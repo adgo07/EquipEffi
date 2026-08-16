@@ -1,0 +1,10382 @@
+{
+ "standard_code": "GB 20052-2024",
+ "standard_name": "电力变压器能效限定值及能效等级",
+ "effective_date": "2025-02-01",
+ "unit_note": "损耗单位kW；1级/2级/3级对应数组[no_load_kw]和[load_kw]",
+ "rows": [
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 30.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.065,
+    0.07,
+    0.08
+   ],
+   "load_kw": [
+    0.455,
+    0.505,
+    0.63
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 30.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.065,
+    0.07,
+    0.08
+   ],
+   "load_kw": [
+    0.43,
+    0.48,
+    0.6
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 30.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.025,
+    0.033,
+    0.033
+   ],
+   "load_kw": [
+    0.51,
+    0.535,
+    0.63
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 30.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.025,
+    0.033,
+    0.033
+   ],
+   "load_kw": [
+    0.48,
+    0.51,
+    0.6
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 50.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.08,
+    0.09,
+    0.1
+   ],
+   "load_kw": [
+    0.655,
+    0.73,
+    0.91
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 50.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.08,
+    0.09,
+    0.1
+   ],
+   "load_kw": [
+    0.625,
+    0.695,
+    0.87
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 50.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.035,
+    0.043,
+    0.043
+   ],
+   "load_kw": [
+    0.735,
+    0.78,
+    0.91
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 50.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.035,
+    0.043,
+    0.043
+   ],
+   "load_kw": [
+    0.7,
+    0.745,
+    0.87
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 63.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.09,
+    0.1,
+    0.11
+   ],
+   "load_kw": [
+    0.785,
+    0.87,
+    1.09
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 63.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.09,
+    0.1,
+    0.11
+   ],
+   "load_kw": [
+    0.745,
+    0.83,
+    1.04
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 63.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.04,
+    0.05,
+    0.05
+   ],
+   "load_kw": [
+    0.88,
+    0.93,
+    1.09
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 63.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.04,
+    0.05,
+    0.05
+   ],
+   "load_kw": [
+    0.84,
+    0.89,
+    1.04
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 80.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.105,
+    0.115,
+    0.13
+   ],
+   "load_kw": [
+    0.945,
+    1.05,
+    1.31
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 80.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.105,
+    0.115,
+    0.13
+   ],
+   "load_kw": [
+    0.9,
+    1.0,
+    1.25
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 80.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.05,
+    0.06,
+    0.06
+   ],
+   "load_kw": [
+    1.06,
+    1.12,
+    1.31
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 80.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.05,
+    0.06,
+    0.06
+   ],
+   "load_kw": [
+    1.01,
+    1.07,
+    1.25
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 100.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.12,
+    0.135,
+    0.15
+   ],
+   "load_kw": [
+    1.14,
+    1.265,
+    1.58
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 100.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.12,
+    0.135,
+    0.15
+   ],
+   "load_kw": [
+    1.08,
+    1.2,
+    1.5
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 100.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.06,
+    0.075,
+    0.075
+   ],
+   "load_kw": [
+    1.27,
+    1.35,
+    1.58
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 100.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.06,
+    0.075,
+    0.075
+   ],
+   "load_kw": [
+    1.215,
+    1.285,
+    1.5
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 125.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.135,
+    0.15,
+    0.17
+   ],
+   "load_kw": [
+    1.36,
+    1.51,
+    1.89
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 125.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.135,
+    0.15,
+    0.17
+   ],
+   "load_kw": [
+    1.295,
+    1.44,
+    1.8
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 125.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.07,
+    0.085,
+    0.085
+   ],
+   "load_kw": [
+    1.53,
+    1.615,
+    1.89
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 125.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.07,
+    0.085,
+    0.085
+   ],
+   "load_kw": [
+    1.45,
+    1.54,
+    1.8
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 160.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.16,
+    0.18,
+    0.2
+   ],
+   "load_kw": [
+    1.665,
+    1.85,
+    2.31
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 160.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.16,
+    0.18,
+    0.2
+   ],
+   "load_kw": [
+    1.585,
+    1.76,
+    2.2
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 160.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.08,
+    0.1,
+    0.1
+   ],
+   "load_kw": [
+    1.87,
+    1.975,
+    2.31
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 160.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.08,
+    0.1,
+    0.1
+   ],
+   "load_kw": [
+    1.78,
+    1.88,
+    2.2
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 200.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.19,
+    0.215,
+    0.24
+   ],
+   "load_kw": [
+    1.97,
+    2.185,
+    2.73
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 200.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.19,
+    0.215,
+    0.24
+   ],
+   "load_kw": [
+    1.87,
+    2.08,
+    2.6
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 200.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.095,
+    0.12,
+    0.12
+   ],
+   "load_kw": [
+    2.21,
+    2.33,
+    2.73
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 200.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.095,
+    0.12,
+    0.12
+   ],
+   "load_kw": [
+    2.1,
+    2.225,
+    2.6
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 250.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.23,
+    0.26,
+    0.29
+   ],
+   "load_kw": [
+    2.3,
+    2.56,
+    3.2
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 250.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.23,
+    0.26,
+    0.29
+   ],
+   "load_kw": [
+    2.195,
+    2.44,
+    3.05
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 250.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.11,
+    0.14,
+    0.14
+   ],
+   "load_kw": [
+    2.59,
+    2.735,
+    3.2
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 250.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.11,
+    0.14,
+    0.14
+   ],
+   "load_kw": [
+    2.47,
+    2.61,
+    3.05
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 315.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.27,
+    0.305,
+    0.34
+   ],
+   "load_kw": [
+    2.76,
+    3.065,
+    3.83
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 315.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.27,
+    0.305,
+    0.34
+   ],
+   "load_kw": [
+    2.63,
+    2.92,
+    3.65
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 315.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.135,
+    0.17,
+    0.17
+   ],
+   "load_kw": [
+    3.1,
+    3.275,
+    3.83
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 315.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.135,
+    0.17,
+    0.17
+   ],
+   "load_kw": [
+    2.95,
+    3.12,
+    3.65
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 400.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.33,
+    0.37,
+    0.41
+   ],
+   "load_kw": [
+    3.25,
+    3.615,
+    4.52
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 400.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.33,
+    0.37,
+    0.41
+   ],
+   "load_kw": [
+    3.095,
+    3.44,
+    4.3
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 400.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.16,
+    0.2,
+    0.2
+   ],
+   "load_kw": [
+    3.66,
+    3.865,
+    4.52
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 400.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.16,
+    0.2,
+    0.2
+   ],
+   "load_kw": [
+    3.48,
+    3.675,
+    4.3
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 500.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.385,
+    0.43,
+    0.48
+   ],
+   "load_kw": [
+    3.9,
+    4.33,
+    5.41
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 500.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.385,
+    0.43,
+    0.48
+   ],
+   "load_kw": [
+    3.71,
+    4.12,
+    5.15
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 500.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Dyn11/Yzn11",
+   "no_load_kw": [
+    0.19,
+    0.24,
+    0.24
+   ],
+   "load_kw": [
+    4.38,
+    4.625,
+    5.41
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 500.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.19,
+    0.24,
+    0.24
+   ],
+   "load_kw": [
+    4.17,
+    4.4,
+    5.15
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 630.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.46,
+    0.51,
+    0.57
+   ],
+   "load_kw": [
+    4.46,
+    4.96,
+    6.2
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 630.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.25,
+    0.32,
+    0.32
+   ],
+   "load_kw": [
+    5.02,
+    5.3,
+    6.2
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 800.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.56,
+    0.63,
+    0.7
+   ],
+   "load_kw": [
+    5.4,
+    6.0,
+    7.5
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 800.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.3,
+    0.38,
+    0.38
+   ],
+   "load_kw": [
+    6.075,
+    6.415,
+    7.5
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1000.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.665,
+    0.745,
+    0.83
+   ],
+   "load_kw": [
+    7.415,
+    8.24,
+    10.3
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1000.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.36,
+    0.45,
+    0.45
+   ],
+   "load_kw": [
+    8.34,
+    8.8,
+    10.3
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1250.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.78,
+    0.87,
+    0.97
+   ],
+   "load_kw": [
+    8.64,
+    9.6,
+    12.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1250.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.425,
+    0.53,
+    0.53
+   ],
+   "load_kw": [
+    9.72,
+    10.26,
+    12.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1600.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.94,
+    1.05,
+    1.17
+   ],
+   "load_kw": [
+    10.44,
+    11.6,
+    14.5
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1600.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.5,
+    0.63,
+    0.63
+   ],
+   "load_kw": [
+    11.745,
+    12.4,
+    14.5
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2000.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    1.085,
+    1.225,
+    1.36
+   ],
+   "load_kw": [
+    13.18,
+    14.64,
+    18.3
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2000.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.55,
+    0.71,
+    0.72
+   ],
+   "load_kw": [
+    14.0,
+    14.8,
+    18.3
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2500.0,
+   "core_material": "电工钢带",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    1.28,
+    1.44,
+    1.6
+   ],
+   "load_kw": [
+    15.27,
+    16.96,
+    21.2
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表1",
+   "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2500.0,
+   "core_material": "非晶合金",
+   "insulation": "",
+   "connection": "Yyn0",
+   "no_load_kw": [
+    0.67,
+    0.86,
+    0.865
+   ],
+   "load_kw": [
+    16.23,
+    17.15,
+    21.2
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 30.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.105,
+    0.13,
+    0.15
+   ],
+   "load_kw": [
+    0.605,
+    0.605,
+    0.67
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 30.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.105,
+    0.13,
+    0.15
+   ],
+   "load_kw": [
+    0.64,
+    0.64,
+    0.71
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 30.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.105,
+    0.13,
+    0.15
+   ],
+   "load_kw": [
+    0.685,
+    0.685,
+    0.76
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 30.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.05,
+    0.06,
+    0.07
+   ],
+   "load_kw": [
+    0.605,
+    0.605,
+    0.67
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 30.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.05,
+    0.06,
+    0.07
+   ],
+   "load_kw": [
+    0.64,
+    0.64,
+    0.71
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 30.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.05,
+    0.06,
+    0.07
+   ],
+   "load_kw": [
+    0.685,
+    0.685,
+    0.76
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 50.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.155,
+    0.185,
+    0.215
+   ],
+   "load_kw": [
+    0.845,
+    0.845,
+    0.94
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 50.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.155,
+    0.185,
+    0.215
+   ],
+   "load_kw": [
+    0.9,
+    0.9,
+    1.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 50.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.155,
+    0.185,
+    0.215
+   ],
+   "load_kw": [
+    0.965,
+    0.965,
+    1.07
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 50.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.06,
+    0.075,
+    0.09
+   ],
+   "load_kw": [
+    0.845,
+    0.845,
+    0.94
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 50.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.06,
+    0.075,
+    0.09
+   ],
+   "load_kw": [
+    0.9,
+    0.9,
+    1.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 50.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.06,
+    0.075,
+    0.09
+   ],
+   "load_kw": [
+    0.965,
+    0.965,
+    1.07
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 80.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.21,
+    0.25,
+    0.295
+   ],
+   "load_kw": [
+    1.16,
+    1.16,
+    1.29
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 80.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.21,
+    0.25,
+    0.295
+   ],
+   "load_kw": [
+    1.24,
+    1.24,
+    1.38
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 80.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.21,
+    0.25,
+    0.295
+   ],
+   "load_kw": [
+    1.33,
+    1.33,
+    1.48
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 80.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.085,
+    0.1,
+    0.12
+   ],
+   "load_kw": [
+    1.16,
+    1.16,
+    1.29
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 80.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.085,
+    0.1,
+    0.12
+   ],
+   "load_kw": [
+    1.24,
+    1.24,
+    1.38
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 80.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.085,
+    0.1,
+    0.12
+   ],
+   "load_kw": [
+    1.33,
+    1.33,
+    1.48
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 100.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.23,
+    0.27,
+    0.32
+   ],
+   "load_kw": [
+    1.33,
+    1.33,
+    1.48
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 100.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.23,
+    0.27,
+    0.32
+   ],
+   "load_kw": [
+    1.415,
+    1.415,
+    1.57
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 100.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.23,
+    0.27,
+    0.32
+   ],
+   "load_kw": [
+    1.52,
+    1.52,
+    1.69
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 100.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.09,
+    0.11,
+    0.13
+   ],
+   "load_kw": [
+    1.33,
+    1.33,
+    1.48
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 100.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.09,
+    0.11,
+    0.13
+   ],
+   "load_kw": [
+    1.415,
+    1.415,
+    1.57
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 100.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.09,
+    0.11,
+    0.13
+   ],
+   "load_kw": [
+    1.52,
+    1.52,
+    1.69
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 125.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.27,
+    0.32,
+    0.375
+   ],
+   "load_kw": [
+    1.565,
+    1.565,
+    1.74
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 125.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.27,
+    0.32,
+    0.375
+   ],
+   "load_kw": [
+    1.665,
+    1.665,
+    1.85
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 125.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.27,
+    0.32,
+    0.375
+   ],
+   "load_kw": [
+    1.78,
+    1.78,
+    1.98
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 125.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.105,
+    0.13,
+    0.15
+   ],
+   "load_kw": [
+    1.565,
+    1.565,
+    1.74
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 125.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.105,
+    0.13,
+    0.15
+   ],
+   "load_kw": [
+    1.665,
+    1.665,
+    1.85
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 125.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.105,
+    0.13,
+    0.15
+   ],
+   "load_kw": [
+    1.78,
+    1.78,
+    1.98
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 160.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.31,
+    0.365,
+    0.43
+   ],
+   "load_kw": [
+    1.8,
+    1.8,
+    2.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 160.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.31,
+    0.365,
+    0.43
+   ],
+   "load_kw": [
+    1.915,
+    1.915,
+    2.13
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 160.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.31,
+    0.365,
+    0.43
+   ],
+   "load_kw": [
+    2.05,
+    2.05,
+    2.28
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 160.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.12,
+    0.145,
+    0.17
+   ],
+   "load_kw": [
+    1.8,
+    1.8,
+    2.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 160.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.12,
+    0.145,
+    0.17
+   ],
+   "load_kw": [
+    1.915,
+    1.915,
+    2.13
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 160.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.12,
+    0.145,
+    0.17
+   ],
+   "load_kw": [
+    2.05,
+    2.05,
+    2.28
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 200.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.36,
+    0.42,
+    0.495
+   ],
+   "load_kw": [
+    2.135,
+    2.135,
+    2.37
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 200.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.36,
+    0.42,
+    0.495
+   ],
+   "load_kw": [
+    2.275,
+    2.275,
+    2.53
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 200.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.36,
+    0.42,
+    0.495
+   ],
+   "load_kw": [
+    2.44,
+    2.44,
+    2.71
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 200.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.14,
+    0.17,
+    0.2
+   ],
+   "load_kw": [
+    2.135,
+    2.135,
+    2.37
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 200.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.14,
+    0.17,
+    0.2
+   ],
+   "load_kw": [
+    2.275,
+    2.275,
+    2.53
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 200.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.14,
+    0.17,
+    0.2
+   ],
+   "load_kw": [
+    2.44,
+    2.44,
+    2.71
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 250.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.415,
+    0.49,
+    0.575
+   ],
+   "load_kw": [
+    2.33,
+    2.33,
+    2.59
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 250.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.415,
+    0.49,
+    0.575
+   ],
+   "load_kw": [
+    2.485,
+    2.485,
+    2.76
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 250.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.415,
+    0.49,
+    0.575
+   ],
+   "load_kw": [
+    2.665,
+    2.665,
+    2.96
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 250.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.16,
+    0.195,
+    0.23
+   ],
+   "load_kw": [
+    2.33,
+    2.33,
+    2.59
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 250.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.16,
+    0.195,
+    0.23
+   ],
+   "load_kw": [
+    2.485,
+    2.485,
+    2.76
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 250.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.16,
+    0.195,
+    0.23
+   ],
+   "load_kw": [
+    2.665,
+    2.665,
+    2.96
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 315.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.51,
+    0.6,
+    0.705
+   ],
+   "load_kw": [
+    2.945,
+    2.945,
+    3.27
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 315.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.51,
+    0.6,
+    0.705
+   ],
+   "load_kw": [
+    3.125,
+    3.125,
+    3.47
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 315.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.51,
+    0.6,
+    0.705
+   ],
+   "load_kw": [
+    3.355,
+    3.355,
+    3.73
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 315.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.195,
+    0.235,
+    0.28
+   ],
+   "load_kw": [
+    2.945,
+    2.945,
+    3.27
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 315.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.195,
+    0.235,
+    0.28
+   ],
+   "load_kw": [
+    3.125,
+    3.125,
+    3.47
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 315.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.195,
+    0.235,
+    0.28
+   ],
+   "load_kw": [
+    3.355,
+    3.355,
+    3.73
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 400.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.57,
+    0.665,
+    0.785
+   ],
+   "load_kw": [
+    3.375,
+    3.375,
+    3.75
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 400.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.57,
+    0.665,
+    0.785
+   ],
+   "load_kw": [
+    3.59,
+    3.59,
+    3.99
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 400.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.57,
+    0.665,
+    0.785
+   ],
+   "load_kw": [
+    3.85,
+    3.85,
+    4.28
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 400.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.215,
+    0.265,
+    0.31
+   ],
+   "load_kw": [
+    3.375,
+    3.375,
+    3.75
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 400.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.215,
+    0.265,
+    0.31
+   ],
+   "load_kw": [
+    3.59,
+    3.59,
+    3.99
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 400.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.215,
+    0.265,
+    0.31
+   ],
+   "load_kw": [
+    3.85,
+    3.85,
+    4.28
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 500.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.67,
+    0.79,
+    0.93
+   ],
+   "load_kw": [
+    4.13,
+    4.13,
+    4.59
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 500.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.67,
+    0.79,
+    0.93
+   ],
+   "load_kw": [
+    4.39,
+    4.39,
+    4.88
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 500.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.67,
+    0.79,
+    0.93
+   ],
+   "load_kw": [
+    4.705,
+    4.705,
+    5.23
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 500.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.25,
+    0.305,
+    0.36
+   ],
+   "load_kw": [
+    4.13,
+    4.13,
+    4.59
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 500.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.25,
+    0.305,
+    0.36
+   ],
+   "load_kw": [
+    4.39,
+    4.39,
+    4.88
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 500.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.25,
+    0.305,
+    0.36
+   ],
+   "load_kw": [
+    4.705,
+    4.705,
+    5.23
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 630.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.775,
+    0.91,
+    1.07
+   ],
+   "load_kw": [
+    4.975,
+    4.975,
+    5.53
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 630.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.775,
+    0.91,
+    1.07
+   ],
+   "load_kw": [
+    5.29,
+    5.29,
+    5.88
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 630.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.775,
+    0.91,
+    1.07
+   ],
+   "load_kw": [
+    5.66,
+    5.66,
+    6.29
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 630.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.295,
+    0.36,
+    0.42
+   ],
+   "load_kw": [
+    4.975,
+    4.975,
+    5.53
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 630.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.295,
+    0.36,
+    0.42
+   ],
+   "load_kw": [
+    5.29,
+    5.29,
+    5.88
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 630.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.295,
+    0.36,
+    0.42
+   ],
+   "load_kw": [
+    5.66,
+    5.66,
+    6.29
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 800.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.875,
+    1.035,
+    1.215
+   ],
+   "load_kw": [
+    5.895,
+    5.895,
+    6.55
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 800.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.875,
+    1.035,
+    1.215
+   ],
+   "load_kw": [
+    6.265,
+    6.265,
+    6.96
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 800.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.875,
+    1.035,
+    1.215
+   ],
+   "load_kw": [
+    6.715,
+    6.715,
+    7.46
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 800.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.335,
+    0.41,
+    0.48
+   ],
+   "load_kw": [
+    5.895,
+    5.895,
+    6.55
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 800.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.335,
+    0.41,
+    0.48
+   ],
+   "load_kw": [
+    6.265,
+    6.265,
+    6.96
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 800.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.335,
+    0.41,
+    0.48
+   ],
+   "load_kw": [
+    6.715,
+    6.715,
+    7.46
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1000.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.02,
+    1.205,
+    1.415
+   ],
+   "load_kw": [
+    6.885,
+    6.885,
+    7.65
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1000.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.02,
+    1.205,
+    1.415
+   ],
+   "load_kw": [
+    7.315,
+    7.315,
+    8.13
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1000.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.02,
+    1.205,
+    1.415
+   ],
+   "load_kw": [
+    7.885,
+    7.885,
+    8.76
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1000.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.385,
+    0.47,
+    0.55
+   ],
+   "load_kw": [
+    6.885,
+    6.885,
+    7.65
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1000.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.385,
+    0.47,
+    0.55
+   ],
+   "load_kw": [
+    7.315,
+    7.315,
+    8.13
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1000.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.385,
+    0.47,
+    0.55
+   ],
+   "load_kw": [
+    7.885,
+    7.885,
+    8.76
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1250.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.205,
+    1.42,
+    1.67
+   ],
+   "load_kw": [
+    8.19,
+    8.19,
+    9.1
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1250.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.205,
+    1.42,
+    1.67
+   ],
+   "load_kw": [
+    8.72,
+    8.72,
+    9.69
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1250.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.205,
+    1.42,
+    1.67
+   ],
+   "load_kw": [
+    9.335,
+    9.335,
+    10.37
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1250.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.455,
+    0.55,
+    0.65
+   ],
+   "load_kw": [
+    8.19,
+    8.19,
+    9.1
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1250.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.455,
+    0.55,
+    0.65
+   ],
+   "load_kw": [
+    8.72,
+    8.72,
+    9.69
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1250.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.455,
+    0.55,
+    0.65
+   ],
+   "load_kw": [
+    9.335,
+    9.335,
+    10.37
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1600.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.415,
+    1.665,
+    1.96
+   ],
+   "load_kw": [
+    9.945,
+    9.945,
+    11.05
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1600.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.415,
+    1.665,
+    1.96
+   ],
+   "load_kw": [
+    10.555,
+    10.555,
+    11.73
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1600.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.415,
+    1.665,
+    1.96
+   ],
+   "load_kw": [
+    11.32,
+    11.32,
+    12.58
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1600.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.53,
+    0.645,
+    0.76
+   ],
+   "load_kw": [
+    9.945,
+    9.945,
+    11.05
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1600.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.53,
+    0.645,
+    0.76
+   ],
+   "load_kw": [
+    10.555,
+    10.555,
+    11.73
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 1600.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.53,
+    0.645,
+    0.76
+   ],
+   "load_kw": [
+    11.32,
+    11.32,
+    12.58
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2000.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.76,
+    2.075,
+    2.44
+   ],
+   "load_kw": [
+    12.24,
+    12.24,
+    13.6
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2000.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.76,
+    2.075,
+    2.44
+   ],
+   "load_kw": [
+    13.005,
+    13.005,
+    14.45
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2000.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.76,
+    2.075,
+    2.44
+   ],
+   "load_kw": [
+    14.005,
+    14.005,
+    15.56
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2000.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.7,
+    0.85,
+    1.0
+   ],
+   "load_kw": [
+    12.24,
+    12.24,
+    13.6
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2000.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.7,
+    0.85,
+    1.0
+   ],
+   "load_kw": [
+    13.005,
+    13.005,
+    14.45
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2000.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.7,
+    0.85,
+    1.0
+   ],
+   "load_kw": [
+    14.005,
+    14.005,
+    15.56
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2500.0,
+   "core_material": "电工钢带",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.08,
+    2.45,
+    2.88
+   ],
+   "load_kw": [
+    14.535,
+    14.535,
+    16.15
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2500.0,
+   "core_material": "电工钢带",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.08,
+    2.45,
+    2.88
+   ],
+   "load_kw": [
+    15.445,
+    15.445,
+    17.17
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2500.0,
+   "core_material": "电工钢带",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.08,
+    2.45,
+    2.88
+   ],
+   "load_kw": [
+    16.605,
+    16.605,
+    18.45
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2500.0,
+   "core_material": "非晶合金",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.84,
+    1.02,
+    1.2
+   ],
+   "load_kw": [
+    14.535,
+    14.535,
+    16.15
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2500.0,
+   "core_material": "非晶合金",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.84,
+    1.02,
+    1.2
+   ],
+   "load_kw": [
+    15.445,
+    15.445,
+    17.17
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表2",
+   "category": "10kV干式三相双绕组无励磁调压配电变压器",
+   "capacity_kva": 2500.0,
+   "core_material": "非晶合金",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.84,
+    1.02,
+    1.2
+   ],
+   "load_kw": [
+    16.605,
+    16.605,
+    18.45
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表3",
+   "category": "35kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 3150.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    1.7,
+    2.0,
+    2.4
+   ],
+   "load_kw": [
+    21.0,
+    21.0,
+    22.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表3",
+   "category": "35kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 4000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.0,
+    2.3,
+    2.9
+   ],
+   "load_kw": [
+    25.0,
+    25.0,
+    26.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表3",
+   "category": "35kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 5000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.4,
+    2.8,
+    3.5
+   ],
+   "load_kw": [
+    28.0,
+    28.0,
+    30.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表3",
+   "category": "35kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.9,
+    3.4,
+    4.2
+   ],
+   "load_kw": [
+    32.0,
+    32.0,
+    33.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表3",
+   "category": "35kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    4.7,
+    5.8
+   ],
+   "load_kw": [
+    35.0,
+    35.0,
+    36.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表3",
+   "category": "35kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.8,
+    5.7,
+    7.0
+   ],
+   "load_kw": [
+    41.0,
+    41.0,
+    43.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表3",
+   "category": "35kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 12500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    5.5,
+    6.5,
+    8.0
+   ],
+   "load_kw": [
+    48.0,
+    48.0,
+    51.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表3",
+   "category": "35kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 16000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    6.7,
+    7.9,
+    9.7
+   ],
+   "load_kw": [
+    59.0,
+    59.0,
+    62.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表3",
+   "category": "35kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 20000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    7.9,
+    9.4,
+    11.5
+   ],
+   "load_kw": [
+    72.0,
+    72.0,
+    76.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表3",
+   "category": "35kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 25000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    9.4,
+    11.1,
+    13.6
+   ],
+   "load_kw": [
+    85.0,
+    85.0,
+    89.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表3",
+   "category": "35kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    11.1,
+    13.1,
+    16.2
+   ],
+   "load_kw": [
+    101.0,
+    101.0,
+    106.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表4",
+   "category": "35kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 3150.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    1.8,
+    2.1,
+    2.6
+   ],
+   "load_kw": [
+    22.0,
+    22.0,
+    24.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表4",
+   "category": "35kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 4000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.1,
+    2.5,
+    3.1
+   ],
+   "load_kw": [
+    26.0,
+    26.0,
+    28.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表4",
+   "category": "35kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 5000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.6,
+    3.0,
+    3.7
+   ],
+   "load_kw": [
+    31.0,
+    31.0,
+    32.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表4",
+   "category": "35kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    3.1,
+    3.7,
+    4.5
+   ],
+   "load_kw": [
+    33.0,
+    33.0,
+    35.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表4",
+   "category": "35kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.3,
+    5.1,
+    6.3
+   ],
+   "load_kw": [
+    36.0,
+    36.0,
+    39.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表4",
+   "category": "35kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    5.1,
+    6.0,
+    7.4
+   ],
+   "load_kw": [
+    43.0,
+    43.0,
+    46.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表4",
+   "category": "35kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 12500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    6.0,
+    7.1,
+    8.7
+   ],
+   "load_kw": [
+    51.0,
+    51.0,
+    54.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表4",
+   "category": "35kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 16000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    7.2,
+    8.5,
+    10.5
+   ],
+   "load_kw": [
+    63.0,
+    63.0,
+    67.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表4",
+   "category": "35kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 20000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    8.5,
+    10.1,
+    12.4
+   ],
+   "load_kw": [
+    74.0,
+    74.0,
+    79.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表4",
+   "category": "35kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 25000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    10.1,
+    11.9,
+    14.6
+   ],
+   "load_kw": [
+    88.0,
+    88.0,
+    93.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表4",
+   "category": "35kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    12.0,
+    14.2,
+    17.4
+   ],
+   "load_kw": [
+    104.0,
+    104.0,
+    110.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 3150.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.2,
+    2.6,
+    3.2
+   ],
+   "load_kw": [
+    21.0,
+    21.0,
+    22.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 4000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.6,
+    3.1,
+    3.8
+   ],
+   "load_kw": [
+    25.0,
+    25.0,
+    26.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 5000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    3.1,
+    3.7,
+    4.6
+   ],
+   "load_kw": [
+    28.0,
+    28.0,
+    29.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    4.7,
+    5.8
+   ],
+   "load_kw": [
+    31.0,
+    31.0,
+    32.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.9,
+    5.8,
+    7.1
+   ],
+   "load_kw": [
+    36.0,
+    36.0,
+    38.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    5.8,
+    6.8,
+    8.4
+   ],
+   "load_kw": [
+    43.0,
+    43.0,
+    45.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 12500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    6.8,
+    8.1,
+    9.9
+   ],
+   "load_kw": [
+    51.0,
+    51.0,
+    54.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 16000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    8.3,
+    9.8,
+    12.0
+   ],
+   "load_kw": [
+    63.0,
+    63.0,
+    66.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 20000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    9.7,
+    11.4,
+    14.1
+   ],
+   "load_kw": [
+    76.0,
+    76.0,
+    80.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 25000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    11.4,
+    13.5,
+    16.6
+   ],
+   "load_kw": [
+    90.0,
+    90.0,
+    95.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    13.5,
+    16.0,
+    19.7
+   ],
+   "load_kw": [
+    108.0,
+    108.0,
+    114.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    16.2,
+    19.1,
+    23.5
+   ],
+   "load_kw": [
+    127.0,
+    127.0,
+    134.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    19.4,
+    22.9,
+    28.2
+   ],
+   "load_kw": [
+    150.0,
+    150.0,
+    159.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表5",
+   "category": "66kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    22.9,
+    27.0,
+    33.3
+   ],
+   "load_kw": [
+    178.0,
+    178.0,
+    188.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表6",
+   "category": "66kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.4,
+    5.2,
+    6.4
+   ],
+   "load_kw": [
+    31.0,
+    31.0,
+    32.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表6",
+   "category": "66kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    5.3,
+    6.2,
+    7.7
+   ],
+   "load_kw": [
+    36.0,
+    36.0,
+    38.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表6",
+   "category": "66kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    6.2,
+    7.3,
+    9.0
+   ],
+   "load_kw": [
+    43.0,
+    43.0,
+    45.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表6",
+   "category": "66kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 12500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    7.4,
+    8.7,
+    10.7
+   ],
+   "load_kw": [
+    51.0,
+    51.0,
+    54.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表6",
+   "category": "66kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 16000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    8.9,
+    10.5,
+    12.9
+   ],
+   "load_kw": [
+    63.0,
+    63.0,
+    66.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表6",
+   "category": "66kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 20000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    10.6,
+    12.5,
+    15.4
+   ],
+   "load_kw": [
+    76.0,
+    76.0,
+    80.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表6",
+   "category": "66kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 25000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    12.5,
+    14.8,
+    18.2
+   ],
+   "load_kw": [
+    90.0,
+    90.0,
+    95.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表6",
+   "category": "66kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    14.8,
+    17.5,
+    21.5
+   ],
+   "load_kw": [
+    108.0,
+    108.0,
+    114.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表6",
+   "category": "66kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    17.7,
+    20.9,
+    25.8
+   ],
+   "load_kw": [
+    127.0,
+    127.0,
+    134.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表6",
+   "category": "66kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    20.9,
+    24.7,
+    30.4
+   ],
+   "load_kw": [
+    150.0,
+    150.0,
+    159.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表6",
+   "category": "66kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    24.7,
+    29.2,
+    35.9
+   ],
+   "load_kw": [
+    178.0,
+    178.0,
+    188.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.1,
+    4.8,
+    5.9
+   ],
+   "load_kw": [
+    32.0,
+    32.0,
+    33.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.9,
+    5.8,
+    7.1
+   ],
+   "load_kw": [
+    38.0,
+    38.0,
+    40.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    5.8,
+    6.8,
+    8.4
+   ],
+   "load_kw": [
+    45.0,
+    45.0,
+    48.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 12500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    6.8,
+    8.1,
+    9.9
+   ],
+   "load_kw": [
+    53.0,
+    53.0,
+    56.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 16000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    8.3,
+    9.8,
+    12.0
+   ],
+   "load_kw": [
+    66.0,
+    66.0,
+    69.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 20000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    9.7,
+    11.4,
+    14.1
+   ],
+   "load_kw": [
+    79.0,
+    79.0,
+    84.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 25000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    11.4,
+    13.5,
+    16.6
+   ],
+   "load_kw": [
+    94.0,
+    94.0,
+    99.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    13.5,
+    16.0,
+    19.7
+   ],
+   "load_kw": [
+    111.0,
+    111.0,
+    117.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    16.2,
+    19.1,
+    23.5
+   ],
+   "load_kw": [
+    133.0,
+    133.0,
+    141.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    19.4,
+    22.9,
+    28.2
+   ],
+   "load_kw": [
+    158.0,
+    158.0,
+    166.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    22.9,
+    27.0,
+    33.3
+   ],
+   "load_kw": [
+    187.0,
+    187.0,
+    198.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 75000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    26.0,
+    30.7,
+    37.8
+   ],
+   "load_kw": [
+    212.0,
+    212.0,
+    224.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    29.9,
+    35.4,
+    43.5
+   ],
+   "load_kw": [
+    245.0,
+    245.0,
+    258.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    37.3,
+    44.1,
+    54.2
+   ],
+   "load_kw": [
+    303.0,
+    303.0,
+    320.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    44.1,
+    52.1,
+    64.1
+   ],
+   "load_kw": [
+    359.0,
+    359.0,
+    379.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表7",
+   "category": "110kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    49.5,
+    58.5,
+    72.0
+   ],
+   "load_kw": [
+    411.0,
+    411.0,
+    434.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表8",
+   "category": "110kV油浸式三相双绕组低压为35kV无励磁调压电力变压器",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.4,
+    5.2,
+    6.4
+   ],
+   "load_kw": [
+    33.0,
+    33.0,
+    35.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表8",
+   "category": "110kV油浸式三相双绕组低压为35kV无励磁调压电力变压器",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    5.3,
+    6.2,
+    7.7
+   ],
+   "load_kw": [
+    40.0,
+    40.0,
+    42.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表8",
+   "category": "110kV油浸式三相双绕组低压为35kV无励磁调压电力变压器",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    6.2,
+    7.3,
+    9.0
+   ],
+   "load_kw": [
+    47.0,
+    47.0,
+    49.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表8",
+   "category": "110kV油浸式三相双绕组低压为35kV无励磁调压电力变压器",
+   "capacity_kva": 12500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    7.2,
+    8.5,
+    10.5
+   ],
+   "load_kw": [
+    56.0,
+    56.0,
+    59.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表8",
+   "category": "110kV油浸式三相双绕组低压为35kV无励磁调压电力变压器",
+   "capacity_kva": 16000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    8.6,
+    10.1,
+    12.5
+   ],
+   "load_kw": [
+    68.0,
+    68.0,
+    72.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表8",
+   "category": "110kV油浸式三相双绕组低压为35kV无励磁调压电力变压器",
+   "capacity_kva": 20000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    10.2,
+    12.0,
+    14.8
+   ],
+   "load_kw": [
+    85.0,
+    85.0,
+    89.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表8",
+   "category": "110kV油浸式三相双绕组低压为35kV无励磁调压电力变压器",
+   "capacity_kva": 25000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    12.1,
+    14.2,
+    17.5
+   ],
+   "load_kw": [
+    99.0,
+    99.0,
+    105.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表8",
+   "category": "110kV油浸式三相双绕组低压为35kV无励磁调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    14.3,
+    16.8,
+    20.7
+   ],
+   "load_kw": [
+    120.0,
+    120.0,
+    126.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表8",
+   "category": "110kV油浸式三相双绕组低压为35kV无励磁调压电力变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    16.9,
+    20.0,
+    24.6
+   ],
+   "load_kw": [
+    140.0,
+    140.0,
+    147.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表8",
+   "category": "110kV油浸式三相双绕组低压为35kV无励磁调压电力变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    20.3,
+    24.0,
+    29.5
+   ],
+   "load_kw": [
+    174.0,
+    174.0,
+    183.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表8",
+   "category": "110kV油浸式三相双绕组低压为35kV无励磁调压电力变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    24.0,
+    28.3,
+    34.9
+   ],
+   "load_kw": [
+    209.0,
+    209.0,
+    220.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表9",
+   "category": "110kV油浸式三相三绕组无励磁调压变压器",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.9,
+    5.8,
+    7.1
+   ],
+   "load_kw": [
+    40.0,
+    40.0,
+    42.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表9",
+   "category": "110kV油浸式三相三绕组无励磁调压变压器",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    5.8,
+    6.9,
+    8.5
+   ],
+   "load_kw": [
+    48.0,
+    48.0,
+    50.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表9",
+   "category": "110kV油浸式三相三绕组无励磁调压变压器",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    6.9,
+    8.2,
+    10.1
+   ],
+   "load_kw": [
+    56.0,
+    56.0,
+    59.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表9",
+   "category": "110kV油浸式三相三绕组无励磁调压变压器",
+   "capacity_kva": 12500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    8.1,
+    9.6,
+    11.8
+   ],
+   "load_kw": [
+    67.0,
+    67.0,
+    70.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表9",
+   "category": "110kV油浸式三相三绕组无励磁调压变压器",
+   "capacity_kva": 16000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    9.8,
+    11.6,
+    14.3
+   ],
+   "load_kw": [
+    81.0,
+    81.0,
+    86.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表9",
+   "category": "110kV油浸式三相三绕组无励磁调压变压器",
+   "capacity_kva": 20000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    11.6,
+    13.7,
+    16.9
+   ],
+   "load_kw": [
+    95.0,
+    95.0,
+    101.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表9",
+   "category": "110kV油浸式三相三绕组无励磁调压变压器",
+   "capacity_kva": 25000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    13.5,
+    16.0,
+    19.7
+   ],
+   "load_kw": [
+    113.0,
+    113.0,
+    120.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表9",
+   "category": "110kV油浸式三相三绕组无励磁调压变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    16.2,
+    19.1,
+    23.5
+   ],
+   "load_kw": [
+    134.0,
+    134.0,
+    142.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表9",
+   "category": "110kV油浸式三相三绕组无励磁调压变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    19.1,
+    22.6,
+    27.8
+   ],
+   "load_kw": [
+    161.0,
+    161.0,
+    170.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表9",
+   "category": "110kV油浸式三相三绕组无励磁调压变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    22.9,
+    27.0,
+    33.3
+   ],
+   "load_kw": [
+    192.0,
+    192.0,
+    202.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表9",
+   "category": "110kV油浸式三相三绕组无励磁调压变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    27.1,
+    32.0,
+    39.4
+   ],
+   "load_kw": [
+    230.0,
+    230.0,
+    243.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表10",
+   "category": "110kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.4,
+    5.2,
+    6.4
+   ],
+   "load_kw": [
+    32.0,
+    32.0,
+    33.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表10",
+   "category": "110kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    5.3,
+    6.2,
+    7.7
+   ],
+   "load_kw": [
+    38.0,
+    38.0,
+    40.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表10",
+   "category": "110kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    6.2,
+    7.3,
+    9.0
+   ],
+   "load_kw": [
+    45.0,
+    45.0,
+    48.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表10",
+   "category": "110kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 12500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    7.4,
+    8.7,
+    10.7
+   ],
+   "load_kw": [
+    53.0,
+    53.0,
+    56.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表10",
+   "category": "110kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 16000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    8.9,
+    10.5,
+    12.9
+   ],
+   "load_kw": [
+    66.0,
+    66.0,
+    69.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表10",
+   "category": "110kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 20000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    10.6,
+    12.5,
+    15.4
+   ],
+   "load_kw": [
+    79.0,
+    79.0,
+    84.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表10",
+   "category": "110kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 25000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    12.5,
+    14.8,
+    18.2
+   ],
+   "load_kw": [
+    94.0,
+    94.0,
+    99.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表10",
+   "category": "110kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    14.9,
+    17.6,
+    21.6
+   ],
+   "load_kw": [
+    111.0,
+    111.0,
+    117.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表10",
+   "category": "110kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    17.8,
+    21.0,
+    25.8
+   ],
+   "load_kw": [
+    140.0,
+    140.0,
+    148.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表10",
+   "category": "110kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    21.0,
+    24.8,
+    30.6
+   ],
+   "load_kw": [
+    175.0,
+    175.0,
+    184.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表10",
+   "category": "110kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    25.0,
+    29.5,
+    36.3
+   ],
+   "load_kw": [
+    209.0,
+    209.0,
+    220.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表11",
+   "category": "110kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    5.3,
+    6.2,
+    7.7
+   ],
+   "load_kw": [
+    40.0,
+    40.0,
+    42.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表11",
+   "category": "110kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    6.3,
+    7.5,
+    9.2
+   ],
+   "load_kw": [
+    48.0,
+    48.0,
+    50.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表11",
+   "category": "110kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    7.5,
+    8.8,
+    10.9
+   ],
+   "load_kw": [
+    56.0,
+    56.0,
+    59.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表11",
+   "category": "110kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 12500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    8.9,
+    10.5,
+    12.9
+   ],
+   "load_kw": [
+    67.0,
+    67.0,
+    70.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表11",
+   "category": "110kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 16000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    10.6,
+    12.5,
+    15.4
+   ],
+   "load_kw": [
+    81.0,
+    81.0,
+    86.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表11",
+   "category": "110kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 20000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    12.5,
+    14.8,
+    18.2
+   ],
+   "load_kw": [
+    95.0,
+    95.0,
+    101.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表11",
+   "category": "110kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 25000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    14.9,
+    17.6,
+    21.6
+   ],
+   "load_kw": [
+    113.0,
+    113.0,
+    120.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表11",
+   "category": "110kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    17.7,
+    20.9,
+    25.7
+   ],
+   "load_kw": [
+    134.0,
+    134.0,
+    142.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表11",
+   "category": "110kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    21.2,
+    25.0,
+    30.8
+   ],
+   "load_kw": [
+    161.0,
+    161.0,
+    170.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表11",
+   "category": "110kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    25.0,
+    29.6,
+    36.4
+   ],
+   "load_kw": [
+    192.0,
+    192.0,
+    202.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表11",
+   "category": "110kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    29.8,
+    35.2,
+    43.3
+   ],
+   "load_kw": [
+    230.0,
+    230.0,
+    243.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    15.0,
+    18.0,
+    22.0
+   ],
+   "load_kw": [
+    115.0,
+    115.0,
+    122.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    18.0,
+    21.0,
+    26.0
+   ],
+   "load_kw": [
+    134.0,
+    134.0,
+    142.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    21.0,
+    25.0,
+    31.0
+   ],
+   "load_kw": [
+    161.0,
+    161.0,
+    170.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    25.0,
+    30.0,
+    37.0
+   ],
+   "load_kw": [
+    188.0,
+    188.0,
+    199.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 75000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    29.0,
+    34.0,
+    42.0
+   ],
+   "load_kw": [
+    213.0,
+    213.0,
+    225.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    34.0,
+    40.0,
+    49.0
+   ],
+   "load_kw": [
+    246.0,
+    246.0,
+    259.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    41.0,
+    49.0,
+    60.0
+   ],
+   "load_kw": [
+    304.0,
+    304.0,
+    321.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    49.0,
+    58.0,
+    71.0
+   ],
+   "load_kw": [
+    360.0,
+    360.0,
+    380.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 160000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    51.0,
+    60.0,
+    74.0
+   ],
+   "load_kw": [
+    378.0,
+    378.0,
+    399.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    56.0,
+    66.0,
+    82.0
+   ],
+   "load_kw": [
+    413.0,
+    413.0,
+    436.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    70.0,
+    83.0,
+    102.0
+   ],
+   "load_kw": [
+    484.0,
+    484.0,
+    511.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 300000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    83.0,
+    98.0,
+    121.0
+   ],
+   "load_kw": [
+    577.0,
+    577.0,
+    609.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 360000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    95.0,
+    112.0,
+    138.0
+   ],
+   "load_kw": [
+    662.0,
+    662.0,
+    698.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 370000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    97.0,
+    114.0,
+    141.0
+   ],
+   "load_kw": [
+    675.0,
+    675.0,
+    713.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 400000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    103.0,
+    122.0,
+    150.0
+   ],
+   "load_kw": [
+    716.0,
+    716.0,
+    755.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表12",
+   "category": "220kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 420000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    106.0,
+    125.0,
+    154.0
+   ],
+   "load_kw": [
+    742.0,
+    742.0,
+    783.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表13",
+   "category": "220kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    18.0,
+    21.0,
+    26.0
+   ],
+   "load_kw": [
+    138.0,
+    138.0,
+    145.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表13",
+   "category": "220kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    21.0,
+    25.0,
+    30.0
+   ],
+   "load_kw": [
+    165.0,
+    165.0,
+    174.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表13",
+   "category": "220kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    24.0,
+    29.0,
+    35.0
+   ],
+   "load_kw": [
+    194.0,
+    194.0,
+    205.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表13",
+   "category": "220kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    29.0,
+    34.0,
+    42.0
+   ],
+   "load_kw": [
+    231.0,
+    231.0,
+    244.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表13",
+   "category": "220kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    37.0,
+    44.0,
+    54.0
+   ],
+   "load_kw": [
+    300.0,
+    300.0,
+    316.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表13",
+   "category": "220kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    46.0,
+    55.0,
+    67.0
+   ],
+   "load_kw": [
+    369.0,
+    369.0,
+    390.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表13",
+   "category": "220kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    55.0,
+    65.0,
+    80.0
+   ],
+   "load_kw": [
+    438.0,
+    438.0,
+    463.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表13",
+   "category": "220kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    62.0,
+    73.0,
+    90.0
+   ],
+   "load_kw": [
+    500.0,
+    500.0,
+    527.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表13",
+   "category": "220kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    72.0,
+    91.0,
+    112.0
+   ],
+   "load_kw": [
+    616.0,
+    616.0,
+    650.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表13",
+   "category": "220kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 300000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    91.0,
+    108.0,
+    133.0
+   ],
+   "load_kw": [
+    726.0,
+    726.0,
+    767.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表14",
+   "category": "220kV油浸式三相双绕组低压为66kV无励磁调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    17.0,
+    20.0,
+    24.0
+   ],
+   "load_kw": [
+    129.0,
+    129.0,
+    136.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表14",
+   "category": "220kV油浸式三相双绕组低压为66kV无励磁调压电力变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    20.0,
+    23.0,
+    29.0
+   ],
+   "load_kw": [
+    150.0,
+    150.0,
+    159.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表14",
+   "category": "220kV油浸式三相双绕组低压为66kV无励磁调压电力变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    23.0,
+    27.0,
+    34.0
+   ],
+   "load_kw": [
+    180.0,
+    180.0,
+    190.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表14",
+   "category": "220kV油浸式三相双绕组低压为66kV无励磁调压电力变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    28.0,
+    33.0,
+    40.0
+   ],
+   "load_kw": [
+    211.0,
+    211.0,
+    222.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表14",
+   "category": "220kV油浸式三相双绕组低压为66kV无励磁调压电力变压器",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    36.0,
+    43.0,
+    53.0
+   ],
+   "load_kw": [
+    275.0,
+    275.0,
+    291.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表14",
+   "category": "220kV油浸式三相双绕组低压为66kV无励磁调压电力变压器",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    45.0,
+    53.0,
+    65.0
+   ],
+   "load_kw": [
+    330.0,
+    330.0,
+    349.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表14",
+   "category": "220kV油浸式三相双绕组低压为66kV无励磁调压电力变压器",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    53.0,
+    63.0,
+    78.0
+   ],
+   "load_kw": [
+    387.0,
+    387.0,
+    409.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表14",
+   "category": "220kV油浸式三相双绕组低压为66kV无励磁调压电力变压器",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    61.0,
+    72.0,
+    88.0
+   ],
+   "load_kw": [
+    438.0,
+    438.0,
+    463.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表14",
+   "category": "220kV油浸式三相双绕组低压为66kV无励磁调压电力变压器",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    75.0,
+    88.0,
+    109.0
+   ],
+   "load_kw": [
+    543.0,
+    543.0,
+    573.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表15",
+   "category": "220kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    17.0,
+    20.0,
+    24.0
+   ],
+   "load_kw": [
+    115.0,
+    115.0,
+    122.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表15",
+   "category": "220kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    20.0,
+    23.0,
+    29.0
+   ],
+   "load_kw": [
+    134.0,
+    134.0,
+    142.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表15",
+   "category": "220kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    24.0,
+    28.0,
+    34.0
+   ],
+   "load_kw": [
+    161.0,
+    161.0,
+    170.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表15",
+   "category": "220kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    28.0,
+    33.0,
+    40.0
+   ],
+   "load_kw": [
+    188.0,
+    188.0,
+    199.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表15",
+   "category": "220kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    35.0,
+    42.0,
+    51.0
+   ],
+   "load_kw": [
+    246.0,
+    246.0,
+    259.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表15",
+   "category": "220kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    43.0,
+    51.0,
+    63.0
+   ],
+   "load_kw": [
+    304.0,
+    304.0,
+    321.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表15",
+   "category": "220kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    51.0,
+    60.0,
+    74.0
+   ],
+   "load_kw": [
+    360.0,
+    360.0,
+    380.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表15",
+   "category": "220kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    59.0,
+    70.0,
+    86.0
+   ],
+   "load_kw": [
+    413.0,
+    413.0,
+    436.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表15",
+   "category": "220kV油浸式三相双绕组有载调压电力变压器",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    77.0,
+    91.0,
+    112.0
+   ],
+   "load_kw": [
+    504.0,
+    504.0,
+    532.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表16",
+   "category": "220kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    19.0,
+    23.0,
+    28.0
+   ],
+   "load_kw": [
+    138.0,
+    138.0,
+    145.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表16",
+   "category": "220kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    23.0,
+    27.0,
+    33.0
+   ],
+   "load_kw": [
+    165.0,
+    165.0,
+    174.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表16",
+   "category": "220kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    26.0,
+    31.0,
+    38.0
+   ],
+   "load_kw": [
+    194.0,
+    194.0,
+    205.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表16",
+   "category": "220kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    31.0,
+    36.0,
+    45.0
+   ],
+   "load_kw": [
+    231.0,
+    231.0,
+    244.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表16",
+   "category": "220kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    40.0,
+    47.0,
+    58.0
+   ],
+   "load_kw": [
+    300.0,
+    300.0,
+    316.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表16",
+   "category": "220kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    51.0,
+    60.0,
+    74.0
+   ],
+   "load_kw": [
+    369.0,
+    369.0,
+    390.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表16",
+   "category": "220kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    59.0,
+    70.0,
+    86.0
+   ],
+   "load_kw": [
+    438.0,
+    438.0,
+    463.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表16",
+   "category": "220kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    68.0,
+    81.0,
+    99.0
+   ],
+   "load_kw": [
+    538.0,
+    538.0,
+    568.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表16",
+   "category": "220kV油浸式三相三绕组有载调压电力变压器",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    85.0,
+    100.0,
+    123.0
+   ],
+   "load_kw": [
+    667.0,
+    667.0,
+    704.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表17",
+   "category": "220kV油浸式三相三绕组有载调压自耦电力变压器",
+   "capacity_kva": 31500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    11.0,
+    13.0,
+    16.0
+   ],
+   "load_kw": [
+    92.0,
+    92.0,
+    97.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表17",
+   "category": "220kV油浸式三相三绕组有载调压自耦电力变压器",
+   "capacity_kva": 40000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    13.0,
+    16.0,
+    19.0
+   ],
+   "load_kw": [
+    113.0,
+    113.0,
+    119.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表17",
+   "category": "220kV油浸式三相三绕组有载调压自耦电力变压器",
+   "capacity_kva": 50000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    15.0,
+    18.0,
+    22.0
+   ],
+   "load_kw": [
+    134.0,
+    134.0,
+    142.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表17",
+   "category": "220kV油浸式三相三绕组有载调压自耦电力变压器",
+   "capacity_kva": 63000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    18.0,
+    21.0,
+    26.0
+   ],
+   "load_kw": [
+    161.0,
+    161.0,
+    170.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表17",
+   "category": "220kV油浸式三相三绕组有载调压自耦电力变压器",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    22.0,
+    26.0,
+    32.0
+   ],
+   "load_kw": [
+    211.0,
+    211.0,
+    222.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表17",
+   "category": "220kV油浸式三相三绕组有载调压自耦电力变压器",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    28.0,
+    33.0,
+    41.0
+   ],
+   "load_kw": [
+    263.0,
+    263.0,
+    277.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表17",
+   "category": "220kV油浸式三相三绕组有载调压自耦电力变压器",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    33.0,
+    39.0,
+    48.0
+   ],
+   "load_kw": [
+    311.0,
+    311.0,
+    329.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表17",
+   "category": "220kV油浸式三相三绕组有载调压自耦电力变压器",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    37.0,
+    44.0,
+    54.0
+   ],
+   "load_kw": [
+    358.0,
+    358.0,
+    378.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表17",
+   "category": "220kV油浸式三相三绕组有载调压自耦电力变压器",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    46.0,
+    54.0,
+    66.0
+   ],
+   "load_kw": [
+    462.0,
+    462.0,
+    487.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表18",
+   "category": "330kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    37.0,
+    44.0,
+    54.0
+   ],
+   "load_kw": [
+    247.0,
+    247.0,
+    260.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表18",
+   "category": "330kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    47.0,
+    55.0,
+    68.0
+   ],
+   "load_kw": [
+    306.0,
+    306.0,
+    323.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表18",
+   "category": "330kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    56.0,
+    66.0,
+    81.0
+   ],
+   "load_kw": [
+    362.0,
+    362.0,
+    382.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表18",
+   "category": "330kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    64.0,
+    75.0,
+    93.0
+   ],
+   "load_kw": [
+    415.0,
+    415.0,
+    438.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表18",
+   "category": "330kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    80.0,
+    94.0,
+    116.0
+   ],
+   "load_kw": [
+    515.0,
+    515.0,
+    543.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表18",
+   "category": "330kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 360000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    109.0,
+    129.0,
+    158.0
+   ],
+   "load_kw": [
+    722.0,
+    722.0,
+    762.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表18",
+   "category": "330kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 370000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    111.0,
+    131.0,
+    162.0
+   ],
+   "load_kw": [
+    736.0,
+    736.0,
+    777.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表18",
+   "category": "330kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 400000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    118.0,
+    139.0,
+    171.0
+   ],
+   "load_kw": [
+    780.0,
+    780.0,
+    824.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表18",
+   "category": "330kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 720000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    183.0,
+    216.0,
+    266.0
+   ],
+   "load_kw": [
+    1212.0,
+    1212.0,
+    1280.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表19",
+   "category": "330kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    42.0,
+    50.0,
+    62.0
+   ],
+   "load_kw": [
+    302.0,
+    302.0,
+    318.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表19",
+   "category": "330kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    53.0,
+    62.0,
+    77.0
+   ],
+   "load_kw": [
+    374.0,
+    374.0,
+    394.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表19",
+   "category": "330kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    63.0,
+    74.0,
+    91.0
+   ],
+   "load_kw": [
+    442.0,
+    442.0,
+    466.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表19",
+   "category": "330kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    72.0,
+    85.0,
+    104.0
+   ],
+   "load_kw": [
+    507.0,
+    507.0,
+    535.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表19",
+   "category": "330kV油浸式三相三绕组无励磁调压电力变压器",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    89.0,
+    105.0,
+    130.0
+   ],
+   "load_kw": [
+    629.0,
+    629.0,
+    664.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表20",
+   "category": "330kV油浸式三相三绕组无励磁调压自耦电力变压器（串联绕组末端调压，中压110kV）",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    25.0,
+    29.0,
+    36.0
+   ],
+   "load_kw": [
+    237.0,
+    237.0,
+    250.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表20",
+   "category": "330kV油浸式三相三绕组无励磁调压自耦电力变压器（串联绕组末端调压，中压110kV）",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    31.0,
+    36.0,
+    45.0
+   ],
+   "load_kw": [
+    292.0,
+    292.0,
+    308.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表20",
+   "category": "330kV油浸式三相三绕组无励磁调压自耦电力变压器（串联绕组末端调压，中压110kV）",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    37.0,
+    44.0,
+    54.0
+   ],
+   "load_kw": [
+    347.0,
+    347.0,
+    366.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表20",
+   "category": "330kV油浸式三相三绕组无励磁调压自耦电力变压器（串联绕组末端调压，中压110kV）",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    42.0,
+    50.0,
+    62.0
+   ],
+   "load_kw": [
+    396.0,
+    396.0,
+    418.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表20",
+   "category": "330kV油浸式三相三绕组无励磁调压自耦电力变压器（串联绕组末端调压，中压110kV）",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    53.0,
+    62.0,
+    77.0
+   ],
+   "load_kw": [
+    492.0,
+    492.0,
+    520.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表20",
+   "category": "330kV油浸式三相三绕组无励磁调压自耦电力变压器（串联绕组末端调压，中压110kV）",
+   "capacity_kva": 360000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    72.0,
+    85.0,
+    104.0
+   ],
+   "load_kw": [
+    668.0,
+    668.0,
+    705.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表21",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（串联绕组末端调压，中压110kV）",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    26.0,
+    31.0,
+    38.0
+   ],
+   "load_kw": [
+    235.0,
+    235.0,
+    248.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表21",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（串联绕组末端调压，中压110kV）",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    32.0,
+    38.0,
+    47.0
+   ],
+   "load_kw": [
+    292.0,
+    292.0,
+    308.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表21",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（串联绕组末端调压，中压110kV）",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    38.0,
+    45.0,
+    55.0
+   ],
+   "load_kw": [
+    345.0,
+    345.0,
+    364.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表21",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（串联绕组末端调压，中压110kV）",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    43.0,
+    51.0,
+    63.0
+   ],
+   "load_kw": [
+    396.0,
+    396.0,
+    418.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表21",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（串联绕组末端调压，中压110kV）",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    54.0,
+    64.0,
+    79.0
+   ],
+   "load_kw": [
+    492.0,
+    492.0,
+    520.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表21",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（串联绕组末端调压，中压110kV）",
+   "capacity_kva": 360000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    74.0,
+    87.0,
+    107.0
+   ],
+   "load_kw": [
+    668.0,
+    668.0,
+    705.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表22",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（中压110kV线端调压）",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    27.0,
+    32.0,
+    39.0
+   ],
+   "load_kw": [
+    251.0,
+    251.0,
+    265.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表22",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（中压110kV线端调压）",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    34.0,
+    40.0,
+    49.0
+   ],
+   "load_kw": [
+    311.0,
+    311.0,
+    329.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表22",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（中压110kV线端调压）",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    40.0,
+    47.0,
+    58.0
+   ],
+   "load_kw": [
+    369.0,
+    369.0,
+    390.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表22",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（中压110kV线端调压）",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    46.0,
+    54.0,
+    66.0
+   ],
+   "load_kw": [
+    423.0,
+    423.0,
+    447.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表22",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（中压110kV线端调压）",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    56.0,
+    66.0,
+    82.0
+   ],
+   "load_kw": [
+    526.0,
+    526.0,
+    555.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表22",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（中压110kV线端调压）",
+   "capacity_kva": 360000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    76.0,
+    90.0,
+    111.0
+   ],
+   "load_kw": [
+    713.0,
+    713.0,
+    752.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表23",
+   "category": "330kV油浸式三相三绕组无励磁调压自耦电力变压器（中压220kV线端调压）",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    13.0,
+    15.0,
+    18.0
+   ],
+   "load_kw": [
+    264.0,
+    264.0,
+    278.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表23",
+   "category": "330kV油浸式三相三绕组无励磁调压自耦电力变压器（中压220kV线端调压）",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    16.0,
+    19.0,
+    23.0
+   ],
+   "load_kw": [
+    327.0,
+    327.0,
+    345.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表23",
+   "category": "330kV油浸式三相三绕组无励磁调压自耦电力变压器（中压220kV线端调压）",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    19.0,
+    22.0,
+    27.0
+   ],
+   "load_kw": [
+    388.0,
+    388.0,
+    409.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表23",
+   "category": "330kV油浸式三相三绕组无励磁调压自耦电力变压器（中压220kV线端调压）",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    21.0,
+    25.0,
+    31.0
+   ],
+   "load_kw": [
+    445.0,
+    445.0,
+    469.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表23",
+   "category": "330kV油浸式三相三绕组无励磁调压自耦电力变压器（中压220kV线端调压）",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    27.0,
+    32.0,
+    39.0
+   ],
+   "load_kw": [
+    552.0,
+    552.0,
+    582.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表23",
+   "category": "330kV油浸式三相三绕组无励磁调压自耦电力变压器（中压220kV线端调压）",
+   "capacity_kva": 360000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    37.0,
+    44.0,
+    54.0
+   ],
+   "load_kw": [
+    752.0,
+    752.0,
+    794.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表24",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（中压220kV线端调压）",
+   "capacity_kva": 90000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    14.0,
+    16.0,
+    20.0
+   ],
+   "load_kw": [
+    264.0,
+    264.0,
+    278.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表24",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（中压220kV线端调压）",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    17.0,
+    20.0,
+    25.0
+   ],
+   "load_kw": [
+    327.0,
+    327.0,
+    345.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表24",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（中压220kV线端调压）",
+   "capacity_kva": 150000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    20.0,
+    24.0,
+    30.0
+   ],
+   "load_kw": [
+    388.0,
+    388.0,
+    409.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表24",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（中压220kV线端调压）",
+   "capacity_kva": 180000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    23.0,
+    27.0,
+    34.0
+   ],
+   "load_kw": [
+    445.0,
+    445.0,
+    469.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表24",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（中压220kV线端调压）",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    29.0,
+    34.0,
+    42.0
+   ],
+   "load_kw": [
+    552.0,
+    552.0,
+    582.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表24",
+   "category": "330kV油浸式三相三绕组有载调压自耦电力变压器（中压220kV线端调压）",
+   "capacity_kva": 360000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    40.0,
+    47.0,
+    58.0
+   ],
+   "load_kw": [
+    753.0,
+    753.0,
+    795.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表25",
+   "category": "500kV油浸式单相双绕组无励磁调压电力变压器",
+   "capacity_kva": 100000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    34.0,
+    40.0,
+    49.0
+   ],
+   "load_kw": [
+    203.0,
+    203.0,
+    214.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表25",
+   "category": "500kV油浸式单相双绕组无励磁调压电力变压器",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    39.0,
+    46.0,
+    56.0
+   ],
+   "load_kw": [
+    234.0,
+    234.0,
+    247.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表25",
+   "category": "500kV油浸式单相双绕组无励磁调压电力变压器",
+   "capacity_kva": 200000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    63.0,
+    74.0,
+    91.0
+   ],
+   "load_kw": [
+    342.0,
+    342.0,
+    361.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表25",
+   "category": "500kV油浸式单相双绕组无励磁调压电力变压器",
+   "capacity_kva": 223000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    68.0,
+    81.0,
+    99.0
+   ],
+   "load_kw": [
+    371.0,
+    371.0,
+    391.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表25",
+   "category": "500kV油浸式单相双绕组无励磁调压电力变压器",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    72.0,
+    85.0,
+    105.0
+   ],
+   "load_kw": [
+    392.0,
+    392.0,
+    413.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表25",
+   "category": "500kV油浸式单相双绕组无励磁调压电力变压器",
+   "capacity_kva": 260000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    77.0,
+    91.0,
+    112.0
+   ],
+   "load_kw": [
+    414.0,
+    414.0,
+    437.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表25",
+   "category": "500kV油浸式单相双绕组无励磁调压电力变压器",
+   "capacity_kva": 380000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    102.0,
+    121.0,
+    149.0
+   ],
+   "load_kw": [
+    549.0,
+    549.0,
+    580.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表25",
+   "category": "500kV油浸式单相双绕组无励磁调压电力变压器",
+   "capacity_kva": 400000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    106.0,
+    125.0,
+    154.0
+   ],
+   "load_kw": [
+    570.0,
+    570.0,
+    601.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表25",
+   "category": "500kV油浸式单相双绕组无励磁调压电力变压器",
+   "capacity_kva": 410000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    108.0,
+    128.0,
+    158.0
+   ],
+   "load_kw": [
+    581.0,
+    581.0,
+    613.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表25",
+   "category": "500kV油浸式单相双绕组无励磁调压电力变压器",
+   "capacity_kva": 484000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    123.0,
+    145.0,
+    178.0
+   ],
+   "load_kw": [
+    657.0,
+    657.0,
+    694.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    41.0,
+    49.0,
+    60.0
+   ],
+   "load_kw": [
+    356.0,
+    356.0,
+    375.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 160000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    50.0,
+    59.0,
+    72.0
+   ],
+   "load_kw": [
+    441.0,
+    441.0,
+    466.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 240000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    69.0,
+    81.0,
+    100.0
+   ],
+   "load_kw": [
+    599.0,
+    599.0,
+    632.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 300000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    80.0,
+    94.0,
+    116.0
+   ],
+   "load_kw": [
+    707.0,
+    707.0,
+    746.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 370000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    94.0,
+    111.0,
+    136.0
+   ],
+   "load_kw": [
+    810.0,
+    810.0,
+    855.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 400000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    96.0,
+    114.0,
+    140.0
+   ],
+   "load_kw": [
+    855.0,
+    855.0,
+    903.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 420000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    102.0,
+    120.0,
+    148.0
+   ],
+   "load_kw": [
+    860.0,
+    860.0,
+    907.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 480000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    110.0,
+    130.0,
+    160.0
+   ],
+   "load_kw": [
+    954.0,
+    954.0,
+    1007.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 600000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    143.0,
+    169.0,
+    208.0
+   ],
+   "load_kw": [
+    1202.0,
+    1202.0,
+    1268.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 720000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    168.0,
+    198.0,
+    244.0
+   ],
+   "load_kw": [
+    1382.0,
+    1382.0,
+    1458.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 750000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    173.0,
+    205.0,
+    252.0
+   ],
+   "load_kw": [
+    1422.0,
+    1422.0,
+    1501.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 780000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    176.0,
+    208.0,
+    256.0
+   ],
+   "load_kw": [
+    1467.0,
+    1467.0,
+    1549.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 860000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    190.0,
+    224.0,
+    276.0
+   ],
+   "load_kw": [
+    1575.0,
+    1575.0,
+    1663.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 1140000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    237.0,
+    280.0,
+    344.0
+   ],
+   "load_kw": [
+    1949.0,
+    1949.0,
+    2057.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表26",
+   "category": "500kV油浸式三相双绕组无励磁调压电力变压器",
+   "capacity_kva": 1170000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    242.0,
+    286.0,
+    352.0
+   ],
+   "load_kw": [
+    1980.0,
+    1980.0,
+    2090.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表27",
+   "category": "500kV油浸式单相三绕组无励磁调压自耦电力变压器（中压线端调压）",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    28.0,
+    33.0,
+    40.0
+   ],
+   "load_kw": [
+    207.0,
+    207.0,
+    219.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表27",
+   "category": "500kV油浸式单相三绕组无励磁调压自耦电力变压器（中压线端调压）",
+   "capacity_kva": 167000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    33.0,
+    39.0,
+    48.0
+   ],
+   "load_kw": [
+    248.0,
+    248.0,
+    261.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表27",
+   "category": "500kV油浸式单相三绕组无励磁调压自耦电力变压器（中压线端调压）",
+   "capacity_kva": 250000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    47.0,
+    55.0,
+    68.0
+   ],
+   "load_kw": [
+    333.0,
+    333.0,
+    352.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表27",
+   "category": "500kV油浸式单相三绕组无励磁调压自耦电力变压器（中压线端调压）",
+   "capacity_kva": 334000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    58.0,
+    68.0,
+    84.0
+   ],
+   "load_kw": [
+    428.0,
+    428.0,
+    451.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表27",
+   "category": "500kV油浸式单相三绕组无励磁调压自耦电力变压器（中压线端调压）",
+   "capacity_kva": 400000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    66.0,
+    78.0,
+    96.0
+   ],
+   "load_kw": [
+    491.0,
+    491.0,
+    518.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表28",
+   "category": "500kV油浸式单相三绕组有载调压自耦电力变压器（中压线端调压）",
+   "capacity_kva": 120000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    28.0,
+    33.0,
+    40.0
+   ],
+   "load_kw": [
+    212.0,
+    212.0,
+    223.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表28",
+   "category": "500kV油浸式单相三绕组有载调压自耦电力变压器（中压线端调压）",
+   "capacity_kva": 167000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    33.0,
+    39.0,
+    48.0
+   ],
+   "load_kw": [
+    257.0,
+    257.0,
+    271.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表28",
+   "category": "500kV油浸式单相三绕组有载调压自耦电力变压器（中压线端调压）",
+   "capacity_kva": 250000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    47.0,
+    55.0,
+    68.0
+   ],
+   "load_kw": [
+    342.0,
+    342.0,
+    361.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表28",
+   "category": "500kV油浸式单相三绕组有载调压自耦电力变压器（中压线端调压）",
+   "capacity_kva": 334000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    61.0,
+    72.0,
+    88.0
+   ],
+   "load_kw": [
+    441.0,
+    441.0,
+    466.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表28",
+   "category": "500kV油浸式单相三绕组有载调压自耦电力变压器（中压线端调压）",
+   "capacity_kva": 400000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    72.0,
+    85.0,
+    104.0
+   ],
+   "load_kw": [
+    504.0,
+    504.0,
+    532.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表29",
+   "category": "6kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    0.385,
+    0.43,
+    0.48
+   ],
+   "load_kw": [
+    3.9,
+    4.33,
+    5.41
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表29",
+   "category": "6kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 630.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    0.46,
+    0.51,
+    0.57
+   ],
+   "load_kw": [
+    4.46,
+    4.96,
+    6.2
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表29",
+   "category": "6kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 800.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    0.56,
+    0.63,
+    0.7
+   ],
+   "load_kw": [
+    5.4,
+    6.0,
+    7.5
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表29",
+   "category": "6kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 1000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    0.665,
+    0.745,
+    0.83
+   ],
+   "load_kw": [
+    7.415,
+    8.24,
+    10.3
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表29",
+   "category": "6kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 1250.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    0.78,
+    0.87,
+    0.97
+   ],
+   "load_kw": [
+    8.64,
+    9.6,
+    12.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表29",
+   "category": "6kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 1600.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    0.94,
+    1.05,
+    1.17
+   ],
+   "load_kw": [
+    10.44,
+    11.6,
+    14.5
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表29",
+   "category": "6kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 2000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    1.085,
+    1.225,
+    1.36
+   ],
+   "load_kw": [
+    13.18,
+    14.64,
+    18.3
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 500.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.67,
+    0.79,
+    0.93
+   ],
+   "load_kw": [
+    4.13,
+    4.13,
+    4.59
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 500.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.67,
+    0.79,
+    0.93
+   ],
+   "load_kw": [
+    4.39,
+    4.39,
+    4.88
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 500.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.67,
+    0.79,
+    0.93
+   ],
+   "load_kw": [
+    4.705,
+    4.705,
+    5.23
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 630.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.775,
+    0.91,
+    1.07
+   ],
+   "load_kw": [
+    4.975,
+    4.975,
+    5.53
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 630.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.775,
+    0.91,
+    1.07
+   ],
+   "load_kw": [
+    5.29,
+    5.29,
+    5.88
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 630.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.775,
+    0.91,
+    1.07
+   ],
+   "load_kw": [
+    5.66,
+    5.66,
+    6.29
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 800.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.875,
+    1.035,
+    1.215
+   ],
+   "load_kw": [
+    5.895,
+    5.895,
+    6.55
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 800.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.875,
+    1.035,
+    1.215
+   ],
+   "load_kw": [
+    6.265,
+    6.265,
+    6.96
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 800.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.875,
+    1.035,
+    1.215
+   ],
+   "load_kw": [
+    6.715,
+    6.715,
+    7.46
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 1000.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.02,
+    1.205,
+    1.415
+   ],
+   "load_kw": [
+    6.885,
+    6.885,
+    7.65
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 1000.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.02,
+    1.205,
+    1.415
+   ],
+   "load_kw": [
+    7.315,
+    7.315,
+    8.13
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 1000.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.02,
+    1.205,
+    1.415
+   ],
+   "load_kw": [
+    7.885,
+    7.885,
+    8.76
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 1250.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.205,
+    1.42,
+    1.67
+   ],
+   "load_kw": [
+    8.19,
+    8.19,
+    9.1
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 1250.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.205,
+    1.42,
+    1.67
+   ],
+   "load_kw": [
+    8.72,
+    8.72,
+    9.69
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 1250.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.205,
+    1.42,
+    1.67
+   ],
+   "load_kw": [
+    9.335,
+    9.335,
+    10.37
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 1600.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.415,
+    1.665,
+    1.96
+   ],
+   "load_kw": [
+    9.945,
+    9.945,
+    11.05
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 1600.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.415,
+    1.665,
+    1.96
+   ],
+   "load_kw": [
+    10.555,
+    10.555,
+    11.73
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 1600.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.415,
+    1.665,
+    1.96
+   ],
+   "load_kw": [
+    11.32,
+    11.32,
+    12.58
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 2000.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.76,
+    2.075,
+    2.44
+   ],
+   "load_kw": [
+    12.24,
+    12.24,
+    13.6
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 2000.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.76,
+    2.075,
+    2.44
+   ],
+   "load_kw": [
+    13.005,
+    13.005,
+    14.45
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表30",
+   "category": "6kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
+   "capacity_kva": 2000.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.76,
+    2.075,
+    2.44
+   ],
+   "load_kw": [
+    14.005,
+    14.005,
+    15.56
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表31",
+   "category": "10kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    385.0,
+    430.0,
+    480.0
+   ],
+   "load_kw": [
+    3900.0,
+    4330.0,
+    5410.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表31",
+   "category": "10kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 630.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    460.0,
+    510.0,
+    570.0
+   ],
+   "load_kw": [
+    4460.0,
+    4960.0,
+    6200.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表31",
+   "category": "10kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 800.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    560.0,
+    630.0,
+    700.0
+   ],
+   "load_kw": [
+    5400.0,
+    6000.0,
+    7500.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表31",
+   "category": "10kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 1000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    665.0,
+    745.0,
+    830.0
+   ],
+   "load_kw": [
+    7415.0,
+    8240.0,
+    10300.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表31",
+   "category": "10kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 1250.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    780.0,
+    870.0,
+    970.0
+   ],
+   "load_kw": [
+    8640.0,
+    9600.0,
+    12000.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表31",
+   "category": "10kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 1600.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    940.0,
+    1050.0,
+    1170.0
+   ],
+   "load_kw": [
+    10440.0,
+    11600.0,
+    14500.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表31",
+   "category": "10kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 2000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    1085.0,
+    1225.0,
+    1360.0
+   ],
+   "load_kw": [
+    13180.0,
+    14640.0,
+    18300.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表31",
+   "category": "10kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 2500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    1280.0,
+    1440.0,
+    1600.0
+   ],
+   "load_kw": [
+    15270.0,
+    16960.0,
+    21200.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表31",
+   "category": "10kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 3000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    1547.0,
+    1719.0,
+    1909.0
+   ],
+   "load_kw": [
+    16797.0,
+    18664.0,
+    23330.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表31",
+   "category": "10kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 3150.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    1606.0,
+    1784.0,
+    1982.0
+   ],
+   "load_kw": [
+    17978.0,
+    19976.0,
+    24970.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 500.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.67,
+    0.79,
+    0.93
+   ],
+   "load_kw": [
+    4.13,
+    4.13,
+    4.59
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 500.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.67,
+    0.79,
+    0.93
+   ],
+   "load_kw": [
+    4.39,
+    4.39,
+    4.88
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 500.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.67,
+    0.79,
+    0.93
+   ],
+   "load_kw": [
+    4.705,
+    4.705,
+    5.23
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 630.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.775,
+    0.91,
+    1.07
+   ],
+   "load_kw": [
+    4.975,
+    4.975,
+    5.53
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 630.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.775,
+    0.91,
+    1.07
+   ],
+   "load_kw": [
+    5.29,
+    5.29,
+    5.88
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 630.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.775,
+    0.91,
+    1.07
+   ],
+   "load_kw": [
+    5.66,
+    5.66,
+    6.29
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 800.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.875,
+    1.035,
+    1.215
+   ],
+   "load_kw": [
+    5.895,
+    5.895,
+    6.55
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 800.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.875,
+    1.035,
+    1.215
+   ],
+   "load_kw": [
+    6.265,
+    6.265,
+    6.96
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 800.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    0.875,
+    1.035,
+    1.215
+   ],
+   "load_kw": [
+    6.715,
+    6.715,
+    7.46
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 1000.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.02,
+    1.205,
+    1.415
+   ],
+   "load_kw": [
+    6.885,
+    6.885,
+    7.65
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 1000.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.02,
+    1.205,
+    1.415
+   ],
+   "load_kw": [
+    7.315,
+    7.315,
+    8.13
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 1000.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.02,
+    1.205,
+    1.415
+   ],
+   "load_kw": [
+    7.885,
+    7.885,
+    8.76
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 1250.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.205,
+    1.42,
+    1.67
+   ],
+   "load_kw": [
+    8.19,
+    8.19,
+    9.1
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 1250.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.205,
+    1.42,
+    1.67
+   ],
+   "load_kw": [
+    8.72,
+    8.72,
+    9.69
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 1250.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.205,
+    1.42,
+    1.67
+   ],
+   "load_kw": [
+    9.335,
+    9.335,
+    10.37
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 1600.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.415,
+    1.665,
+    1.96
+   ],
+   "load_kw": [
+    9.945,
+    9.945,
+    11.05
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 1600.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.415,
+    1.665,
+    1.96
+   ],
+   "load_kw": [
+    10.555,
+    10.555,
+    11.73
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 1600.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.415,
+    1.665,
+    1.96
+   ],
+   "load_kw": [
+    11.32,
+    11.32,
+    12.58
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 2000.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.76,
+    2.075,
+    2.44
+   ],
+   "load_kw": [
+    12.24,
+    12.24,
+    13.6
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 2000.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.76,
+    2.075,
+    2.44
+   ],
+   "load_kw": [
+    13.005,
+    13.005,
+    14.45
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 2000.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.76,
+    2.075,
+    2.44
+   ],
+   "load_kw": [
+    14.005,
+    14.005,
+    15.56
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 2500.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.08,
+    2.45,
+    2.88
+   ],
+   "load_kw": [
+    14.535,
+    14.535,
+    16.15
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 2500.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.08,
+    2.45,
+    2.88
+   ],
+   "load_kw": [
+    15.445,
+    15.445,
+    17.17
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 2500.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.08,
+    2.45,
+    2.88
+   ],
+   "load_kw": [
+    16.605,
+    16.605,
+    18.45
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 3150.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.52,
+    2.965,
+    3.488
+   ],
+   "load_kw": [
+    17.95,
+    17.95,
+    19.945
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 3150.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.52,
+    2.965,
+    3.488
+   ],
+   "load_kw": [
+    19.095,
+    19.095,
+    21.217
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表32",
+   "category": "10kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（10kV~12kV/0.4kV~1.14kV）",
+   "capacity_kva": 3150.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.52,
+    2.965,
+    3.488
+   ],
+   "load_kw": [
+    20.49,
+    20.49,
+    22.765
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 1000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    0.6,
+    0.8,
+    0.9
+   ],
+   "load_kw": [
+    10.0,
+    10.0,
+    11.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 1250.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    0.8,
+    0.9,
+    1.1
+   ],
+   "load_kw": [
+    12.0,
+    12.0,
+    13.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 1600.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    0.9,
+    1.1,
+    1.3
+   ],
+   "load_kw": [
+    15.0,
+    15.0,
+    16.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 2000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    1.2,
+    1.4,
+    1.5
+   ],
+   "load_kw": [
+    16.0,
+    16.0,
+    17.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 2500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    1.4,
+    1.7,
+    1.8
+   ],
+   "load_kw": [
+    18.0,
+    18.0,
+    20.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 3000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    1.6,
+    1.9,
+    2.1
+   ],
+   "load_kw": [
+    20.0,
+    20.0,
+    22.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 3150.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    1.7,
+    2.0,
+    2.2
+   ],
+   "load_kw": [
+    21.0,
+    21.0,
+    23.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 4000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.0,
+    2.3,
+    2.6
+   ],
+   "load_kw": [
+    25.0,
+    25.0,
+    27.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 4500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.2,
+    2.6,
+    3.0
+   ],
+   "load_kw": [
+    27.0,
+    27.0,
+    30.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 5000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.4,
+    2.8,
+    3.2
+   ],
+   "load_kw": [
+    28.0,
+    28.0,
+    31.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 5500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.6,
+    3.0,
+    3.5
+   ],
+   "load_kw": [
+    30.0,
+    30.0,
+    34.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.9,
+    3.4,
+    3.8
+   ],
+   "load_kw": [
+    32.0,
+    32.0,
+    35.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    4.7,
+    5.2
+   ],
+   "load_kw": [
+    35.0,
+    35.0,
+    38.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.8,
+    5.7,
+    6.3
+   ],
+   "load_kw": [
+    41.0,
+    41.0,
+    45.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表33",
+   "category": "35kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 12500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    5.6,
+    6.5,
+    7.2
+   ],
+   "load_kw": [
+    51.0,
+    51.0,
+    56.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 1000.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.0,
+    2.0,
+    2.0
+   ],
+   "load_kw": [
+    9.0,
+    9.0,
+    10.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 1000.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.0,
+    2.0,
+    2.0
+   ],
+   "load_kw": [
+    9.0,
+    9.0,
+    10.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 1000.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    1.0,
+    2.0,
+    2.0
+   ],
+   "load_kw": [
+    10.0,
+    10.0,
+    11.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 1250.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.0,
+    2.0,
+    2.0
+   ],
+   "load_kw": [
+    11.0,
+    11.0,
+    12.0
+   ],
+   "suspicious": true
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 1250.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.0,
+    2.0,
+    2.0
+   ],
+   "load_kw": [
+    11.0,
+    11.0,
+    13.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 1250.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.0,
+    2.0,
+    2.0
+   ],
+   "load_kw": [
+    12.0,
+    12.0,
+    14.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 1600.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.0,
+    2.0,
+    2.0
+   ],
+   "load_kw": [
+    13.0,
+    13.0,
+    14.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 1600.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.0,
+    2.0,
+    2.0
+   ],
+   "load_kw": [
+    14.0,
+    14.0,
+    15.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 1600.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.0,
+    2.0,
+    2.0
+   ],
+   "load_kw": [
+    15.0,
+    15.0,
+    16.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 2000.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.0,
+    2.0,
+    3.0
+   ],
+   "load_kw": [
+    15.0,
+    15.0,
+    17.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 2000.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.0,
+    2.0,
+    3.0
+   ],
+   "load_kw": [
+    16.0,
+    16.0,
+    18.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 2000.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    2.0,
+    2.0,
+    3.0
+   ],
+   "load_kw": [
+    18.0,
+    18.0,
+    19.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 2500.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    3.0,
+    3.0,
+    3.0
+   ],
+   "load_kw": [
+    18.0,
+    18.0,
+    20.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 2500.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    3.0,
+    3.0,
+    3.0
+   ],
+   "load_kw": [
+    20.0,
+    20.0,
+    22.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 2500.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    3.0,
+    3.0,
+    3.0
+   ],
+   "load_kw": [
+    21.0,
+    21.0,
+    23.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 3000.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    3.0,
+    4.0,
+    4.0
+   ],
+   "load_kw": [
+    20.0,
+    20.0,
+    23.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 3000.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    3.0,
+    4.0,
+    4.0
+   ],
+   "load_kw": [
+    22.0,
+    22.0,
+    24.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 3000.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    3.0,
+    4.0,
+    4.0
+   ],
+   "load_kw": [
+    23.0,
+    23.0,
+    26.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 3150.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    4.0,
+    4.0
+   ],
+   "load_kw": [
+    21.0,
+    21.0,
+    23.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 3150.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    4.0,
+    4.0
+   ],
+   "load_kw": [
+    22.0,
+    22.0,
+    24.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 3150.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    4.0,
+    4.0
+   ],
+   "load_kw": [
+    24.0,
+    24.0,
+    26.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 4000.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    4.0,
+    5.0
+   ],
+   "load_kw": [
+    25.0,
+    25.0,
+    28.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 4000.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    4.0,
+    5.0
+   ],
+   "load_kw": [
+    26.0,
+    26.0,
+    29.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 4000.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    4.0,
+    5.0
+   ],
+   "load_kw": [
+    28.0,
+    28.0,
+    31.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 4500.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    5.0,
+    5.0
+   ],
+   "load_kw": [
+    27.0,
+    27.0,
+    30.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 4500.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    5.0,
+    5.0
+   ],
+   "load_kw": [
+    29.0,
+    29.0,
+    32.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 4500.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    5.0,
+    5.0
+   ],
+   "load_kw": [
+    31.0,
+    31.0,
+    34.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 5000.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    5.0,
+    5.0,
+    6.0
+   ],
+   "load_kw": [
+    30.0,
+    30.0,
+    33.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 5000.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    5.0,
+    5.0,
+    6.0
+   ],
+   "load_kw": [
+    31.0,
+    31.0,
+    35.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 5000.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    5.0,
+    5.0,
+    6.0
+   ],
+   "load_kw": [
+    34.0,
+    34.0,
+    37.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    6.0,
+    6.0,
+    7.0
+   ],
+   "load_kw": [
+    35.0,
+    35.0,
+    38.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    6.0,
+    6.0,
+    7.0
+   ],
+   "load_kw": [
+    37.0,
+    37.0,
+    41.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    6.0,
+    6.0,
+    7.0
+   ],
+   "load_kw": [
+    39.0,
+    39.0,
+    44.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    7.0,
+    8.0,
+    8.0
+   ],
+   "load_kw": [
+    42.0,
+    42.0,
+    46.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    7.0,
+    8.0,
+    8.0
+   ],
+   "load_kw": [
+    44.0,
+    44.0,
+    49.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    7.0,
+    8.0,
+    8.0
+   ],
+   "load_kw": [
+    47.0,
+    47.0,
+    53.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "B(100℃)",
+   "connection": "",
+   "no_load_kw": [
+    8.0,
+    9.0,
+    10.0
+   ],
+   "load_kw": [
+    49.0,
+    49.0,
+    54.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "F(120℃)",
+   "connection": "",
+   "no_load_kw": [
+    8.0,
+    9.0,
+    10.0
+   ],
+   "load_kw": [
+    52.0,
+    52.0,
+    58.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表34",
+   "category": "35kV干式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（35kV~38.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "H(145℃)",
+   "connection": "",
+   "no_load_kw": [
+    8.0,
+    9.0,
+    10.0
+   ],
+   "load_kw": [
+    56.0,
+    56.0,
+    62.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表35",
+   "category": "66kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（66kV~72.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 3150.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.2,
+    2.6,
+    2.9
+   ],
+   "load_kw": [
+    21.0,
+    21.0,
+    23.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表35",
+   "category": "66kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（66kV~72.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 4000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    2.6,
+    3.1,
+    3.4
+   ],
+   "load_kw": [
+    25.0,
+    25.0,
+    27.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表35",
+   "category": "66kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（66kV~72.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 5000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    3.1,
+    3.7,
+    4.1
+   ],
+   "load_kw": [
+    28.0,
+    28.0,
+    31.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表35",
+   "category": "66kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（66kV~72.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 6300.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.0,
+    4.7,
+    5.2
+   ],
+   "load_kw": [
+    31.0,
+    31.0,
+    34.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表35",
+   "category": "66kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（66kV~72.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 8000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    4.9,
+    5.8,
+    6.4
+   ],
+   "load_kw": [
+    36.0,
+    36.0,
+    40.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表35",
+   "category": "66kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（66kV~72.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 10000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    5.8,
+    6.8,
+    7.6
+   ],
+   "load_kw": [
+    43.0,
+    43.0,
+    48.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表35",
+   "category": "66kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（66kV~72.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 12500.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    6.8,
+    8.1,
+    8.9
+   ],
+   "load_kw": [
+    51.0,
+    51.0,
+    57.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表35",
+   "category": "66kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（66kV~72.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 16000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    8.3,
+    9.8,
+    10.8
+   ],
+   "load_kw": [
+    63.0,
+    63.0,
+    70.0
+   ],
+   "suspicious": false
+  },
+  {
+   "table": "表35",
+   "category": "66kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（66kV~72.5kV/0.4kV~1.14kV）",
+   "capacity_kva": 20000.0,
+   "core_material": "",
+   "insulation": "",
+   "connection": "",
+   "no_load_kw": [
+    9.7,
+    11.4,
+    12.7
+   ],
+   "load_kw": [
+    76.0,
+    76.0,
+    85.0
+   ],
+   "suspicious": false
+  }
+ ]
+}
