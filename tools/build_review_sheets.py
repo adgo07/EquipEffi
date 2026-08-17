@@ -93,13 +93,21 @@ def sheet_fan(ws, data):
                                e[i * 3], e[i * 3 + 1], e[i * 3 + 2], "待校对", ""])
 
 
+def _safe_off(t, lv, bi, si):
+    """安全取值：offsets[lv][bi][si]（部分表等级/行可能缺失）"""
+    offs = t["offsets"].get(lv)
+    if not offs or bi >= len(offs) or offs[bi] is None or si >= len(offs[bi]):
+        return None
+    return offs[bi][si]
+
+
 def sheet_submersible(ws, data):
     ws.append(["表", "型式", "功率档", "1级偏移", "2级偏移", "3级", "校对"])
     for t in data["tables"]:
         for bi, (lo, hi) in enumerate(t["power_bins"]):
             for si, st in enumerate(t["subtypes"]):
-                o1 = t["offsets"]["1"][bi][si] if t["offsets"]["1"] else None
-                o2 = t["offsets"]["2"][bi][si] if t["offsets"]["2"] else None
+                o1 = _safe_off(t, "1", bi, si)
+                o2 = _safe_off(t, "2", bi, si)
                 ws.append([t["name"], st, f"{lo}<P≤{hi}", o1, o2, "ηDB-Δη", "待校对"])
 
 
