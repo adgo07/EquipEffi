@@ -73,7 +73,7 @@ class MotorHvEvaluator(BaseEvaluator):
             int(poles)
         except (TypeError, ValueError):
             return {"result": CANNOT_JUDGE, "note": f"极数格式错误[{poles}]"}
-        limits, result = motor_judge(t["rows"], power, poles, eff)
+        limits, result = motor_judge(t["rows"], t["dims"], power, poles, eff)
         return {
             "level1": limits.get("1"), "level2": limits.get("2"), "level3": limits.get("3"),
             "result": result, "basis": f"GB 30254-2024 {t['title'][:30]}",

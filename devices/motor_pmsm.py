@@ -106,7 +106,7 @@ class MotorPmsmEvaluator(BaseEvaluator):
                     for i, (label, rg) in enumerate(t["dims"]):
                         diffs.append((abs(rg[1] - speed), i))
                     idx = min(diffs)[1]
-                limits[lv] = row["efficiency"][lv].get(idx)
+                limits[lv] = row["efficiency"].get(lv, {}).get(str(idx), row["efficiency"].get(lv, {}).get(idx))
                 if limits[lv] is not None and eff is not None and eff >= limits[lv]:
                     result = lv + "级"
                     break
@@ -120,7 +120,7 @@ class MotorPmsmEvaluator(BaseEvaluator):
                 int(poles)
             except (TypeError, ValueError):
                 return {"result": CANNOT_JUDGE, "note": f"极数格式错误[{poles}]"}
-            limits, result = motor_judge(t["rows"], power, poles, eff)
+            limits, result = motor_judge(t["rows"], t["dims"], power, poles, eff)
             return {"level1": limits.get("1"), "level2": limits.get("2"), "level3": limits.get("3"),
                     "result": result, "basis": f"GB 30253-2024 {t['title'][:24]}",
                     "note": "" if result != CANNOT_JUDGE else "缺少功率或效率"}

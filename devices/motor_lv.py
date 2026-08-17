@@ -5,9 +5,19 @@
 from .base import BaseEvaluator, to_float, interp, find_bracket, LEVEL_1, LEVEL_2, LEVEL_3, NOT_MEET_3, CANNOT_JUDGE
 
 
-def motor_judge(rows, power_kw, poles, efficiency_pct):
-    """通用电机判定：rows=标准行[{power_kw, efficiency:{lv:{idx:val}}}]，
-    poles=极数序列，返回(限值dict, result)"""
+def _eff(row, lv, idx):
+    """取效率值：JSON的dict键是字符串，统一转int"""
+    d = row["efficiency"].get(lv, {})
+    if idx in d:
+        return d[idx]
+    if str(idx) in d:
+        return d[str(idx)]
+    return None
+
+
+def motor_judge(rows, dims, power_kw, poles, efficiency_pct):
+    """通用电机判定：rows=[{power_kw, efficiency:{lv:{idx:val}}}]，
+    dims=极数/转速序列，返回(限值dict, result)"""
     if power_kw is None or efficiency_pct is None:
         return {}, CANNOT_JUDGE
     caps = sorted({r["power_kw"] for r in rows})
@@ -17,16 +27,16 @@ def motor_judge(rows, power_kw, poles, efficiency_pct):
     row_lo = next(r for r in rows if r["power_kw"] == lo)
     row_hi = next(r for r in rows if r["power_kw"] == hi) if hi != lo else row_lo
     try:
-        pole_idx = rows[0]["poles"].index(str(poles))
-    except ValueError:
+        pole_idx = dims.index(int(str(poles).replace("极", "").strip()))
+    except (ValueError, TypeError):
         return {}, CANNOT_JUDGE
     limits = {}
     for lv in ("1", "2", "3"):
-        v_lo = row_lo["efficiency"].get(lv, {}).get(pole_idx)
+        v_lo = _eff(row_lo, lv, pole_idx)
         if row_hi is row_lo:
             limits[lv] = v_lo
         else:
-            v_hi = row_hi["efficiency"].get(lv, {}).get(pole_idx)
+            v_hi = _eff(row_hi, lv, pole_idx)
             limits[lv] = interp(power_kw, lo, hi, v_lo, v_hi)
     result = NOT_MEET_3
     for lv in ("1", "2", "3"):
@@ -52,7 +62,8 @@ class MotorLvEvaluator(BaseEvaluator):
             int(poles)
         except (TypeError, ValueError):
             return {"result": CANNOT_JUDGE, "note": f"极数格式错误[{poles}]"}
-        limits, result = motor_judge(self.standard["rows"], power, poles, eff)
+        limits, result = motor_judge(self.standard["rows"], self.standard.get("dims", [2, 4, 6, 8]),
+                                     power, poles, eff)
         return {
             "level1": limits.get("1"), "level2": limits.get("2"), "level3": limits.get("3"),
             "result": result,

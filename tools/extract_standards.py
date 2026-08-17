@@ -103,14 +103,14 @@ def extract_motor_lv(wb) -> dict:
     # R4: [空, 空, 1级, 空, 空, 空, 2级, 空, 空, 空, 3级, ...]
     # R5: [空, 极数, 2, 4, 6, 8, 2, 4, 6, 8, 2, 4, 6, 8]
     # R6+: [空, 0.12, 71.4, 74.3, ...]
+    poles = None
     rows = []
     for i, r in enumerate(ws.iter_rows(min_row=3, max_col=14), start=3):
         vals = [c.value for c in r]
         if i == 3:
             continue  # 表头行
         if i == 4:
-            levels = vals
-            continue
+            continue  # 等级行
         if i == 5:
             poles = vals
             continue
@@ -121,26 +121,38 @@ def extract_motor_lv(wb) -> dict:
             power_f = float(power)
         except (TypeError, ValueError):
             continue
-        eff = []
+        # 极数去重（每组等级重复）
+        pole_list = []
+        for p in (poles[2:14] or []):
+            s = str(p).strip()
+            if s and int(float(s)) not in pole_list:
+                pole_list.append(int(float(s)))
+        # 效率按列序：1级[2,4,6,8] 2级[2,4,6,8] 3级[2,4,6,8]
+        eff = {}
+        n = len(pole_list)
         for j in range(2, 14):
             v = vals[j]
-            if v in (None, "", "—", "-"):
-                eff.append(None)
-            else:
+            lv = str((j - 2) // n + 1)
+            idx = (j - 2) % n
+            f = None
+            if v not in (None, "", "—", "-"):
                 try:
-                    eff.append(float(v))
+                    f = float(v)
                 except (TypeError, ValueError):
-                    eff.append(None)
+                    f = None
+            eff.setdefault(lv, {})[idx] = f
         rows.append({
             "power_kw": power_f,
-            "poles": [str(p).strip() for p in poles[2:14]],
-            "efficiency_pct": eff,
+            "efficiency": eff,
         })
     return {
         "standard_code": "GB 18613-2020",
         "standard_name": "电动机能效限定值及能效等级",
         "effective_date": "2021-06-01",
-        "unit_note": "效率单位%；efficiency_pct按极数列顺序[2,4,6,8]",
+        "mode": "poles",
+        "dims": pole_list,
+        "levels": ["1", "2", "3"],
+        "unit_note": "效率单位%；efficiency: {等级: {极数索引: 效率}}",
         "rows": rows,
     }
 
@@ -243,9 +255,13 @@ def build_review_xlsx(data_map: dict, out_path: Path):
                      "6极1级", "6极2级", "6极3级", "8极1级", "8极2级", "8极3级", "校对状态", "备注"]
             ws.append(heads)
             for row in data["rows"]:
-                e = row["efficiency_pct"]
-                # 列顺序：2极(3个) 4极(3个) 6极(3个) 8极(3个)
-                ws.append([row["power_kw"], *e, "待校对", ""])
+                e = []
+                for lv in ("1", "2", "3"):
+                    for idx in range(4):
+                        e.append(row["efficiency"].get(lv, {}).get(idx))
+                # 列顺序：2极(3个等级) 4极(3个) 6极(3个) 8极(3个)
+                ws.append([row["power_kw"], e[0], e[4], e[8], e[1], e[5], e[9],
+                           e[2], e[6], e[10], e[3], e[7], e[11], "待校对", ""])
         elif key == "compressor":
             heads = ["表", "类型", "功率kW", "等级", "排气压力MPa", "冷却方式", "比功率kW/(m³/min)",
                      "校对状态", "备注"]

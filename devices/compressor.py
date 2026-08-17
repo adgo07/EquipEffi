@@ -33,36 +33,42 @@ class CompressorEvaluator(BaseEvaluator):
     standard_key = "compressor"
 
     def evaluate(self, params: dict) -> dict:
-        ftype = params.get("type")
+        ftype = str(params.get("type") or "").strip()
         power = to_float(params.get("power_kw"))
         pressure = to_float(params.get("pressure_mpa"))
         cooling = str(params.get("cooling") or "").strip()
-        variable = params.get("variable")
+        variable = str(params.get("variable") or "").strip()
         sp = to_float(params.get("specific_power"))
         if sp is None:
             return {"result": CANNOT_JUDGE, "note": "缺少机组比功率实测值（须为机组输入功率÷排气量）"}
         if power is None or pressure is None:
             return {"result": CANNOT_JUDGE, "note": "缺少额定功率或排气压力"}
-        t = _pick_comp_table(self.standard["tables"], ftype, variable)
-        if t is None:
+        # 选表类型：喷油回转(表1工频/表2变转速)/往复活塞(表3)/全无油(表4)
+        is_var = ("变频" in variable) or ("变" in variable and "不变" not in variable)
+        rows = self.standard["rows"]
+        if "无油" in ftype or "全无油" in ftype:
+            rows = [r for r in rows if "无油" in r["type"]]
+        elif "活塞" in ftype or "往复" in ftype:
+            rows = [r for r in rows if "往复活塞" in r["type"] and "无油" not in r["type"]]
+        else:
+            rows = [r for r in rows if "喷油回转" in r["type"]]
+            rows = [r for r in rows if ("变转速" in r["type"]) == is_var]
+        if not rows:
             return {"result": CANNOT_JUDGE, "note": f"未匹配空压机类型[{ftype}]变频[{variable}]"}
         # 冷却标准化
-        if "液" in cooling or "水" in cooling:
-            cooling_n = "液冷"
-        else:
-            cooling_n = "风冷"
+        cooling_n = "液冷" if ("液" in cooling or "水" in cooling) else "风冷"
         # 功率靠档（向上取整档）
-        powers = sorted({r["power_kw"] for r in t["rows"] if r["power_kw"]})
+        powers = sorted({r["power_kw"] for r in rows if r["power_kw"]})
         p_pick = next((p for p in powers if p >= power), powers[-1])
         # 压力靠档
-        presses = sorted({r["pressure_mpa"] for r in t["rows"] if r["pressure_mpa"]})
+        presses = sorted({r["pressure_mpa"] for r in rows if r["pressure_mpa"]})
         pr_pick = next((p for p in presses if p >= pressure), presses[-1])
         # 查1/2/3级比功率
         lv = {}
         for lv_i in (1, 2, 3):
-            rows = [r for r in t["rows"] if r["power_kw"] == p_pick and r["level"] == lv_i
-                    and r["pressure_mpa"] == pr_pick and r["cooling"] == cooling_n]
-            lv[str(lv_i)] = rows[0]["specific_power"] if rows else None
+            hit = [r for r in rows if r["power_kw"] == p_pick and r["level"] == lv_i
+                   and r["pressure_mpa"] == pr_pick and r["cooling"] == cooling_n]
+            lv[str(lv_i)] = hit[0]["specific_power"] if hit else None
         result = NOT_MEET_3
         for lv_i in ("1", "2", "3"):
             if lv[lv_i] is not None and sp <= lv[lv_i]:
@@ -74,4 +80,4 @@ class CompressorEvaluator(BaseEvaluator):
         if pr_pick != pressure:
             note += f"排气压力{pressure}MPa靠档至{pr_pick}MPa；"
         return {"level1": lv["1"], "level2": lv["2"], "level3": lv["3"], "result": result,
-                "basis": f"GB 19153-2019 {t['type']}", "note": note}
+                "basis": "GB 19153-2019 表1~表4", "note": note}

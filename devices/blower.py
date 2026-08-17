@@ -53,8 +53,22 @@ class BlowerEvaluator(BaseEvaluator):
             eta_pol = eff  # 实测优先
         if eta_pol is None:
             return {"result": CANNOT_JUDGE, "note": "缺少多变效率（计算或实测）"}
+        # 手动限值（V1.11工作流：人工查表填Y限定值/Z评价值）
+        manual_limit = to_float(params.get("manual_limit"))
+        manual_save = to_float(params.get("manual_save"))
+        if manual_limit is not None or manual_save is not None:
+            lim = manual_limit
+            save = manual_save
+            result = NOT_PASS
+            if save is not None and eta_pol * 100 >= save:
+                result = ENERGY_SAVING
+            elif lim is not None and eta_pol * 100 >= lim:
+                result = PASS
+            return {"level1": save, "level2": lim, "level3": None, "result": result,
+                    "basis": "GB 28381-2012（人工填限值）",
+                    "note": f"ηpol={eta_pol*100:.1f}%；限定值{lim}%；评价值{save}%（手动）"}
         if b2 is None or d2 is None or d2 <= 0:
-            return {"result": CANNOT_JUDGE, "note": "缺少叶轮出口宽度b2/直径D2"}
+            return {"result": CANNOT_JUDGE, "note": "缺少叶轮出口宽度b2/直径D2（或手动限值）"}
         b2d2 = b2 / d2
         # 表选择
         kind = "限定值"

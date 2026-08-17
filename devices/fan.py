@@ -19,35 +19,36 @@ def _kp(pF, psg2, k):
 
 
 def _in_range(val, rng):
-    """区间匹配：'1.35≤ψ<1.55' / '>1800' / '45<ns≤65' / 'γ<0.3' / 'No2<机号≤No2.5'"""
+    """区间匹配：'1.35≤ψ<1.55' / '>1800' / '45<ns≤65' / 'γ<0.3' / 'No2<机号≤No2.5'
+    按比较符方向解析：'1.35≤'→val≥1.35；'<1.55'→val<1.55"""
     s = str(rng).strip()
-    # 提取数字
-    nums = [float(x) for x in re.findall(r"\d+(?:\.\d+)?", s)]
-    if not nums:
+    if not s:
         return True
-    if "≤" in s or "≥" in s:
-        if "≤" in s and len(nums) == 2:
-            lo, hi = nums
-            return lo <= val <= hi
-        if "≤" in s and len(nums) == 1:
-            # x≤hi 或 lo≤x
-            if s.startswith("≤"):
-                return val <= nums[0]
-            return val >= nums[0]
-        if "≥" in s and len(nums) == 1:
-            return val >= nums[0]
-    if "<" in s and ">" not in s:
-        return val < nums[-1]
-    if ">" in s and "<" not in s:
-        return val > nums[0]
-    if "<" in s and ">" in s:
-        # a<x<b 或 a≤x<b 等
-        lo = nums[0]
-        hi = nums[1]
-        ok_lo = val > lo if "≤" not in s.split("x")[0] else val >= lo
-        ok_hi = val < hi if "≤" not in s.split("x")[1] else val <= hi
-        return ok_lo and ok_hi
-    return True
+    ok = True
+    for p in re.findall(r"(\d+(?:\.\d+)?)\s*([<>≤≥])|([<>≤≥])\s*(?:No|机号)?\s*(\d+(?:\.\d+)?)", s):
+        if p[0]:
+            # "1.35≤" 数字在左：num op 变量 → val 反向比较
+            num, op = float(p[0]), p[1]
+            if op == "<":
+                ok = ok and val > num
+            elif op == "≤":
+                ok = ok and val >= num
+            elif op == ">":
+                ok = ok and val < num
+            elif op == "≥":
+                ok = ok and val <= num
+        else:
+            # "≤1.55" 符号在左：变量 op num
+            op, num = p[2], float(p[3])
+            if op == "<":
+                ok = ok and val < num
+            elif op == "≤":
+                ok = ok and val <= num
+            elif op == ">":
+                ok = ok and val > num
+            elif op == "≥":
+                ok = ok and val >= num
+    return ok
 
 
 class FanEvaluator(BaseEvaluator):
