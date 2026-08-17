@@ -2,9 +2,15 @@
 """devices/base.py - 判定器基类与公共工具"""
 import math
 import json
+import sys
 from pathlib import Path
 
-STD_DIR = Path(__file__).resolve().parent.parent / "standards"
+if getattr(sys, "frozen", False):
+    # 打包运行：优先exe同目录standards/（升级换数据），否则用内置
+    _ext = Path(sys.executable).parent / "standards"
+    STD_DIR = _ext if _ext.exists() else Path(getattr(sys, "_MEIPASS", ".")) / "standards"
+else:
+    STD_DIR = Path(__file__).resolve().parent.parent / "standards"
 
 # 结果常量
 LEVEL_1 = "1级"
