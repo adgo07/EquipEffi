@@ -76,6 +76,9 @@ class FanEvaluator(BaseEvaluator):
 
         # 选表
         tables = self.standard["tables"]
+        # 类型缺省推断：有轮毂比→轴流
+        if not ftype and params.get("hub_ratio") is not None:
+            ftype = "轴流"
         if "轴流" in ftype:
             t = next((t for t in tables if t["type"] == "轴流"), None)
             if t is None:
