@@ -153,6 +153,9 @@ SHEET_CONFIG = {
     "清水泵": ("pump_water", 4),
     "清水离心泵 ": ("pump_water", 4),
     "清水离心泵": ("pump_water", 4),
+    "水泵 ": ("pump_water", 4),
+    "水泵": ("pump_water", 4),
+    "离心泵（2025）": ("pump_water", 4),
     "化工泵": ("pump_chem", 4),
     "化工离心泵": ("pump_chem", 4),
     "通风机": ("fan", 3),
@@ -171,8 +174,11 @@ class Cleaner:
         self.devices = {}   # key -> [{params, issues, row, name}]
         self.summary = []   # 每sheet统计
 
-    def run(self):
+    def run(self, keys=None):
+        """清洗全部/指定设备类别。keys=None→全部，否则只处理选中的key"""
         for sheet_name, (key, data_start) in SHEET_CONFIG.items():
+            if keys is not None and key not in keys:
+                continue
             if sheet_name not in self.wb.sheetnames:
                 continue
             ws = self.wb[sheet_name]

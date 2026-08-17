@@ -10,17 +10,27 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 
-# 收集standards下的JSON
+# 用干净构建环境（避免hermes主环境numpy元数据问题）
+PY = ROOT / ".venv_build" / "Scripts" / "python.exe"
+if not PY.exists():
+    PY = Path(sys.executable)
+
+# 收集standards下的JSON + 模板文件
 std_files = [str(p) for p in (ROOT / "standards").glob("*.json")]
 add_data = []
 for f in std_files:
     add_data.append(f"{f};standards")
+tpl = ROOT / "template" / "设备能效分析模板.xlsx"
+if tpl.exists():
+    add_data.append(f"{tpl};template")
 
 cmd = [
-    sys.executable, "-m", "PyInstaller",
+    str(PY), "-m", "PyInstaller",
     "--noconfirm", "--clean",
     "--onefile", "--windowed",
     "--name", "设备能效分析工具",
+    "--exclude-module", "numpy", "--exclude-module", "pandas",
+    "--collect-data", "tkinterdnd2",
 ]
 icon = ROOT / "assets" / "app.ico"
 if icon.exists():

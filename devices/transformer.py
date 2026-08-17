@@ -5,6 +5,11 @@
 from .base import BaseEvaluator, to_float, interp, match_rows, LEVEL_1, LEVEL_2, LEVEL_3, NOT_MEET_3, CANNOT_JUDGE
 
 
+def _norm(s):
+    """类别文本归一化：小写+去空格（企业常写10KV，标准是10kV）"""
+    return str(s).lower().replace(" ", "").replace("　", "")
+
+
 class TransformerEvaluator(BaseEvaluator):
     code = "transformer"
     name = "变压器"
@@ -24,12 +29,17 @@ class TransformerEvaluator(BaseEvaluator):
         if p0 is None or pk is None:
             return {"result": CANNOT_JUDGE, "note": "缺少空载损耗或负载损耗实测值"}
 
-        rows = match_rows(self.standard["rows"], category=category)
-        if not rows:
-            # 类别模糊匹配（含关键字）
-            rows = [r for r in self.standard["rows"] if category in r["category"] or r["category"] in category]
-        if not rows:
+        # 类别匹配：归一化（小写+去空格）后模糊匹配，多候选取文本最接近
+        cat_n = _norm(category)
+        cand = []
+        for r in self.standard["rows"]:
+            rc = _norm(r["category"])
+            if rc and (rc in cat_n or cat_n in rc):
+                cand.append(r)
+        if not cand:
             return {"result": CANNOT_JUDGE, "note": f"未找到类别[{category}]的标准表"}
+        cand.sort(key=lambda r: abs(len(_norm(r["category"])) - len(cat_n)))
+        rows = cand[:1]  # 只取文本最接近的类别（避免配电/新能源等多候选干扰）
 
         # 维度自适应：材质/连接组/绝缘仅在该表内区分时才参与匹配
         mats = {r["core_material"] for r in rows if r["core_material"]}

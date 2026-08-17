@@ -145,7 +145,7 @@ FILES = ["transformer.json", "motor_lv.json", "motor_hv.json", "motor_pmsm.json"
 
 NAME = {
     "transformer": "变压器", "motor_lv": "低压电机", "motor_hv": "高压电机",
-    "motor_pmsm": "永磁电机", "compressor": "空压机", "pump": "清水/化工泵",
+    "motor_pmsm": "永磁电机", "compressor": "空压机", "pump": "泵_清水化工",
     "fan": "通风机", "submersible": "潜水电泵", "boiler": "锅炉",
     "heat_treatment": "热处理", "blower": "鼓风机",
 }

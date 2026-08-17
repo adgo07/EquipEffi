@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 """gui/main_window.py - 主窗口（tkinter，大众主流蓝白配色）
-流程：选择输入Excel → 开始分析（后台线程）→ 清洗/判定/汇总 → 写回结果 → 完成
+功能：模板下载 / 设备类别选择 / 拖拽上传 / 分析（清洗→判定→汇总→写回）
 """
 import os
 import queue
+import shutil
+import sys
 import threading
 import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
+
+try:
+    from tkinterdnd2 import DND_FILES, TkinterDnD
+    HAS_DND = True
+except ImportError:
+    HAS_DND = False
 
 from core.cleaner import Cleaner
 from core.evaluator import evaluate_all
@@ -21,8 +29,17 @@ COLOR_TEXT = "#333333"      # 正文深灰
 COLOR_SUB = "#666666"       # 次级文字
 COLOR_BORDER = "#E1E1E1"    # 边框
 COLOR_OK = "#107C10"        # 成功绿
-COLOR_WARN = "#D13438"      # 警示红
 FONT = "Microsoft YaHei"
+
+# 设备类别选项（key, 显示名）
+DEVICE_OPTIONS = [
+    ("transformer", "变压器"), ("motor_lv", "低压电动机"), ("motor_hv", "高压电动机"),
+    ("motor_pmsm", "永磁同步电机"), ("compressor", "空压机"),
+    ("pump_water", "清水泵"), ("pump_chem", "化工泵"), ("fan", "通风机"),
+    ("blower", "鼓风机"), ("submersible", "潜水电泵"), ("boiler", "锅炉"),
+    ("heat_treatment", "热处理"),
+]
+TEMPLATE_NAME = "设备能效分析模板.xlsx"
 
 
 class MainWindow:
@@ -31,10 +48,11 @@ class MainWindow:
         self.queue = queue.Queue()
         self.out_path = None
         root.title("设备能效分析工具")
-        root.geometry("720x560")
-        root.minsize(640, 500)
+        root.geometry("760x680")
+        root.minsize(680, 580)
         root.configure(bg=COLOR_BG)
         self._build_ui()
+        self._bind_dnd()
         self._check_queue()
 
     # ---------- 界面 ----------
@@ -45,31 +63,53 @@ class MainWindow:
         header.pack_propagate(False)
         tk.Label(header, text="设备能效分析工具", bg=COLOR_PRIMARY, fg="white",
                  font=(FONT, 16, "bold")).pack(side="left", padx=24, pady=12)
-        tk.Label(header, text="v0.1.0", bg=COLOR_PRIMARY, fg="#D0E8FF",
+        tk.Label(header, text="v0.2.0", bg=COLOR_PRIMARY, fg="#D0E8FF",
                  font=(FONT, 9)).pack(side="right", padx=24)
 
-        # 内容区
         body = tk.Frame(self.root, bg=COLOR_BG)
         body.pack(fill="both", expand=True, padx=20, pady=16)
 
-        # 输入文件卡片
-        self._card = self._make_card(body)
-        tk.Label(self._card, text="① 选择设备台账Excel", bg=COLOR_CARD, fg=COLOR_TEXT,
-                 font=(FONT, 11, "bold")).grid(row=0, column=0, sticky="w", pady=(4, 8))
+        # ① 输入文件卡片
+        card1 = self._make_card(body)
+        tk.Label(card1, text="① 选择/拖入设备台账Excel", bg=COLOR_CARD, fg=COLOR_TEXT,
+                 font=(FONT, 11, "bold")).grid(row=0, column=0, sticky="w", pady=(2, 6))
         self.input_var = tk.StringVar()
-        self.input_entry = ttk.Entry(self._card, textvariable=self.input_var, font=(FONT, 10))
+        self.input_entry = ttk.Entry(card1, textvariable=self.input_var, font=(FONT, 10))
         self.input_entry.grid(row=1, column=0, sticky="ew", padx=(0, 8))
-        self.input_entry.insert(0, "请选择企业填写的设备台账文件…")
+        self.input_entry.insert(0, "请选择或拖入企业填写的台账文件…")
         self.input_entry.bind("<Button-1>", lambda e: self._browse_input())
         btn_style = {"font": (FONT, 10), "bg": "#E8F1FA", "fg": COLOR_PRIMARY,
                      "activebackground": "#D6E8F7", "relief": "flat", "cursor": "hand2"}
-        tk.Button(self._card, text="浏览…", command=self._browse_input, **btn_style).grid(row=1, column=1)
-        self._card.columnconfigure(0, weight=1)
+        tk.Button(card1, text="浏览…", command=self._browse_input, **btn_style).grid(row=1, column=1)
+        card1.columnconfigure(0, weight=1)
 
-        # 输出提示
-        self.out_label = tk.Label(body, text="输出：与输入文件同目录，文件名加“_能效分析结果”",
-                                  bg=COLOR_BG, fg=COLOR_SUB, font=(FONT, 9))
-        self.out_label.pack(fill="x", pady=(6, 2))
+        # ② 设备类别卡片
+        card2 = self._make_card(body)
+        top = tk.Frame(card2, bg=COLOR_CARD)
+        top.pack(fill="x")
+        tk.Label(top, text="② 分析设备类别", bg=COLOR_CARD, fg=COLOR_TEXT,
+                 font=(FONT, 11, "bold")).pack(side="left")
+        tk.Button(top, text="全选", command=lambda: self._set_all(True),
+                  font=(FONT, 9), bg="#F5F5F5", fg=COLOR_TEXT, relief="flat", cursor="hand2").pack(side="right", padx=4)
+        tk.Button(top, text="全不选", command=lambda: self._set_all(False),
+                  font=(FONT, 9), bg="#F5F5F5", fg=COLOR_TEXT, relief="flat", cursor="hand2").pack(side="right")
+        grid = tk.Frame(card2, bg=COLOR_CARD)
+        grid.pack(fill="x", pady=(8, 2))
+        self.device_vars = {}
+        for i, (key, label) in enumerate(DEVICE_OPTIONS):
+            var = tk.BooleanVar(value=True)
+            self.device_vars[key] = var
+            tk.Checkbutton(grid, text=label, variable=var, bg=COLOR_CARD, fg=COLOR_TEXT,
+                           font=(FONT, 10), activebackground=COLOR_CARD,
+                           selectcolor="white").grid(row=i // 4, column=i % 4, sticky="w", padx=8, pady=2)
+
+        # ③ 模板下载
+        card3 = self._make_card(body)
+        tk.Label(card3, text="③ 没有台账模板？", bg=COLOR_CARD, fg=COLOR_TEXT,
+                 font=(FONT, 11, "bold")).pack(side="left")
+        tk.Button(card3, text="下载空白模板", command=self._download_template,
+                  font=(FONT, 10), bg="#E8F1FA", fg=COLOR_PRIMARY, relief="flat",
+                  cursor="hand2", activebackground="#D6E8F7").pack(side="right")
 
         # 开始按钮
         self.start_btn = tk.Button(body, text="开始分析", command=self._start,
@@ -85,23 +125,40 @@ class MainWindow:
         # 日志区
         log_frame = tk.Frame(body, bg=COLOR_BG)
         log_frame.pack(fill="both", expand=True, pady=(8, 0))
-        self.log = tk.Text(log_frame, height=12, font=(FONT, 9), fg=COLOR_TEXT,
+        self.log = tk.Text(log_frame, height=10, font=(FONT, 9), fg=COLOR_TEXT,
                            bg="white", relief="flat", wrap="word", state="disabled")
         self.log.pack(side="left", fill="both", expand=True)
         scroll = ttk.Scrollbar(log_frame, command=self.log.yview)
         scroll.pack(side="right", fill="y")
         self.log.configure(yscrollcommand=scroll.set)
 
-        self._log("欢迎使用设备能效分析工具\n请选择企业填写的设备台账Excel文件，点击“开始分析”。")
+        self._log("欢迎使用设备能效分析工具\n1. 可直接把台账Excel拖入窗口\n2. 勾选要分析的设备类别\n3. 点击“开始分析”")
 
     def _make_card(self, parent):
         card = tk.Frame(parent, bg=COLOR_CARD, highlightbackground=COLOR_BORDER, highlightthickness=1)
-        card.pack(fill="x", pady=(0, 4))
-        card.columnconfigure(0, weight=1)
-        card.grid_columnconfigure(0, weight=1)
+        card.pack(fill="x", pady=(0, 8))
         inner = tk.Frame(card, bg=COLOR_CARD)
-        inner.pack(fill="x", padx=14, pady=12)
+        inner.pack(fill="x", padx=14, pady=10)
+        inner.columnconfigure(0, weight=1)
         return inner
+
+    # ---------- 拖拽 ----------
+    def _bind_dnd(self):
+        if not HAS_DND:
+            self._log("（拖拽功能不可用，请用浏览按钮选择文件）")
+            return
+        self.root.drop_target_register(DND_FILES)
+        self.root.dnd_bind("<<Drop>>", self._on_drop)
+        self.input_entry.drop_target_register(DND_FILES)
+        self.input_entry.dnd_bind("<<Drop>>", self._on_drop)
+
+    def _on_drop(self, event):
+        files = self.root.tk.splitlist(event.data)
+        for f in files:
+            if f.lower().endswith((".xlsx", ".xlsm")):
+                self.input_var.set(f)
+                self._log(f"已拖入：{f}")
+                return
 
     # ---------- 交互 ----------
     def _browse_input(self):
@@ -112,21 +169,56 @@ class MainWindow:
             self.input_var.set(path)
             self._log(f"已选择：{path}")
 
+    def _set_all(self, val):
+        for var in self.device_vars.values():
+            var.set(val)
+
+    def _download_template(self):
+        src = self._template_path()
+        if src is None:
+            messagebox.showwarning("提示", "模板文件缺失，请重新安装工具")
+            return
+        out = filedialog.asksaveasfilename(
+            title="保存空白模板", defaultextension=".xlsx",
+            initialfile=TEMPLATE_NAME,
+            filetypes=[("Excel文件", "*.xlsx")])
+        if out:
+            try:
+                shutil.copy2(src, out)
+                self._log(f"模板已保存：{out}")
+                messagebox.showinfo("完成",
+                                    f"模板已保存到：\n{out}\n\n将模板发给企业填写，收回后再用本工具分析。")
+            except Exception as e:
+                messagebox.showerror("错误", f"保存失败：{e}")
+
+    def _template_path(self):
+        if getattr(sys, "frozen", False):
+            ext = Path(sys.executable).parent / "template" / TEMPLATE_NAME
+            if ext.exists():
+                return ext
+            return Path(getattr(sys, "_MEIPASS", ".")) / "template" / TEMPLATE_NAME
+        p = Path(__file__).resolve().parent.parent / "template" / TEMPLATE_NAME
+        return p if p.exists() else None
+
+    # ---------- 分析流程 ----------
     def _start(self):
         src = self.input_var.get().strip()
         if not src or not Path(src).exists():
             messagebox.showwarning("提示", "请先选择有效的Excel文件")
             return
+        selected = [k for k, v in self.device_vars.items() if v.get()]
+        if not selected:
+            messagebox.showwarning("提示", "请至少勾选一类设备")
+            return
         self.start_btn.configure(state="disabled", text="分析中…")
         self.progress["value"] = 0
-        threading.Thread(target=self._worker, args=(src,), daemon=True).start()
+        threading.Thread(target=self._worker, args=(src, selected), daemon=True).start()
 
-    def _worker(self, src):
-        """后台分析线程"""
+    def _worker(self, src, selected):
         try:
             self._log("\n[1/4] 正在读取与清洗数据…")
             cleaner = Cleaner(src)
-            devices = cleaner.run()
+            devices = cleaner.run(keys=selected)
             n = sum(len(v) for v in devices.values())
             self._post("progress", 30)
             self._log(f"清洗完成：{len(devices)}类设备，共{n}台")
@@ -159,22 +251,21 @@ class MainWindow:
         out = src_path.parent / f"{src_path.stem}_能效分析结果.xlsx"
         changes = {}
         for key, items in results.items():
-            # 定位判定列（由清洗时的表头信息，此处用结果中的row）
+            sheet_name = self._sheet_name_for(key, src_path)
+            if sheet_name is None:
+                continue
+            col = self._judge_col(sheet_name, src_path)
+            if col is None:
+                self._log(f"  ⚠ {sheet_name}：未找到判定列，跳过")
+                continue
             for it in items:
-                sheet_name = self._sheet_name_for(key, src_path)
-                if sheet_name is None:
-                    continue
-                col = self._judge_col(sheet_name, src_path)
-                if col is None:
-                    continue
-                cell_ref = f"{col}{it['row']}"
-                changes.setdefault(sheet_name, {})[cell_ref] = it["result_dict"]["result"]
+                changes.setdefault(sheet_name, {})[f"{col}{it['row']}"] = it["result_dict"]["result"]
         if not changes:
-            # 无任何可写回 → 直接复制
             import shutil
             shutil.copy2(src, out)
         else:
-            patch_cells(src, out, changes)
+            res = patch_cells(src, out, changes)
+            self._log(f"  已写入 {len(res.get('patched_sheets', {}))} 个sheet")
         return out
 
     def _sheet_name_for(self, key, src_path):
@@ -193,18 +284,27 @@ class MainWindow:
         return None
 
     def _judge_col(self, sheet_name, src_path):
-        """找sheet的能效判定列（表头含'能效判定'或'能效等级'或'能效'）"""
+        """找sheet的能效判定列：必须在表头行（含'序号'的行）中找，
+        避免R1标题行（如《XX能效限定值及能效等级》）误导"""
         import openpyxl
         wb = openpyxl.load_workbook(src_path, read_only=True)
         ws = wb[sheet_name]
-        col = None
+        hdr = None
         for r in range(1, 6):
-            for c in range(1, min(ws.max_column, 40) + 1):
+            for c in range(1, 8):
                 v = ws.cell(r, c).value
-                if v and ("能效判定" in str(v) or "能效等级" in str(v) or "判定" in str(v)):
-                    col = openpyxl.utils.get_column_letter(c)
+                if v and "序号" in str(v):
+                    hdr = r
                     break
-            if col:
+            if hdr:
+                break
+        if hdr is None:
+            hdr = 2
+        col = None
+        for c in range(1, min(ws.max_column, 40) + 1):
+            v = ws.cell(hdr, c).value
+            if v and ("能效判定" in str(v) or "能效等级" in str(v) or "判定" in str(v)):
+                col = openpyxl.utils.get_column_letter(c)
                 break
         wb.close()
         return col
@@ -240,7 +340,7 @@ class MainWindow:
 
 
 def run():
-    root = tk.Tk()
+    root = (TkinterDnD.Tk() if HAS_DND else tk.Tk())
     MainWindow(root)
     root.mainloop()
 
