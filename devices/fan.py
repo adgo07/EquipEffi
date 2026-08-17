@@ -122,7 +122,10 @@ class FanEvaluator(BaseEvaluator):
                 break
         if row is None:
             return {"result": CANNOT_JUDGE, "note": f"ψ={psi:.3f}或ns={ns:.1f}无匹配行"}
-        return self._judge_cols(t, row, no, eff, f"GB 19761-2020 {t['title'][:16]}")
+        res = self._judge_cols(t, row, no, eff, f"GB 19761-2020 {t['title'][:16]}")
+        res["psi"] = round(psi, 3)
+        res["ns"] = round(ns, 1)
+        return res
 
     def _psi(self, pF, psg2, k, rho, n, no):
         u = math.pi * no * 0.1 * n / 60

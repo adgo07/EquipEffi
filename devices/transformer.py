@@ -81,6 +81,8 @@ class TransformerEvaluator(BaseEvaluator):
             "level1": (nl[0], lk[0]) if nl[0] is not None else None,
             "level2": (nl[1], lk[1]) if nl[1] is not None else None,
             "level3": (nl[2], lk[2]) if nl[2] is not None else None,
+            "no_load_levels": [round(v, 3) if v is not None else None for v in nl],
+            "load_levels": [round(v, 3) if v is not None else None for v in lk],
             "result": result,
             "basis": f"GB 20052-2024 {category}",
             "note": "双指标：空载+负载损耗同时达标" if result != CANNOT_JUDGE else "",

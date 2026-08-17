@@ -40,13 +40,15 @@ class PumpEvaluator(BaseEvaluator):
         pump_type = str(params.get("pump_type") or "").strip()  # 单级单吸/单级双吸/管道/多级/轻型多级立式/轻型多级卧式
         if q is None or h is None or n is None:
             return {"result": CANNOT_JUDGE, "note": "缺少流量/扬程/转速"}
-        if eff is None:
-            return {"result": CANNOT_JUDGE, "note": "缺少实测效率（须为检测值）"}
         ns = calc_ns(n, q, h, stages, suction)
         if ns is None:
             return {"result": CANNOT_JUDGE, "note": "比转数计算失败"}
         if ns < 20 or ns > 300:
-            return {"result": "不在范围", "note": f"比转数ns={ns:.1f}超出标准范围20~300"}
+            return {"result": "不在范围", "note": f"比转数ns={ns:.1f}超出标准范围20~300",
+                    "ns": round(ns, 1)}
+        if eff is None:
+            return {"result": CANNOT_JUDGE, "note": "缺少实测效率（须为检测值）",
+                    "ns": round(ns, 1)}
         std = self.standard
         if "化" in kind:
             return self._chemical(std, q, ns, stages, eff, pump_type)
@@ -89,7 +91,8 @@ class PumpEvaluator(BaseEvaluator):
                 break
         return {"level1": round(levels[0], 2), "level2": round(levels[1], 2), "level3": round(levels[2], 2),
                 "result": result, "basis": f"GB 19762-2025 公式({2 if not is_multi else 3})+表3",
-                "note": f"ns={ns:.1f}, Ci={ci_row['ci']}"}
+                "note": f"ns={ns:.1f}, Ci={ci_row['ci']}",
+                "ns": round(ns, 1), "ci": ci_row["ci"]}
 
     # ---------- 化工泵 ----------
     def _chemical(self, std, q, ns, stages, eff, pump_type):
@@ -120,4 +123,5 @@ class PumpEvaluator(BaseEvaluator):
                 break
         return {"level1": round(levels[0], 2), "level2": round(levels[1], 2), "level3": round(levels[2], 2),
                 "result": result, "basis": f"GB 19762-2025 公式(4/5/6/7)+表2",
-                "note": f"ns={ns:.1f}, ηb={eta_b:.2f}, Δη={delta:.2f}, η0={eta0:.2f}"}
+                "note": f"ns={ns:.1f}, ηb={eta_b:.2f}, Δη={delta:.2f}, η0={eta0:.2f}",
+                "ns": round(ns, 1), "ci": None}

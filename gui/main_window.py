@@ -245,7 +245,8 @@ class MainWindow:
             self._post("error", f"分析失败：{type(e).__name__}: {e}")
 
     def _write_back(self, src, results):
-        """写回判定结果到输出文件（zip补丁，图片保留）"""
+        """写回判定结果到输出文件（zip补丁，图片保留）
+        写回内容：判定列结论 + 1/2/3级标准限值列 + 过程指标（泵ns/Ci、变压器空载负载、风机ψ/ns）"""
         from core.writer import patch_cells
         src_path = Path(src)
         out = src_path.parent / f"{src_path.stem}_能效分析结果.xlsx"
@@ -254,19 +255,133 @@ class MainWindow:
             sheet_name = self._sheet_name_for(key, src_path)
             if sheet_name is None:
                 continue
-            col = self._judge_col(sheet_name, src_path)
-            if col is None:
+            scheme = self._judge_scheme(sheet_name, src_path, key)
+            if not scheme or not scheme.get("judge"):
                 self._log(f"  ⚠ {sheet_name}：未找到判定列，跳过")
                 continue
+            sc = changes.setdefault(sheet_name, {})
             for it in items:
-                changes.setdefault(sheet_name, {})[f"{col}{it['row']}"] = it["result_dict"]["result"]
+                rd = it["result_dict"]
+                row = it["row"]
+                sc[f"{scheme['judge']}{row}"] = rd.get("result", "")
+                self._apply_levels(sc, scheme, key, rd, row)
+                self._apply_extra(sc, scheme, key, rd, row)
         if not changes:
             import shutil
             shutil.copy2(src, out)
         else:
             res = patch_cells(src, out, changes)
-            self._log(f"  已写入 {len(res.get('patched_sheets', {}))} 个sheet")
+            self._log(f"  已写入 {len(res.get('patched_sheets', {}))} 个sheet（含标准限值/过程指标）")
         return out
+
+    def _judge_scheme(self, sheet_name, src_path, key):
+        """动态定位写回列方案：
+        {"judge": 判定列, "levels": {"1":[列...],"2":[...],"3":[...]},
+         "extra": {"ns":列,"ci":列,"limit":列,"save":列,"psi":列}}"""
+        import openpyxl
+        wb = openpyxl.load_workbook(src_path, read_only=True)
+        ws = wb[sheet_name]
+        # 表头行
+        hdr = None
+        for r in range(1, 6):
+            for c in range(1, 8):
+                v = ws.cell(r, c).value
+                if v and "序号" in str(v):
+                    hdr = r
+                    break
+            if hdr:
+                break
+        if hdr is None:
+            hdr = 2
+        scheme = {"hdr": hdr}
+        # 判定列
+        for c in range(1, min(ws.max_column, 40) + 1):
+            v = ws.cell(hdr, c).value
+            if v and ("能效判定" in str(v) or "能效等级" in str(v) or "判定" in str(v)):
+                scheme["judge"] = openpyxl.utils.get_column_letter(c)
+                break
+        # 1/2/3级限值列（表头行或其下一行的"1级"等；变压器R3次级表头）
+        levels = {"1": [], "2": [], "3": []}
+        for rr in (hdr, hdr + 1):
+            for c in range(1, min(ws.max_column, 40) + 1):
+                v = str(ws.cell(rr, c).value or "").strip()
+                if v in ("1级", "1 级") or v.startswith("1级"):
+                    levels["1"].append(openpyxl.utils.get_column_letter(c))
+                elif v in ("2级", "2 级") or v.startswith("2级"):
+                    levels["2"].append(openpyxl.utils.get_column_letter(c))
+                elif v in ("3级", "3 级") or v.startswith("3级"):
+                    levels["3"].append(openpyxl.utils.get_column_letter(c))
+                elif v in ("一等", "二等", "三等") and key == "heat_treatment":
+                    levels[{"一等": "1", "二等": "2", "三等": "3"}[v]].append(
+                        openpyxl.utils.get_column_letter(c))
+            if any(levels.values()):
+                break
+        scheme["levels"] = levels
+        # 特殊指标列（表头行）
+        extra = {}
+        for c in range(1, min(ws.max_column, 40) + 1):
+            v = str(ws.cell(hdr, c).value or "")
+            if key in ("pump_water", "pump_chem"):
+                if "比转速" in v or "/ns" in v or v.strip() == "ns":
+                    extra["ns"] = openpyxl.utils.get_column_letter(c)
+                if "Ci" in v or "常数" in v:
+                    extra["ci"] = openpyxl.utils.get_column_letter(c)
+            elif key == "fan":
+                if "压力系数" in v or "/Ψ" in v:
+                    extra["psi"] = openpyxl.utils.get_column_letter(c)
+                if "比转速" in v or "/ns" in v:
+                    extra["ns"] = openpyxl.utils.get_column_letter(c)
+            elif key == "blower":
+                if "能效限定值" in v:
+                    extra["limit"] = openpyxl.utils.get_column_letter(c)
+                if "节能评价值" in v:
+                    extra["save"] = openpyxl.utils.get_column_letter(c)
+        scheme["extra"] = extra
+        wb.close()
+        return scheme
+
+    def _apply_levels(self, sc, scheme, key, rd, row):
+        """写1/2/3级限值到标准值列"""
+        levels = scheme["levels"]
+        if key == "transformer":
+            # 每级2列（空载+负载），按出现顺序配对
+            for i, lv in enumerate(("1", "2", "3")):
+                cols = levels.get(lv, [])
+                nl = rd.get("no_load_levels") or [None] * 3
+                ld = rd.get("load_levels") or [None] * 3
+                if len(cols) >= 2:
+                    if nl[i] is not None:
+                        sc[f"{cols[0]}{row}"] = nl[i]
+                    if ld[i] is not None:
+                        sc[f"{cols[1]}{row}"] = ld[i]
+            return
+        if key == "blower":
+            # level1=评价值→Z列、level2=限定值→Y列（由scheme.extra定位）
+            return
+        for lv in ("1", "2", "3"):
+            v = rd.get("level" + lv)
+            cols = levels.get(lv, [])
+            if v is not None and cols:
+                sc[f"{cols[0]}{row}"] = round(float(v), 2)
+
+    def _apply_extra(self, sc, scheme, key, rd, row):
+        """写过程指标（泵ns/Ci、变压器空载负载已由_apply_levels处理、风机ψ/ns、鼓风机限值）"""
+        extra = scheme.get("extra", {})
+        if key in ("pump_water", "pump_chem"):
+            if extra.get("ns") and rd.get("ns"):
+                sc[f"{extra['ns']}{row}"] = rd["ns"]
+            if extra.get("ci") and rd.get("ci"):
+                sc[f"{extra['ci']}{row}"] = "/".join(str(x) for x in rd["ci"])
+        elif key == "fan":
+            if extra.get("psi") and rd.get("psi"):
+                sc[f"{extra['psi']}{row}"] = rd["psi"]
+            if extra.get("ns") and rd.get("ns"):
+                sc[f"{extra['ns']}{row}"] = rd["ns"]
+        elif key == "blower":
+            if extra.get("limit") and rd.get("level2") is not None:
+                sc[f"{extra['limit']}{row}"] = round(float(rd["level2"]), 2)
+            if extra.get("save") and rd.get("level1") is not None:
+                sc[f"{extra['save']}{row}"] = round(float(rd["level1"]), 2)
 
     def _sheet_name_for(self, key, src_path):
         """设备key → 输入文件中的sheet名（按SHEET_CONFIG反向）"""
