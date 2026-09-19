@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-30",
+  "packs": [
+    {
+      "device_type": "transformer",
+      "pack_id": "gb20052_2024_v1",
+      "source": "resources/standards/transformer.json",
+      "standard_code": "GB 20052-2024",
+      "effective_date": "2025-02-01",
+      "status": "active",
+      "data_version": "2026.08.23"
+    },
+    {
+      "device_type": "motor_lv",
+      "pack_id": "gb18613_2020_v1",
+      "source": "resources/standards/motor_lv.json",
+      "standard_code": "GB 18613-2020",
+      "effective_date": "2021-06-01",
+      "status": "active",
+      "data_version": "2026.08.23"
+    },
+    {
+      "device_type": "motor_hv",
+      "pack_id": "gb30254_2024_v1",
+      "source": "resources/standards/motor_hv.json",
+      "standard_code": "GB 30254-2024",
+      "effective_date": "2025-09-01",
+      "status": "active",
+      "data_version": "2026.08.23"
+    },
+    {
+      "device_type": "motor_pmsm",
+      "pack_id": "gb30253_2024_pdf_verified_v1",
+      "source": "resources/standards/gb30253_2024_pdf_verified_v1.json",
+      "standard_code": "GB 30253-2024",
+      "effective_date": "2025-10-01",
+      "status": "active",
+      "data_version": "pdf-rebuild-2026.08.23-user-reviewed-2026.08.30",
+      "reviewer": "用户确认",
+      "review_date": "2026-08-30",
+      "reviewed_efficiency_cell_count": 10803,
+      "activation_source": "resources/standards/gb30253_2024_pdf_verified_v1.json"
+    },
+    {
+      "device_type": "compressor",
+      "pack_id": "gb19153_2019_v1",
+      "source": "resources/standards/compressor.json",
+      "standard_code": "GB 19153-2019",
+      "effective_date": "2020-07-01",
+      "status": "active",
+      "data_version": "2026.08.23"
+    },
+    {
+      "device_type": "pump_water",
+      "pack_id": "gb19762_2025_water_v1",
+      "source": "resources/standards/pump.json",
+      "standard_code": "GB 19762-2025",
+      "effective_date": "2026-03-01",
+      "status": "active",
+      "data_version": "2026.08.23"
+    },
+    {
+      "device_type": "pump_chemical",
+      "pack_id": "gb19762_2025_chemical_v1",
+      "source": "resources/standards/pump.json",
+      "standard_code": "GB 19762-2025",
+      "effective_date": "2026-03-01",
+      "status": "active",
+      "data_version": "2026.08.23"
+    },
+    {
+      "device_type": "fan",
+      "pack_id": "gb19761_2020_v1",
+      "source": "resources/standards/fan.json",
+      "standard_code": "GB 19761-2020",
+      "effective_date": "2021-06-01",
+      "status": "active",
+      "data_version": "2026.08.26-efficiency-formula-v1"
+    },
+    {
+      "device_type": "blower",
+      "pack_id": "gb28381_2012_v1",
+      "source": "resources/standards/blower.json",
+      "standard_code": "GB 28381-2012",
+      "effective_date": "2012-09-01",
+      "status": "active",
+      "data_version": "2026.08.26-pdf-tables-1-8-v1"
+    },
+    {
+      "device_type": "submersible",
+      "pack_id": "gb32030_2022_v1",
+      "source": "resources/standards/submersible.json",
+      "standard_code": "GB 32030-2022",
+      "effective_date": "2024-01-01",
+      "status": "active",
+      "data_version": "2026.08.26-gbt25409-calc-v3-power-boundaries"
+    },
+    {
+      "device_type": "boiler",
+      "pack_id": "gb24500_2020_v1",
+      "source": "resources/standards/boiler.json",
+      "standard_code": "GB 24500-2020",
+      "effective_date": "2021-06-01",
+      "status": "active",
+      "data_version": "2026.08.26-gb24500-electric-v1"
+    },
+    {
+      "device_type": "heat_treatment",
+      "pack_id": "gbt36561_2018_v1",
+      "source": "resources/standards/heat_treatment.json",
+      "standard_code": "GB/T 36561-2018",
+      "effective_date": "2019-02-01",
+      "status": "active",
+      "data_version": "2026.08.26-gbt36561-fuel-coeff-v1"
+    },
+    {
+      "device_type": "heat_pump_chiller",
+      "pack_id": "gb19577_2024_pdf_verified_v1",
+      "source": "resources/standards/hvac_thresholds.json",
+      "standard_code": "GB 19577-2024",
+      "effective_date": "按适用产品标准",
+      "status": "active",
+      "data_version": "pdf-verified-2026.08.26"
+    },
+    {
+      "device_type": "heat_pump_water_heater",
+      "pack_id": "gb29541_2013_v1",
+      "source": "resources/standards/hvac_thresholds.json",
+      "standard_code": "GB 29541-2013",
+      "effective_date": "按适用产品标准",
+      "status": "active",
+      "data_version": "2026.08.23"
+    },
+    {
+      "device_type": "duct_ac",
+      "pack_id": "gb37479_2019_v1",
+      "source": "resources/standards/hvac_thresholds.json",
+      "standard_code": "GB 37479-2019",
+      "effective_date": "按适用产品标准",
+      "status": "active",
+      "data_version": "2026.08.23"
+    },
+    {
+      "device_type": "unitary_ac",
+      "pack_id": "gb19576_2019_v1",
+      "source": "resources/standards/hvac_thresholds.json",
+      "standard_code": "GB 19576-2019",
+      "effective_date": "按适用产品标准",
+      "status": "active",
+      "data_version": "2026.08.23"
+    },
+    {
+      "device_type": "multi_split_ac",
+      "pack_id": "gb21454_2021_v1",
+      "source": "resources/standards/hvac_thresholds.json",
+      "standard_code": "GB 21454-2021",
+      "effective_date": "按适用产品标准",
+      "status": "active",
+      "data_version": "2026.08.26-eer-gates-v2"
+    }
+  ]
+}

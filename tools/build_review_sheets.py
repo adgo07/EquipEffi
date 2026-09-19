@@ -39,21 +39,23 @@ def sheet_motor_lv(ws, data):
     ws.append(["功率kW", "2极1", "2极2", "2极3", "4极1", "4极2", "4极3",
                "6极1", "6极2", "6极3", "8极1", "8极2", "8极3", "校对", "备注"])
     for r in data["rows"]:
-        e = [r["efficiency"].get(lv, {}).get(idx) for lv in ("1", "2", "3") for idx in range(4)]
+        e = [r["efficiency"].get(lv, {}).get(str(idx)) for lv in ("1", "2", "3") for idx in range(4)]
         ws.append([r["power_kw"], e[0], e[4], e[8], e[1], e[5], e[9],
                    e[2], e[6], e[10], e[3], e[7], e[11], "待校对", ""])
 
 
 def sheet_motor(ws, data, label):
-    """高压电机/永磁（表结构）"""
+    """高压电机/永磁：每行对应一个功率×极数/转速维度。"""
     ws.append(["表", "极数/转速", "功率kW", "1级", "2级", "3级", "校对", "备注"])
     for t in data["tables"]:
         for r in t["rows"]:
-            dims_txt = "、".join(str(d[0] if isinstance(d, tuple) else d) for d in t["dims"][:8])
-            for lv in t["levels"]:
-                vals = r["efficiency"].get(lv, {})
-                vals_txt = " | ".join(str(v) if v is not None else "—" for v in vals.values())
-                ws.append([t["title"][:20], dims_txt, r["power_kw"], vals_txt, "", "", "待校对", ""])
+            for i, dim in enumerate(t["dims"]):
+                if isinstance(dim, list):
+                    dim_txt = dim[0]
+                else:
+                    dim_txt = dim
+                vals = [r["efficiency"].get(lv, {}).get(str(i)) for lv in ("1", "2", "3")]
+                ws.append([t["title"], dim_txt, r["power_kw"], *vals, "待校对", ""])
 
 
 def sheet_compressor(ws, data):
@@ -137,7 +139,6 @@ BUILDERS = {
     "transformer": sheet_transformer,
     "motor_lv": sheet_motor_lv,
     "motor_hv": lambda ws, d: sheet_motor(ws, d, "高压电机"),
-    "motor_pmsm": lambda ws, d: sheet_motor(ws, d, "永磁"),
     "compressor": sheet_compressor,
     "pump": sheet_pump,
     "fan": sheet_fan,
@@ -147,13 +148,13 @@ BUILDERS = {
     "blower": sheet_blower,
 }
 
-FILES = ["transformer.json", "motor_lv.json", "motor_hv.json", "motor_pmsm.json",
+FILES = ["transformer.json", "motor_lv.json", "motor_hv.json",
          "compressor.json", "pump.json", "fan.json", "submersible.json",
          "boiler.json", "heat_treatment.json", "blower.json"]
 
 NAME = {
     "transformer": "变压器", "motor_lv": "低压电机", "motor_hv": "高压电机",
-    "motor_pmsm": "永磁电机", "compressor": "空压机", "pump": "泵_清水化工",
+    "compressor": "空压机", "pump": "泵_清水化工",
     "fan": "通风机", "submersible": "潜水电泵", "boiler": "锅炉",
     "heat_treatment": "热处理", "blower": "鼓风机",
 }

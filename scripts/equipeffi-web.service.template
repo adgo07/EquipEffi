@@ -1,0 +1,13 @@
+[Unit]
+Description=EquipEffi 设备能效分析 Web 服务
+After=default.target
+
+[Service]
+Type=simple
+ExecStart=__EQUIPEFFI_PYTHON__ -m equipeffi --web --host __EQUIPEFFI_HOST__ --port __EQUIPEFFI_PORT__
+Restart=on-failure
+RestartSec=3
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=default.target

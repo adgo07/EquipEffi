@@ -8,5 +8,19 @@ dist/
 *.spec
 *.log
 .venv_build/
-build/
-dist/
+
+# 本地构建、审计和标准提取产物；正式交付文件通过发布清单归档，
+# 不进入源码版本库，也避免IDE/杀毒软件反复索引大目录。
+outputs/
+tmp/
+_codex/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 标准原始/校对工作区和旧版模板只在本机用于提取、核对或回溯。
+# 可发布的机器标准包与V4模板位于 src/equipeffi/resources/，不要把两套数据混用。
+/standards/
+/standards2/
+/template/

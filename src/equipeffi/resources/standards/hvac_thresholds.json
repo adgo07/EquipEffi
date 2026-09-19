@@ -1,0 +1,2976 @@
+{
+  "standard_code": "GB 19577-2024",
+  "standard_name": "热泵和冷水机组能效限定值及能效等级",
+  "source_note": "PDF逐表复核版；表1～表8分别对应PDF第9～12页，—表示原文不作容量分档或不设置该指标。",
+  "status": "active",
+  "verified_table_count": 8,
+  "source_files": [
+    "13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+    "standards2/第四来源Excel_按设备/heat_pump_chiller.xlsx"
+  ],
+  "devices": {
+    "heat_pump_chiller": {
+      "status": "active",
+      "records": [
+        {
+          "data_id": "GB19577-T1-01",
+          "table": "表1",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "水冷式",
+            "evaluation_system": "综合部分负荷/季节性能指标体系（表1）",
+            "product_standard": [
+              "GB/T 18430.1",
+              "GB/T 18430.2"
+            ]
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "IPLV",
+          "thresholds": [
+            6.0,
+            5.6,
+            5.2
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表1",
+          "range_metric": "cooling_capacity_kw",
+          "max": 300,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "copc",
+              "name": "COPc",
+              "threshold": 4.2,
+              "levels": [
+                3
+              ]
+            }
+          ],
+          "alternate_metric_name": "COPc",
+          "alternate_metric_threshold": 4.2
+        },
+        {
+          "data_id": "GB19577-T1-02",
+          "table": "表1",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "水冷式",
+            "evaluation_system": "综合部分负荷/季节性能指标体系（表1）"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "IPLV",
+          "thresholds": [
+            7.8,
+            7.2,
+            5.7
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表1",
+          "range_metric": "cooling_capacity_kw",
+          "min": 300,
+          "min_inclusive": false,
+          "max": 528,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "copc",
+              "name": "COPc",
+              "threshold": 5.0,
+              "levels": [
+                3
+              ]
+            }
+          ],
+          "alternate_metric_name": "COPc",
+          "alternate_metric_threshold": 5.0
+        },
+        {
+          "data_id": "GB19577-T1-03",
+          "table": "表1",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "水冷式",
+            "evaluation_system": "综合部分负荷/季节性能指标体系（表1）"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "IPLV",
+          "thresholds": [
+            8.1,
+            7.5,
+            6.2
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表1",
+          "range_metric": "cooling_capacity_kw",
+          "min": 528,
+          "min_inclusive": false,
+          "max": 1163,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "copc",
+              "name": "COPc",
+              "threshold": 5.4,
+              "levels": [
+                3
+              ]
+            }
+          ],
+          "alternate_metric_name": "COPc",
+          "alternate_metric_threshold": 5.4
+        },
+        {
+          "data_id": "GB19577-T1-04",
+          "table": "表1",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "水冷式",
+            "evaluation_system": "综合部分负荷/季节性能指标体系（表1）"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "IPLV",
+          "thresholds": [
+            8.5,
+            8.1,
+            6.3
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表1",
+          "range_metric": "cooling_capacity_kw",
+          "min": 1163,
+          "min_inclusive": false,
+          "fixed_gates": [
+            {
+              "field": "copc",
+              "name": "COPc",
+              "threshold": 5.6,
+              "levels": [
+                3
+              ]
+            }
+          ],
+          "alternate_metric_name": "COPc",
+          "alternate_metric_threshold": 5.6
+        },
+        {
+          "data_id": "GB19577-T1-05",
+          "table": "表1",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "风冷式",
+            "evaluation_system": "综合部分负荷/季节性能指标体系（表1）",
+            "product_standard": [
+              "GB/T 18430.1",
+              "GB/T 18430.2"
+            ]
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "CSPF",
+          "thresholds": [
+            4.5,
+            4.0,
+            3.5
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表1",
+          "range_metric": "cooling_capacity_kw",
+          "max": 50,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "copc",
+              "name": "COPc",
+              "threshold": 2.7,
+              "levels": [
+                3
+              ]
+            }
+          ],
+          "alternate_metric_name": "COPc",
+          "alternate_metric_threshold": 2.7
+        },
+        {
+          "data_id": "GB19577-T1-06",
+          "table": "表1",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "风冷式",
+            "evaluation_system": "综合部分负荷/季节性能指标体系（表1）"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "CSPF",
+          "thresholds": [
+            4.3,
+            3.85,
+            3.3
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表1",
+          "range_metric": "cooling_capacity_kw",
+          "min": 50,
+          "min_inclusive": false,
+          "fixed_gates": [
+            {
+              "field": "copc",
+              "name": "COPc",
+              "threshold": 2.8,
+              "levels": [
+                3
+              ]
+            }
+          ],
+          "alternate_metric_name": "COPc",
+          "alternate_metric_threshold": 2.8
+        },
+        {
+          "data_id": "GB19577-T1-07",
+          "table": "表1",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "蒸发冷却式",
+            "evaluation_system": "综合部分负荷/季节性能指标体系（表1）",
+            "product_standard": [
+              "GB/T 18430.1",
+              "GB/T 18430.2"
+            ]
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "IPLV",
+          "thresholds": [
+            5.4,
+            5.0,
+            4.4
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表1",
+          "range_metric": "cooling_capacity_kw",
+          "max": 300,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "copc",
+              "name": "COPc",
+              "threshold": 4.0,
+              "levels": [
+                3
+              ]
+            }
+          ],
+          "alternate_metric_name": "COPc",
+          "alternate_metric_threshold": 4.0
+        },
+        {
+          "data_id": "GB19577-T1-08",
+          "table": "表1",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "蒸发冷却式",
+            "evaluation_system": "综合部分负荷/季节性能指标体系（表1）"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "IPLV",
+          "thresholds": [
+            5.8,
+            5.4,
+            5.1
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表1",
+          "range_metric": "cooling_capacity_kw",
+          "min": 300,
+          "min_inclusive": false,
+          "fixed_gates": [
+            {
+              "field": "copc",
+              "name": "COPc",
+              "threshold": 4.6,
+              "levels": [
+                3
+              ]
+            }
+          ],
+          "alternate_metric_name": "COPc",
+          "alternate_metric_threshold": 4.6
+        },
+        {
+          "data_id": "GB19577-T1-09",
+          "table": "表1",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-数据中心专用型",
+            "unit_type": "数据中心专用型",
+            "source": "水冷式",
+            "evaluation_system": "综合部分负荷/季节性能指标体系（表1）",
+            "product_standard": [
+              "GB/T 18430.1",
+              "GB/T 18430.2"
+            ]
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACCOP",
+          "thresholds": [
+            8.2,
+            7.5,
+            6.8
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表1",
+          "range_metric": "cooling_capacity_kw",
+          "max": 528,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "copc",
+              "name": "COPc",
+              "threshold": 6.0,
+              "levels": [
+                3
+              ]
+            }
+          ],
+          "alternate_metric_name": "COPc",
+          "alternate_metric_threshold": 6.0
+        },
+        {
+          "data_id": "GB19577-T1-10",
+          "table": "表1",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-数据中心专用型",
+            "unit_type": "数据中心专用型",
+            "source": "水冷式",
+            "evaluation_system": "综合部分负荷/季节性能指标体系（表1）",
+            "product_standard": [
+              "GB/T 18430.1",
+              "GB/T 18430.2"
+            ]
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACCOP",
+          "thresholds": [
+            10.0,
+            8.0,
+            7.4
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表1",
+          "range_metric": "cooling_capacity_kw",
+          "min": 528,
+          "min_inclusive": false,
+          "max": 1163,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "copc",
+              "name": "COPc",
+              "threshold": 6.5,
+              "levels": [
+                3
+              ]
+            }
+          ],
+          "alternate_metric_name": "COPc",
+          "alternate_metric_threshold": 6.5
+        },
+        {
+          "data_id": "GB19577-T1-11",
+          "table": "表1",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-数据中心专用型",
+            "unit_type": "数据中心专用型",
+            "source": "水冷式",
+            "evaluation_system": "综合部分负荷/季节性能指标体系（表1）",
+            "product_standard": [
+              "GB/T 18430.1",
+              "GB/T 18430.2"
+            ]
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACCOP",
+          "thresholds": [
+            12.0,
+            10.0,
+            8.0
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表1",
+          "range_metric": "cooling_capacity_kw",
+          "min": 1163,
+          "min_inclusive": false,
+          "fixed_gates": [
+            {
+              "field": "copc",
+              "name": "COPc",
+              "threshold": 7.0,
+              "levels": [
+                3
+              ]
+            }
+          ],
+          "alternate_metric_name": "COPc",
+          "alternate_metric_threshold": 7.0
+        },
+        {
+          "data_id": "GB19577-T1-12",
+          "table": "表1",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-数据中心专用型",
+            "unit_type": "数据中心专用型",
+            "source": "风冷式",
+            "evaluation_system": "综合部分负荷/季节性能指标体系（表1）",
+            "product_standard": [
+              "GB/T 18430.1",
+              "GB/T 18430.2"
+            ]
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACCOP",
+          "thresholds": [
+            6.8,
+            5.8,
+            4.8
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表1",
+          "fixed_gates": [
+            {
+              "field": "copc",
+              "name": "COPc",
+              "threshold": 3.0,
+              "levels": [
+                3
+              ]
+            }
+          ],
+          "alternate_metric_name": "COPc",
+          "alternate_metric_threshold": 3.0
+        },
+        {
+          "data_id": "GB19577-T2-01",
+          "table": "表2",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "水冷式",
+            "evaluation_system": "制冷性能系数COPc指标体系（表2）",
+            "product_standard": [
+              "GB/T 18430.1",
+              "GB/T 18430.2"
+            ]
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPc",
+          "thresholds": [
+            5.3,
+            5.1,
+            4.2
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表2",
+          "range_metric": "cooling_capacity_kw",
+          "max": 300,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "alternate_metric_value",
+              "name": "CSPF/IPLV/ACCOP",
+              "threshold": 5.2,
+              "levels": [3]
+            }
+          ],
+          "alternate_metric_name": "CSPF/IPLV/ACCOP",
+          "alternate_metric_threshold": 5.2
+        },
+        {
+          "data_id": "GB19577-T2-02",
+          "table": "表2",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "水冷式",
+            "evaluation_system": "制冷性能系数COPc指标体系（表2）",
+            "product_standard": [
+              "GB/T 18430.1",
+              "GB/T 18430.2"
+            ]
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPc",
+          "thresholds": [
+            5.8,
+            5.6,
+            5.0
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表2",
+          "range_metric": "cooling_capacity_kw",
+          "min": 300,
+          "min_inclusive": false,
+          "max": 528,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "alternate_metric_value",
+              "name": "CSPF/IPLV/ACCOP",
+              "threshold": 5.7,
+              "levels": [3]
+            }
+          ],
+          "alternate_metric_name": "CSPF/IPLV/ACCOP",
+          "alternate_metric_threshold": 5.7
+        },
+        {
+          "data_id": "GB19577-T2-03",
+          "table": "表2",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "水冷式",
+            "evaluation_system": "制冷性能系数COPc指标体系（表2）",
+            "product_standard": [
+              "GB/T 18430.1",
+              "GB/T 18430.2"
+            ]
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPc",
+          "thresholds": [
+            6.2,
+            6.0,
+            5.4
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表2",
+          "range_metric": "cooling_capacity_kw",
+          "min": 528,
+          "min_inclusive": false,
+          "max": 1163,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "alternate_metric_value",
+              "name": "CSPF/IPLV/ACCOP",
+              "threshold": 6.2,
+              "levels": [3]
+            }
+          ],
+          "alternate_metric_name": "CSPF/IPLV/ACCOP",
+          "alternate_metric_threshold": 6.2
+        },
+        {
+          "data_id": "GB19577-T2-04",
+          "table": "表2",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "水冷式",
+            "evaluation_system": "制冷性能系数COPc指标体系（表2）",
+            "product_standard": [
+              "GB/T 18430.1",
+              "GB/T 18430.2"
+            ]
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPc",
+          "thresholds": [
+            6.4,
+            6.2,
+            5.6
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表2",
+          "range_metric": "cooling_capacity_kw",
+          "min": 1163,
+          "min_inclusive": false,
+          "fixed_gates": [
+            {
+              "field": "alternate_metric_value",
+              "name": "CSPF/IPLV/ACCOP",
+              "threshold": 6.3,
+              "levels": [3]
+            }
+          ],
+          "alternate_metric_name": "CSPF/IPLV/ACCOP",
+          "alternate_metric_threshold": 6.3
+        },
+        {
+          "data_id": "GB19577-T2-05",
+          "table": "表2",
+          "conditions": {
+            "category": "蒸气压缩循环冷水（热泵）机组-舒适型",
+            "unit_type": "舒适型",
+            "source": "风冷式",
+            "evaluation_system": "制冷性能系数COPc指标体系（表2）",
+            "product_standard": [
+              "GB/T 18430.1",
+              "GB/T 18430.2"
+            ]
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPc",
+          "thresholds": [
+            3.4,
+            3.2,
+            2.8
+          ],
+          "direction": ">=",
+          "source_page": "PDF第9页",
+          "source_clause": "4.2、表2",
+          "range_metric": "cooling_capacity_kw",
+          "fixed_gates": [
+            {
+              "field": "alternate_metric_value",
+              "name": "CSPF/IPLV/ACCOP",
+              "threshold": 3.3,
+              "levels": [3]
+            }
+          ],
+          "alternate_metric_name": "CSPF/IPLV/ACCOP",
+          "alternate_metric_threshold": 3.3
+        },
+        {
+          "data_id": "GB19577-T3-01",
+          "table": "表3",
+          "conditions": {
+            "category": "低环境温度空气源热泵（冷水）机组",
+            "unit_type": "地板采暖型",
+            "source": "空气源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25127.2"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "HSPF",
+          "thresholds": [
+            3.6,
+            3.2,
+            2.8
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表3",
+          "range_metric": "heating_capacity_kw",
+          "max": 35,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "cop_dh",
+              "name": "COPdh",
+              "threshold": 2.0
+            },
+            {
+              "field": "cop_h",
+              "name": "COPh",
+              "threshold": 2.3
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T3-02",
+          "table": "表3",
+          "conditions": {
+            "category": "低环境温度空气源热泵（冷水）机组",
+            "unit_type": "风机盘管型",
+            "source": "空气源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25127.2"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "APF",
+          "thresholds": [
+            3.05,
+            2.85,
+            2.65
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表3",
+          "range_metric": "heating_capacity_kw",
+          "max": 35,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "cop_dh",
+              "name": "COPdh",
+              "threshold": 1.8
+            },
+            {
+              "field": "cop_h",
+              "name": "COPh",
+              "threshold": 2.1
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T3-03",
+          "table": "表3",
+          "conditions": {
+            "category": "低环境温度空气源热泵（冷水）机组",
+            "unit_type": "散热器型",
+            "source": "空气源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25127.2"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "HSPF",
+          "thresholds": [
+            2.6,
+            2.4,
+            2.3
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表3",
+          "range_metric": "heating_capacity_kw",
+          "max": 35,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "cop_dh",
+              "name": "COPdh",
+              "threshold": 1.5
+            },
+            {
+              "field": "cop_h",
+              "name": "COPh",
+              "threshold": 1.7
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T3-04",
+          "table": "表3",
+          "conditions": {
+            "category": "低环境温度空气源热泵（冷水）机组",
+            "unit_type": "地板采暖型",
+            "source": "空气源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25127.1"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "HSPF",
+          "thresholds": [
+            3.4,
+            3.2,
+            3.0
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表3",
+          "range_metric": "heating_capacity_kw",
+          "min": 35,
+          "min_inclusive": false,
+          "fixed_gates": [
+            {
+              "field": "cop_dh",
+              "name": "COPdh",
+              "threshold": 2.1
+            },
+            {
+              "field": "cop_h",
+              "name": "COPh",
+              "threshold": 2.5
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T3-05",
+          "table": "表3",
+          "conditions": {
+            "category": "低环境温度空气源热泵（冷水）机组",
+            "unit_type": "风机盘管型",
+            "source": "空气源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25127.1"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "APF",
+          "thresholds": [
+            3.3,
+            3.1,
+            3.0
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表3",
+          "range_metric": "heating_capacity_kw",
+          "min": 35,
+          "min_inclusive": false,
+          "fixed_gates": [
+            {
+              "field": "cop_dh",
+              "name": "COPdh",
+              "threshold": 1.8
+            },
+            {
+              "field": "cop_h",
+              "name": "COPh",
+              "threshold": 2.3
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T3-06",
+          "table": "表3",
+          "conditions": {
+            "category": "低环境温度空气源热泵（冷水）机组",
+            "unit_type": "散热器型",
+            "source": "空气源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25127.1"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "HSPF",
+          "thresholds": [
+            2.6,
+            2.4,
+            2.3
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表3",
+          "range_metric": "heating_capacity_kw",
+          "min": 35,
+          "min_inclusive": false,
+          "fixed_gates": [
+            {
+              "field": "cop_dh",
+              "name": "COPdh",
+              "threshold": 1.5
+            },
+            {
+              "field": "cop_h",
+              "name": "COPh",
+              "threshold": 1.8
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T4-01",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热风型-热泵型",
+            "source": "水环式",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACOP",
+          "thresholds": [
+            4.6,
+            4.1,
+            3.7
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4"
+        },
+        {
+          "data_id": "GB19577-T4-02",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热风型-热泵型",
+            "source": "地下水式",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACOP",
+          "thresholds": [
+            5.1,
+            4.6,
+            4.0
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4"
+        },
+        {
+          "data_id": "GB19577-T4-03",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热风型-热泵型",
+            "source": [
+              "地埋管式",
+              "地表水式"
+            ],
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACOP",
+          "thresholds": [
+            4.4,
+            4.0,
+            3.8
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4"
+        },
+        {
+          "data_id": "GB19577-T4-04",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热水型-单热型",
+            "source": "水环式",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COP",
+          "thresholds": [
+            5.6,
+            5.0,
+            4.6
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4",
+          "range_metric": "heating_capacity_kw",
+          "max": 260,
+          "max_inclusive": true
+        },
+        {
+          "data_id": "GB19577-T4-05",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热水型-单热型",
+            "source": "水环式",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COP",
+          "thresholds": [
+            5.8,
+            5.4,
+            4.4
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4",
+          "range_metric": "heating_capacity_kw",
+          "min": 260,
+          "min_inclusive": false
+        },
+        {
+          "data_id": "GB19577-T4-06",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热水型-单热型",
+            "source": "地下水式",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COP",
+          "thresholds": [
+            4.9,
+            4.5,
+            4.0
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4",
+          "range_metric": "heating_capacity_kw",
+          "max": 260,
+          "max_inclusive": true
+        },
+        {
+          "data_id": "GB19577-T4-07",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热水型-单热型",
+            "source": "地下水式",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COP",
+          "thresholds": [
+            5.1,
+            4.7,
+            4.4
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4",
+          "range_metric": "heating_capacity_kw",
+          "min": 260,
+          "min_inclusive": false
+        },
+        {
+          "data_id": "GB19577-T4-08",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热水型-单热型",
+            "source": [
+              "地埋管式",
+              "地表水式"
+            ],
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COP",
+          "thresholds": [
+            4.7,
+            4.3,
+            4.2
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4",
+          "range_metric": "heating_capacity_kw",
+          "max": 260,
+          "max_inclusive": true
+        },
+        {
+          "data_id": "GB19577-T4-09",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热水型-单热型",
+            "source": [
+              "地埋管式",
+              "地表水式"
+            ],
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COP",
+          "thresholds": [
+            4.9,
+            4.5,
+            4.2
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4",
+          "range_metric": "heating_capacity_kw",
+          "min": 260,
+          "min_inclusive": false
+        },
+        {
+          "data_id": "GB19577-T4-10",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热水型-热泵型",
+            "source": "水环式",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACOP",
+          "thresholds": [
+            5.1,
+            4.7,
+            4.0
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4",
+          "range_metric": "cooling_capacity_kw",
+          "max": 260,
+          "max_inclusive": true
+        },
+        {
+          "data_id": "GB19577-T4-11",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热水型-热泵型",
+            "source": "水环式",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACOP",
+          "thresholds": [
+            5.8,
+            5.2,
+            4.3
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4",
+          "range_metric": "cooling_capacity_kw",
+          "min": 260,
+          "min_inclusive": false
+        },
+        {
+          "data_id": "GB19577-T4-12",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热水型-热泵型",
+            "source": "地下水式",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACOP",
+          "thresholds": [
+            5.7,
+            5.5,
+            5.3
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4",
+          "range_metric": "cooling_capacity_kw",
+          "max": 260,
+          "max_inclusive": true
+        },
+        {
+          "data_id": "GB19577-T4-13",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热水型-热泵型",
+            "source": "地下水式",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACOP",
+          "thresholds": [
+            6.2,
+            5.8,
+            5.4
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4",
+          "range_metric": "cooling_capacity_kw",
+          "min": 260,
+          "min_inclusive": false
+        },
+        {
+          "data_id": "GB19577-T4-14",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热水型-热泵型",
+            "source": [
+              "地埋管式",
+              "地表水式"
+            ],
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACOP",
+          "thresholds": [
+            5.1,
+            4.7,
+            4.2
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4",
+          "range_metric": "cooling_capacity_kw",
+          "max": 260,
+          "max_inclusive": true
+        },
+        {
+          "data_id": "GB19577-T4-15",
+          "table": "表4",
+          "conditions": {
+            "category": "水（地）源热泵机组",
+            "unit_type": "冷热水型-热泵型",
+            "source": [
+              "地埋管式",
+              "地表水式"
+            ],
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 19409"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "ACOP",
+          "thresholds": [
+            5.6,
+            5.1,
+            4.4
+          ],
+          "direction": ">=",
+          "source_page": "PDF第10页",
+          "source_clause": "4.2、表4",
+          "range_metric": "cooling_capacity_kw",
+          "min": 260,
+          "min_inclusive": false
+        },
+        {
+          "data_id": "GB19577-T5-01",
+          "table": "表5",
+          "conditions": {
+            "category": "溴化锂吸收式冷（温）水机组",
+            "unit_type": "饱和蒸汽压力0.4MPa",
+            "source": "饱和蒸汽",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 18431"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "单位制冷量加热源耗量",
+          "thresholds": [
+            1.05,
+            1.1,
+            1.19
+          ],
+          "direction": "<=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表5"
+        },
+        {
+          "data_id": "GB19577-T5-02",
+          "table": "表5",
+          "conditions": {
+            "category": "溴化锂吸收式冷（温）水机组",
+            "unit_type": "饱和蒸汽压力0.6MPa",
+            "source": "饱和蒸汽",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 18431"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "单位制冷量加热源耗量",
+          "thresholds": [
+            1.02,
+            1.05,
+            1.11
+          ],
+          "direction": "<=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表5"
+        },
+        {
+          "data_id": "GB19577-T5-03",
+          "table": "表5",
+          "conditions": {
+            "category": "溴化锂吸收式冷（温）水机组",
+            "unit_type": "饱和蒸汽压力0.8MPa",
+            "source": "饱和蒸汽",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 18431"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "单位制冷量加热源耗量",
+          "thresholds": [
+            1.0,
+            1.02,
+            1.09
+          ],
+          "direction": "<=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表5"
+        },
+        {
+          "data_id": "GB19577-T5-04",
+          "table": "表5",
+          "conditions": {
+            "category": "溴化锂吸收式冷（温）水机组",
+            "unit_type": "直燃型机组",
+            "source": "直燃",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 18362"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COP",
+          "thresholds": [
+            1.46,
+            1.4,
+            1.3
+          ],
+          "direction": ">=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表5"
+        },
+        {
+          "data_id": "GB19577-T6-01",
+          "table": "表6",
+          "conditions": {
+            "category": "蒸气压缩循环高温热泵机组",
+            "unit_type": "H1a",
+            "source": "水源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25861"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPH",
+          "thresholds": [
+            4.0,
+            3.8,
+            3.6
+          ],
+          "direction": ">=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表6"
+        },
+        {
+          "data_id": "GB19577-T6-02",
+          "table": "表6",
+          "conditions": {
+            "category": "蒸气压缩循环高温热泵机组",
+            "unit_type": "H2a",
+            "source": "水源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25861"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPH",
+          "thresholds": [
+            4.4,
+            4.2,
+            4.0
+          ],
+          "direction": ">=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表6"
+        },
+        {
+          "data_id": "GB19577-T6-03",
+          "table": "表6",
+          "conditions": {
+            "category": "蒸气压缩循环高温热泵机组",
+            "unit_type": "H3a",
+            "source": "水源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25861"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPH",
+          "thresholds": [
+            4.1,
+            3.9,
+            3.7
+          ],
+          "direction": ">=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表6"
+        },
+        {
+          "data_id": "GB19577-T6-04",
+          "table": "表6",
+          "conditions": {
+            "category": "蒸气压缩循环高温热泵机组",
+            "unit_type": "H4a",
+            "source": "水源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25861"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPH",
+          "thresholds": [
+            3.7,
+            3.5,
+            3.3
+          ],
+          "direction": ">=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表6"
+        },
+        {
+          "data_id": "GB19577-T6-05",
+          "table": "表6",
+          "conditions": {
+            "category": "蒸气压缩循环高温热泵机组",
+            "unit_type": "H5a",
+            "source": "水源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25861"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPH",
+          "thresholds": [
+            3.4,
+            3.2,
+            3.0
+          ],
+          "direction": ">=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表6"
+        },
+        {
+          "data_id": "GB19577-T6-06",
+          "table": "表6",
+          "conditions": {
+            "category": "蒸气压缩循环高温热泵机组",
+            "unit_type": "H1b",
+            "source": "水源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25861"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPH",
+          "thresholds": [
+            4.5,
+            4.2,
+            4.0
+          ],
+          "direction": ">=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表6"
+        },
+        {
+          "data_id": "GB19577-T6-07",
+          "table": "表6",
+          "conditions": {
+            "category": "蒸气压缩循环高温热泵机组",
+            "unit_type": "H2b",
+            "source": "水源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25861"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPH",
+          "thresholds": [
+            4.8,
+            4.5,
+            4.3
+          ],
+          "direction": ">=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表6"
+        },
+        {
+          "data_id": "GB19577-T6-08",
+          "table": "表6",
+          "conditions": {
+            "category": "蒸气压缩循环高温热泵机组",
+            "unit_type": "H3b",
+            "source": "水源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25861"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPH",
+          "thresholds": [
+            4.5,
+            4.1,
+            3.9
+          ],
+          "direction": ">=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表6"
+        },
+        {
+          "data_id": "GB19577-T6-09",
+          "table": "表6",
+          "conditions": {
+            "category": "蒸气压缩循环高温热泵机组",
+            "unit_type": "H4b",
+            "source": "水源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25861"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPH",
+          "thresholds": [
+            4.0,
+            3.7,
+            3.5
+          ],
+          "direction": ">=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表6"
+        },
+        {
+          "data_id": "GB19577-T6-10",
+          "table": "表6",
+          "conditions": {
+            "category": "蒸气压缩循环高温热泵机组",
+            "unit_type": "H5b",
+            "source": "水源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "GB/T 25861"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COPH",
+          "thresholds": [
+            3.6,
+            3.3,
+            3.2
+          ],
+          "direction": ">=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表6"
+        },
+        {
+          "data_id": "GB19577-T6-11",
+          "table": "表6",
+          "conditions": {
+            "category": "蒸气压缩循环高温热泵机组",
+            "unit_type": "循环供水式热泵高温热水机组",
+            "source": "水源",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 12840"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "COP",
+          "thresholds": [
+            4.1,
+            3.7,
+            3.4
+          ],
+          "direction": ">=",
+          "source_page": "PDF第11页",
+          "source_clause": "4.2、表6"
+        },
+        {
+          "data_id": "GB19577-T7-01",
+          "table": "表7",
+          "conditions": {
+            "category": "间接蒸发冷却冷水机组",
+            "unit_type": "标准机型",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 14642"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "AEER",
+          "thresholds": [
+            17,
+            14,
+            10
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表7",
+          "range_metric": "cooling_capacity_kw",
+          "max": 100,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "eer",
+              "name": "EER",
+              "threshold": 9,
+              "levels": [
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T7-02",
+          "table": "表7",
+          "conditions": {
+            "category": "间接蒸发冷却冷水机组",
+            "unit_type": "标准机型",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 14642"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "AEER",
+          "thresholds": [
+            22,
+            19,
+            15
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表7",
+          "range_metric": "cooling_capacity_kw",
+          "min": 100,
+          "min_inclusive": false,
+          "fixed_gates": [
+            {
+              "field": "eer",
+              "name": "EER",
+              "threshold": 13,
+              "levels": [
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T7-03",
+          "table": "表7",
+          "conditions": {
+            "category": "间接蒸发冷却冷水机组",
+            "unit_type": "大温差型",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 14642"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "AEER",
+          "thresholds": [
+            21,
+            18,
+            14
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表7",
+          "range_metric": "cooling_capacity_kw",
+          "max": 100,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "eer",
+              "name": "EER",
+              "threshold": 12,
+              "levels": [
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T7-04",
+          "table": "表7",
+          "conditions": {
+            "category": "间接蒸发冷却冷水机组",
+            "unit_type": "大温差型",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 14642"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "AEER",
+          "thresholds": [
+            25,
+            22,
+            18
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表7",
+          "range_metric": "cooling_capacity_kw",
+          "min": 100,
+          "min_inclusive": false,
+          "fixed_gates": [
+            {
+              "field": "eer",
+              "name": "EER",
+              "threshold": 16,
+              "levels": [
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T7-05",
+          "table": "表7",
+          "conditions": {
+            "category": "间接蒸发冷却冷水机组",
+            "unit_type": "外冷式",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 14640"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "EER",
+          "thresholds": [
+            16,
+            14,
+            10
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表7",
+          "range_metric": "cooling_capacity_kw",
+          "max": 100,
+          "max_inclusive": true
+        },
+        {
+          "data_id": "GB19577-T7-06",
+          "table": "表7",
+          "conditions": {
+            "category": "间接蒸发冷却冷水机组",
+            "unit_type": "外冷式",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 14640"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "EER",
+          "thresholds": [
+            20,
+            17,
+            14
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表7",
+          "range_metric": "cooling_capacity_kw",
+          "min": 100,
+          "min_inclusive": false
+        },
+        {
+          "data_id": "GB19577-T7-07",
+          "table": "表7",
+          "conditions": {
+            "category": "间接蒸发冷却冷水机组",
+            "unit_type": "内冷式",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 14640"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "EER",
+          "thresholds": [
+            15,
+            11,
+            9
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表7",
+          "range_metric": "cooling_capacity_kw",
+          "max": 100,
+          "max_inclusive": true
+        },
+        {
+          "data_id": "GB19577-T7-08",
+          "table": "表7",
+          "conditions": {
+            "category": "间接蒸发冷却冷水机组",
+            "unit_type": "内冷式",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 14640"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "EER",
+          "thresholds": [
+            20,
+            14,
+            13
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表7",
+          "range_metric": "cooling_capacity_kw",
+          "min": 100,
+          "min_inclusive": false
+        },
+        {
+          "data_id": "GB19577-T7-09",
+          "table": "表7",
+          "conditions": {
+            "category": "间接蒸发冷却冷水机组",
+            "unit_type": "内外冷串联式",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 14640"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "EER",
+          "thresholds": [
+            21,
+            15,
+            12
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表7",
+          "range_metric": "cooling_capacity_kw",
+          "max": 100,
+          "max_inclusive": true
+        },
+        {
+          "data_id": "GB19577-T7-10",
+          "table": "表7",
+          "conditions": {
+            "category": "间接蒸发冷却冷水机组",
+            "unit_type": "内外冷串联式",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 14640"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "EER",
+          "thresholds": [
+            22,
+            15,
+            14
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表7",
+          "range_metric": "cooling_capacity_kw",
+          "min": 100,
+          "min_inclusive": false
+        },
+        {
+          "data_id": "GB19577-T8-01",
+          "table": "表8",
+          "conditions": {
+            "category": "一体式冷水（热泵）机组",
+            "unit_type": "蒸发冷却式冷却塔式",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 12839"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "IPLV(I)",
+          "thresholds": [
+            5.4,
+            5.0,
+            4.4
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表8",
+          "range_metric": "cooling_capacity_kw",
+          "max": 300,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "copi",
+              "name": "COP(I)",
+              "threshold": 4.0,
+              "levels": [
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T8-02",
+          "table": "表8",
+          "conditions": {
+            "category": "一体式冷水（热泵）机组",
+            "unit_type": "蒸发冷却式冷却塔式",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 12839"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "IPLV(I)",
+          "thresholds": [
+            5.6,
+            5.0,
+            4.8
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表8",
+          "range_metric": "cooling_capacity_kw",
+          "min": 300,
+          "min_inclusive": false,
+          "max": 528,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "copi",
+              "name": "COP(I)",
+              "threshold": 4.4,
+              "levels": [
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T8-03",
+          "table": "表8",
+          "conditions": {
+            "category": "一体式冷水（热泵）机组",
+            "unit_type": "蒸发冷却式冷却塔式",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 12839"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "IPLV(I)",
+          "thresholds": [
+            5.8,
+            5.4,
+            5.1
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表8",
+          "range_metric": "cooling_capacity_kw",
+          "min": 528,
+          "min_inclusive": false,
+          "max": 1163,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "copi",
+              "name": "COP(I)",
+              "threshold": 4.6,
+              "levels": [
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T8-04",
+          "table": "表8",
+          "conditions": {
+            "category": "一体式冷水（热泵）机组",
+            "unit_type": "蒸发冷却式冷却塔式",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 12839"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "IPLV(I)",
+          "thresholds": [
+            6.0,
+            5.6,
+            5.2
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表8",
+          "range_metric": "cooling_capacity_kw",
+          "min": 1163,
+          "min_inclusive": false,
+          "fixed_gates": [
+            {
+              "field": "copi",
+              "name": "COP(I)",
+              "threshold": 4.8,
+              "levels": [
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T8-05",
+          "table": "表8",
+          "conditions": {
+            "category": "一体式冷水（热泵）机组",
+            "unit_type": "风冷式",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 12839"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "IPLV(I)",
+          "thresholds": [
+            4.4,
+            3.9,
+            3.4
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表8",
+          "range_metric": "cooling_capacity_kw",
+          "max": 50,
+          "max_inclusive": true,
+          "fixed_gates": [
+            {
+              "field": "copi",
+              "name": "COP(I)",
+              "threshold": 2.7,
+              "levels": [
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "data_id": "GB19577-T8-06",
+          "table": "表8",
+          "conditions": {
+            "category": "一体式冷水（热泵）机组",
+            "unit_type": "风冷式",
+            "source": "不适用",
+            "evaluation_system": "对应产品类别指标体系（表3～表8）",
+            "product_standard": "JB/T 12839"
+          },
+          "metric_field": "primary_metric_value",
+          "metric_name": "IPLV(I)",
+          "thresholds": [
+            4.2,
+            3.75,
+            3.2
+          ],
+          "direction": ">=",
+          "source_page": "PDF第12页",
+          "source_clause": "4.2、表8",
+          "range_metric": "cooling_capacity_kw",
+          "min": 50,
+          "min_inclusive": false,
+          "fixed_gates": [
+            {
+              "field": "copi",
+              "name": "COP(I)",
+              "threshold": 2.7,
+              "levels": [
+                3
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "表1采用综合部分负荷/季节性能指标并以COPc 3级限定值作固定门槛。",
+        "表2为COPc通道；表4～表8按各自标准规定的单一主指标或固定门槛判定。",
+        "所有标称指标按设计/铭牌值输入，不代表型式试验合格证明。"
+      ]
+    },
+    "heat_pump_water_heater": {
+      "records": [
+        {
+          "data_id": "GB29541-T1-01",
+          "table": "表1",
+          "conditions": {
+            "unit_type": "普通型",
+            "heating_method": "一次加热、循环加热式"
+          },
+          "range_metric": "heating_capacity_kw",
+          "max": 10,
+          "max_inclusive": false,
+          "metric_field": "cop",
+          "metric_name": "性能系数COP",
+          "thresholds": [
+            4.6,
+            4.4,
+            4.1,
+            3.9,
+            3.7
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB29541-T1-02",
+          "table": "表1",
+          "conditions": {
+            "unit_type": "普通型",
+            "heating_method": "静态加热式"
+          },
+          "range_metric": "heating_capacity_kw",
+          "max": 10,
+          "max_inclusive": false,
+          "metric_field": "cop",
+          "metric_name": "性能系数COP",
+          "thresholds": [
+            4.2,
+            4.0,
+            3.8,
+            3.6,
+            3.4
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB29541-T1-03",
+          "table": "表1",
+          "conditions": {
+            "unit_type": "低温型",
+            "heating_method": "一次加热、循环加热式"
+          },
+          "range_metric": "heating_capacity_kw",
+          "max": 10,
+          "max_inclusive": false,
+          "metric_field": "cop",
+          "metric_name": "性能系数COP",
+          "thresholds": [
+            3.8,
+            3.6,
+            3.4,
+            3.2,
+            3.0
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB29541-T1-04",
+          "table": "表1",
+          "conditions": {
+            "unit_type": "普通型",
+            "heating_method": "一次加热"
+          },
+          "range_metric": "heating_capacity_kw",
+          "min": 10,
+          "metric_field": "cop",
+          "metric_name": "性能系数COP",
+          "thresholds": [
+            4.6,
+            4.4,
+            4.1,
+            3.9,
+            3.7
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB29541-T1-05",
+          "table": "表1",
+          "conditions": {
+            "unit_type": "普通型",
+            "heating_method": "循环加热",
+            "provides_pump": "否"
+          },
+          "range_metric": "heating_capacity_kw",
+          "min": 10,
+          "metric_field": "cop",
+          "metric_name": "性能系数COP",
+          "thresholds": [
+            4.6,
+            4.4,
+            4.1,
+            3.9,
+            3.7
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB29541-T1-06",
+          "table": "表1",
+          "conditions": {
+            "unit_type": "普通型",
+            "heating_method": "循环加热",
+            "provides_pump": "是"
+          },
+          "range_metric": "heating_capacity_kw",
+          "min": 10,
+          "metric_field": "cop",
+          "metric_name": "性能系数COP",
+          "thresholds": [
+            4.5,
+            4.3,
+            4.0,
+            3.8,
+            3.6
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB29541-T1-07",
+          "table": "表1",
+          "conditions": {
+            "unit_type": "低温型",
+            "heating_method": "一次加热"
+          },
+          "range_metric": "heating_capacity_kw",
+          "min": 10,
+          "metric_field": "cop",
+          "metric_name": "性能系数COP",
+          "thresholds": [
+            3.9,
+            3.7,
+            3.5,
+            3.3,
+            3.1
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB29541-T1-08",
+          "table": "表1",
+          "conditions": {
+            "unit_type": "低温型",
+            "heating_method": "循环加热",
+            "provides_pump": "否"
+          },
+          "range_metric": "heating_capacity_kw",
+          "min": 10,
+          "metric_field": "cop",
+          "metric_name": "性能系数COP",
+          "thresholds": [
+            3.9,
+            3.7,
+            3.5,
+            3.3,
+            3.1
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB29541-T1-09",
+          "table": "表1",
+          "conditions": {
+            "unit_type": "低温型",
+            "heating_method": "循环加热",
+            "provides_pump": "是"
+          },
+          "range_metric": "heating_capacity_kw",
+          "min": 10,
+          "metric_field": "cop",
+          "metric_name": "性能系数COP",
+          "thresholds": [
+            3.8,
+            3.6,
+            3.4,
+            3.2,
+            3.0
+          ],
+          "source_page": "PDF第4页"
+        }
+      ]
+    },
+    "duct_ac": {
+      "records": [
+        {
+          "data_id": "GB37479-T1-01",
+          "table": "表1",
+          "conditions": {
+            "product_type": "风管送风式机组",
+            "cooling_source": "风冷式",
+            "mode": "单冷型"
+          },
+          "range_metric": "cooling_capacity_w",
+          "max": 7100,
+          "metric_field": "seer",
+          "metric_name": "SEER",
+          "thresholds": [
+            4.2,
+            3.8,
+            3.0
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T1-02",
+          "table": "表1",
+          "conditions": {
+            "product_type": "风管送风式机组",
+            "cooling_source": "风冷式",
+            "mode": "单冷型"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 7100,
+          "min_inclusive": false,
+          "max": 14000,
+          "metric_field": "seer",
+          "metric_name": "SEER",
+          "thresholds": [
+            4.0,
+            3.6,
+            2.9
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T1-03",
+          "table": "表1",
+          "conditions": {
+            "product_type": "风管送风式机组",
+            "cooling_source": "风冷式",
+            "mode": "单冷型"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 14000,
+          "min_inclusive": false,
+          "max": 28000,
+          "metric_field": "seer",
+          "metric_name": "SEER",
+          "thresholds": [
+            3.8,
+            3.4,
+            2.8
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T1-04",
+          "table": "表1",
+          "conditions": {
+            "product_type": "风管送风式机组",
+            "cooling_source": "风冷式",
+            "mode": "单冷型"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 28000,
+          "min_inclusive": false,
+          "metric_field": "seer",
+          "metric_name": "SEER",
+          "thresholds": [
+            3.2,
+            3.0,
+            2.6
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T1-05",
+          "table": "表1",
+          "conditions": {
+            "product_type": "风管送风式机组",
+            "cooling_source": "风冷式",
+            "mode": "热泵型"
+          },
+          "range_metric": "cooling_capacity_w",
+          "max": 7100,
+          "metric_field": "apf",
+          "metric_name": "APF",
+          "thresholds": [
+            3.8,
+            3.4,
+            2.9
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T1-06",
+          "table": "表1",
+          "conditions": {
+            "product_type": "风管送风式机组",
+            "cooling_source": "风冷式",
+            "mode": "热泵型"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 7100,
+          "min_inclusive": false,
+          "max": 14000,
+          "metric_field": "apf",
+          "metric_name": "APF",
+          "thresholds": [
+            3.6,
+            3.2,
+            2.8
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T1-07",
+          "table": "表1",
+          "conditions": {
+            "product_type": "风管送风式机组",
+            "cooling_source": "风冷式",
+            "mode": "热泵型"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 14000,
+          "min_inclusive": false,
+          "max": 28000,
+          "metric_field": "apf",
+          "metric_name": "APF",
+          "thresholds": [
+            3.4,
+            3.0,
+            2.7
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T1-08",
+          "table": "表1",
+          "conditions": {
+            "product_type": "风管送风式机组",
+            "cooling_source": "风冷式",
+            "mode": "热泵型"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 28000,
+          "min_inclusive": false,
+          "metric_field": "apf",
+          "metric_name": "APF",
+          "thresholds": [
+            3.0,
+            2.8,
+            2.4
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T1-09",
+          "table": "表1",
+          "conditions": {
+            "product_type": "风管送风式机组",
+            "cooling_source": "水冷式"
+          },
+          "range_metric": "cooling_capacity_w",
+          "max": 14000,
+          "metric_field": "iplv",
+          "metric_name": "IPLV",
+          "thresholds": [
+            4.2,
+            4.0,
+            3.4
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T1-10",
+          "table": "表1",
+          "conditions": {
+            "product_type": "风管送风式机组",
+            "cooling_source": "水冷式"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 14000,
+          "min_inclusive": false,
+          "metric_field": "iplv",
+          "metric_name": "IPLV",
+          "thresholds": [
+            4.0,
+            3.8,
+            3.3
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T2-01",
+          "table": "表2",
+          "conditions": {
+            "product_type": "直接蒸发式全新风机组",
+            "cooling_source": "风冷式",
+            "enthalpy_difference": "小焓差"
+          },
+          "range_metric": "cooling_capacity_w",
+          "max": 4500,
+          "metric_field": "eer",
+          "metric_name": "EER",
+          "thresholds": [
+            3.4,
+            3.2,
+            3.0
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T2-02",
+          "table": "表2",
+          "conditions": {
+            "product_type": "直接蒸发式全新风机组",
+            "cooling_source": "风冷式",
+            "enthalpy_difference": "大焓差"
+          },
+          "range_metric": "cooling_capacity_w",
+          "max": 4500,
+          "metric_field": "eer",
+          "metric_name": "EER",
+          "thresholds": [
+            3.2,
+            3.0,
+            2.8
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T2-03",
+          "table": "表2",
+          "conditions": {
+            "product_type": "直接蒸发式全新风机组",
+            "cooling_source": "水冷式(水环式)",
+            "enthalpy_difference": "小焓差"
+          },
+          "range_metric": "cooling_capacity_w",
+          "max": 14000,
+          "metric_field": "eer",
+          "metric_name": "EER",
+          "thresholds": [
+            4.7,
+            4.5,
+            4.3
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB37479-T2-04",
+          "table": "表2",
+          "conditions": {
+            "product_type": "直接蒸发式全新风机组",
+            "cooling_source": "水冷式(水环式)",
+            "enthalpy_difference": "大焓差"
+          },
+          "range_metric": "cooling_capacity_w",
+          "max": 14000,
+          "metric_field": "eer",
+          "metric_name": "EER",
+          "thresholds": [
+            4.4,
+            4.2,
+            4.0
+          ],
+          "source_page": "PDF第4页"
+        }
+      ]
+    },
+    "unitary_ac": {
+      "records": [
+        {
+          "data_id": "GB19576-T1-01",
+          "table": "表1",
+          "conditions": {
+            "category": "风冷式单元式空调机",
+            "mode": "单冷型"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 7000,
+          "max": 14000,
+          "metric_field": "seer",
+          "metric_name": "SEER",
+          "thresholds": [
+            4.5,
+            3.8,
+            2.9
+          ],
+          "source_page": "PDF第3-4页"
+        },
+        {
+          "data_id": "GB19576-T1-02",
+          "table": "表1",
+          "conditions": {
+            "category": "风冷式单元式空调机",
+            "mode": "单冷型"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 14000,
+          "min_inclusive": false,
+          "metric_field": "seer",
+          "metric_name": "SEER",
+          "thresholds": [
+            3.6,
+            3.0,
+            2.7
+          ],
+          "source_page": "PDF第3-4页"
+        },
+        {
+          "data_id": "GB19576-T1-03",
+          "table": "表1",
+          "conditions": {
+            "category": "风冷式单元式空调机",
+            "mode": "热泵型"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 7000,
+          "max": 14000,
+          "metric_field": "apf",
+          "metric_name": "APF",
+          "thresholds": [
+            3.5,
+            3.1,
+            2.7
+          ],
+          "source_page": "PDF第3-4页"
+        },
+        {
+          "data_id": "GB19576-T1-04",
+          "table": "表1",
+          "conditions": {
+            "category": "风冷式单元式空调机",
+            "mode": "热泵型"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 14000,
+          "min_inclusive": false,
+          "metric_field": "apf",
+          "metric_name": "APF",
+          "thresholds": [
+            3.4,
+            3.0,
+            2.6
+          ],
+          "source_page": "PDF第3-4页"
+        },
+        {
+          "data_id": "GB19576-T1-05",
+          "table": "表1",
+          "conditions": {
+            "category": "水冷式单元式空调机"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 14000,
+          "min_inclusive": false,
+          "metric_field": "iplv",
+          "metric_name": "IPLV",
+          "thresholds": [
+            4.5,
+            4.3,
+            3.7
+          ],
+          "source_page": "PDF第3-4页"
+        },
+        {
+          "data_id": "GB19576-T1-06",
+          "table": "表1",
+          "conditions": {
+            "category": "水冷式单元式空调机"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 7000,
+          "max": 14000,
+          "metric_field": "iplv",
+          "metric_name": "IPLV",
+          "thresholds": [
+            4.0,
+            3.7,
+            3.3
+          ],
+          "source_page": "PDF第3-4页"
+        },
+        {
+          "data_id": "GB19576-T1-07",
+          "table": "表1",
+          "conditions": {
+            "category": "计算机和数据处理机房用单元式空调机",
+            "cooling_source": "风冷式"
+          },
+          "metric_field": "aeer",
+          "metric_name": "AEER",
+          "thresholds": [
+            4.0,
+            3.6,
+            3.0
+          ],
+          "source_page": "PDF第3-4页"
+        },
+        {
+          "data_id": "GB19576-T1-08",
+          "table": "表1",
+          "conditions": {
+            "category": "计算机和数据处理机房用单元式空调机",
+            "cooling_source": "水冷式"
+          },
+          "metric_field": "aeer",
+          "metric_name": "AEER",
+          "thresholds": [
+            4.2,
+            4.0,
+            3.5
+          ],
+          "source_page": "PDF第3-4页"
+        },
+        {
+          "data_id": "GB19576-T1-09",
+          "table": "表1",
+          "conditions": {
+            "category": "通讯基站用单元式空气调节机"
+          },
+          "metric_field": "cop",
+          "metric_name": "COP",
+          "thresholds": [
+            3.2,
+            3.0,
+            2.8
+          ],
+          "source_page": "PDF第3-4页"
+        },
+        {
+          "data_id": "GB19576-T1-10",
+          "table": "表1",
+          "conditions": {
+            "category": "恒温恒湿型单元式空气调节机"
+          },
+          "metric_field": "aeer",
+          "metric_name": "AEER",
+          "thresholds": [
+            4.0,
+            3.7,
+            3.0
+          ],
+          "source_page": "PDF第3-4页"
+        }
+      ]
+    },
+    "multi_split_ac": {
+      "records": [
+        {
+          "data_id": "GB21454-T1-01",
+          "table": "表1",
+          "conditions": {
+            "category": "风冷单冷"
+          },
+          "range_metric": "cooling_capacity_w",
+          "max": 14000,
+          "metric_field": "seer",
+          "metric_name": "SEER",
+          "thresholds": [
+            5.5,
+            5.1,
+            4.8
+          ],
+          "fixed_gates": [
+            {
+              "field": "eer",
+              "name": "EERmin",
+              "thresholds": [
+                3.6,
+                2.9,
+                2.1
+              ]
+            }
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB21454-T1-02",
+          "table": "表1",
+          "conditions": {
+            "category": "风冷单冷"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 14000,
+          "min_inclusive": false,
+          "max": 28000,
+          "metric_field": "seer",
+          "metric_name": "SEER",
+          "thresholds": [
+            5.1,
+            4.7,
+            4.4
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB21454-T1-03",
+          "table": "表1",
+          "conditions": {
+            "category": "风冷单冷"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 28000,
+          "min_inclusive": false,
+          "max": 50000,
+          "metric_field": "seer",
+          "metric_name": "SEER",
+          "thresholds": [
+            4.9,
+            4.5,
+            4.2
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB21454-T1-04",
+          "table": "表1",
+          "conditions": {
+            "category": "风冷单冷"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 50000,
+          "min_inclusive": false,
+          "max": 68000,
+          "metric_field": "seer",
+          "metric_name": "SEER",
+          "thresholds": [
+            4.8,
+            4.4,
+            4.1
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB21454-T1-05",
+          "table": "表1",
+          "conditions": {
+            "category": "风冷单冷"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 68000,
+          "min_inclusive": false,
+          "metric_field": "seer",
+          "metric_name": "SEER",
+          "thresholds": [
+            4.7,
+            4.3,
+            4.0
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB21454-T2-01",
+          "table": "表2",
+          "conditions": {
+            "category": "风冷热泵"
+          },
+          "range_metric": "cooling_capacity_w",
+          "max": 14000,
+          "metric_field": "apf",
+          "metric_name": "APF",
+          "thresholds": [
+            5.2,
+            4.4,
+            3.6
+          ],
+          "fixed_gates": [
+            {
+              "field": "eer",
+              "name": "EERmin",
+              "thresholds": [
+                3.5,
+                2.8,
+                2.0
+              ]
+            }
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB21454-T2-02",
+          "table": "表2",
+          "conditions": {
+            "category": "风冷热泵"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 14000,
+          "min_inclusive": false,
+          "max": 28000,
+          "metric_field": "apf",
+          "metric_name": "APF",
+          "thresholds": [
+            4.8,
+            4.3,
+            3.5
+          ],
+          "source_page": "PDF第4页"
+        },
+        {
+          "data_id": "GB21454-T3-01",
+          "table": "表3",
+          "conditions": {
+            "category": "水冷",
+            "cooling_source": "水环式"
+          },
+          "range_metric": "cooling_capacity_w",
+          "max": 28000,
+          "metric_field": "iplv_c",
+          "metric_name": "IPLV(C)",
+          "thresholds": [
+            7.0,
+            5.9,
+            5.2
+          ],
+          "source_page": "PDF第5页"
+        },
+        {
+          "data_id": "GB21454-T3-02",
+          "table": "表3",
+          "conditions": {
+            "category": "水冷",
+            "cooling_source": "水环式"
+          },
+          "range_metric": "cooling_capacity_w",
+          "min": 28000,
+          "min_inclusive": false,
+          "metric_field": "iplv_c",
+          "metric_name": "IPLV(C)",
+          "thresholds": [
+            6.8,
+            5.8,
+            5.0
+          ],
+          "source_page": "PDF第5页"
+        },
+        {
+          "data_id": "GB21454-T3-03",
+          "table": "表3",
+          "conditions": {
+            "category": "水冷",
+            "cooling_source": "地埋管式"
+          },
+          "metric_field": "eer",
+          "metric_name": "EER",
+          "thresholds": [
+            4.6,
+            4.2,
+            3.8
+          ],
+          "source_page": "PDF第5页"
+        },
+        {
+          "data_id": "GB21454-T3-04",
+          "table": "表3",
+          "conditions": {
+            "category": "水冷",
+            "cooling_source": "地下水式"
+          },
+          "metric_field": "eer",
+          "metric_name": "EER",
+          "thresholds": [
+            5.0,
+            4.5,
+            4.3
+          ],
+          "source_page": "PDF第5页"
+        },
+        {
+          "data_id": "GB21454-T4-01",
+          "table": "表4",
+          "conditions": {
+            "category": "低温机组"
+          },
+          "range_metric": "heating_capacity_w",
+          "max": 18000,
+          "metric_field": "hspf",
+          "metric_name": "HSPF",
+          "thresholds": [
+            3.4,
+            3.2,
+            3.0
+          ],
+          "fixed_gates": [
+            {
+              "field": "cop_minus_12",
+              "name": "COP(-12℃)",
+              "threshold": 2.2
+            },
+            {
+              "field": "cop_minus_20",
+              "name": "COP(-20℃)",
+              "threshold": 1.8
+            }
+          ],
+          "source_page": "PDF第5页"
+        },
+        {
+          "data_id": "GB21454-T4-02",
+          "table": "表4",
+          "conditions": {
+            "category": "低温机组"
+          },
+          "range_metric": "heating_capacity_w",
+          "min": 18000,
+          "min_inclusive": false,
+          "metric_field": "hspf",
+          "metric_name": "HSPF",
+          "thresholds": [
+            3.2,
+            3.0,
+            2.8
+          ],
+          "fixed_gates": [
+            {
+              "field": "cop_minus_12",
+              "name": "COP(-12℃)",
+              "threshold": 1.9
+            },
+            {
+              "field": "cop_minus_20",
+              "name": "COP(-20℃)",
+              "threshold": 1.5
+            }
+          ],
+          "source_page": "PDF第5页"
+        }
+      ]
+    }
+  }
+}

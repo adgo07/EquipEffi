@@ -1,0 +1,355 @@
+{
+  "standard_code": "GB/T 36561-2018",
+  "standard_name": "清洁节能热处理装备技术要求及评价体系",
+  "effective_date": "2019-02-01",
+  "standard_type": "推荐性",
+  "unit_note": "可比单耗：电炉kW·h/t（bk=W/Gz），燃料炉kgce/t；判定：可比单耗≤一等→一等，≤二等→二等，≤三等→三等，>三等→未达三等。规格=额定功率/温度/加热方式条件",
+  "table8_source_page": 11,
+  "table8": [
+    {
+      "furnace": "传送式连续炉",
+      "spec": "",
+      "unit": "kWh/t",
+      "level": [
+        330,
+        390,
+        470
+      ],
+      "data_id": "GB36561-R000001",
+      "source_page": 11
+    },
+    {
+      "furnace": "震底式连续炉",
+      "spec": "",
+      "unit": "kWh/t",
+      "level": [
+        340,
+        400,
+        480
+      ],
+      "data_id": "GB36561-R000002",
+      "source_page": 11
+    },
+    {
+      "furnace": "推送式连续炉",
+      "spec": "",
+      "unit": "kWh/t",
+      "level": [
+        370,
+        460,
+        560
+      ],
+      "data_id": "GB36561-R000003",
+      "source_page": 11
+    },
+    {
+      "furnace": "滚筒式连续炉",
+      "spec": "",
+      "unit": "kWh/t",
+      "level": [
+        390,
+        480,
+        600
+      ],
+      "data_id": "GB36561-R000004",
+      "source_page": 11
+    },
+    {
+      "furnace": "箱式多用炉",
+      "spec": "额定功率≤45kW",
+      "unit": "kWh/t",
+      "level": [
+        540,
+        680,
+        840
+      ],
+      "data_id": "GB36561-R000005",
+      "source_page": 11
+    },
+    {
+      "furnace": "箱式多用炉",
+      "spec": "45<额定功率≤75kW",
+      "unit": "kWh/t",
+      "level": [
+        480,
+        630,
+        760
+      ],
+      "data_id": "GB36561-R000006",
+      "source_page": 11
+    },
+    {
+      "furnace": "箱式多用炉",
+      "spec": "额定功率>75kW",
+      "unit": "kWh/t",
+      "level": [
+        440,
+        560,
+        700
+      ],
+      "data_id": "GB36561-R000007",
+      "source_page": 11
+    },
+    {
+      "furnace": "井式炉-中温炉",
+      "spec": "额定功率≤75kW",
+      "unit": "kWh/t",
+      "level": [
+        460,
+        590,
+        700
+      ],
+      "data_id": "GB36561-R000008",
+      "source_page": 11
+    },
+    {
+      "furnace": "井式炉-中温炉",
+      "spec": "75<额定功率≤125kW",
+      "unit": "kWh/t",
+      "level": [
+        420,
+        550,
+        650
+      ],
+      "data_id": "GB36561-R000009",
+      "source_page": 11
+    },
+    {
+      "furnace": "井式炉-中温炉",
+      "spec": "额定功率>125kW",
+      "unit": "kWh/t",
+      "level": [
+        400,
+        510,
+        600
+      ],
+      "data_id": "GB36561-R000010",
+      "source_page": 11
+    },
+    {
+      "furnace": "井式炉-回火炉",
+      "spec": "额定功率≤36kW",
+      "unit": "kWh/t",
+      "level": [
+        210,
+        270,
+        320
+      ],
+      "data_id": "GB36561-R000011",
+      "source_page": 11
+    },
+    {
+      "furnace": "井式炉-回火炉",
+      "spec": "额定功率>36kW",
+      "unit": "kWh/t",
+      "level": [
+        190,
+        250,
+        290
+      ],
+      "data_id": "GB36561-R000012",
+      "source_page": 11
+    },
+    {
+      "furnace": "井式炉-气体渗碳(氮)炉",
+      "spec": "额定功率≤35kW",
+      "unit": "kWh/t",
+      "level": [
+        1400,
+        1550,
+        1700
+      ],
+      "data_id": "GB36561-R000013",
+      "source_page": 11
+    },
+    {
+      "furnace": "井式炉-气体渗碳(氮)炉",
+      "spec": "35<额定功率≤75kW",
+      "unit": "kWh/t",
+      "level": [
+        1000,
+        1230,
+        1400
+      ],
+      "data_id": "GB36561-R000014",
+      "source_page": 11
+    },
+    {
+      "furnace": "井式炉-气体渗碳(氮)炉",
+      "spec": "额定功率>75kW",
+      "unit": "kWh/t",
+      "level": [
+        950,
+        1090,
+        1200
+      ],
+      "data_id": "GB36561-R000015",
+      "source_page": 11
+    },
+    {
+      "furnace": "箱式炉",
+      "spec": "15≤额定功率≤30kW",
+      "unit": "kWh/t",
+      "level": [
+        400,
+        540,
+        660
+      ],
+      "data_id": "GB36561-R000016",
+      "source_page": 11
+    },
+    {
+      "furnace": "箱式炉",
+      "spec": "额定功率>30kW",
+      "unit": "kWh/t",
+      "level": [
+        350,
+        480,
+        600
+      ],
+      "data_id": "GB36561-R000017",
+      "source_page": 11
+    },
+    {
+      "furnace": "台车炉",
+      "spec": "额定功率>65kW",
+      "unit": "kWh/t",
+      "level": [
+        390,
+        530,
+        650
+      ],
+      "data_id": "GB36561-R000018",
+      "source_page": 11
+    },
+    {
+      "furnace": "热处理电热浴炉",
+      "spec": ">1000℃",
+      "unit": "kWh/t",
+      "level": [
+        680,
+        900,
+        1050
+      ],
+      "data_id": "GB36561-R000019",
+      "source_page": 11
+    },
+    {
+      "furnace": "热处理电热浴炉",
+      "spec": ">700~1000℃",
+      "unit": "kWh/t",
+      "level": [
+        650,
+        850,
+        1000
+      ],
+      "data_id": "GB36561-R000020",
+      "source_page": 11
+    },
+    {
+      "furnace": "热处理电热浴炉",
+      "spec": ">350~700℃",
+      "unit": "kWh/t",
+      "level": [
+        300,
+        400,
+        500
+      ],
+      "data_id": "GB36561-R000021",
+      "source_page": 11
+    },
+    {
+      "furnace": "热处理电热浴炉",
+      "spec": "≤350℃",
+      "unit": "kWh/t",
+      "level": [
+        165,
+        210,
+        290
+      ],
+      "data_id": "GB36561-R000022",
+      "source_page": 11
+    },
+    {
+      "furnace": "辊底炉",
+      "spec": "电加热",
+      "unit": "kWh/t",
+      "level": [
+        300,
+        400,
+        520
+      ],
+      "data_id": "GB36561-R000023",
+      "source_page": 11
+    },
+    {
+      "furnace": "辊底炉",
+      "spec": "燃料加热",
+      "unit": "kgce/t",
+      "level": [
+        60,
+        100,
+        170
+      ],
+      "data_id": "GB36561-R000024",
+      "source_page": 11
+    },
+    {
+      "furnace": "罩式炉",
+      "spec": "电加热",
+      "unit": "kWh/t",
+      "level": [
+        330,
+        370,
+        450
+      ],
+      "data_id": "GB36561-R000025",
+      "source_page": 11
+    },
+    {
+      "furnace": "罩式炉",
+      "spec": "燃料加热",
+      "unit": "kgce/t",
+      "level": [
+        110,
+        140,
+        200
+      ],
+      "data_id": "GB36561-R000026",
+      "source_page": 11
+    }
+  ],
+  "note": "level=[一等限值, 二等限值, 三等限值]；一等≤330即一等，330<bk≤390二等，390<bk≤470三等，>470未达三等",
+  "fuel_coefficients": [
+    {
+      "fuel": "燃料油",
+      "alpha": 1.0,
+      "source_page": 12,
+      "condition": "40193～46055 kJ/m³"
+    },
+    {
+      "fuel": "发生炉煤气（1250kcal/m³～1350kcal/m³）",
+      "alpha": 0.95,
+      "source_page": 12,
+      "condition": "5234～5652 kJ/m³"
+    },
+    {
+      "fuel": "发生炉煤气（1400kcal/m³～2200kcal/m³）",
+      "alpha": 1.0,
+      "source_page": 12,
+      "condition": "586～9211 kJ/m³"
+    },
+    {
+      "fuel": "城市煤气/焦炉煤气",
+      "alpha": 1.14,
+      "source_page": 12,
+      "condition": "14654～17585 kJ/m³"
+    },
+    {
+      "fuel": "天然气",
+      "alpha": 1.1,
+      "source_page": 12,
+      "condition": "34541～41868 kJ/m³"
+    }
+  ]
+}

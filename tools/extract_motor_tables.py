@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-tools/extract_motor_tables.py - 高压电机/永磁/风机标准提取（V1.11标准sheet）
+tools/extract_motor_tables.py - 高压电机标准提取（V1.11标准sheet）
 结构：表标题行(A列"表N...") + 表头(等级行/极数行) + 数据行(功率×等级×极数)
 用法：python tools/extract_motor_tables.py
 """
@@ -30,14 +30,23 @@ def to_float(v):
 def parse_speed_range(s):
     """' >1800~6000/r/min' -> (1800,6000); '500/r/min' -> (500,500); 失败->None"""
     s = str(s).replace("～", "~").replace("r/min", "").replace("r", "").replace("/", "").strip()
-    m = re.match(r"[>≥]?(\d+(?:\.\d+)?)\s*~\s*(\d+(?:\.\d+)?)", s)
+    m = re.match(r"[>≥≤]?(\d+(?:\.\d+)?)\s*~\s*(\d+(?:\.\d+)?)", s)
     if m:
         return (float(m.group(1)), float(m.group(2)))
-    m = re.match(r"[>≥]?(\d+(?:\.\d+)?)", s)
+    m = re.match(r"[>≥≤]?(\d+(?:\.\d+)?)", s)
     if m:
         v = float(m.group(1))
         return (v, v)
     return None
+
+
+def clean_text(s):
+    """Normalize layout whitespace without changing the table meaning."""
+    s = str(s).replace("～", "~").replace("\r\n", "\n").replace("\r", "\n")
+    s = re.sub(r"\s+", " ", s).strip()
+    s = re.sub(r"\s*~\s*", "~", s)
+    s = re.sub(r"(?<=\d)r/min", " r/min", s)
+    return s
 
 
 def parse_motor_table(ws, start_row):
@@ -45,30 +54,58 @@ def parse_motor_table(ws, start_row):
     - 极数模式（异步电机）：标题/功率/等级行/极数行/数据（4行表头）
     - 转速模式（变频电机）：标题/功率/转速行/数据（3行表头，等级在标题里）
     """
-    title = str(ws.cell(start_row, 1).value).strip()
+    title = clean_text(ws.cell(start_row, 1).value)
 
-    # 先检测 start+2 行是否为转速行（变频表特征：无"级"文本、含转速区间）
-    r2_vals = [ws.cell(start_row + 2, c).value for c in range(2, 40)]
+    # 变频表通常在标题后第2行放转速维度；表29另有一行“额定转速”说明，
+    # 实际转速维度位于第4行，因此同时检查两种布局。
     speed_dims = []
-    for v in r2_vals:
-        if v is None:
-            continue
-        s = str(v).strip()
-        if re.search(r"\d+\s*[～~]\s*\d+", s) or re.match(r"[>≥]?\d+\s*/?\s*r/min", s) or re.match(r">\d+", s):
-            rg = parse_speed_range(s)
-            if rg:
-                speed_dims.append((s, rg))
+    speed_row = None
+    for offset in (2, 4):
+        candidate = []
+        for c in range(2, 40):
+            v = ws.cell(start_row + offset, c).value
+            if v is None:
+                continue
+            s = clean_text(v)
+            is_level_label = re.match(r"\d+\s*级", s)
+            # 只有带转速单位、转速区间或不等号的值才可能是转速维度。
+            # 不能把普通效率数值（如94、93.9）当成转速，否则极数表会被误判为转速表。
+            is_speed_label = (
+                "r/min" in s
+                or re.search(r"\d+\s*[～~]\s*\d+", s)
+                or re.match(r"[>≥≤]\s*\d+", s)
+            )
+            if not is_level_label and is_speed_label:
+                rg = parse_speed_range(s)
+                if rg:
+                    if not any(existing == s for existing, _ in candidate):
+                        candidate.append((s, rg))
+        if candidate:
+            speed_dims = candidate
+            speed_row = start_row + offset
+            break
 
     if speed_dims:
         # ===== 转速模式（变频）=====
         m = re.search(r"(\d+)\s*级", title)
-        if not m:
-            return None, start_row + 1
-        lv = int(m.group(1))
-        level_starts = {2: lv}
+        if m:
+            # 旧版布局：表标题本身带有“1级/2级/3级”，数据只有一个等级块。
+            level_starts = {2: int(m.group(1))}
+        else:
+            # 表29布局：标题不带等级，等级写在 start_row+2 的分组表头中。
+            level_starts = {}
+            for c in range(2, 60):
+                v = ws.cell(start_row + 2, c).value
+                if v is None:
+                    continue
+                mm = re.match(r"(\d+)\s*级", str(v).strip())
+                if mm:
+                    level_starts[c] = int(mm.group(1))
+            if not level_starts:
+                return None, start_row + 1
         dims = speed_dims
         dim_desc = "speeds"
-        data_start = start_row + 3
+        data_start = speed_row + 1
     else:
         # ===== 极数模式 =====
         lv_row = start_row + 2
@@ -157,6 +194,17 @@ def extract_generic(wb, sheet_name, std_code, std_name, eff_date):
                 print(f"  ⚠ 解析失败跳过: R{r} {str(v).strip()[:40]}")
                 r = next_r
                 continue
+            # 表29在原工作簿分页处重复了90 kW和110 kW两行；相同功率且全部效率值
+            # 完全一致时只保留一条，避免把分页重复误当成标准数据。
+            if "电梯用永磁同步电动机" in info["title"]:
+                unique_rows = []
+                seen = set()
+                for row in info["rows"]:
+                    marker = json.dumps(row, ensure_ascii=False, sort_keys=True)
+                    if marker not in seen:
+                        seen.add(marker)
+                        unique_rows.append(row)
+                info["rows"] = unique_rows
             tables.append(info)
             r = next_r
         else:
@@ -175,7 +223,6 @@ def main():
     wb = openpyxl.load_workbook(SRC, data_only=True)
     jobs = [
         ("高压电机标准", "GB 30254-2024", "高压三相笼型异步电动机能效限定值及能效等级", "2025-09-01", "motor_hv"),
-        ("永磁同步电机标准", "GB 30253-2024", "永磁同步电动机能效限定值及能效等级", "2025-10-01", "motor_pmsm"),
     ]
     for sheet, code, name, date, key in jobs:
         data = extract_generic(wb, sheet, code, name, date)

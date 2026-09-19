@@ -1,0 +1,404 @@
+{
+  "schema_version": "1.0",
+  "data_version": "industry_adjustment_catalog_2024_pdf_verified_equipment_subset_20260828",
+  "status": "normalized_pdf_verified_subset",
+  "source_priority": "《产业结构调整指导目录（2024年本）》原始PDF；当前仅核对并结构化与17类设备相关的11项原文条目、13条受控匹配规则",
+  "matching_policy": "仅精确型号或有边界的受控系列匹配；附加条件必须全部满足；缺少条件返回疑似命中而不直接淘汰",
+  "source_complete": false,
+  "coverage": "已按原始PDF第134～137页核对用户列出的11项设备淘汰条目，并拆分为13条受控匹配规则；不代表《产业结构调整指导目录（2024年本）》全文",
+  "source_document": {
+    "file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+    "sha256": "428DBE811FADED393EA037AD7555CF5FCF0914D095BFC35674DCEE2C7B144011",
+    "pages": [
+      134,
+      135,
+      136,
+      137
+    ],
+    "verification": "逐页文本核对；设备相关条目与用户提供清单一致"
+  },
+  "sources": [
+    {
+      "file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "sha256": "428DBE811FADED393EA037AD7555CF5FCF0914D095BFC35674DCEE2C7B144011",
+      "entry_count": 11,
+      "source_item_count": 11,
+      "pages": [
+        134,
+        135,
+        136,
+        137
+      ],
+      "status": "verified_equipment_subset"
+    }
+  ],
+  "entries": [
+    {
+      "entry_id": "IND2024-MOTOR-YBF",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目1",
+      "device_type": "motor_lv",
+      "product_name": "YBF系列隔爆型三相异步电动机",
+      "model_exact": [],
+      "series_patterns": [
+        "YBF(?:[-]?[A-Z0-9].*)?"
+      ],
+      "conditions": {
+        "frame_size_mm": {
+          "op": ">=",
+          "value": 63
+        },
+        "frame_size_mm_max": {
+          "op": "<=",
+          "value": 160
+        },
+        "rated_voltage_v": {
+          "op": "in",
+          "values": [
+            380,
+            660,
+            "380/660"
+          ]
+        }
+      },
+      "original_condition": "YBF系列机座号63～160mm、额定电压380、660V或380/660V",
+      "reason": "目录明确淘汰隔爆型三相异步电动机系列",
+      "notes": "机座号和额定电压均为附加条件，缺失时返回疑似命中而不直接淘汰。",
+      "specifications": "YBF：机座号63～160mm；额定电压380、660V或380/660V",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    },
+    {
+      "entry_id": "IND2024-MOTOR-YBK",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目1",
+      "device_type": "motor_lv",
+      "product_name": "YBK系列隔爆型三相异步电动机",
+      "model_exact": [],
+      "series_patterns": [
+        "YBK(?:[-]?[A-Z0-9].*)?"
+      ],
+      "conditions": {
+        "frame_size_mm": {
+          "op": ">=",
+          "value": 100
+        },
+        "frame_size_mm_max": {
+          "op": "<=",
+          "value": 355
+        },
+        "rated_voltage_v": {
+          "op": "in",
+          "values": [
+            "380/660",
+            "660/1140"
+          ]
+        }
+      },
+      "original_condition": "YBK系列机座号100～355mm、额定电压380/660V、660/1140V",
+      "reason": "目录明确淘汰隔爆型三相异步电动机系列",
+      "notes": "机座号和额定电压均为附加条件，缺失时返回疑似命中而不直接淘汰。",
+      "specifications": "YBK：机座号100～355mm；额定电压380/660V或660/1140V",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    },
+    {
+      "entry_id": "IND2024-MOTOR-YB",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目1",
+      "device_type": "motor_lv",
+      "product_name": "YB系列隔爆型三相异步电动机",
+      "model_exact": [],
+      "series_patterns": [
+        "YB(?!F|K|2)(?:[-]?[A-Z0-9].*)?"
+      ],
+      "conditions": {
+        "frame_size_mm": {
+          "op": ">=",
+          "value": 63
+        },
+        "frame_size_mm_max": {
+          "op": "<=",
+          "value": 355
+        },
+        "rated_voltage_v": {
+          "op": "<=",
+          "value": 660
+        }
+      },
+      "original_condition": "YB系列机座号63～355mm、额定电压660V及以下",
+      "reason": "目录明确淘汰隔爆型三相异步电动机系列",
+      "notes": "机座号和额定电压均为附加条件，缺失时返回疑似命中而不直接淘汰。",
+      "specifications": "YB：机座号63～355mm；额定电压≤660V",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    },
+    {
+      "entry_id": "IND2024-PUMP-BA",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目2",
+      "device_type": "pump_water",
+      "product_name": "B型、BA型单级单吸悬臂式离心泵系列",
+      "model_exact": [],
+      "series_patterns": [
+        "B(?:A)?(?:-?[0-9].*)?"
+      ],
+      "conditions": {},
+      "original_condition": "B型、BA型单级单吸悬臂式离心泵系列",
+      "reason": "目录明确淘汰泵系列",
+      "notes": "仅匹配标准化型号B或BA及其连字符系列型号。",
+      "specifications": "单级单吸悬臂式",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    },
+    {
+      "entry_id": "IND2024-PUMP-F",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目3",
+      "device_type": "pump_chemical",
+      "product_name": "F型单级单吸耐腐蚀泵系列",
+      "model_exact": [],
+      "series_patterns": [
+        "F(?:-?[0-9].*)?"
+      ],
+      "conditions": {},
+      "original_condition": "F型单级单吸耐腐蚀泵系列",
+      "reason": "目录明确淘汰泵系列",
+      "notes": "仅匹配标准化型号F及其连字符系列型号。",
+      "specifications": "单级单吸耐腐蚀泵",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    },
+    {
+      "entry_id": "IND2024-PUMP-JD",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目4",
+      "device_type": "pump_water",
+      "product_name": "JD型长轴深井泵",
+      "model_exact": [],
+      "series_patterns": [
+        "JD(?:-?[0-9].*)?"
+      ],
+      "conditions": {},
+      "original_condition": "JD型长轴深井泵",
+      "reason": "目录明确淘汰泵产品",
+      "notes": "仅匹配标准化型号JD及其连字符系列型号。",
+      "specifications": "长轴深井泵",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    },
+    {
+      "entry_id": "IND2024-COMPRESSOR-3W",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目5",
+      "device_type": "compressor",
+      "product_name": "3W-0.9/7（环状阀）空气压缩机",
+      "model_exact": [
+        "3W-0.9/7"
+      ],
+      "series_patterns": [],
+      "conditions": {},
+      "original_condition": "3W-0.9/7（环状阀）空气压缩机",
+      "reason": "目录明确淘汰空气压缩机",
+      "notes": "环状阀属性保留在原文条件中；型号精确命中即可进入淘汰轨迹。",
+      "specifications": "环状阀",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    },
+    {
+      "entry_id": "IND2024-PUMP-BOILER-FEED",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目6",
+      "device_type": "pump_water",
+      "product_name": "GC型低压锅炉给水泵及DG270-140、DG500-140、DG375-185锅炉给水泵",
+      "model_exact": [
+        "GC",
+        "DG270-140",
+        "DG500-140",
+        "DG375-185"
+      ],
+      "series_patterns": [
+        "GC(?:-?[0-9].*)?"
+      ],
+      "conditions": {},
+      "original_condition": "GC型低压锅炉给水泵，DG270-140、DG500-140、DG375-185锅炉给水泵",
+      "reason": "目录明确淘汰锅炉给水泵",
+      "notes": "DG型号按精确型号匹配；GC允许连字符系列后缀。",
+      "specifications": "低压锅炉给水泵",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    },
+    {
+      "entry_id": "IND2024-BOILER-FIXED-GRATE",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目7",
+      "device_type": "boiler",
+      "product_name": "固定炉排燃煤锅炉",
+      "model_exact": [],
+      "series_patterns": [
+        ".+"
+      ],
+      "conditions": {
+        "category": {
+          "op": "regex",
+          "value": "(?=.*固定炉排)(?=.*燃煤).*"
+        }
+      },
+      "original_condition": "固定炉排燃煤锅炉",
+      "reason": "目录明确淘汰固定炉排燃煤锅炉",
+      "notes": "需要填写型号和包含固定炉排、燃煤属性的设备类别；缺少类别时不直接淘汰。",
+      "specifications": "固定炉排、燃煤",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    },
+    {
+      "entry_id": "IND2024-COMPRESSOR-L10",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目8",
+      "device_type": "compressor",
+      "product_name": "L-10/8、L-10/7型动力用往复式空气压缩机",
+      "model_exact": [
+        "L-10/8",
+        "L-10/7"
+      ],
+      "series_patterns": [],
+      "conditions": {},
+      "original_condition": "L-10/8、L-10/7型动力用往复式空气压缩机",
+      "reason": "目录明确淘汰往复式空气压缩机",
+      "notes": "按型号精确匹配。",
+      "specifications": "动力用往复式",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    },
+    {
+      "entry_id": "IND2024-FAN-HIGH-PRESSURE",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目9",
+      "device_type": "fan",
+      "product_name": "8-18系列、9-27系列高压离心通风机",
+      "model_exact": [],
+      "series_patterns": [
+        "8-18(?:[-]?[A-Z0-9].*)?",
+        "9-27(?:[-]?[A-Z0-9].*)?"
+      ],
+      "conditions": {
+        "category": {
+          "op": "regex",
+          "value": ".*离心.*"
+        }
+      },
+      "original_condition": "8-18系列、9-27系列高压离心通风机",
+      "reason": "目录明确淘汰高压离心通风机系列",
+      "notes": "需要填写包含离心属性的设备类别；不凭型号系列单独推断风机类别。",
+      "specifications": "高压、离心",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    },
+    {
+      "entry_id": "IND2024-BOILER-COAL-10T",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目10",
+      "device_type": "boiler",
+      "product_name": "每小时10蒸吨及以下燃煤锅炉",
+      "model_exact": [],
+      "series_patterns": [
+        ".+"
+      ],
+      "conditions": {
+        "fuel": {
+          "op": "regex",
+          "value": ".*煤.*"
+        },
+        "evaporation_tph": {
+          "op": "<=",
+          "value": 10
+        }
+      },
+      "original_condition": "每小时10蒸吨及以下燃煤锅炉",
+      "reason": "目录明确淘汰10蒸吨及以下燃煤锅炉",
+      "notes": "需要填写型号、燃料品种和蒸发量；不使用热功率反推蒸发量。",
+      "specifications": "蒸发量≤10t/h、燃煤",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    },
+    {
+      "entry_id": "IND2024-BOILER-BIOMASS-2T",
+      "catalog": "产业结构调整指导目录（2024年本）",
+      "batch": "",
+      "item_no": "用户条目11",
+      "device_type": "boiler",
+      "product_name": "每小时2蒸吨及以下生物质锅炉",
+      "model_exact": [],
+      "series_patterns": [
+        ".+"
+      ],
+      "conditions": {
+        "fuel": {
+          "op": "regex",
+          "value": ".*生物质.*"
+        },
+        "evaporation_tph": {
+          "op": "<=",
+          "value": 2
+        }
+      },
+      "original_condition": "每小时2蒸吨及以下生物质锅炉",
+      "reason": "目录明确淘汰2蒸吨及以下生物质锅炉",
+      "notes": "需要填写型号、燃料品种和蒸发量；不使用热功率反推蒸发量。",
+      "specifications": "蒸发量≤2t/h、生物质",
+      "source_file": "G:\\标准  规范\\04_政策法规\\国家政策\\关键政策\\产业结构调整指导目录（2024年本）.pdf",
+      "source_tables": [],
+      "source_status": "PDF页面核对（第134～137页）",
+      "matching_status": "enabled",
+      "raw_rows": []
+    }
+  ]
+}

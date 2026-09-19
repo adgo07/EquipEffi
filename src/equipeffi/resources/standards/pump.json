@@ -1,0 +1,495 @@
+{
+  "standard_code": "GB 19762-2025",
+  "standard_name": "离心泵能效限定值及能效等级",
+  "effective_date": "2026-03-01",
+  "unit_note": "清水泵公式：η = a(ln ns)² + b(ln QBEP)² + c(ln ns)(ln QBEP) + d(ln ns) + e(ln QBEP) - Ci；ns=3.65n√Q/H^0.75，Q单位m³/s（双吸取半），H单级扬程（多级除级数）；QBEP单位m³/h。化工泵：ηb按6阶多项式(lnQ)，Δη按ns多项式，η0=ηb-Δη(120≤ns≤210时Δη=0)，各级=η0+偏移",
+  "water": {
+    "formulas": {
+      "单级": {
+        "a": -8.44,
+        "b": -0.48,
+        "c": 0.09,
+        "d": 84.63,
+        "e": 8.5
+      },
+      "多级": {
+        "a": -6.93,
+        "b": -0.19,
+        "c": -0.4,
+        "d": 72.67,
+        "e": 8.73
+      }
+    },
+    "ci": [
+      {
+        "data_id": "GB19762-T3-01",
+        "type": "单级单吸",
+        "q_min": 5,
+        "q_max": 300,
+        "min_inclusive": true,
+        "max_inclusive": true,
+        "ci": [
+          161.33,
+          163.33,
+          168.33
+        ],
+        "source_pages": "9-10"
+      },
+      {
+        "data_id": "GB19762-T3-02",
+        "type": "单级单吸",
+        "q_min": 300,
+        "q_max": 10000,
+        "min_inclusive": false,
+        "max_inclusive": true,
+        "ci": [
+          162.33,
+          163.33,
+          168.33
+        ],
+        "source_pages": "9-10"
+      },
+      {
+        "data_id": "GB19762-T3-03",
+        "type": "单级双吸",
+        "q_min": 50,
+        "q_max": 600,
+        "min_inclusive": true,
+        "max_inclusive": true,
+        "ci": [
+          161.33,
+          163.33,
+          168.33
+        ],
+        "source_pages": "9-10"
+      },
+      {
+        "data_id": "GB19762-T3-04",
+        "type": "单级双吸",
+        "q_min": 600,
+        "q_max": 20000,
+        "min_inclusive": false,
+        "max_inclusive": true,
+        "ci": [
+          162.33,
+          163.33,
+          168.33
+        ],
+        "source_pages": "9-10"
+      },
+      {
+        "data_id": "GB19762-T3-05",
+        "type": "管道",
+        "q_min": 5,
+        "q_max": 300,
+        "min_inclusive": true,
+        "max_inclusive": true,
+        "ci": [
+          163.33,
+          165.33,
+          171.33
+        ],
+        "source_pages": "9-10"
+      },
+      {
+        "data_id": "GB19762-T3-06",
+        "type": "管道",
+        "q_min": 300,
+        "q_max": 3000,
+        "min_inclusive": false,
+        "max_inclusive": true,
+        "ci": [
+          164.33,
+          165.33,
+          171.33
+        ],
+        "source_pages": "9-10"
+      },
+      {
+        "data_id": "GB19762-T3-07",
+        "type": "多级",
+        "q_min": 5,
+        "q_max": 100,
+        "min_inclusive": true,
+        "max_inclusive": true,
+        "ci": [
+          139.33,
+          142.33,
+          150.33
+        ],
+        "source_pages": "9-10"
+      },
+      {
+        "data_id": "GB19762-T3-08",
+        "type": "多级",
+        "q_min": 100,
+        "q_max": 3000,
+        "min_inclusive": false,
+        "max_inclusive": true,
+        "ci": [
+          140.33,
+          144.33,
+          150.33
+        ],
+        "source_pages": "9-10"
+      },
+      {
+        "data_id": "GB19762-T3-09",
+        "type": "轻型多级立式",
+        "q_min": 5,
+        "q_max": 300,
+        "min_inclusive": true,
+        "max_inclusive": true,
+        "ci": [
+          137.33,
+          139.33,
+          144.33
+        ],
+        "source_pages": "9-10"
+      },
+      {
+        "data_id": "GB19762-T3-10",
+        "type": "轻型多级卧式",
+        "q_min": 5,
+        "q_max": 300,
+        "min_inclusive": true,
+        "max_inclusive": true,
+        "ci": [
+          140.33,
+          142.33,
+          147.33
+        ],
+        "source_pages": "9-10"
+      }
+    ]
+  },
+  "chemical": {
+    "interval_boundaries": {
+      "flow_q": [
+        {
+          "min": 5,
+          "min_inclusive": false,
+          "max": 300,
+          "max_inclusive": true
+        },
+        {
+          "min": 300,
+          "min_inclusive": false,
+          "max": null,
+          "max_inclusive": null,
+          "max_unbounded": true
+        }
+      ],
+      "specific_speed_ns": [
+        {
+          "min": 20,
+          "min_inclusive": true,
+          "max": 60,
+          "max_inclusive": false
+        },
+        {
+          "min": 60,
+          "min_inclusive": true,
+          "max": 120,
+          "max_inclusive": false
+        },
+        {
+          "min": 120,
+          "min_inclusive": true,
+          "max": 210,
+          "max_inclusive": true
+        },
+        {
+          "min": 210,
+          "min_inclusive": false,
+          "max": 300,
+          "max_inclusive": true
+        }
+      ],
+      "source_clause": "GB 19762-2025表2：20≤ns<60、60≤ns<120、120≤ns≤210、210<ns≤300"
+    },
+    "level_offsets": [
+      {
+        "pump": "单级",
+        "q_min": 5,
+        "q_max": 300,
+        "ns_min": 20,
+        "ns_max": 60,
+        "eta0_uses_delta": true,
+        "offsets": [
+          10,
+          5,
+          -4
+        ],
+        "data_id": "GB19762-R000011",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "单级",
+        "q_min": 5,
+        "q_max": 300,
+        "ns_min": 60,
+        "ns_max": 120,
+        "eta0_uses_delta": true,
+        "offsets": [
+          4,
+          1,
+          -6
+        ],
+        "data_id": "GB19762-R000012",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "单级",
+        "q_min": 5,
+        "q_max": 300,
+        "ns_min": 120,
+        "ns_max": 210,
+        "eta0_uses_delta": false,
+        "offsets": [
+          3,
+          1,
+          -6
+        ],
+        "data_id": "GB19762-R000013",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "单级",
+        "q_min": 5,
+        "q_max": 300,
+        "ns_min": 210,
+        "ns_max": 300,
+        "eta0_uses_delta": true,
+        "offsets": [
+          3,
+          1,
+          -6
+        ],
+        "data_id": "GB19762-R000014",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "单级",
+        "q_min": 300,
+        "q_max": null,
+        "ns_min": 20,
+        "ns_max": 60,
+        "eta0_uses_delta": true,
+        "offsets": [
+          11,
+          5,
+          -5
+        ],
+        "data_id": "GB19762-R000015",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "单级",
+        "q_min": 300,
+        "q_max": null,
+        "ns_min": 60,
+        "ns_max": 120,
+        "eta0_uses_delta": true,
+        "offsets": [
+          5,
+          1,
+          -5
+        ],
+        "data_id": "GB19762-R000016",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "单级",
+        "q_min": 300,
+        "q_max": null,
+        "ns_min": 120,
+        "ns_max": 210,
+        "eta0_uses_delta": false,
+        "offsets": [
+          3,
+          2,
+          -5
+        ],
+        "data_id": "GB19762-R000017",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "单级",
+        "q_min": 300,
+        "q_max": null,
+        "ns_min": 210,
+        "ns_max": 300,
+        "eta0_uses_delta": true,
+        "offsets": [
+          3,
+          2,
+          -5
+        ],
+        "data_id": "GB19762-R000018",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "多级",
+        "q_min": 5,
+        "q_max": 300,
+        "ns_min": 20,
+        "ns_max": 60,
+        "eta0_uses_delta": true,
+        "offsets": [
+          5,
+          3,
+          -5
+        ],
+        "data_id": "GB19762-R000019",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "多级",
+        "q_min": 5,
+        "q_max": 300,
+        "ns_min": 60,
+        "ns_max": 120,
+        "eta0_uses_delta": true,
+        "offsets": [
+          6,
+          4,
+          -4
+        ],
+        "data_id": "GB19762-R000020",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "多级",
+        "q_min": 5,
+        "q_max": 300,
+        "ns_min": 120,
+        "ns_max": 210,
+        "eta0_uses_delta": false,
+        "offsets": [
+          1,
+          -1,
+          -5
+        ],
+        "data_id": "GB19762-R000021",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "多级",
+        "q_min": 5,
+        "q_max": 300,
+        "ns_min": 210,
+        "ns_max": 300,
+        "eta0_uses_delta": true,
+        "offsets": [
+          1,
+          -1,
+          -5
+        ],
+        "data_id": "GB19762-R000022",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "多级",
+        "q_min": 300,
+        "q_max": null,
+        "ns_min": 20,
+        "ns_max": 60,
+        "eta0_uses_delta": true,
+        "offsets": [
+          3,
+          1,
+          -4
+        ],
+        "data_id": "GB19762-R000023",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "多级",
+        "q_min": 300,
+        "q_max": null,
+        "ns_min": 60,
+        "ns_max": 120,
+        "eta0_uses_delta": true,
+        "offsets": [
+          3,
+          1,
+          -4
+        ],
+        "data_id": "GB19762-R000024",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "多级",
+        "q_min": 300,
+        "q_max": null,
+        "ns_min": 120,
+        "ns_max": 210,
+        "eta0_uses_delta": false,
+        "offsets": [
+          1,
+          -1,
+          -5
+        ],
+        "data_id": "GB19762-R000025",
+        "source_pages": "8-9"
+      },
+      {
+        "pump": "多级",
+        "q_min": 300,
+        "q_max": null,
+        "ns_min": 210,
+        "ns_max": 300,
+        "eta0_uses_delta": true,
+        "offsets": [
+          1,
+          -1,
+          -5
+        ],
+        "data_id": "GB19762-R000026",
+        "source_pages": "8-9"
+      }
+    ],
+    "eta_b": {
+      "单级": [
+        4.7057338e-05,
+        -0.0066320555,
+        0.15115754,
+        -1.4023278,
+        5.5234828,
+        -0.83298912,
+        41.951745
+      ],
+      "多级": [
+        0.00055836234,
+        -0.012499816,
+        0.099576648,
+        -0.46811292,
+        1.9459872,
+        1.4371144,
+        41.467097
+      ]
+    },
+    "delta_eta": {
+      "ns_20_120": [
+        3.7873403e-10,
+        -1.7898913e-07,
+        3.4269717e-05,
+        -0.0034148047,
+        0.1905063,
+        -6.0391904,
+        98.970658
+      ],
+      "ns_210_300": [
+        -1.1111111e-10,
+        1.6769231e-07,
+        -0.00010507265,
+        0.03498704,
+        -6.529872,
+        647.73909,
+        -26684.155
+      ]
+    },
+    "note": "ηb多项式：coef[0](lnQ)^6+coef[1](lnQ)^5+...+coef[6]；QBEP>3000按3000；Δη多项式同构ns；120≤ns≤210时Δη=0"
+  }
+}
