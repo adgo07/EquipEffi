@@ -1,5 +1,28 @@
 # EquipEffi 项目交接说明
 
+> **Phase 0 治理切换（2026-09-21）**
+>
+> 当前唯一权威路线：`EquipEffi V2.2`；当前阶段：`Phase 0`；当前状态：`PHASE_0_PASS`；下一状态：`PHASE_1_READY`。
+>
+> 旧 v7–v15、T04.xx、旧 HANDOFF 和编号执行清单均为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`。它们保留事实，不再拥有自动任务调度权。请先读取 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[BASELINE.md](BASELINE.md)、[ASSET_AUDIT.md](ASSET_AUDIT.md)、[QA_BACKLOG.md](QA_BACKLOG.md) 和 [V1_SCOPE.md](V1_SCOPE.md)。
+>
+> Phase 0 已建立 tag `pre-v2-rebaseline`，指向起始 HEAD `a1643ed38e0b934bbc7562348883b8a8bd4badc5`。本阶段未修改业务代码，未执行 0B Hotfix。2026-09-22 的暂时阻塞项已完成治理补正、全量复验并纳入可复现提交；Phase 1 现在是唯一允许启动的下一阶段。
+
+## 当前事实摘要（Phase 0 Revalidated）
+
+| 项目 | 当前事实 |
+|---|---|
+| 正式运行实现 | `domain/evaluation` → `EvaluationService` → `evaluator_registry` → 17 个 evaluators → `JsonStandardRepository` |
+| 空壳/兼容路径 | `domain/devices/` 为 0 引用空壳；`device_evaluators.py` 为当前仍被依赖的兼容门面；均未删除 |
+| 当前正式测试 | Python 3.13.3 全量 unittest：887 项，880 pass、3 fail、1 error、3 skip；本次 wall 139.621 s（unittest 内部 138.524 s）；完整结果见 `BASELINE.md` |
+| compileall | `src tools tests` PASS |
+| 标准加载 | 17 个 manifest pack 可加载并报告 active；不等于业务边界已验收 |
+| Windows V1 草案 | `transformer`、`compressor`、`pump_water` 为 IN_V1；motor 三 Profile和其余 Profile按 `UNDER_REVIEW/POST_V1` 处理，详见 `V1_SCOPE.md` |
+| 首个纵向样板 | `pump_water`；候选比较和必须证明项见 `V1_SCOPE.md` |
+| 当前唯一下一步 | Phase 1；不得继续 T04.xx、批量改 evaluator、建完整 PySide6/SQLite/Excel 产品 |
+
+以下旧正文保留为历史事实参考；其中的日期、通过数字和“下一任务”说明不覆盖本节及 Phase 0 权威文件。
+
 > 文档用途：给一个完全没有前文上下文的新 Codex/开发者使用。阅读本文件后，应能知道项目要做什么、当前做到哪里、哪些内容不能重复做，以及如何安全地继续工作。
 >
 > 本文件是项目根目录的当前交接入口。历史逐项记录仍在 [HANDOFF_20260831.md](HANDOFF_20260831.md)；详细执行规则见 [docs/27_后续Agent和大模型可直接照做交付清单_v15_20260905.md](docs/27_后续Agent和大模型可直接照做交付清单_v15_20260905.md)。
