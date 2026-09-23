@@ -12,7 +12,7 @@ phase_0b: NOT_EXECUTED
 phase_1_hotfix: NOT_EXECUTED
 blocked_by: NONE
 evidence_needed: Solution/Product Review of the recorded Windows V1 decision and Profile mapping; shared AUD-011 evidence remains NEEDS_MORE_EVIDENCE
-affected_scope: Phase 1 documents, contracts, Golden Cases and governance are reproducible at HEAD 9cb39cccf0381ba0e560c5f69fcb81725acfbe87; product decision recorded 2026-09-23 by 王玮（总经理）; CPython 3.12.14 x64 project environment has revalidated the gates; no evaluator, directory, standard resource, UI, SQLite, Excel, report, or Phase 2 implementation; known Legacy failures retained
+affected_scope: Phase 1 technical documents, contracts and Golden Cases are reproducible at 9cb39cccf0381ba0e560c5f69fcb81725acfbe87; Windows V1 product decision and governance closeout are reproducible from bcfb8e9d02eb9a44d284896ac3c369de1b7bd6aa and carried by current HEAD; CPython 3.12.14 x64 project environment has revalidated the gates; no evaluator, directory, standard resource, UI, SQLite, Excel, report, or Phase 2 implementation; known Legacy failures retained
 next_action: submit the Phase 1 package to Solution/Product Review; do not start Phase 2
 last_verified: 2026-09-23T17:50:39+08:00
 acceptance_history: 2026-09-22 initially BLOCKED for uncommitted governance deliverables, incomplete evidence fields, non-uniform QA tables and missing demand/value evidence; corrected and revalidated without business-code changes; 2026-09-23 product decision recorded by 王玮（总经理） for transformer and centrifugal_pump public types, with pump_water as the evidence-backed IN_V1 profile
