@@ -5,10 +5,10 @@
 - **Current Roadmap:** EquipEffi V2.2
 - **路线原文:** [docs/28_EquipEffi 后续开发总体路线 V2.2.md](docs/28_EquipEffi%20后续开发总体路线%20V2.2.md)
 - **Current Phase:** Phase 1
-- **State:** `BLOCKED`
-- **Next State:** `REVIEW_BLOCKER_RESOLUTION`
+- **State:** `READY_FOR_SOL_REVIEW`
+- **Next State:** `SOLUTION_REVIEW_REQUIRED`
 - **Automatic continuation:** `DISABLED`
-- **Allowed Work:** 仅 Phase 1 验收阻塞收口和 Solution/Product Review 输入补齐；不得启动 Phase 2；Phase 0B/Phase 1 Hotfix 均未执行
+- **Allowed Work:** 仅 Solution/Product Review；不得启动 Phase 2；Phase 0B/Phase 1 Hotfix 均未执行
 
 ## 治理切换
 
@@ -39,7 +39,7 @@ Phase 0A 的治理切换、不可变起始 tag、真实基线、资产审计、�
 
 当前唯一合法下一步是：
 
-> **Phase 1：业务规范与数据契约。**
+> **Solution/Product Review：审查 Phase 1 业务规范、数据契约、`pump_water` 映射、Golden Case、P0 证据和 Windows V1 Scope。**
 
 Phase 1 只允许建立业务规范 V0.1、Canonical Schema、Product/Profile Schema、Import Contract、Golden Case Schema、Support Status 和 `pump_water` 样板的标准映射；不得批量迁移 17 个 Profile。
 
@@ -51,11 +51,11 @@ Phase 1 按 `docs/29_Phase 1 业务规范与数据契约.md` 的既定顺序执�
 P1-G01 → P1-G02 → P1-G03 → P1-G04 → P1-G05 → P1-G06
 ```
 
-`P1-G01` 已形成业务规范草案，`P1-G02` 已形成契约 Schema，`P1-G03` 已形成 `pump_water` / GB 19762-2025 映射，`P1-G04` 已形成并通过增强验证的 7 个首批 Golden Case，`P1-G05` 已对四项 Phase 1 P0 风险完成证据复核且未执行 Hotfix，`P1-G06` 已形成 Python/版本语义/Windows V1 Scope 评审候选。权威交付物已在 `9cb39cccf0381ba0e560c5f69fcb81725acfbe87` 可复现；CPython 3.12.14 x64 已完成门禁复验，当前状态仍为 `BLOCKED`，原因仅剩 Windows V1 尚无产品负责人批准。上述阻塞解决并完成 Solution/Product Review 前，不得声明 Phase 1 PASS 或启动 Phase 2。已知 Legacy Regression 失败必须原样保留并显式记录。
+`P1-G01` 已形成业务规范草案，`P1-G02` 已形成契约 Schema，`P1-G03` 已形成 `pump_water` / GB 19762-2025 映射，`P1-G04` 已形成并通过增强验证的 7 个首批 Golden Case，`P1-G05` 已对四项 Phase 1 P0 风险完成证据复核且未执行 Hotfix，`P1-G06` 已形成 Python/版本语义/Windows V1 Scope 评审包。权威交付物已在 `9cb39cccf0381ba0e560c5f69fcb81725acfbe87` 可复现；CPython 3.12.14 x64 已完成门禁复验；王玮（总经理）已于 2026-09-23 记录 Windows V1 产品决策：变压器和离心泵为公共类型首发优先，Profile 级 `IN_V1` 为 `transformer`、`pump_water`。当前状态为 `READY_FOR_SOL_REVIEW`，不得声明 Phase 1 PASS 或启动 Phase 2。已知 Legacy Regression 失败必须原样保留并显式记录。
 
 ## Phase 1 Review Boundary
 
-Phase 1 的唯一合法下一步是评审本次交付的业务规范、契约 Schema、`pump_water` 映射、Golden Case、P0 证据和 V1 Scope。当前仍需产品负责人补齐实际用户需求/商业价值/Scope 决策，并对 `NEEDS_MORE_EVIDENCE` 项继续提供证据。任何评审前的代码重构、目录搬迁、完整 UI/SQLite/Excel/报告和批量 Profile 迁移均越界。
+Phase 1 的唯一合法下一步是 Solution/Product Review 本次交付的业务规范、契约 Schema、`pump_water` 映射、Golden Case、P0 证据和 V1 Scope。产品需求、商业价值、负责人、日期和风险接受人已记录；评审仍需检查公共类型到 Profile 的范围映射及 `NEEDS_MORE_EVIDENCE` 项。任何评审前的代码重构、目录搬迁、完整 UI/SQLite/Excel/报告和批量 Profile 迁移均越界。
 
 ## Phase 0 Exit Gate
 
@@ -70,7 +70,7 @@ Phase 1 的唯一合法下一步是评审本次交付的业务规范、契约 Sc
 | Vertical Slice | PASS | `pump_water` 已与 3 个替代候选比较并记录风险/必须证明项 |
 | Phase 0B | N/A | 没有满足条件的 Hotfix 被批准；无额外重构混入 |
 
-因此最终状态为：`PHASE_0_PASS` → `PHASE_1_READY`。V1 Scope 的需求和商业价值仍明确标为 `UNKNOWN / NEEDS_EVIDENCE`，由 Phase 1 指定产品决策负责人补证；这不授权扩大 Scope。
+因此 Phase 0 保持 `PHASE_0_PASS`，Phase 1 当前状态为 `READY_FOR_SOL_REVIEW`。Windows V1 的产品决策已记录，但这不等同于 Phase 1 PASS，也不授权扩大 Scope。
 
 ## Phase 0 保护边界
 

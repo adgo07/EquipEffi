@@ -1,6 +1,6 @@
-# Windows V1 Scope（Phase 1 冻结候选）
+# Windows V1 Scope（Phase 1 Review Package）
 
-**状态：** `BLOCKED`；工程候选边界已冻结，但 Windows V1 尚未获得产品/商业批准，不得视为 Phase 1 PASS、`READY_FOR_SOL_REVIEW` 或商业承诺。
+**状态：** `READY_FOR_SOL_REVIEW`；产品负责人已作出 Windows V1 范围决策，但仍需 Solution/Product Review，不能视为 Phase 1 PASS，也不能自动启动 Phase 2。
 **原则：** 不默认 15 类公共设备或 17 个内部 Profile 全部首发；不允许“半支持”。
 
 ## Support Status 草案
@@ -44,79 +44,110 @@ REQUIRES_REVIEW
 
 `legacy_tests` 是 Phase 0 对命中测试模块的粗盘点，不等于 Approved Golden Case 数量；`known_P0` 只表示已登记风险，不表示已经确认标准错误。
 
-| public type | profile_id | standard / pack | current evaluator | legacy tests | known P0 | known P1 | data quality | source quality | canonical readiness | golden candidates | release surface | draft scope |
+| public type | profile_id | standard / pack | current evaluator | legacy tests | known P0 | known P1 | data quality | source quality | canonical readiness | golden candidates | release surface | scope status |
 |---|---|---|---|---:|---|---|---|---|---|---:|---|---|
 | transformer | transformer | GB 20052-2024 / `gb20052_2024_v1` | TransformerEvaluator | 14 | 0 confirmed | shared architecture | 546 rows | MEDIUM | REVIEW | 2 | V1_RUNTIME | IN_V1 |
-| motor | motor_lv | GB 18613-2020 / `gb18613_2020_v1` | MotorEvaluator | 22 shared | V4 P0 candidate | shared architecture | 42 rows | MEDIUM | REVIEW | 2 | V1_RUNTIME | UNDER_REVIEW |
-| motor | motor_hv | GB 30254-2024 / `gb30254_2024_v1` | MotorEvaluator | 22 shared | 0 confirmed | shared architecture | tables | MEDIUM | REVIEW | 1 | V1_RUNTIME | UNDER_REVIEW |
-| motor | motor_pmsm | GB 30253-2024 / `gb30253_2024_pdf_verified_v1` | PmsmEvaluator | 22 shared | 0 confirmed | provenance/contract | 29 tables | HIGH | REVIEW | 1 | V1_RUNTIME | UNDER_REVIEW |
-| compressor | compressor | GB 19153-2019 / `gb19153_2019_v1` | CompressorEvaluator | 10 | 0 confirmed | shared architecture | 2469 rows | MEDIUM-HIGH | REVIEW | 1 | V1_RUNTIME | IN_V1 |
+| motor | motor_lv | GB 18613-2020 / `gb18613_2020_v1` | MotorEvaluator | 22 shared | V4 P0 candidate | shared architecture | 42 rows | MEDIUM | REVIEW | 2 | V1_RUNTIME | POST_V1 |
+| motor | motor_hv | GB 30254-2024 / `gb30254_2024_v1` | MotorEvaluator | 22 shared | 0 confirmed | shared architecture | tables | MEDIUM | REVIEW | 1 | V1_RUNTIME | POST_V1 |
+| motor | motor_pmsm | GB 30253-2024 / `gb30253_2024_pdf_verified_v1` | PmsmEvaluator | 22 shared | 0 confirmed | provenance/contract | 29 tables | HIGH | REVIEW | 1 | V1_RUNTIME | POST_V1 |
+| compressor | compressor | GB 19153-2019 / `gb19153_2019_v1` | CompressorEvaluator | 10 | 0 confirmed | shared architecture | 2469 rows | MEDIUM-HIGH | REVIEW | 1 | V1_RUNTIME | POST_V1 |
 | centrifugal_pump | pump_water | GB 19762-2025 / `gb19762_2025_water_v1` | WaterPumpEvaluator | 13 | 0 confirmed | shared architecture | formula + CI | MEDIUM-HIGH | PHASE1_CANDIDATE | 4 | V1_RUNTIME | IN_V1 |
-| centrifugal_pump | pump_chemical | GB 19762-2025 / `gb19762_2025_chemical_v1` | ChemicalPumpEvaluator | 13 shared | 0 confirmed | shared architecture | formula + tables | MEDIUM | REVIEW | 1 | V1_RUNTIME | POST_V1 |
-| centrifugal_fan / axial_fan | fan | GB 19761-2020 / `gb19761_2020_v1` | FanEvaluator | 9 shared | 0 confirmed | boundary review | 4 tables | MEDIUM | REVIEW | 1 | V1_RUNTIME | POST_V1 |
-| blower | blower | GB 28381-2012 / `gb28381_2012_v1` | BlowerEvaluator | 9 | 0 confirmed | missing-input trace | 8 tables | MEDIUM | REVIEW | 1 | V1_RUNTIME | POST_V1 |
-| submersible_pump | submersible | GB 32030-2022 / `gb32030_2022_v1` | SubmersibleEvaluator | 11 | 0 confirmed | calculation provenance | 5 tables | MEDIUM | REVIEW | 1 | V1_RUNTIME | POST_V1 |
+| centrifugal_pump | pump_chemical | GB 19762-2025 / `gb19762_2025_chemical_v1` | ChemicalPumpEvaluator | 13 shared | 0 confirmed | shared architecture | formula + tables | MEDIUM | REVIEW | 1 | V1_RUNTIME | UNDER_REVIEW |
+| centrifugal_fan / axial_fan | fan | GB 19761-2020 / `gb19761_2020_v1` | FanEvaluator | 9 shared | 0 confirmed | boundary review | 4 tables | MEDIUM | REVIEW | 1 | V1_RUNTIME | UNDER_REVIEW |
+| blower | blower | GB 28381-2012 / `gb28381_2012_v1` | BlowerEvaluator | 9 | 0 confirmed | missing-input trace | 8 tables | MEDIUM | REVIEW | 1 | V1_RUNTIME | UNDER_REVIEW |
+| submersible_pump | submersible | GB 32030-2022 / `gb32030_2022_v1` | SubmersibleEvaluator | 11 | 0 confirmed | calculation provenance | 5 tables | MEDIUM | REVIEW | 1 | V1_RUNTIME | UNDER_REVIEW |
 | industrial_boiler | boiler | GB 24500-2020 / `gb24500_2020_v1` | BoilerEvaluator | 10 | 0 confirmed | input gate | 4 tables | MEDIUM | REVIEW | 1 | V1_RUNTIME | POST_V1 |
-| heat_treatment | heat_treatment | GB/T 36561-2018 / `gbt36561_2018_v1` | HeatTreatmentEvaluator | 10 | 0 confirmed | input gate | coefficients + table8 | MEDIUM | REVIEW | 1 | V1_RUNTIME | POST_V1 |
+| heat_treatment | heat_treatment | GB/T 36561-2018 / `gbt36561_2018_v1` | HeatTreatmentEvaluator | 10 | 0 confirmed | input gate | coefficients + table8 | MEDIUM | REVIEW | 1 | V1_RUNTIME | UNDER_REVIEW |
 | heat_pump_chiller | heat_pump_chiller | GB 19577-2024 / `gb19577_2024_pdf_verified_v1` | HvacEvaluator | 8 | 0 confirmed | source/contract | nested 5-device pack | HIGH | REVIEW | 1 | V1_RUNTIME | UNDER_REVIEW |
-| heat_pump_water_heater | heat_pump_water_heater | GB 29541-2013 / `gb29541_2013_v1` | HvacEvaluator | 8 shared | 0 confirmed | source/contract | nested HVAC pack | MEDIUM | REVIEW | 1 | V1_RUNTIME | POST_V1 |
-| duct_ac | duct_ac | GB 37479-2019 / `gb37479_2019_v1` | HvacEvaluator | 8 shared | 0 confirmed | source/contract | nested HVAC pack | MEDIUM | REVIEW | 1 | V1_RUNTIME | POST_V1 |
-| unitary_ac | unitary_ac | GB 19576-2019 / `gb19576_2019_v1` | HvacEvaluator | 8 shared | 0 confirmed | source/contract | nested HVAC pack | MEDIUM | REVIEW | 1 | V1_RUNTIME | POST_V1 |
-| multi_split_ac | multi_split_ac | GB 21454-2021 / `gb21454_2021_v1` | HvacEvaluator | 8 shared | 0 confirmed | source/contract | nested HVAC pack | MEDIUM | REVIEW | 1 | V1_RUNTIME | POST_V1 |
+| heat_pump_water_heater | heat_pump_water_heater | GB 29541-2013 / `gb29541_2013_v1` | HvacEvaluator | 8 shared | 0 confirmed | source/contract | nested HVAC pack | MEDIUM | REVIEW | 1 | V1_RUNTIME | UNDER_REVIEW |
+| duct_ac | duct_ac | GB 37479-2019 / `gb37479_2019_v1` | HvacEvaluator | 8 shared | 0 confirmed | source/contract | nested HVAC pack | MEDIUM | REVIEW | 1 | V1_RUNTIME | UNDER_REVIEW |
+| unitary_ac | unitary_ac | GB 19576-2019 / `gb19576_2019_v1` | HvacEvaluator | 8 shared | 0 confirmed | source/contract | nested HVAC pack | MEDIUM | REVIEW | 1 | V1_RUNTIME | UNDER_REVIEW |
+| multi_split_ac | multi_split_ac | GB 21454-2021 / `gb21454_2021_v1` | HvacEvaluator | 8 shared | 0 confirmed | source/contract | nested HVAC pack | MEDIUM | REVIEW | 1 | V1_RUNTIME | UNDER_REVIEW |
 
-## Draft Scope 解释
+## 产品决策记录（2026-09-23）
+
+本节记录产品负责人提供的 Windows V1 决策输入。它是产品决策证据，不伪装成量化市场研究；最终 Phase 1 状态仍须经过 Solution/Product Review。
+
+```text
+decision_owner: 王玮
+decision_role: 总经理
+decision_date: 2026-09-23
+risk_acceptor: 王玮（总经理）
+evidence_id: USER_PROVIDED_PRODUCT_DECISION_2026-09-23
+evidence_type: PRODUCT_OWNER_DECISION
+```
+
+| 决策项 | 决策内容 | 记录理由 |
+|---|---|---|
+| Windows V1 首发支持 | 变压器、离心泵 | 实际用户需求和成熟度优先；标准证据、评价器成熟度和工作量满足首发选择原则 |
+| 暂不承诺、继续评审 | 通风机、鼓风机、潜水电泵、热处理、热泵和冷水机、热泵热水机、风管送风空调、单元式空调、多联式空调 | 继续补齐业务证据、标准复核和 Profile 级风险判断 |
+| 明确放到 V1 之后 | 电动机、永磁电机、高压电机、空压机、工业锅炉 | 本次不纳入 Windows V1，后续单独规划 |
+| 实际用户需求 | 变压器和离心泵最成熟，优先它们 | 产品负责人已确认的定性需求判断 |
+| 商业价值 | 优先变压器和离心泵，其他后面补 | 产品负责人已确认的首发价值排序 |
+| 风险接受人 | 王玮，总经理 | 与产品决策负责人相同 |
+
+### 公共设备类型到内部 Profile 的映射解释
+
+`centrifugal_pump`（离心泵）在仓库中对应 `pump_water` 和 `pump_chemical` 两个内部 Profile。本次按 Phase 1 已完成证据的最小解释处理：
+
+- `pump_water` 标记为 `IN_V1`，因为本阶段已完成 GB 19762-2025 清水泵映射、7 个 Golden Case 和标准来源复核；
+- `pump_chemical` 标记为 `UNDER_REVIEW`，不因公共类型“离心泵”四个字自动获得同等首发资格；
+- Windows V1 UI 必须按 Profile 显示状态，不能把整个 `centrifugal_pump` 直接显示成无条件 `SUPPORTED`。
+
+如果产品负责人意图同时承诺化工泵，应在后续产品决策中明确写出 `pump_chemical`；本次不静默扩大范围。
 
 ## 用户需求与商业价值证据状态
 
-以下判断是 Phase 0 的证据状态，不把工程就绪度误写成产品承诺。当前仓库未发现用户访谈、已确认订单/项目清单、使用遥测、收入贡献分析或产品负责人签字的 V1 需求决策，因此需求和商业价值不能在本阶段被假定为“已确认”。
+以下状态已根据 `USER_PROVIDED_PRODUCT_DECISION_2026-09-23` 更新。需求和商业价值是产品负责人的定性决策证据；本阶段没有把它夸大为订单、收入或市场规模的量化分析。
 
 | dimension | evidence status | evidence / source | effect on scope |
 |---|---|---|---|
-| 实际用户需求 | `UNKNOWN / NEEDS_EVIDENCE` | 当前仓库没有可引用的用户访谈、客户需求单、订单/项目优先级或使用遥测记录 | 不因工程可行而扩展为全量 17 Profile；Phase 1 必须补充需求证据 |
-| 商业价值 | `UNKNOWN / NEEDS_EVIDENCE` | 当前仓库没有收入贡献、客户覆盖、交付频率、市场优先级或产品负责人确认记录 | `IN_V1` 仍是工程草案，不构成商业承诺 |
+| 实际用户需求 | `CONFIRMED_BY_PRODUCT_DECISION` | 王玮（总经理）确认“变压器和离心泵最成熟，优先他们” | 支持将变压器和离心泵列为公共类型首发优先范围；仍按 Profile 证据执行 |
+| 商业价值 | `CONFIRMED_BY_PRODUCT_DECISION` | 王玮（总经理）确认“优先变压器和离心泵，其他的后面补” | 支持首发价值排序；不代表其他 Profile 永久淘汰 |
 | 工程就绪度 | `VERIFIED` | 本次 Phase 0 的真实测试、标准资源、风险分级、Profile 注册和样板比较 | 可作为候选排序依据，但不能替代产品决策 |
-| 产品决策负责人 | `REQUIRED_INPUT` | 当前权威治理文件未指定姓名、角色和决策日期 | 解除阻塞前必须登记具名负责人、证据来源、决定日期和接受/拒绝理由 |
+| 产品决策负责人 | `CONFIRMED` | 王玮，总经理；决策日期 2026-09-23；风险接受人同为王玮 | 解除产品信息阻塞；范围仍需 Solution/Product Review |
 
-因此，以下 `IN_V1 / UNDER_REVIEW / POST_V1` 是“工程与风险草案”。Phase 1 只允许在指定产品决策负责人补齐实际需求和商业价值证据后，冻结最终业务 Scope；在此之前不得把 `IN_V1` 描述为已获商业批准。
+因此，以下 `IN_V1 / UNDER_REVIEW / POST_V1` 是已记录产品决策后的 Profile 级 Review Package。定性需求和商业价值已由产品负责人确认；Solution/Product Review 仍可要求补充量化证据，但 Agent 不得自行扩大范围。
 
 ## Phase 1 Scope Freeze Package
 
 ### 冻结类型与决策状态
 
-本节冻结的是 Windows V1 的**评审候选边界**，目的是禁止在 Solution/Product Review 前继续扩大范围；它不是产品负责人签字，也不把工程可用性自动转换为商业承诺。
+本节记录 Windows V1 的**产品决策边界和 Profile 级映射**，同时保留 Solution/Product Review 作为 Phase 1 出口；它不授权自动进入 Phase 2。
 
 ```text
-scope_freeze_status: BLOCKED
-scope_freeze_kind: ENGINEERING_CANDIDATE_BOUNDARY
-commercial_approval: PENDING_PRODUCT_DECISION
-product_decision_owner: REQUIRED_INPUT
-decision_date: REQUIRED_INPUT
+scope_freeze_status: READY_FOR_SOL_REVIEW
+scope_freeze_kind: PRODUCT_DECISION_RECORDED_PROFILE_BOUNDARY
+commercial_approval: APPROVED_BY_PRODUCT_OWNER
+product_decision_owner: 王玮（总经理）
+decision_date: 2026-09-23
+risk_acceptor: 王玮（总经理）
 automatic_scope_expansion: DISABLED
 ```
 
 | Scope 状态 | 本次冻结的 Profile | Windows V1 UI 语义 |
 |---|---|---|
-| `IN_V1`（工程候选，待产品确认） | `transformer`、`compressor`、`pump_water` | 可进入 V1 候选，但必须显示标准、版本和 Support Status |
-| `UNDER_REVIEW` | `motor_lv`、`motor_hv`、`motor_pmsm`、`heat_pump_chiller` | 不显示为已支持；显示需要复核/评审中 |
-| `POST_V1` | `pump_chemical`、`fan`、`blower`、`submersible`、`boiler`、`heat_treatment`、`heat_pump_water_heater`、`duct_ac`、`unitary_ac`、`multi_split_ac` | 当前版本未支持 |
+| `IN_V1`（产品已决定，待 Solution Review） | `transformer`、`pump_water` | 允许进入 V1 方案评审；必须显示标准、版本和 Support Status |
+| `UNDER_REVIEW` | `pump_chemical`、`fan`、`blower`、`submersible`、`heat_treatment`、`heat_pump_chiller`、`heat_pump_water_heater`、`duct_ac`、`unitary_ac`、`multi_split_ac` | 不显示为已支持；显示需要复核/评审中 |
+| `POST_V1` | `motor_lv`、`motor_hv`、`motor_pmsm`、`compressor`、`boiler` | 当前版本未支持 |
 
-这 17 个状态是当前 Phase 1 review package 的冻结输入。任何把 `UNDER_REVIEW` 或 `POST_V1` 改为首发的请求，都必须由产品负责人给出实际需求、商业价值、接受风险和决定日期；不得由 Agent 或 evaluator 成熟度自行扩大。
+这 17 个状态是当前 Phase 1 review package 的冻结输入。任何把 `UNDER_REVIEW` 或 `POST_V1` 改为首发的请求，都必须形成新的产品决策记录；不得由 Agent 或 evaluator 成熟度自行扩大。
 
-### 用户需求与商业价值的决策缺口
+### 用户需求与商业价值的决策记录
 
 | 决策维度 | 当前证据 | 当前状态 | 对冻结 Scope 的影响 | 需要谁补证 |
 |---|---|---|---|---|
-| 实际用户需求 | 仓库没有用户访谈、客户需求单、订单/项目优先级或使用遥测 | `UNKNOWN / NEEDS_EVIDENCE` | 不允许把 17 Profile 全量纳入 V1 | 产品负责人/业务负责人 |
-| 商业价值 | 仓库没有收入贡献、客户覆盖、交付频率、市场优先级或报价证据 | `UNKNOWN / NEEDS_EVIDENCE` | `IN_V1` 只是工程优先级，不是销售承诺 | 产品负责人/业务负责人 |
+| 实际用户需求 | 王玮（总经理）确认变压器和离心泵最成熟，优先它们 | `CONFIRMED_BY_PRODUCT_DECISION` | 支持 `transformer` 与 `pump_water` 进入首发方案评审；不自动覆盖 `pump_chemical` | 王玮/总经理 |
+| 商业价值 | 王玮（总经理）确认优先变压器和离心泵，其他后续补 | `CONFIRMED_BY_PRODUCT_DECISION` | 支持首发价值排序；其他 Profile 仍按 `UNDER_REVIEW` 或 `POST_V1` 执行 | 王玮/总经理 |
 | 标准重要性 | 各 Profile 的标准包和来源质量登记在本表上方 | `PARTIALLY_VERIFIED` | 可作为工程排序依据，不能替代客户价值 | 技术/标准负责人 |
 | evaluator 成熟度 | Phase 0 测试和 ASSET_AUDIT；Legacy Regression 有已知失败 | `VERIFIED_AS_ENGINEERING_EVIDENCE` | 只决定候选工作量，不决定业务首发 | 技术负责人 |
 | P0 风险 | `QA_BACKLOG.md` 中登记，Phase 1 已做证据复核 | `OPEN / REVIEWED` | 未关闭风险不得被描述为已发布能力 | 技术/产品共同确认 |
 
-产品评审需要明确填写：`decision_owner`、`decision_date`、每个 Scope 状态的接受/拒绝理由、需求来源、商业价值证据、风险接受人和是否允许调整本候选边界。在这些字段补齐前，最终状态保持 `BLOCKED`；Agent 不得代填或推断产品批准。
+产品决策记录已填写：`decision_owner`、`decision_date`、各 Scope 状态的接受/拒绝理由、需求来源、商业价值判断、风险接受人和自动扩展规则。Solution/Product Review 仍需审查这些记录与技术证据；Agent 不得代替评审结论。
 
-### Acceptance blocker
+### Remaining review gate
 
-当前 `IN_V1 / UNDER_REVIEW / POST_V1` 仍是工程候选，不是产品决策。缺少具名负责人、决定日期、实际用户需求证据、商业价值证据和明确接受/拒绝理由，因此本文件不能声明 Windows V1 Scope 已冻结，也不能解除 Phase 1 阻塞。
+产品决策阻塞已解除，当前状态为 `READY_FOR_SOL_REVIEW`。剩余门禁是 Solution/Product Review 对业务规范、`pump_water` 标准证据、Profile 级范围映射和 QA 中 `NEEDS_MORE_EVIDENCE` 项作出评审结论；在此之前不宣布 Phase 1 PASS，也不启动 Phase 2。
 
 ## Python Windows V1 运行环境冻结
 
@@ -162,19 +193,19 @@ Windows `py` 启动器不是本次门禁入口；验收统一使用项目 `.venv
 
 ### `IN_V1`
 
-Phase 0 工程草案只将 `transformer`、`compressor`、`pump_water` 放入首发候选。它们都有可加载标准、当前 evaluator、较完整的回归资产，且不受当前 V4 电机失败直接阻断。
+产品决策将变压器和离心泵列为公共类型首发优先范围。按已完成的 Phase 1 证据，Profile 级 `IN_V1` 为 `transformer`、`pump_water`；`pump_chemical` 保持 `UNDER_REVIEW`。三者都有可加载标准或明确的标准映射，但只有 `pump_water` 已完成本阶段纵向样板证据。
 
 ### `UNDER_REVIEW`
 
-三个 motor Profile 和 `heat_pump_chiller` 暂不承诺首发。电机公共类型同时路由 3 个内部 Profile，若只支持其中一个会造成半支持；同时当前 V4 电机结果路径有 3 个失败断言。必须先完成 Profile 级 Golden/Scope 决策。
+`pump_chemical`、`fan`、`blower`、`submersible`、`heat_treatment`、`heat_pump_chiller`、`heat_pump_water_heater`、`duct_ac`、`unitary_ac`、`multi_split_ac` 暂不承诺首发，继续评审。`pump_chemical` 与 `pump_water` 共用公共类型，必须按 Profile 展示，不能造成半支持。
 
 ### `POST_V1`
 
-其余 Profile 保留资产和回归价值，但 Phase 0 没有足够的业务需求、Canonical 复核和首发工作量证据将其承诺为 V1。
+`motor_lv`、`motor_hv`、`motor_pmsm`、`compressor`、`boiler` 明确放到 V1 之后；保留资产和回归价值，但当前版本不支持。
 
 ### Public UI 规则
 
-`motor` 和 `centrifugal_pump` 这类一对多公共类型不能直接显示为笼统的 `SUPPORTED`。Phase 1 必须决定：按 profile 展示，或在公共类型层显示 `REQUIRES_REVIEW`；不能让用户看到“已支持，只是算不出来”。
+`motor` 和 `centrifugal_pump` 这类一对多公共类型不能直接显示为笼统的 `SUPPORTED`。本次按 Profile 展示：`pump_water` 可进入 V1 方案评审，`pump_chemical` 显示 `REQUIRES_REVIEW`；不能让用户看到“已支持，只是算不出来”。
 
 ## 纵向样板选择
 

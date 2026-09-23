@@ -2,11 +2,11 @@
 
 > **Phase 1 执行（2026-09-22～2026-09-23）**
 >
-> 当前唯一权威路线：`EquipEffi V2.2`；当前阶段：`Phase 1`；当前状态：`BLOCKED`；下一状态：`REVIEW_BLOCKER_RESOLUTION`。
+> 当前唯一权威路线：`EquipEffi V2.2`；当前阶段：`Phase 1`；当前状态：`READY_FOR_SOL_REVIEW`；下一状态：`SOLUTION_REVIEW_REQUIRED`。
 >
 > 旧 v7–v15、T04.xx、旧 HANDOFF 和编号执行清单均为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`。它们保留事实，不再拥有自动任务调度权。请先读取 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[BASELINE.md](BASELINE.md)、[ASSET_AUDIT.md](ASSET_AUDIT.md)、[QA_BACKLOG.md](QA_BACKLOG.md) 和 [V1_SCOPE.md](V1_SCOPE.md)。
 >
-> Phase 0 已建立 tag `pre-v2-rebaseline`，指向起始 HEAD `a1643ed38e0b934bbc7562348883b8a8bd4badc5`。Phase 1 未修改 evaluator、目录、标准资源或业务算法，未执行 0B Hotfix。六个 Goal 的技术交付已在 HEAD `9cb39cccf0381ba0e560c5f69fcb81725acfbe87` 提交并可复现；CPython 3.12.14 x64 已完成项目复验，当前仅缺 Windows V1 产品决策。当前唯一合法下一步是收口该 Phase 1 阻塞并提交 Solution/Product Review，不得启动 Phase 2。
+> Phase 0 已建立 tag `pre-v2-rebaseline`，指向起始 HEAD `a1643ed38e0b934bbc7562348883b8a8bd4badc5`。Phase 1 未修改 evaluator、目录、标准资源或业务算法，未执行 0B Hotfix。六个 Goal 的技术交付已在 HEAD `9cb39cccf0381ba0e560c5f69fcb81725acfbe87` 提交并可复现；CPython 3.12.14 x64 已完成项目复验。王玮（总经理）已于 2026-09-23 记录 Windows V1 产品决策：变压器和离心泵为公共类型首发优先，Profile 级 `IN_V1` 为 `transformer`、`pump_water`；`pump_chemical` 继续评审。当前唯一合法下一步是 Solution/Product Review，不得启动 Phase 2。
 
 ## Phase 1 当前权威状态
 
@@ -15,8 +15,8 @@
 | 当前路线 | `EquipEffi V2.2` |
 | 当前阶段 | `Phase 1` |
 | 当前 Goal | `Phase 1 Review Package` |
-| 状态 | `BLOCKED` |
-| 唯一下一步 | 获取产品 Scope 决策，再进入 Solution/Product Review；不得跳到 Phase 2 |
+| 状态 | `READY_FOR_SOL_REVIEW` |
+| 唯一下一步 | 进入 Solution/Product Review；不得跳到 Phase 2 |
 | 业务样板 | `pump_water`，后续以 GB 19762-2025 标准映射为证据 |
 | 代码边界 | 仅允许规范/契约/Golden/审计文档及必要验证；不改业务实现 |
 
@@ -29,7 +29,7 @@
 | `P1-G03` | `COMPLETE` | [profiles/pump_water.md](specs/equipment_efficiency/profiles/pump_water.md)：字段、单位、别名、标准公式、10 个表 3 数据行、开闭边界、无插值/外推、缺失/未知/冲突语义；当前包哈希已记录 | `P1-G04`：建立并批准首批 `pump_water` Golden Cases |
 | `P1-G04` | `COMPLETE` | [golden/pump_water](specs/equipment_efficiency/golden/pump_water)：7 个 `REVIEWED` 案例覆盖正常、下/上端点、区间切换、不外推、缺失效率和未知类别；增强验证器校验 Decimal、受控 `unit_id`、来源存在性/指纹和三项负例拒绝 | `P1-G05`：复核四项 Phase 1 P0 风险 |
 | `P1-G05` | `COMPLETE` | [QA_BACKLOG.md](QA_BACKLOG.md) Phase 1 P0 Evidence Review：AUD-010/011/030/031 分别为允许的精确分类；AUD-011 因共享风险证据不足为 `NEEDS_MORE_EVIDENCE`；无 Hotfix、无 evaluator 修改 | `P1-G06`：冻结 Python 版本、版本字段和 Windows V1 Scope |
-| `P1-G06` | `COMPLETE` | [V1_SCOPE.md](V1_SCOPE.md) 形成 17 Profile 的工程候选边界、CPython 3.12.x x64 和版本字段语义；商业批准、负责人/日期仍为 `REQUIRED_INPUT`，3.12.14 x64 已完成复验 | `BLOCKED`；先收口产品决策，不得自动进入 Phase 2 |
+| `P1-G06` | `COMPLETE` | [V1_SCOPE.md](V1_SCOPE.md) 记录王玮（总经理）于 2026-09-23 作出的 Windows V1 产品决策、17 Profile 映射、CPython 3.12.x x64 和版本字段语义；`transformer`、`pump_water` 为 Profile 级 `IN_V1`，`pump_chemical` 继续评审 | `READY_FOR_SOL_REVIEW`；不得自动进入 Phase 2 |
 
 ## Phase 1 acceptance re-review（2026-09-23）
 
@@ -39,10 +39,10 @@
 | Golden Case Schema 类型、单位、来源门禁 | `RESOLVED_TECHNICALLY` | `golden_case.schema.json` 约束 Decimal 字符串和 `unit_id` 枚举；`tools/validate_phase1_contracts.py` 负责来源存在性和 SHA-256；负例必须得到 3 个错误 |
 | `pump_water` 规定点语义 | `RESOLVED_TECHNICALLY` | 映射明确 `flow_m3h=Q_BEP`、`head_m=H_BEP`、`pump_efficiency=η_BEP`，案例机器字段为 `STANDARD_BEP/BEP`；GB PDF 外部指纹已记录 |
 | AUD-011 精确分类及共享风险 | `RESOLVED_AS_REVIEW_RESULT` | `review_result=NEEDS_MORE_EVIDENCE`；保留 `classification=P0`，样板证据不外推为全 Profile `NOT_P0` |
-| Windows V1 产品决策 | `BLOCKED` | `V1_SCOPE.md` 显式要求具名负责人、日期、用户需求/商业价值证据和接受/拒绝理由；Agent 不代填 |
+| Windows V1 产品决策 | `RESOLVED` | `V1_SCOPE.md` 记录王玮（总经理）、2026-09-23、需求/商业价值判断、风险接受和各状态范围理由；Profile 级映射仍交由 Solution/Product Review 审查 |
 | CPython 3.12.x x64 可复验环境 | `RESOLVED` | CPython 3.12.14 x64 已安装到忽略目录 `_codex/python/`，项目 `.venv\Scripts\python.exe` 已建立；887 项 Legacy Regression 在该环境下完成，结果仍为 880 pass、3 fail、1 error、3 skip |
 
-产品 Scope 决策仍缺失，因此本交接继续保持 `BLOCKED`；不声明 `PHASE_1_PASS`，不启动 Phase 2。
+产品 Scope 决策已记录，因此本交接状态切换为 `READY_FOR_SOL_REVIEW`；不声明 `PHASE_1_PASS`，不启动 Phase 2。
 
 ## Phase 1 Verification Evidence（2026-09-22～2026-09-23）
 
@@ -75,9 +75,9 @@ Phase 1 没有修改标准 JSON、模板、evaluator 或测试期望，因此没
 | 当前正式测试 | CPython 3.12.14 x64 V1 复验：887 项，880 pass、3 fail、1 error、3 skip；unittest 内部 151.127 s；4 个已知失败未改变，详见上方 Evidence |
 | compileall / package import | CPython 3.12.14 x64：3.198 s / 0.075 s，均 PASS |
 | 标准加载 | 17 个 manifest pack 可加载并报告 active；不等于业务边界已验收；`pump_water` 已有 7 个 Golden Case |
-| Windows V1 Scope | 工程候选冻结为 `transformer`、`compressor`、`pump_water`；motor 三 Profile 与 `heat_pump_chiller` `UNDER_REVIEW`，其余 `POST_V1`；产品批准待评审 |
+| Windows V1 Scope | 产品决策为变压器、离心泵公共类型优先；Profile 级 `IN_V1` 为 `transformer`、`pump_water`；`pump_chemical` 等继续评审；三个 motor Profile、`compressor`、`boiler` 明确 `POST_V1` |
 | 首个纵向样板 | `pump_water`；候选比较和必须证明项见 `V1_SCOPE.md` |
-| 当前唯一下一步 | 收口 Phase 1 阻塞并提交 Solution/Product Review；不得继续 T04.xx、批量改 evaluator、建完整 PySide6/SQLite/Excel 产品或启动 Phase 2 |
+| 当前唯一下一步 | 提交并完成 Solution/Product Review；不得继续 T04.xx、批量改 evaluator、建完整 PySide6/SQLite/Excel 产品或启动 Phase 2 |
 
 以下旧正文保留为历史事实参考；其中的日期、通过数字和“下一任务”说明不覆盖本节及 Phase 0 权威文件。
 
