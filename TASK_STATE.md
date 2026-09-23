@@ -3,7 +3,7 @@ phase: Phase 1
 goal: Submit the Phase 1 review package after P1-G01 through P1-G06
 status: READY_FOR_SOL_REVIEW
 next_status: SOLUTION_REVIEW_REQUIRED
-head_sha: 9cb39cccf0381ba0e560c5f69fcb81725acfbe87
+head_sha: bcfb8e9d02eb9a44d284896ac3c369de1b7bd6aa
 baseline_ref: pre-v2-rebaseline
 working_tree_at_start: four_untracked_user_supplied_phase0_documents
 allowed_next: Solution/Product Review of the Phase 1 package only; Phase 2 disabled
