@@ -1,6 +1,6 @@
 # EquipEffi QA_BACKLOG
 
-**状态：** Phase 1 acceptance blocked；Phase 0 已入库；未执行 Phase 0B Hotfix；未批准 Phase 1 Hotfix
+**状态：** Phase 1 acceptance blocked by Golden Case approval；Phase 0 已入库；未执行 Phase 0B Hotfix；未批准 Phase 1 Hotfix
 **来源：** v7–v15 / T04.xx 历史材料、第三方 `docs/重构问题清单_20260921.csv` 的 55 项、Phase 0 重跑和资产审计。
 
 ## 字段规则
