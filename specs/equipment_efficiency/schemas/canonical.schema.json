@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://equipeffi.local/schema/canonical-0.1.json",
+  "title": "EquipEffi Canonical Standard Pack 0.1",
+  "description": "标准事实候选源；不包含用户输入、UI 文案、导入别名或运行时评价流程。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "standard_pack_id",
+    "standard_code",
+    "standard_name",
+    "effective_date",
+    "catalog_data_version",
+    "review_status",
+    "source",
+    "facts",
+    "tables",
+    "formulas"
+  ],
+  "properties": {
+    "schema_version": { "const": "canonical-0.1" },
+    "standard_pack_id": { "type": "string", "minLength": 1 },
+    "standard_code": { "type": "string", "minLength": 1 },
+    "standard_name": { "type": "string", "minLength": 1 },
+    "effective_date": {
+      "type": "string",
+      "description": "ISO 日期，或由标准明确给出的非日期适用语义；不得猜测。"
+    },
+    "catalog_data_version": { "type": "string", "minLength": 1 },
+    "review_status": {
+      "enum": ["DRAFT", "REVIEWED", "APPROVED", "DEPRECATED"]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact", "provenance", "references"],
+      "properties": {
+        "artifact": { "type": "string", "minLength": 1 },
+        "provenance": { "type": "string", "minLength": 1 },
+        "references": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/source_reference" },
+          "minItems": 1
+        }
+      }
+    },
+    "facts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/fact" }
+    },
+    "tables": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/table" }
+    },
+    "formulas": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/formula" }
+    }
+  },
+  "$defs": {
+    "unit_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z%][A-Za-z0-9_./%²³-]*$"
+    },
+    "decimal": {
+      "type": "string",
+      "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+    },
+    "source_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "clause_or_table"],
+      "properties": {
+        "source_id": { "type": "string", "minLength": 1 },
+        "clause_or_table": { "type": "string", "minLength": 1 },
+        "pages": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "quote_or_note": { "type": "string" }
+      }
+    },
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fact_id", "fact_type", "value", "source_reference"],
+      "properties": {
+        "fact_id": { "type": "string", "minLength": 1 },
+        "fact_type": {
+          "enum": ["THRESHOLD", "BOUNDARY", "ENUM", "UNIT", "EFFECTIVE_DATE", "SCOPE", "PROVENANCE", "OTHER"]
+        },
+        "value": {},
+        "unit_id": { "$ref": "#/$defs/unit_id" },
+        "conditions": { "type": "object" },
+        "source_reference": { "$ref": "#/$defs/source_reference" }
+      }
+    },
+    "table": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["table_id", "title", "columns", "rows", "source_reference"],
+      "properties": {
+        "table_id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["column_id", "value_type"],
+            "properties": {
+              "column_id": { "type": "string", "minLength": 1 },
+              "value_type": { "enum": ["STRING", "DECIMAL", "INTEGER", "BOOLEAN", "ENUM"] },
+              "unit_id": { "$ref": "#/$defs/unit_id" }
+            }
+          },
+          "minItems": 1
+        },
+        "rows": {
+          "type": "array",
+          "items": { "type": "object" }
+        },
+        "source_reference": { "$ref": "#/$defs/source_reference" }
+      }
+    },
+    "formula": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["formula_id", "formula_revision", "expression", "source_reference"],
+      "properties": {
+        "formula_id": { "type": "string", "minLength": 1 },
+        "formula_revision": { "type": "string", "minLength": 1 },
+        "expression": { "type": "string", "minLength": 1 },
+        "variables": { "type": "array", "items": { "type": "string" } },
+        "rounding": { "type": "string" },
+        "source_reference": { "$ref": "#/$defs/source_reference" }
+      }
+    }
+  }
+}

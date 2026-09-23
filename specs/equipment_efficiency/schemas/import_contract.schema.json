@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://equipeffi.local/schema/import-contract-0.1.json",
+  "title": "EquipEffi Import Contract 0.1",
+  "description": "外部模板到 Product/Profile 字段的受控映射；不包含评价公式、查表或结论逻辑。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "profile_id",
+    "template_id",
+    "template_version",
+    "sheet_name",
+    "evaluation_behavior",
+    "mappings"
+  ],
+  "properties": {
+    "schema_version": { "const": "import-contract-0.1" },
+    "contract_id": { "type": "string", "minLength": 1 },
+    "profile_id": { "type": "string", "minLength": 1 },
+    "template_id": { "type": "string", "minLength": 1 },
+    "template_version": { "type": "string", "minLength": 1 },
+    "sheet_name": { "type": "string", "minLength": 1 },
+    "evaluation_behavior": { "const": "NO_EVALUATION_RULES" },
+    "mappings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/mapping" }
+    },
+    "unmapped_fields": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "source_references": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source_reference" }
+    }
+  },
+  "$defs": {
+    "mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_field_id", "target_field_id", "aliases", "transform", "validation_owner"],
+      "properties": {
+        "source_field_id": { "type": "string", "minLength": 1 },
+        "target_field_id": { "type": "string", "minLength": 1 },
+        "aliases": { "type": "array", "items": { "type": "string" } },
+        "source_unit_id": { "type": "string" },
+        "target_unit_id": { "type": "string" },
+        "transform": {
+          "enum": ["NONE", "PARSE_DECIMAL", "PARSE_INTEGER", "MAP_ENUM", "UNIT_CONVERT", "PARSE_DATE", "REVIEW_REQUIRED"]
+        },
+        "validation_owner": {
+          "enum": ["IMPORT_CONTRACT", "PRODUCT_PROFILE_SCHEMA", "RULESET", "HUMAN_REVIEW"]
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "source_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "clause_or_table"],
+      "properties": {
+        "source_id": { "type": "string", "minLength": 1 },
+        "clause_or_table": { "type": "string", "minLength": 1 },
+        "pages": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

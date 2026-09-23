@@ -3,12 +3,12 @@
 ## 权威状态
 
 - **Current Roadmap:** EquipEffi V2.2
-- **路线原文:** [docs/2026.9.21 EquipEffi 后续开发总体路线 V2.2.md](docs/2026.9.21%20EquipEffi%20后续开发总体路线%20V2.2.md)
-- **Current Phase:** Phase 0
-- **State:** `PHASE_0_PASS`
-- **Next State:** `PHASE_1_READY`
+- **路线原文:** [docs/28_EquipEffi 后续开发总体路线 V2.2.md](docs/28_EquipEffi%20后续开发总体路线%20V2.2.md)
+- **Current Phase:** Phase 1
+- **State:** `BLOCKED`
+- **Next State:** `REVIEW_BLOCKER_RESOLUTION`
 - **Automatic continuation:** `DISABLED`
-- **Allowed Work:** 仅 Phase 1；Phase 0B 未执行，未批准任何代码 Hotfix
+- **Allowed Work:** 仅 Phase 1 验收阻塞收口和 Solution/Product Review 输入补齐；不得启动 Phase 2；Phase 0B/Phase 1 Hotfix 均未执行
 
 ## 治理切换
 
@@ -42,6 +42,20 @@ Phase 0A 的治理切换、不可变起始 tag、真实基线、资产审计、�
 > **Phase 1：业务规范与数据契约。**
 
 Phase 1 只允许建立业务规范 V0.1、Canonical Schema、Product/Profile Schema、Import Contract、Golden Case Schema、Support Status 和 `pump_water` 样板的标准映射；不得批量迁移 17 个 Profile。
+
+## Phase 1 当前执行
+
+Phase 1 按 `docs/29_Phase 1 业务规范与数据契约.md` 的既定顺序执行：
+
+```text
+P1-G01 → P1-G02 → P1-G03 → P1-G04 → P1-G05 → P1-G06
+```
+
+`P1-G01` 已形成业务规范草案，`P1-G02` 已形成契约 Schema，`P1-G03` 已形成 `pump_water` / GB 19762-2025 映射，`P1-G04` 已形成并通过增强验证的 7 个首批 Golden Case，`P1-G05` 已对四项 Phase 1 P0 风险完成证据复核且未执行 Hotfix，`P1-G06` 已形成 Python/版本语义/Windows V1 Scope 评审候选。当前状态为 `BLOCKED`：权威交付物需要进入可复现 Git 提交，Windows V1 尚无产品负责人批准，CPython 3.12.x x64 尚无可复验环境。上述阻塞解决并完成 Solution/Product Review 前，不得声明 Phase 1 PASS 或启动 Phase 2。已知 Legacy Regression 失败必须原样保留并显式记录。
+
+## Phase 1 Review Boundary
+
+Phase 1 的唯一合法下一步是评审本次交付的业务规范、契约 Schema、`pump_water` 映射、Golden Case、P0 证据和 V1 Scope。当前仍需产品负责人补齐实际用户需求/商业价值/Scope 决策，需在 Phase 2 前建立 Python 3.12.x x64 环境，并对 `NEEDS_MORE_EVIDENCE` 项继续提供证据。任何评审前的代码重构、目录搬迁、完整 UI/SQLite/Excel/报告和批量 Profile 迁移均越界。
 
 ## Phase 0 Exit Gate
 

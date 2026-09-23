@@ -1,6 +1,6 @@
 # EquipEffi QA_BACKLOG
 
-**状态：** Phase 0 已入库；未执行 Phase 0B Hotfix  
+**状态：** Phase 1 acceptance blocked；Phase 0 已入库；未执行 Phase 0B Hotfix；未批准 Phase 1 Hotfix
 **来源：** v7–v15 / T04.xx 历史材料、第三方 `docs/重构问题清单_20260921.csv` 的 55 项、Phase 0 重跑和资产审计。
 
 ## 字段规则
@@ -45,8 +45,8 @@
 | QA-AUD-007 | AUD-007 | shared | `metadata.py` | 1687 行混合枚举、V4 映射、展示和 profile 构建 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 1/2 | OPEN | CSV#7 | 已在 ASSET_AUDIT 完成职责分类，暂不迁移 |
 | QA-AUD-008 | AUD-008 | shared | `device_specs.py:179-188` | 导入时就地修改 `DEVICE_SPECS` | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 2 | OPEN | CSV#8 | 记录为导入副作用，不在 0A 重写 |
 | QA-AUD-009 | AUD-009 | all | `device_specs.py`、`metadata.py`、`entrypoint.py` | 标准/字段/示例硬编码多份，可能产生数据漂移 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 1/2 | OPEN | CSV#9 | Python 数据先盘点，不能直接删除 |
-| QA-AUD-010 | AUD-010 | shared | `evaluators/shared.py:_interval_hit` | 核心区间解析难验证，边界错误可能给错结论 | 可能影响业务结论；需标准/Golden 证据 | M | V1_RUNTIME | P0 | Phase 1 | VERIFY | CSV#10 + source | 需边界标准证据/Golden 后决定 Hotfix |
-| QA-AUD-011 | AUD-011 | shared | `v4_validation.py` / `input_normalization.py` | 规范化重复实现，差异可能改变输入含义 | 可能影响业务结论；需标准/Golden 证据 | H | NOT_SHIPPED | P0 | Phase 1/2 | VERIFY | CSV#11 | 先对照 Golden/Import Contract，不做重构 |
+| QA-AUD-010 | AUD-010 | shared | `evaluators/shared.py:_interval_hit` | 核心区间解析难验证，边界错误可能给错结论 | 可能影响业务结论；需标准/Golden 证据 | M | V1_RUNTIME | P0 | Phase 1 | VERIFY | CSV#10 + source；Phase 1 已执行 12 个开闭端点 probe，全部符合预期 | Phase 1 review=`NEEDS_MORE_EVIDENCE`；现有 probe 未发现错误，但尚缺跨标准/Golden 的完整覆盖；不进入 Hotfix |
+| QA-AUD-011 | AUD-011 | shared | `v4_validation.py` / `input_normalization.py` | 规范化重复实现，差异可能改变输入含义 | 可能影响业务结论；需标准/Golden 证据 | H | NOT_SHIPPED | P0 | Phase 1/2 | VERIFY | CSV#11；pump_water 的完整别名与 canonical 输入输出一致，V4 validation valid/invalid probe 有预期结果 | Phase 1 review=`NEEDS_MORE_EVIDENCE`；样板证据不能代表全 Profile 的共享风险；不重构 |
 | QA-AUD-012 | AUD-012 | shared | `evaluation_service.py:148-426` | 279 行上帝方法，门禁分支难审计 | 可能影响发布可靠性或长期维护；业务影响待证 | H | V1_RUNTIME | P1 | Phase 2 | OPEN | CSV#12 | 结构债务，不因严重度直接 Hotfix |
 | QA-AUD-013 | AUD-013 | shared | `v4_validation.py` | 882 行、多 sheet 特例链，新增规则易漏 | 可能影响发布可靠性或长期维护；业务影响待证 | H | NOT_SHIPPED | P1 | Phase 2 | OPEN | CSV#13 | Import Contract 冻结后拆分 |
 | QA-AUD-014 | AUD-014 | shared | `input_normalization.py` | 226 行、16 类转换硬编码，输入错误风险 | 可能影响发布可靠性或长期维护；业务影响待证 | H | NOT_SHIPPED | P1 | Phase 1/2 | OPEN | CSV#14 | 先建立 Product/Profile Schema |
@@ -65,8 +65,8 @@
 | QA-AUD-027 | AUD-027 | shared | OOXML 解析三处 | sheet 名和 rels 解析重复，修复容易不一致 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Phase 2 | OPEN | CSV#27 | 不在冻结 V4 端口中重构 |
 | QA-AUD-028 | AUD-028 | shared | `ooxml_reader.py` / `v4_writer.py` | 列号互换换算重复 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Phase 2 | OPEN | CSV#28 | 归入 OOXML 工具清理 |
 | QA-AUD-029 | AUD-029 | shared | `template_resource.py` / `v4_template_contract.py` | 模板名、sheet 清单和说明重复配置 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 1/2 | OPEN | CSV#29 | Import Contract 单一来源 |
-| QA-AUD-030 | AUD-030 | shared | `v4_validation.py` | 手工规则表和 metadata 派生规则双真相源 | 可能影响业务结论；需标准/Golden 证据 | M | NOT_SHIPPED | P0 | Phase 1 | VERIFY | CSV#30 | 需确认是否存在实际输入差异，未授权 Hotfix |
-| QA-AUD-031 | AUD-031 | shared | 多处默认判定日期 | 日期硬编码可能选错标准生效状态 | 可能影响业务结论；需标准/Golden 证据 | M | V1_RUNTIME | P0 | Phase 1/2 | VERIFY | CSV#31 | 先用 Golden 明确 as-of 语义 |
+| QA-AUD-030 | AUD-030 | shared | `v4_validation.py` | 手工规则表和 metadata 派生规则双真相源 | 可能影响业务结论；需标准/Golden 证据 | M | NOT_SHIPPED | P0 | Phase 1 | VERIFY | CSV#30；pump_water 元数据字段约束与 V4 valid/zero/fraction/percent probes 未发现当前输入差异 | Phase 1 review=`NEEDS_MORE_EVIDENCE`；样板路径未证明全 Profile 无差异；待 Import/Profile 矩阵；未授权 Hotfix |
+| QA-AUD-031 | AUD-031 | shared | 多处默认判定日期 | 日期硬编码可能选错标准生效状态 | 可能影响业务结论；需标准/Golden 证据 | M | V1_RUNTIME | P0 | Phase 1/2 | VERIFY | CSV#31；default/explicit `2026-08-23` 一致，`2026-02-28` 与 `2026-03-01` 明确跨过实施日期 | Phase 1 review=`NEEDS_MORE_EVIDENCE`；Golden 已显式填写 `as_of`，但默认日期是否允许仍需产品/业务决策；不改实现 |
 | QA-AUD-032 | AUD-032 | shared | `__init__.py`、`pyproject.toml`、`build_msi.py` | 版本号 0.2.1 多处硬编码，追溯可能漂移 | 当前未确认影响 V1 业务结论；维护风险待证 | M | DEV_ONLY | P2 | Phase 2 | OPEN | CSV#32 | 版本模型由 ADR-003 进入 Phase 1 |
 | QA-AUD-033 | AUD-033 | shared | `main_window.py:339` | UI 写死公共类型数量 15 | 当前未确认影响 V1 业务结论；维护风险待证 | L | PROTOTYPE | P2 | Phase 2 | OPEN | CSV#33 | 非业务结论问题 |
 | QA-AUD-034 | AUD-034 | shared | `application/bootstrap.py` | Application 直接导入 infrastructure | 可能影响发布可靠性或长期维护；业务影响待证 | H | V1_RUNTIME | P1 | Phase 2 | OPEN | CSV#34 | 装配方向重做时处理 |
@@ -103,3 +103,14 @@ Hotfix IDs: none
 ```
 
 进入 Phase 1 后，先把 P0 风险转成标准复核和 Golden Candidate；未经批准不得修 evaluator、拆架构或清理空壳。
+
+## Phase 1 P0 Evidence Review（2026-09-22）
+
+本节只记录证据复核，不关闭原始 P0 条目，也不授权 Hotfix。`review_result` 只能使用 `CONFIRMED_P0`、`NOT_P0`、`NEEDS_MORE_EVIDENCE`；它与 backlog 的 `classification=P0` 分开。本节也使用与其他来源一致的最小字段；未知信息必须写 `UNKNOWN / NEEDS_EVIDENCE`。
+
+| issue_id | legacy_id/audit_id | profile_id | location | description | business_risk | engineering_risk | release_surface | classification | target_phase | status | review_result | evidence | decision | next_action |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `QA-AUD-010` | `AUD-010` | shared | `evaluators/shared.py:_interval_hit` | 核心区间解析可能造成边界结论错误 | 可能影响业务结论；需标准/Golden 证据 | M | V1_RUNTIME | P0 | Phase 1 | VERIFY | `NEEDS_MORE_EVIDENCE` | 复跑既有 12 个标准区间 probe：`0.25`、`0.95`、`3.15`、`10`、`17700`、`21000`、`700`、`700.01`、`1000`、`1000.01` 及严格开区间样例，实际结果全部符合预期 | 尚未证明错误；保持 P0/VERIFY，不因 probe 通过而自报关闭 | 以标准原文区间和 Golden Case 扩大覆盖，再决定是否需要最小修复 |
+| `QA-AUD-011` | `AUD-011` | shared | `v4_validation.py` / `input_normalization.py` | 规范化重复实现，差异可能改变输入含义 | 可能影响业务结论；需标准/Golden 证据 | H | NOT_SHIPPED | P0 | Phase 1/2 | VERIFY | `NEEDS_MORE_EVIDENCE` | `pump_water` 的短类别和完整 V4 别名均归一化为同一字段；同一输入得到相同等级、指标、限值和查表命中；V4 validation 对合法、零值、分数级数和效率越界分别给出预期问题 | 样板路径未显示业务结论差异，但证据不足以对共享风险作整体 `NOT_P0` 判断；保持 P0/VERIFY，不重构 | 将其他 V1 Profile 纳入 Import Contract/Golden 矩阵；未完成前不删除重复实现 |
+| `QA-AUD-030` | `AUD-030` | shared | `v4_validation.py` metadata/manual constraints | 手工规则表和 metadata 派生规则可能形成双真相源 | 可能影响业务结论；需标准/Golden 证据 | M | NOT_SHIPPED | P0 | Phase 1 | VERIFY | `NEEDS_MORE_EVIDENCE` | 元数据字段：流量/扬程/转速为正、级数为整数、效率 1–100；V4 probe 对 0、分数级数、0/101 效率均按预期拒绝；未发现样板输入差异 | 样板未复现错误，不能外推到所有 Profile；保持 P0/VERIFY | 完成各 V1 Profile 的字段约束对照和 Golden 证据；不在 Phase 1 重构校验器 |
+| `QA-AUD-031` | `AUD-031` | shared | 默认 `as_of` 与标准实施日期 | 多处默认判定日期可能选择错误的标准生效状态 | 可能影响业务结论；需标准/Golden 证据 | M | V1_RUNTIME | P0 | Phase 1/2 | VERIFY | `NEEDS_MORE_EVIDENCE` | 默认/显式 `2026-08-23` 均判为 1 级；显式 `2026-02-28` 在 `2026-03-01` 实施日前拒绝使用该标准；Golden Cases 全部显式记录 `as_of` | 当前未证明错误结论；默认日期是否允许、默认来源和审计展示仍是业务决策 | 在 Result Contract/产品决策中确认 `as_of` 必填或兼容默认，并要求结果带默认来源；不改实现 |

@@ -1,12 +1,65 @@
 # EquipEffi 项目交接说明
 
-> **Phase 0 治理切换（2026-09-21）**
+> **Phase 1 执行（2026-09-22～2026-09-23）**
 >
-> 当前唯一权威路线：`EquipEffi V2.2`；当前阶段：`Phase 0`；当前状态：`PHASE_0_PASS`；下一状态：`PHASE_1_READY`。
+> 当前唯一权威路线：`EquipEffi V2.2`；当前阶段：`Phase 1`；当前状态：`BLOCKED`；下一状态：`REVIEW_BLOCKER_RESOLUTION`。
 >
 > 旧 v7–v15、T04.xx、旧 HANDOFF 和编号执行清单均为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`。它们保留事实，不再拥有自动任务调度权。请先读取 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[BASELINE.md](BASELINE.md)、[ASSET_AUDIT.md](ASSET_AUDIT.md)、[QA_BACKLOG.md](QA_BACKLOG.md) 和 [V1_SCOPE.md](V1_SCOPE.md)。
 >
-> Phase 0 已建立 tag `pre-v2-rebaseline`，指向起始 HEAD `a1643ed38e0b934bbc7562348883b8a8bd4badc5`。本阶段未修改业务代码，未执行 0B Hotfix。2026-09-22 的暂时阻塞项已完成治理补正、全量复验并纳入可复现提交；Phase 1 现在是唯一允许启动的下一阶段。
+> Phase 0 已建立 tag `pre-v2-rebaseline`，指向起始 HEAD `a1643ed38e0b934bbc7562348883b8a8bd4badc5`。Phase 1 未修改 evaluator、目录、标准资源或业务算法，未执行 0B Hotfix。六个 Goal 的技术交付已形成，但验收复核发现交付物尚未进入可复现提交、Windows V1 产品决策缺失、CPython 3.12.x x64 环境缺失；当前唯一合法下一步是收口这些 Phase 1 阻塞并提交 Solution/Product Review，不得启动 Phase 2。
+
+## Phase 1 当前权威状态
+
+| 项目 | 当前事实 |
+|---|---|
+| 当前路线 | `EquipEffi V2.2` |
+| 当前阶段 | `Phase 1` |
+| 当前 Goal | `Phase 1 Review Package` |
+| 状态 | `BLOCKED` |
+| 唯一下一步 | 收口可复现提交、产品 Scope 决策和 Python 3.12.x x64 环境，再进入 Solution/Product Review；不得跳到 Phase 2 |
+| 业务样板 | `pump_water`，后续以 GB 19762-2025 标准映射为证据 |
+| 代码边界 | 仅允许规范/契约/Golden/审计文档及必要验证；不改业务实现 |
+
+## Phase 1 Goal Log（当前权威）
+
+| Goal | 状态 | 交付/证据 | 下一步 |
+|---|---|---|---|
+| `P1-G01` | `COMPLETE` | [business_spec.md](specs/equipment_efficiency/business_spec.md)：业务对象、评价生命周期、Support Status、证据优先级和验收条件 | `P1-G02`：建立五类数据契约和版本字段语义 |
+| `P1-G02` | `COMPLETE` | `schemas/canonical.schema.json`、`profile.schema.json`、`import_contract.schema.json`、`golden_case.schema.json`；business spec 第 10/11 节冻结契约边界和版本字段语义；JSON 语法校验通过 | `P1-G03`：完成 `pump_water` / GB 19762-2025 映射 |
+| `P1-G03` | `COMPLETE` | [profiles/pump_water.md](specs/equipment_efficiency/profiles/pump_water.md)：字段、单位、别名、标准公式、10 个表 3 数据行、开闭边界、无插值/外推、缺失/未知/冲突语义；当前包哈希已记录 | `P1-G04`：建立并批准首批 `pump_water` Golden Cases |
+| `P1-G04` | `COMPLETE` | [golden/pump_water](specs/equipment_efficiency/golden/pump_water)：7 个 `REVIEWED` 案例覆盖正常、下/上端点、区间切换、不外推、缺失效率和未知类别；增强验证器校验 Decimal、受控 `unit_id`、来源存在性/指纹和三项负例拒绝 | `P1-G05`：复核四项 Phase 1 P0 风险 |
+| `P1-G05` | `COMPLETE` | [QA_BACKLOG.md](QA_BACKLOG.md) Phase 1 P0 Evidence Review：AUD-010/011/030/031 分别为允许的精确分类；AUD-011 因共享风险证据不足为 `NEEDS_MORE_EVIDENCE`；无 Hotfix、无 evaluator 修改 | `P1-G06`：冻结 Python 版本、版本字段和 Windows V1 Scope |
+| `P1-G06` | `COMPLETE` | [V1_SCOPE.md](V1_SCOPE.md) 形成 17 Profile 的工程候选边界、CPython 3.12.x x64 和版本字段语义；商业批准、负责人/日期仍为 `REQUIRED_INPUT`，3.12 环境尚未建立 | `BLOCKED`；先收口验收阻塞，不得自动进入 Phase 2 |
+
+## Phase 1 acceptance re-review（2026-09-23）
+
+| 验收项 | 状态 | 证据/处理 |
+|---|---|---|
+| Phase 1 交付物进入可复现 Git 提交 | `IN_PROGRESS` | 当前 HEAD `468d498317ed917443ebd135a04d3b993f7c3503` 仍是 Phase 0；本次修正完成后只提交权威 Phase 1 交付物、治理文件和既有 docs/28～30 路线/方案文件，不提交业务实现 |
+| Golden Case Schema 类型、单位、来源门禁 | `RESOLVED_TECHNICALLY` | `golden_case.schema.json` 约束 Decimal 字符串和 `unit_id` 枚举；`tools/validate_phase1_contracts.py` 负责来源存在性和 SHA-256；负例必须得到 3 个错误 |
+| `pump_water` 规定点语义 | `RESOLVED_TECHNICALLY` | 映射明确 `flow_m3h=Q_BEP`、`head_m=H_BEP`、`pump_efficiency=η_BEP`，案例机器字段为 `STANDARD_BEP/BEP`；GB PDF 外部指纹已记录 |
+| AUD-011 精确分类及共享风险 | `RESOLVED_AS_REVIEW_RESULT` | `review_result=NEEDS_MORE_EVIDENCE`；保留 `classification=P0`，样板证据不外推为全 Profile `NOT_P0` |
+| Windows V1 产品决策 | `BLOCKED` | `V1_SCOPE.md` 显式要求具名负责人、日期、用户需求/商业价值证据和接受/拒绝理由；Agent 不代填 |
+| CPython 3.12.x x64 可复验环境 | `BLOCKED` | 当前仅有 Python 3.13.3；`py -3.12 --version` 尚未可用，不能把 3.13 结果冒充 V1 验收 |
+
+在产品 Scope 决策和可重复 3.12.x x64 复验缺失期间，本交接保持 `BLOCKED`；不声明 `PHASE_1_PASS`，不启动 Phase 2。
+
+## Phase 1 Verification Evidence（2026-09-22）
+
+| 类别 | exact command / probe | environment | duration | pass | fail | error | skip | not_run / reason |
+|---|---|---|---:|---:|---:|---:|---:|---|
+| Legacy Regression | `$env:PYTHONPATH='src'; & 'C:\Users\WANGWEI\AppData\Local\Programs\Python\Python313\python.exe' -m unittest discover -s tests -p 'test_*.py'` | Windows；Python 3.13.3；完整依赖；源码工作区 | 142.123 s（unittest 内部；PowerShell wall 未单独包裹） | 880 | 3 | 1 | 3 | 0 |
+| Legacy failures retained | 同上 | 与 Phase 0 相同 | — | — | 3（V4 motor reader/writer） | 1（release audit `wheel_pmsm_status`） | 3 | 未修复、未隐藏、已保留在 QA_BACKLOG |
+| compileall | `$py -m compileall -q src tools tests` | Python 3.13.3；`PYTHONPATH=src` | 0.911 s | 1 | 0 | 0 | 0 | 0 |
+| package import | `$env:PYTHONPATH='src'; $py -c "import equipeffi; print(equipeffi.__file__)"` | Python 3.13.3；`PYTHONPATH=src` | 0.068 s | 1 | 0 | 0 | 0 | 0 |
+| package/resource smoke | `$py -m equipeffi --status`；`$py -m equipeffi --device-type centrifugal_pump --example` | Python 3.13.3；`PYTHONPATH=src` | 0.279 s / 0.257 s | 2 | 0 | 0 | 0 | 0 |
+| Contract/Golden validation | `python tools/validate_phase1_contracts.py --negative-probe` | Python 3.13.3；`jsonschema 4.23.0`；工作区外部 GB PDF 可访问 | 0.317 s | 7 cases；negative probe=3 errors | 0 | 0 | 0 | 0 |
+| Python 3.12 environment | `py -3.12 --version` | Windows Python launcher | — | — | — | — | — | NOT_RUN：未安装 Python 3.12；Phase 2 前必须建立可重复 x64 环境 |
+| `git diff --check` | `git diff --check` | Git working tree | <1 s | PASS | 0 | 0 | 0 | 0 |
+
+Phase 1 没有修改标准 JSON、模板、evaluator 或测试期望，因此没有重写 `BASELINE.md` 的 Phase 0 起始事实。上表是本次 Phase 1 复验事实；旧失败仍然是当前失败。
+
+以下 Phase 0 摘要和旧正文保留为历史事实；本节及后续 Goal Log 覆盖其中的当前阶段和下一步说明。
 
 ## 当前事实摘要（Phase 0 Revalidated）
 
@@ -14,12 +67,12 @@
 |---|---|
 | 正式运行实现 | `domain/evaluation` → `EvaluationService` → `evaluator_registry` → 17 个 evaluators → `JsonStandardRepository` |
 | 空壳/兼容路径 | `domain/devices/` 为 0 引用空壳；`device_evaluators.py` 为当前仍被依赖的兼容门面；均未删除 |
-| 当前正式测试 | Python 3.13.3 全量 unittest：887 项，880 pass、3 fail、1 error、3 skip；本次 wall 139.621 s（unittest 内部 138.524 s）；完整结果见 `BASELINE.md` |
-| compileall | `src tools tests` PASS |
-| 标准加载 | 17 个 manifest pack 可加载并报告 active；不等于业务边界已验收 |
-| Windows V1 草案 | `transformer`、`compressor`、`pump_water` 为 IN_V1；motor 三 Profile和其余 Profile按 `UNDER_REVIEW/POST_V1` 处理，详见 `V1_SCOPE.md` |
+| 当前正式测试 | Python 3.13.3 Phase 1 复验：887 项，880 pass、3 fail、1 error、3 skip；unittest 内部 142.123 s；4 个已知失败未改变，详见上方 Evidence |
+| compileall / package import | Python 3.13.3：0.315 s / 0.055 s，均 PASS |
+| 标准加载 | 17 个 manifest pack 可加载并报告 active；不等于业务边界已验收；`pump_water` 已有 7 个 Golden Case |
+| Windows V1 Scope | 工程候选冻结为 `transformer`、`compressor`、`pump_water`；motor 三 Profile 与 `heat_pump_chiller` `UNDER_REVIEW`，其余 `POST_V1`；产品批准待评审 |
 | 首个纵向样板 | `pump_water`；候选比较和必须证明项见 `V1_SCOPE.md` |
-| 当前唯一下一步 | Phase 1；不得继续 T04.xx、批量改 evaluator、建完整 PySide6/SQLite/Excel 产品 |
+| 当前唯一下一步 | 收口 Phase 1 阻塞并提交 Solution/Product Review；不得继续 T04.xx、批量改 evaluator、建完整 PySide6/SQLite/Excel 产品或启动 Phase 2 |
 
 以下旧正文保留为历史事实参考；其中的日期、通过数字和“下一任务”说明不覆盖本节及 Phase 0 权威文件。
 

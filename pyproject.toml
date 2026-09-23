@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "equipeffi"
 version = "0.2.1"
 description = "设备能效分析工具"
-requires-python = ">=3.11"
+requires-python = ">=3.12,<3.13"
 # 判定内核、公共API及OOXML适配器只使用Python标准库；将文档/表格
 # 生成工具依赖放入可选组，便于Linux服务和安卓桥接层安装轻量核心包。
 dependencies = []

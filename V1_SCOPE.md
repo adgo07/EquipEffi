@@ -1,6 +1,6 @@
-# Windows V1 Scope（Phase 0 草案）
+# Windows V1 Scope（Phase 1 冻结候选）
 
-**状态：** Phase 0 形成的工程/风险草案；Phase 1 冻结业务语义前不得视为商业承诺。  
+**状态：** `BLOCKED`；工程候选边界已冻结，但 Windows V1 尚未获得产品/商业批准，不得视为 Phase 1 PASS、`READY_FOR_SOL_REVIEW` 或商业承诺。
 **原则：** 不默认 15 类公共设备或 17 个内部 Profile 全部首发；不允许“半支持”。
 
 ## Support Status 草案
@@ -75,9 +75,77 @@ REQUIRES_REVIEW
 | 实际用户需求 | `UNKNOWN / NEEDS_EVIDENCE` | 当前仓库没有可引用的用户访谈、客户需求单、订单/项目优先级或使用遥测记录 | 不因工程可行而扩展为全量 17 Profile；Phase 1 必须补充需求证据 |
 | 商业价值 | `UNKNOWN / NEEDS_EVIDENCE` | 当前仓库没有收入贡献、客户覆盖、交付频率、市场优先级或产品负责人确认记录 | `IN_V1` 仍是工程草案，不构成商业承诺 |
 | 工程就绪度 | `VERIFIED` | 本次 Phase 0 的真实测试、标准资源、风险分级、Profile 注册和样板比较 | 可作为候选排序依据，但不能替代产品决策 |
-| 产品决策负责人 | `PENDING / NEEDS_EVIDENCE` | 当前权威治理文件未指定姓名、角色和决策日期 | Phase 1 启动前必须登记负责人、证据来源、决定日期和接受/拒绝理由 |
+| 产品决策负责人 | `REQUIRED_INPUT` | 当前权威治理文件未指定姓名、角色和决策日期 | 解除阻塞前必须登记具名负责人、证据来源、决定日期和接受/拒绝理由 |
 
 因此，以下 `IN_V1 / UNDER_REVIEW / POST_V1` 是“工程与风险草案”。Phase 1 只允许在指定产品决策负责人补齐实际需求和商业价值证据后，冻结最终业务 Scope；在此之前不得把 `IN_V1` 描述为已获商业批准。
+
+## Phase 1 Scope Freeze Package
+
+### 冻结类型与决策状态
+
+本节冻结的是 Windows V1 的**评审候选边界**，目的是禁止在 Solution/Product Review 前继续扩大范围；它不是产品负责人签字，也不把工程可用性自动转换为商业承诺。
+
+```text
+scope_freeze_status: BLOCKED
+scope_freeze_kind: ENGINEERING_CANDIDATE_BOUNDARY
+commercial_approval: PENDING_PRODUCT_DECISION
+product_decision_owner: REQUIRED_INPUT
+decision_date: REQUIRED_INPUT
+automatic_scope_expansion: DISABLED
+```
+
+| Scope 状态 | 本次冻结的 Profile | Windows V1 UI 语义 |
+|---|---|---|
+| `IN_V1`（工程候选，待产品确认） | `transformer`、`compressor`、`pump_water` | 可进入 V1 候选，但必须显示标准、版本和 Support Status |
+| `UNDER_REVIEW` | `motor_lv`、`motor_hv`、`motor_pmsm`、`heat_pump_chiller` | 不显示为已支持；显示需要复核/评审中 |
+| `POST_V1` | `pump_chemical`、`fan`、`blower`、`submersible`、`boiler`、`heat_treatment`、`heat_pump_water_heater`、`duct_ac`、`unitary_ac`、`multi_split_ac` | 当前版本未支持 |
+
+这 17 个状态是当前 Phase 1 review package 的冻结输入。任何把 `UNDER_REVIEW` 或 `POST_V1` 改为首发的请求，都必须由产品负责人给出实际需求、商业价值、接受风险和决定日期；不得由 Agent 或 evaluator 成熟度自行扩大。
+
+### 用户需求与商业价值的决策缺口
+
+| 决策维度 | 当前证据 | 当前状态 | 对冻结 Scope 的影响 | 需要谁补证 |
+|---|---|---|---|---|
+| 实际用户需求 | 仓库没有用户访谈、客户需求单、订单/项目优先级或使用遥测 | `UNKNOWN / NEEDS_EVIDENCE` | 不允许把 17 Profile 全量纳入 V1 | 产品负责人/业务负责人 |
+| 商业价值 | 仓库没有收入贡献、客户覆盖、交付频率、市场优先级或报价证据 | `UNKNOWN / NEEDS_EVIDENCE` | `IN_V1` 只是工程优先级，不是销售承诺 | 产品负责人/业务负责人 |
+| 标准重要性 | 各 Profile 的标准包和来源质量登记在本表上方 | `PARTIALLY_VERIFIED` | 可作为工程排序依据，不能替代客户价值 | 技术/标准负责人 |
+| evaluator 成熟度 | Phase 0 测试和 ASSET_AUDIT；Legacy Regression 有已知失败 | `VERIFIED_AS_ENGINEERING_EVIDENCE` | 只决定候选工作量，不决定业务首发 | 技术负责人 |
+| P0 风险 | `QA_BACKLOG.md` 中登记，Phase 1 已做证据复核 | `OPEN / REVIEWED` | 未关闭风险不得被描述为已发布能力 | 技术/产品共同确认 |
+
+产品评审需要明确填写：`decision_owner`、`decision_date`、每个 Scope 状态的接受/拒绝理由、需求来源、商业价值证据、风险接受人和是否允许调整本候选边界。在这些字段补齐前，最终状态保持 `BLOCKED`；Agent 不得代填或推断产品批准。
+
+### Acceptance blocker
+
+当前 `IN_V1 / UNDER_REVIEW / POST_V1` 仍是工程候选，不是产品决策。缺少具名负责人、决定日期、实际用户需求证据、商业价值证据和明确接受/拒绝理由，因此本文件不能声明 Windows V1 Scope 已冻结，也不能解除 Phase 1 阻塞。
+
+## Python Windows V1 运行环境冻结
+
+| 项目 | 冻结值/状态 | 说明 |
+|---|---|---|
+| Windows V1 开发与验收 | `CPython 3.12.x x64` | 冻结 major/minor 和 64-bit；patch 由可重复构建环境另行 pin |
+| Phase 0 基线 | `Python 3.13.3` | 保留为历史/基线证据，不覆盖 V1 验收环境 |
+| 当前 3.12 复验 | `NOT_REVALIDATED / NEEDS_ENVIRONMENT` | 本阶段不安装或切换解释器；Phase 2 前必须建立可重复环境并重跑门禁 |
+| package metadata | `requires-python >=3.12,<3.13` | 用项目元数据执行冻结；见 `pyproject.toml` |
+| 禁止推断 | 不把 3.13 通过数字转写成 3.12 通过 | 版本差异必须保留在验证记录中 |
+
+## 版本字段冻结
+
+结果和 Golden Case 的版本字段按以下职责分离，不再新增含义模糊的全局 `algorithm_version`：
+
+| 字段 | 冻结语义 |
+|---|---|
+| `app_version` | 应用/构建发行版本，不单独证明业务结果相同 |
+| `business_spec_version` | 业务对象、状态和业务流程语义版本 |
+| `catalog_data_version` | Canonical 标准事实内容版本 |
+| `standard_pack_id` | 标准包稳定身份 |
+| `standard_pack_version` | 标准包结构/发布修订；`pump_water` 当前候选为 `v1` |
+| `standard_pack_hash` | 实际加载标准包字节指纹 |
+| `ruleset_version` | 路由、边界、公式调用、比较方向和问题码规则版本 |
+| `result_contract_version` | 对外结果字段和语义版本 |
+| `schema_version` | 输入、Canonical、Profile、Import 或 Golden Schema 版本 |
+| `formula_id` / `formula_revision` | 公式稳定身份及表达/精度/修约修订 |
+
+`pump_water` 首批 Golden Case 使用 `business_spec_version=0.1`、`standard_pack_version=v1`、`catalog_data_version=2026.08.23`、`ruleset_version=pump_water-rules-0.1`；这些值可被 Solution Review 以新版本 supersede，不得原地改写已批准案例。
 
 ### `IN_V1`
 
