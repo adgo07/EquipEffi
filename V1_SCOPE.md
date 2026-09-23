@@ -124,9 +124,22 @@ automatic_scope_expansion: DISABLED
 |---|---|---|
 | Windows V1 开发与验收 | `CPython 3.12.x x64` | 冻结 major/minor 和 64-bit；patch 由可重复构建环境另行 pin |
 | Phase 0 基线 | `Python 3.13.3` | 保留为历史/基线证据，不覆盖 V1 验收环境 |
-| 当前 3.12 复验 | `NOT_REVALIDATED / NEEDS_ENVIRONMENT` | 本阶段不安装或切换解释器；Phase 2 前必须建立可重复环境并重跑门禁 |
+| 当前 3.12 复验 | `REVALIDATED` | CPython 3.12.14 x64；项目 `.venv\Scripts\python.exe` 由 uv 管理运行时建立；887 项回归和 Phase 1 合同/静态门禁已重跑 |
 | package metadata | `requires-python >=3.12,<3.13` | 用项目元数据执行冻结；见 `pyproject.toml` |
 | 禁止推断 | 不把 3.13 通过数字转写成 3.12 通过 | 版本差异必须保留在验证记录中 |
+
+本次复验使用的可重复入口（项目根目录）：
+
+```powershell
+$env:UV_CACHE_DIR = 'G:\Python Project\EquipEffi\_codex\uv-cache'
+$env:UV_PYTHON_INSTALL_DIR = 'G:\Python Project\EquipEffi\_codex\python'
+uv python install 3.12.14 --install-dir $env:UV_PYTHON_INSTALL_DIR
+uv venv --python 3.12.14 .venv
+uv pip install --python .venv\Scripts\python.exe -e '.[tools,test]' 'jsonschema>=4.23,<5'
+.venv\Scripts\python.exe -m unittest discover -s tests -p 'test_*.py'
+```
+
+Windows `py` 启动器不是本次门禁入口；验收统一使用项目 `.venv\Scripts\python.exe`，避免把系统解释器选择和项目运行时混在一起。
 
 ## 版本字段冻结
 

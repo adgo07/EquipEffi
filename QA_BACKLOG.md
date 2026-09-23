@@ -114,3 +114,17 @@ Hotfix IDs: none
 | `QA-AUD-011` | `AUD-011` | shared | `v4_validation.py` / `input_normalization.py` | 规范化重复实现，差异可能改变输入含义 | 可能影响业务结论；需标准/Golden 证据 | H | NOT_SHIPPED | P0 | Phase 1/2 | VERIFY | `NEEDS_MORE_EVIDENCE` | `pump_water` 的短类别和完整 V4 别名均归一化为同一字段；同一输入得到相同等级、指标、限值和查表命中；V4 validation 对合法、零值、分数级数和效率越界分别给出预期问题 | 样板路径未显示业务结论差异，但证据不足以对共享风险作整体 `NOT_P0` 判断；保持 P0/VERIFY，不重构 | 将其他 V1 Profile 纳入 Import Contract/Golden 矩阵；未完成前不删除重复实现 |
 | `QA-AUD-030` | `AUD-030` | shared | `v4_validation.py` metadata/manual constraints | 手工规则表和 metadata 派生规则可能形成双真相源 | 可能影响业务结论；需标准/Golden 证据 | M | NOT_SHIPPED | P0 | Phase 1 | VERIFY | `NEEDS_MORE_EVIDENCE` | 元数据字段：流量/扬程/转速为正、级数为整数、效率 1–100；V4 probe 对 0、分数级数、0/101 效率均按预期拒绝；未发现样板输入差异 | 样板未复现错误，不能外推到所有 Profile；保持 P0/VERIFY | 完成各 V1 Profile 的字段约束对照和 Golden 证据；不在 Phase 1 重构校验器 |
 | `QA-AUD-031` | `AUD-031` | shared | 默认 `as_of` 与标准实施日期 | 多处默认判定日期可能选择错误的标准生效状态 | 可能影响业务结论；需标准/Golden 证据 | M | V1_RUNTIME | P0 | Phase 1/2 | VERIFY | `NEEDS_MORE_EVIDENCE` | 默认/显式 `2026-08-23` 均判为 1 级；显式 `2026-02-28` 在 `2026-03-01` 实施日前拒绝使用该标准；Golden Cases 全部显式记录 `as_of` | 当前未证明错误结论；默认日期是否允许、默认来源和审计展示仍是业务决策 | 在 Result Contract/产品决策中确认 `as_of` 必填或兼容默认，并要求结果带默认来源；不改实现 |
+
+## CPython 3.12.x x64 V1 revalidation（2026-09-23）
+
+本次用项目 `.venv\Scripts\python.exe`（CPython 3.12.14 x64）重跑当前正式 unittest：
+
+```text
+$env:PYTHONPATH='src'; & '.venv\Scripts\python.exe' -m unittest discover -s tests -p 'test_*.py'
+Ran 887 tests in 151.127s
+FAILED (failures=3, errors=1, skipped=3)
+wall duration: 155.565s
+pass=880; fail=3; error=1; skip=3; not_run=0
+```
+
+失败集合与 Python 3.13.3 Phase 0/Phase 1 记录一致：3 个 V4 电机 reader/writer 失败（`NOT_SHIPPED`），1 个 release audit `wheel_pmsm_status` 错误（`DEV_ONLY`）。本次仅完成环境复验，没有修改业务实现、测试期望或发布表面。
