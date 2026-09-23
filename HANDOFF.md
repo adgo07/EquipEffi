@@ -16,7 +16,7 @@
 | 当前阶段 | `Phase 1` |
 | 当前 Goal | `Phase 1 Review Package` |
 | 状态 | `BLOCKED` |
-| 唯一下一步 | 收口可复现提交、产品 Scope 决策和 Python 3.12.x x64 环境，再进入 Solution/Product Review；不得跳到 Phase 2 |
+| 唯一下一步 | 获取产品 Scope 决策并建立/复验 Python 3.12.x x64 环境，再进入 Solution/Product Review；不得跳到 Phase 2 |
 | 业务样板 | `pump_water`，后续以 GB 19762-2025 标准映射为证据 |
 | 代码边界 | 仅允许规范/契约/Golden/审计文档及必要验证；不改业务实现 |
 
