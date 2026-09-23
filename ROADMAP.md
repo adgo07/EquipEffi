@@ -51,7 +51,7 @@ Phase 1 按 `docs/29_Phase 1 业务规范与数据契约.md` 的既定顺序执�
 P1-G01 → P1-G02 → P1-G03 → P1-G04 → P1-G05 → P1-G06
 ```
 
-`P1-G01` 已形成业务规范草案，`P1-G02` 已形成契约 Schema，`P1-G03` 已形成 `pump_water` / GB 19762-2025 映射，`P1-G04` 已形成并通过增强验证的 7 个首批 Golden Case，`P1-G05` 已对四项 Phase 1 P0 风险完成证据复核且未执行 Hotfix，`P1-G06` 已形成 Python/版本语义/Windows V1 Scope 评审候选。当前状态为 `BLOCKED`：权威交付物需要进入可复现 Git 提交，Windows V1 尚无产品负责人批准，CPython 3.12.x x64 尚无可复验环境。上述阻塞解决并完成 Solution/Product Review 前，不得声明 Phase 1 PASS 或启动 Phase 2。已知 Legacy Regression 失败必须原样保留并显式记录。
+`P1-G01` 已形成业务规范草案，`P1-G02` 已形成契约 Schema，`P1-G03` 已形成 `pump_water` / GB 19762-2025 映射，`P1-G04` 已形成并通过增强验证的 7 个首批 Golden Case，`P1-G05` 已对四项 Phase 1 P0 风险完成证据复核且未执行 Hotfix，`P1-G06` 已形成 Python/版本语义/Windows V1 Scope 评审候选。权威交付物已在 `9cb39cccf0381ba0e560c5f69fcb81725acfbe87` 可复现；当前状态仍为 `BLOCKED`，原因仅剩 Windows V1 尚无产品负责人批准、CPython 3.12.x x64 尚无可复验环境。上述阻塞解决并完成 Solution/Product Review 前，不得声明 Phase 1 PASS 或启动 Phase 2。已知 Legacy Regression 失败必须原样保留并显式记录。
 
 ## Phase 1 Review Boundary
 

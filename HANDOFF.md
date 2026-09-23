@@ -6,7 +6,7 @@
 >
 > 旧 v7–v15、T04.xx、旧 HANDOFF 和编号执行清单均为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`。它们保留事实，不再拥有自动任务调度权。请先读取 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[BASELINE.md](BASELINE.md)、[ASSET_AUDIT.md](ASSET_AUDIT.md)、[QA_BACKLOG.md](QA_BACKLOG.md) 和 [V1_SCOPE.md](V1_SCOPE.md)。
 >
-> Phase 0 已建立 tag `pre-v2-rebaseline`，指向起始 HEAD `a1643ed38e0b934bbc7562348883b8a8bd4badc5`。Phase 1 未修改 evaluator、目录、标准资源或业务算法，未执行 0B Hotfix。六个 Goal 的技术交付已形成，但验收复核发现交付物尚未进入可复现提交、Windows V1 产品决策缺失、CPython 3.12.x x64 环境缺失；当前唯一合法下一步是收口这些 Phase 1 阻塞并提交 Solution/Product Review，不得启动 Phase 2。
+> Phase 0 已建立 tag `pre-v2-rebaseline`，指向起始 HEAD `a1643ed38e0b934bbc7562348883b8a8bd4badc5`。Phase 1 未修改 evaluator、目录、标准资源或业务算法，未执行 0B Hotfix。六个 Goal 的技术交付已在 HEAD `9cb39cccf0381ba0e560c5f69fcb81725acfbe87` 提交并可复现；Windows V1 产品决策和 CPython 3.12.x x64 环境仍缺失。当前唯一合法下一步是收口这两个 Phase 1 阻塞并提交 Solution/Product Review，不得启动 Phase 2。
 
 ## Phase 1 当前权威状态
 
@@ -35,7 +35,7 @@
 
 | 验收项 | 状态 | 证据/处理 |
 |---|---|---|
-| Phase 1 交付物进入可复现 Git 提交 | `IN_PROGRESS` | 当前 HEAD `468d498317ed917443ebd135a04d3b993f7c3503` 仍是 Phase 0；本次修正完成后只提交权威 Phase 1 交付物、治理文件和既有 docs/28～30 路线/方案文件，不提交业务实现 |
+| Phase 1 交付物进入可复现 Git 提交 | `RESOLVED` | HEAD `9cb39cccf0381ba0e560c5f69fcb81725acfbe87` 已包含权威 Phase 1 交付物、治理文件、验证器和 docs/28～30 路线/方案文件；未提交业务实现 |
 | Golden Case Schema 类型、单位、来源门禁 | `RESOLVED_TECHNICALLY` | `golden_case.schema.json` 约束 Decimal 字符串和 `unit_id` 枚举；`tools/validate_phase1_contracts.py` 负责来源存在性和 SHA-256；负例必须得到 3 个错误 |
 | `pump_water` 规定点语义 | `RESOLVED_TECHNICALLY` | 映射明确 `flow_m3h=Q_BEP`、`head_m=H_BEP`、`pump_efficiency=η_BEP`，案例机器字段为 `STANDARD_BEP/BEP`；GB PDF 外部指纹已记录 |
 | AUD-011 精确分类及共享风险 | `RESOLVED_AS_REVIEW_RESULT` | `review_result=NEEDS_MORE_EVIDENCE`；保留 `classification=P0`，样板证据不外推为全 Profile `NOT_P0` |
