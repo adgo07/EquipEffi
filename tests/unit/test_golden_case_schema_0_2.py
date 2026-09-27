@@ -321,7 +321,7 @@ class GoldenCaseSchema02Tests(unittest.TestCase):
             )
             self.assertEqual(
                 resolved,
-                evidence_root
+                evidence_root.resolve()
                 / "6 7. GB 19762-2025 离心泵能效限定值及能效等级.pdf",
             )
             self.assertIn("G:/", reference["artifact_path"])
