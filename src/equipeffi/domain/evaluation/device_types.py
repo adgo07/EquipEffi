@@ -206,7 +206,10 @@ def _resolve_pump(values: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
     if profile in {"chemical", "pump_chemical", "petrochemical"}:
         return "pump_chemical", [{"rule": "公共离心泵profile", "profile": "chemical"}]
 
-    category = str(values.get("category", ""))
+    # Golden v0.3 and the public input contract retain product_type as the
+    # source field. Keep legacy category as a fallback, but route from the
+    # canonical raw field when both are present.
+    category = str(values.get("product_type", values.get("category", "")) or "")
     if any(token in category for token in ("石油化工", "石化", "化工")):
         return "pump_chemical", [{"rule": "按设备类别路由离心泵", "category": category, "profile": "chemical"}]
     if any(token in category for token in ("清水", "单级单吸", "单级双吸", "管道", "多级", "轻型多级")):

@@ -53,6 +53,9 @@ DEVICE_ALIASES: dict[str, dict[str, str]] = {
         "cooling": "cooling_method",
     },
     "pump_water": {
+        "product_type": "category",
+        "QBEP": "flow_m3h",
+        "HBEP": "head_m",
         "flow": "flow_m3h",
         "head": "head_m",
         "speed": "rated_speed_rpm",
@@ -61,6 +64,9 @@ DEVICE_ALIASES: dict[str, dict[str, str]] = {
         "efficiency": "pump_efficiency",
     },
     "pump_chemical": {
+        "product_type": "category",
+        "QBEP": "flow_m3h",
+        "HBEP": "head_m",
         "flow": "flow_m3h",
         "head": "head_m",
         "speed": "rated_speed_rpm",

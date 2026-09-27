@@ -16,6 +16,8 @@ class StandardDataStatus(StrEnum):
 
 class Conclusion(StrEnum):
     OUT_OF_SCOPE = "不在范围"
+    NOT_APPLICABLE = "不适用"
+    NOT_IN_RELEASE_SCOPE = "当前版本未支持"
     UNABLE_TO_JUDGE = "无法判定"
     ELIMINATED = "淘汰"
     NOT_COMPLIANT = "未达标"

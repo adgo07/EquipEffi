@@ -52,6 +52,12 @@ class EvaluationResult:
     # 对外使用V4公共类型；内部类型用于追溯实际调用的标准评价器。
     public_device_type: str = ""
     internal_device_type: str = ""
+    # 分层离心泵结果契约。非泵设备维持 None/空列表以兼容既有结果。
+    support_status: str | None = None
+    category_status: str | None = None
+    evaluation_status: str | None = None
+    grade: str | None = None
+    issue_codes: list[str] = field(default_factory=list)
 
     @property
     def elimination(self) -> dict[str, Any] | None:

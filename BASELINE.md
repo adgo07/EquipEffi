@@ -111,3 +111,16 @@ Python 3.13 全量 unittest 的 4 个当前缺陷已进入 `QA_BACKLOG.md`：
 ## Baseline 复验规则
 
 Phase 0B 若未执行，本文件保持起始事实；本次确实未执行 0B。若未来批准 P0 Hotfix，必须追加新的复验段，记录修改前后 HEAD、哈希、测试和结果，不覆盖本节。
+
+## Phase 1 Pump V2 R01–R06 isolated revision（2026-09-27）
+
+此段为 Phase 1 新增快照，不回写或替代上面的 Phase 0 基线。起点为固定提交 `9e413051177fbfa7f1b217de17d344f33176b152`；修订在独立 clean worktree 完成，原工作树不参与复制或验证源代码导入。
+
+| 资产 | 起点 SHA-256 | 修订后候选 SHA-256 | 事实 |
+|---|---|---|---|
+| `src/equipeffi/resources/standards/pump.json` | `A5B1C43F49C8B6F4785EA3A624DE9AC8FC5AE9FD37608CCB1DB4893229903EF7` | `5D91F01B1C5F26DC4F364A3156C4E974B159FA1005BD840489C0BC3465C18C0F` | SHA-256 为 Git 提交中的 LF 规范文本字节；仅 T3-08 的 C2 从 `144.33` 改为已授权 `142.33`，逐字段对照没有其他 JSON 值差异；T3-09 C3=`144.33` 保持。 |
+| `src/equipeffi/standard_manifest.json` | `D8D80497E7B177F5E244DF1FB0ECD5924737BC050D9E4C7E46412D6D15C2C077` | `5D598B6C028554341CF26B5F5DF241E3538FF06626465C8795F2D1D1ECD9566F` | SHA-256 为 Git 提交中的 LF 规范文本字节；共享 `pump.json` 的 `pump_water` 与 `pump_chemical` 两条 manifest 记录同步到新数据版本；Canonical 数值事实仍以上行逐字段对照为准。 |
+| `src/equipeffi/domain/evaluation/evaluators/pump.py` | inherited from base | `615F7EC884CF4EB103FFD74804DFE1A5E2616E0B317AD9C457E16213EDB1FFBB` | SHA-256 为提交中 LF 规范文本字节；泵状态修订；Decimal50、GB 19762—2025 公式、ns_raw 正式分档及总 Q/H 和 suction/stages 换算保持冻结，详见新契约和独立定点测试。 |
+| `src/equipeffi/application/services/evaluation_service.py` | inherited from base | `EEF8731E5A162C81441D83BAC4C493D0F9EA5A0014CEC1E44BF5E82535DEB8ED` | SHA-256 为提交中 LF 规范文本字节；应用路由状态修订；清水泵公开准入、化工泵未发布状态在应用边界明确表达。 |
+
+本轮正式命令、环境、用时、统计和全量测试已有失败详见 [IMPLEMENTATION_REPORT.md](IMPLEMENTATION_REPORT.md)。该快照不构成 Golden 批准或 Phase 1 PASS。七个旧 Golden 0.1 文件和其 hash 未改；validator 仅通过版本化来源登记识别一项确切历史 Canonical 指纹，未知指纹仍失败。

@@ -31,6 +31,13 @@ _COMMON_CONCLUSIONS = [
 ]
 _THREE_LEVEL_CONCLUSIONS = [Conclusion.LEVEL_3.value, Conclusion.LEVEL_2.value, Conclusion.LEVEL_1.value]
 _CONCLUSIONS_BY_PUBLIC_TYPE = {
+    "centrifugal_pump": _COMMON_CONCLUSIONS + [
+        Conclusion.NOT_APPLICABLE.value,
+        Conclusion.NOT_IN_RELEASE_SCOPE.value,
+        Conclusion.LEVEL_1.value,
+        Conclusion.LEVEL_2.value,
+        Conclusion.LEVEL_3.value,
+    ],
     "blower": _COMMON_CONCLUSIONS + [Conclusion.SAVING_VALUE.value, Conclusion.LIMIT_VALUE.value],
     "heat_treatment": _COMMON_CONCLUSIONS + [Conclusion.FIRST_CLASS.value, Conclusion.SECOND_CLASS.value, Conclusion.THIRD_CLASS.value],
     "heat_pump_water_heater": _COMMON_CONCLUSIONS + [

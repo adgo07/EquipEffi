@@ -66,6 +66,34 @@ def _standard_effective_date(pack: dict[str, Any]) -> date | None:
         return None
 
 
+def _pump_release_support(internal_device_type: str) -> str | None:
+    if internal_device_type == "pump_water":
+        return "SUPPORTED"
+    if internal_device_type == "pump_chemical":
+        return "NOT_IN_RELEASE_SCOPE"
+    return None
+
+
+def _requested_pump_release_support(device_type: str, values: dict[str, Any]) -> str | None:
+    if str(device_type) in {"pump_water", "pump_chemical"}:
+        return _pump_release_support(str(device_type))
+    if str(device_type) not in {"centrifugal_pump", "离心泵"}:
+        return None
+    try:
+        resolution = resolve_device_type(device_type, values)
+    except DeviceTypeResolutionError:
+        # An unresolved public category has no release-approved Profile route.
+        return "NOT_IN_RELEASE_SCOPE"
+    return _pump_release_support(resolution.internal_device_type)
+
+
+def _apply_pump_release_support(result: EvaluationResult, internal_device_type: str) -> EvaluationResult:
+    support_status = _pump_release_support(internal_device_type)
+    if support_status is not None:
+        result.support_status = support_status
+    return result
+
+
 def _evaluate_reference_result(
     internal_device_type: str,
     values: dict[str, Any],
@@ -157,6 +185,7 @@ class EvaluationService:
         # instead of reaching ``scope.value`` later and raising an opaque
         # AttributeError.
         elimination_scope = _coerce_elimination_scope(elimination_scope)
+        input_values = dict(draft.normalized_values or draft.raw_values)
         try:
             effective_as_of = _coerce_as_of(as_of)
         except (TypeError, ValueError) as exc:
@@ -165,6 +194,7 @@ class EvaluationService:
                 record_id=draft.record_id,
                 conclusion=Conclusion.UNABLE_TO_JUDGE,
                 public_device_type=str(draft.metadata.get("public_device_type", draft.device_type)),
+                support_status=_requested_pump_release_support(str(draft.device_type), input_values),
                 elimination_scope=elimination_scope,
                 explanation=reason,
                 missing_fields=["as_of"],
@@ -177,10 +207,41 @@ class EvaluationService:
                     "reason": reason,
                 }],
             )
-        input_values = dict(draft.normalized_values or draft.raw_values)
         try:
             resolution = resolve_device_type(draft.device_type, input_values)
         except DeviceTypeResolutionError as exc:
+            public_pump = str(draft.device_type) in {"centrifugal_pump", "离心泵"}
+            if public_pump:
+                category = str(input_values.get("product_type", input_values.get("category", input_values.get("设备类别", ""))) or "").strip()
+                is_other = category in {"OTHER", "其他类别", "其他（请备注说明）", "其他(请备注说明)"}
+                if is_other:
+                    return EvaluationResult(
+                        record_id=draft.record_id,
+                        conclusion=Conclusion.NOT_APPLICABLE,
+                        public_device_type="centrifugal_pump",
+                        support_status="NOT_IN_RELEASE_SCOPE",
+                        category_status="NOT_APPLICABLE",
+                        evaluation_status="OUT_OF_STANDARD_SCOPE",
+                        issue_codes=["CATEGORY_NOT_APPLICABLE"],
+                        explanation="已确认该产品类别不属于本标准列出的泵型，不执行标准公式",
+                        standard_reference={"standard_code": "GB 19762-2025", "standard_name": "离心泵能效限定值及能效等级"},
+                        trace=[{"step_type": "泵类别判定", "output": Conclusion.NOT_APPLICABLE.value, "reason": "CATEGORY_NOT_APPLICABLE"}],
+                    )
+                missing = not category
+                reason = "产品类别缺失，无法确定GB 19762-2025产品类别" if missing else str(exc)
+                return EvaluationResult(
+                    record_id=draft.record_id,
+                    conclusion=Conclusion.UNABLE_TO_JUDGE,
+                    public_device_type="centrifugal_pump",
+                    support_status="NOT_IN_RELEASE_SCOPE",
+                    category_status="UNRESOLVED",
+                    evaluation_status="INSUFFICIENT_DATA" if missing else "INVALID_INPUT",
+                    issue_codes=["CATEGORY_UNRESOLVED", *( ["CATEGORY_MISSING"] if missing else [])],
+                    explanation=reason,
+                    missing_fields=["产品类别"] if missing else [],
+                    standard_reference={"standard_code": "GB 19762-2025", "standard_name": "离心泵能效限定值及能效等级"},
+                    trace=[{"step_type": "泵类别判定", "output": Conclusion.UNABLE_TO_JUDGE.value, "reason": "CATEGORY_UNRESOLVED"}],
+                )
             return EvaluationResult(
                 record_id=draft.record_id,
                 conclusion=Conclusion.UNABLE_TO_JUDGE,
@@ -219,6 +280,52 @@ class EvaluationService:
         }
         normalization_trace = {"step_type": "输入规范化", "as_of": effective_as_of.isoformat(), "device_type": internal_device_type, "changes": normalization_changes}
         pack = self._get_pack(internal_device_type)
+        if internal_device_type == "pump_chemical":
+            category = str(values.get("category", values.get("product_type", "")) or "").strip()
+            if category in {"OTHER", "其他类别", "其他（请备注说明）", "其他(请备注说明)"}:
+                return EvaluationResult(
+                    record_id=draft.record_id,
+                    conclusion=Conclusion.NOT_APPLICABLE,
+                    public_device_type=public_device_type,
+                    internal_device_type=internal_device_type,
+                    support_status="NOT_IN_RELEASE_SCOPE",
+                    category_status="NOT_APPLICABLE",
+                    evaluation_status="OUT_OF_STANDARD_SCOPE",
+                    issue_codes=["CATEGORY_NOT_APPLICABLE"],
+                    standard_reference={"standard_code": pack.get("standard_code", ""), "pack_id": pack.get("pack_id", ""), "data_version": pack.get("data_version", "")},
+                    explanation="已确认该产品类别不属于本标准列出的泵型，不执行标准公式",
+                    trace=[{"step_type": "Profile范围", "output": Conclusion.NOT_APPLICABLE.value, "reason": "CATEGORY_NOT_APPLICABLE"}],
+                )
+            if category not in {"单级石油化工离心泵", "多级石油化工离心泵", "单级", "多级"}:
+                missing_category = not category
+                return EvaluationResult(
+                    record_id=draft.record_id,
+                    conclusion=Conclusion.UNABLE_TO_JUDGE,
+                    public_device_type=public_device_type,
+                    internal_device_type=internal_device_type,
+                    support_status="NOT_IN_RELEASE_SCOPE",
+                    category_status="UNRESOLVED",
+                    evaluation_status="INSUFFICIENT_DATA" if missing_category else "INVALID_INPUT",
+                    issue_codes=["CATEGORY_UNRESOLVED", *( ["CATEGORY_MISSING"] if missing_category else [])],
+                    standard_reference={"standard_code": pack.get("standard_code", ""), "pack_id": pack.get("pack_id", ""), "data_version": pack.get("data_version", "")},
+                    explanation="石化泵产品类别未解析；未执行公式，当前Profile尚未进入发布支持状态",
+                    missing_fields=["产品类别"] if missing_category else [],
+                    trace=[{"step_type": "泵类别判定", "output": Conclusion.UNABLE_TO_JUDGE.value, "reason": "CATEGORY_UNRESOLVED"}],
+                )
+            # 化工泵已列入Windows V1目标范围，但V1发布支持仍受同等Phase 1门禁约束。
+            return EvaluationResult(
+                record_id=draft.record_id,
+                conclusion=Conclusion.NOT_IN_RELEASE_SCOPE,
+                public_device_type=public_device_type,
+                internal_device_type=internal_device_type,
+                support_status="NOT_IN_RELEASE_SCOPE",
+                category_status="APPLICABLE",
+                evaluation_status=None,
+                issue_codes=["PROFILE_NOT_IN_RELEASE_SCOPE"],
+                standard_reference={"standard_code": pack.get("standard_code", ""), "pack_id": pack.get("pack_id", ""), "data_version": pack.get("data_version", ""), "status": pack.get("status", "")},
+                explanation="pump_chemical已纳入Windows V1目标范围，但尚未通过等同于清水泵的Phase 1验收门槛；当前版本未支持",
+                trace=[{"step_type": "Profile范围", "output": Conclusion.NOT_IN_RELEASE_SCOPE.value, "reason": "PROFILE_NOT_IN_RELEASE_SCOPE"}],
+            )
         decision = self.elimination.match(internal_device_type, values, elimination_scope)
         effective_date = _standard_effective_date(pack)
 
@@ -263,7 +370,7 @@ class EvaluationService:
                 "reason": standard_date_reason,
                 "standard_evaluation_skipped": True,
             }
-            return EvaluationResult(
+            return _apply_pump_release_support(EvaluationResult(
                 record_id=draft.record_id,
                 conclusion=conclusion,
                 public_device_type=public_device_type,
@@ -286,7 +393,7 @@ class EvaluationService:
                     elimination_trace,
                     standard_date_trace,
                 ],
-            )
+            ), internal_device_type)
         if decision.possible:
             # 型号已经疑似命中淘汰目录，但附加条件（例如生产年份）缺失时，
             # 最终结论必须保持“无法判定”。同时保留可确定的能效参考证据。
@@ -310,7 +417,7 @@ class EvaluationService:
                 elimination_match=decision.detail,
             )
             if reference_result is not None:
-                return reference_result
+                return _apply_pump_release_support(reference_result, internal_device_type)
 
             fallback = EvaluationResult(
                 record_id=draft.record_id,
@@ -331,7 +438,7 @@ class EvaluationService:
             )
             if reference_error:
                 fallback.notes.append(f"能效参考判定异常：{reference_error}")
-            return fallback
+            return _apply_pump_release_support(fallback, internal_device_type)
         # 产业结构调整目录当前可能只载入用户明确提供的受控子集。目录
         # 未完成全文核对时，未命中不能被解释为“未淘汰”，否则会绕过
         # 尚未导入的条目继续给出能效等级。明确命中/条件不足仍在上面
@@ -364,7 +471,7 @@ class EvaluationService:
                 reason=reason,
             )
             if reference_result is not None:
-                return reference_result
+                return _apply_pump_release_support(reference_result, internal_device_type)
 
             fallback = EvaluationResult(
                 record_id=draft.record_id,
@@ -388,7 +495,7 @@ class EvaluationService:
             )
             if reference_error:
                 fallback.notes.append(f"能效参考判定异常：{reference_error}")
-            return fallback
+            return _apply_pump_release_support(fallback, internal_device_type)
         evaluator = EVALUATOR_FACTORIES[internal_device_type]()
         try:
             result = evaluator.evaluate(values, pack)
@@ -423,4 +530,4 @@ class EvaluationService:
             result.conclusion = Conclusion.ELIMINATED
             result.elimination_match = decision.detail
             result.explanation = f"明确命中淘汰目录；参考能效等级为{result.reference_conclusion.value}"
-        return result
+        return _apply_pump_release_support(result, internal_device_type)

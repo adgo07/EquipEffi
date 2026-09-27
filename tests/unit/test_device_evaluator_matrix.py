@@ -10,7 +10,7 @@ from equipeffi.application.services.evaluation_service import EvaluationService
 from equipeffi.domain.common.enums import Conclusion
 from equipeffi.domain.common.models import DeviceDraft
 from equipeffi.domain.evaluation.device_specs import list_device_specs
-from equipeffi.domain.evaluation.device_evaluators import BlowerEvaluator, HeatTreatmentEvaluator, HvacEvaluator, MotorEvaluator, PmsmEvaluator, _interval_hit
+from equipeffi.domain.evaluation.device_evaluators import BlowerEvaluator, ChemicalPumpEvaluator, HeatTreatmentEvaluator, HvacEvaluator, MotorEvaluator, PmsmEvaluator, _interval_hit
 from equipeffi.infrastructure.standards.json_repository import JsonStandardRepository
 
 
@@ -24,6 +24,11 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         cls.specs = list_device_specs()
 
     def evaluate(self, device_type: str, values: dict):
+        # pump_chemical is in V1 target scope but remains gated from public
+        # release; legacy formula regressions exercise its profile evaluator
+        # directly. The public NOT_IN_RELEASE_SCOPE gate is tested separately.
+        if device_type == "pump_chemical":
+            return ChemicalPumpEvaluator().evaluate(values, self.service.standards.get_pack("pump_chemical"))
         return self.service.evaluate(
             DeviceDraft(record_id=f"TEST-{device_type}", device_type=device_type, raw_values=values)
         )
@@ -230,7 +235,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(conditions["head_m"], "50")
         self.assertEqual(conditions["rated_speed_rpm"], "2900")
         self.assertEqual(conditions["stages"], "1")
-        self.assertEqual(conditions["suction"], "")
+        self.assertEqual(conditions["suction"], "单吸")
         self.assertEqual(conditions["pump_efficiency"], "80")
         self.assertEqual(conditions["specific_speed"], str(result.calculated_metrics["比转速"]))
         self.assertEqual(lookup["match_status"], "命中")
@@ -250,15 +255,15 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(result.calculated_metrics["输出功率_kW"], Decimal("13.6250"))
         self.assertEqual(
             result.calculated_metrics["基准效率_%"],
-            Decimal("72.99496443932956746644665952"),
+            Decimal("72.994964439329567466446659598229238364944975446517"),
         )
         self.assertEqual(
             result.calculated_metrics["效率修正值_%"],
-            Decimal("1.6064050959376390746025852"),
+            Decimal("1.60640509593763907460258422095108102009021526342"),
         )
         self.assertEqual(
             result.calculated_metrics["规定点效率_%"],
-            Decimal("71.38855934339192839184407432"),
+            Decimal("71.388559343391928391844075377278157344854760183097"),
         )
         self.assertEqual(result.limits, {
             "1级效率_%": Decimal("75.388559"),
@@ -279,6 +284,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """多级石化泵缺级数时保留已确定流量对应的表2比转速候选。"""
         result = self.evaluate("pump_chemical", {
             "category": "多级石油化工离心泵",
+            "suction": "单吸",
             "flow_m3h": 100,
             "head_m": 100,
             "rated_speed_rpm": 2900,
@@ -307,7 +313,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             "head_m": "100",
             "rated_speed_rpm": "2900",
             "stages": "",
-            "suction": "",
+            "suction": "单吸",
             "pump_efficiency": "80",
             "specific_speed": "",
         })
@@ -357,6 +363,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """多级清水泵缺级数时保留表3流量候选和已填参数。"""
         result = self.evaluate("pump_water", {
             "category": "多级",
+            "suction": "单吸",
             "flow_m3h": 100,
             "head_m": 100,
             "rated_speed_rpm": 2900,
@@ -382,7 +389,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             "head_m": "100",
             "rated_speed_rpm": "2900",
             "stages": "",
-            "suction": "",
+            "suction": "单吸",
             "pump_efficiency": "80",
             "specific_speed": "",
         })
@@ -636,7 +643,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         }
         for device_type, field in fields.items():
             values = dict(self.specs[device_type]["example"])
-            values[field] = 0.98
+            values[field] = "0.98" if device_type in {"pump_water", "pump_chemical"} else 0.98
             with self.subTest(device_type=device_type, field=field):
                 result = self.evaluate(device_type, values)
                 self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
@@ -1887,7 +1894,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             "head_m": "50",
             "rated_speed_rpm": "2900",
             "stages": "1",
-            "suction": "",
+            "suction": "单吸",
             "pump_efficiency": "80",
         })
         self.assertEqual(lookup["match_status"], "命中")
@@ -2254,18 +2261,20 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             result = self.evaluate(device_type, values)
             with self.subTest(device_type=device_type):
                 self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
-                self.assertIn("级数", result.missing_fields)
+                self.assertNotIn("级数", result.missing_fields)
+                self.assertEqual(result.evaluation_status, "INVALID_INPUT")
+                self.assertIn("STAGES_INVALID", result.issue_codes)
                 self.assertIn("正整数", result.explanation)
 
     def test_pump_range_miss_retains_actual_and_calculated_metrics(self):
         cases = (
-            ("pump_water", {"category": "单级单吸", "flow_m3h": "0.1", "head_m": 50, "rated_speed_rpm": 2900, "pump_efficiency": 80}),
-            ("pump_chemical", {"category": "单级石油化工离心泵", "flow_m3h": "0.1", "head_m": 50, "rated_speed_rpm": 2900, "pump_efficiency": 80}),
+            ("pump_water", {"category": "单级单吸", "suction": "单吸", "stages": "1", "flow_m3h": "0.1", "head_m": 50, "rated_speed_rpm": 2900, "pump_efficiency": 80}),
+            ("pump_chemical", {"category": "单级石油化工离心泵", "suction": "单吸", "stages": "1", "flow_m3h": "0.1", "head_m": 50, "rated_speed_rpm": 2900, "pump_efficiency": 80}),
         )
         for device_type, values in cases:
             result = self.evaluate(device_type, values)
             with self.subTest(device_type=device_type):
-                self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
+                self.assertEqual(result.conclusion, Conclusion.NOT_APPLICABLE)
                 self.assertEqual(result.actual_metrics["泵效率_%"], 80)
                 self.assertIn("比转速", result.calculated_metrics)
                 self.assertIn("输出功率_kW", result.calculated_metrics)
@@ -2278,24 +2287,28 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """清水泵流量未命中早退仍应保留表3的PDF来源页。"""
         result = self.evaluate("pump_water", {
             "category": "单级单吸",
+            "suction": "单吸",
+            "stages": "1",
             "flow_m3h": "0.1",
             "head_m": 50,
             "rated_speed_rpm": 2900,
             "pump_efficiency": 80,
         })
-        self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
+        self.assertEqual(result.conclusion, Conclusion.NOT_APPLICABLE)
         self.assertEqual(result.lookups[0]["source_pages"], "9-10")
 
     def test_chemical_pump_range_miss_preserves_standard_source_pages(self):
         """石化泵流量/比转速未命中早退应保留表2的PDF来源页。"""
         result = self.evaluate("pump_chemical", {
             "category": "单级石油化工离心泵",
+            "suction": "单吸",
+            "stages": "1",
             "flow_m3h": "0.1",
             "head_m": 50,
             "rated_speed_rpm": 2900,
             "pump_efficiency": 80,
         })
-        self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
+        self.assertEqual(result.conclusion, Conclusion.NOT_APPLICABLE)
         self.assertEqual(result.lookups[0]["source_pages"], "8-9")
 
     def test_water_pump_category_and_suction_conflict_does_not_silently_recalculate(self):
@@ -2303,6 +2316,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         result = self.evaluate("pump_water", {
             "category": "单级单吸清水离心泵",
             "suction": "双吸",
+            "stages": "1",
             "flow_m3h": 100,
             "head_m": 50,
             "rated_speed_rpm": 2900,
@@ -2334,25 +2348,16 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             "rated_speed_rpm": 2900,
             "pump_efficiency": 80,
         })
-        self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
-        self.assertIn("设备类别", result.explanation)
-        self.assertEqual(result.actual_metrics["泵效率_%"], Decimal("80"))
-        self.assertEqual(result.calculated_metrics["输出功率_kW"], Decimal("13.6250"))
-        self.assertNotIn("比转速", result.calculated_metrics)
-        self.assertNotIn("单级扬程_m", result.calculated_metrics)
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["match_status"], "设备类别未命中")
-        self.assertEqual(lookup["candidate_types"], [
-            "单级单吸", "单级双吸", "管道", "多级", "轻型多级立式", "轻型多级卧式",
-        ])
-        self.assertEqual(len(lookup["data_ids"]), 10)
-        self.assertEqual(lookup["source_clause"], "6.1、6.2、表3")
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["data_ids"], lookup["data_ids"])
+        self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
+        self.assertEqual(result.category_status, "UNRESOLVED")
+        self.assertEqual(result.evaluation_status, "INVALID_INPUT")
+        self.assertIn("CATEGORY_UNRESOLVED", result.issue_codes)
+        self.assertFalse(result.calculated_metrics)
+        self.assertFalse(result.lookups)
 
     def test_water_pump_uses_pdf_open_upper_boundary_for_flow_bins(self):
         values = {
-            "category": "单级单吸", "head_m": 50,
+            "category": "单级单吸", "suction": "单吸", "stages": "1", "head_m": 50,
             "rated_speed_rpm": 2900, "pump_efficiency": 80,
         }
         lower = self.evaluate("pump_water", {**values, "flow_m3h": 300})
@@ -2368,6 +2373,8 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """GB 19762-2025表3双吸600 m³/h仍属闭上限档并按半流量计算。"""
         result = self.evaluate("pump_water", {
             "category": "单级双吸",
+            "suction": "双吸",
+            "stages": "1",
             "flow_m3h": 600,
             "head_m": 50,
             "rated_speed_rpm": 2900,
@@ -2375,9 +2382,9 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         })
         self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
         self.assertEqual(result.calculated_metrics["计算流量_m3/h"], Decimal("300"))
-        self.assertEqual(result.calculated_metrics["C1"], 161.33)
-        self.assertEqual(result.calculated_metrics["C2"], 163.33)
-        self.assertEqual(result.calculated_metrics["C3"], 168.33)
+        self.assertEqual(result.calculated_metrics["C1"], Decimal("161.33"))
+        self.assertEqual(result.calculated_metrics["C2"], Decimal("163.33"))
+        self.assertEqual(result.calculated_metrics["C3"], Decimal("168.33"))
         lookup = result.lookups[0]
         self.assertEqual(lookup["data_id"], "GB19762-T3-03")
         self.assertEqual(lookup["source_pages"], "9-10")
@@ -2391,6 +2398,8 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """双吸泵Q=600闭合于表3-03，超过600后进入表3-04且仍按半流量计算。"""
         common = {
             "category": "单级双吸",
+            "suction": "双吸",
+            "stages": "1",
             "head_m": 50,
             "rated_speed_rpm": 2900,
             "pump_efficiency": 90,
@@ -2408,7 +2417,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         })
         self.assertEqual(
             tuple(upper.calculated_metrics[f"C{i}"] for i in range(1, 4)),
-            (162.33, 163.33, 168.33),
+            (Decimal("162.33"), Decimal("163.33"), Decimal("168.33")),
         )
         self.assertEqual(upper.limits["1级效率_%"], Decimal("87.434212"))
 
@@ -2416,6 +2425,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """GB 19762-2025表3多级Q=100闭上限应除级数计算单级扬程。"""
         result = self.evaluate("pump_water", {
             "category": "多级",
+            "suction": "单吸",
             "flow_m3h": 100,
             "head_m": 100,
             "rated_speed_rpm": 2900,
@@ -2427,12 +2437,12 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(result.calculated_metrics["单级扬程_m"], Decimal("50"))
         self.assertEqual(
             result.calculated_metrics["比转速"],
-            Decimal("93.82360344860450750501470111"),
+            Decimal("93.823603448604507505014701083136622423532335781578"),
         )
         self.assertEqual(result.calculated_metrics["输出功率_kW"], Decimal("27.2500"))
         self.assertEqual(
             {result.calculated_metrics[f"C{i}"] for i in range(1, 4)},
-            {139.33, 142.33, 150.33},
+            {Decimal("139.33"), Decimal("142.33"), Decimal("150.33")},
         )
         lookup = result.lookups[0]
         self.assertEqual(lookup["data_id"], "GB19762-T3-07")
@@ -2448,12 +2458,13 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             "flow_m3h": 300,
             "head_m": 100,
             "rated_speed_rpm": 2900,
+            "suction": "单吸",
             "stages": 2,
             "pump_efficiency": 90,
         }
         expected = {
-            "轻型多级立式": ("GB19762-T3-09", (137.33, 139.33, 144.33), Decimal("85.016873")),
-            "轻型多级卧式": ("GB19762-T3-10", (140.33, 142.33, 147.33), Decimal("82.016873")),
+            "轻型多级立式": ("GB19762-T3-09", (Decimal("137.33"), Decimal("139.33"), Decimal("144.33")), Decimal("85.016873")),
+            "轻型多级卧式": ("GB19762-T3-10", (Decimal("140.33"), Decimal("142.33"), Decimal("147.33")), Decimal("82.016873")),
         }
         for category, (data_id, coefficients, level_one) in expected.items():
             with self.subTest(category=category):
@@ -2463,7 +2474,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
                 self.assertEqual(result.calculated_metrics["单级扬程_m"], Decimal("50"))
                 self.assertEqual(
                     result.calculated_metrics["比转速"],
-                    Decimal("162.5072481221775378467327828"),
+                    Decimal("162.50724812217753784673278280082570542858815880464"),
                 )
                 self.assertEqual(
                     tuple(result.calculated_metrics[f"C{i}"] for i in range(1, 4)),
@@ -2482,6 +2493,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """普通多级泵Q=100属于表3-07，超过100后才进入表3-08。"""
         common = {
             "category": "多级",
+            "suction": "单吸",
             "head_m": 100,
             "rated_speed_rpm": 2900,
             "stages": 2,
@@ -2503,17 +2515,18 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         })
         self.assertEqual(
             tuple(lower.calculated_metrics[f"C{i}"] for i in range(1, 4)),
-            (139.33, 142.33, 150.33),
+            (Decimal("139.33"), Decimal("142.33"), Decimal("150.33")),
         )
         self.assertEqual(
             tuple(upper.calculated_metrics[f"C{i}"] for i in range(1, 4)),
-            (140.33, 144.33, 150.33),
+            (Decimal("140.33"), Decimal("142.33"), Decimal("150.33")),
         )
 
     def test_chemical_pump_uses_pdf_open_upper_boundaries_at_ns_60_and_120(self):
         values = {
             "category": "单级石油化工离心泵", "flow_m3h": 100,
             "head_m": 50, "rated_speed_rpm": 2900, "pump_efficiency": 80,
+            "suction": "单吸", "stages": "1",
         }
         for ns, expected_min, expected_max, min_inclusive, max_inclusive in (
             (Decimal("60"), Decimal("60"), Decimal("120"), True, False),
@@ -2535,20 +2548,24 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """GB 19762-2025表2第一流量档为5<Q≤300，Q=5不得被判级。"""
         result = self.evaluate("pump_chemical", {
             "category": "单级石油化工离心泵",
+            "suction": "单吸",
+            "stages": "1",
             "flow_m3h": Decimal("5"),
             "head_m": 50,
             "rated_speed_rpm": 2900,
             "pump_efficiency": 80,
         })
-        self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
-        self.assertIn("流量或比转速超出", result.explanation)
+        self.assertEqual(result.conclusion, Conclusion.NOT_APPLICABLE)
+        self.assertIn("要求总流量QBEP大于5", result.explanation)
         self.assertEqual(result.actual_metrics["泵效率_%"], Decimal("80"))
         self.assertEqual(result.calculated_metrics["计算流量_m3/h"], Decimal("5"))
-        self.assertEqual(result.lookups[0]["match_status"], "流量或比转速档位未命中")
+        self.assertEqual(result.lookups[0]["match_status"], "流量档位未命中：总流量低于开区间下界")
         self.assertFalse(result.lookups[0]["flow_ranges"][0].get("min_inclusive", True))
 
         inside = self.evaluate("pump_chemical", {
             "category": "单级石油化工离心泵",
+            "suction": "单吸",
+            "stages": "1",
             "flow_m3h": Decimal("5.0001"),
             "head_m": 50,
             "rated_speed_rpm": 2900,
@@ -2561,6 +2578,8 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """石化泵Q=300仍属5<Q≤300档，并保留规定点效率计算过程。"""
         result = self.evaluate("pump_chemical", {
             "category": "单级石油化工离心泵",
+            "suction": "单吸",
+            "stages": "1",
             "flow_m3h": 300,
             "head_m": 100,
             "rated_speed_rpm": 2900,
@@ -2571,7 +2590,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(result.calculated_metrics["单级扬程_m"], Decimal("100"))
         self.assertEqual(
             result.calculated_metrics["比转速"],
-            Decimal("96.62738785320305518236708584"),
+            Decimal("96.627387853203055182367085849108176464830043275893"),
         )
         self.assertIn("基准效率_%", result.calculated_metrics)
         self.assertIn("效率修正值_%", result.calculated_metrics)
@@ -2594,6 +2613,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """多级化工泵应保留级数及除级数后的单级扬程，便于复核公式。"""
         result = self.evaluate("pump_chemical", {
             "category": "多级石油化工离心泵",
+            "suction": "单吸",
             "flow_m3h": 100,
             "head_m": 100,
             "rated_speed_rpm": 2900,
@@ -2611,6 +2631,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """石化多级泵Q=300、ns≈162.5命中闭区间并按η0=ηb计算。"""
         result = self.evaluate("pump_chemical", {
             "category": "多级石油化工离心泵",
+            "suction": "单吸",
             "flow_m3h": 300,
             "head_m": 100,
             "rated_speed_rpm": 2900,
@@ -2622,7 +2643,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(result.calculated_metrics["单级扬程_m"], Decimal("50"))
         self.assertEqual(
             result.calculated_metrics["比转速"],
-            Decimal("162.5072481221775378467327828"),
+            Decimal("162.50724812217753784673278280082570542858815880464"),
         )
         self.assertEqual(result.calculated_metrics["效率修正值_%"], Decimal("0"))
         self.assertEqual(
@@ -2648,13 +2669,15 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """表2第二流量档为Q>300，无人为99999上限。"""
         result = self.evaluate("pump_chemical", {
             "category": "单级石油化工离心泵",
+            "suction": "单吸",
+            "stages": "1",
             "flow_m3h": Decimal("100000"),
             "head_m": 5000,
             "rated_speed_rpm": 2900,
             "pump_efficiency": 80,
         })
         self.assertEqual(result.conclusion, Conclusion.LEVEL_3)
-        self.assertEqual(result.calculated_metrics["比转速"], Decimal("93.82360344860450750501470109"))
+        self.assertEqual(result.calculated_metrics["比转速"], Decimal("93.823603448604507505014701083136622423532335781577"))
         lookup = result.lookups[0]
         self.assertEqual(lookup["data_id"], "GB19762-R000016")
         self.assertIsNone(lookup["flow_boundary"]["max"])
@@ -2664,6 +2687,8 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """表2的120≤ns≤210档应记录η0=ηb及三级偏移量。"""
         values = {
             "category": "单级石油化工离心泵",
+            "suction": "单吸",
+            "stages": "1",
             "flow_m3h": 100,
             "head_m": 50,
             "rated_speed_rpm": 2900,
@@ -2685,6 +2710,8 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """比转速未命中时仍应保留表2各档的开闭端点。"""
         values = {
             "category": "单级石油化工离心泵",
+            "suction": "单吸",
+            "stages": "1",
             "flow_m3h": 100,
             "head_m": 50,
             "rated_speed_rpm": 2900,
@@ -2695,7 +2722,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             return_value=(Decimal("300.0001"), {"比转速": Decimal("300.0001")}),
         ):
             result = self.evaluate("pump_chemical", values)
-        self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
+        self.assertEqual(result.conclusion, Conclusion.NOT_APPLICABLE)
         ranges = result.lookups[0]["specific_speed_ranges"]
         self.assertFalse(ranges[-1]["min_inclusive"])
         self.assertTrue(ranges[-1]["max_inclusive"])
@@ -2704,6 +2731,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """类别已说明单级时，级数大于1不能被忽略后继续查单级标准。"""
         result = self.evaluate("pump_chemical", {
             "category": "单级石油化工离心泵",
+            "suction": "单吸",
             "flow_m3h": 100,
             "head_m": 50,
             "rated_speed_rpm": 2900,
@@ -2730,23 +2758,21 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """未知泵型不得静默按单级套用GB 19762-2025表2。"""
         result = self.evaluate("pump_chemical", {
             "category": "未知化工泵",
+            "suction": "单吸",
+            "stages": "1",
             "flow_m3h": 100,
             "head_m": 50,
             "rated_speed_rpm": 2900,
             "pump_efficiency": 80,
         })
-        self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
-        self.assertIn("设备类别", result.explanation)
-        self.assertEqual(result.actual_metrics["泵效率_%"], Decimal("80"))
-        self.assertEqual(result.calculated_metrics["输出功率_kW"], Decimal("13.6250"))
-        self.assertNotIn("比转速", result.calculated_metrics)
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["match_status"], "设备类别未命中")
-        self.assertEqual(lookup["candidate_types"], ["单级", "多级"])
-        self.assertEqual(len(lookup["data_ids"]), 16)
-        self.assertEqual(lookup["source_clause"], "表2/公式(4)~(7)")
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["data_ids"], lookup["data_ids"])
+        self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
+        self.assertIn("类别", result.explanation)
+        self.assertEqual(result.category_status, "UNRESOLVED")
+        self.assertEqual(result.evaluation_status, "INVALID_INPUT")
+        self.assertEqual(result.issue_codes, ["CATEGORY_UNRESOLVED"])
+        self.assertEqual(result.actual_metrics, {})
+        self.assertEqual(result.calculated_metrics, {})
+        self.assertEqual(result.lookups, [])
 
     def test_blower_calculates_polytropic_efficiency_from_pressures_and_temperatures(self):
         values = {

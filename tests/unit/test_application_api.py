@@ -51,6 +51,7 @@ class ApplicationApiTests(unittest.TestCase):
             "blower": common + ["节能评价值", "能效限定值"],
             "heat_treatment": common + ["一等", "二等", "三等"],
             "heat_pump_water_heater": common + ["1级", "2级", "3级", "4级", "5级"],
+            "centrifugal_pump": common + ["不适用", "当前版本未支持", "1级", "2级", "3级"],
         }
         for item in self.api.device_types():
             public_type = item["code"]

@@ -128,3 +128,18 @@ pass=880; fail=3; error=1; skip=3; not_run=0
 ```
 
 失败集合与 Python 3.13.3 Phase 0/Phase 1 记录一致：3 个 V4 电机 reader/writer 失败（`NOT_SHIPPED`），1 个 release audit `wheel_pmsm_status` 错误（`DEV_ONLY`）。本次仅完成环境复验，没有修改业务实现、测试期望或发布表面。
+
+## Pump V2 R01–R06 remediation record（2026-09-27）
+
+王玮已授权按独立正式验收报告限定修订 R01–R06。本节记录实现和针对性证据；状态是 `IMPLEMENTED_PENDING_FIXED_SHA_INDEPENDENT_REVIEW`，不是业务批准、Golden 批准、P0 复核分类变更或 Phase 1 PASS。实施范围在独立 clean worktree，起点为 `9e413051177fbfa7f1b217de17d344f33176b152`；逐文件 allowlist 见 `PUMP_V2_R01_R06_COMMIT_MANIFEST.md`。
+
+| ID | 本次处理和证据 | 剩余门禁 |
+|---|---|---|
+| R01 | 非空非法流量、扬程、效率、单双吸和级数统一为 `INVALID_INPUT`，从 `missing_fields` 移除；缺失字段仍为 `INSUFFICIENT_DATA`。`test_pump_numeric_contract_v2` 与 `test_pump_golden_case_0_3` 覆盖非法值、真正缺失和冲突。 | 原独立会话按固定 SHA 复验；不扩大为共享 evaluator 重构。 |
+| R02 | 公共 pump API 对已准入 `pump_water` 返回 `SUPPORTED`；`pump_chemical`、类别缺失/未知/OTHER 等无已批准公开路由的结果显式返回 `NOT_IN_RELEASE_SCOPE`。技术 Profile 的 `support_status=null` 仍表示未经过发布门禁。 | `pump_chemical` 仍 `UNDER_REVIEW`；不得把技术计算解释为发布支持。 |
+| R03 | 新版 26 个候选均为 `DRAFT/PENDING`：18 条水泵通过公共 Application E2E，覆盖有效 1/2/3 级、轻型立式/卧式和管道泵；8 条化工泵仅作技术 Profile 诊断。候选 schema 和回放由 `test_pump_golden_case_0_3` 验证。 | 全部案例仍待具名业务/标准复核，不批准 Golden。 |
+| R04 | validator 支持 0.1/0.2/0.3 版本读取；仓库文本引用的 CRLF/LF 统一以 LF 内容计算 SHA-256，外部/非文本文件仍按原始字节；0.3 sidecar pins 对应提交内容。只将确切登记的 0.1 Canonical 路径、catalog 和旧哈希作为历史 provenance。旧七个官方案例文件保持基线字节；未知哈希仍报错。`test_golden_case_schema_0_2` 验证跨行尾 hash、26 个候选引用及历史哈希规则。 | 旧官方历史 hash 不更新；Golden 业务批准仍待独立验收。 |
+| R05 | `EV_SUCTION` metadata projection 恢复冻结的 V4 选项“一吸/双吸/不适用/其他（请备注说明）”；公式有效性仍只接受单双吸。由 metadata contract、architecture 和 evaluator matrix 覆盖。 | 表单可表达值不等于有效公式输入，不扩展产品适用范围。 |
+| R06 | HANDOFF、TASK_STATE、ROADMAP、BASELINE、QA_BACKLOG 和实施报告反映本轮范围、阻塞、命令及现存失败；release-audit 只带入泵诊断差异，排除 `tests/unit/test_release_audit.py` 的工作区行尾状态及所有非泵审计行为。 | `wheel_pmsm_status` 全量测试错误仍保留为既有发布审计基线；等待原独立正式验收。 |
+
+截至本记录，V2 目标测试全部通过；最终 fixed-SHA fresh worktree 全量 unittest 为 916 tests，909 pass、3 fail、1 error、3 skip，失败为既有 V4 motor reader/writer 三项及 wheel 审计缺少 `wheel_pmsm_status` 一项错误。没有修复或隐藏这些基线结果。无 P0 `review_result` 被改写；Phase 1/Golden/Solution-Product Review 继续阻塞。

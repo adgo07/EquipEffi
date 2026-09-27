@@ -62,13 +62,13 @@ DEVICE_SPECS: dict[str, dict[str, Any]] = {
     },
     "pump_water": {
         "name": "清水离心泵", "standard": "GB 19762-2025",
-        "fields": [f("model", "型号", required=False), f("category", "设备类别"), f("suction", "单双吸", required=False), f("flow_m3h", "流量", "m³/h"), f("head_m", "扬程", "m"), f("rated_speed_rpm", "额定转速", "r/min"), f("rated_power_kw", "额定功率", "kW", required=False), f("stages", "级数", "级", required=False, note="多级泵必填"), f("pump_efficiency", "泵效率", "%")],
-        "example": {"category": "单级单吸", "flow_m3h": 100, "head_m": 50, "rated_speed_rpm": 2900, "pump_efficiency": 80},
+        "fields": [f("model", "型号", required=False), f("category", "设备类别"), f("suction", "单双吸", enum_name="EV_SUCTION"), f("flow_m3h", "最高效率点总流量 QBEP", "m³/h"), f("head_m", "最高效率点总扬程 HBEP", "m"), f("rated_speed_rpm", "转速 n", "r/min"), f("rated_power_kw", "额定功率", "kW", required=False), f("stages", "实际级数", "级"), f("pump_efficiency", "最高效率点效率", "%")],
+        "example": {"category": "单级单吸", "suction": "单吸", "flow_m3h": "100", "head_m": "50", "rated_speed_rpm": "2900", "stages": "1", "pump_efficiency": "80"},
     },
     "pump_chemical": {
         "name": "石油化工离心泵", "standard": "GB 19762-2025",
-        "fields": [f("model", "型号", required=False), f("category", "设备类别"), f("flow_m3h", "流量", "m³/h"), f("head_m", "扬程", "m"), f("rated_speed_rpm", "额定转速", "r/min"), f("rated_power_kw", "额定功率", "kW", required=False), f("stages", "级数", "级", required=False, note="多级泵必填"), f("pump_efficiency", "泵效率", "%")],
-        "example": {"category": "单级石油化工离心泵", "flow_m3h": 100, "head_m": 50, "rated_speed_rpm": 2900, "pump_efficiency": 80},
+        "fields": [f("model", "型号", required=False), f("category", "设备类别"), f("suction", "单双吸", enum_name="EV_SUCTION"), f("flow_m3h", "最高效率点总流量 QBEP", "m³/h"), f("head_m", "最高效率点总扬程 HBEP", "m"), f("rated_speed_rpm", "转速 n", "r/min"), f("rated_power_kw", "额定功率", "kW", required=False), f("stages", "实际级数", "级"), f("pump_efficiency", "最高效率点效率", "%")],
+        "example": {"category": "单级石油化工离心泵", "suction": "单吸", "flow_m3h": "100", "head_m": "50", "rated_speed_rpm": "2900", "stages": "1", "pump_efficiency": "80"},
     },
     "fan": {
         "name": "通风机", "standard": "GB 19761-2020",

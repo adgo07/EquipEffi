@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://equipeffi.local/schema/golden-case-0.2.json",
+  "title": "EquipEffi Golden Case 0.2 Candidate",
+  "description": "Phase 1 candidate schema. Extends 0.1 only with explicit suction and representation of missing required inputs. Candidates remain DRAFT until named human approval.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_schema_version", "case_id", "case_status", "device_type", "profile_id",
+    "business_spec_version", "standard_pack_id", "standard_pack_version",
+    "catalog_data_version", "ruleset_version", "input", "expected_status",
+    "expected_actual_metrics", "expected_lookups", "expected_calculated_metrics",
+    "expected_limits", "expected_conclusion", "expected_issue_codes",
+    "expected_rule_ids", "source_reference", "review_status", "review_metadata"
+  ],
+  "properties": {
+    "case_schema_version": { "const": "golden-case-0.2" },
+    "case_id": { "type": "string", "pattern": "^GC-[A-Z0-9-]+$" },
+    "case_status": { "enum": ["DRAFT", "REVIEWED", "APPROVED", "DEPRECATED"] },
+    "device_type": { "type": "string", "minLength": 1 },
+    "profile_id": { "enum": ["pump_water", "pump_chemical"] },
+    "business_spec_version": { "type": "string", "minLength": 1 },
+    "standard_pack_id": { "type": "string", "minLength": 1 },
+    "standard_pack_version": { "type": "string", "minLength": 1 },
+    "catalog_data_version": { "type": "string", "minLength": 1 },
+    "ruleset_version": { "type": "string", "minLength": 1 },
+    "input": { "$ref": "#/$defs/input" },
+    "expected_status": {
+      "enum": ["SUPPORTED", "NOT_IN_RELEASE_SCOPE", "UNSUPPORTED_STANDARD", "OUT_OF_STANDARD_SCOPE", "INSUFFICIENT_DATA", "INVALID_INPUT", "NOT_APPLICABLE", "REQUIRES_REVIEW"]
+    },
+    "expected_actual_metrics": { "$ref": "#/$defs/metric_map" },
+    "expected_lookups": { "type": "array", "items": { "$ref": "#/$defs/lookup" } },
+    "expected_calculated_metrics": { "$ref": "#/$defs/metric_map" },
+    "expected_limits": { "$ref": "#/$defs/metric_map" },
+    "expected_conclusion": { "type": "string" },
+    "expected_issue_codes": { "type": "array", "items": { "type": "string" } },
+    "expected_rule_ids": { "type": "array", "items": { "type": "string" } },
+    "source_reference": { "type": "array", "items": { "$ref": "#/$defs/source_reference" }, "minItems": 1 },
+    "review_status": { "enum": ["DRAFT", "REVIEWED", "APPROVED", "DEPRECATED"] },
+    "review_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewed_at", "reviewer", "review_owner", "approval_basis", "known_limits"],
+      "properties": {
+        "reviewed_at": { "type": "string", "format": "date" },
+        "reviewer": { "type": "string", "minLength": 1 },
+        "review_owner": { "type": "string", "minLength": 1 },
+        "approval_basis": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "known_limits": { "type": "array", "items": { "type": "string" } },
+        "supersedes": { "type": "string" }
+      }
+    }
+  },
+  "$defs": {
+    "decimal": { "type": "string", "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$" },
+    "positive_integer": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+    "decimal_or_null": { "anyOf": [{ "$ref": "#/$defs/decimal" }, { "type": "null" }] },
+    "positive_integer_or_null": { "anyOf": [{ "$ref": "#/$defs/positive_integer" }, { "type": "null" }] },
+    "unit_id": { "type": "string", "enum": ["%", "m3/h", "m", "rpm", "stage", "kW", "unitless", "percent_point"] },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["as_of", "category", "input_basis", "measurement_point", "unit_id_by_field"],
+      "properties": {
+        "as_of": { "type": "string", "format": "date" },
+        "category": { "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }] },
+        "flow_m3h": { "$ref": "#/$defs/decimal_or_null" },
+        "head_m": { "$ref": "#/$defs/decimal_or_null" },
+        "rated_speed_rpm": { "$ref": "#/$defs/decimal_or_null" },
+        "rated_power_kw": { "$ref": "#/$defs/decimal_or_null" },
+        "suction": { "anyOf": [{ "enum": ["单吸", "双吸"] }, { "type": "null" }] },
+        "stages": { "$ref": "#/$defs/positive_integer_or_null" },
+        "pump_efficiency": { "$ref": "#/$defs/decimal_or_null" },
+        "input_basis": { "const": "STANDARD_BEP" },
+        "measurement_point": { "const": "BEP" },
+        "unit_id_by_field": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["flow_m3h", "head_m", "rated_speed_rpm", "suction", "stages", "pump_efficiency"],
+          "properties": {
+            "flow_m3h": { "const": "m3/h" },
+            "head_m": { "const": "m" },
+            "rated_speed_rpm": { "const": "rpm" },
+            "rated_power_kw": { "const": "kW" },
+            "suction": { "const": "unitless" },
+            "stages": { "const": "stage" },
+            "pump_efficiency": { "const": "%" }
+          }
+        }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit_id"],
+      "properties": {
+        "value": { "$ref": "#/$defs/decimal" },
+        "unit_id": { "$ref": "#/$defs/unit_id" },
+        "scale": { "type": "integer", "minimum": 0, "maximum": 18 },
+        "rounding": { "enum": ["EXACT", "HALF_UP"] }
+      }
+    },
+    "metric_map": { "type": "object", "additionalProperties": { "$ref": "#/$defs/metric" } },
+    "lookup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["table_id", "data_ids", "matching", "match_status"],
+      "properties": {
+        "table_id": { "type": "string", "minLength": 1 },
+        "data_ids": { "type": "array", "items": { "type": "string" } },
+        "matching": { "type": "string", "minLength": 1 },
+        "match_status": { "type": "string", "minLength": 1 },
+        "boundary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min", "max", "min_inclusive", "max_inclusive"],
+          "properties": {
+            "min": { "$ref": "#/$defs/decimal" },
+            "max": { "$ref": "#/$defs/decimal" },
+            "min_inclusive": { "type": "boolean" },
+            "max_inclusive": { "type": "boolean" }
+          }
+        },
+        "no_interpolation": { "type": "boolean" },
+        "no_default_mapping": { "type": "boolean" }
+      }
+    },
+    "source_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "artifact_kind", "artifact_path", "artifact_sha256", "clause_or_table", "evidence_role"],
+      "properties": {
+        "source_id": { "type": "string", "minLength": 1 },
+        "artifact_kind": { "enum": ["REPOSITORY_FILE", "EXTERNAL_FILE"] },
+        "artifact_path": { "type": "string", "minLength": 1 },
+        "artifact_sha256": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+        "clause_or_table": { "type": "string", "minLength": 1 },
+        "pages": { "type": "array", "items": { "type": "string" } },
+        "stable_data_ids": { "type": "array", "items": { "type": "string" } },
+        "evidence_role": { "enum": ["STANDARD", "CANONICAL_PACK", "CURRENT_IMPLEMENTATION", "LEGACY_TEST", "HUMAN_REVIEW"] },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

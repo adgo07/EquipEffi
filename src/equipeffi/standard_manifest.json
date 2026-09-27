@@ -58,7 +58,7 @@
       "standard_code": "GB 19762-2025",
       "effective_date": "2026-03-01",
       "status": "active",
-      "data_version": "2026.08.23"
+      "data_version": "2026.09.26-t3-08-c2-142.33-v1"
     },
     {
       "device_type": "pump_chemical",
@@ -67,7 +67,7 @@
       "standard_code": "GB 19762-2025",
       "effective_date": "2026-03-01",
       "status": "active",
-      "data_version": "2026.08.23"
+      "data_version": "2026.09.26-t3-08-c2-142.33-v1"
     },
     {
       "device_type": "fan",

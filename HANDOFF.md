@@ -1,12 +1,12 @@
 # EquipEffi 项目交接说明
 
-> **Phase 1 执行（2026-09-22～2026-09-23）**
+> Phase 1 执行（2026-09-22～2026-09-27）
 >
-> 当前唯一权威路线：`EquipEffi V2.2`；当前阶段：`Phase 1`；当前状态：`BLOCKED`；下一状态：`REVIEW_BLOCKER_RESOLUTION`。
+当前唯一权威路线：EquipEffi V2.2；当前阶段：Phase 1；当前状态：BLOCKED；下一状态：PENDING_FIXED_SHA_INDEPENDENT_REVIEW。
 >
 > 旧 v7–v15、T04.xx、旧 HANDOFF 和编号执行清单均为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`。它们保留事实，不再拥有自动任务调度权。请先读取 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[BASELINE.md](BASELINE.md)、[ASSET_AUDIT.md](ASSET_AUDIT.md)、[QA_BACKLOG.md](QA_BACKLOG.md) 和 [V1_SCOPE.md](V1_SCOPE.md)。
 >
-> Phase 0 已建立 tag `pre-v2-rebaseline`，指向起始 HEAD `a1643ed38e0b934bbc7562348883b8a8bd4badc5`。Phase 1 未修改 evaluator、目录、标准资源或业务算法，未执行 0B Hotfix。验收 HEAD `df9f53e468d49ac7d9c6419fe89fb99c25d9f30c` 的技术交付、CPython 3.12.14 x64 复验和 Windows V1 产品决策记录均已保留；但 7 个 Golden Case 仍为 `REVIEWED`，且 `review_owner` 尚为占位值。当前唯一合法下一步是补齐 Golden Case 正式批准授权，不得启动 Phase 2。
+授权实施分支以 9e413051177fbfa7f1b217de17d344f33176b152 为基线。V2 R01–R06 在新的独立 clean worktree 中定点修订；原工作树未参与复制。最终提交已在第二个 final-SHA clean worktree 完成复验；精确 SHA 见本次执行交接，下一步只交原独立会话复验。不批准 Golden、不宣布 Phase 1 PASS、不进入 Phase 2。
 
 ## Phase 1 当前权威状态
 
@@ -16,9 +16,11 @@
 | 当前阶段 | `Phase 1` |
 | 当前 Goal | `Phase 1 Review Package` |
 | 状态 | `BLOCKED` |
-| 唯一下一步 | 补齐 Golden Case 具名复核负责人和批准记录，再进入 Solution/Product Review；不得跳到 Phase 2 |
+| 唯一下一步 | 将最终固定 SHA 交原独立验收会话复验；之后仍需 Golden 具名审批及 Solution/Product Review。不得进入 Phase 2 |
 | 业务样板 | `pump_water`，后续以 GB 19762-2025 标准映射为证据 |
-| 代码边界 | 仅允许规范/契约/Golden/审计文档及必要验证；不改业务实现 |
+| 代码边界 | 仅用户授权的泵 V2 R01–R06 范围；Decimal50、公式、ns_raw、OOS、V1 scope 等冻结边界不变；无 Phase 2 功能 |
+
+本轮修订的文件级提交许可清单为 [PUMP_V2_R01_R06_COMMIT_MANIFEST.md](PUMP_V2_R01_R06_COMMIT_MANIFEST.md)，命令、环境和最终 fresh-worktree 测试结果见 [IMPLEMENTATION_REPORT.md](IMPLEMENTATION_REPORT.md)。旧 0.1 Golden hash 未刷新；26 个 V0.3 候选全部为 `DRAFT/PENDING`。全量 unittest 的既有 3 个 V4 motor 失败和 1 个 wheel 审计错误保持原样并记录，不作为泵修复范围。下一步将精确 SHA 交回原独立验收会话并停止。
 
 ## Phase 1 Goal Log（当前权威）
 

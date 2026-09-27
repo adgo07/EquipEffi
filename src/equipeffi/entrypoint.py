@@ -53,7 +53,15 @@ def _public_example(device_type: str) -> dict[str, object]:
     if device_type == "motor":
         return {"category": "三相异步电动机（一般用途）", "rated_voltage": "0.4", "rated_power": 7.5, "poles": 4, "rated_speed": 1480, "efficiency": 98}
     if device_type == "centrifugal_pump":
-        return {"category": "单级单吸清水离心泵", "flow": 100, "head": 50, "speed": 2900, "efficiency": 80}
+        return {
+            "category": "单级单吸清水离心泵",
+            "suction": "单吸",
+            "stages": "1",
+            "flow": "100",
+            "head": "50",
+            "speed": "2900",
+            "efficiency": "80",
+        }
     profiles = profiles_for_public_type(device_type)
     if not profiles:
         return {}

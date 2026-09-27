@@ -36,6 +36,7 @@ from equipeffi.domain.common.enums import Conclusion, EliminationScope  # noqa: 
 from equipeffi.domain.common.models import DeviceDraft  # noqa: E402
 from equipeffi.domain.evaluation.device_specs import get_device_spec, list_device_specs  # noqa: E402
 from equipeffi.domain.evaluation.device_types import PUBLIC_DEVICE_TYPES, public_device_types  # noqa: E402
+from equipeffi.domain.evaluation.device_evaluators import ChemicalPumpEvaluator, WaterPumpEvaluator  # noqa: E402
 from equipeffi.domain.evaluation.elimination import EliminationMatcher  # noqa: E402
 from equipeffi.infrastructure.excel.template_resource import DEFAULT_V4_TEMPLATE  # noqa: E402
 from equipeffi.infrastructure.excel.v4_template_audit import audit_v4_template  # noqa: E402
@@ -406,11 +407,24 @@ def _audit_evaluator_examples(src: Path, errors: list[str], checks: dict[str, An
     manifest_path = src / "equipeffi" / "standard_manifest.json"
     try:
         service = EvaluationService(JsonStandardRepository(src / "equipeffi", manifest=manifest_path))
+
+        def evaluate_example(device_type: str, record_id: str, values: dict[str, Any]):
+            # Release audit checks profile evaluator evidence. The public
+            # pump_chemical route intentionally remains NOT_IN_RELEASE_SCOPE
+            # until the pending V1 gates have been reviewed.
+            evaluator_type = {
+                "pump_water": WaterPumpEvaluator,
+                "pump_chemical": ChemicalPumpEvaluator,
+            }.get(device_type)
+            if evaluator_type is not None:
+                return evaluator_type().evaluate(values, service.standards.get_pack(device_type))
+            return service.evaluate(DeviceDraft(record_id, device_type, values))
+
         results: dict[str, str] = {}
         trace_data_ids: dict[str, list[str]] = {}
         for device_type in list_device_specs():
             example = dict(get_device_spec(device_type).get("example", {}))
-            result = service.evaluate(DeviceDraft(f"RELEASE-{device_type}", device_type, example))
+            result = evaluate_example(device_type, f"RELEASE-{device_type}", example)
             results[device_type] = result.conclusion.value
             standard_step = next(
                 (item for item in result.trace if item.get("step_type") == "标准查询结果"),
@@ -431,18 +445,27 @@ def _audit_evaluator_examples(src: Path, errors: list[str], checks: dict[str, An
         for device_type, category in (("pump_water", "多级"), ("pump_chemical", "多级石油化工离心泵")):
             example = dict(get_device_spec(device_type).get("example", {}))
             example.update({"category": category, "stages": "1.5"})
-            invalid_stage = service.evaluate(DeviceDraft(f"RELEASE-{device_type}-INVALID-STAGES", device_type, example))
+            invalid_stage = evaluate_example(device_type, f"RELEASE-{device_type}-INVALID-STAGES", example)
             integer_stage_results[device_type] = invalid_stage.conclusion.value
-            if invalid_stage.conclusion is not Conclusion.UNABLE_TO_JUDGE or "级数" not in invalid_stage.missing_fields:
-                errors.append(f"评价器示例{device_type}未拒绝非整数级数")
+            if (
+                invalid_stage.conclusion is not Conclusion.UNABLE_TO_JUDGE
+                or "级数" in invalid_stage.missing_fields
+                or invalid_stage.evaluation_status != "INVALID_INPUT"
+                or "STAGES_INVALID" not in invalid_stage.issue_codes
+            ):
+                errors.append(f"评价器示例{device_type}未将已提供的非整数级数标记为INVALID_INPUT")
         checks["pump_integer_stage_validation"] = integer_stage_results
         range_miss_context: dict[str, Any] = {}
         for device_type, category in (("pump_water", "单级单吸"), ("pump_chemical", "单级石油化工离心泵")):
             example = dict(get_device_spec(device_type).get("example", {}))
-            example.update({"category": category, "flow_m3h": "0.1", "head_m": 50, "rated_speed_rpm": 2900, "pump_efficiency": 80})
-            range_miss = service.evaluate(DeviceDraft(f"RELEASE-{device_type}-RANGE-MISS", device_type, example))
+            example.update({
+                "category": category, "suction": "单吸", "stages": "1",
+                "flow_m3h": "0.1", "head_m": "50", "rated_speed_rpm": "2900",
+                "pump_efficiency": "80",
+            })
+            range_miss = evaluate_example(device_type, f"RELEASE-{device_type}-RANGE-MISS", example)
             has_context = (
-                range_miss.conclusion is Conclusion.OUT_OF_SCOPE
+                range_miss.conclusion is Conclusion.NOT_APPLICABLE
                 and "泵效率_%" in range_miss.actual_metrics
                 and "比转速" in range_miss.calculated_metrics
                 and "输出功率_kW" in range_miss.calculated_metrics

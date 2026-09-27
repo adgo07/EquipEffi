@@ -6,9 +6,9 @@
 - **路线原文:** [docs/28_EquipEffi 后续开发总体路线 V2.2.md](docs/28_EquipEffi%20后续开发总体路线%20V2.2.md)
 - **Current Phase:** Phase 1
 - **State:** `BLOCKED`
-- **Next State:** `REVIEW_BLOCKER_RESOLUTION`
+- **Next State:** PENDING_FIXED_SHA_INDEPENDENT_REVIEW
 - **Automatic continuation:** `DISABLED`
-- **Allowed Work:** 仅 Golden Case 批准阻塞收口和 Solution/Product Review 输入；不得启动 Phase 2；Phase 0B/Phase 1 Hotfix 均未执行
+- **Allowed Work:** The authorized pump V2 R01–R06 revision is limited to the clean branch and clean-checkout verification; after its fixed SHA, wait for the original independent review. Golden approval and Solution/Product Review remain open; Phase 2 is disabled.
 
 ## 治理切换
 
@@ -37,9 +37,9 @@ ADR/
 
 Phase 0A 的治理切换、不可变起始 tag、真实基线、资产审计、第三方 55 项入库、风险重新分级、17 Profile 注册、Windows V1 Scope 草案、Golden Candidate 盘点和首个纵向样板选择已完成。2026-09-22 验收曾因交付物未提交、证据字段不完整、QA 表结构不统一和产品需求/商业价值证据缺失而暂时阻塞；治理补正和复验已完成，未修改业务代码。
 
-当前唯一合法下一步是：
+R01–R06 的授权修订已进入独立 clean worktree；当前只能完成规定验证、形成固定 SHA 并等待原独立验收。Golden 具名审批与 Solution/Product Review 仍是后续门禁。
 
-> **Solution/Product Review：审查 Phase 1 业务规范、数据契约、`pump_water` 映射、Golden Case、P0 证据和 Windows V1 Scope。**
+> **先由原独立验收会话复验固定 SHA，再处理 Golden 具名审批和 Solution/Product Review；不得自动进入 Phase 2。**
 
 Phase 1 只允许建立业务规范 V0.1、Canonical Schema、Product/Profile Schema、Import Contract、Golden Case Schema、Support Status 和 `pump_water` 样板的标准映射；不得批量迁移 17 个 Profile。
 
@@ -55,7 +55,7 @@ P1-G01 → P1-G02 → P1-G03 → P1-G04 → P1-G05 → P1-G06
 
 ## Phase 1 Review Boundary
 
-Phase 1 的唯一合法下一步是补齐 Golden Case 的具名标准复核负责人和批准记录，再提交 Solution/Product Review。本次独立复算和来源验证只能证明技术证据充分，不能替代正式批准。任何评审前的代码重构、目录搬迁、完整 UI/SQLite/Excel/报告和批量 Profile 迁移均越界。
+当前修订提交后，唯一合法下一步是由原独立验收会话按固定 SHA 复验；技术复验后仍需 Golden 具名审批和 Solution/Product Review。
 
 ## Phase 0 Exit Gate
 

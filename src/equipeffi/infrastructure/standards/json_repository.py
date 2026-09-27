@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from copy import deepcopy
+from decimal import Decimal
 import importlib.resources as resources
 from pathlib import Path
 from typing import Any
@@ -76,7 +77,13 @@ class JsonStandardRepository:
                 "status": entry.get("status", StandardDataStatus.EXTRACTED.value),
                 "unavailable_reason": entry.get("unavailable_reason", "标准数据文件不存在"),
             }
-        data = json.loads(source.read_text(encoding="utf-8"))
+        # Pump formula coefficients and table boundaries are decimal source
+        # literals.  Keep their JSON lexemes exact instead of first parsing
+        # them as binary floats; other packages retain their historical loader.
+        if device_type in {"pump_water", "pump_chemical"}:
+            data = json.loads(source.read_text(encoding="utf-8"), parse_float=Decimal)
+        else:
+            data = json.loads(source.read_text(encoding="utf-8"))
         data["pack_id"] = entry["pack_id"]
         data["device_type"] = device_type
         data["status"] = entry.get("status", StandardDataStatus.NORMALIZED.value)
