@@ -110,7 +110,7 @@
       "properties": {
         "source_id": { "type": "string", "minLength": 1 },
         "artifact_kind": { "enum": ["REPOSITORY_FILE", "EXTERNAL_FILE"] },
-        "artifact_path": { "type": "string", "minLength": 1 },
+        "artifact_path": { "type": "string", "minLength": 1, "description": "REPOSITORY_FILE uses a repository-relative path. EXTERNAL_FILE uses the relative_path registered for source_id in evidence_registry.json; resolve it under --external-evidence-root or EQUIPEFFI_EXTERNAL_EVIDENCE_ROOT. Never store a machine-specific absolute path in a v0.3 candidate." },
         "artifact_sha256": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$", "description": "SHA-256 for repository text files is computed after canonical CRLF-to-LF normalization so pins are stable across Windows checkout settings; external and non-text files use raw-byte SHA-256." },
         "clause_or_table": { "type": "string", "minLength": 1 },
         "pages": { "type": "array", "items": { "type": "string" } },

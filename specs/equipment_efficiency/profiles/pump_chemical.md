@@ -19,13 +19,15 @@
 | 公式(1) | 标准印刷页3；PDF页9 |
 | 公式(4)–(7) | 标准印刷页4–5；PDF页10–11 |
 
-`active` 是可加载状态，不表示数据或 Profile 已获业务批准。原始标准 PDF 不随仓库提交；页码、路径及 SHA 已固定在本文件和 Golden0.2 候选来源引用中。表2包括标准列出的单级和多级石油化工离心泵，表内数据以规范 `单级`/`多级` 表示。
+`active` 是可加载状态，不表示数据或 Profile 已获业务批准。原始标准 PDF 不随仓库提交；其 `source_id`、注册相对定位符和 SHA 固定在 `specs/equipment_efficiency/evidence_registry.json`。验证时由 `--external-evidence-root` 或 `EQUIPEFFI_EXTERNAL_EVIDENCE_ROOT` 提供本机证据目录。表2包括标准列出的单级和多级石油化工离心泵，表内数据以规范 `单级`/`多级` 表示。
 
 ## 2. 产品字段与规定点
 
 原始字段为 `product_type`、总 `QBEP`、总 `HBEP`、`speed`、`efficiency`、`suction`、`stages` 和 `as_of`；数值通过十进制文本转为 Decimal50。兼容别名不改变总流量/总扬程语义。石化公式输入须对应同一标准规定点/BEP；合成候选使用显式 `STANDARD_BEP/BEP` 测试前提，真实设备仍需来源证明。
 
 石化类别只接受“单级石油化工离心泵”和“多级石油化工离心泵”。单级要求 `stages=1`；多级要求级数大于1。`suction` 和 `stages` (K/L) 均必须显式提供；按标准公式(1)对双吸以总 Q 的一半计算比转速。K/L缺失为 `INSUFFICIENT_DATA`，非法值或类别/输入冲突为 `INVALID_INPUT`，均不出等级；不根据历史源表补值。
+
+公共 `centrifugal_pump` 路由只接受这两个完整标准名称，或显式 `pump_profile=chemical`/`pump_chemical`。未登记文本不得通过“石化”“化工”“多级”等子串被猜测为此 Profile。公共 Application 仍返回 `NOT_IN_RELEASE_SCOPE`；技术诊断需显式指定 Profile，不能因此视为发布支持。
 
 ## 3. 标准公式与表2
 

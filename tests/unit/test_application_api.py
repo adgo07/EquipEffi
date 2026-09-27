@@ -921,6 +921,32 @@ class ApplicationApiTests(unittest.TestCase):
         self.assertEqual(result["public_device_type"], "motor")
         self.assertEqual(result["standard_reference"]["effective_date"], "2021-06-01")
 
+    def test_public_pump_unknown_keyword_categories_are_not_routed_to_water(self):
+        for category in ("未知多级泵", "未知管道泵", "未知单级单吸泵"):
+            with self.subTest(category=category):
+                result = self.api.evaluate({
+                    "record_id": f"UNKNOWN-PUMP-{category}",
+                    "device_type": "centrifugal_pump",
+                    "values": {
+                        "product_type": category,
+                        "suction": "单吸",
+                        "stages": "1",
+                        "QBEP": "100",
+                        "HBEP": "50",
+                        "speed": "2900",
+                        "efficiency": "80",
+                    },
+                })
+
+                self.assertEqual(result["support_status"], "NOT_IN_RELEASE_SCOPE")
+                self.assertEqual(result["category_status"], "UNRESOLVED")
+                self.assertEqual(result["evaluation_status"], "INVALID_INPUT")
+                self.assertEqual(
+                    [step.get("step_type") for step in result["trace"]],
+                    ["泵类别判定"],
+                )
+                self.assertEqual(result["grade"], None)
+
     def test_public_motor_route_preserves_pmsm_no_data_lookup(self):
         from copy import deepcopy
 

@@ -16,18 +16,18 @@
 | `catalog_data_version` | `2026.09.26-t3-08-c2-142.33-v1`（manifest） |
 | `standard_pack_version` | `v1`（由 pack id 后缀得到；需在版本冻结时显式确认） |
 | 当前包 SHA-256（仓库文本 CRLF→LF 规范） | `5D91F01B1C5F26DC4F364A3156C4E974B159FA1005BD840489C0BC3465C18C0F` |
-| 外部标准原文证据 | `G:/标准  规范/02_能耗限额_终端产品/用能设备/重点设备能效标准/6 7. GB 19762-2025 离心泵能效限定值及能效等级.pdf`；SHA-256 `7F515D8B9D6B4D2AB97FFA7BECB78520BA0579CFBD6D5ECA10C7E7CC77895FEC` |
+| 外部标准原文证据 | `source_id=GB19762-2025-PDF`；相对定位符见 `specs/equipment_efficiency/evidence_registry.json`；SHA-256 `7F515D8B9D6B4D2AB97FFA7BECB78520BA0579CFBD6D5ECA10C7E7CC77895FEC` |
 | 标准实施日期 | `2026-03-01` |
 | 表/来源页 | 表 1、表 3；当前包标注标准页 `9-10` |
 | 当前正式运行路径 | `EvaluationFacade` → `EvaluationService` → `WaterPumpEvaluator` → `JsonStandardRepository` |
 | 当前实现文件 | `src/equipeffi/domain/evaluation/evaluators/pump.py` |
 | 旧测试证据 | `tests/unit/test_device_evaluator_matrix.py`；只能验证当前行为，不能单独证明标准事实 |
 
-标准 PDF 原件不随本仓库提交；当前工作区外部证据文件及其 SHA-256 已在上表和 Golden Case `source_reference` 中固定。标准所有者或 Solution Review 仍可要求补充具名复核，不能把文件存在或指纹一致单独解释为业务批准。
+标准 PDF 原件不随本仓库提交。PDF 的身份与原始字节 SHA-256 固定在 evidence registry；Golden Case 0.3 只存注册的相对定位符，不保存个人机器绝对路径。验证时把 `--external-evidence-root` 指向包含该 PDF 的目录，或设置 `EQUIPEFFI_EXTERNAL_EVIDENCE_ROOT`；例如本机可以指向标准库中的“重点设备能效标准”目录。无证据文件的 CI 可显式使用 `--skip-external-evidence`，其输出会标明外部文件检查未执行。标准所有者或 Solution Review 仍可要求补充具名复核，不能把文件存在或指纹一致单独解释为业务批准。
 
 ## 2. 公共类型路由
 
-`centrifugal_pump` 只在类别或用户选择明确表明为清水离心泵时路由到本 Profile。当前输入归一化支持以下别名：
+`centrifugal_pump` 只在 `product_type` 完整精确匹配下列标准名称/登记别名，或调用方显式选择 `pump_profile=water`/`pump_water` 时路由到本 Profile。旧 `category` 字段仅支持同一组精确别名；未知名称不按“清水”“多级”“管道”等子串猜测 Profile。
 
 | Product/Profile 值 | V4/展示别名 | 标准表类型 |
 |---|---|---|

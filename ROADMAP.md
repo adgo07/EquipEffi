@@ -8,7 +8,7 @@
 - **State:** `BLOCKED`
 - **Next State:** PENDING_FIXED_SHA_INDEPENDENT_REVIEW
 - **Automatic continuation:** `DISABLED`
-- **Allowed Work:** The authorized pump V2 R01–R06 revision is limited to the clean branch and clean-checkout verification; after its fixed SHA, wait for the original independent review. Golden approval and Solution/Product Review remain open; Phase 2 is disabled.
+- **Allowed Work:** The authorized R07 follow-up is limited to the isolated pump branch: exact public pump routing, portable external evidence, exact historical-hash registration, direct tests and Windows CI. After pushing and checking its fixed SHA, wait for the original independent review. Golden approval and Solution/Product Review remain open; Phase 2 is disabled.
 
 ## 治理切换
 
@@ -37,7 +37,7 @@ ADR/
 
 Phase 0A 的治理切换、不可变起始 tag、真实基线、资产审计、第三方 55 项入库、风险重新分级、17 Profile 注册、Windows V1 Scope 草案、Golden Candidate 盘点和首个纵向样板选择已完成。2026-09-22 验收曾因交付物未提交、证据字段不完整、QA 表结构不统一和产品需求/商业价值证据缺失而暂时阻塞；治理补正和复验已完成，未修改业务代码。
 
-R01–R06 的授权修订已进入独立 clean worktree；当前只能完成规定验证、形成固定 SHA 并等待原独立验收。Golden 具名审批与 Solution/Product Review 仍是后续门禁。
+R01–R06 的 fixed head `72e8e490d2da56ec8064ad799750fb7b83425a57` 经独立验收后发现 R02 路由和 R04 外部证据定位仍有缺口。用户另行授权的 R07 修订在隔离分支 worktree 中实施；当前只允许检查允许清单、验证并推送更新后的固定 SHA，再等待原独立验收。Golden 具名审批与 Solution/Product Review 仍是后续门禁。
 
 > **先由原独立验收会话复验固定 SHA，再处理 Golden 具名审批和 Solution/Product Review；不得自动进入 Phase 2。**
 

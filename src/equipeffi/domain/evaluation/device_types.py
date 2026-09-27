@@ -199,22 +199,64 @@ def _resolve_motor(values: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
     raise DeviceTypeResolutionError("电动机缺少可区分低压、高压或永磁产品的设备类别、profile或额定电压")
 
 
-def _resolve_pump(values: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
-    profile = values.get("pump_profile") or values.get("rule_profile")
-    if profile in {"water", "pump_water"}:
-        return "pump_water", [{"rule": "公共离心泵profile", "profile": "water"}]
-    if profile in {"chemical", "pump_chemical", "petrochemical"}:
-        return "pump_chemical", [{"rule": "公共离心泵profile", "profile": "chemical"}]
+_PUMP_PROFILE_ALIASES = {
+    "water": "pump_water",
+    "pump_water": "pump_water",
+    "chemical": "pump_chemical",
+    "pump_chemical": "pump_chemical",
+    "petrochemical": "pump_chemical",
+}
 
-    # Golden v0.3 and the public input contract retain product_type as the
-    # source field. Keep legacy category as a fallback, but route from the
-    # canonical raw field when both are present.
-    category = str(values.get("product_type", values.get("category", "")) or "")
-    if any(token in category for token in ("石油化工", "石化", "化工")):
-        return "pump_chemical", [{"rule": "按设备类别路由离心泵", "category": category, "profile": "chemical"}]
-    if any(token in category for token in ("清水", "单级单吸", "单级双吸", "管道", "多级", "轻型多级")):
-        return "pump_water", [{"rule": "按设备类别路由离心泵", "category": category, "profile": "water"}]
-    raise DeviceTypeResolutionError("离心泵缺少可区分清水泵或石油化工泵的设备类别或profile")
+_PUMP_PRODUCT_TYPE_PROFILES = {
+    # Standard product names and the explicit legacy aliases documented by
+    # pump_water. Deliberately do not infer a profile from a substring.
+    "单级单吸清水离心泵": "pump_water",
+    "单级单吸": "pump_water",
+    "单级双吸清水离心泵": "pump_water",
+    "单级双吸": "pump_water",
+    "管道清水离心泵": "pump_water",
+    "管道": "pump_water",
+    "多级清水离心泵": "pump_water",
+    "多级": "pump_water",
+    "轻型多级清水离心泵（立式）": "pump_water",
+    "轻型多级立式": "pump_water",
+    "轻型多级清水离心泵（卧式）": "pump_water",
+    "轻型多级卧式": "pump_water",
+    "单级石油化工离心泵": "pump_chemical",
+    "多级石油化工离心泵": "pump_chemical",
+}
+
+
+def _resolve_pump(values: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
+    # An explicitly selected profile is authoritative. An unrecognized
+    # explicit profile must not silently fall back to product-name guessing.
+    if values.get("pump_profile") not in (None, ""):
+        selected_profile = str(values["pump_profile"]).strip()
+        profile = _PUMP_PROFILE_ALIASES.get(selected_profile)
+        if profile is None:
+            raise DeviceTypeResolutionError(f"未知离心泵Profile: {selected_profile}")
+        return profile, [{"rule": "公共离心泵profile", "profile": profile.removeprefix("pump_")}]
+    if values.get("rule_profile") not in (None, ""):
+        selected_profile = str(values["rule_profile"]).strip()
+        profile = _PUMP_PROFILE_ALIASES.get(selected_profile)
+        if profile is None:
+            raise DeviceTypeResolutionError(f"未知离心泵Profile: {selected_profile}")
+        return profile, [{"rule": "公共离心泵profile", "profile": profile.removeprefix("pump_")}]
+
+    # product_type is canonical; category remains a compatibility alias only
+    # when product_type is absent or empty. Match a complete registered value.
+    category_value = values.get("product_type")
+    if category_value in (None, ""):
+        category_value = values.get("category", "")
+    category = str(category_value or "").strip()
+    profile = _PUMP_PRODUCT_TYPE_PROFILES.get(category)
+    if profile is not None:
+        return profile, [{
+            "rule": "按标准产品类别精确路由离心泵",
+            "category": category,
+            "profile": profile.removeprefix("pump_"),
+        }]
+    raise DeviceTypeResolutionError("离心泵产品类别未精确匹配已注册标准Profile，或缺少显式pump_profile")
 
 
 def resolve_device_type(device_type: str, values: dict[str, Any] | None = None) -> DeviceTypeResolution:

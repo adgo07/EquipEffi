@@ -1,0 +1,30 @@
+{
+  "registry_version": "phase1-evidence-registry-0.1",
+  "external_sources": {
+    "GB19762-2025-PDF": {
+      "artifact_kind": "EXTERNAL_FILE",
+      "aliases": ["GB 19762-2025"],
+      "default_locator": "EQUIPEFFI_EXTERNAL_EVIDENCE_ROOT",
+      "relative_path": "6 7. GB 19762-2025 离心泵能效限定值及能效等级.pdf",
+      "artifact_sha256": "7F515D8B9D6B4D2AB97FFA7BECB78520BA0579CFBD6D5ECA10C7E7CC77895FEC",
+      "media_type": "application/pdf",
+      "source_title": "GB 19762-2025 离心泵能效限定值及能效等级"
+    }
+  },
+  "historical_repository_hashes": [
+    {
+      "case_schema_version": "golden-case-0.1",
+      "catalog_data_version": "2026.08.23",
+      "artifact_path": "src/equipeffi/resources/standards/pump.json",
+      "artifact_sha256": "D1FAB8310AA5ADE7ACCCB379BD347F442D51202E0EE2EEF4CA6E34F5A2F3EA00",
+      "reason": "GB 19762-2025 water Canonical before the authorized T3-08 C2 correction"
+    },
+    {
+      "case_schema_version": "golden-case-0.1",
+      "catalog_data_version": "2026.08.23",
+      "artifact_path": "src/equipeffi/domain/evaluation/evaluators/pump.py",
+      "artifact_sha256": "66F84899DA5FE411340311075346D75216F1335577669CF3CC2C16F1129611EF",
+      "reason": "Pump evaluator snapshot referenced by the immutable 0.1 historical cases"
+    }
+  ]
+}

@@ -1,12 +1,12 @@
 # EquipEffi 项目交接说明
 
-> Phase 1 执行（2026-09-22～2026-09-27）
+> Phase 1 执行（2026-09-22～2026-09-28）
 >
 当前唯一权威路线：EquipEffi V2.2；当前阶段：Phase 1；当前状态：BLOCKED；下一状态：PENDING_FIXED_SHA_INDEPENDENT_REVIEW。
 >
 > 旧 v7–v15、T04.xx、旧 HANDOFF 和编号执行清单均为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`。它们保留事实，不再拥有自动任务调度权。请先读取 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[BASELINE.md](BASELINE.md)、[ASSET_AUDIT.md](ASSET_AUDIT.md)、[QA_BACKLOG.md](QA_BACKLOG.md) 和 [V1_SCOPE.md](V1_SCOPE.md)。
 >
-授权实施分支以 9e413051177fbfa7f1b217de17d344f33176b152 为基线。V2 R01–R06 在新的独立 clean worktree 中定点修订；原工作树未参与复制。最终提交已在第二个 final-SHA clean worktree 完成复验；精确 SHA 见本次执行交接，下一步只交原独立会话复验。不批准 Golden、不宣布 Phase 1 PASS、不进入 Phase 2。
+授权实施分支以 9e413051177fbfa7f1b217de17d344f33176b152 为基线，后合入当前 master 的文档提交。R01–R06 的 fixed head `72e8e490d2da56ec8064ad799750fb7b83425a57` 经独立验收后，用户授权在隔离 worktree 修复 R02 精确路由与 R04 外部证据定位/历史 hash 注册。原始 `G:\Python Project\EquipEffi` 工作树未用于复制、修改或测试。R07 只在逐文件 manifest 范围内提交；推送后核查 Windows CI，再把精确 SHA 交原独立验收会话复验。不批准 Golden、不宣布 Phase 1 PASS、不进入 Phase 2。
 
 ## Phase 1 当前权威状态
 
@@ -16,11 +16,11 @@
 | 当前阶段 | `Phase 1` |
 | 当前 Goal | `Phase 1 Review Package` |
 | 状态 | `BLOCKED` |
-| 唯一下一步 | 将最终固定 SHA 交原独立验收会话复验；之后仍需 Golden 具名审批及 Solution/Product Review。不得进入 Phase 2 |
+| 唯一下一步 | 推送 R07 allowlist 并核查 Windows CI，然后将最终固定 SHA 交原独立验收会话复验；之后仍需 Golden 具名审批及 Solution/Product Review。不得进入 Phase 2 |
 | 业务样板 | `pump_water`，后续以 GB 19762-2025 标准映射为证据 |
-| 代码边界 | 仅用户授权的泵 V2 R01–R06 范围；Decimal50、公式、ns_raw、OOS、V1 scope 等冻结边界不变；无 Phase 2 功能 |
+| 代码边界 | 仅用户授权的泵 V2 R01–R07 范围；Decimal50、公式、ns_raw、C2=142.33、OOS、V1 scope 等冻结边界不变；无 Phase 2 功能 |
 
-本轮修订的文件级提交许可清单为 [PUMP_V2_R01_R06_COMMIT_MANIFEST.md](PUMP_V2_R01_R06_COMMIT_MANIFEST.md)，命令、环境和最终 fresh-worktree 测试结果见 [IMPLEMENTATION_REPORT.md](IMPLEMENTATION_REPORT.md)。旧 0.1 Golden hash 未刷新；26 个 V0.3 候选全部为 `DRAFT/PENDING`。全量 unittest 的既有 3 个 V4 motor 失败和 1 个 wheel 审计错误保持原样并记录，不作为泵修复范围。下一步将精确 SHA 交回原独立验收会话并停止。
+R01–R06 的文件清单见 [PUMP_V2_R01_R06_COMMIT_MANIFEST.md](PUMP_V2_R01_R06_COMMIT_MANIFEST.md)；R07 清单见 [PUMP_V2_R07_COMMIT_MANIFEST.md](PUMP_V2_R07_COMMIT_MANIFEST.md)，验证结果见 [IMPLEMENTATION_REPORT.md](IMPLEMENTATION_REPORT.md)。旧 Golden hash 未刷新；26 个 V0.3 候选全部为 `DRAFT/PENDING`。外部标准 PDF 不进入仓库；validator 通过证据根目录/环境变量按 SHA-256 定位，GitHub CI 明确跳过外部 PDF 字节校验并报告跳过数。全量 unittest 的 3 个 V4 motor 失败和 1 个 wheel 审计错误保持原样，不作为泵修复范围。推送和 Windows CI 状态核查后，将精确 SHA 交回原独立验收会话并停止。
 
 ## Phase 1 Goal Log（当前权威）
 

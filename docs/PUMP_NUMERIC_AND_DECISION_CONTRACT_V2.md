@@ -61,13 +61,15 @@ actual_efficiency >= threshold
 
 必填泵字段非空但无法解析、超出允许范围或不满足离散类型时，属于 `INVALID_INPUT`，不得再放入 `missing_fields` 或报告成 `INSUFFICIENT_DATA`。当前逐字段代码为：流量 `FLOW_INVALID`、扬程 `HEAD_INVALID`、转速 `SPEED_INVALID`、级数 `STAGES_INVALID`、效率 `EFFICIENCY_INVALID`、单双吸 `SUCTION_INVALID`。字段确实为空时仍报告相应 missing code。技术 Profile evaluator 不拥有产品发布门禁，其 `support_status` 保持 `null`；公共 Application 路由负责输出发布状态：已准入清水泵为 `SUPPORTED`，化工泵以及缺失/未知/OTHER 等无已批准 Profile 路由的请求为 `NOT_IN_RELEASE_SCOPE`。
 
+公共 `centrifugal_pump` 路由只接受注册的完整标准 `product_type` 名称、Profile 文档列明的完整精确别名，或显式且可识别的 `pump_profile`。不通过“多级”“管道”“清水”等子串猜测 Profile；未知类别即使包含这些词，也必须返回 `support_status=NOT_IN_RELEASE_SCOPE`、`category_status=UNRESOLVED`，并在类别路由处停止，不执行查表或公式。旧 `category` 字段只保留明确列出的精确兼容别名；未知 `pump_profile` 不回退到类别猜测。
+
 `EV_SUCTION` 为兼容冻结 V4 表单投影仍包含“单吸”“双吸”“不适用”“其他（请备注说明）”四项；后两项不是可用于本标准公式的 suction 值。非空提交后按非法输入处理，并停止公式计算。
 
 ## 4. Golden 0.3 与输入兼容
 
 新增 `specs/equipment_efficiency/schemas/golden_case_0_3.schema.json`。顶层 `raw_inputs` 明确保存 `product_type`、`suction`、`stages`、`QBEP`、`HBEP`、`speed`、`efficiency`、`input_basis`、`measurement_point`。合法泵输入为文本；缺失/非法负例保留原始 null 或原始错误文本。类别/单双吸/级数校验由 profile/evaluator 负责；不得静默修正。
 
-`expected_calculation_trace` 独立保存派生值、匹配规则ID和内部阈值；原始数值不得放入派生区域。`source_sidecar` 只允许标准/Canonical/历史诊断来源证据，不允许放入替代输入的业务参数。仓库文本来源（`.json`、`.jsonl`、`.py`、`.md` 等）计算 SHA-256 前将 CRLF 规范为 LF，以免 Git 的 Windows checkout 设置造成同一提交出现不同来源指纹；外部文件及仓库非文本文件仍使用原始字节 SHA-256。Golden 0.1、0.2 schema 和原7例身份保留，只可作为显式兼容读取或历史/诊断输入；读取旧数据不能推断缺失 suction/stages，不能静默改变 schema 状态。
+`expected_calculation_trace` 独立保存派生值、匹配规则ID和内部阈值；原始数值不得放入派生区域。`source_sidecar` 只允许标准/Canonical/历史诊断来源证据，不允许放入替代输入的业务参数。仓库文本来源（`.json`、`.jsonl`、`.py`、`.md` 等）计算 SHA-256 前将 CRLF 规范为 LF，以免 Git 的 Windows checkout 设置造成同一提交出现不同来源指纹；外部文件及仓库非文本文件仍使用原始字节 SHA-256。Golden 0.3 的外部来源由 `specs/equipment_efficiency/evidence_registry.json` 锁定 `source_id`、相对定位符和 SHA-256；本机路径只通过 `--external-evidence-root` 或 `EQUIPEFFI_EXTERNAL_EVIDENCE_ROOT` 注入，不进入候选文件。缺少标准文件时，CI 可以显式使用 `--skip-external-evidence`，并必须保留“外部证据未检查”的计数；这不等同于完整证据验证。Golden 0.1、0.2 schema 和原7例身份、字节及原始来源字段保持不变，只可作为显式兼容读取或历史/诊断输入；读取旧数据不能推断缺失 suction/stages，不能静默改变 schema 状态。旧 `CURRENT_IMPLEMENTATION` 只有命中 registry 中完整版本、catalog、路径、hash 的记录才可作为历史来源；其他不匹配仍报错。
 
 新0.3候选共26条：18条清水泵通过公共 Application E2E（覆盖1/2/3级、轻型立式/卧式及管道泵），8条化工泵仅运行技术 Profile evaluator 并明确 `support_status=null`。所有候选均为 `DRAFT/PENDING`，这组回放只证明候选与当前实现一致，不构成业务批准。每条候选的 source sidecar 固定标准 PDF、Canonical Pack 和参与回放的当前实现文件及 SHA-256；版本化 validator 对0.3代码来源执行精确哈希校验。旧6个 `EFF-EXACT` 降为数值比较诊断，不纳入业务 Golden；旧12个 Excel“等号”例保留来源ID和原始缺项（尤其 K/L），不补 suction/stages，降为历史兼容诊断。旧7个0.1案例保持原ID和文件不变。
 
@@ -88,4 +90,4 @@ pump_chemical 保持 V1_SCOPE 冻结的 UNDER_REVIEW；本次仅用其现有 Pro
 
 ## 7. 实施范围和治理状态
 
-本轮授权仅覆盖离心泵 evaluator、直接应用/输入/结果适配、Golden schema/候选、针对性测试和 Phase 1 文档。未覆盖其他设备、完整 PySide6、SQLite、Excel工作簿、报告产品或 Phase 2。Canonical 标准数值未修改；T3-08 C2=`142.33` 保持。旧 DRAFT 不转 APPROVED。R01–R06 定点修订完成后仍须原独立验收会话按固定 commit SHA 复验；当前治理状态保持 `BLOCKED`。只有满足治理出口后才能转 `READY_FOR_SOL_REVIEW`，执行者不得宣布 Phase 1 PASS。
+本轮授权仅覆盖离心泵精确 Profile 路由、external evidence locator/registry、历史 hash 登记、对应回归测试、Windows 定向 CI 和 Phase 1 治理记录。未覆盖其他设备、完整 PySide6、SQLite、Excel工作簿、报告产品或 Phase 2。Decimal50、`ns_raw`、GB公式、总Q/H换算、Canonical 标准数值及 OOS 政策均未修改；T3-08 C2=`142.33` 保持。旧 DRAFT 不转 APPROVED。R01–R06 经原独立验收后指出的 R02/R04 阻塞在此轮定点修订；最终候选 SHA 仍须独立复验，当前治理状态保持 `BLOCKED`。只有满足治理出口后才能转 `READY_FOR_SOL_REVIEW`，执行者不得宣布 Phase 1 PASS。

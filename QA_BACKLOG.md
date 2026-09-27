@@ -143,3 +143,17 @@ pass=880; fail=3; error=1; skip=3; not_run=0
 | R06 | HANDOFF、TASK_STATE、ROADMAP、BASELINE、QA_BACKLOG 和实施报告反映本轮范围、阻塞、命令及现存失败；release-audit 只带入泵诊断差异，排除 `tests/unit/test_release_audit.py` 的工作区行尾状态及所有非泵审计行为。 | `wheel_pmsm_status` 全量测试错误仍保留为既有发布审计基线；等待原独立正式验收。 |
 
 截至本记录，V2 目标测试全部通过；最终 fixed-SHA fresh worktree 全量 unittest 为 916 tests，909 pass、3 fail、1 error、3 skip，失败为既有 V4 motor reader/writer 三项及 wheel 审计缺少 `wheel_pmsm_status` 一项错误。没有修复或隐藏这些基线结果。无 P0 `review_result` 被改写；Phase 1/Golden/Solution-Product Review 继续阻塞。
+
+## Pump V2 R07 follow-up（2026-09-28）
+
+用户根据 fixed head `72e8e490d2da56ec8064ad799750fb7b83425a57` 的独立验收结论，授权定点处理 R02 路由和 R04 外部证据问题。R07 实施状态为 `IMPLEMENTED_PENDING_FIXED_SHA_INDEPENDENT_REVIEW`；以下技术修复不代表外部验收通过、业务批准或 Phase 1 状态转换。
+
+| ID | 实施与证据 | 剩余门禁 |
+|---|---|---|
+| R07-01 / R02 | `device_types.py` 将公共离心泵 `product_type` 改为完整名称/登记别名精确映射；显式 profile 只接受受支持的注册值；未知含“多级/管道/单级单吸”的类别不会落入 `pump_water`。Application 回归测试要求三种未知关键词请求为 `NOT_IN_RELEASE_SCOPE`、`UNRESOLVED`、`INVALID_INPUT`，只保留类别路由 trace，不执行公式。 | 固定 SHA 交原独立会话复验；`pump_chemical` 的发布门禁仍冻结。 |
+| R07-02 / R04 | 新增外部 evidence registry，以标准 source ID、相对文件名和原始 PDF SHA-256 标识 GB 19762-2025；validator 支持 CLI evidence root 或 `EQUIPEFFI_EXTERNAL_EVIDENCE_ROOT`，不提交 PDF。0.3 候选移除本机盘符路径。 | 独立 clone 的 PDF 字节校验需要用户/复验者挂载同一标准文件并提供 evidence root。CI 只校验结构、registry pins 和仓库证据，会清楚报告跳过数。 |
+| R07-03 | 新增 unknown-keyword Application 负例、外部 evidence root 跨 clone 定位及内容 hash 篡改测试、机器盘符扫描，并覆盖 v0.1 legacy source ID 到 registry locator 的映射。 | 原独立验收复验最终候选 SHA。 |
+| R07-04 | `CURRENT_IMPLEMENTATION` 历史差异不再宽泛自动放行；仅严格匹配 registry 中的 schema version/catalog/path/hash 才保留历史 provenance。登记的确切 0.1 implementation hash 可读；任意改动值和 0.2 未登记值均为错误。旧 case bytes/hash 不改。 | 无历史 hash 刷新；复验 validator 与对应回归测试。 |
+| R07-05 | 增加面向 PR #1 的 Windows 3.12 workflow，覆盖 contract/schema、泵 route/numeric/boundary/Golden、metadata/architecture、evaluator matrix、compileall 和 diff check。 | workflow 推送后等待 GitHub Actions 实际运行；CI 未验证外部 PDF 原始字节。 |
+
+R07 本机 isolated-worktree 定向泵组为 157 pass；metadata/architecture/evaluator matrix 为 394 pass。外部证据根目录模式验证 7 条旧案例和 26 条候选、0 错误；显式 skip 模式也为 0 结构/hash 错误，分别标记跳过 7 和 26 项 PDF 字节检查。全量 unittest 更新为 921 total：914 pass、3 fail、1 error、3 skip；既有 3 个 V4 motor 失败和 wheel `wheel_pmsm_status` 错误保持原样。详见 `IMPLEMENTATION_REPORT.md` 与逐文件 `PUMP_V2_R07_COMMIT_MANIFEST.md`。Golden 仍全部 `DRAFT/PENDING`，Phase 1 仍 `BLOCKED`，不启动 Phase 2。
