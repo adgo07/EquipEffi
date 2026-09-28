@@ -43,3 +43,13 @@
 - 正式 unittest、compileall、package/resource smoke 和性能基线必须按命令、环境、耗时、pass/fail/error/skip/not_run 完整记录。
 - 性能问题先登记实测结果，不能在 Phase 0 直接做 Repository 或缓存重构。
 - 依赖方向：Domain 不依赖 UI/Excel/SQLite；Presentation 只能通过 Application 契约调用核心；装配层不得制造新的包级环。
+
+## Qingzhou-contracts 公共治理（QZC-A01）
+
+- 本仓采用 `https://github.com/adgo07/Qingzhou-contracts.git` 的公共治理基线；精确锁定以 `PLATFORM_BASELINE.md` 和 `platform-lock.json` 为准，不得实时跟随中央仓 `main`。
+- 当前中央基线为 `0cd74d783fa23add6dc881b408a8c8ba8503f8e8`：Architecture `V2.1 FROZEN`；Numeric、Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack v1 均保持 `DRAFT / NOT YET RELEASED`。
+- 公共治理只约束跨产品的架构和公共外围 Contract，不覆盖标准原文、Canonical、已批准 Golden、单标准规则、EquipEffi 业务结果语义或 V1 Scope 决策。
+- Phase 1 的已批准治理和业务结论仍由当前 `master` 上的 `ROADMAP.md`、`TASK_STATE.md`、`HANDOFF.md`、业务规范及其明确引用的冻结资产共同记录；QZC-A01 不得删除、弱化或重新解释 P1-G01～G06 顺序、Solution/Product Review 门禁、Pump Numeric & Decision Contract、Canonical/Golden/QA 要求或 Phase 2 进入条件。
+- 当前 Phase 1 `PHASE_1_PASS` 是既有独立复验和 Solution/Product Review 后记录的状态，不是本次 adoption 自行批准。`PHASE_2_READY` 不代表开始或授权；自动继续保持 `DISABLED`，只有用户明确授权后才能进入 Phase 2。
+- 发现跨产品公共语义缺口时，在本仓记录 RFC candidate 并交由 Qingzhou-contracts 治理；普通设备能效业务问题仍在本仓处理。中央 DRAFT 不得在本仓升格为 FROZEN/RELEASED。
+- QZC-A01 adoption 只更新治理文档与中央基线锁，不授权修改业务实现、Schema、Canonical、Golden、数据库、Excel、UI 或 Phase 2 功能。

@@ -37,6 +37,14 @@ Excel 不复制评价算法；
 
 以上仅作为 Phase 2 设计输入；Phase 2 READY 不代表自动开始或授权开发 Excel 功能，进入 Phase 2 前仍须取得用户明确授权。
 
+## QZC-A01 — Qingzhou-contracts 公共治理在最新 master 上重新落地（2026-09-28）
+
+本节记录公共治理接入，不替代或回退 Phase 1 已合并的现行事实。QZC-A01 新分支以最新 `master` / Phase 1 PR #1 merge SHA `1a74ff4cc07e9068783a370ec4269e89245cef38` 为基线；旧 `chore/qingzhou-contracts-adoption` 只作为中央治理接入内容参考，其过时的 Phase 1 状态和旧治理文件不覆盖当前版本。
+
+- Qingzhou-contracts 锁定：`0cd74d783fa23add6dc881b408a8c8ba8503f8e8`；Architecture `V2.1 FROZEN`；Numeric、Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack v1 均为 `DRAFT / NOT YET RELEASED`。详见 `PLATFORM_BASELINE.md`、`platform-lock.json` 和 `docs/governance/PLATFORM_ADOPTION_REPORT.md`。
+- 公共 Contract 仅约束公共外围，不改变 Phase 1 已冻结的泵业务契约、Canonical/Golden、V1 Scope、QA 决策或既有业务算法；本次不修改业务代码、Schema 或测试预期。
+- 当前状态仍为 `PHASE_1_PASS` / `PHASE_2_READY`。这不代表自动开始 Phase 2；自动继续保持 `DISABLED`，进入 Phase 2 仍须用户明确授权。本次 QZC-A01 不进入 Phase 2。
+
 ## Phase 1 Goal Log（当前权威）
 
 | Goal | 状态 | 交付/证据 | 下一步 |
