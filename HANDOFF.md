@@ -6,6 +6,24 @@
 >
 > 最近一次 HANDOFF 事实记录：2026-09-07，第 213 章。当前日期可能晚于该日期；如果代码或测试发生变化，必须重新运行验证并更新本文件，不要直接沿用旧数字。
 
+## 0. Qingzhou Contracts 公共治理接入（QZC-A01，2026-09-28）
+
+本仓已建立 `Qingzhou-contracts` 上位治理关系，仅增加治理锁定，不改变下述既有业务事实和阶段结论。
+
+- 公共治理仓：`https://github.com/adgo07/Qingzhou-contracts.git`
+- 当前锁定类型：`pre-release / bootstrap baseline`
+- 正式 release/tag：无
+- 锁定 commit：`0cd74d783fa23add6dc881b408a8c8ba8503f8e8`
+- Architecture：`V2.1 FROZEN`
+- Numeric / Unit / Module-Capability / Workspace-Record-Result / qzpack：均为 `draft-v1 / DRAFT`，不得描述成 FROZEN
+- 人类可读基线：`PLATFORM_BASELINE.md`
+- 机器锁定：`platform-lock.json`
+- Adoption 差异报告：`docs/governance/PLATFORM_ADOPTION_REPORT.md`
+- 本项目不得实时跟随中央仓 `main`；只有显式升级 baseline 后中央新变化才生效
+- 当前接入不授权业务重构、算法修改、数据库迁移、UI 重写、qzpack 全量迁移、Suite 或移动端开发
+
+本 QZC-A01 分支按用户要求从默认分支 `master@19b628f6349713f62d8f5127a52b4be521d163da` 创建。仓库另有尚未合并的 Phase 1 PR #1，其治理文件比默认分支更新；未来 merge/rebase 必须合并两侧治理内容，**不得用本节或本分支整文件覆盖 PR #1 已形成的业务阶段结论**。
+
 ## 1. 当前项目目标
 
 EquipEffi 是一个设备能效分析工具。目标是以 V4 空白模板为数据入口，以标准原文为依据，对设备的出厂设计值、额定值或铭牌值进行能效等级、评价等级、适用范围和淘汰目录判定，并输出可审计的中间计算、查表结果和判定轨迹。
