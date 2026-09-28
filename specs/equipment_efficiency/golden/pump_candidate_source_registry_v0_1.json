@@ -1,0 +1,35 @@
+{
+  "registry_version": "pump-candidate-source-registry-0.1",
+  "candidate_sources": [
+    {
+      "candidate_set_version": "pump-water-e2e-v0.3",
+      "source_candidate_schema_version": "golden-case-0.3",
+      "source_candidate_file": "specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl",
+      "source_baseline_sha": "3101e05abd7f33262a9449c390d61ec00008fb75",
+      "source_file_sha256": "E8096D18E4B62A6986222C6E5ADEC9519FA842AE44860A736D45AFA3AE712C8D",
+      "record_count": 26
+    },
+    {
+      "candidate_set_version": "pump-water-replacement-v0.1",
+      "source_candidate_schema_version": "golden-case-0.3",
+      "source_candidate_file": "specs/equipment_efficiency/golden/pump_water_replacement_candidates_v0_1.jsonl",
+      "source_baseline_sha": "6c672fe48ac3da09b173cb62fd4119daf1c0ab54",
+      "source_file_sha256": "2600E577B25926263823AA7C42A59B8CD1433B5A6D49C2C0075D14543103CED9",
+      "record_count": 3
+    }
+  ],
+  "replacements": [
+    {
+      "source_candidate_case_id": "GC-PUMP-V3-WATER-LIGHT-VERTICAL-L2",
+      "replacement_candidate_case_id": "GC-PUMP-V3-R1-WATER-LIGHT-VERTICAL-L2"
+    },
+    {
+      "source_candidate_case_id": "GC-PUMP-V3-WATER-LIGHT-HORIZONTAL-L3",
+      "replacement_candidate_case_id": "GC-PUMP-V3-R1-WATER-LIGHT-HORIZONTAL-L3"
+    },
+    {
+      "source_candidate_case_id": "GC-PUMP-V3-WATER-PIPELINE-L1",
+      "replacement_candidate_case_id": "GC-PUMP-V3-R1-WATER-PIPELINE-L1"
+    }
+  ]
+}

@@ -14,7 +14,7 @@ import json
 import os
 import sys
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 from jsonschema import Draft202012Validator, FormatChecker
@@ -23,7 +23,36 @@ from jsonschema import Draft202012Validator, FormatChecker
 CASE_DIR = Path("specs/equipment_efficiency/golden/pump_water")
 APPROVAL_REVIEW_DIR = Path("specs/equipment_efficiency/golden/pump_water_approval_review")
 PUMP_CANDIDATE_JSONL = Path("specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl")
-PUMP_CANDIDATE_BASELINE_SHA = "3101e05abd7f33262a9449c390d61ec00008fb75"
+PUMP_WATER_REPLACEMENT_CANDIDATE_JSONL = Path(
+    "specs/equipment_efficiency/golden/pump_water_replacement_candidates_v0_1.jsonl"
+)
+CANDIDATE_SOURCE_REGISTRY_PATH = Path(
+    "specs/equipment_efficiency/golden/pump_candidate_source_registry_v0_1.json"
+)
+CANDIDATE_SOURCE_REGISTRY_SCHEMA_PATH = Path(
+    "specs/equipment_efficiency/schemas/pump_candidate_source_registry_v0_1.schema.json"
+)
+PUMP_CANDIDATE_SOURCE_ALLOWLIST = {
+    PUMP_CANDIDATE_JSONL.as_posix(): {
+        "candidate_set_version": "pump-water-e2e-v0.3",
+        "source_candidate_schema_version": "golden-case-0.3",
+        "source_baseline_sha": "3101e05abd7f33262a9449c390d61ec00008fb75",
+        "source_file_sha256": "E8096D18E4B62A6986222C6E5ADEC9519FA842AE44860A736D45AFA3AE712C8D",
+        "record_count": 26,
+    },
+    PUMP_WATER_REPLACEMENT_CANDIDATE_JSONL.as_posix(): {
+        "candidate_set_version": "pump-water-replacement-v0.1",
+        "source_candidate_schema_version": "golden-case-0.3",
+        "source_baseline_sha": "6c672fe48ac3da09b173cb62fd4119daf1c0ab54",
+        "source_file_sha256": "2600E577B25926263823AA7C42A59B8CD1433B5A6D49C2C0075D14543103CED9",
+        "record_count": 3,
+    },
+}
+PUMP_CANDIDATE_REPLACEMENTS = {
+    "GC-PUMP-V3-WATER-LIGHT-VERTICAL-L2": "GC-PUMP-V3-R1-WATER-LIGHT-VERTICAL-L2",
+    "GC-PUMP-V3-WATER-LIGHT-HORIZONTAL-L3": "GC-PUMP-V3-R1-WATER-LIGHT-HORIZONTAL-L3",
+    "GC-PUMP-V3-WATER-PIPELINE-L1": "GC-PUMP-V3-R1-WATER-PIPELINE-L1",
+}
 EVIDENCE_REGISTRY_PATH = Path("specs/equipment_efficiency/evidence_registry.json")
 SCHEMA_BY_VERSION = {
     "golden-case-0.1": Path("specs/equipment_efficiency/schemas/golden_case.schema.json"),
@@ -256,30 +285,185 @@ def _candidate_evidence_review_flags(candidate: dict[str, Any]) -> list[str]:
     ]
 
 
-def _candidate_index(repo_root: Path) -> tuple[dict[str, tuple[int, dict[str, Any]]], list[str]]:
-    path = repo_root / PUMP_CANDIDATE_JSONL
-    records: dict[str, tuple[int, dict[str, Any]]] = {}
+def _load_candidate_source_registry(
+    repo_root: Path,
+) -> tuple[dict[str, dict[str, Any]], dict[str, str], list[str]]:
+    """Load only explicitly allowlisted, versioned candidate files and pins."""
+
+    registry_path = repo_root / CANDIDATE_SOURCE_REGISTRY_PATH
+    schema_path = repo_root / CANDIDATE_SOURCE_REGISTRY_SCHEMA_PATH
     errors: list[str] = []
-    if not path.is_file():
-        return records, [f"candidate provenance source is missing: {PUMP_CANDIDATE_JSONL}"]
-    with path.open("r", encoding="utf-8") as stream:
-        for line_number, line in enumerate(stream, start=1):
-            if not line.strip():
+    if not registry_path.is_file():
+        return {}, {}, [f"candidate source registry is missing: {CANDIDATE_SOURCE_REGISTRY_PATH}"]
+    if not schema_path.is_file():
+        return {}, {}, [f"candidate source registry schema is missing: {CANDIDATE_SOURCE_REGISTRY_SCHEMA_PATH}"]
+    try:
+        registry = _load_json(registry_path)
+        schema = _load_json(schema_path)
+    except (OSError, json.JSONDecodeError) as exc:
+        return {}, {}, [f"candidate source registry cannot be loaded: {exc}"]
+    if not isinstance(registry, dict):
+        return {}, {}, ["candidate source registry root must be an object"]
+    errors.extend(f"candidate source registry schema: {message}" for message in _schema_errors(schema, registry))
+
+    root = repo_root.resolve()
+    sources: dict[str, dict[str, Any]] = {}
+    for entry in registry.get("candidate_sources", []):
+        if not isinstance(entry, dict):
+            errors.append("candidate source registry entries must be objects")
+            continue
+        source_file = entry.get("source_candidate_file")
+        if not isinstance(source_file, str) or source_file not in PUMP_CANDIDATE_SOURCE_ALLOWLIST:
+            errors.append(f"candidate source file is not allowlisted: {source_file!r}")
+            continue
+        relative = PurePosixPath(source_file)
+        if relative.is_absolute() or ".." in relative.parts or relative.suffix != ".jsonl":
+            errors.append(f"candidate source path must be a relative repository JSONL path: {source_file!r}")
+            continue
+        if source_file in sources:
+            errors.append(f"candidate source registry contains duplicate path: {source_file}")
+            continue
+        expected = PUMP_CANDIDATE_SOURCE_ALLOWLIST[source_file]
+        source = dict(entry)
+        for key in ("candidate_set_version", "source_candidate_schema_version", "source_baseline_sha", "source_file_sha256", "record_count"):
+            if source.get(key) != expected[key]:
+                errors.append(
+                    f"candidate source registry {source_file}: {key} {source.get(key)!r} "
+                    f"does not match its registered version pin {expected[key]!r}"
+                )
+        path = (root / Path(*relative.parts)).resolve()
+        if not path.is_relative_to(root):
+            errors.append(f"candidate source path escapes the repository: {source_file}")
+            continue
+        if not path.is_file():
+            errors.append(f"registered candidate source is missing: {source_file}")
+            continue
+        actual_file_hash = _sha256(path, normalize_repository_text=True)
+        if actual_file_hash != str(source.get("source_file_sha256", "")).upper():
+            errors.append(
+                f"candidate source file SHA-256 {actual_file_hash} != registered "
+                f"{source.get('source_file_sha256')} for {source_file}"
+            )
+        sources[source_file] = source
+
+    if set(sources) != set(PUMP_CANDIDATE_SOURCE_ALLOWLIST):
+        errors.append(
+            "candidate source registry must contain exactly the allowlisted versioned files; "
+            f"missing={sorted(set(PUMP_CANDIDATE_SOURCE_ALLOWLIST) - set(sources))}; "
+            f"extra={sorted(set(sources) - set(PUMP_CANDIDATE_SOURCE_ALLOWLIST))}"
+        )
+
+    registered_replacements: dict[str, str] = {}
+    for pair in registry.get("replacements", []):
+        if not isinstance(pair, dict):
+            errors.append("candidate replacement entries must be objects")
+            continue
+        source_id = pair.get("source_candidate_case_id")
+        replacement_id = pair.get("replacement_candidate_case_id")
+        if not isinstance(source_id, str) or not isinstance(replacement_id, str):
+            errors.append("candidate replacement entries must identify source and replacement case IDs")
+            continue
+        if source_id in registered_replacements:
+            errors.append(f"candidate source has more than one replacement: {source_id}")
+            continue
+        registered_replacements[source_id] = replacement_id
+    if registered_replacements != PUMP_CANDIDATE_REPLACEMENTS:
+        errors.append(
+            "candidate replacement map differs from the explicit allowlist: "
+            f"{registered_replacements}"
+        )
+    return sources, registered_replacements, errors
+
+
+def _replacement_payload_errors(
+    records: dict[str, tuple[int, dict[str, Any], dict[str, Any]]],
+    replacements: dict[str, str],
+) -> list[str]:
+    errors: list[str] = []
+    for source_id, replacement_id in replacements.items():
+        source_record = records.get(source_id)
+        replacement_record = records.get(replacement_id)
+        if source_record is None or replacement_record is None:
+            errors.append(f"replacement pair is incomplete: {source_id} -> {replacement_id}")
+            continue
+        source = source_record[1]
+        replacement = replacement_record[1]
+        for key, value in source.items():
+            if key in {"case_id", "source_sidecar"}:
                 continue
-            try:
-                item = json.loads(line)
-            except json.JSONDecodeError as exc:
-                errors.append(f"{PUMP_CANDIDATE_JSONL}:{line_number}: invalid JSON: {exc}")
-                continue
-            if not isinstance(item, dict) or not isinstance(item.get("case_id"), str):
-                errors.append(f"{PUMP_CANDIDATE_JSONL}:{line_number}: candidate must be an object with case_id")
-                continue
-            case_id = item["case_id"]
-            if case_id in records:
-                errors.append(f"{PUMP_CANDIDATE_JSONL}:{line_number}: duplicate candidate case_id {case_id}")
-                continue
-            records[case_id] = (line_number, item)
-    return records, errors
+            if replacement.get(key) != value:
+                errors.append(f"replacement {replacement_id}: field {key!r} differs from source candidate {source_id}")
+        expected_sidecar = copy.deepcopy(source.get("source_sidecar"))
+        rule_id = source.get("expected_calculation_trace", {}).get("matched_rule_id")
+        canonical_refs = [
+            reference
+            for reference in expected_sidecar.get("source_references", [])
+            if reference.get("evidence_role") == "CANONICAL_PACK"
+        ] if isinstance(expected_sidecar, dict) else []
+        if not isinstance(rule_id, str) or len(canonical_refs) != 1:
+            errors.append(f"replacement source {source_id} must have one Canonical reference and a matched rule")
+        else:
+            canonical_refs[0]["stable_data_ids"] = [rule_id]
+            if replacement.get("source_sidecar") != expected_sidecar:
+                errors.append(
+                    f"replacement {replacement_id}: source_sidecar must differ only by setting "
+                    f"CANONICAL_PACK stable_data_ids to {rule_id}"
+                )
+    return errors
+
+
+def _candidate_index(
+    repo_root: Path,
+) -> tuple[dict[str, tuple[int, dict[str, Any], dict[str, Any]]], dict[str, str], list[str]]:
+    source_files, replacements, errors = _load_candidate_source_registry(repo_root)
+    records: dict[str, tuple[int, dict[str, Any], dict[str, Any]]] = {}
+    schemas = {version: _load_json(repo_root / path) for version, path in SCHEMA_BY_VERSION.items()}
+    root = repo_root.resolve()
+    for source_file in PUMP_CANDIDATE_SOURCE_ALLOWLIST:
+        source = source_files.get(source_file)
+        relative = PurePosixPath(source_file)
+        path = (root / Path(*relative.parts)).resolve()
+        if not path.is_relative_to(root) or not path.is_file():
+            continue
+        expected_schema_version = source["source_candidate_schema_version"] if source else None
+        count = 0
+        with path.open("r", encoding="utf-8") as stream:
+            for line_number, line in enumerate(stream, start=1):
+                if not line.strip():
+                    continue
+                count += 1
+                try:
+                    item = json.loads(line)
+                except json.JSONDecodeError as exc:
+                    errors.append(f"{source_file}:{line_number}: invalid JSON: {exc}")
+                    continue
+                if not isinstance(item, dict) or not isinstance(item.get("case_id"), str):
+                    errors.append(f"{source_file}:{line_number}: candidate must be an object with case_id")
+                    continue
+                case_id = item["case_id"]
+                if case_id in records:
+                    errors.append(f"{source_file}:{line_number}: duplicate candidate case_id {case_id}")
+                    continue
+                schema_version = item.get("case_schema_version")
+                if schema_version != expected_schema_version:
+                    errors.append(
+                        f"{source_file}:{line_number}: case_schema_version {schema_version!r} "
+                        f"does not match registered {expected_schema_version!r}"
+                    )
+                schema = schemas.get(schema_version)
+                if schema is None:
+                    errors.append(f"{source_file}:{line_number}: unsupported candidate schema version {schema_version!r}")
+                else:
+                    errors.extend(
+                        f"{source_file}:{line_number}: schema: {message}"
+                        for message in _schema_errors(schema, item)
+                    )
+                records[case_id] = (line_number, item, source or {})
+        expected_count = source.get("record_count") if source else None
+        if count != expected_count:
+            errors.append(f"{source_file}: record count {count} != registered {expected_count}")
+    errors.extend(_replacement_payload_errors(records, replacements))
+    return records, replacements, errors
 
 
 def _provenance_errors(repo_root: Path, case: dict[str, Any], version: str | None) -> list[str]:
@@ -290,27 +474,35 @@ def _provenance_errors(repo_root: Path, case: dict[str, Any], version: str | Non
     if not isinstance(provenance, dict):
         return ["provenance must identify an unchanged 0.3 pump_water candidate"]
     candidate_id = provenance.get("source_candidate_case_id")
-    records, index_errors = _candidate_index(repo_root)
+    records, replacements, index_errors = _candidate_index(repo_root)
     errors.extend(index_errors)
     record = records.get(candidate_id)
     if record is None:
         errors.append(f"provenance candidate does not exist: {candidate_id!r}")
         return errors
-    actual_line, candidate = record
+    actual_line, candidate, source_record = record
     if provenance.get("source_candidate_line") != actual_line:
         errors.append(f"provenance source_candidate_line {provenance.get('source_candidate_line')!r} != {actual_line}")
+    for key in ("source_candidate_file", "source_candidate_schema_version", "source_baseline_sha"):
+        registry_key = key
+        if provenance.get(key) != source_record.get(registry_key):
+            errors.append(
+                f"provenance {key} {provenance.get(key)!r} does not match the registered candidate source "
+                f"{source_record.get(registry_key)!r}"
+            )
     actual_hash = _canonical_record_sha256(candidate)
     if str(provenance.get("source_candidate_sha256", "")).upper() != actual_hash:
         errors.append(f"provenance candidate SHA-256 {actual_hash} != recorded {provenance.get('source_candidate_sha256')}")
-    if provenance.get("source_baseline_sha") != PUMP_CANDIDATE_BASELINE_SHA:
-        errors.append("provenance source_baseline_sha is not the fixed technical acceptance SHA")
-    if candidate.get("case_schema_version") != "golden-case-0.3":
-        errors.append("provenance source is not golden-case-0.3")
+    if candidate.get("case_schema_version") != provenance.get("source_candidate_schema_version"):
+        errors.append("provenance source schema version does not match the candidate record")
     if candidate.get("profile_id") != "pump_water" or candidate.get("evaluation_layer") != "APPLICATION_E2E":
         errors.append("formal V2 Golden provenance must resolve to a pump_water APPLICATION_E2E candidate")
     if candidate.get("case_status") != "DRAFT" or candidate.get("approval_status") != "PENDING":
         errors.append("source 0.3 candidate is not retained as DRAFT/PENDING")
-    expected_id = "GC-PUMP-V4-WATER-" + str(candidate_id).removeprefix("GC-PUMP-V3-WATER-")
+    source_case_id = next((old_id for old_id, new_id in replacements.items() if new_id == candidate_id), candidate_id)
+    if not source_case_id.startswith("GC-PUMP-V3-WATER-"):
+        errors.append(f"candidate {candidate_id!r} has no registered original business scenario ID")
+    expected_id = "GC-PUMP-V4-WATER-" + str(source_case_id).removeprefix("GC-PUMP-V3-WATER-")
     if case.get("case_id") != expected_id:
         errors.append(f"case_id must be {expected_id!r} for the linked source candidate")
     # Every source payload field must be copied without changing inputs, expected results,
@@ -397,14 +589,17 @@ def _validate_approval_review_packages(
         external_skipped += skipped
         for message in source_errors:
             errors.append(f"{case_path}: evidence: {message}")
-    candidates, candidate_errors = _candidate_index(repo_root)
+    candidates, replacements, candidate_errors = _candidate_index(repo_root)
     errors.extend(candidate_errors)
-    expected_candidates = {
-        case_id for case_id, (_, candidate) in candidates.items()
+    water_e2e_candidates = {
+        case_id for case_id, (_, candidate, _) in candidates.items()
         if candidate.get("profile_id") == "pump_water" and candidate.get("evaluation_layer") == "APPLICATION_E2E"
     }
+    replaced_source_ids = set(replacements)
+    replacement_candidate_ids = set(replacements.values())
+    expected_candidates = (water_e2e_candidates - replaced_source_ids) | replacement_candidate_ids
     if len(expected_candidates) != 18:
-        errors.append(f"expected the frozen 18 water Application E2E source candidates, found {len(expected_candidates)}")
+        errors.append(f"expected 18 selected water Application E2E cases after registered replacements, found {len(expected_candidates)}")
     if len(observed_candidates) != len(set(observed_candidates)):
         errors.append("approval review package contains duplicate source candidate references")
     if set(observed_candidates) != expected_candidates:
@@ -482,9 +677,20 @@ def _validate_candidate_jsonl(
     into the official Golden directory.
     """
 
+    root = repo_root.resolve()
     resolved = candidate_path if candidate_path.is_absolute() else repo_root / candidate_path
+    resolved = resolved.resolve()
+    try:
+        relative_candidate_path = resolved.relative_to(root).as_posix()
+    except ValueError:
+        return 0, 1, [f"candidate JSONL path is outside the repository: {candidate_path}"], [], 0
+    registered_sources, _, registry_errors = _load_candidate_source_registry(repo_root)
+    if relative_candidate_path not in registered_sources:
+        return 0, 1, [f"candidate JSONL path is not in the versioned source registry: {relative_candidate_path}"], [], 0
+    if not resolved.is_file():
+        return 0, 1, [f"registered candidate JSONL is missing: {relative_candidate_path}"], [], 0
     schemas = {version: _load_json(repo_root / path) for version, path in SCHEMA_BY_VERSION.items()}
-    errors: list[str] = []
+    errors: list[str] = list(registry_errors)
     historical: list[str] = []
     external_skipped = 0
     count = 0
@@ -567,7 +773,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo-root", type=Path, default=Path.cwd())
     parser.add_argument("--negative-probe", action="store_true", help="also verify the three known invalid counterexamples")
-    parser.add_argument("--candidate-jsonl", type=Path, help="optionally validate a DRAFT candidate JSONL using each explicit schema version")
+    parser.add_argument("--candidate-jsonl", type=Path, action="append", help="validate a registered, versioned DRAFT candidate JSONL; may be repeated")
     parser.add_argument("--approval-review-dir", type=Path, help="validate pending 0.4 pump_water approval review packages and their 0.3 source provenance")
     external_group = parser.add_mutually_exclusive_group()
     external_group.add_argument(
@@ -609,14 +815,14 @@ def main() -> int:
             print("ERROR negative probe did not reject exactly JSON number, invalid unit_id, and missing source", file=sys.stderr)
             error_count += 1
 
-    if args.candidate_jsonl is not None:
+    for candidate_path in args.candidate_jsonl or []:
         candidate_count, candidate_errors, candidate_messages, candidate_historical, candidate_external_skipped = _validate_candidate_jsonl(
             repo_root,
-            args.candidate_jsonl,
+            candidate_path,
             external_evidence_root=external_evidence_root,
             skip_external_evidence=args.skip_external_evidence,
         )
-        print(f"candidate_cases={candidate_count} candidate_errors={candidate_errors}")
+        print(f"candidate_file={candidate_path.as_posix()} candidate_cases={candidate_count} candidate_errors={candidate_errors}")
         for error in candidate_messages:
             print(f"CANDIDATE_ERROR {error}")
         for message in candidate_historical:

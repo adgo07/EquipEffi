@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://equipeffi.local/schema/golden-case-0.4.json",
   "title": "EquipEffi Pump Golden Case 0.4 Approved Record",
-  "description": "Formal V2 approved Golden record. Approval states and named review evidence are mandatory; provenance resolves to an unchanged 0.3 pump_water Application E2E candidate.",
+  "description": "Formal V2 approved Golden record. Approval states and named review evidence are mandatory; provenance resolves through the versioned source registry to an allowlisted pump_water Application E2E candidate and exact hashes.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -514,13 +514,17 @@
       "properties": {
         "source_candidate_case_id": {
           "type": "string",
-          "pattern": "^GC-PUMP-V3-WATER-[A-Z0-9-]+$"
+          "pattern": "^GC-PUMP-V3-[A-Z0-9-]+$"
         },
         "source_candidate_schema_version": {
-          "const": "golden-case-0.3"
+          "type": "string",
+          "pattern": "^golden-case-[0-9]+\\.[0-9]+$"
         },
         "source_candidate_file": {
-          "const": "specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl"
+          "enum": [
+            "specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl",
+            "specs/equipment_efficiency/golden/pump_water_replacement_candidates_v0_1.jsonl"
+          ]
         },
         "source_candidate_line": {
           "type": "integer",
@@ -532,7 +536,8 @@
           "description": "SHA-256 of canonical UTF-8 JSON for the parsed source candidate object (sorted keys, compact separators, no trailing newline)."
         },
         "source_baseline_sha": {
-          "const": "3101e05abd7f33262a9449c390d61ec00008fb75"
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
         }
       }
     }

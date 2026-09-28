@@ -160,9 +160,9 @@
   "approved_at": null,
   "approval_basis": [],
   "known_limits": [
-    "本记录来自固定技术基线上的 0.3 DRAFT/PENDING 候选；标准负责人完成独立业务复核前，不是正式 Golden，也不构成批准。",
-    "不改变 Decimal50、ns_raw 分档、GB 19762—2025 公式、Q/H 与 suction/stages 换算、Canonical 常数或 OOS 政策。",
-    "这 18 条候选没有 Q=5、Q=300 等精确流量端点等值案例；Q=4.9 仅覆盖下界外侧。精确端点仍见 0.1 历史冻结材料，未升级为 0.4。"
+    "本记录来源于注册的 DRAFT/PENDING pump_water Application E2E 候选；不构成正式 Golden 或业务批准。",
+    "Decimal50、ns_raw、GB 19762—2025 公式、Q/H 与 suction/stages 换算、Canonical 数值和 OOS 政策均保持冻结。",
+    "精确表3流量边界由 tests/unit/test_pump_generated_boundaries_v2.py 对每条 water Canonical 行的 q_min/q_max 等值及两侧 ±1e-6 自动验证；首批人工 Golden 只覆盖代表场景，不重复穷举端点。"
   ],
   "provenance": {
     "source_candidate_case_id": "GC-PUMP-V3-WATER-SUCTION-CONFLICT",

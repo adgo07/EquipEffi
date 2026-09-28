@@ -44,6 +44,7 @@ jobs:
           python tools/validate_phase1_contracts.py
           --negative-probe
           --candidate-jsonl specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl
+          --candidate-jsonl specs/equipment_efficiency/golden/pump_water_replacement_candidates_v0_1.jsonl
           --approval-review-dir specs/equipment_efficiency/golden/pump_water_approval_review
           --skip-external-evidence
 
@@ -70,5 +71,5 @@ jobs:
       - name: Compile source and tests
         run: python -m compileall -q src tools tests
 
-      - name: Check R07 and master-integration diff whitespace
-        run: git diff --check 72e8e490d2da56ec8064ad799750fb7b83425a57...HEAD
+      - name: Check P1-G04-R1 diff whitespace
+        run: git diff --check 6c672fe48ac3da09b173cb62fd4119daf1c0ab54...HEAD

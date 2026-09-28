@@ -37,7 +37,7 @@ ADR/
 
 Phase 0A 的治理切换、不可变起始 tag、真实基线、资产审计、第三方 55 项入库、风险重新分级、17 Profile 注册、Windows V1 Scope 草案、Golden Candidate 盘点和首个纵向样板选择已完成。2026-09-22 验收曾因交付物未提交、证据字段不完整、QA 表结构不统一和产品需求/商业价值证据缺失而暂时阻塞；治理补正和复验已完成，未修改业务代码。
 
-R01–R07 的技术独立复验固定 SHA 为 `3101e05abd7f33262a9449c390d61ec00008fb75`。当前 P1-G04 仅收口 V2 Golden 批准 schema、0.3 来源/hash 校验和 18 条清水泵待审包。原 0.1 七例历史冻结；0.3 的 26 条保持 `DRAFT/PENDING`；本轮不生成已批准 0.4 记录。待审验证发现 3 条 Canonical stable_data_ids 与 trace rule 不一致，不能批准，需标准负责人决定退回并形成新版本候选。
+R01–R07 的技术独立复验固定 SHA 为 `3101e05abd7f33262a9449c390d61ec00008fb75`。P1-G04-R1 仅收口 Golden provenance：0.1 七例保持历史冻结，原 0.3 的 26 条记录内容不变且仍为 `DRAFT/PENDING`；新增 3 条版本化 replacement candidates，由 18 条清水待审记录引用，`review_flags=0`。正式 0.4 仍未生成或批准。候选注册表锁定允许文件路径、文件 SHA、schema 版本、基线 SHA、记录总数及三条旧/新 ID 映射。精确表3边界由 generated boundary test 负责，首批人工 Golden 不要求重复穷举端点。当前仍 `BLOCKED`，等待具名标准负责人逐条决定、固定 SHA 独立复验和 Solution/Product Review；不得声明 Phase 1 PASS 或启动 Phase 2。
 
 > **提交后核查新固定 SHA 的 Windows CI，然后停止等待人工标准批准与独立复验；不得宣布 Phase 1 PASS 或进入 Phase 2。**
 
@@ -51,7 +51,7 @@ Phase 1 按 `docs/29_Phase 1 业务规范与数据契约.md` 的既定顺序执�
 P1-G01 → P1-G02 → P1-G03 → P1-G04 → P1-G05 → P1-G06
 ```
 
-`P1-G01` 至 `P1-G03`、`P1-G05`、`P1-G06` 的既有交付保持不变。`P1-G04` 的层次为：Golden 0.1 的 7 例只作历史冻结且不批准；0.3 的 26 例继续为 `DRAFT/PENDING`（18 条清水 Application E2E、8 条石化 technical-only）；本轮新增正式已批准记录 schema `golden-case-0.4` 与单独的待审 schema/复核包 `golden-case-0.4-review`。待审包覆盖全部 18 条清水候选，未含石化候选；其中轻型立式、轻型卧式和管道泵 3 条存在 source-sidecar stable_data_ids 与 matched_rule_id 不一致的待解决标记。技术基础为固定 SHA `3101e05abd7f33262a9449c390d61ec00008fb75`；当前仍 `BLOCKED`，须由标准负责人逐条决定，随后独立验收和 Solution/Product Review；不得声明 Phase 1 PASS 或启动 Phase 2。已知 Legacy Regression 失败继续保留。
+`P1-G01` 至 `P1-G03`、`P1-G05`、`P1-G06` 的既有交付保持不变。`P1-G04` 区分三个层次：Golden 0.1 的 7 例只作历史冻结且不批准；原始 0.3 的 26 例继续为 `DRAFT/PENDING`（18 条清水 Application E2E、8 条石化 technical-only）；0.4 review package 是待人工具名复核记录，正式 `golden-case-0.4` schema 只在真实批准后接收正式记录。三条有来源不一致的场景已经有独立、版本化 replacement candidate，原 0.3 行未改；18 条 review record 均无 review flags。精确表3边界由 generated boundary test 负责，首批人工 Golden 不要求重复穷举端点。候选来源路径、文件和记录哈希、schema 版本、基线 SHA 由注册表及 validator 校验。技术基础为固定 SHA `3101e05abd7f33262a9449c390d61ec00008fb75`；当前仍 `BLOCKED`，须由标准负责人逐条决定，随后独立验收和 Solution/Product Review；不得声明 Phase 1 PASS 或启动 Phase 2。已知 Legacy Regression 失败继续保留。
 
 ## Phase 1 Review Boundary
 

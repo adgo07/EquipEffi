@@ -72,7 +72,7 @@
           "9-10"
         ],
         "stable_data_ids": [
-          "GB19762-T3-01"
+          "GB19762-T3-05"
         ],
         "evidence_role": "CANONICAL_PACK",
         "note": "Canonical data maps standard rows and coefficients; does not approve this candidate."
@@ -159,20 +159,17 @@
   "approved_at": null,
   "approval_basis": [],
   "known_limits": [
-    "本记录来自固定技术基线上的 0.3 DRAFT/PENDING 候选；标准负责人完成独立业务复核前，不是正式 Golden，也不构成批准。",
-    "不改变 Decimal50、ns_raw 分档、GB 19762—2025 公式、Q/H 与 suction/stages 换算、Canonical 常数或 OOS 政策。",
-    "这 18 条候选没有 Q=5、Q=300 等精确流量端点等值案例；Q=4.9 仅覆盖下界外侧。精确端点仍见 0.1 历史冻结材料，未升级为 0.4。",
-    "Open evidence issue: matched_rule_id=GB19762-T3-05 is absent from CANONICAL_PACK stable_data_ids=GB19762-T3-01; resolve provenance before approval. The 0.3 candidate is immutable; do not approve or silently change its source sidecar."
+    "本记录来源于注册的 DRAFT/PENDING pump_water Application E2E 候选；不构成正式 Golden 或业务批准。",
+    "Decimal50、ns_raw、GB 19762—2025 公式、Q/H 与 suction/stages 换算、Canonical 数值和 OOS 政策均保持冻结。",
+    "精确表3流量边界由 tests/unit/test_pump_generated_boundaries_v2.py 对每条 water Canonical 行的 q_min/q_max 等值及两侧 ±1e-6 自动验证；首批人工 Golden 只覆盖代表场景，不重复穷举端点。"
   ],
   "provenance": {
-    "source_candidate_case_id": "GC-PUMP-V3-WATER-PIPELINE-L1",
+    "source_candidate_case_id": "GC-PUMP-V3-R1-WATER-PIPELINE-L1",
     "source_candidate_schema_version": "golden-case-0.3",
-    "source_candidate_file": "specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl",
-    "source_candidate_line": 26,
-    "source_candidate_sha256": "4849C258A77E5B37A29F1FB4191B2DFEE3C27D8B5ADA5EC1918A4A3F93A3E865",
-    "source_baseline_sha": "3101e05abd7f33262a9449c390d61ec00008fb75"
+    "source_candidate_file": "specs/equipment_efficiency/golden/pump_water_replacement_candidates_v0_1.jsonl",
+    "source_candidate_line": 3,
+    "source_candidate_sha256": "C923D85447853DF9809575D913FA95624BC4F7B8CB8584A01C919CFD51A4A52D",
+    "source_baseline_sha": "6c672fe48ac3da09b173cb62fd4119daf1c0ab54"
   },
-  "review_flags": [
-    "matched_rule_id=GB19762-T3-05 is absent from CANONICAL_PACK stable_data_ids=GB19762-T3-01; resolve provenance before approval"
-  ]
+  "review_flags": []
 }

@@ -10,7 +10,7 @@
 | Golden 0.3 | [`pump_e2e_v0_3_candidates.jsonl`](../pump_e2e_v0_3_candidates.jsonl) 共 26 条：18 条 `pump_water` Application E2E、8 条 `pump_chemical` technical-only | 全部 `DRAFT/PENDING` | 候选池；本轮不改写 |
 | Golden 0.4 | 本目录以后新增的正式 V2 Golden | 只有标准负责人逐条批准后，才允许三个状态均为 `APPROVED` | 正式业务回归 Oracle |
 
-待人工复核材料位于 [`pump_water_approval_review/README.md`](../pump_water_approval_review/README.md)，每条记录独立对应一条 0.3 清水候选并固定来源行 hash。复核材料使用 `golden-case-0.4-review`，状态为 `PENDING_APPROVAL/PENDING/PENDING`；其中 3 条 source-sidecar Canonical ID 与 trace rule 不一致，已标记且不得批准。它不是正式 Golden。石化 8 条候选仍是技术诊断材料，当前公共应用路由 `NOT_IN_RELEASE_SCOPE`，不得晋升为 Windows V1 Golden。
+待人工复核材料位于 [`pump_water_approval_review/README.md`](../pump_water_approval_review/README.md)，每条记录均通过版本化来源注册表引用原始 0.3 清水候选或对应 replacement candidate，并验证 case_id、schema 版本、来源文件、文件/记录 SHA、baseline SHA 与逐字段 payload。复核材料使用 `golden-case-0.4-review`，状态为 `PENDING_APPROVAL/PENDING/PENDING`；18 条 `review_flags=[]`，尚未人工批准，因此不是正式 Golden。原始 0.3 26 条记录未改。石化 8 条候选仍是技术诊断材料，当前公共应用路由 `NOT_IN_RELEASE_SCOPE`，不得晋升为 Windows V1 Golden。
 
 ## 正式 0.4 批准条件
 
@@ -31,10 +31,11 @@
 python tools/validate_phase1_contracts.py `
   --negative-probe `
   --candidate-jsonl specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl `
+  --candidate-jsonl specs/equipment_efficiency/golden/pump_water_replacement_candidates_v0_1.jsonl `
   --approval-review-dir specs/equipment_efficiency/golden/pump_water_approval_review `
   --external-evidence-root <包含注册标准相对路径的目录>
 ```
 
-当前 18 条候选中有 3 条 Canonical 行 ID 问题（T3-09/T3-10 缺失、T3-05 对应到 T3-01），已在复核包标记，解决前不能批准；精确流量端点等值案例仍保存在冻结的 0.1 历史材料中；当前 18 条 0.3 清水候选含 Q=4.9 的下界外侧案例，但不含 Q=5、Q=300 等精确等值端点。若标准负责人要求这些精确边界成为正式 0.4 Golden，需另行形成并评审新版本候选，不能改写 0.3 或晋升 0.1。
+3 条 replacement candidate 已分别将 Canonical `stable_data_ids` 对齐到 trace T3-09、T3-10、T3-05；原始 0.3 记录没有改写，替代来源由注册表/hash validator 验证。精确表3边界由 generated boundary test 负责，首批人工 Golden 不要求重复穷举端点。该测试覆盖全部 water Canonical 行的 q_min/q_max 等值及两侧 ±1e-6；人工 review package 只保留必要代表场景，不要求新增 Q=5/Q=300 Golden。
 
 当前 P1-G04 保持 `BLOCKED` 直至具名标准批准、固定 SHA 独立复验及 Solution/Product Review 完成；不得据此宣布 Phase 1 PASS 或进入 Phase 2。
