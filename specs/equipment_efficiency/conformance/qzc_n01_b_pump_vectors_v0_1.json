@@ -1,0 +1,254 @@
+{
+  "vector_schema_version": "qzc-n01-b-vector-0.1-candidate",
+  "pilot_id": "QZC-N01-B",
+  "reference_procedure_id": "PUMP-RP-0.1",
+  "profile_candidate": "EQUIPEFFI_PUMP_DECIMAL50_V2",
+  "design_baseline_sha": "b336fd313ea8e3ee1c688786c05d126d76dc2699",
+  "execution_base_sha": "77acc7d31a687dbe43c878b809109afe2bd13ae0",
+  "working_precision_candidates": [28, 34, 40, 50, 60],
+  "working_rounding": "ROUND_HALF_EVEN",
+  "business_comparison": "FULL_VALUE_EXACT_NO_EPSILON",
+  "tolerance_experiments": {
+    "T-NL-ATOM": "abs_error <= max(1E-13, 1E-13*abs(reference))",
+    "T-NL-COMPOSITE": "abs_error <= max(1E-10, 1E-12*abs(reference))",
+    "status": "EXPERIMENT_SEED_ONLY_NOT_PLATFORM_RULE"
+  },
+  "vectors": [
+    {
+      "id": "N01B-EXACT-001",
+      "category": "Exact",
+      "profile": "pump_common",
+      "operation": "sqrt-perfect-square",
+      "inputs": {"x": "16"},
+      "reference": {"sqrt": "4"},
+      "acceptance_mode": "EXACT_DECIMAL",
+      "tolerance_purpose": "NONE",
+      "business_output": null
+    },
+    {
+      "id": "N01B-EXACT-002",
+      "category": "Exact",
+      "profile": "pump_common",
+      "operation": "ln-one",
+      "inputs": {"x": "1"},
+      "reference": {"ln": "0"},
+      "acceptance_mode": "EXACT_DECIMAL",
+      "tolerance_purpose": "NONE",
+      "business_output": null
+    },
+    {
+      "id": "N01B-EXACT-003",
+      "category": "Exact",
+      "profile": "pump_common",
+      "operation": "fractional-power-construct",
+      "inputs": {"base": "16", "exponent": "0.75"},
+      "reference": {"result": "8"},
+      "acceptance_mode": "EXACT_DECIMAL",
+      "tolerance_purpose": "NONE",
+      "business_output": null
+    },
+    {
+      "id": "N01B-EXACT-004",
+      "category": "Exact",
+      "profile": "pump_water",
+      "operation": "specific-speed-exact-construct",
+      "inputs": {"QBEP": "7200", "HBEP": "32", "speed": "10", "suction": "双吸", "stages": "2"},
+      "reference": {"q_for_ns_m3s": "1", "h_for_ns_m": "16", "head_power_0_75": "8", "ns_raw": "4.5625"},
+      "acceptance_mode": "EXACT_DECIMAL",
+      "tolerance_purpose": "NONE",
+      "business_output": null
+    },
+    {
+      "id": "N01B-ATOMIC-001",
+      "category": "Nonlinear atomic",
+      "profile": "pump_common",
+      "operation": "sqrt-general",
+      "inputs": {"x": "2"},
+      "reference": {"precision50": "1.4142135623730950488016887242096980785696718753769"},
+      "acceptance_mode": "NUMERICAL_CONFORMANCE",
+      "tolerance_purpose": "T-NL-ATOM_EXPERIMENT",
+      "business_output": null
+    },
+    {
+      "id": "N01B-ATOMIC-002",
+      "category": "Nonlinear atomic",
+      "profile": "pump_common",
+      "operation": "ln-general",
+      "inputs": {"x": "2"},
+      "reference": {"precision50": "0.69314718055994530941723212145817656807550013436026"},
+      "acceptance_mode": "NUMERICAL_CONFORMANCE",
+      "tolerance_purpose": "T-NL-ATOM_EXPERIMENT",
+      "business_output": null
+    },
+    {
+      "id": "N01B-COMPOSITE-001",
+      "category": "Composite",
+      "profile": "pump_water",
+      "operation": "specific-speed-and-water-threshold",
+      "inputs": {"QBEP": "100", "HBEP": "50", "speed": "2900", "suction": "单吸", "stages": "1", "rule_id": "GB19762-T3-01"},
+      "reference": {
+        "ns_raw": "93.823603448604507505014701083136622423532335781578",
+        "thresholds": [
+          "79.78616520331852907378831138801700817769648093823",
+          "77.78616520331852907378831138801700817769648093823",
+          "72.78616520331852907378831138801700817769648093823"
+        ]
+      },
+      "acceptance_mode": "NUMERICAL_CONFORMANCE_PLUS_EXACT_BUSINESS",
+      "tolerance_purpose": "T-NL-COMPOSITE_EXPERIMENT_FOR_NUMBERS_ONLY",
+      "business_output": {"efficiency": "78", "grade": "2", "rule_id": "GB19762-T3-01"}
+    },
+    {
+      "id": "N01B-COMPOSITE-002",
+      "category": "Composite",
+      "profile": "pump_chemical",
+      "operation": "specific-speed-eta-delta-threshold",
+      "inputs": {"QBEP": "100", "HBEP": "50", "speed": "2900", "suction": "单吸", "stages": "1"},
+      "reference": {
+        "ns_raw": "93.823603448604507505014701083136622423532335781578",
+        "eta_b": "72.994964439329567466446659598229238364944975446517",
+        "delta_eta": "1.60640509593763907460258422095108102009021526342",
+        "eta_0": "71.388559343391928391844075377278157344854760183097",
+        "thresholds": [
+          "75.388559343391928391844075377278157344854760183097",
+          "72.388559343391928391844075377278157344854760183097",
+          "65.388559343391928391844075377278157344854760183097"
+        ]
+      },
+      "acceptance_mode": "NUMERICAL_CONFORMANCE_PLUS_EXACT_BUSINESS",
+      "tolerance_purpose": "T-NL-COMPOSITE_EXPERIMENT_FOR_NUMBERS_ONLY",
+      "business_output": {"rule_id": "GB19762-R000012", "ns_bucket": "60<=ns<120"}
+    },
+    {
+      "id": "N01B-BOUNDARY-001",
+      "category": "Business boundary",
+      "profile": "pump_water",
+      "operation": "full-value-grade-threshold",
+      "inputs": {"threshold": "79.78616520331852907378831138801700817769648093823", "delta": "1E-48"},
+      "reference": {"below": "2", "equal": "1", "above": "1"},
+      "acceptance_mode": "EXACT_BUSINESS_DECISION",
+      "tolerance_purpose": "FORBIDDEN_FOR_BUSINESS_COMPARISON",
+      "business_output": {"comparison": "actual>=threshold"}
+    },
+    {
+      "id": "N01B-BOUNDARY-002",
+      "category": "Business boundary",
+      "profile": "pump_chemical",
+      "operation": "ns-rule-bucket",
+      "inputs": {"values": ["59.9999999", "60", "60.0000004"]},
+      "reference": {"buckets": ["20<=ns<60", "60<=ns<120", "60<=ns<120"]},
+      "acceptance_mode": "EXACT_BUSINESS_DECISION",
+      "tolerance_purpose": "FORBIDDEN_FOR_RULE_SELECTION",
+      "business_output": {"boundary": "60"}
+    },
+    {
+      "id": "N01B-PRECISION-001",
+      "category": "Precision sensitivity",
+      "profile": "pump_water",
+      "operation": "typical-case-precision-sweep",
+      "inputs": {"QBEP": "100", "HBEP": "50", "speed": "2900", "suction": "单吸", "stages": "1", "efficiency": "78", "precisions": [28, 34, 40, 50, 60]},
+      "reference": {"grade_all": "2", "precision50_ns_raw": "93.823603448604507505014701083136622423532335781578"},
+      "acceptance_mode": "BUSINESS_OUTPUT_EXACT_NUMERICAL_DIAGNOSTIC",
+      "tolerance_purpose": "MEASURE_ONLY",
+      "business_output": {"grade_stable": true}
+    },
+    {
+      "id": "N01B-PRECISION-002",
+      "category": "Precision sensitivity",
+      "profile": "pump_chemical",
+      "operation": "adversarial-ns-boundary-precision-sweep",
+      "inputs": {
+        "QBEP": "100", "HBEP": "50", "suction": "单吸", "stages": "1",
+        "speed": "1854.54399111109819797925934852904259002949226287668605052340414462252949882422036898621942325043170362951874863911956290",
+        "precisions": [28, 34, 40, 50, 60]
+      },
+      "reference": {
+        "ns": {
+          "28": "60.00000000000000000000000004",
+          "34": "60.00000000000000000000000000000001",
+          "40": "60.00000000000000000000000000000000000004",
+          "50": "59.999999999999999999999999999999999999999900000002",
+          "60": "59.9999999999999999999999999999999999999998999999999999999999"
+        },
+        "buckets": {"28": "60<=ns<120", "34": "60<=ns<120", "40": "60<=ns<120", "50": "20<=ns<60", "60": "20<=ns<60"}
+      },
+      "acceptance_mode": "EXACT_REFERENCE_DIAGNOSTIC",
+      "tolerance_purpose": "NONE_FOR_BUCKET",
+      "business_output": {"precision_can_change_rule_selection": true}
+    },
+    {
+      "id": "N01B-ORDER-001",
+      "category": "Operation-order sensitivity",
+      "profile": "pump_chemical",
+      "operation": "specific-speed-current-vs-equivalent-at-ns60",
+      "inputs": {
+        "QBEP": "100", "HBEP": "50", "suction": "单吸", "stages": "1", "precision": 50,
+        "speed": "1854.54399111109819797925934852904259002949535378321426608766003684157842993863514863914042912335007065954525766019462533"
+      },
+      "reference": {
+        "current_ns": "59.999999999999999999999999999999999999999999999995",
+        "equivalent_ns": "60.000000000000000000000000000000000000000000000000",
+        "current_bucket": "20<=ns<60",
+        "equivalent_bucket": "60<=ns<120"
+      },
+      "acceptance_mode": "EXACT_BUSINESS_DECISION_AND_NUMERICAL_DIAGNOSTIC",
+      "tolerance_purpose": "NUMERICAL_TOLERANCE_MUST_NOT_OVERRIDE_BUCKET_MISMATCH",
+      "business_output": {"operation_tree_is_contract_significant": true}
+    },
+    {
+      "id": "N01B-INVALID-001",
+      "category": "Invalid input/domain",
+      "profile": "pump_common",
+      "operation": "binary-float-rejection",
+      "inputs": {"example": "Python float 100.1"},
+      "reference": {"result": "REJECT_BEFORE_FORMULA"},
+      "acceptance_mode": "EXACT_STATUS",
+      "tolerance_purpose": "NONE",
+      "business_output": {"evaluation_status": "INVALID_INPUT"}
+    },
+    {
+      "id": "N01B-INVALID-002",
+      "category": "Invalid input/domain",
+      "profile": "pump_common",
+      "operation": "nonlinear-domain-guards",
+      "inputs": {"sqrt": "-1", "ln": "0", "fractional_power_base": "0"},
+      "reference": {"result": "STRUCTURED_REJECTION"},
+      "acceptance_mode": "EXACT_EXCEPTION_CLASS_IN_REFERENCE_TEST",
+      "tolerance_purpose": "NONE",
+      "business_output": null
+    },
+    {
+      "id": "N01B-E2E-001",
+      "category": "Real Pump E2E",
+      "profile": "pump_water",
+      "operation": "approved-golden-single-suction-L1",
+      "inputs": {"golden_id": "GC-PUMP-V4-WATER-SINGLE-SUCTION-L1", "QBEP": "100", "HBEP": "50", "speed": "2900", "suction": "单吸", "stages": "1", "efficiency": "90"},
+      "reference": {"ns_raw": "93.823603448604507505014701083136622423532335781578", "rule_id": "GB19762-T3-01"},
+      "acceptance_mode": "APPROVED_GOLDEN_EXACT_BUSINESS",
+      "tolerance_purpose": "NUMERICAL_ONLY_IF_FUTURE_LANGUAGE_NEEDS_IT",
+      "business_output": {"grade": "1", "support_status": "SUPPORTED", "evaluation_status": "SUCCESS"}
+    },
+    {
+      "id": "N01B-E2E-002",
+      "category": "Real Pump E2E",
+      "profile": "pump_water",
+      "operation": "approved-golden-light-vertical-L2",
+      "inputs": {"golden_id": "GC-PUMP-V4-WATER-LIGHT-VERTICAL-L2", "QBEP": "100", "HBEP": "150", "speed": "2900", "suction": "双吸", "stages": "3", "efficiency": "73"},
+      "reference": {"ns_raw": "66.343306233865793197664981245608048820775055895608", "rule_id": "GB19762-T3-09"},
+      "acceptance_mode": "APPROVED_GOLDEN_EXACT_BUSINESS",
+      "tolerance_purpose": "NUMERICAL_ONLY_IF_FUTURE_LANGUAGE_NEEDS_IT",
+      "business_output": {"grade": "2", "support_status": "SUPPORTED", "evaluation_status": "SUCCESS"}
+    },
+    {
+      "id": "N01B-E2E-003",
+      "category": "Real Pump E2E",
+      "profile": "pump_water",
+      "operation": "approved-golden-pipeline-L1",
+      "inputs": {"golden_id": "GC-PUMP-V4-WATER-PIPELINE-L1", "QBEP": "100", "HBEP": "50", "speed": "2900", "suction": "单吸", "stages": "1", "efficiency": "90"},
+      "reference": {"ns_raw": "93.823603448604507505014701083136622423532335781578", "rule_id": "GB19762-T3-05"},
+      "acceptance_mode": "APPROVED_GOLDEN_EXACT_BUSINESS",
+      "tolerance_purpose": "NUMERICAL_ONLY_IF_FUTURE_LANGUAGE_NEEDS_IT",
+      "business_output": {"grade": "1", "support_status": "SUPPORTED", "evaluation_status": "SUCCESS"}
+    }
+  ]
+}
