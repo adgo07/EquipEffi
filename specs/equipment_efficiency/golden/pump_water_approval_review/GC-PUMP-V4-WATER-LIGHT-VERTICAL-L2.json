@@ -159,7 +159,8 @@
   "known_limits": [
     "本记录来自固定技术基线上的 0.3 DRAFT/PENDING 候选；标准负责人完成独立业务复核前，不是正式 Golden，也不构成批准。",
     "不改变 Decimal50、ns_raw 分档、GB 19762—2025 公式、Q/H 与 suction/stages 换算、Canonical 常数或 OOS 政策。",
-    "这 18 条候选没有 Q=5、Q=300 等精确流量端点等值案例；Q=4.9 仅覆盖下界外侧。精确端点仍见 0.1 历史冻结材料，未升级为 0.4。"
+    "这 18 条候选没有 Q=5、Q=300 等精确流量端点等值案例；Q=4.9 仅覆盖下界外侧。精确端点仍见 0.1 历史冻结材料，未升级为 0.4。",
+    "Open evidence issue: matched_rule_id=GB19762-T3-09 is absent from CANONICAL_PACK stable_data_ids=<empty>; resolve provenance before approval. The 0.3 candidate is immutable; do not approve or silently change its source sidecar."
   ],
   "provenance": {
     "source_candidate_case_id": "GC-PUMP-V3-WATER-LIGHT-VERTICAL-L2",
@@ -168,5 +169,8 @@
     "source_candidate_line": 4,
     "source_candidate_sha256": "0B5AB3A1DB9818E673A58069131ED28074CBAD06F3141F0B0FD93FFC81041215",
     "source_baseline_sha": "3101e05abd7f33262a9449c390d61ec00008fb75"
-  }
+  },
+  "review_flags": [
+    "matched_rule_id=GB19762-T3-09 is absent from CANONICAL_PACK stable_data_ids=<empty>; resolve provenance before approval"
+  ]
 }

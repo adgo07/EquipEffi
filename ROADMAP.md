@@ -37,7 +37,7 @@ ADR/
 
 Phase 0A 的治理切换、不可变起始 tag、真实基线、资产审计、第三方 55 项入库、风险重新分级、17 Profile 注册、Windows V1 Scope 草案、Golden Candidate 盘点和首个纵向样板选择已完成。2026-09-22 验收曾因交付物未提交、证据字段不完整、QA 表结构不统一和产品需求/商业价值证据缺失而暂时阻塞；治理补正和复验已完成，未修改业务代码。
 
-R01–R07 的技术独立复验固定 SHA 为 `3101e05abd7f33262a9449c390d61ec00008fb75`。当前 P1-G04 仅收口 V2 Golden 批准 schema、0.3 来源/hash 校验和 18 条清水泵待审包。原 0.1 七例历史冻结；0.3 的 26 条保持 `DRAFT/PENDING`；本轮不生成已批准 0.4 记录。标准负责人仍需逐条人工复核和决定。
+R01–R07 的技术独立复验固定 SHA 为 `3101e05abd7f33262a9449c390d61ec00008fb75`。当前 P1-G04 仅收口 V2 Golden 批准 schema、0.3 来源/hash 校验和 18 条清水泵待审包。原 0.1 七例历史冻结；0.3 的 26 条保持 `DRAFT/PENDING`；本轮不生成已批准 0.4 记录。待审验证发现 3 条 Canonical stable_data_ids 与 trace rule 不一致，不能批准，需标准负责人决定退回并形成新版本候选。
 
 > **提交后核查新固定 SHA 的 Windows CI，然后停止等待人工标准批准与独立复验；不得宣布 Phase 1 PASS 或进入 Phase 2。**
 
@@ -51,7 +51,7 @@ Phase 1 按 `docs/29_Phase 1 业务规范与数据契约.md` 的既定顺序执�
 P1-G01 → P1-G02 → P1-G03 → P1-G04 → P1-G05 → P1-G06
 ```
 
-`P1-G01` 至 `P1-G03`、`P1-G05`、`P1-G06` 的既有交付保持不变。`P1-G04` 的层次为：Golden 0.1 的 7 例只作历史冻结且不批准；0.3 的 26 例继续为 `DRAFT/PENDING`（18 条清水 Application E2E、8 条石化 technical-only）；本轮新增正式已批准记录 schema `golden-case-0.4` 与单独的待审 schema/复核包 `golden-case-0.4-review`。待审包覆盖全部 18 条清水候选，未含石化候选。技术基础为固定 SHA `3101e05abd7f33262a9449c390d61ec00008fb75`；当前仍 `BLOCKED`，须由标准负责人逐条决定，随后独立验收和 Solution/Product Review；不得声明 Phase 1 PASS 或启动 Phase 2。已知 Legacy Regression 失败继续保留。
+`P1-G01` 至 `P1-G03`、`P1-G05`、`P1-G06` 的既有交付保持不变。`P1-G04` 的层次为：Golden 0.1 的 7 例只作历史冻结且不批准；0.3 的 26 例继续为 `DRAFT/PENDING`（18 条清水 Application E2E、8 条石化 technical-only）；本轮新增正式已批准记录 schema `golden-case-0.4` 与单独的待审 schema/复核包 `golden-case-0.4-review`。待审包覆盖全部 18 条清水候选，未含石化候选；其中轻型立式、轻型卧式和管道泵 3 条存在 source-sidecar stable_data_ids 与 matched_rule_id 不一致的待解决标记。技术基础为固定 SHA `3101e05abd7f33262a9449c390d61ec00008fb75`；当前仍 `BLOCKED`，须由标准负责人逐条决定，随后独立验收和 Solution/Product Review；不得声明 Phase 1 PASS 或启动 Phase 2。已知 Legacy Regression 失败继续保留。
 
 ## Phase 1 Review Boundary
 

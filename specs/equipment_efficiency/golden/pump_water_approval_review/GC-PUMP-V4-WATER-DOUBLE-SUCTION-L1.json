@@ -170,5 +170,6 @@
     "source_candidate_line": 2,
     "source_candidate_sha256": "36B0E5877C152CDBA85EE26E9D993AC4EA025EAF03F2B2918448AAF44058126B",
     "source_baseline_sha": "3101e05abd7f33262a9449c390d61ec00008fb75"
-  }
+  },
+  "review_flags": []
 }

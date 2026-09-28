@@ -34,7 +34,7 @@ class GoldenCaseV04ApprovalTests(unittest.TestCase):
 
     def test_approved_contract_requires_named_review_and_all_approved_states(self):
         required = set(self.approved_schema["required"])
-        self.assertTrue({"review_owner", "reviewed_at", "approved_at", "approval_basis", "known_limits", "provenance"}.issubset(required))
+        self.assertTrue({"review_owner", "reviewed_at", "approved_at", "approval_basis", "known_limits", "provenance", "review_flags"}.issubset(required))
         self.assertEqual(self.approved_schema["properties"]["case_status"]["const"], "APPROVED")
         self.assertEqual(self.approved_schema["properties"]["approval_status"]["const"], "APPROVED")
         self.assertEqual(self.approved_schema["properties"]["review_status"]["const"], "APPROVED")
@@ -52,12 +52,19 @@ class GoldenCaseV04ApprovalTests(unittest.TestCase):
 
     def test_review_package_is_pending_and_covers_exact_water_candidate_pool(self):
         self.assertEqual(len(self.review_cases), 18)
-        count, error_count, errors, _, skipped = validator._validate_approval_review_packages(
+        count, error_count, errors, _, skipped, open_flags = validator._validate_approval_review_packages(
             ROOT, REVIEW_DIR, skip_external_evidence=True
         )
         self.assertEqual(count, 18, errors)
         self.assertEqual(error_count, 0, errors)
         self.assertGreaterEqual(skipped, 18)
+        self.assertEqual(open_flags, 3)
+        flagged_ids = {case["case_id"] for case in self.review_cases if case["review_flags"]}
+        self.assertEqual(flagged_ids, {
+            "GC-PUMP-V4-WATER-LIGHT-HORIZONTAL-L3",
+            "GC-PUMP-V4-WATER-LIGHT-VERTICAL-L2",
+            "GC-PUMP-V4-WATER-PIPELINE-L1",
+        })
         for case in self.review_cases:
             with self.subTest(case_id=case["case_id"]):
                 self.review_validator.validate(case)
@@ -89,7 +96,7 @@ class GoldenCaseV04ApprovalTests(unittest.TestCase):
             case["approved_at"] = "2026-09-28T10:10:00+08:00"
             case["approval_basis"] = ["Reviewed against the registered standard evidence"]
             (review_dir / "wrong-layer.json").write_text(json.dumps(case), encoding="utf-8")
-            count, error_count, errors, _, _ = validator._validate_approval_review_packages(
+            count, error_count, errors, _, _, _ = validator._validate_approval_review_packages(
                 ROOT, review_dir, skip_external_evidence=True
             )
         self.assertEqual(count, 1)
@@ -107,6 +114,17 @@ class GoldenCaseV04ApprovalTests(unittest.TestCase):
         case["raw_inputs"]["QBEP"] = "999"
         errors = validator._provenance_errors(ROOT, case, case["case_schema_version"])
         self.assertTrue(any("raw_inputs" in error for error in errors), errors)
+
+    def test_candidate_evidence_flags_block_formal_approval(self):
+        case = copy.deepcopy(next(item for item in self.review_cases if item["review_flags"]))
+        case["case_schema_version"] = "golden-case-0.4"
+        case["case_status"] = case["approval_status"] = case["review_status"] = "APPROVED"
+        case["review_owner"] = "Named Standard Owner"
+        case["reviewed_at"] = "2026-09-28T10:00:00+08:00"
+        case["approved_at"] = "2026-09-28T10:10:00+08:00"
+        case["approval_basis"] = ["Reviewed against the registered standard evidence"]
+        errors = validator._provenance_errors(ROOT, case, "golden-case-0.4")
+        self.assertTrue(any("cannot approve while candidate source evidence is unresolved" in error for error in errors), errors)
 
     def test_approved_record_must_have_real_owner_and_monotonic_timestamps(self):
         case = copy.deepcopy(self.review_cases[0])

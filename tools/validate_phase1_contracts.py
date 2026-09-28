@@ -238,6 +238,24 @@ def _canonical_record_sha256(record: dict[str, Any]) -> str:
     return hashlib.sha256(canonical).hexdigest().upper()
 
 
+def _candidate_evidence_review_flags(candidate: dict[str, Any]) -> list[str]:
+    rule_id = candidate.get("expected_calculation_trace", {}).get("matched_rule_id")
+    if rule_id is None:
+        return []
+    canonical_ids = [
+        stable_id
+        for reference in _case_source_references(candidate)
+        if reference.get("evidence_role") == "CANONICAL_PACK"
+        for stable_id in reference.get("stable_data_ids", [])
+    ]
+    if rule_id in canonical_ids:
+        return []
+    recorded = ",".join(canonical_ids) if canonical_ids else "<empty>"
+    return [
+        f"matched_rule_id={rule_id} is absent from CANONICAL_PACK stable_data_ids={recorded}; resolve provenance before approval"
+    ]
+
+
 def _candidate_index(repo_root: Path) -> tuple[dict[str, tuple[int, dict[str, Any]]], list[str]]:
     path = repo_root / PUMP_CANDIDATE_JSONL
     records: dict[str, tuple[int, dict[str, Any]]] = {}
@@ -302,6 +320,15 @@ def _provenance_errors(repo_root: Path, case: dict[str, Any], version: str | Non
             continue
         if case.get(key) != value:
             errors.append(f"candidate payload field {key!r} differs from its linked 0.3 source")
+    evidence_flags = _candidate_evidence_review_flags(candidate)
+    if version == "golden-case-0.4-review":
+        if case.get("review_flags") != evidence_flags:
+            errors.append(f"review_flags must exactly record candidate source-evidence issues: {evidence_flags}")
+    elif version == "golden-case-0.4":
+        if case.get("review_flags") != []:
+            errors.append("approved 0.4 Golden must have review_flags=[]")
+        for flag in evidence_flags:
+            errors.append(f"cannot approve while candidate source evidence is unresolved: {flag}")
     return errors
 
 
@@ -331,13 +358,14 @@ def _validate_approval_review_packages(
     *,
     external_evidence_root: Path | None = None,
     skip_external_evidence: bool = False,
-) -> tuple[int, int, list[str], list[str], int]:
+) -> tuple[int, int, list[str], list[str], int, int]:
     resolved = review_dir if review_dir.is_absolute() else repo_root / review_dir
     schemas = {version: _load_json(repo_root / path) for version, path in SCHEMA_BY_VERSION.items()}
     paths = sorted(resolved.glob("*.json")) if resolved.is_dir() else []
     errors: list[str] = []
     historical: list[str] = []
     external_skipped = 0
+    open_review_flags = 0
     for error in ([] if resolved.is_dir() else [f"approval review directory is missing: {resolved}"]):
         errors.append(error)
     observed_candidates: list[str] = []
@@ -353,6 +381,9 @@ def _validate_approval_review_packages(
             continue
         for message in _schema_errors(schema, case):
             errors.append(f"{case_path}: schema: {message}")
+        review_flags = case.get("review_flags", [])
+        if isinstance(review_flags, list):
+            open_review_flags += len(review_flags)
         provenance = case.get("provenance", {})
         if isinstance(provenance, dict) and isinstance(provenance.get("source_candidate_case_id"), str):
             observed_candidates.append(provenance["source_candidate_case_id"])
@@ -382,7 +413,7 @@ def _validate_approval_review_packages(
         errors.append(f"approval review package must cover exactly the 18 pump_water E2E candidates; missing={missing}; extra={extra}")
     if not paths:
         errors.append(f"no approval review package files found under {resolved}")
-    return len(paths), len(errors), errors, historical, external_skipped
+    return len(paths), len(errors), errors, historical, external_skipped, open_review_flags
 
 
 def _validate_cases(
@@ -595,13 +626,13 @@ def main() -> int:
         error_count += candidate_errors
 
     if args.approval_review_dir is not None:
-        review_count, review_errors, review_messages, review_historical, review_external_skipped = _validate_approval_review_packages(
+        review_count, review_errors, review_messages, review_historical, review_external_skipped, review_open_flags = _validate_approval_review_packages(
             repo_root,
             args.approval_review_dir,
             external_evidence_root=external_evidence_root,
             skip_external_evidence=args.skip_external_evidence,
         )
-        print(f"approval_review_cases={review_count} approval_review_errors={review_errors}")
+        print(f"approval_review_cases={review_count} approval_review_errors={review_errors} open_evidence_flags={review_open_flags}")
         for error in review_messages:
             print(f"APPROVAL_REVIEW_ERROR {error}")
         for message in review_historical:

@@ -24,7 +24,8 @@
     "approved_at",
     "approval_basis",
     "known_limits",
-    "provenance"
+    "provenance",
+    "review_flags"
   ],
   "properties": {
     "case_schema_version": {
@@ -108,6 +109,9 @@
     },
     "provenance": {
       "$ref": "#/$defs/provenance"
+    },
+    "review_flags": {
+      "const": []
     }
   },
   "allOf": [
