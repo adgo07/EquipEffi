@@ -1,6 +1,6 @@
 # Windows V1 Scope（Phase 1 Review Package）
 
-**状态：** `PENDING_SR01_REVIEW`；产品负责人已作出 Windows V1 范围决策，当前待审的是状态术语与业务契约对齐；不改变范围决策，不代表 Phase 1 PASS，也不授权启动 Phase 2。
+**状态：** Solution/Product Review 已通过（P1-SR01=PASS；review baseline 38bdfc28e078fee067743d30055fb39337881c7c）；Phase 1 Exit Gate 已满足。Phase 2 为 READY，但须经用户明确授权后才能开始；本状态不改变 Windows V1 范围映射。
 **原则：** 不默认 15 类公共设备或 17 个内部 Profile 全部首发；不允许“半支持”。
 
 ## 状态模型与产品范围字段边界
@@ -66,7 +66,7 @@ POST_V1 或 UNDER_REVIEW 的 Profile 不得仅凭范围登记显示为运行时�
 
 ## 产品决策记录（2026-09-23）
 
-本节记录产品负责人提供的 Windows V1 决策输入。它是产品决策证据，不伪装成量化市场研究；最终 Phase 1 状态仍须经过 Solution/Product Review。
+本节记录产品负责人提供的 Windows V1 决策输入。它是产品决策证据，不伪装成量化市场研究；Solution/Product Review 已通过，Profile 级范围映射保持不变。
 
 ```text
 decision_owner: 王玮
@@ -105,18 +105,18 @@ evidence_type: PRODUCT_OWNER_DECISION
 | 实际用户需求 | `CONFIRMED_BY_PRODUCT_DECISION` | 王玮（总经理）确认“变压器和离心泵最成熟，优先他们” | 支持将变压器和离心泵列为公共类型首发优先范围；仍按 Profile 证据执行 |
 | 商业价值 | `CONFIRMED_BY_PRODUCT_DECISION` | 王玮（总经理）确认“优先变压器和离心泵，其他的后面补” | 支持首发价值排序；不代表其他 Profile 永久淘汰 |
 | 工程就绪度 | `VERIFIED` | 本次 Phase 0 的真实测试、标准资源、风险分级、Profile 注册和样板比较 | 可作为候选排序依据，但不能替代产品决策 |
-| 产品决策负责人 | `CONFIRMED` | 王玮，总经理；决策日期 2026-09-23；风险接受人同为王玮 | 解除产品信息阻塞；范围仍需 Solution/Product Review |
+| 产品决策负责人 | `CONFIRMED` | 王玮，总经理；决策日期 2026-09-23；风险接受人同为王玮 | Solution/Product Review 已通过；Profile 范围映射保持不变 |
 
-因此，以下 `IN_V1 / UNDER_REVIEW / POST_V1` 是已记录产品决策后的 Profile 级 Review Package。定性需求和商业价值已由产品负责人确认；Solution/Product Review 仍可要求补充量化证据，但 Agent 不得自行扩大范围。
+因此，以下 IN_V1 / UNDER_REVIEW / POST_V1 是已记录产品决策并通过 Solution/Product Review 的 Profile 级映射。定性需求和商业价值由产品负责人确认；任何扩大范围的变化仍须新的产品决策。
 
 ## Phase 1 Scope Freeze Package
 
 ### 冻结类型与决策状态
 
-本节记录 Windows V1 的**产品决策边界和 Profile 级映射**，同时保留 Solution/Product Review 作为 Phase 1 出口；它不授权自动进入 Phase 2。
+本节记录 Windows V1 的产品决策边界和 Profile 级映射。Solution/Product Review 已通过并满足 Phase 1 Exit Gate；这不授权自动进入 Phase 2，仍须用户明确授权。
 
 ```text
-scope_freeze_status: READY_FOR_SOL_REVIEW
+scope_freeze_status: SOLUTION_PRODUCT_REVIEW_RESOLVED
 scope_freeze_kind: PRODUCT_DECISION_RECORDED_PROFILE_BOUNDARY
 commercial_approval: APPROVED_BY_PRODUCT_OWNER
 product_decision_owner: 王玮（总经理）
@@ -127,7 +127,7 @@ automatic_scope_expansion: DISABLED
 
 | Scope 状态 | 本次冻结的 Profile | Windows V1 UI 语义 |
 |---|---|---|
-| `IN_V1`（产品已决定，待 Solution Review） | `transformer`、`pump_water` | 允许进入 V1 方案评审；必须显示标准、版本和 Support Status |
+| IN_V1（产品已决定，Solution/Product Review 已通过） | transformer、pump_water | 保持已批准的 Windows V1 范围映射；必须显示标准、版本和 Support Status |
 | `UNDER_REVIEW` | `pump_chemical`、`fan`、`blower`、`submersible`、`heat_treatment`、`heat_pump_chiller`、`heat_pump_water_heater`、`duct_ac`、`unitary_ac`、`multi_split_ac` | 不显示为已支持；显示需要复核/评审中 |
 | `POST_V1` | `motor_lv`、`motor_hv`、`motor_pmsm`、`compressor`、`boiler` | 当前版本未支持 |
 
@@ -143,11 +143,11 @@ automatic_scope_expansion: DISABLED
 | evaluator 成熟度 | Phase 0 测试和 ASSET_AUDIT；Legacy Regression 有已知失败 | `VERIFIED_AS_ENGINEERING_EVIDENCE` | 只决定候选工作量，不决定业务首发 | 技术负责人 |
 | P0 风险 | `QA_BACKLOG.md` 中登记，Phase 1 已做证据复核 | `OPEN / REVIEWED` | 未关闭风险不得被描述为已发布能力 | 技术/产品共同确认 |
 
-产品决策记录已填写：`decision_owner`、`decision_date`、各 Scope 状态的接受/拒绝理由、需求来源、商业价值判断、风险接受人和自动扩展规则。Solution/Product Review 仍需审查这些记录与技术证据；Agent 不得代替评审结论。
+产品决策记录已填写 decision_owner、decision_date、各 Scope 状态的接受/拒绝理由、需求来源、商业价值判断、风险接受人和自动扩展规则；Solution/Product Review 已通过。各 Profile 范围映射保持不变，Agent 不得自行扩大范围。
 
-### Remaining review gate
+### Review result and phase boundary
 
-Windows V1 Profile 范围决策保持不变。当前 Solution/Product Review 门禁为 PENDING_SR01_REVIEW，待评审本轮统一的多维状态术语及其与 pump_water V2 结果契约的一致性。完成该评审前，Phase 1 保持 BLOCKED；不得宣布 Phase 1 PASS 或启动 Phase 2。
+Windows V1 Profile 范围决策保持不变。Solution/Product Review 已通过，P1-SR01=PASS，Phase 1 Exit Gate 已满足。Phase 1 状态为 PHASE_1_PASS，下一状态为 PHASE_2_READY；Phase 2 不会自动开始，须取得用户明确授权。
 
 ## Python Windows V1 运行环境冻结
 

@@ -1,8 +1,8 @@
 # EquipEffi 设备能效业务规范 V0.1
 
-状态：`DRAFT_FOR_SOLUTION_REVIEW`
+状态：`V0.1 Reviewed/Candidate`（Solution/Product Review 已通过）
 
-本文件是 Phase 1 的业务语义草案，不是 Phase 1 通过声明，也不授权进入 Phase 2。它冻结业务对象、评价生命周期、多维结果状态和证据优先级；具体标准事实由 Canonical 候选包、Profile Schema、Ruleset 和已批准 Golden Case 共同约束。
+本文件为经 Solution/Product Review 的 V0.1 Reviewed/Candidate，记录业务对象、评价生命周期、多维结果状态和证据优先级；具体标准事实由 Canonical 候选包、Profile Schema、Ruleset 和已批准 Golden Case 共同约束。本状态不代表 V1.0，也不授权自动进入 Phase 2。
 
 ## 1. 目标与边界
 
@@ -203,7 +203,7 @@ trace
 - `pump_water` 映射中的标准证据、边界和 Golden Case 可以回溯；
 - V1 Scope 的实际用户需求和商业价值由产品负责人补齐或明确批准保持未知。
 
-在上述确认前，本文件状态保持 `DRAFT_FOR_SOLUTION_REVIEW`，不得据此启动 Phase 2。
+Solution/Product Review 已通过，本文件状态为 V0.1 Reviewed/Candidate；这不等同于 V1.0，也不授权自动启动 Phase 2。
 
 ## 10. 五类契约的边界（Phase 1 冻结草案）
 
