@@ -2,48 +2,65 @@
 
 > Phase 1 执行（2026-09-22～2026-09-28）
 >
-当前唯一权威路线：EquipEffi V2.2；Phase 1 状态：PHASE_1_PASS；下一状态：PHASE_2_READY（待用户明确授权后开始）。自动继续保持 DISABLED。
+当前唯一权威路线：EquipEffi V2.3；Phase 1 状态：PHASE_1_PASS；下一状态：PHASE_2_READY（待用户明确授权后开始）。自动继续保持 DISABLED。
 >
-> 旧 v7–v15、T04.xx、旧 HANDOFF 和编号执行清单均为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`。它们保留事实，不再拥有自动任务调度权。请先读取 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[BASELINE.md](BASELINE.md)、[ASSET_AUDIT.md](ASSET_AUDIT.md)、[QA_BACKLOG.md](QA_BACKLOG.md) 和 [V1_SCOPE.md](V1_SCOPE.md)。
+> V2.2 保留为 V2.3 的继承基线；旧 v7–v15、T04.xx、旧 HANDOFF 和编号执行清单均为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`。它们保留事实，不再拥有自动任务调度权。请先读取 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[BASELINE.md](BASELINE.md)、[ASSET_AUDIT.md](ASSET_AUDIT.md)、[QA_BACKLOG.md](QA_BACKLOG.md)、[V1_SCOPE.md](V1_SCOPE.md)、[PLATFORM_BASELINE.md](PLATFORM_BASELINE.md) 和 `platform-lock.json`。
 >
-R01–R07 技术独立复验固定 SHA 为 3101e05abd7f33262a9449c390d61ec00008fb75；P1-SR01 Solution/Product Review 通过的固定基线为 38bdfc28e078fee067743d30055fb39337881c7c。FIXED_SHA_INDEPENDENT_REVIEW、GOLDEN_CASE_NAMED_HUMAN_APPROVAL 和 SOLUTION_PRODUCT_REVIEW 均为 RESOLVED。王玮于 2026-09-28T11:03:04+08:00 批准全部 18 条 pump_water Golden 0.4。原工作树 G:\Python Project\EquipEffi 保持原状；Golden 0.1 七例、原 0.3 的 26 条记录及 3 条 replacement candidates 不变，8 条 pump_chemical 候选未获 V1 Golden 批准。P1-SR01 只对齐状态契约文档；本次行政收口也只改治理/业务 Markdown，不改生产代码、Schema、Canonical、Golden、evaluator、Numeric Contract、V1 Scope 映射或测试预期。Phase 1 Exit Gate 已满足。Phase 2 READY 不代表自动开始，必须由用户明确授权；本次不合并 PR。
+R01–R07 技术独立复验固定 SHA 为 3101e05abd7f33262a9449c390d61ec00008fb75；P1-SR01 Solution/Product Review 通过的固定基线为 38bdfc28e078fee067743d30055fb39337881c7c。FIXED_SHA_INDEPENDENT_REVIEW、GOLDEN_CASE_NAMED_HUMAN_APPROVAL 和 SOLUTION_PRODUCT_REVIEW 均为 RESOLVED。王玮于 2026-09-28T11:03:04+08:00 批准全部 18 条 pump_water Golden 0.4。Golden 0.1 七例、原 0.3 的 26 条记录及 3 条 replacement candidates 不变，8 条 pump_chemical 候选未获 V1 Golden 批准。Phase 1 Exit Gate 已满足；PR #1 与 QZC-A01 PR #2 均已合并。Roadmap V2.3 只校准总体路线与治理指针，不改生产代码、Schema、Canonical、Golden、evaluator、Numeric Contract、V1 Scope 映射或测试预期。Phase 2 READY 不代表自动开始，必须由用户明确授权。
 
-## Phase 1 当前权威状态
+## 当前权威状态
 
 | 项目 | 当前事实 |
 |---|---|
-| 当前路线 | `EquipEffi V2.2` |
-| 当前阶段 | `Phase 1` |
-| 当前 Goal | Phase 1 Administrative Closeout |
+| 当前路线 | `EquipEffi V2.3` |
+| 继承基线 | `EquipEffi V2.2`；未被 V2.3 明确修改的原则与阶段结构继续有效 |
+| 当前阶段 | `Phase 1 complete / Phase 2 ready` |
+| 当前 Goal | Roadmap V2.3 Alignment |
 | 状态 | `PHASE_1_PASS` |
-| 唯一下一步 | Phase 1 行政收口完成后停止。Phase 2 为 READY，只有用户明确授权后才能开始；自动继续 DISABLED；本次不合并 PR #1 |
-| 业务样板 | `pump_water`，后续以 GB 19762-2025 标准映射为证据 |
-| 本轮边界 | 仅 business_spec.md、V1_SCOPE.md、ROADMAP.md、TASK_STATE.md、HANDOFF.md；不修改生产代码、Schema、Golden、V1范围决策、泵算法或 Phase 2 功能 |
+| 下一状态 | `PHASE_2_READY / NOT_STARTED` |
+| 唯一下一步 | 完成 V2.3 路线文档与治理指针校准后停止；Phase 2 只有用户明确授权后才能开始；automatic continuation 继续 DISABLED |
+| 业务样板 | `pump_water`；Phase 1 已完成业务真相样板，Phase 3 才做正式工程/生命周期纵向样板 |
+| 本轮边界 | 仅路线/治理 Markdown；不修改生产代码、Schema、Golden、Canonical、V1范围决策、泵算法、数据库、Excel实现、UI实现或 Phase 2 功能 |
 
 R01–R06 清单见 PUMP_V2_R01_R06_COMMIT_MANIFEST.md，R07 清单见 PUMP_V2_R07_COMMIT_MANIFEST.md，P1-G04 来源与批准清单见 PUMP_V2_G04_APPROVAL_MANIFEST.md。Golden 0.1 七例保持历史冻结，原始 0.3 的 26 条候选保持 DRAFT/PENDING，3 条 replacement candidates 未改；18 条正式 pump_water Golden 0.4 均为 APPROVED，8 条 pump_chemical technical-only 候选未获 V1 Golden 批准。精确表3边界由 generated boundary test 负责，首批人工 Golden 不要求重复穷举端点。标准 PDF 不入仓库，validator 支持 external-evidence-root。Phase 1 Exit Gate 已满足；三个评审门禁均为 RESOLVED。
 
 ### P1-SR01 — Phase 1 Status Model Contract Alignment（2026-09-28）
 
-固定 SHA 独立技术复验、Golden named-human approval 和 Solution/Product Review 均为 RESOLVED；P1-SR01 = PASS。保留最近全量代码基线 931 total / 924 pass / 3 个已知 V4 motor failures / 1 个已知 wheel audit error / 3 skips；本次为治理-only收口，没有重新运行全量 unittest。Phase 1 Exit Gate 已满足，状态为 PHASE_1_PASS；Phase 2 为 PHASE_2_READY，但须经用户明确授权后才能开始。
+固定 SHA 独立技术复验、Golden named-human approval 和 Solution/Product Review 均为 RESOLVED；P1-SR01 = PASS。保留最近全量代码基线 931 total / 924 pass / 3 个已知 V4 motor failures / 1 个已知 wheel audit error / 3 skips；Roadmap V2.3 为治理/文档-only 校准，不声称重新运行全量 unittest。Phase 1 Exit Gate 已满足，状态为 PHASE_1_PASS；Phase 2 为 PHASE_2_READY，但须经用户明确授权后才能开始。
 
 ## Phase 2 设计输入（尚未授权实施）
 
-未来 Excel 批量导入/回写必须采用 contract-driven 方式：
+Phase 2 只建立最小正式工程底座：Python 3.12、PySide6 薄 AppShell、Design Token、Repository Protocol、三库职责、Migration 基础、Logging 和有限工程结构清理。不得在 Phase 2 批量迁移 17 Profile、批量重写 evaluator、实现完整 Excel、完整产品 Shell、移动端、Suite，或一次性实现全部中央 DRAFT Contract。
+
+未来 Excel 批量导入/回写继续采用 contract-driven 方式：
 Product/Profile Contract 为字段类型、单位、枚举和约束真相源；
 Import Contract 只负责外部字段映射；
 Excel 不复制评价算法；
 批量行统一进入 EvaluationService；
-结果长期按 stable result field_id 回写。
+结果长期按 stable result_field_id 回写。
 
-以上仅作为 Phase 2 设计输入；Phase 2 READY 不代表自动开始或授权开发 Excel 功能，进入 Phase 2 前仍须取得用户明确授权。
+正式 Excel 产品能力仍在 Phase 8。Phase 2～4 只需保证字段、输入和结果契约不会把未来 Excel 路径堵死，不得提前实现完整 Excel 产品功能。
 
 ## QZC-A01 — Qingzhou-contracts 公共治理在最新 master 上重新落地（2026-09-28）
 
 本节记录公共治理接入，不替代或回退 Phase 1 已合并的现行事实。QZC-A01 新分支以最新 `master` / Phase 1 PR #1 merge SHA `1a74ff4cc07e9068783a370ec4269e89245cef38` 为基线；旧 `chore/qingzhou-contracts-adoption` 只作为中央治理接入内容参考，其过时的 Phase 1 状态和旧治理文件不覆盖当前版本。
 
 - Qingzhou-contracts 锁定：`0cd74d783fa23add6dc881b408a8c8ba8503f8e8`；Architecture `V2.1 FROZEN`；Numeric、Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack v1 均为 `DRAFT / NOT YET RELEASED`。详见 `PLATFORM_BASELINE.md`、`platform-lock.json` 和 `docs/governance/PLATFORM_ADOPTION_REPORT.md`。
-- 公共 Contract 仅约束公共外围，不改变 Phase 1 已冻结的泵业务契约、Canonical/Golden、V1 Scope、QA 决策或既有业务算法；本次不修改业务代码、Schema 或测试预期。
-- 当前状态仍为 `PHASE_1_PASS` / `PHASE_2_READY`。这不代表自动开始 Phase 2；自动继续保持 `DISABLED`，进入 Phase 2 仍须用户明确授权。本次 QZC-A01 不进入 Phase 2。
+- 公共 Contract 仅约束公共外围，不改变 Phase 1 已冻结的泵业务契约、Canonical/Golden、V1 Scope、QA 决策或既有业务算法。
+- 当前状态仍为 `PHASE_1_PASS` / `PHASE_2_READY`。这不代表自动开始 Phase 2；自动继续保持 `DISABLED`，进入 Phase 2 仍须用户明确授权。
+
+## Roadmap V2.3 Alignment（2026-09-28）
+
+V2.3 是对 V2.2 的增量校准，不改变 Phase 0～10 的阶段结构。当前正式路线文件为 `docs/28_EquipEffi 后续开发总体路线 V2.3.md`；V2.2 作为继承基线继续保留。
+
+V2.3 明确：
+
+- Phase 0 = PASS；Phase 1 = PASS；QZC-A01 = COMPLETE；Phase 2 = READY / NOT_STARTED；
+- 旧单一 Support Status 由 Phase 1 已验证的 `scope_status / support_status / category_status / evaluation_status / grade / conclusion / REQUIRES_REVIEW` 多维模型替代；
+- Phase 1 `pump_water` 是业务真相样板，Phase 3 `pump_water` 是正式工程/生命周期纵向样板；Phase 3 不得重新设计 GB 19762—2025 算法，必须以 Approved Golden 为业务 Oracle；
+- 中央 DRAFT Contract 只作为兼容方向和设计约束，不自动要求 EquipEffi 完整实现；
+- 正式 Excel 仍在 Phase 8，但 Phase 2～4 必须保持 contract-driven 字段、Import 和 stable result field 接口；
+- V2.2 的 Canonical-first、Golden-protected incremental migration、Legacy Regression ≠ Golden Truth、一个能力一个正式实现、Profile 渐进迁移、Workspace/Record 分离、三库职责、Phase 4 后再通用化、Phase 5 迁 IN_V1、Phase 8 Excel、Phase 9 Windows V1、Phase 10 多平台等原则继续有效。
 
 ## Phase 1 Goal Log（当前权威）
 
@@ -70,7 +87,7 @@ Excel 不复制评价算法；
 | Golden Case 正式批准门禁 | `BLOCKED / REVIEW PACKAGE PREPARED` | 0.1 七例历史冻结且不批准；原始 0.3 候选 26 条保持 DRAFT/PENDING；0.4-review 有 18 条清水复核资料，尚无 0.4 APPROVED 文件。3 条 replacement provenance 已对齐且 review_flags=0；标准负责人仍需逐条作业务批准/退回决定 |
 | CPython 3.12.x x64 可复验环境 | `RESOLVED` | CPython 3.12.14 x64 已安装到忽略目录 `_codex/python/`，项目 `.venv\Scripts\python.exe` 已建立；887 项 Legacy Regression 在该环境下完成，结果仍为 880 pass、3 fail、1 error、3 skip |
 
-R01–R07 技术复验已通过；P1-G04 批准机制和待审资料已准备，但标准业务批准与端点覆盖判断仍未完成。本交接保持 `BLOCKED`，不声明 `PHASE_1_PASS`，不启动 Phase 2。
+R01–R07 技术复验已通过；P1-G04 批准机制和待审资料已准备，但标准业务批准与端点覆盖判断仍未完成。本交接在该历史快照下保持 `BLOCKED`；该历史文字不覆盖本文上方当前 `PHASE_1_PASS / PHASE_2_READY` 权威状态。
 
 ## Phase 1 Verification Evidence（2026-09-22～2026-09-23）
 
@@ -105,7 +122,7 @@ Phase 1 没有修改标准 JSON、模板、evaluator 或测试期望，因此没
 | 标准加载 | 17 个 manifest pack 可加载并报告 active；不等于业务边界已验收；pump_water 分为 0.1 历史、0.3 候选和 0.4 已批准三层 |
 | Windows V1 Scope | 产品决策为变压器、离心泵公共类型优先；Profile 级 IN_V1 为 transformer、pump_water；pump_chemical 等继续 UNDER_REVIEW；motor Profile、compressor、boiler 为 POST_V1。Solution/Product Review 已通过；范围映射不变 |
 | 首个纵向样板 | `pump_water`；候选比较和必须证明项见 `V1_SCOPE.md` |
-| 当前唯一下一步 | Phase 1 行政收口完成后停止；Phase 2 READY 但须用户明确授权后才能开始。不得自动继续或合并 PR #1 |
+| 当前唯一下一步 | Roadmap V2.3 文档校准完成后停止；Phase 2 READY 但须用户明确授权后才能开始。不得自动继续。 |
 
 以下旧正文保留为历史事实参考；其中的日期、通过数字和“下一任务”说明不覆盖本节及 Phase 0 权威文件。
 
@@ -336,6 +353,8 @@ Excel 适配器代码、V4 合同和端口已经存在，但正式读取和写�
 7. 原文件不覆盖；
 8. 1500 行以上批量性能和重新打开验收。
 
+V2.3 对该历史条目的新约束是：正式 Excel 仍在 Phase 8；Phase 2～4 只建立 contract-driven 字段/Import/result 接口，不提前开启完整 Excel 产品实现。
+
 ### 5.3 产业目录不完整
 
 第一至第四批机电淘汰目录是当前默认目录。产业结构调整目录只有用户明确提供的受控设备条目，未接入全文。未覆盖条目不能解释为“未淘汰”；条件不足或目录不完整时应返回“无法判定”。
@@ -353,9 +372,13 @@ Excel 适配器代码、V4 合同和端口已经存在，但正式读取和写�
 
 ## 6. 下一步应该做什么
 
-按以下顺序继续，不要一次扩大到整个项目：
+本节以下旧小任务顺序属于历史执行材料，不再拥有当前调度权。V2.3 生效后的唯一当前下一步是：
 
-### 第一步：领取一个新的单一边界
+> **Roadmap V2.3 Alignment 完成后停止，等待用户单独授权 Phase 2。**
+
+在授权 Phase 2 前，不得自动领取工程清理、PySide6、Excel、Profile 迁移或其他 Phase 2+ 正式实现任务。
+
+### 历史第一步：领取一个新的单一边界
 
 当前 HANDOFF 第 213 章建议的下一步是：
 
@@ -371,7 +394,7 @@ rg -n 'T[0-9]{2}\.[0-9]{2}-|目标边界|唯一下一步' HANDOFF_20260831.md do
 rg -n '<任务ID>|<边界关键词>' HANDOFF_20260831.md docs
 ```
 
-### 第二步：遵循小任务流程
+### 历史第二步：遵循小任务流程
 
 ```text
 只读预检
@@ -389,15 +412,15 @@ rg -n '<任务ID>|<边界关键词>' HANDOFF_20260831.md docs
 
 每次只认领一个任务 ID、一个内部 profile、一个标准边界。没有 PDF 或校对册证据时，停止并报告“证据不足”，不要猜标准值。
 
-### 第三步：建立最终覆盖矩阵
+### 历史第三步：建立最终覆盖矩阵
 
 待边界任务足够后，建立 17×场景矩阵，至少包含：正常、边界、未命中、可插值、禁止插值、缺失、非法、零/负值、—值、冲突条件、淘汰命中和标准未激活。每个单元格都要能追溯到标准表号、页码、data_id 和测试。
 
-### 第四步：单独重新授权 Excel 集成
+### 历史第四步：单独重新授权 Excel 集成
 
-Excel 阶段必须以 V4 模板为唯一字段合同，不在评价器中复制 Excel 逻辑。使用 `V4WorkbookService` 编排读取→验证→评价→写回，结果文件必须是新文件，不覆盖输入。
+Excel 阶段必须以版本化 Product/Profile + Import Contract 为字段与映射契约，不在评价器中复制 Excel 逻辑。正式实现仍归 Phase 8；批量行必须进入统一 Application/EvaluationService 路径，结果文件必须是新文件，不覆盖输入。
 
-### 第五步：发布和跨平台验收
+### 历史第五步：发布和跨平台验收
 
 完成覆盖矩阵和 Excel 后，再做 Windows 便携包、Linux JSONL、Android 桥接、安装/签名和最终审计。发布审计必须同时验证标准来源、模板、校对册、目录和包内资源路径。
 
@@ -453,9 +476,13 @@ Excel 阶段必须以 V4 模板为唯一字段合同，不在评价器中复制 
 
 - `README.md`：项目运行、发布包、模板、JSONL 和验收说明；
 - `HANDOFF.md`：本文件，当前统一入口；
+- `ROADMAP.md`：V2.3 当前路线入口；
+- `docs/28_EquipEffi 后续开发总体路线 V2.3.md`：当前总体路线增量校准；
+- `docs/28_EquipEffi 后续开发总体路线 V2.2.md`：V2.3 继承基线；
+- `PLATFORM_BASELINE.md` / `platform-lock.json`：Qingzhou-contracts 锁定基线；
 - `HANDOFF_20260831.md`：逐任务历史事实和最新第 213 章；
-- `docs/27_后续Agent和大模型可直接照做交付清单_v15_20260905.md`：首选执行手册；
-- `docs/26_多Agent可直接照做交付清单_v14_执行手册_20260905.md`：低 CPU 执行流程和停止条件。
+- `docs/27_后续Agent和大模型可直接照做交付清单_v15_20260905.md`：历史执行手册，不再决定当前下一任务；
+- `docs/26_多Agent可直接照做交付清单_v14_执行手册_20260905.md`：历史低 CPU 执行流程和停止条件。
 
 ### 8.2 核心代码
 
@@ -561,35 +588,37 @@ rg -n 'data_id|source_page|source_clause|match_status' src tests
 
 ## 10. 交接回报格式
 
-每完成一个小任务，必须在 `HANDOFF_20260831.md` 末尾追加一个新章节，并同步本文件及 docs/23～docs/27 的当前基线。章节至少记录：
+每完成一个已授权的后续任务，应同步当前权威治理文件。历史 `HANDOFF_20260831.md` 继续保留逐任务事实，但不自动调度新任务。回报至少记录：
 
 ```text
 任务ID
 状态
 唯一目标
-标准编号、表号、条款、PDF页码、pack_id、data_version
-输入条件和边界
-修复前真实失败（若有）
-最小生产改动
-新增测试
+业务/标准证据
+修改范围
+新增或修改测试
 结果契约
-查表/计算/插值中间证据
-未修改的标准、模板、目录和 Excel 文件
-真实测试命令、耗时和退出码
+未修改边界
+真实验证命令与结果
 静态检查
-性能和 CPU 观察
 已知风险
-唯一下一步
+下一步
 ```
 
-不要写“项目全部完成”，除非负责人已经完成全量覆盖矩阵、Excel、发布和跨平台验收，并有独立审计证据。
+不要写“项目全部完成”，除非负责人已经完成 Windows V1 的正式全量验收并有独立审计证据。
 
 ## 11. 当前建议的下一项任务
 
-优先从第 213 章的唯一下一步中选择一个尚未重复的单一边界：
+当前没有自动领取的工程任务。
 
-1. 工业锅炉容量二选一的非法数值，保留容量候选并明确“无法判定/不在范围”；或
-2. 热处理非法能源枚举，保留表 9 燃料候选和字段缺失/冲突说明；或
-3. 其他 profile 中有标准原文证据的一个新缺失/边界场景。
+Roadmap V2.3 Alignment 完成后：
 
-完成后必须重新实测，不得直接复制旧的 852 数字。若没有清晰标准证据，停止并请求用户确认。
+```text
+Phase 0 = PASS
+Phase 1 = PASS
+QZC-A01 = COMPLETE
+Phase 2 = READY / NOT_STARTED
+automatic_continuation = DISABLED
+```
+
+**停止。等待用户单独授权 Phase 2。**
