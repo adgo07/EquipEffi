@@ -21,3 +21,19 @@ last_verified: 2026-09-28: P1-SR01 Solution/Product Review PASS is recorded agai
 acceptance_history: 2026-09-22 initially BLOCKED for uncommitted governance deliverables, incomplete evidence fields, non-uniform QA tables and missing demand/value evidence; corrected and revalidated without business-code changes; 2026-09-23 product decision recorded by 王玮（总经理） for transformer and centrifugal_pump public types, with pump_water as the evidence-backed IN_V1 profile; R01-R07 independent technical acceptance was completed at 3101e05; P1-G04-R1 provenance closure at the approved baseline left 0.1 historical, 26 original 0.3 candidates pending and 18 review records ready; on 2026-09-28 王玮（GB 19762—2025 离心泵标准负责人） explicitly approved all 18 Golden 0.4 records, resolving GOLDEN_CASE_NAMED_HUMAN_APPROVAL_PENDING; fixed-SHA independent review and Golden named-human approval are RESOLVED; P1-SR01 PASS and Solution/Product Review RESOLVED were confirmed on review baseline 38bdfc28e078fee067743d30055fb39337881c7c; Phase 1 Exit Gate is satisfied, Phase 1 is PHASE_1_PASS and Phase 2 is PHASE_2_READY subject to explicit user authorization.
 authoritative_files: ROADMAP.md; HANDOFF.md; TASK_STATE.md; AGENTS.md; BASELINE.md; ASSET_AUDIT.md; QA_BACKLOG.md; V1_SCOPE.md; ADR/
 historical_routes: v7-v15; T04.xx; HANDOFF_20260831.md; numbered execution checklists
+
+qzc_a01:
+  status: REAPPLIED_ON_CURRENT_MASTER
+  scope: governance-only Qingzhou-contracts adoption; no Phase 2 implementation
+  current_master_base_sha: 1a74ff4cc07e9068783a370ec4269e89245cef38
+  phase_1_pr_1_merge_sha: 1a74ff4cc07e9068783a370ec4269e89245cef38
+  previous_adoption_branch: chore/qingzhou-contracts-adoption (reference only; not rebased or copied wholesale)
+  platform_repository: https://github.com/adgo07/Qingzhou-contracts.git
+  platform_commit_sha: 0cd74d783fa23add6dc881b408a8c8ba8503f8e8
+  architecture: V2.1 FROZEN
+  numeric_unit_module_capability_workspace_record_result_qzpack: draft-v1 / DRAFT / NOT YET RELEASED
+  auto_follow_central_main: false
+  new_rfc_candidates: 0
+  relevant_existing_central_decisions: D-001; D-005; D-006
+  phase_1_state_preserved: PHASE_1_PASS
+  phase_2_state: PHASE_2_READY; NOT_STARTED; explicit user authorization required; automatic_continuation DISABLED
