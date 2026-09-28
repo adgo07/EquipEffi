@@ -1,10 +1,10 @@
 # EquipEffi 后续开发总体路线 V2.3
 
-**文档版本：** V2.3  
-**适用项目：** EquipEffi 设备能效分析软件  
-**文档性质：** 当前正式总体路线（V2.2 增量校准版）  
-**状态：** Approved for Phase 2 readiness  
-**继承基线：** `docs/28_EquipEffi 后续开发总体路线 V2.2.md`  
+**文档版本：** V2.3
+**适用项目：** EquipEffi 设备能效分析软件
+**文档性质：** 当前正式总体路线（V2.2 增量校准版）
+**状态：** Approved for Phase 2 readiness
+**继承基线：** `docs/28_EquipEffi 后续开发总体路线 V2.2.md`
 **上位治理：** `Qingzhou-contracts` 锁定基线 + 本仓 `PLATFORM_BASELINE.md` / `platform-lock.json`
 
 ---
