@@ -2,11 +2,11 @@
 
 > Phase 1 执行（2026-09-22～2026-09-28）
 >
-当前唯一权威路线：EquipEffi V2.2；当前阶段：Phase 1；当前状态：BLOCKED；下一状态：PENDING_FIXED_SHA_INDEPENDENT_REVIEW。
+当前唯一权威路线：EquipEffi V2.2；当前阶段：Phase 1；当前状态：BLOCKED；下一状态：PENDING_SR01_REVIEW。
 >
 > 旧 v7–v15、T04.xx、旧 HANDOFF 和编号执行清单均为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`。它们保留事实，不再拥有自动任务调度权。请先读取 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[BASELINE.md](BASELINE.md)、[ASSET_AUDIT.md](ASSET_AUDIT.md)、[QA_BACKLOG.md](QA_BACKLOG.md) 和 [V1_SCOPE.md](V1_SCOPE.md)。
 >
-R01–R07 技术独立复验的固定 SHA 为 3101e05abd7f33262a9449c390d61ec00008fb75；本轮以 P1-G04 审批基线 3e8ff4eb3f13593d2d223e7b98373311d2e85d7f 为起点。王玮作为 GB 19762—2025 离心泵标准负责人，已于 2026-09-28T11:03:04+08:00 明确批准全部 18 条 pump_water Golden 0.4。原工作树 G:\Python Project\EquipEffi 不修改；0.1 七例仍为历史冻结，原 0.3 26 条记录和 3 条 replacement candidates 均保持不变，8 条石化候选未获 V1 Golden 批准。正式 0.4 保留已批准 review/candidate 的输入、预期结果、计算 trace、source sidecar 与 provenance，只写入批准字段和适用限制。Golden named-human approval gate 为 RESOLVED；完成验证、push 和最终 SHA 的 Windows CI 后停止，等待固定 SHA 独立复验和 Solution/Product Review；不宣布 Phase 1 PASS、不进入 Phase 2、不合并 PR。
+R01–R07 技术独立复验固定 SHA 为 3101e05abd7f33262a9449c390d61ec00008fb75；当前 P1-SR01 基线为 7aaf7058273353237a36d03a05679d807cddcf07。该固定 SHA 的独立技术复验为 RESOLVED。王玮作为 GB 19762—2025 离心泵标准负责人，已于 2026-09-28T11:03:04+08:00 明确批准全部 18 条 pump_water Golden 0.4，named-human approval 为 RESOLVED。原工作树 G:\Python Project\EquipEffi 保持原状；Golden 0.1 七例、原 0.3 26 条记录及 3 条 replacement candidates 不变，8 条 pump_chemical 候选未获 V1 Golden 批准。P1-SR01 仅对齐 business_spec.md、V1_SCOPE.md 及治理 Markdown 的多维状态术语，不改范围决策或生产/Schema/Golden。当前 SOLUTION_PRODUCT_REVIEW=PENDING_SR01_REVIEW，Phase 1 仍 BLOCKED；新 SHA 的文档校验和 Windows CI 完成后停止，等待 Solution/Product Review，不宣布 Phase 1 PASS、不进入 Phase 2、不合并 PR。
 
 ## Phase 1 当前权威状态
 
@@ -16,22 +16,26 @@ R01–R07 技术独立复验的固定 SHA 为 3101e05abd7f33262a9449c390d61ec000
 | 当前阶段 | `Phase 1` |
 | 当前 Goal | `Phase 1 Review Package` |
 | 状态 | `BLOCKED` |
-| 唯一下一步 | 完成本轮正式 Golden 0.4 提交并核查新 SHA 的 Windows CI；之后停止，交固定 SHA 独立复验及 Solution/Product Review。不得宣布 Phase 1 PASS、合并 PR 或进入 Phase 2 |
+| 唯一下一步 | 完成 P1-SR01 五份 Markdown 对齐、合同验证、提交/push及新 SHA Windows CI；随后停止，等待 SOLUTION_PRODUCT_REVIEW=PENDING_SR01_REVIEW。不得宣布 Phase 1 PASS、合并 PR 或进入 Phase 2 |
 | 业务样板 | `pump_water`，后续以 GB 19762-2025 标准映射为证据 |
-| 代码边界 | 仅 P1-G04 schema、来源/hash validator、复核包、测试和治理文件；数值核心、公式、ns_raw、C2=142.33、OOS、泵算法、V1 scope 和既有电机问题均不改；无 Phase 2 功能 |
+| 本轮边界 | 仅 business_spec.md、V1_SCOPE.md、ROADMAP.md、TASK_STATE.md、HANDOFF.md；不修改生产代码、Schema、Golden、V1范围决策、泵算法或 Phase 2 功能 |
 
-R01–R06 清单见 PUMP_V2_R01_R06_COMMIT_MANIFEST.md，R07 清单见 PUMP_V2_R07_COMMIT_MANIFEST.md，P1-G04 来源与批准清单见 PUMP_V2_G04_APPROVAL_MANIFEST.md。复核包索引见 specs/equipment_efficiency/golden/pump_water_approval_review/README.md：该目录仍保留 18 条原始 review records；对应的 18 条正式 golden-case-0.4 已写入 specs/equipment_efficiency/golden/pump_water，review_owner=王玮、三个状态均为 APPROVED、review_flags=0。Golden 0.1 七例保持历史冻结，原始 0.3 26 条记录保持 DRAFT/PENDING，三条 replacement candidates 未改；8 条 pump_chemical technical-only 候选不批准。精确表3边界由generated boundary test负责，首批人工Golden不要求重复穷举端点。标准 PDF 不进仓库，validator 保留 external-evidence-root；Windows CI 使用 skip-external-evidence 时验证 registry/source pins 并报告外部 PDF 字节检查跳过。当前 Phase 1 仍 BLOCKED，下一状态为 PENDING_FIXED_SHA_INDEPENDENT_REVIEW。
+R01–R06 清单见 PUMP_V2_R01_R06_COMMIT_MANIFEST.md，R07 清单见 PUMP_V2_R07_COMMIT_MANIFEST.md，P1-G04 来源与批准清单见 PUMP_V2_G04_APPROVAL_MANIFEST.md。复核包索引见 specs/equipment_efficiency/golden/pump_water_approval_review/README.md：该目录仍保留 18 条原始 review records；对应的 18 条正式 golden-case-0.4 已写入 specs/equipment_efficiency/golden/pump_water，review_owner=王玮、三个状态均为 APPROVED、review_flags=0。Golden 0.1 七例保持历史冻结，原始 0.3 26 条记录保持 DRAFT/PENDING，三条 replacement candidates 未改；8 条 pump_chemical technical-only 候选不批准。精确表3边界由generated boundary test负责，首批人工Golden不要求重复穷举端点。标准 PDF 不进仓库，validator 保留 external-evidence-root；Windows CI 使用 skip-external-evidence 时验证 registry/source pins 并报告外部 PDF 字节检查跳过。当前 Phase 1 仍 BLOCKED；FIXED_SHA_INDEPENDENT_REVIEW=RESOLVED、GOLDEN_CASE_NAMED_HUMAN_APPROVAL=RESOLVED，下一状态为 PENDING_SR01_REVIEW。
+
+### P1-SR01 — Phase 1 Status Model Contract Alignment（2026-09-28）
+
+固定 SHA 独立技术复验 RESOLVED；Golden named-human approval RESOLVED；SOLUTION_PRODUCT_REVIEW=PENDING_SR01_REVIEW。本任务只同步 business_spec.md、V1_SCOPE.md、ROADMAP.md、TASK_STATE.md 和本交接文件的术语及状态事实。保留最近全量代码基线 931 total / 924 pass / 3 个已知 V4 motor failures / 1 个已知 wheel audit error / 3 skips；本轮是文档-only，未声称重新运行全量 unittest。Phase 1 仍为 BLOCKED。
 
 ## Phase 1 Goal Log（当前权威）
 
 | Goal | 状态 | 交付/证据 | 下一步 |
 |---|---|---|---|
-| `P1-G01` | `COMPLETE` | [business_spec.md](specs/equipment_efficiency/business_spec.md)：业务对象、评价生命周期、Support Status、证据优先级和验收条件 | `P1-G02`：建立五类数据契约和版本字段语义 |
+| `P1-G01` | `COMPLETE` | [business_spec.md](specs/equipment_efficiency/business_spec.md)：业务对象、评价生命周期、多维状态、证据优先级和验收条件；P1-SR01 对齐状态术语，待复核 | `P1-G02`：建立五类数据契约和版本字段语义 |
 | `P1-G02` | `COMPLETE` | `schemas/canonical.schema.json`、`profile.schema.json`、`import_contract.schema.json`、`golden_case.schema.json`；business spec 第 10/11 节冻结契约边界和版本字段语义；JSON 语法校验通过 | `P1-G03`：完成 `pump_water` / GB 19762-2025 映射 |
 | `P1-G03` | `COMPLETE` | [profiles/pump_water.md](specs/equipment_efficiency/profiles/pump_water.md)：字段、单位、别名、标准公式、10 个表 3 数据行、开闭边界、无插值/外推、缺失/未知/冲突语义；当前包哈希已记录 | `P1-G04`：准备 0.4 批准契约和清水候选复核包，待标准负责人逐条决定 |
-| P1-G04 | APPROVED / PENDING_FIXED_SHA_INDEPENDENT_REVIEW | Golden 0.1 七例保持历史冻结；原始 Golden 0.3 的 26 条仍 DRAFT/PENDING；3 条 replacement candidates 未改。王玮于 2026-09-28T11:03:04+08:00 批准并生成 18 条正式 pump_water Golden 0.4，均为 review_owner=王玮、三个 APPROVED 状态、review_flags=[]，candidate provenance 与已审输入/结果/trace/sidecar一致。 | 新固定 SHA 独立复验，然后完成 Solution/Product Review；不得自动进入后续阶段或宣布 Phase 1 PASS |
+| P1-G04 | APPROVED / FIXED_SHA_INDEPENDENT_REVIEW=RESOLVED | Golden 0.1 七例保持历史冻结；原始 Golden 0.3 的 26 条仍 DRAFT/PENDING；3 条 replacement candidates 未改。王玮于 2026-09-28T11:03:04+08:00 批准并生成 18 条正式 pump_water Golden 0.4，均为 review_owner=王玮、三个 APPROVED 状态、review_flags=[]，candidate provenance 与已审输入/结果/trace/sidecar一致。 | SOLUTION_PRODUCT_REVIEW=PENDING_SR01_REVIEW；不得自动进入后续阶段或宣布 Phase 1 PASS |
 | `P1-G05` | `COMPLETE` | [QA_BACKLOG.md](QA_BACKLOG.md) Phase 1 P0 Evidence Review：AUD-010/011/030/031 分别为允许的精确分类；AUD-011 因共享风险证据不足为 `NEEDS_MORE_EVIDENCE`；无 Hotfix、无 evaluator 修改 | `P1-G06`：冻结 Python 版本、版本字段和 Windows V1 Scope |
-| P1-G06 | COMPLETE | V1_SCOPE.md 记录王玮（总经理）于 2026-09-23 作出的 Windows V1 产品决策、17 Profile 映射、CPython 3.12.x x64 和版本字段语义；transformer、pump_water 为 Profile 级 IN_V1，pump_chemical 继续评审 | 固定 SHA 独立复验完成后进行 Solution/Product Review；不得自动进入 Phase 2 |
+| P1-G06 | COMPLETE | V1_SCOPE.md 记录王玮（总经理）于 2026-09-23 作出的 Windows V1 产品决策、17 Profile 映射、CPython 3.12.x x64 和版本字段语义；transformer、pump_water 为 Profile 级 IN_V1，pump_chemical 继续评审 | Solution/Product Review=PENDING_SR01_REVIEW；不得自动进入 Phase 2 |
 
 以下验收表是 2026-09-23 的历史快照；当前 P1-G04 正式批准状态见本文上方权威状态及 approval manifest。
 

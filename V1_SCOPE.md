@@ -1,24 +1,24 @@
 # Windows V1 Scope（Phase 1 Review Package）
 
-**状态：** `READY_FOR_SOL_REVIEW`；产品负责人已作出 Windows V1 范围决策，但仍需 Solution/Product Review，不能视为 Phase 1 PASS，也不能自动启动 Phase 2。
+**状态：** `PENDING_SR01_REVIEW`；产品负责人已作出 Windows V1 范围决策，当前待审的是状态术语与业务契约对齐；不改变范围决策，不代表 Phase 1 PASS，也不授权启动 Phase 2。
 **原则：** 不默认 15 类公共设备或 17 个内部 Profile 全部首发；不允许“半支持”。
 
-## Support Status 草案
+## 状态模型与产品范围字段边界
 
-正式命名留给 Phase 1，当前先统一使用：
+Windows V1 的产品范围决策（scope_status）与运行时评价结果分开记录。以下运行时状态定义对应当前已验证的 pump_water V2；其他 Profile 按自己的业务契约定义类别状态，不要求完全相同。
 
-```text
-SUPPORTED
-NOT_IN_RELEASE_SCOPE
-UNSUPPORTED_STANDARD
-OUT_OF_STANDARD_SCOPE
-INSUFFICIENT_DATA
-INVALID_INPUT
-NOT_APPLICABLE
-REQUIRES_REVIEW
-```
+| 字段/维度 | 语义 | 当前已验证术语 |
+|---|---|---|
+| scope_status | 产品范围决策 | IN_V1 / UNDER_REVIEW / POST_V1，本任务不改变各 Profile 的既有映射 |
+| support_status | 发布能力是否可用 | SUPPORTED / NOT_IN_RELEASE_SCOPE |
+| category_status | 类别解析/适用性 | pump_water：APPLICABLE / NOT_APPLICABLE / UNRESOLVED |
+| evaluation_status | 本次评价执行结果 | pump_water：SUCCESS / OUT_OF_STANDARD_SCOPE / INSUFFICIENT_DATA / INVALID_INPUT |
+| grade / conclusion | 等级和对外结论 | 独立于以上状态字段；BELOW_MINIMUM 是 pump_water 的评价等级结果 |
+| REQUIRES_REVIEW | 人工评审流程处置/提示 | 不属于任何运行结果枚举，也不替代 scope_status 或 support_status |
 
-`POST_V1` 或 `UNDER_REVIEW` 的 Profile 不得在 Windows V1 UI 中显示为已支持；应明确显示“当前版本未支持”或“需要复核”。
+旧草案中的 UNSUPPORTED_STANDARD 不再作为共享 support_status 值。标准证据不足应记录在 Profile/标准证据和评审资料中；若没有可发布能力，运行时发布门禁使用 NOT_IN_RELEASE_SCOPE。REQUIRES_REVIEW 属于评审流程，Profile 的 UNDER_REVIEW 可在 UI 显示“需要复核”提示，但两者都不是 evaluation_status。
+
+POST_V1 或 UNDER_REVIEW 的 Profile 不得仅凭范围登记显示为运行时已支持；UI 应按 Profile 展示范围决策和当前发布能力。
 
 ## 15 公共类型与 17 Profile
 
@@ -147,7 +147,7 @@ automatic_scope_expansion: DISABLED
 
 ### Remaining review gate
 
-产品决策阻塞已解除，当前状态为 `READY_FOR_SOL_REVIEW`。剩余门禁是 Solution/Product Review 对业务规范、`pump_water` 标准证据、Profile 级范围映射和 QA 中 `NEEDS_MORE_EVIDENCE` 项作出评审结论；在此之前不宣布 Phase 1 PASS，也不启动 Phase 2。
+Windows V1 Profile 范围决策保持不变。当前 Solution/Product Review 门禁为 PENDING_SR01_REVIEW，待评审本轮统一的多维状态术语及其与 pump_water V2 结果契约的一致性。完成该评审前，Phase 1 保持 BLOCKED；不得宣布 Phase 1 PASS 或启动 Phase 2。
 
 ## Python Windows V1 运行环境冻结
 
@@ -205,7 +205,7 @@ Windows `py` 启动器不是本次门禁入口；验收统一使用项目 `.venv
 
 ### Public UI 规则
 
-`motor` 和 `centrifugal_pump` 这类一对多公共类型不能直接显示为笼统的 `SUPPORTED`。本次按 Profile 展示：`pump_water` 可进入 V1 方案评审，`pump_chemical` 显示 `REQUIRES_REVIEW`；不能让用户看到“已支持，只是算不出来”。
+motor 和 centrifugal_pump 这类一对多公共类型不能直接显示为笼统的 SUPPORTED。本次按 Profile 展示：pump_water 的范围状态为 IN_V1，其运行时 support_status 仍由发布门禁决定；pump_chemical 保持 UNDER_REVIEW，运行时发布状态为 NOT_IN_RELEASE_SCOPE，UI 可显示“需要复核”的评审提示。REQUIRES_REVIEW 不是支持、类别或评价状态；不能让用户看到“已支持，只是算不出来”。
 
 ## 纵向样板选择
 

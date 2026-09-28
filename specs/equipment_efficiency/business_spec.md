@@ -2,7 +2,7 @@
 
 状态：`DRAFT_FOR_SOLUTION_REVIEW`
 
-本文件是 Phase 1 的业务语义草案，不是 Phase 1 通过声明，也不授权进入 Phase 2。它冻结业务对象、评价生命周期、支持状态和证据优先级；具体标准事实由 Canonical 候选包、Profile Schema、Ruleset 和已批准 Golden Case 共同约束。
+本文件是 Phase 1 的业务语义草案，不是 Phase 1 通过声明，也不授权进入 Phase 2。它冻结业务对象、评价生命周期、多维结果状态和证据优先级；具体标准事实由 Canonical 候选包、Profile Schema、Ruleset 和已批准 Golden Case 共同约束。
 
 ## 1. 目标与边界
 
@@ -37,7 +37,7 @@ Phase 1 采用以下原则：
 
 - `centrifugal_pump` 可以路由到 `pump_water` 或 `pump_chemical`；不能凭公共名称自动选择标准口径。
 - `motor` 可以路由到 `motor_lv`、`motor_hv` 或 `motor_pmsm`；必须由输入条件或明确选择消除歧义。
-- 如果无法唯一选择 Profile，返回 `REQUIRES_REVIEW`，不得猜测默认 Profile。
+- 如果无法唯一选择 Profile，不得猜测默认 Profile；将请求交由人工复核流程并记录路由原因。REQUIRES_REVIEW 属于独立评审流程处置，不是运行结果维度中的值。
 - `profile_id` 是结果、标准包、规则、Golden Case 和审计证据的主连接键。
 
 ## 3. 一次评价的规范生命周期
@@ -61,47 +61,76 @@ Phase 1 采用以下原则：
 3. **归一化**：别名、字符串格式和单位转换只能把输入转换到稳定 Product/Profile 字段；不能在 Import Contract 中偷偷实现评价规则。
 4. **检查**：缺失、非法、超范围、标准未覆盖和规则冲突必须分别保留，不能统一吞成一个“计算失败”。
 5. **评价**：只能使用 Profile 对应的 Canonical 事实和经批准的 Ruleset；旧实现和旧测试只作为证据。
-6. **结果**：Support Status 与能效等级/评价等级是两个维度；“不支持”不能伪装成某个等级，也不能仅用“无法判定”代替。
+6. **结果**：分别记录发布支持、类别/适用性解析、评价执行状态，以及 grade/conclusion；这些字段互不替代。“不支持”不能伪装成某个等级，也不能仅用“无法判定”代替。
 7. **审计**：结果必须能回指输入快照、标准来源、稳定 `data_id`、公式/规则 ID、版本和人工复核信息。
 
-## 4. Support Status V0.1
+## 4. 多维状态模型（P1-SR01）
 
-Support Status 是业务状态，不是 Python 异常名，也不是单纯的 UI 文案。它与 `conclusion`、`reference_conclusion`、问题码和证据轨迹分开存储。
+本节取代旧的单一“Support Status V0.1”列表。运行结果按以下维度表达，维度可以同时成立，不用一个主状态覆盖其他事实：
 
-| 状态 | 适用条件 | 允许的结论形态 | V1 UI 语义 |
-|---|---|---|---|
-| `SUPPORTED` | Profile 在 V1 Scope 内，输入有效，标准条件和必要事实已满足 | 可有等级、评价值或标准结论 | 显示评价结果和证据 |
-| `NOT_IN_RELEASE_SCOPE` | Profile 已识别，但不在当前发布范围 | 不生成正式等级；可显示范围说明 | 当前版本未支持 |
-| `UNSUPPORTED_STANDARD` | 已识别需求，但项目没有可批准的标准事实包 | 不生成正式等级 | 缺少已支持标准 |
-| `OUT_OF_STANDARD_SCOPE` | 标准存在，但设备类型、参数或工况不在标准适用范围 | 不生成标准等级；可保留确定的派生指标 | 不在标准范围 |
-| `INSUFFICIENT_DATA` | 评价所需字段、来源或条件不完整 | 不得补默认值；可保留不依赖缺失项的中间结果 | 缺少必要数据 |
-| `INVALID_INPUT` | 输入违反数据类型、单位、正负性、枚举或一致性约束 | 不执行会误导的评价 | 输入无效 |
-| `NOT_APPLICABLE` | 业务上明确不适用于该对象或场景 | 不生成该评价结论 | 不适用 |
-| `REQUIRES_REVIEW` | 路由、标准解释、来源、规则冲突或证据不足需要人工确认 | 不自动生成不可逆的正式结论 | 需人工复核 |
+- **support_status**：产品发布/能力可用性；
+- **category_status**：业务类别和适用性解析；
+- **evaluation_status**：评价执行后的业务结果状态；
+- **grade** 与 **conclusion**：评价等级和对用户表达的结论，独立于前三项；
+- **REQUIRES_REVIEW**：独立的评审流程处置，不属于上述运行结果枚举。
 
-### 4.1 状态优先级
+**pump_water V2 是当前第一个经 Golden 0.4 实际验证的多维状态模型实例。** 本节对通用业务规范作术语对齐，不改变已批准的泵行为、Golden 内容或其他 Profile 的既定契约。
 
-当一次输入同时触发多个问题，按以下顺序确定主状态，同时保留全部问题码和证据：
+### 4.1 发布支持维度：support_status
 
-```text
-INVALID_INPUT
-  > REQUIRES_REVIEW
-  > UNSUPPORTED_STANDARD / NOT_IN_RELEASE_SCOPE / NOT_APPLICABLE
-  > OUT_OF_STANDARD_SCOPE
-  > INSUFFICIENT_DATA
-  > SUPPORTED
-```
+support_status 回答某个 Profile 的产品发布/能力门禁是否开放，不回答当前输入能否成功评价。当前已验证的泵公共 Application 契约使用：
 
-该优先级只定义状态选择，不允许把输入错误掩盖为“不在范围”，也不允许用标准缺失掩盖路由冲突。
+| 值 | 含义 |
+|---|---|
+| SUPPORTED | 该 Profile 已具备当前发布范围内的评价能力；单次输入仍可能缺失、非法或超出标准范围。 |
+| NOT_IN_RELEASE_SCOPE | 当前发布不提供该 Profile 的正式评价能力；不得仅因标准包可加载或存在技术 evaluator 就推断为已支持。 |
 
-### 4.2 部分支持
+技术 evaluator 的内部诊断状态不代替产品发布门禁。pump_water 已准入路由返回 SUPPORTED；pump_chemical 及缺失、未知、OTHER 等没有已批准公共 Profile 路由的请求按已批准泵契约返回 NOT_IN_RELEASE_SCOPE。
 
-部分支持不作为隐藏状态。一个 Profile 可以在字段或标准条件层面存在限制，但对外必须明确写出限制：
+旧草案中的 UNSUPPORTED_STANDARD 不保留为共享 support_status 值。缺少或尚未批准标准事实包时，应在 Profile/标准证据与评审记录中说明原因；若因此没有可发布能力，发布门禁使用 NOT_IN_RELEASE_SCOPE。不得把标准证据不足伪装成评价状态。
 
-- 能够完成标准评价的输入，返回 `SUPPORTED`；
-- Profile 已识别但缺少当前发布能力，返回 `NOT_IN_RELEASE_SCOPE`；
-- 仅能计算不依赖缺失字段的功率、比转速等派生指标时，保留这些指标，同时主状态仍为 `INSUFFICIENT_DATA` 或 `OUT_OF_STANDARD_SCOPE`；
-- 不允许返回“已支持，只是算不出来”这种模糊状态。
+### 4.2 类别与适用性维度：category_status
+
+category_status 回答 Profile 的类别解析或业务适用性。pump_water V2 当前使用：
+
+| 值 | 含义 |
+|---|---|
+| APPLICABLE | 类别已解析，且属于该 Profile 的适用类别。 |
+| NOT_APPLICABLE | 类别已明确识别，但不适用于该 Profile 的标准评价口径。 |
+| UNRESOLVED | 类别缺失、未知或存在冲突，无法唯一解析。 |
+
+类别状态描述输入和适用性，不表示 Profile 是否进入产品发布范围，也不表示评价是否成功。未来 Profile 应按自身业务规则定义类别/适用性契约；不要求所有 Profile 机械采用同一组状态。
+
+### 4.3 评价执行维度：evaluation_status
+
+evaluation_status 回答本次评价路径产生的业务状态。pump_water V2 已验证的值为：
+
+| 值 | 含义 |
+|---|---|
+| SUCCESS | 评价按适用规则完成；结果仍需结合 grade 判断是否达标。 |
+| OUT_OF_STANDARD_SCOPE | 输入工况超出标准适用范围，不生成标准等级；可保留已确定的派生量。 |
+| INSUFFICIENT_DATA | 完成判断所需的输入或条件缺失。 |
+| INVALID_INPUT | 已提供输入违反类型、取值、枚举或一致性约束。 |
+
+没有进入评价的其他 Profile 可以依其自身结果契约省略此状态或使用空值；不得从 support_status 自动推导评价状态。pump_water 公共 API 的具体组合以 V2 契约和已批准 Golden 0.4 为准。
+
+### 4.4 grade、conclusion 与状态分离
+
+grade 是能效评价等级结果，不是支持或执行状态。对 pump_water，只有 evaluation_status=SUCCESS 时可产生等级；值可为 1、2、3 或 BELOW_MINIMUM，其中 BELOW_MINIMUM 表示评价已完成但未达到最低等级要求。其他评价状态的 grade 为 null。
+
+conclusion 是对外业务结论/UI表达，例如等级、未达标、无法判定或不适用；它不替代 support_status、category_status 或 evaluation_status。问题原因继续由 issue_codes 和证据轨迹单独记录。
+
+### 4.5 REQUIRES_REVIEW 的正式归属
+
+REQUIRES_REVIEW 的正式归属是独立的人工评审/治理流程处置，用于标记 Profile、范围、标准解释、来源或规则证据需要人工作出决定。它不是 support_status、category_status、evaluation_status、grade 或 conclusion 的枚举值，也不覆盖已经确定的运行结果。
+
+当前 EvaluationResult 通过结果状态、issue_codes 和审计轨迹表达单次评价；评审工作状态保存在相应 Profile/范围/证据评审记录中。本轮不新增 EvaluationResult 字段或 Schema。UI 可以显示“需要复核”作为评审提示，但不得将它映射成单一 Support Status。
+
+### 4.6 状态组合
+
+这些维度不互斥，不设跨维度的全局优先级。一个支持的 Profile 可以对某次输入返回 INVALID_INPUT、INSUFFICIENT_DATA 或 OUT_OF_STANDARD_SCOPE；已解析的类别也可以和评价失败状态同时出现。公共路由的停止位置及具体组合按 Profile 契约处理，不得以某一维状态抹去其他维度和问题码。
+
+pump_water V2 的真实状态组合由 18 条已批准 Golden 0.4 固定；本规范只统一字段含义，不重新推导或改写其输入、结果、等级、结论或计算轨迹。
 
 ## 5. 输入、单位与缺失语义
 
@@ -109,7 +138,7 @@ INVALID_INPUT
 - `unit_id` 必须稳定且可解释；显示单位可以本地化，但不能替换字段的内部单位语义。
 - 小数、阈值和公式中间值在契约中以十进制字符串表达，避免跨语言二进制浮点差异。
 - 空字符串、`null`、未提供和无法解析必须在归一化阶段区分，并映射到明确问题码。
-- 单位未知或单位换算不安全时，不得猜测；返回 `INVALID_INPUT` 或 `REQUIRES_REVIEW`。
+- 单位未知或单位换算不安全时，不得猜测；可判定的类型/单位错误记为 INVALID_INPUT；若标准语义需要标准负责人裁决，另将评审事项标记为 REQUIRES_REVIEW。
 - 缺失字段不得使用示例值、零值或某个设备类型的默认值代替，除非 Product/Profile Schema 明确批准且结果中记录默认来源。
 
 ## 6. Workspace 与 Record
@@ -132,7 +161,7 @@ Phase 1 采用已批准方向：
 5. 当前正式运行实现的输出和 trace；
 6. Legacy Regression、旧 matrix、旧 V4 样例和历史 HANDOFF。
 
-后两类不能单独推翻标准证据。实现与标准或 Golden Case 不一致时，应登记 QA/P0 或 `REQUIRES_REVIEW`，不能为了让旧测试通过而修改业务真相。
+后两类不能单独推翻标准证据。实现与标准或 Golden Case 不一致时，应登记 QA/P0；需要人工裁定时另将评审事项标记为 REQUIRES_REVIEW，不能为了让旧测试通过而修改业务真相。
 
 ## 8. 结果的最小审计要求
 
@@ -142,6 +171,9 @@ Phase 1 采用已批准方向：
 public_device_type
 profile_id
 support_status
+category_status
+evaluation_status
+grade
 conclusion / reference_conclusion
 standard_code
 standard_pack_id / standard_pack_version / standard_pack_hash
@@ -165,7 +197,7 @@ trace
 
 本规范只有在 Solution Review 中确认以下事项后，才可成为下一版冻结输入：
 
-- Support Status 的业务文案和状态优先级获得确认；
+- 多维状态字段的语义、组合规则及 grade/conclusion 分离获得确认；
 - 公共类型到 Profile 的歧义处理获得确认；
 - `as_of`、版本字段和 Record 不可变边界与数据契约一致；
 - `pump_water` 映射中的标准证据、边界和 Golden Case 可以回溯；
