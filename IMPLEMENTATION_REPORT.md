@@ -173,6 +173,6 @@ The approval validator confirmed exact linked-candidate provenance and source ha
 | compileall | python -B -m compileall -q src tools tests — passed |
 | git diff --check | Passed |
 | Protected-file comparison against approval base | Passed: evaluator, Decimal core, pump Canonical, original 0.3 pool, replacement pool, and seven 0.1 files unchanged |
-| Windows CI | Must be checked on the pushed final fixed SHA; CI uses the repository workflow and reports external PDF byte-check skipping because the standard PDF is not stored in Git |
+| Windows CI (approval persistence SHA 3d90557a8d411bf72d203973a03048f0d3d57c3d; GitHub Actions run #12 / 36373937797) | PASS: the Windows workflow completed successfully; checkout, dependency install, import path, validator, pump route/numeric/boundary/candidate tests, metadata/architecture, evaluator matrix, compileall and whitespace steps all succeeded. CI uses --skip-external-evidence because the standard PDF is not in Git; the local external-root run independently checked its raw SHA-256. |
 
 This addendum supersedes earlier G04/R1 point-in-time statements that no formal Golden had been approved. The Golden named-human approval gate is RESOLVED. Phase 1 remains BLOCKED, with PENDING_FIXED_SHA_INDEPENDENT_REVIEW as the next state and Solution/Product Review also outstanding. Do not declare Phase 1 PASS, merge PR #1, or begin Phase 2.
