@@ -1,0 +1,56 @@
+编号,严重度,问题类型,所在层,位置,问题描述,修复建议
+1,高,双架构并存,领域层,src/equipeffi/domain/devices/（8个文件）,已废弃的"垂直切分"迁移：registry.py 与 transformer/ 下所有类均为空壳（validate 返回空列表、normalize 原样返回、evaluate 直接返回"尚未接入旧判定逻辑"、aggregate/calculate 仅透传），全仓库 0 引用，却与在用的 domain/evaluation/ 并存，且 TransformerEvaluator 类名与 evaluators/transformer.py 冲突,删除整个 domain/devices/ 包；若坚持垂直架构，须真正迁移而非保留空壳
+2,高,循环依赖,领域层,domain/evaluation/device_evaluators.py 及 evaluators/*.py,device_evaluators 是"兼容门面"，从各 evaluators 反向导入；10 个评价器模块又在函数体内 from ..device_evaluators import（共 38 处延迟导入）以绕开循环导入,把 _value/_result/_attach_metrics 等共享助手抽到独立 shared 模块，评价器顶层直接导入，删除 device_evaluators 门面
+3,高,动态派发,领域层,domain/evaluation/evaluators/motor.py:14-32,用 _legacy_helper 与 getattr(device_evaluators,name) 按字符串名在运行时取函数（_value/_result/out_of_scope 等），改名或移动模块即静默失败，无静态检查,改为直接 import 具体函数
+4,高,兼容契约,领域层,domain/evaluation/evaluation_engine.py:25-39,用 inspect.signature 判断评价器是 2 参数还是 3 参数来兼容"旧插件"，契约模糊且掩盖真实签名错误,确定唯一 evaluate 契约(values,standard)，删除签名嗅探
+5,中,双类型体系,领域层,domain/evaluation/device_types.py,同时维护 15 个公共类型与 17 个内部 profile，并保留"兼容旧的通风机入口"映射，增加认知负担与出错面,评估是否收敛为单一类型体系，或固化边界并加测试
+6,中,上帝数据类,领域层,domain/common/models.py:29-66,EvaluationResult 含 25+ 字段，混合判定结果、轨迹、淘汰匹配、数据质量，并带 elimination 兼容别名属性,按职责拆分为结果/轨迹/淘汰匹配等，去掉兼容别名
+7,中,巨型数据模块,领域层,domain/evaluation/metadata.py（1834行）,把枚举值表、V4 字段映射、显示名/单位映射、公共字段定义与 _build_profile 构建逻辑混在一个模块，且 import 时即构建全部 15 个 profile,枚举/映射数据下沉到 resources JSON，构建逻辑单独成模块；注意 EV_SUCTION 等枚举重复定义
+8,中,导入副作用,领域层,domain/evaluation/device_specs.py:179-188,模块导入时遍历并就地修改 DEVICE_SPECS 字典（插入 model/production_year）,改为显式构造或工厂函数
+9,中,硬编码数据,领域层,device_specs.py（DEVICE_SPECS）与 metadata.py,17 类设备的字段/示例/枚举硬编码在 .py 中；entrypoint.py:44-61 又另写一份公共示例（_public_example）,把标准数据移到资源文件，示例单一来源
+10,中,难读核心函数,领域层,domain/evaluation/evaluators/shared.py:353-409,_interval_hit 用多重嵌套三元表达式与正则解析标准区间，可读性差、难以验证（却是判定核心）,拆成命名辅助函数/小表达式解析器，并补单元测试
+11,高,重复实现,应用层,application/services/v4_validation.py 与 input_normalization.py（530行）,两文件在 _present、_number、电压解析、枚举别名表、指标字段映射、锅炉冷凝 110% 上限 6 类上各自实现一遍（ENUM_ALIASES 与 V4_ENUM_ALIASES 互为反向）,抽公共规范化工具，删除重复
+12,高,上帝方法,应用层,application/services/evaluation_service.py:148-426,EvaluationService.evaluate() 约 279 行，内嵌实施日期门禁/疑似命中/产业目录三套早退分支,按 路由→门禁→评价器调用 拆分为私有方法或策略
+13,高,超长文件,应用层,application/services/v4_validation.py（882行）,validate() 约 237 行含 10+ sheet 特例 if 链,按设备/sheet 拆分为校验器子模块
+14,高,超长方法,应用层,application/services/input_normalization.py:261-486,normalize_evaluation_input() 约 226 行，16 类设备转换硬编码在一个函数,按设备类型拆为转换策略表
+15,高,重复实现,展示层,application_api.py:80-189 与 main_window.py:99-220,"无 V4 契约时的回退表单"构建逻辑几乎逐字重复（含 data_type 映射、metadata 合并）,下沉到 presentation/metadata_projection.py 共享
+16,中,重复实现,展示层,application_api.py:263,428-432 与 main_window.py:49-61,结论列标题映射（blower→能效结论/heat_treatment→评价等级）出现 3 处,统一使用 schema["conclusion_field"]
+17,中,重复实现,展示层,application_api.py:100-107 与 main_window.py:73-80,无契约时"基础信息"六字段元组逐字复制两份,提取为公共契约单一来源
+18,中,重复实现,展示层,main_window.py:259-288 与 web/server.py:57,结果→摘要（标准/参考等级/说明/缺失/质量）Python 与 JS 各写一遍,由 API 返回摘要结构，前端仅渲染
+19,高,死代码,基础设施层,infrastructure/excel/v4_writer.py,V4WorkbookWriterImpl 是完整实现但生产链路 0 引用（仅测试实例化），结果回写功能实际不可达,在 bootstrap/entrypoint 注入 writer，或明确标记未接线并补集成测试
+20,中,死代码,基础设施层,infrastructure/excel/legacy_importer.py、legacy_writer.py、report_exporter.py、template_builder.py,4 个各 11 行的空桩适配器，只 raise FeatureNotEnabledError，src 内 0 引用（仅 test_disabled_adapters）,删除或实现
+21,中,死代码,基础设施层,infrastructure/excel/strict_importer.py,StrictTemplateImporter 只是 V4WorkbookReaderImpl 的 3 行别名子类，src 0 引用,删除；测试直接用 V4WorkbookReaderImpl
+22,中,死代码,基础设施层,infrastructure/standards/sqlite_repository.py、persistence/sqlite_project_repository.py,两个空桩仓储，src 0 引用,删除
+23,中,死代码,应用层,application/services/cleaning_service.py、import_service.py,CleaningService、ImportService 全仓库 0 引用,删除或接入调用方
+24,中,死代码,应用层,application/ports/exporter.py、project_repository.py、standard_repository.py,三个端口 Protocol 零引用；注意存在功能等价实现但未显式继承协议（如生产中广泛使用的 JsonStandardRepository）；dto.py 仅 1 行占位,删除协议，或让现有实现显式继承并真正接入端口
+25,低,死代码,基础设施层、配置,infrastructure/excel/v4_template_audit.py:178、config/settings.py,V4TemplateAudit 包装类与 DEFAULT_SETTINGS 均 0 引用,删除
+26,中,未接线,应用层,application/services/v4_input_adapter.py:142、v4_validation.py:881,adapt_many()、validate_draft() 0 引用,删除或接入
+27,中,重复实现,基础设施层,ooxml_reader.py:81-104、template_resource.py:51-62、v4_template_audit.py:106-125,三处各自用 ZipFile 解析 xl/workbook.xml + rels 取 sheet 名,统一到 OOXMLWorkbook
+28,中,重复实现,基础设施层,ooxml_reader.py:25 与 v4_writer.py:29,列号与列名互逆换算各写一份,合并为公共函数
+29,中,重复配置,基础设施层、应用层,template_resource.py:14-34 与 v4_template_contract.py:10-11,模板文件名与 V4 sheet 清单两套常量（REQUIRED_V4_SHEETS 与 V4_DEVICE_SHEETS），且 注意事项/模板说明/配置 硬编码于 3 处,收敛为单一来源
+30,中,重复真相源,应用层,application/services/v4_validation.py:35-100 与 178-306,手工规则表与 metadata 派生规则两套并存并在运行时合并，双真相源,完成迁移后删除旧表
+31,中,硬编码,跨层,evaluation_service.py:13、application_api.py:532、entrypoint.py:69、evaluation_facade.py:27,68、v4_workbook_service.py:34,67、web/server.py:48,判定基准日期 2026-08-23 至少 8 处硬编码（含 HTML）,提取为单一常量 DEFAULT_EVALUATION_DATE
+32,中,硬编码,工程化,src/equipeffi/__init__.py:7、pyproject.toml:7、tools/build_msi.py:92,178,232,版本号 0.2.1 至少 3 处硬编码，构建脚本未引用 __version__,单一来源并由打包脚本动态读取
+33,低,硬编码,展示层,presentation/desktop/main_window.py:339,侧栏写死"公共类型数量:15",改用 len(PUBLIC_DEVICE_TYPES)
+34,高,分层穿透,应用层,application/bootstrap.py:12,42-43,应用层 module-level 导入基础设施 JsonStandardRepository，函数内再导入 infrastructure.excel.*,只用端口 Protocol，装配下沉到入口层
+35,高,分层穿透/包级环,应用层,application/bootstrap.py:13,应用层反向导入展示层 presentation.api.application_api，与 application_api.py 形成包级循环依赖,抽走装配入口，打断反向依赖
+36,高,吞异常,应用层,application/bootstrap.py:46-49,except Exception 后 return None,None，无日志静默降级，模板损坏/IO 错误无法察觉,限定异常类型并记录日志
+37,中,无日志设施,配置,config/logging.py（仅4行）,占位实现；全项目 import logging = 0，日志配置形同虚设,接入 logging 并在关键路径记录
+38,中,异常不可诊断,基础设施层,v4_writer.py:430,432 与 standards/json_repository.py:38,ZipFile 打开损坏文件时 BadZipFile 逃逸；json_repository 把 4 类异常合并为一句丢失根因,分类捕获并给出可诊断信息
+39,中,异常风格,应用层,evaluation_service.py:200、v4_validation.py:679,未注册评价器抛裸 KeyError；契约缺字段时 raise ValueError 中断整批校验,改用明确领域异常或降级为 issue 返回
+40,高,性能,基础设施层,infrastructure/standards/json_repository.py:79-91,每次 get_pack 都 read_text + json.loads 整包再 deepcopy；注释自称每批数千次却只缓存校验标志,缓存已解析的标准包，仅对返回值拷贝
+41,中,健壮性,基础设施层,infrastructure/standards/json_repository.py:29,40,55,73-96,清单 payload["packs"]/entry["pack_id"] 直接取值缺键即 KeyError；文件缺失静默返回空记录；find 每次全表线性扫描,校验清单 schema，缺失显式报错，为 find 建索引
+42,中,资源管理,基础设施层,v4_writer.py:430-474、template_resource.py:92,写回时把整个 xlsx（含 media）读入 dict 再整体写回（内存约 2 倍）且重复打开同一文件；wheel 场景临时目录生命周期依赖调用方保活,改为仅改写目标部件，并显式管理临时目录生命周期
+43,中,安全,展示层,presentation/web/server.py:174-203、entrypoint.py:78-79,--host 可绑 0.0.0.0 且无任何鉴权,默认只绑回环；对外暴露需提示并加鉴权
+44,中,安全,展示层,presentation/web/server.py:139-141,上传直接使用 X-Filename（unquote 后）拼宿主路径，未清洗,取 basename 并校验路径
+45,中,上帝窗口,展示层,presentation/desktop/main_window.py（561行）,窗口类约 270 行，表单渲染/模板 IO/结果展示混杂,拆分视图与回调，表单构建复用 metadata_projection
+46,中,历史文档堆积,工程化,docs/（27 个编号交付清单及多份 HANDOFF）,存在 01..27 号"多Agent可直接执行交付清单 v4..v15"等高度重叠的交接文档,归档到 docs/archive/，保留一份权威路线图
+47,中,工程化缺口,工程化,仓库根,缺 LICENSE 与 CHANGELOG；README.md（147行）更像交接长文而非使用说明,补 LICENSE/CHANGELOG，README 精简为安装/快速开始/架构简述
+48,低,打包重复,工程化,equip_test.spec:8 与 tools/build_native.py,spec 引用旧 standards/transformer.json，与 build_native 重复，且被 .gitignore（*.spec）忽略却仍在库中,删除或统一到 build_native
+49,低,硬编码路径,工具脚本,tools/extract_standards.py:14,25、extract_fan.py:14,旧脚本硬编码本机绝对路径（G 盘 标准 规范 目录）,标注为 legacy 或参数化
+50,低,魔法数据,基础设施层,infrastructure/excel/v4_template_audit.py:16-21,83,98,硬编码 16 个国标号与 GB 28381-2026、状态字符串,移至数据文件
+51,低,重复实现,基础设施层,ooxml_reader.py:48-49 与 v4_template_audit.py:45-55,inline 字符串读取各写一份；OOXML 命名空间 URL 4 处硬编码,合并公共实现与常量
+52,低,未达分支,基础设施层,infrastructure/excel/v4_writer.py:450-451,if target not in sheet_xml_cache: continue 恒假（445 行刚赋值）,删除
+53,低,一致性,应用层,application/ports/__init__.py:3-5,仅导出 v4_workbook 的符号，其余 4 个端口未导出,统一导出策略
+54,中,测试缺口,工程化,application/services/schema_constraints.py 等,schema_constraints 无专门单测；多处死代码模块也无测试,随清理补齐测试或删除
+55,正向,已具备,工程化,tests/,存在 60 个真实 unittest 用例（unit 57 + contract 2 + integration 1）,重构时保持通过，作为回归基线

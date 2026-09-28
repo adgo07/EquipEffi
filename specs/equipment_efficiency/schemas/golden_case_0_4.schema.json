@@ -1,0 +1,545 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://equipeffi.local/schema/golden-case-0.4.json",
+  "title": "EquipEffi Pump Golden Case 0.4 Approved Record",
+  "description": "Formal V2 approved Golden record. Approval states and named review evidence are mandatory; provenance resolves through the versioned source registry to an allowlisted pump_water Application E2E candidate and exact hashes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_schema_version",
+    "case_id",
+    "case_status",
+    "approval_status",
+    "review_status",
+    "device_type",
+    "profile_id",
+    "numeric_contract_id",
+    "evaluation_layer",
+    "raw_inputs",
+    "expected_result",
+    "expected_calculation_trace",
+    "source_sidecar",
+    "review_owner",
+    "reviewed_at",
+    "approved_at",
+    "approval_basis",
+    "known_limits",
+    "provenance",
+    "review_flags"
+  ],
+  "properties": {
+    "case_schema_version": {
+      "const": "golden-case-0.4"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^GC-PUMP-V4-WATER-[A-Z0-9-]+$"
+    },
+    "case_status": {
+      "const": "APPROVED"
+    },
+    "approval_status": {
+      "const": "APPROVED"
+    },
+    "review_status": {
+      "const": "APPROVED"
+    },
+    "device_type": {
+      "const": "centrifugal_pump"
+    },
+    "profile_id": {
+      "const": "pump_water"
+    },
+    "numeric_contract_id": {
+      "const": "PUMP_NUMERIC_AND_DECISION_CONTRACT_V2"
+    },
+    "evaluation_layer": {
+      "const": "APPLICATION_E2E"
+    },
+    "raw_inputs": {
+      "$ref": "#/$defs/raw_inputs"
+    },
+    "expected_result": {
+      "$ref": "#/$defs/expected_result"
+    },
+    "expected_calculation_trace": {
+      "$ref": "#/$defs/calculation_trace"
+    },
+    "source_sidecar": {
+      "$ref": "#/$defs/source_sidecar"
+    },
+    "historical_origin_id": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "review_owner": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*",
+      "description": "Named human reviewer; placeholders rejected by semantic validator."
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "approved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "approval_basis": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "known_limits": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "review_flags": {
+      "const": []
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "evaluation_layer": {
+            "const": "APPLICATION_E2E"
+          }
+        },
+        "required": [
+          "evaluation_layer",
+          "expected_result"
+        ]
+      },
+      "then": {
+        "properties": {
+          "expected_result": {
+            "properties": {
+              "support_status": {
+                "enum": [
+                  "SUPPORTED",
+                  "NOT_IN_RELEASE_SCOPE"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "expected_result": {
+            "properties": {
+              "support_status": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "raw_text_or_null": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Keep the exact source text, including invalid values for negative cases. The evaluator validates accepted formats; schema validation must not rewrite or fill this value."
+    },
+    "raw_inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "product_type",
+        "suction",
+        "stages",
+        "QBEP",
+        "HBEP",
+        "speed",
+        "efficiency",
+        "input_basis",
+        "measurement_point"
+      ],
+      "properties": {
+        "product_type": {
+          "$ref": "#/$defs/raw_text_or_null",
+          "description": "GB 19762-2025 product category; valid values are profile-specific Canonical types. Null/unknown text remains explicit and resolves to UNRESOLVED."
+        },
+        "suction": {
+          "$ref": "#/$defs/raw_text_or_null",
+          "description": "Valid values: 单吸 or 双吸. Other text is preserved for INVALID_INPUT cases."
+        },
+        "stages": {
+          "$ref": "#/$defs/raw_text_or_null",
+          "description": "Valid value is a positive integer text. Single-stage profile types require 1; multistage types require at least 2. Null and malformed strings are explicit negative inputs."
+        },
+        "QBEP": {
+          "$ref": "#/$defs/raw_text_or_null",
+          "description": "Total BEP flow in m3/h, before suction conversion."
+        },
+        "HBEP": {
+          "$ref": "#/$defs/raw_text_or_null",
+          "description": "Total BEP head in m, before dividing by stages."
+        },
+        "speed": {
+          "$ref": "#/$defs/raw_text_or_null",
+          "description": "BEP speed in r/min."
+        },
+        "efficiency": {
+          "$ref": "#/$defs/raw_text_or_null",
+          "description": "BEP pump efficiency as percent points, e.g. 80 means 80%."
+        },
+        "input_basis": {
+          "const": "STANDARD_BEP"
+        },
+        "measurement_point": {
+          "const": "BEP"
+        }
+      }
+    },
+    "expected_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "support_status",
+        "category_status",
+        "evaluation_status",
+        "ui_conclusion",
+        "grade",
+        "issue_codes"
+      ],
+      "properties": {
+        "support_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "SUPPORTED",
+                "NOT_IN_RELEASE_SCOPE"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "category_status": {
+          "enum": [
+            "APPLICABLE",
+            "NOT_APPLICABLE",
+            "UNRESOLVED"
+          ]
+        },
+        "evaluation_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "SUCCESS",
+                "INSUFFICIENT_DATA",
+                "INVALID_INPUT",
+                "OUT_OF_STANDARD_SCOPE"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ui_conclusion": {
+          "enum": [
+            "1级",
+            "2级",
+            "3级",
+            "未达标",
+            "无法判定",
+            "不适用",
+            "当前版本未支持"
+          ]
+        },
+        "grade": {
+          "anyOf": [
+            {
+              "enum": [
+                "1",
+                "2",
+                "3",
+                "BELOW_MINIMUM"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "issue_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "evaluation_status": {
+                "const": "SUCCESS"
+              }
+            },
+            "required": [
+              "evaluation_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "grade": {
+                "enum": [
+                  "1",
+                  "2",
+                  "3",
+                  "BELOW_MINIMUM"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "grade": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "calculation_trace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "execution_basis",
+        "derived",
+        "matched_rule_id",
+        "grade_thresholds_internal"
+      ],
+      "properties": {
+        "execution_basis": {
+          "enum": [
+            "BUSINESS_DRAFT",
+            "TECHNICAL_DIAGNOSTIC_ONLY"
+          ]
+        },
+        "derived": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "suction_factor": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "stage_count": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "q_for_ns_m3s": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "h_for_ns_m": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "ns_raw": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "eta_b": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "delta_eta": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "eta_0": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "output_power_kw": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "matched_rule_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "grade_thresholds_internal": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 3
+        }
+      }
+    },
+    "source_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "artifact_kind",
+        "artifact_path",
+        "artifact_sha256",
+        "clause_or_table",
+        "evidence_role"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifact_kind": {
+          "enum": [
+            "REPOSITORY_FILE",
+            "EXTERNAL_FILE"
+          ]
+        },
+        "artifact_path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "REPOSITORY_FILE uses a repository-relative path. EXTERNAL_FILE uses the relative_path registered for source_id in evidence_registry.json; resolve it under --external-evidence-root or EQUIPEFFI_EXTERNAL_EVIDENCE_ROOT. Never store a machine-specific absolute path in a versioned V2 Golden or review record."
+        },
+        "artifact_sha256": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$",
+          "description": "SHA-256 for repository text files is computed after canonical CRLF-to-LF normalization so pins are stable across Windows checkout settings; external and non-text files use raw-byte SHA-256."
+        },
+        "clause_or_table": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stable_data_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_role": {
+          "enum": [
+            "STANDARD",
+            "CANONICAL_PACK",
+            "CURRENT_IMPLEMENTATION",
+            "LEGACY_DIAGNOSTIC"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "source_sidecar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_references"
+      ],
+      "properties": {
+        "source_references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source_reference"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_candidate_case_id",
+        "source_candidate_schema_version",
+        "source_candidate_file",
+        "source_candidate_line",
+        "source_candidate_sha256",
+        "source_baseline_sha"
+      ],
+      "properties": {
+        "source_candidate_case_id": {
+          "type": "string",
+          "pattern": "^GC-PUMP-V3-[A-Z0-9-]+$"
+        },
+        "source_candidate_schema_version": {
+          "type": "string",
+          "pattern": "^golden-case-[0-9]+\\.[0-9]+$"
+        },
+        "source_candidate_file": {
+          "enum": [
+            "specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl",
+            "specs/equipment_efficiency/golden/pump_water_replacement_candidates_v0_1.jsonl"
+          ]
+        },
+        "source_candidate_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_candidate_sha256": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$",
+          "description": "SHA-256 of canonical UTF-8 JSON for the parsed source candidate object (sorted keys, compact separators, no trailing newline)."
+        },
+        "source_baseline_sha": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        }
+      }
+    }
+  }
+}

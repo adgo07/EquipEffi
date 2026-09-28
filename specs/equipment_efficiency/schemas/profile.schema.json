@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://equipeffi.local/schema/profile-0.1.json",
+  "title": "EquipEffi Product/Profile Contract 0.1",
+  "description": "稳定的设备输入、输出、UI 投影和规则引用；不承载标准事实表格。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "public_device_type",
+    "display_name",
+    "support_status",
+    "standard_pack_ref",
+    "fields",
+    "ruleset_ref",
+    "ui_metadata"
+  ],
+  "properties": {
+    "schema_version": { "const": "profile-0.1" },
+    "profile_id": { "type": "string", "minLength": 1 },
+    "public_device_type": { "type": "string", "minLength": 1 },
+    "display_name": { "type": "string", "minLength": 1 },
+    "support_status": {
+      "enum": [
+        "SUPPORTED",
+        "NOT_IN_RELEASE_SCOPE",
+        "UNSUPPORTED_STANDARD",
+        "OUT_OF_STANDARD_SCOPE",
+        "INSUFFICIENT_DATA",
+        "INVALID_INPUT",
+        "NOT_APPLICABLE",
+        "REQUIRES_REVIEW"
+      ]
+    },
+    "standard_pack_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["standard_pack_id", "standard_code"],
+      "properties": {
+        "standard_pack_id": { "type": "string", "minLength": 1 },
+        "standard_code": { "type": "string", "minLength": 1 },
+        "standard_pack_version": { "type": "string" },
+        "catalog_data_version": { "type": "string" }
+      }
+    },
+    "fields": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/field" },
+      "minItems": 1
+    },
+    "ruleset_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ruleset_version", "rule_ids"],
+      "properties": {
+        "ruleset_version": { "type": "string", "minLength": 1 },
+        "rule_ids": { "type": "array", "items": { "type": "string" } },
+        "formula_ids": { "type": "array", "items": { "type": "string" } },
+        "description": { "type": "string" }
+      }
+    },
+    "import_contract_ref": { "type": "string" },
+    "ui_metadata": { "$ref": "#/$defs/ui_metadata" },
+    "source_references": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source_reference" }
+    }
+  },
+  "$defs": {
+    "unit_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z%][A-Za-z0-9_./%²³-]*$"
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field_id", "role", "data_type", "unit_id", "required", "ui"],
+      "properties": {
+        "field_id": { "type": "string", "minLength": 1 },
+        "role": { "enum": ["INPUT", "DERIVED", "RESULT", "AUDIT"] },
+        "data_type": { "enum": ["STRING", "DECIMAL", "INTEGER", "BOOLEAN", "DATE", "ENUM", "OBJECT"] },
+        "unit_id": { "$ref": "#/$defs/unit_id" },
+        "required": {
+          "oneOf": [
+            { "type": "boolean" },
+            { "type": "string", "minLength": 1 }
+          ]
+        },
+        "aliases": { "type": "array", "items": { "type": "string" } },
+        "constraints": { "type": "object" },
+        "ui": { "$ref": "#/$defs/ui_field" },
+        "source_references": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/source_reference" }
+        }
+      }
+    },
+    "ui_field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display_name", "visible", "editable"],
+      "properties": {
+        "display_name": { "type": "string", "minLength": 1 },
+        "help_text": { "type": "string" },
+        "visible": { "type": "boolean" },
+        "editable": { "type": "boolean" },
+        "enum_values": { "type": "array", "items": { "type": "string" } },
+        "display_order": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "ui_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["locale", "fields", "result_projection"],
+      "properties": {
+        "locale": { "type": "string", "minLength": 1 },
+        "fields": { "type": "object" },
+        "result_projection": { "type": "object" },
+        "review_note": { "type": "string" }
+      }
+    },
+    "source_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "clause_or_table"],
+      "properties": {
+        "source_id": { "type": "string", "minLength": 1 },
+        "clause_or_table": { "type": "string", "minLength": 1 },
+        "pages": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

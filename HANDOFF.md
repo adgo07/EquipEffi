@@ -1,5 +1,106 @@
 # EquipEffi 项目交接说明
 
+> Phase 1 执行（2026-09-22～2026-09-28）
+>
+当前唯一权威路线：EquipEffi V2.2；Phase 1 状态：PHASE_1_PASS；下一状态：PHASE_2_READY（待用户明确授权后开始）。自动继续保持 DISABLED。
+>
+> 旧 v7–v15、T04.xx、旧 HANDOFF 和编号执行清单均为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`。它们保留事实，不再拥有自动任务调度权。请先读取 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[BASELINE.md](BASELINE.md)、[ASSET_AUDIT.md](ASSET_AUDIT.md)、[QA_BACKLOG.md](QA_BACKLOG.md) 和 [V1_SCOPE.md](V1_SCOPE.md)。
+>
+R01–R07 技术独立复验固定 SHA 为 3101e05abd7f33262a9449c390d61ec00008fb75；P1-SR01 Solution/Product Review 通过的固定基线为 38bdfc28e078fee067743d30055fb39337881c7c。FIXED_SHA_INDEPENDENT_REVIEW、GOLDEN_CASE_NAMED_HUMAN_APPROVAL 和 SOLUTION_PRODUCT_REVIEW 均为 RESOLVED。王玮于 2026-09-28T11:03:04+08:00 批准全部 18 条 pump_water Golden 0.4。原工作树 G:\Python Project\EquipEffi 保持原状；Golden 0.1 七例、原 0.3 的 26 条记录及 3 条 replacement candidates 不变，8 条 pump_chemical 候选未获 V1 Golden 批准。P1-SR01 只对齐状态契约文档；本次行政收口也只改治理/业务 Markdown，不改生产代码、Schema、Canonical、Golden、evaluator、Numeric Contract、V1 Scope 映射或测试预期。Phase 1 Exit Gate 已满足。Phase 2 READY 不代表自动开始，必须由用户明确授权；本次不合并 PR。
+
+## Phase 1 当前权威状态
+
+| 项目 | 当前事实 |
+|---|---|
+| 当前路线 | `EquipEffi V2.2` |
+| 当前阶段 | `Phase 1` |
+| 当前 Goal | Phase 1 Administrative Closeout |
+| 状态 | `PHASE_1_PASS` |
+| 唯一下一步 | Phase 1 行政收口完成后停止。Phase 2 为 READY，只有用户明确授权后才能开始；自动继续 DISABLED；本次不合并 PR #1 |
+| 业务样板 | `pump_water`，后续以 GB 19762-2025 标准映射为证据 |
+| 本轮边界 | 仅 business_spec.md、V1_SCOPE.md、ROADMAP.md、TASK_STATE.md、HANDOFF.md；不修改生产代码、Schema、Golden、V1范围决策、泵算法或 Phase 2 功能 |
+
+R01–R06 清单见 PUMP_V2_R01_R06_COMMIT_MANIFEST.md，R07 清单见 PUMP_V2_R07_COMMIT_MANIFEST.md，P1-G04 来源与批准清单见 PUMP_V2_G04_APPROVAL_MANIFEST.md。Golden 0.1 七例保持历史冻结，原始 0.3 的 26 条候选保持 DRAFT/PENDING，3 条 replacement candidates 未改；18 条正式 pump_water Golden 0.4 均为 APPROVED，8 条 pump_chemical technical-only 候选未获 V1 Golden 批准。精确表3边界由 generated boundary test 负责，首批人工 Golden 不要求重复穷举端点。标准 PDF 不入仓库，validator 支持 external-evidence-root。Phase 1 Exit Gate 已满足；三个评审门禁均为 RESOLVED。
+
+### P1-SR01 — Phase 1 Status Model Contract Alignment（2026-09-28）
+
+固定 SHA 独立技术复验、Golden named-human approval 和 Solution/Product Review 均为 RESOLVED；P1-SR01 = PASS。保留最近全量代码基线 931 total / 924 pass / 3 个已知 V4 motor failures / 1 个已知 wheel audit error / 3 skips；本次为治理-only收口，没有重新运行全量 unittest。Phase 1 Exit Gate 已满足，状态为 PHASE_1_PASS；Phase 2 为 PHASE_2_READY，但须经用户明确授权后才能开始。
+
+## Phase 2 设计输入（尚未授权实施）
+
+未来 Excel 批量导入/回写必须采用 contract-driven 方式：
+Product/Profile Contract 为字段类型、单位、枚举和约束真相源；
+Import Contract 只负责外部字段映射；
+Excel 不复制评价算法；
+批量行统一进入 EvaluationService；
+结果长期按 stable result field_id 回写。
+
+以上仅作为 Phase 2 设计输入；Phase 2 READY 不代表自动开始或授权开发 Excel 功能，进入 Phase 2 前仍须取得用户明确授权。
+
+## Phase 1 Goal Log（当前权威）
+
+| Goal | 状态 | 交付/证据 | 下一步 |
+|---|---|---|---|
+| P1-G01 | COMPLETE | business_spec.md：业务对象、评价生命周期、多维状态、证据优先级和验收条件；P1-SR01 Solution/Product Review 已通过 | Phase 1 Exit Gate satisfied; Phase 2 is READY and may start only after explicit user authorization |
+| `P1-G02` | `COMPLETE` | `schemas/canonical.schema.json`、`profile.schema.json`、`import_contract.schema.json`、`golden_case.schema.json`；business spec 第 10/11 节冻结契约边界和版本字段语义；JSON 语法校验通过 | Phase 1 Exit Gate satisfied; Phase 2 is READY and may start only after explicit user authorization |
+| `P1-G03` | `COMPLETE` | [profiles/pump_water.md](specs/equipment_efficiency/profiles/pump_water.md)：字段、单位、别名、标准公式、10 个表 3 数据行、开闭边界、无插值/外推、缺失/未知/冲突语义；当前包哈希已记录 | Phase 1 Exit Gate satisfied; Phase 2 is READY and may start only after explicit user authorization |
+| P1-G04 | APPROVED / FIXED_SHA_INDEPENDENT_REVIEW=RESOLVED | Golden 0.1 七例历史冻结；原始 0.3 的 26 条保持 DRAFT/PENDING；3 条 replacement candidates 未改；18 条正式 pump_water Golden 0.4 已由王玮批准，均保留已审核内容和 candidate provenance。 | Phase 1 Exit Gate satisfied; Phase 2 is READY and may start only after explicit user authorization |
+| `P1-G05` | `COMPLETE` | [QA_BACKLOG.md](QA_BACKLOG.md) Phase 1 P0 Evidence Review：AUD-010/011/030/031 分别为允许的精确分类；AUD-011 因共享风险证据不足为 `NEEDS_MORE_EVIDENCE`；无 Hotfix、无 evaluator 修改 | Phase 1 Exit Gate satisfied; Phase 2 is READY and may start only after explicit user authorization |
+| P1-G06 | COMPLETE | V1_SCOPE.md 记录王玮（总经理）于 2026-09-23 作出的 Windows V1 产品决策、17 Profile 映射、CPython 3.12.x x64 和版本字段语义；transformer、pump_water 为 Profile 级 IN_V1，pump_chemical 继续 UNDER_REVIEW | Phase 1 Exit Gate satisfied; Phase 2 is READY and may start only after explicit user authorization |
+
+以下验收表是 2026-09-23 的历史快照；当前 P1-G04 正式批准状态见本文上方权威状态及 approval manifest。
+
+## Phase 1 acceptance re-review（2026-09-23）
+
+| 验收项 | 状态 | 证据/处理 |
+|---|---|---|
+| Phase 1 交付物进入可复现 Git 提交 | `RESOLVED` | HEAD `9cb39cccf0381ba0e560c5f69fcb81725acfbe87` 已包含权威 Phase 1 交付物、治理文件、验证器和 docs/28～30 路线/方案文件；未提交业务实现 |
+| Golden Case Schema 类型、单位、来源门禁 | `RESOLVED_TECHNICALLY` | `golden_case.schema.json` 约束 Decimal 字符串和 `unit_id` 枚举；`tools/validate_phase1_contracts.py` 负责来源存在性和 SHA-256；负例必须得到 3 个错误 |
+| `pump_water` 规定点语义 | `RESOLVED_TECHNICALLY` | 映射明确 `flow_m3h=Q_BEP`、`head_m=H_BEP`、`pump_efficiency=η_BEP`，案例机器字段为 `STANDARD_BEP/BEP`；GB PDF 外部指纹已记录 |
+| AUD-011 精确分类及共享风险 | `RESOLVED_AS_REVIEW_RESULT` | `review_result=NEEDS_MORE_EVIDENCE`；保留 `classification=P0`，样板证据不外推为全 Profile `NOT_P0` |
+| Windows V1 产品决策 | `RESOLVED` | `V1_SCOPE.md` 记录王玮（总经理）、2026-09-23、需求/商业价值判断、风险接受和各状态范围理由；Profile 级映射仍交由 Solution/Product Review 审查 |
+| Golden Case 正式批准门禁 | `BLOCKED / REVIEW PACKAGE PREPARED` | 0.1 七例历史冻结且不批准；原始 0.3 候选 26 条保持 DRAFT/PENDING；0.4-review 有 18 条清水复核资料，尚无 0.4 APPROVED 文件。3 条 replacement provenance 已对齐且 review_flags=0；标准负责人仍需逐条作业务批准/退回决定 |
+| CPython 3.12.x x64 可复验环境 | `RESOLVED` | CPython 3.12.14 x64 已安装到忽略目录 `_codex/python/`，项目 `.venv\Scripts\python.exe` 已建立；887 项 Legacy Regression 在该环境下完成，结果仍为 880 pass、3 fail、1 error、3 skip |
+
+R01–R07 技术复验已通过；P1-G04 批准机制和待审资料已准备，但标准业务批准与端点覆盖判断仍未完成。本交接保持 `BLOCKED`，不声明 `PHASE_1_PASS`，不启动 Phase 2。
+
+## Phase 1 Verification Evidence（2026-09-22～2026-09-23）
+
+| 类别 | exact command / probe | environment | duration | pass | fail | error | skip | not_run / reason |
+|---|---|---|---:|---:|---:|---:|---:|---|
+| Legacy Regression | `$env:PYTHONPATH='src'; & 'C:\Users\WANGWEI\AppData\Local\Programs\Python\Python313\python.exe' -m unittest discover -s tests -p 'test_*.py'` | Windows；Python 3.13.3；完整依赖；源码工作区 | 142.123 s（unittest 内部；PowerShell wall 未单独包裹） | 880 | 3 | 1 | 3 | 0 |
+| Legacy Regression（V1 3.12 复验） | `$env:PYTHONPATH='src'; & '.venv\Scripts\python.exe' -m unittest discover -s tests -p 'test_*.py'` | Windows；CPython 3.12.14 x64；`.venv`；完整项目可选依赖；源码工作区 | 155.565 s | 880 | 3 | 1 | 3 | 0 |
+| Legacy failures retained | 同上 | 与 Phase 0 相同 | — | — | 3（V4 motor reader/writer） | 1（release audit `wheel_pmsm_status`） | 3 | 未修复、未隐藏、已保留在 QA_BACKLOG |
+| compileall | `$py -m compileall -q src tools tests` | Python 3.13.3；`PYTHONPATH=src` | 0.911 s | 1 | 0 | 0 | 0 | 0 |
+| compileall（V1 3.12 复验） | `.venv\Scripts\python.exe -m compileall -q src tools tests` | CPython 3.12.14 x64；`.venv` | 3.198 s | 1 | 0 | 0 | 0 | 0 |
+| package import | `$env:PYTHONPATH='src'; $py -c "import equipeffi; print(equipeffi.__file__)"` | Python 3.13.3；`PYTHONPATH=src` | 0.068 s | 1 | 0 | 0 | 0 | 0 |
+| package import（V1 3.12 复验） | `.venv\Scripts\python.exe -c "import equipeffi; print(equipeffi.__file__)"` | CPython 3.12.14 x64；`.venv` | 0.075 s | 1 | 0 | 0 | 0 | 0 |
+| package/resource smoke | `$py -m equipeffi --status`；`$py -m equipeffi --device-type centrifugal_pump --example` | Python 3.13.3；`PYTHONPATH=src` | 0.279 s / 0.257 s | 2 | 0 | 0 | 0 | 0 |
+| package/resource smoke（V1 3.12 复验） | `.venv\Scripts\python.exe -m equipeffi --list-device-types`；`--status`；`--device-type centrifugal_pump --example` | CPython 3.12.14 x64；`.venv` | 0.959 / 0.224 / 0.218 s | 3 | 0 | 0 | 0 | 0 |
+| Contract/Golden validation | `python tools/validate_phase1_contracts.py --negative-probe` | Python 3.13.3；`jsonschema 4.23.0`；工作区外部 GB PDF 可访问 | 0.317 s | 7 cases；negative probe=3 errors | 0 | 0 | 0 | 0 |
+| Contract/Golden validation（V1 3.12 复验） | `.venv\Scripts\python.exe tools/validate_phase1_contracts.py --negative-probe` | CPython 3.12.14 x64；`jsonschema 4.26.0`；工作区外部 GB PDF 可访问 | 0.899 s | 7 cases；negative probe=3 errors | 0 | 0 | 0 | 0 |
+| Python 3.12 environment | `.venv\Scripts\python.exe -c "import sys,struct; print(sys.version); print(struct.calcsize('P')*8)"` | Windows；CPython 3.12.14；64-bit；项目 `.venv` | <1 s | 1 | 0 | 0 | 0 | 0 |
+| `git diff --check` | `git diff --check` | Git working tree | <1 s | PASS | 0 | 0 | 0 | 0 |
+
+Phase 1 没有修改标准 JSON、模板、evaluator 或测试期望，因此没有重写 `BASELINE.md` 的 Phase 0 起始事实。上表是本次 Phase 1 复验事实；旧失败仍然是当前失败。
+
+以下 Phase 0 摘要和旧正文保留为历史事实；本节及后续 Goal Log 覆盖其中的当前阶段和下一步说明。
+
+## 当前事实摘要（Phase 0 Revalidated）
+
+| 项目 | 当前事实 |
+|---|---|
+| 正式运行实现 | `domain/evaluation` → `EvaluationService` → `evaluator_registry` → 17 个 evaluators → `JsonStandardRepository` |
+| 空壳/兼容路径 | `domain/devices/` 为 0 引用空壳；`device_evaluators.py` 为当前仍被依赖的兼容门面；均未删除 |
+| 当前正式测试 | CPython 3.12.14 x64 V1 复验：887 项，880 pass、3 fail、1 error、3 skip；unittest 内部 151.127 s；4 个已知失败未改变，详见上方 Evidence |
+| compileall / package import | CPython 3.12.14 x64：3.198 s / 0.075 s，均 PASS |
+| 标准加载 | 17 个 manifest pack 可加载并报告 active；不等于业务边界已验收；pump_water 分为 0.1 历史、0.3 候选和 0.4 已批准三层 |
+| Windows V1 Scope | 产品决策为变压器、离心泵公共类型优先；Profile 级 IN_V1 为 transformer、pump_water；pump_chemical 等继续 UNDER_REVIEW；motor Profile、compressor、boiler 为 POST_V1。Solution/Product Review 已通过；范围映射不变 |
+| 首个纵向样板 | `pump_water`；候选比较和必须证明项见 `V1_SCOPE.md` |
+| 当前唯一下一步 | Phase 1 行政收口完成后停止；Phase 2 READY 但须用户明确授权后才能开始。不得自动继续或合并 PR #1 |
+
+以下旧正文保留为历史事实参考；其中的日期、通过数字和“下一任务”说明不覆盖本节及 Phase 0 权威文件。
+
 > 文档用途：给一个完全没有前文上下文的新 Codex/开发者使用。阅读本文件后，应能知道项目要做什么、当前做到哪里、哪些内容不能重复做，以及如何安全地继续工作。
 >
 > 本文件是项目根目录的当前交接入口。历史逐项记录仍在 [HANDOFF_20260831.md](HANDOFF_20260831.md)；详细执行规则见 [docs/27_后续Agent和大模型可直接照做交付清单_v15_20260905.md](docs/27_后续Agent和大模型可直接照做交付清单_v15_20260905.md)。

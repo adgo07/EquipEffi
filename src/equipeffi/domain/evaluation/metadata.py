@@ -1016,7 +1016,14 @@ _V4_DISPLAY_NAME_BY_PROFILE: dict[str, dict[str, str]] = {
     "motor_hv": {"rated_efficiency": "效率"},
     "motor_pmsm": {"rated_efficiency": "效率", "efficiency_at_90pct_speed": "效率"},
     "compressor": {"input_power_kw": "驱动电动机额定功率（合计）"},
-    "pump_water": {"suction": "单吸/双吸"},
+    "pump_water": {
+        "suction": "单吸/双吸",
+        "flow_m3h": "流量",
+        "head_m": "扬程",
+        "rated_speed_rpm": "额定转速",
+        "stages": "级数",
+        "pump_efficiency": "泵效率",
+    },
     "fan": {
         "fan_pressure_pa": "风机压力pF",
         "rated_power_kw": "额定功率",

@@ -1,0 +1,58 @@
+{
+  "case_schema_version": "golden-case-0.1",
+  "case_id": "GC-PUMP-003-MISSING-EFFICIENCY",
+  "case_status": "REVIEWED",
+  "device_type": "centrifugal_pump",
+  "profile_id": "pump_water",
+  "business_spec_version": "0.1",
+  "standard_pack_id": "gb19762_2025_water_v1",
+  "standard_pack_version": "v1",
+  "catalog_data_version": "2026.08.23",
+  "ruleset_version": "pump_water-rules-0.1",
+  "input": {
+    "as_of": "2026-08-23",
+    "input_basis": "STANDARD_BEP",
+    "measurement_point": "BEP",
+    "category": "单级单吸",
+    "flow_m3h": "100",
+    "head_m": "50",
+    "rated_speed_rpm": "2900",
+    "stages": "1",
+    "unit_id_by_field": { "flow_m3h": "m3/h", "head_m": "m", "rated_speed_rpm": "rpm", "stages": "stage" }
+  },
+  "expected_status": "INSUFFICIENT_DATA",
+  "expected_actual_metrics": {},
+  "expected_lookups": [
+    { "table_id": "GB19762-T3", "data_ids": ["GB19762-T3-01"], "matching": "category+flow_m3h", "match_status": "HIT", "boundary": { "min": "5", "max": "300", "min_inclusive": true, "max_inclusive": true }, "no_interpolation": true }
+  ],
+  "expected_calculated_metrics": {
+    "flow_effective_m3h": { "value": "100", "unit_id": "m3/h", "scale": 0 },
+    "head_stage_m": { "value": "50", "unit_id": "m", "scale": 0 },
+    "specific_speed": { "value": "93.823603448605", "unit_id": "unitless", "scale": 12, "rounding": "HALF_UP" },
+    "output_power_kw": { "value": "13.6250", "unit_id": "kW", "scale": 4 },
+    "c1": { "value": "161.33", "unit_id": "percent_point", "scale": 2 },
+    "c2": { "value": "163.33", "unit_id": "percent_point", "scale": 2 },
+    "c3": { "value": "168.33", "unit_id": "percent_point", "scale": 2 }
+  },
+  "expected_limits": {
+    "level_1_efficiency_percent": { "value": "79.786165", "unit_id": "%", "scale": 6 },
+    "level_2_efficiency_percent": { "value": "77.786165", "unit_id": "%", "scale": 6 },
+    "level_3_efficiency_percent": { "value": "72.786165", "unit_id": "%", "scale": 6 }
+  },
+  "expected_conclusion": "无法判定",
+  "expected_issue_codes": ["MISSING_FIELD:pump_efficiency"],
+  "expected_rule_ids": ["PUMP-WATER-MISSING-001", "PUMP-WATER-THRESHOLD-001"],
+  "source_reference": [
+    { "source_id": "src/equipeffi/resources/standards/pump.json", "artifact_kind": "REPOSITORY_FILE", "artifact_path": "src/equipeffi/resources/standards/pump.json", "artifact_sha256": "D1FAB8310AA5ADE7ACCCB379BD347F442D51202E0EE2EEF4CA6E34F5A2F3EA00", "clause_or_table": "GB 19762-2025 表3", "pages": ["9-10"], "stable_data_ids": ["GB19762-T3-01"], "evidence_role": "CANONICAL_PACK" },
+    { "source_id": "GB 19762-2025", "artifact_kind": "EXTERNAL_FILE", "artifact_path": "G:/标准  规范/02_能耗限额_终端产品/用能设备/重点设备能效标准/6 7. GB 19762-2025 离心泵能效限定值及能效等级.pdf", "artifact_sha256": "7F515D8B9D6B4D2AB97FFA7BECB78520BA0579CFBD6D5ECA10C7E7CC77895FEC", "clause_or_table": "6.1、6.2、表3；泵效率缺失不具备等级比较条件", "pages": ["9-10"], "stable_data_ids": ["GB19762-T3-01"], "evidence_role": "STANDARD" },
+    { "source_id": "src/equipeffi/domain/evaluation/evaluators/pump.py", "artifact_kind": "REPOSITORY_FILE", "artifact_path": "src/equipeffi/domain/evaluation/evaluators/pump.py", "artifact_sha256": "66F84899DA5FE411340311075346D75216F1335577669CF3CC2C16F1129611EF", "clause_or_table": "deferred efficiency path", "evidence_role": "CURRENT_IMPLEMENTATION" }
+  ],
+  "review_status": "REVIEWED",
+  "review_metadata": {
+    "reviewed_at": "2026-09-22",
+    "reviewer": "Phase 1 technical evidence review",
+    "review_owner": "Solution Review designated standards owner (REQUIRED_INPUT)",
+    "approval_basis": ["独立 Decimal 计算复核缺失效率时保留合法中间量", "标准等级比较需要实际效率，未用默认值补齐"],
+    "known_limits": ["最终问题码命名需与 Result Contract V0.x 一起冻结", "标准 PDF 原件不在仓库"]
+  }
+}
