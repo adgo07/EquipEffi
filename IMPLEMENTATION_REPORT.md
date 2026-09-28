@@ -133,3 +133,46 @@ The 18 review records still have their existing review IDs and business inputs/r
 | Protected source comparison | `git diff --exit-code 6c672fe... -- pump evaluator, decimal core, Canonical pump.json, original 0.3 JSONL, and seven 0.1 Golden JSON files` | Isolated worktree | PASS; frozen files unchanged |
 
 Windows CI on the final commit SHA is triggered by pushing this branch update and must be reported from GitHub Actions before handoff. The local checks above ran under Python 3.13.3; the workflow independently uses Windows Python 3.12. No full unittest run was requested for this R1 correction. State remains `BLOCKED` pending Windows CI, named human Golden decisions, fixed-SHA independent review and Solution/Product Review. No Golden approval, Phase 1 PASS, Phase 2 work or PR merge is authorized.
+
+## P1-G04 formal Golden 0.4 approval persistence (2026-09-28)
+
+Approval baseline: 3e8ff4eb3f13593d2d223e7b98373311d2e85d7f. 王玮 explicitly confirmed that he reviewed each of the 18 pump_water Golden review records as the GB 19762—2025 centrifugal-pump standard owner and formally approved all 18. The formal records were added under specs/equipment_efficiency/golden/pump_water. Each has case_schema_version=golden-case-0.4, case_status=approval_status=review_status=APPROVED, review_owner=王玮, and review_flags=[]. The actual recorded review/approval timestamp is 2026-09-28T11:03:04+08:00; equal timestamps are used because the explicit review-complete and approval instruction arrived as one approval action, with no earlier time backfilled.
+
+Approved case IDs:
+
+- GC-PUMP-V4-WATER-BELOW-MINIMUM
+- GC-PUMP-V4-WATER-CATEGORY-MISSING
+- GC-PUMP-V4-WATER-CATEGORY-OTHER
+- GC-PUMP-V4-WATER-CATEGORY-UNKNOWN
+- GC-PUMP-V4-WATER-DOUBLE-SUCTION-L1
+- GC-PUMP-V4-WATER-FLOW-OOS
+- GC-PUMP-V4-WATER-LIGHT-HORIZONTAL-L3
+- GC-PUMP-V4-WATER-LIGHT-VERTICAL-L2
+- GC-PUMP-V4-WATER-MISSING-EFFICIENCY
+- GC-PUMP-V4-WATER-MISSING-STAGES
+- GC-PUMP-V4-WATER-MISSING-SUCTION
+- GC-PUMP-V4-WATER-MULTISTAGE-C2-142-33
+- GC-PUMP-V4-WATER-PIPELINE-L1
+- GC-PUMP-V4-WATER-SINGLE-L2
+- GC-PUMP-V4-WATER-SINGLE-L3
+- GC-PUMP-V4-WATER-SINGLE-SUCTION-L1
+- GC-PUMP-V4-WATER-STAGE-CONFLICT
+- GC-PUMP-V4-WATER-SUCTION-CONFLICT
+
+For the 11 standard-calculation cases, approval_basis records review against the applicable GB 19762—2025 Table 3 row and formulas (1)–(3), the relevant Canonical stable_data_id (including the T3-01 lower-bound basis for FLOW-OOS), recorded Q/H/n/suction/stages/efficiency, existing Decimal50 trace and grade result, and the distinction between the GB standard and the project Numeric & Decision Contract V2. For the seven missing/unknown/conflict records, approval_basis explicitly attributes support/category/evaluation status, issue codes and UI conclusion to the project contract and Application input/routing contract, not to explicit GB status provisions. Each record carries applicable known_limits.
+
+The approval validator confirmed exact linked-candidate provenance and source hashes for all 18 formal records. Original review records remain unchanged in the preparation directory. Golden 0.1's seven historical JSONs, the 26 original 0.3 candidates and all three replacement candidate records remain unchanged. pump_chemical remains unapproved as Windows V1 Golden. The standard PDF was not added to Git. Its raw SHA-256 was re-read from the configured external evidence root and matched 7F515D8B9D6B4D2AB97FFA7BECB78520BA0579CFBD6D5ECA10C7E7CC77895FEC.
+
+| Check | Result |
+|---|---|
+| Full contract/evidence validator with external evidence root | 25 official/historical cases, 0 errors; 26 original candidates and 3 replacements, 0 candidate errors; 18 review records, 0 review errors, 0 open flags; 3 negative probes rejected as expected |
+| Approval schema/provenance + pump numeric + generated boundaries + Application API + pump Golden | 164 passed |
+| Metadata + architecture + evaluator matrix | 394 passed |
+| Full unittest | 931 total: 924 passed, 3 failed, 1 error, 3 skipped; 157.980 s |
+| Full-suite existing failures | Same three previously recorded V4 motor reader/writer failures and the wheel release-audit KeyError for wheel_pmsm_status; all three prior skips remain. The 10 additional passing cases versus the older 921-test baseline are the G04 approval-contract tests already present at the approval base. This task changes only Golden approval metadata and governance files; new regression count is 0. |
+| compileall | python -B -m compileall -q src tools tests — passed |
+| git diff --check | Passed |
+| Protected-file comparison against approval base | Passed: evaluator, Decimal core, pump Canonical, original 0.3 pool, replacement pool, and seven 0.1 files unchanged |
+| Windows CI | Must be checked on the pushed final fixed SHA; CI uses the repository workflow and reports external PDF byte-check skipping because the standard PDF is not stored in Git |
+
+This addendum supersedes earlier G04/R1 point-in-time statements that no formal Golden had been approved. The Golden named-human approval gate is RESOLVED. Phase 1 remains BLOCKED, with PENDING_FIXED_SHA_INDEPENDENT_REVIEW as the next state and Solution/Product Review also outstanding. Do not declare Phase 1 PASS, merge PR #1, or begin Phase 2.

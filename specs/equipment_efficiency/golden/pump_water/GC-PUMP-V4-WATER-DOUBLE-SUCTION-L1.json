@@ -1,0 +1,186 @@
+{
+  "case_schema_version": "golden-case-0.4",
+  "case_id": "GC-PUMP-V4-WATER-DOUBLE-SUCTION-L1",
+  "case_status": "APPROVED",
+  "approval_status": "APPROVED",
+  "review_status": "APPROVED",
+  "device_type": "centrifugal_pump",
+  "profile_id": "pump_water",
+  "numeric_contract_id": "PUMP_NUMERIC_AND_DECISION_CONTRACT_V2",
+  "evaluation_layer": "APPLICATION_E2E",
+  "raw_inputs": {
+    "product_type": "单级双吸清水离心泵",
+    "suction": "双吸",
+    "stages": "1",
+    "QBEP": "800",
+    "HBEP": "50",
+    "speed": "2900",
+    "efficiency": "90",
+    "input_basis": "STANDARD_BEP",
+    "measurement_point": "BEP"
+  },
+  "expected_result": {
+    "support_status": "SUPPORTED",
+    "category_status": "APPLICABLE",
+    "evaluation_status": "SUCCESS",
+    "ui_conclusion": "1级",
+    "grade": "1",
+    "issue_codes": []
+  },
+  "expected_calculation_trace": {
+    "execution_basis": "BUSINESS_DRAFT",
+    "derived": {
+      "suction_factor": "2",
+      "stage_count": "1",
+      "q_for_ns_m3s": "0.11111111111111111111111111111111111111111111111111",
+      "h_for_ns_m": "50",
+      "ns_raw": "187.64720689720901501002940216627324484706467156315",
+      "eta_b": null,
+      "delta_eta": null,
+      "eta_0": null,
+      "output_power_kw": "109.00"
+    },
+    "matched_rule_id": "GB19762-T3-04",
+    "grade_thresholds_internal": [
+      "87.92963566447011321814351217326534422425728004473",
+      "86.92963566447011321814351217326534422425728004473",
+      "81.92963566447011321814351217326534422425728004473"
+    ]
+  },
+  "source_sidecar": {
+    "source_references": [
+      {
+        "source_id": "GB19762-2025-PDF",
+        "artifact_kind": "EXTERNAL_FILE",
+        "artifact_path": "6 7. GB 19762-2025 离心泵能效限定值及能效等级.pdf",
+        "artifact_sha256": "7F515D8B9D6B4D2AB97FFA7BECB78520BA0579CFBD6D5ECA10C7E7CC77895FEC",
+        "clause_or_table": "表3、公式(1)~(3)",
+        "pages": [
+          "9-10"
+        ],
+        "stable_data_ids": [],
+        "evidence_role": "STANDARD",
+        "note": "Standard identity/hash and relevant printed pages; business interpretation remains subject to independent review."
+      },
+      {
+        "source_id": "pump-canonical-v1",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/resources/standards/pump.json",
+        "artifact_sha256": "5D91F01B1C5F26DC4F364A3156C4E974B159FA1005BD840489C0BC3465C18C0F",
+        "clause_or_table": "清水泵表3及公式(1)~(3)",
+        "pages": [
+          "9-10"
+        ],
+        "stable_data_ids": [
+          "GB19762-T3-04"
+        ],
+        "evidence_role": "CANONICAL_PACK",
+        "note": "Canonical data maps standard rows and coefficients; does not approve this candidate."
+      },
+      {
+        "source_id": "impl-domain-evaluation-evaluators-pump",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/domain/evaluation/evaluators/pump.py",
+        "artifact_sha256": "615F7EC884CF4EB103FFD74804DFE1A5E2616E0B317AD9C457E16213EDB1FFBB",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-domain-evaluation-device_evaluators",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/domain/evaluation/device_evaluators.py",
+        "artifact_sha256": "EB2E49B77A3C5BE39D5D9C190CF36107DCBE2A526BC59877D1F0CE3AC1B17820",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-domain-evaluation-decimal_math",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/domain/evaluation/decimal_math.py",
+        "artifact_sha256": "49A429B1237D373DBEE60BEC6D186243952EB525AD77201953B1DB325EC8EA2C",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-infrastructure-standards-json_repository",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/infrastructure/standards/json_repository.py",
+        "artifact_sha256": "466A6E5154E0040F5529D689E61B3C68B0B0C18CAEC369AA1C59E0D582AB2F4A",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-application-services-evaluation_service",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/application/services/evaluation_service.py",
+        "artifact_sha256": "EEF8731E5A162C81441D83BAC4C493D0F9EA5A0014CEC1E44BF5E82535DEB8ED",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-application-services-input_normalization",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/application/services/input_normalization.py",
+        "artifact_sha256": "E37ACC4039C32BB20747657F0F1FAAFB4FBA497C21201143AD77D98CC7A20134",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-domain-evaluation-device_types",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/domain/evaluation/device_types.py",
+        "artifact_sha256": "792464AB989718607F94A7E99E0590651E1FD66CB1CDD0686FE94815D98D3A3B",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-domain-evaluation-evaluator_registry",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/domain/evaluation/evaluator_registry.py",
+        "artifact_sha256": "7811AC937498C75497AC08CFD210BBD3420013CD37A14FBCFFF2BAF386D9B4A4",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      }
+    ]
+  },
+  "notes": [
+    "清水单级、双吸；双吸按S=2进入ns计算"
+  ],
+  "review_owner": "王玮",
+  "reviewed_at": "2026-09-28T11:03:04+08:00",
+  "approved_at": "2026-09-28T11:03:04+08:00",
+  "approval_basis": [
+    "王玮作为 GB 19762—2025 离心泵标准负责人，已逐案复核并正式批准本记录。",
+    "已依据 GB 19762—2025 对应表3行及公式（1）～（3）复核标准计算场景；GB 19762—2025 表3、公式(1)~(3)；本记录保存的 matched_rule_id 为 GB19762-T3-04。",
+    "已核对对应 Canonical stable_data_id：GB19762-T3-04。",
+    "已核对本记录中的 Q、H、n、单双吸、级数及效率输入，原始空值按记录保留：Q='800' m³/h，H='50' m，n='2900' r/min，suction='双吸'，stages='1'，efficiency='90'。",
+    "已核对记录中原有 Decimal50 calculation trace、等级阈值及结论（grade='1'，UI=1级）；未重新计算或改写数值。",
+    "Numeric & Decision Contract V2 属于本项目计算实现约定，不表述为 GB 19762—2025 原文新增规定。"
+  ],
+  "known_limits": [
+    "Decimal50、ns_raw、GB 19762—2025 公式、Q/H 与 suction/stages 换算、Canonical 数值和 OOS 政策均保持冻结。",
+    "精确表3流量边界由 tests/unit/test_pump_generated_boundaries_v2.py 对每条 water Canonical 行的 q_min/q_max 等值及两侧 ±1e-6 自动验证；首批人工 Golden 只覆盖代表场景，不重复穷举端点。",
+    "Decimal50、输入规范化及状态机属于项目实现契约，不是 GB 19762—2025 新增条款。",
+    "GB 19762—2025 标准 PDF 不进入 Git 仓库；通过 external evidence root 定位并以 SHA-256 固定来源。",
+    "pump_chemical 当前未批准为正式 Windows V1 Golden。",
+    "本次批准不扩大既定 Windows V1 Scope。",
+    "首批人工 Golden 是代表性业务真值集合；表3精确边界由 generated boundary tests 负责，人工 Golden 不重复穷举 Q=5、Q=300 等所有端点。"
+  ],
+  "provenance": {
+    "source_candidate_case_id": "GC-PUMP-V3-WATER-DOUBLE-SUCTION-L1",
+    "source_candidate_schema_version": "golden-case-0.3",
+    "source_candidate_file": "specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl",
+    "source_candidate_line": 2,
+    "source_candidate_sha256": "36B0E5877C152CDBA85EE26E9D993AC4EA025EAF03F2B2918448AAF44058126B",
+    "source_baseline_sha": "3101e05abd7f33262a9449c390d61ec00008fb75"
+  },
+  "review_flags": []
+}

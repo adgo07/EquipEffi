@@ -8,11 +8,11 @@
 |---|---|---|---|
 | Golden 0.1 | 本目录既有 7 个案例 | 历史冻结；不升级、不批准 | 保存旧版历史证据 |
 | Golden 0.3 | [`pump_e2e_v0_3_candidates.jsonl`](../pump_e2e_v0_3_candidates.jsonl) 共 26 条：18 条 `pump_water` Application E2E、8 条 `pump_chemical` technical-only | 全部 `DRAFT/PENDING` | 候选池；本轮不改写 |
-| Golden 0.4 | 本目录以后新增的正式 V2 Golden | 只有标准负责人逐条批准后，才允许三个状态均为 `APPROVED` | 正式业务回归 Oracle |
+| Golden 0.4 | 本目录新增的 18 条正式 V2 Golden | 王玮已逐案批准；三个状态均为 APPROVED | 正式业务回归 Oracle |
 
-待人工复核材料位于 [`pump_water_approval_review/README.md`](../pump_water_approval_review/README.md)，每条记录均通过版本化来源注册表引用原始 0.3 清水候选或对应 replacement candidate，并验证 case_id、schema 版本、来源文件、文件/记录 SHA、baseline SHA 与逐字段 payload。复核材料使用 `golden-case-0.4-review`，状态为 `PENDING_APPROVAL/PENDING/PENDING`；18 条 `review_flags=[]`，尚未人工批准，因此不是正式 Golden。原始 0.3 26 条记录未改。石化 8 条候选仍是技术诊断材料，当前公共应用路由 `NOT_IN_RELEASE_SCOPE`，不得晋升为 Windows V1 Golden。
+审批依据材料保存在 pump_water_approval_review/README.md，18 条原始 review records 仍作为候选来源与审核档案保留；每条正式记录通过版本化来源注册表引用原始 0.3 清水候选或对应 replacement candidate，并验证 case_id、schema 版本、来源文件、文件/记录 SHA、baseline SHA 与逐字段业务 payload。正式目录中的 18 条 golden-case-0.4 均为 APPROVED/APPROVED/APPROVED，review_owner=王玮，review_flags=[]。原始 0.3 26 条记录未改。石化 8 条候选仍是技术诊断材料，当前公共应用路由 NOT_IN_RELEASE_SCOPE，不得晋升为 Windows V1 Golden。
 
-## 正式 0.4 批准条件
+## 正式 0.4 审批记录
 
 正式 schema 为 [`golden_case_0_4.schema.json`](../../schemas/golden_case_0_4.schema.json)，要求：
 
@@ -21,7 +21,7 @@
 - 非空 `approval_basis`、明确 `known_limits`；
 - `provenance` 指向固定的 0.3 `pump_water` Application E2E `case_id`、文件/行和 canonical JSON SHA-256；候选原始输入、期望结果、计算 trace、source sidecar 和 notes 必须逐字段一致；`review_flags` 必须为空，所有 source-evidence 问题都已解决。
 
-只有标准负责人完成逐条业务复核、作出批准决定并将正式 0.4 文件放入本目录后，validator 才会把该记录作为正式 Golden 接受。本轮没有代替标准负责人批准任何案例。
+王玮作为 GB 19762—2025 离心泵标准负责人，已于 2026-09-28T11:03:04+08:00 完成 18 条记录的具名批准。正式文件保留 review/candidate 的已审业务 payload 与来源 provenance；approval basis 和适用限制随每条正式记录保存。Golden named-human approval gate 为 RESOLVED。
 
 ## 标准证据与复验
 
@@ -38,4 +38,4 @@ python tools/validate_phase1_contracts.py `
 
 3 条 replacement candidate 已分别将 Canonical `stable_data_ids` 对齐到 trace T3-09、T3-10、T3-05；原始 0.3 记录没有改写，替代来源由注册表/hash validator 验证。精确表3边界由 generated boundary test 负责，首批人工 Golden 不要求重复穷举端点。该测试覆盖全部 water Canonical 行的 q_min/q_max 等值及两侧 ±1e-6；人工 review package 只保留必要代表场景，不要求新增 Q=5/Q=300 Golden。
 
-当前 P1-G04 保持 `BLOCKED` 直至具名标准批准、固定 SHA 独立复验及 Solution/Product Review 完成；不得据此宣布 Phase 1 PASS 或进入 Phase 2。
+当前 P1-G04 的具名 Golden 批准门禁为 RESOLVED。Phase 1 仍 BLOCKED，待正式批准落库 SHA 的独立复验及 Solution/Product Review；不得据此宣布 Phase 1 PASS 或进入 Phase 2。

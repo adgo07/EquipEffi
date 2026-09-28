@@ -1,8 +1,8 @@
 # pump_water V2 Golden 0.4 人工复核包
 
-状态：`PENDING_APPROVAL`。以下 18 条独立复核记录来自固定技术基线 3101e05 上未改写的 0.3 `pump_water` `APPLICATION_E2E` 候选，其中 15 条继续引用原候选，3 条引用以 R1 基线 `6c672fe48ac3da09b173cb62fd4119daf1c0ab54` 登记的 replacement candidates。它们不是已批准 Golden。
+档案状态：原始 18 条 golden-case-0.4-review 记录保持 PENDING_APPROVAL/PENDING/PENDING，内容不改，作为正式审批文件的来源/复核档案保留。王玮已于 2026-09-28T11:03:04+08:00 批准其对应的 18 条正式 golden-case-0.4；正式文件位于 ../pump_water/，三个状态均为 APPROVED，review_flags 均为空。15 条引用原 0.3 候选，3 条引用以 R1 基线 6c672fe48ac3da09b173cb62fd4119daf1c0ab54 登记的 replacement candidates。
 
-0.1 的 7 条旧案例仍为历史冻结记录，未修改、未升级；0.3 的 26 条（18 清水、8 石化技术诊断）仍为 `DRAFT/PENDING`；正式 0.4 schema 仅接受三个审批状态均为 `APPROVED`、且 `review_flags=[]` 的记录。石化案例不在此包中。
+0.1 的 7 条旧案例仍为历史冻结记录，未修改、未升级；0.3 的 26 条（18 清水、8 石化技术诊断）仍为 DRAFT/PENDING；正式 0.4 目录已新增 18 条三个状态均为 APPROVED 且 review_flags=[] 的清水记录。石化案例不在此包中。
 
 ## 覆盖与限制
 
@@ -37,12 +37,12 @@
 | [`GC-PUMP-V4-WATER-STAGE-CONFLICT.json`](GC-PUMP-V4-WATER-STAGE-CONFLICT.json) / `GC-PUMP-V3-WATER-STAGE-CONFLICT` | 多级清水离心泵；Q=100，H=150，n=2900，η=80，单吸，1 | SUPPORTED / APPLICABLE / INVALID_INPUT；无法判定；grade=—；issues=STAGE_CATEGORY_CONFLICT | GB19762-2025 PDF 表3/公式(1)~(3), pp.9–10；未匹配 Canonical 行（范围外/缺失/未知） | `Qns=—; Hns=—; ns_raw=—; rule=无; η阈值(1/2/3)=不计算; Pout=—` |
 | [`GC-PUMP-V4-WATER-SUCTION-CONFLICT.json`](GC-PUMP-V4-WATER-SUCTION-CONFLICT.json) / `GC-PUMP-V3-WATER-SUCTION-CONFLICT` | 单级单吸清水离心泵；Q=100，H=50，n=2900，η=80，双吸，1 | SUPPORTED / APPLICABLE / INVALID_INPUT；无法判定；grade=—；issues=SUCTION_CATEGORY_CONFLICT | GB19762-2025 PDF 表3/公式(1)~(3), pp.9–10；Canonical refs GB19762-T3-01,GB19762-T3-02,GB19762-T3-03,GB19762-T3-04（本例未匹配规则） | `Qns=—; Hns=—; ns_raw=—; rule=无; η阈值(1/2/3)=不计算; Pout=13.6250` |
 
-## 人工批准操作
+## 已完成的具名批准
 
-1. 标准负责人逐条打开复核 JSON 和引用 PDF（本机通过 `--external-evidence-root` 提供），核对输入、适用类别/表3行、公式、状态和计算 trace，并处理每条 `review_flags`。
-2. 当前 18 条记录均为 `review_flags=[]`。标准负责人仍须逐条独立核对证据并决定批准或退回；三条 replacement 的历史来源关系和新旧字段差异已在注册表中固定。
-3. 批准时填写真实 `review_owner`、带时区 RFC3339 `reviewed_at` / `approved_at`、非空 `approval_basis` 和明确 `known_limits`；正式记录的三个状态全部设为 `APPROVED`、`review_flags=[]`，版本为 `golden-case-0.4`，再放入 `golden/pump_water/`。不改 0.1 和 0.3。
-4. 运行 `python tools/validate_phase1_contracts.py --negative-probe --candidate-jsonl specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl --candidate-jsonl specs/equipment_efficiency/golden/pump_water_replacement_candidates_v0_1.jsonl --approval-review-dir specs/equipment_efficiency/golden/pump_water_approval_review --external-evidence-root <含注册相对路径的标准目录>`。标准 PDF 不进 Git。
-5. 任何输入、trace、标准依据或范围的更改先退回并形成新版本候选，不能在审批过程中直接改成 APPROVED。
+- 批准人：王玮（GB 19762—2025 离心泵标准负责人）。
+- reviewed_at / approved_at：2026-09-28T11:03:04+08:00；使用本次实际具名复核/决定记录时间，不回填更早时间。
+- 正式批准文件：本目录所列 18 个 case ID 对应的 ../pump_water/GC-PUMP-V4-WATER-*.json。每条记录保留原始输入、预期结果、计算 trace、source sidecar、candidate provenance 和空 review_flags；仅写入批准元数据及适用限制。
+- 本目录保留原 review records，供独立复验从 review/candidate provenance 重放来源。不要把它们覆盖成正式记录。
+- 验证命令见 ../pump_water/README.md；正式审批校验必须传入 --external-evidence-root。标准 PDF 不进 Git。
 
-本复核包只准备材料，没有代替标准负责人审批。Phase 1 仍 BLOCKED；不得宣布 PASS 或进入 Phase 2。
+精确表3边界由generated boundary test负责，首批人工Golden不要求重复穷举端点。Golden named-human approval gate 已 RESOLVED；Phase 1 仍 BLOCKED，等待新固定 SHA 独立复验及 Solution/Product Review。
