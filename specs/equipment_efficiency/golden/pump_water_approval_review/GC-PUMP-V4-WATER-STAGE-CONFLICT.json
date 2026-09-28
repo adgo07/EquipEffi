@@ -1,0 +1,170 @@
+{
+  "case_schema_version": "golden-case-0.4-review",
+  "case_id": "GC-PUMP-V4-WATER-STAGE-CONFLICT",
+  "case_status": "PENDING_APPROVAL",
+  "approval_status": "PENDING",
+  "review_status": "PENDING",
+  "device_type": "centrifugal_pump",
+  "profile_id": "pump_water",
+  "numeric_contract_id": "PUMP_NUMERIC_AND_DECISION_CONTRACT_V2",
+  "evaluation_layer": "APPLICATION_E2E",
+  "raw_inputs": {
+    "product_type": "多级清水离心泵",
+    "suction": "单吸",
+    "stages": "1",
+    "QBEP": "100",
+    "HBEP": "150",
+    "speed": "2900",
+    "efficiency": "80",
+    "input_basis": "STANDARD_BEP",
+    "measurement_point": "BEP"
+  },
+  "expected_result": {
+    "support_status": "SUPPORTED",
+    "category_status": "APPLICABLE",
+    "evaluation_status": "INVALID_INPUT",
+    "ui_conclusion": "无法判定",
+    "grade": null,
+    "issue_codes": [
+      "STAGE_CATEGORY_CONFLICT"
+    ]
+  },
+  "expected_calculation_trace": {
+    "execution_basis": "BUSINESS_DRAFT",
+    "derived": {
+      "suction_factor": null,
+      "stage_count": null,
+      "q_for_ns_m3s": null,
+      "h_for_ns_m": null,
+      "ns_raw": null,
+      "eta_b": null,
+      "delta_eta": null,
+      "eta_0": null,
+      "output_power_kw": null
+    },
+    "matched_rule_id": null,
+    "grade_thresholds_internal": []
+  },
+  "source_sidecar": {
+    "source_references": [
+      {
+        "source_id": "GB19762-2025-PDF",
+        "artifact_kind": "EXTERNAL_FILE",
+        "artifact_path": "6 7. GB 19762-2025 离心泵能效限定值及能效等级.pdf",
+        "artifact_sha256": "7F515D8B9D6B4D2AB97FFA7BECB78520BA0579CFBD6D5ECA10C7E7CC77895FEC",
+        "clause_or_table": "表3、公式(1)~(3)",
+        "pages": [
+          "9-10"
+        ],
+        "stable_data_ids": [],
+        "evidence_role": "STANDARD",
+        "note": "Standard identity/hash and relevant printed pages; business interpretation remains subject to independent review."
+      },
+      {
+        "source_id": "pump-canonical-v1",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/resources/standards/pump.json",
+        "artifact_sha256": "5D91F01B1C5F26DC4F364A3156C4E974B159FA1005BD840489C0BC3465C18C0F",
+        "clause_or_table": "清水泵表3及公式(1)~(3)",
+        "pages": [
+          "9-10"
+        ],
+        "stable_data_ids": [],
+        "evidence_role": "CANONICAL_PACK",
+        "note": "Canonical data maps standard rows and coefficients; does not approve this candidate."
+      },
+      {
+        "source_id": "impl-domain-evaluation-evaluators-pump",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/domain/evaluation/evaluators/pump.py",
+        "artifact_sha256": "615F7EC884CF4EB103FFD74804DFE1A5E2616E0B317AD9C457E16213EDB1FFBB",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-domain-evaluation-device_evaluators",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/domain/evaluation/device_evaluators.py",
+        "artifact_sha256": "EB2E49B77A3C5BE39D5D9C190CF36107DCBE2A526BC59877D1F0CE3AC1B17820",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-domain-evaluation-decimal_math",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/domain/evaluation/decimal_math.py",
+        "artifact_sha256": "49A429B1237D373DBEE60BEC6D186243952EB525AD77201953B1DB325EC8EA2C",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-infrastructure-standards-json_repository",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/infrastructure/standards/json_repository.py",
+        "artifact_sha256": "466A6E5154E0040F5529D689E61B3C68B0B0C18CAEC369AA1C59E0D582AB2F4A",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-application-services-evaluation_service",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/application/services/evaluation_service.py",
+        "artifact_sha256": "EEF8731E5A162C81441D83BAC4C493D0F9EA5A0014CEC1E44BF5E82535DEB8ED",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-application-services-input_normalization",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/application/services/input_normalization.py",
+        "artifact_sha256": "E37ACC4039C32BB20747657F0F1FAAFB4FBA497C21201143AD77D98CC7A20134",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-domain-evaluation-device_types",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/domain/evaluation/device_types.py",
+        "artifact_sha256": "792464AB989718607F94A7E99E0590651E1FD66CB1CDD0686FE94815D98D3A3B",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      },
+      {
+        "source_id": "impl-domain-evaluation-evaluator_registry",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/domain/evaluation/evaluator_registry.py",
+        "artifact_sha256": "7811AC937498C75497AC08CFD210BBD3420013CD37A14FBCFFF2BAF386D9B4A4",
+        "clause_or_table": "V2 evaluator, route, normalization, or numeric input implementation",
+        "evidence_role": "CURRENT_IMPLEMENTATION",
+        "note": "Pins the implementation replayed for this candidate; implementation provenance is not standard evidence or business approval."
+      }
+    ]
+  },
+  "notes": [
+    "类别与级数冲突；停止ns计算"
+  ],
+  "review_owner": null,
+  "reviewed_at": null,
+  "approved_at": null,
+  "approval_basis": [],
+  "known_limits": [
+    "本记录来自固定技术基线上的 0.3 DRAFT/PENDING 候选；标准负责人完成独立业务复核前，不是正式 Golden，也不构成批准。",
+    "不改变 Decimal50、ns_raw 分档、GB 19762—2025 公式、Q/H 与 suction/stages 换算、Canonical 常数或 OOS 政策。",
+    "这 18 条候选没有 Q=5、Q=300 等精确流量端点等值案例；Q=4.9 仅覆盖下界外侧。精确端点仍见 0.1 历史冻结材料，未升级为 0.4。"
+  ],
+  "provenance": {
+    "source_candidate_case_id": "GC-PUMP-V3-WATER-STAGE-CONFLICT",
+    "source_candidate_schema_version": "golden-case-0.3",
+    "source_candidate_file": "specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl",
+    "source_candidate_line": 12,
+    "source_candidate_sha256": "8DF65E55DCEDAE4CADD6D3D9D4DB13E52EC56CE28D9F0556BB78772ABE1A7221",
+    "source_baseline_sha": "3101e05abd7f33262a9449c390d61ec00008fb75"
+  }
+}

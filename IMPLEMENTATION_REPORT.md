@@ -95,3 +95,23 @@ The exact commands `python -m compileall -q src tools tests` and `git diff --che
 Initial GitHub Windows runs for `90af7f882aad542bd4f5d992acdb62a91da341de` failed one new evidence-root test because Windows Actions returned the temporary directory using its 8.3 short path while the resolver correctly returned the canonical long path. The test now compares against `evidence_root.resolve()`; no production route or numeric code changed. The follow-up commit and rerun status are reported in the execution handoff.
 
 The R07 file-by-file allowlist and provenance notes are in `PUMP_V2_R07_COMMIT_MANIFEST.md`. Phase 1 remains `BLOCKED` pending fixed-SHA independent review, named Golden approval, and Solution/Product Review. No Golden approval, Phase 1 PASS, or Phase 2 work is authorized. The current pushed SHA is supplied outside this report because a commit cannot include its own final hash.
+
+
+## P1-G04 V2 Golden approval preparation (2026-09-28)
+
+The authorized G04 follow-up starts from the independently accepted R01–R07 fixed SHA `3101e05abd7f33262a9449c390d61ec00008fb75` on the existing isolated branch worktree. It adds the final approved-record schema `golden-case-0.4`, a separate `golden-case-0.4-review` schema for pending preparation, and 18 standalone `pump_water` review records linked 1:1 to the unchanged 0.3 Application E2E candidate records by candidate ID, source line and canonical JSON SHA-256. The validator checks the linked candidate payload, source references and registry hashes; the external evidence root option remains available.
+
+Golden 0.1's seven files and hashes were left untouched and remain historical. The 26 Golden 0.3 candidates remain DRAFT/PENDING. No `pump_chemical` case was approved or included. The standard PDF was not added. No evaluator, numerical algorithm, Canonical value, or OOS policy changed. The review dossier and file-by-file scope are in `specs/equipment_efficiency/golden/pump_water_approval_review/README.md` and `PUMP_V2_G04_APPROVAL_MANIFEST.md`.
+
+| Check | Command | Result |
+|---|---|---|
+| Validator | `python tools/validate_phase1_contracts.py --negative-probe --candidate-jsonl specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl --approval-review-dir specs/equipment_efficiency/golden/pump_water_approval_review --skip-external-evidence` | 7 historical official cases: 0 errors; 26 candidates: 0 errors; 18 review records: 0 errors; three expected negative-probe rejections; external PDF bytes explicitly skipped |
+| Pump/API + approval/schema tests | `python -m unittest tests.unit.test_application_api tests.unit.test_pump_numeric_contract_v2 tests.unit.test_pump_rule_integrity_v2 tests.unit.test_pump_generated_boundaries_v2 tests.unit.test_pump_golden_case_0_3 tests.unit.test_golden_case_schema_0_2 tests.unit.test_golden_case_0_4_approval -q` | 163 passed |
+| Metadata/architecture | `python -m unittest tests.contract.test_device_metadata tests.contract.test_architecture_boundaries -q` | 110 passed |
+| Evaluator matrix | `python -m unittest tests.unit.test_device_evaluator_matrix -q` | 284 passed |
+| Compile and whitespace | `python -m compileall -q src tools tests`; `git diff --check` | PASS |
+| Frozen-file comparison | `git diff --exit-code 3101e05... -- pump evaluator, decimal core, Canonical pump.json, 0.3 candidate pool and seven 0.1 JSON files` | PASS; all protected files byte/content unchanged |
+
+The new Windows CI run is triggered by the resulting pushed fixed SHA; its outcome is reported in the execution handoff. The whole legacy unittest suite was not rerun for this G04-only change. The R07 report records the known 921-test baseline of 914 pass, 3 V4 motor failures, 1 wheel release-audit error and 3 skips.
+
+The 18 source candidates do not contain exact Q=5 or Q=300 equality cases. Q=4.9 is the lower-bound outside case; the 0.1 endpoint records remain immutable historical evidence. This limitation is explicit for the named standard owner's decision. No case was approved, Phase 1 PASS was not declared, and Phase 2 was not entered.

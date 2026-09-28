@@ -44,6 +44,7 @@ jobs:
           python tools/validate_phase1_contracts.py
           --negative-probe
           --candidate-jsonl specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl
+          --approval-review-dir specs/equipment_efficiency/golden/pump_water_approval_review
           --skip-external-evidence
 
       - name: Pump route, numeric, boundary, and candidate tests
@@ -54,7 +55,8 @@ jobs:
           tests.unit.test_pump_rule_integrity_v2
           tests.unit.test_pump_generated_boundaries_v2
           tests.unit.test_pump_golden_case_0_3
-          tests.unit.test_golden_case_schema_0_2 -q
+          tests.unit.test_golden_case_schema_0_2
+          tests.unit.test_golden_case_0_4_approval -q
 
       - name: Metadata and architecture contracts
         run: >-

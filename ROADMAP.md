@@ -6,9 +6,9 @@
 - **路线原文:** [docs/28_EquipEffi 后续开发总体路线 V2.2.md](docs/28_EquipEffi%20后续开发总体路线%20V2.2.md)
 - **Current Phase:** Phase 1
 - **State:** `BLOCKED`
-- **Next State:** PENDING_FIXED_SHA_INDEPENDENT_REVIEW
+- **Next State:** PENDING_GOLDEN_OWNER_REVIEW
 - **Automatic continuation:** `DISABLED`
-- **Allowed Work:** The authorized R07 follow-up is limited to the isolated pump branch: exact public pump routing, portable external evidence, exact historical-hash registration, direct tests and Windows CI. After pushing and checking its fixed SHA, wait for the original independent review. Golden approval and Solution/Product Review remain open; Phase 2 is disabled.
+- **Allowed Work:** P1-G04 only: close the V2 Golden approval schema, validate candidate provenance/hashes, prepare 18 `pump_water` review records, update governance, and run Windows CI. Do not approve cases, declare Phase 1 PASS, or begin Phase 2.
 
 ## 治理切换
 
@@ -37,9 +37,9 @@ ADR/
 
 Phase 0A 的治理切换、不可变起始 tag、真实基线、资产审计、第三方 55 项入库、风险重新分级、17 Profile 注册、Windows V1 Scope 草案、Golden Candidate 盘点和首个纵向样板选择已完成。2026-09-22 验收曾因交付物未提交、证据字段不完整、QA 表结构不统一和产品需求/商业价值证据缺失而暂时阻塞；治理补正和复验已完成，未修改业务代码。
 
-R01–R06 的 fixed head `72e8e490d2da56ec8064ad799750fb7b83425a57` 经独立验收后发现 R02 路由和 R04 外部证据定位仍有缺口。用户另行授权的 R07 修订在隔离分支 worktree 中实施；当前只允许检查允许清单、验证并推送更新后的固定 SHA，再等待原独立验收。Golden 具名审批与 Solution/Product Review 仍是后续门禁。
+R01–R07 的技术独立复验固定 SHA 为 `3101e05abd7f33262a9449c390d61ec00008fb75`。当前 P1-G04 仅收口 V2 Golden 批准 schema、0.3 来源/hash 校验和 18 条清水泵待审包。原 0.1 七例历史冻结；0.3 的 26 条保持 `DRAFT/PENDING`；本轮不生成已批准 0.4 记录。标准负责人仍需逐条人工复核和决定。
 
-> **先由原独立验收会话复验固定 SHA，再处理 Golden 具名审批和 Solution/Product Review；不得自动进入 Phase 2。**
+> **提交后核查新固定 SHA 的 Windows CI，然后停止等待人工标准批准与独立复验；不得宣布 Phase 1 PASS 或进入 Phase 2。**
 
 Phase 1 只允许建立业务规范 V0.1、Canonical Schema、Product/Profile Schema、Import Contract、Golden Case Schema、Support Status 和 `pump_water` 样板的标准映射；不得批量迁移 17 个 Profile。
 
@@ -51,11 +51,11 @@ Phase 1 按 `docs/29_Phase 1 业务规范与数据契约.md` 的既定顺序执�
 P1-G01 → P1-G02 → P1-G03 → P1-G04 → P1-G05 → P1-G06
 ```
 
-`P1-G01` 已形成业务规范草案，`P1-G02` 已形成契约 Schema，`P1-G03` 已形成 `pump_water` / GB 19762-2025 映射，`P1-G04` 已形成并通过增强验证的 7 个首批 Golden Case，但正式批准字段仍待具名标准复核负责人，`P1-G05` 已对四项 Phase 1 P0 风险完成证据复核且未执行 Hotfix，`P1-G06` 已形成 Python/版本语义/Windows V1 Scope 评审包。验收 HEAD `df9f53e468d49ac7d9c6419fe89fb99c25d9f30c` 的 CPython 3.12.14 x64 门禁已复验；王玮（总经理）已于 2026-09-23 记录 Windows V1 产品决策。当前状态为 `BLOCKED`，唯一阻塞是 Golden Case 批准授权缺失；不得声明 Phase 1 PASS 或启动 Phase 2。已知 Legacy Regression 失败必须原样保留并显式记录。
+`P1-G01` 至 `P1-G03`、`P1-G05`、`P1-G06` 的既有交付保持不变。`P1-G04` 的层次为：Golden 0.1 的 7 例只作历史冻结且不批准；0.3 的 26 例继续为 `DRAFT/PENDING`（18 条清水 Application E2E、8 条石化 technical-only）；本轮新增正式已批准记录 schema `golden-case-0.4` 与单独的待审 schema/复核包 `golden-case-0.4-review`。待审包覆盖全部 18 条清水候选，未含石化候选。技术基础为固定 SHA `3101e05abd7f33262a9449c390d61ec00008fb75`；当前仍 `BLOCKED`，须由标准负责人逐条决定，随后独立验收和 Solution/Product Review；不得声明 Phase 1 PASS 或启动 Phase 2。已知 Legacy Regression 失败继续保留。
 
 ## Phase 1 Review Boundary
 
-当前修订提交后，唯一合法下一步是由原独立验收会话按固定 SHA 复验；技术复验后仍需 Golden 具名审批和 Solution/Product Review。
+本轮提交并取得 Windows CI 后，停止等待具名标准负责人逐条审批及原独立会话复验；Golden 批准前不得推进 Phase 1 状态或 Phase 2。
 
 ## Phase 0 Exit Gate
 
@@ -70,7 +70,7 @@ P1-G01 → P1-G02 → P1-G03 → P1-G04 → P1-G05 → P1-G06
 | Vertical Slice | PASS | `pump_water` 已与 3 个替代候选比较并记录风险/必须证明项 |
 | Phase 0B | N/A | 没有满足条件的 Hotfix 被批准；无额外重构混入 |
 
-因此 Phase 0 保持 `PHASE_0_PASS`，Phase 1 当前状态为 `BLOCKED`。Windows V1 的产品决策已记录，但 7 个 Golden Case 尚未完成正式批准，不授权进入 Phase 2。
+因此 Phase 0 保持 `PHASE_0_PASS`，Phase 1 当前状态为 `BLOCKED`。Windows V1 产品决策已记录；0.1 的 7 个历史案例不会晋升，正式 0.4 仍待具名标准负责人审批，不授权进入 Phase 2。
 
 ## Phase 0 保护边界
 

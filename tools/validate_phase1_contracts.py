@@ -13,6 +13,7 @@ import hashlib
 import json
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -20,12 +21,18 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 
 CASE_DIR = Path("specs/equipment_efficiency/golden/pump_water")
+APPROVAL_REVIEW_DIR = Path("specs/equipment_efficiency/golden/pump_water_approval_review")
+PUMP_CANDIDATE_JSONL = Path("specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl")
+PUMP_CANDIDATE_BASELINE_SHA = "3101e05abd7f33262a9449c390d61ec00008fb75"
 EVIDENCE_REGISTRY_PATH = Path("specs/equipment_efficiency/evidence_registry.json")
 SCHEMA_BY_VERSION = {
     "golden-case-0.1": Path("specs/equipment_efficiency/schemas/golden_case.schema.json"),
     "golden-case-0.2": Path("specs/equipment_efficiency/schemas/golden_case_0_2.schema.json"),
     "golden-case-0.3": Path("specs/equipment_efficiency/schemas/golden_case_0_3.schema.json"),
+    "golden-case-0.4": Path("specs/equipment_efficiency/schemas/golden_case_0_4.schema.json"),
+    "golden-case-0.4-review": Path("specs/equipment_efficiency/schemas/golden_case_0_4_review.schema.json"),
 }
+LINEAGE_VERSIONS = {"golden-case-0.3", "golden-case-0.4", "golden-case-0.4-review"}
 REPOSITORY_TEXT_SUFFIXES = {
     ".cfg",
     ".csv",
@@ -157,15 +164,15 @@ def _source_errors(
     roles = {reference.get("evidence_role") for reference in references}
     if "STANDARD" not in roles:
         errors.append("source references must contain a STANDARD evidence reference")
-    if version == "golden-case-0.3" and "CURRENT_IMPLEMENTATION" not in roles:
-        errors.append("v0.3 candidates must identify the current implementation used for replay")
+    if version in LINEAGE_VERSIONS and "CURRENT_IMPLEMENTATION" not in roles:
+        errors.append("versioned pump cases must identify the current implementation used for replay")
 
     for index, reference in enumerate(references):
         label = f"source_reference[{index}] {reference.get('source_id', '<unknown>')}"
         source_id = str(reference.get("source_id", ""))
         if reference.get("artifact_kind") == "EXTERNAL_FILE":
             registered_source = _external_source_record(registry, source_id)
-            if version == "golden-case-0.3" and registered_source is None:
+            if version in LINEAGE_VERSIONS and registered_source is None:
                 if not (repo_root / EVIDENCE_REGISTRY_PATH).is_file():
                     errors.append(f"{label}: evidence registry is missing {EVIDENCE_REGISTRY_PATH}")
                 else:
@@ -179,7 +186,7 @@ def _source_errors(
                 if recorded_hash != expected_registry_hash:
                     errors.append(f"{label}: artifact_sha256 differs from the external evidence registry")
                 recorded_path = Path(str(reference.get("artifact_path", "")))
-                if version == "golden-case-0.3" and (
+                if version in LINEAGE_VERSIONS and (
                     recorded_path.is_absolute()
                     or recorded_path.as_posix() != str(registered_source.get("relative_path", ""))
                 ):
@@ -226,6 +233,158 @@ def _schema_errors(schema: dict[str, Any], case: dict[str, Any]) -> list[str]:
     return [error.message for error in sorted(validator.iter_errors(case), key=lambda item: list(item.path))]
 
 
+def _canonical_record_sha256(record: dict[str, Any]) -> str:
+    canonical = json.dumps(record, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest().upper()
+
+
+def _candidate_index(repo_root: Path) -> tuple[dict[str, tuple[int, dict[str, Any]]], list[str]]:
+    path = repo_root / PUMP_CANDIDATE_JSONL
+    records: dict[str, tuple[int, dict[str, Any]]] = {}
+    errors: list[str] = []
+    if not path.is_file():
+        return records, [f"candidate provenance source is missing: {PUMP_CANDIDATE_JSONL}"]
+    with path.open("r", encoding="utf-8") as stream:
+        for line_number, line in enumerate(stream, start=1):
+            if not line.strip():
+                continue
+            try:
+                item = json.loads(line)
+            except json.JSONDecodeError as exc:
+                errors.append(f"{PUMP_CANDIDATE_JSONL}:{line_number}: invalid JSON: {exc}")
+                continue
+            if not isinstance(item, dict) or not isinstance(item.get("case_id"), str):
+                errors.append(f"{PUMP_CANDIDATE_JSONL}:{line_number}: candidate must be an object with case_id")
+                continue
+            case_id = item["case_id"]
+            if case_id in records:
+                errors.append(f"{PUMP_CANDIDATE_JSONL}:{line_number}: duplicate candidate case_id {case_id}")
+                continue
+            records[case_id] = (line_number, item)
+    return records, errors
+
+
+def _provenance_errors(repo_root: Path, case: dict[str, Any], version: str | None) -> list[str]:
+    if version not in {"golden-case-0.4", "golden-case-0.4-review"}:
+        return []
+    errors: list[str] = []
+    provenance = case.get("provenance")
+    if not isinstance(provenance, dict):
+        return ["provenance must identify an unchanged 0.3 pump_water candidate"]
+    candidate_id = provenance.get("source_candidate_case_id")
+    records, index_errors = _candidate_index(repo_root)
+    errors.extend(index_errors)
+    record = records.get(candidate_id)
+    if record is None:
+        errors.append(f"provenance candidate does not exist: {candidate_id!r}")
+        return errors
+    actual_line, candidate = record
+    if provenance.get("source_candidate_line") != actual_line:
+        errors.append(f"provenance source_candidate_line {provenance.get('source_candidate_line')!r} != {actual_line}")
+    actual_hash = _canonical_record_sha256(candidate)
+    if str(provenance.get("source_candidate_sha256", "")).upper() != actual_hash:
+        errors.append(f"provenance candidate SHA-256 {actual_hash} != recorded {provenance.get('source_candidate_sha256')}")
+    if provenance.get("source_baseline_sha") != PUMP_CANDIDATE_BASELINE_SHA:
+        errors.append("provenance source_baseline_sha is not the fixed technical acceptance SHA")
+    if candidate.get("case_schema_version") != "golden-case-0.3":
+        errors.append("provenance source is not golden-case-0.3")
+    if candidate.get("profile_id") != "pump_water" or candidate.get("evaluation_layer") != "APPLICATION_E2E":
+        errors.append("formal V2 Golden provenance must resolve to a pump_water APPLICATION_E2E candidate")
+    if candidate.get("case_status") != "DRAFT" or candidate.get("approval_status") != "PENDING":
+        errors.append("source 0.3 candidate is not retained as DRAFT/PENDING")
+    expected_id = "GC-PUMP-V4-WATER-" + str(candidate_id).removeprefix("GC-PUMP-V3-WATER-")
+    if case.get("case_id") != expected_id:
+        errors.append(f"case_id must be {expected_id!r} for the linked source candidate")
+    # Every source payload field must be copied without changing inputs, expected results,
+    # trace, source sidecar, notes, or other candidate evidence.
+    for key, value in candidate.items():
+        if key in {"case_schema_version", "case_id", "case_status", "approval_status", "review_status"}:
+            continue
+        if case.get(key) != value:
+            errors.append(f"candidate payload field {key!r} differs from its linked 0.3 source")
+    return errors
+
+
+def _approval_semantic_errors(case: dict[str, Any], version: str | None) -> list[str]:
+    if version != "golden-case-0.4":
+        return []
+    errors: list[str] = []
+    owner = str(case.get("review_owner", "")).strip()
+    if owner.casefold() in {"required_input", "tbd", "pending", "unknown", "solution review designated standards owner (required_input)"}:
+        errors.append("review_owner must be a real named human, not a placeholder")
+    try:
+        reviewed = datetime.fromisoformat(str(case.get("reviewed_at", "")).replace("Z", "+00:00"))
+        approved = datetime.fromisoformat(str(case.get("approved_at", "")).replace("Z", "+00:00"))
+        if reviewed.tzinfo is None or approved.tzinfo is None:
+            errors.append("reviewed_at and approved_at must include a timezone")
+        elif approved < reviewed:
+            errors.append("approved_at must be equal to or later than reviewed_at")
+    except ValueError:
+        # JSON Schema format validation reports malformed/missing timestamps.
+        pass
+    return errors
+
+
+def _validate_approval_review_packages(
+    repo_root: Path,
+    review_dir: Path = APPROVAL_REVIEW_DIR,
+    *,
+    external_evidence_root: Path | None = None,
+    skip_external_evidence: bool = False,
+) -> tuple[int, int, list[str], list[str], int]:
+    resolved = review_dir if review_dir.is_absolute() else repo_root / review_dir
+    schemas = {version: _load_json(repo_root / path) for version, path in SCHEMA_BY_VERSION.items()}
+    paths = sorted(resolved.glob("*.json")) if resolved.is_dir() else []
+    errors: list[str] = []
+    historical: list[str] = []
+    external_skipped = 0
+    for error in ([] if resolved.is_dir() else [f"approval review directory is missing: {resolved}"]):
+        errors.append(error)
+    observed_candidates: list[str] = []
+    for case_path in paths:
+        case = _load_json(case_path)
+        version = case.get("case_schema_version")
+        if version != "golden-case-0.4-review":
+            errors.append(f"{case_path}: approval review directory only accepts golden-case-0.4-review records")
+            continue
+        schema = schemas.get(version)
+        if schema is None:
+            errors.append(f"{case_path}: unsupported case_schema_version: {version!r}")
+            continue
+        for message in _schema_errors(schema, case):
+            errors.append(f"{case_path}: schema: {message}")
+        provenance = case.get("provenance", {})
+        if isinstance(provenance, dict) and isinstance(provenance.get("source_candidate_case_id"), str):
+            observed_candidates.append(provenance["source_candidate_case_id"])
+        for message in _provenance_errors(repo_root, case, version):
+            errors.append(f"{case_path}: provenance: {message}")
+        source_errors, source_historical, skipped = _source_errors(
+            repo_root, case, version, external_evidence_root=external_evidence_root,
+            skip_external_evidence=skip_external_evidence,
+        )
+        historical.extend(f"{case_path}: {message}" for message in source_historical)
+        external_skipped += skipped
+        for message in source_errors:
+            errors.append(f"{case_path}: evidence: {message}")
+    candidates, candidate_errors = _candidate_index(repo_root)
+    errors.extend(candidate_errors)
+    expected_candidates = {
+        case_id for case_id, (_, candidate) in candidates.items()
+        if candidate.get("profile_id") == "pump_water" and candidate.get("evaluation_layer") == "APPLICATION_E2E"
+    }
+    if len(expected_candidates) != 18:
+        errors.append(f"expected the frozen 18 water Application E2E source candidates, found {len(expected_candidates)}")
+    if len(observed_candidates) != len(set(observed_candidates)):
+        errors.append("approval review package contains duplicate source candidate references")
+    if set(observed_candidates) != expected_candidates:
+        missing = sorted(expected_candidates - set(observed_candidates))
+        extra = sorted(set(observed_candidates) - expected_candidates)
+        errors.append(f"approval review package must cover exactly the 18 pump_water E2E candidates; missing={missing}; extra={extra}")
+    if not paths:
+        errors.append(f"no approval review package files found under {resolved}")
+    return len(paths), len(errors), errors, historical, external_skipped
+
+
 def _validate_cases(
     repo_root: Path,
     *,
@@ -244,6 +403,10 @@ def _validate_cases(
     for case_path in case_paths:
         case = _load_json(case_path)
         version = case.get("case_schema_version")
+        if version in {"golden-case-0.3", "golden-case-0.4-review"}:
+            errors.append(f"{case_path}: {version} is a candidate/review schema and cannot be loaded as an official Golden")
+            schema_error_count += 1
+            continue
         schema = schemas.get(version)
         if schema is None:
             errors.append(f"{case_path}: unsupported case_schema_version: {version!r}")
@@ -259,12 +422,18 @@ def _validate_cases(
         )
         historical.extend(f"{case_path}: {message}" for message in source_historical)
         external_skipped += skipped
+        provenance_errors = _provenance_errors(repo_root, case, version)
+        semantic_errors = _approval_semantic_errors(case, version)
         schema_error_count += len(schema_errors)
-        source_error_count += len(source_errors)
+        source_error_count += len(source_errors) + len(provenance_errors) + len(semantic_errors)
         for message in schema_errors:
             errors.append(f"{case_path}: schema: {message}")
         for message in source_errors:
             errors.append(f"{case_path}: evidence: {message}")
+        for message in provenance_errors:
+            errors.append(f"{case_path}: provenance: {message}")
+        for message in semantic_errors:
+            errors.append(f"{case_path}: approval: {message}")
 
     if not case_paths:
         errors.append(f"no Golden Cases found under {case_dir}")
@@ -302,6 +471,10 @@ def _validate_candidate_jsonl(
                 schema_error_count += 1
                 continue
             version = case.get("case_schema_version") if isinstance(case, dict) else None
+            if version in {"golden-case-0.4", "golden-case-0.4-review"}:
+                errors.append(f"{resolved}:{line_number}: {version} must be validated from its official/review directory, not a candidate JSONL")
+                schema_error_count += 1
+                continue
             schema = schemas.get(version)
             if schema is None:
                 errors.append(f"{resolved}:{line_number}: unsupported case_schema_version: {version!r}")
@@ -364,6 +537,7 @@ def main() -> int:
     parser.add_argument("--repo-root", type=Path, default=Path.cwd())
     parser.add_argument("--negative-probe", action="store_true", help="also verify the three known invalid counterexamples")
     parser.add_argument("--candidate-jsonl", type=Path, help="optionally validate a DRAFT candidate JSONL using each explicit schema version")
+    parser.add_argument("--approval-review-dir", type=Path, help="validate pending 0.4 pump_water approval review packages and their 0.3 source provenance")
     external_group = parser.add_mutually_exclusive_group()
     external_group.add_argument(
         "--external-evidence-root",
@@ -419,6 +593,22 @@ def main() -> int:
         if args.skip_external_evidence:
             print(f"candidate_external_evidence_not_checked={candidate_external_skipped}")
         error_count += candidate_errors
+
+    if args.approval_review_dir is not None:
+        review_count, review_errors, review_messages, review_historical, review_external_skipped = _validate_approval_review_packages(
+            repo_root,
+            args.approval_review_dir,
+            external_evidence_root=external_evidence_root,
+            skip_external_evidence=args.skip_external_evidence,
+        )
+        print(f"approval_review_cases={review_count} approval_review_errors={review_errors}")
+        for error in review_messages:
+            print(f"APPROVAL_REVIEW_ERROR {error}")
+        for message in review_historical:
+            print(f"APPROVAL_REVIEW_HISTORICAL {message}")
+        if args.skip_external_evidence:
+            print(f"approval_review_external_evidence_not_checked={review_external_skipped}")
+        error_count += review_errors
 
     return 1 if error_count else 0
 
