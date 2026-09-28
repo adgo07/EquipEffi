@@ -2,17 +2,18 @@
 
 ## 权威状态
 
-- **Current Roadmap:** EquipEffi V2.2
-- **路线原文:** [docs/28_EquipEffi 后续开发总体路线 V2.2.md](docs/28_EquipEffi%20后续开发总体路线%20V2.2.md)
+- **Current Roadmap:** EquipEffi V2.3
+- **路线原文:** [docs/28_EquipEffi 后续开发总体路线 V2.3.md](docs/28_EquipEffi%20后续开发总体路线%20V2.3.md)
+- **V2.2 继承基线:** [docs/28_EquipEffi 后续开发总体路线 V2.2.md](docs/28_EquipEffi%20后续开发总体路线%20V2.2.md)
 - **Current Phase:** Phase 1 (complete)
 - **State:** `PHASE_1_PASS`
 - **Next State:** `PHASE_2_READY`
 - **Automatic continuation:** `DISABLED`
-- **Allowed Work:** The Phase 1 exit gate is satisfied. Phase 2 is READY but has not started; begin Phase 2 only after explicit user authorization. Automatic continuation remains DISABLED. This administrative closeout does not merge PR #1.
+- **Allowed Work:** Roadmap V2.3 alignment only. Phase 2 is READY but has not started; begin Phase 2 only after explicit user authorization. Automatic continuation remains DISABLED.
 
 ## 治理切换
 
-V2.2 已取代旧 v15 / T04.xx 路线。旧路线、旧 HANDOFF、编号执行清单和历史测试数字仍保留事实价值，但统一标记为：
+V2.3 在 V2.2 阶段骨架不变的前提下完成路线校准，并成为当前正式总体路线。V2.2 保留为 V2.3 的继承基线；旧 v15 / T04.xx、旧 HANDOFF、编号执行清单和历史测试数字仍保留事实价值，但统一标记为：
 
 ```text
 HISTORICAL
@@ -30,8 +31,16 @@ BASELINE.md
 ASSET_AUDIT.md
 QA_BACKLOG.md
 V1_SCOPE.md
+PLATFORM_BASELINE.md
+platform-lock.json
 ADR/
 ```
+
+## Roadmap V2.3 Alignment（2026-09-28）
+
+V2.3 不重新编号或改变 Phase 0～10。它只把已经发生的真实进展反馈回总体路线：Phase 0 PASS、Phase 1 PASS、QZC-A01 COMPLETE、Phase 2 READY/NOT_STARTED；用 Phase 1 已验证的多维状态模型替代旧单一 Support Status；明确 Phase 1 `pump_water` 是业务真相样板、Phase 3 `pump_water` 是工程/生命周期纵向样板；正式 Excel 仍在 Phase 8，但 Phase 2～4 必须保持 contract-driven 输入/结果接口。
+
+Qingzhou-contracts 继续锁定 `0cd74d783fa23add6dc881b408a8c8ba8503f8e8`，Architecture `V2.1 FROZEN`；其余公共 Contract 仍为 `DRAFT / NOT YET RELEASED`。中央 DRAFT 只作为兼容方向和设计约束，不授权 EquipEffi 一次性完整实现。升级仍须显式更新 `PLATFORM_BASELINE.md` 与 `platform-lock.json`。
 
 ## Phase 0 结论
 
@@ -41,7 +50,7 @@ R01–R07 的技术独立复验固定 SHA 为 3101e05abd7f33262a9449c390d61ec000
 
 > **P1-SR01 = PASS；Solution/Product Review = RESOLVED。Phase 1 Exit Gate 已满足并进入 PHASE_1_PASS；Phase 2 状态为 PHASE_2_READY，但不会自动开始，必须等待用户明确授权。**
 
-Phase 1 只允许建立业务规范 V0.1、Canonical Schema、Product/Profile Schema、Import Contract、Golden Case Schema、Support Status 和 `pump_water` 样板的标准映射；不得批量迁移 17 个 Profile。
+Phase 1 建立并验证了业务规范 V0.1、Canonical Schema、Product/Profile Schema、Import Contract、Golden Case Schema、多维状态模型和 `pump_water` 样板标准映射；未批量迁移 17 个 Profile。
 
 ## Phase 1 当前执行
 
@@ -55,7 +64,7 @@ P1-G01 至 P1-G03、P1-G05、P1-G06 的既有交付保持不变。P1-G04 明确�
 
 ## Phase 1 Review Boundary
 
-P1-SR01 状态模型契约对齐已通过 Solution/Product Review。FIXED_SHA_INDEPENDENT_REVIEW、GOLDEN_CASE_NAMED_HUMAN_APPROVAL、SOLUTION_PRODUCT_REVIEW 均为 RESOLVED；Phase 1 Exit Gate 已满足。当前状态为 PHASE_1_PASS，下一状态为 PHASE_2_READY。Phase 2 不会自动开始，须先取得用户明确授权；不因本次行政收口合并 PR。
+P1-SR01 状态模型契约对齐已通过 Solution/Product Review。FIXED_SHA_INDEPENDENT_REVIEW、GOLDEN_CASE_NAMED_HUMAN_APPROVAL、SOLUTION_PRODUCT_REVIEW 均为 RESOLVED；Phase 1 Exit Gate 已满足。当前状态为 PHASE_1_PASS，下一状态为 PHASE_2_READY。Phase 2 不会自动开始，须先取得用户明确授权。
 
 ## Phase 2 设计输入（尚未授权实施）
 
@@ -64,7 +73,9 @@ Product/Profile Contract 为字段类型、单位、枚举和约束真相源；
 Import Contract 只负责外部字段映射；
 Excel 不复制评价算法；
 批量行统一进入 EvaluationService；
-结果长期按 stable result field_id 回写。
+结果长期按 stable result_field_id 回写。
+
+Phase 2 只建立最小正式工程底座：Python 3.12、PySide6 薄 AppShell、Design Token、Repository Protocol、三库职责、Migration 基础、Logging 和有限工程结构清理。不得在 Phase 2 批量迁移 17 Profile、批量重写 evaluator、实现完整 Excel、完整产品 Shell、移动端、Suite，或一次性实现全部中央 DRAFT Contract。
 
 以上仅作为 Phase 2 设计输入；Phase 2 READY 不代表自动开始或授权开发 Excel 功能，进入 Phase 2 前仍须取得用户明确授权。
 
@@ -72,12 +83,12 @@ Excel 不复制评价算法；
 
 | Gate | result | evidence |
 |---|---|---|
-| Governance | PASS | V2.2 权威入口、旧路线失去调度权、Phase 0 状态和可复现治理提交 |
+| Governance | PASS | V2.3 权威入口、V2.2 作为继承基线、旧路线失去调度权、Phase 0 状态和可复现治理提交 |
 | Baseline | PASS | `BASELINE.md`、`pre-v2-rebaseline`、真实 unittest/compile/package/smoke/performance |
 | Assets | PASS | `ASSET_AUDIT.md`；运行链、双实现、空壳和 release surface 已登记 |
 | QA | PASS（开放项已入库） | `QA_BACKLOG.md`；第三方 55 项、历史路线和当前失败均有 ID |
 | Metadata | PASS | Canonical / Product Schema / Import Contract / Ruleset / UI Metadata 边界 |
-| Scope | PASS（Phase 1 冻结前为草案） | `V1_SCOPE.md`；17 Profile、Support Status 草案，以及用户需求/商业价值的显式证据状态 |
+| Scope | PASS | `V1_SCOPE.md`；17 Profile、已批准多维状态模型，以及用户需求/商业价值的显式证据状态 |
 | Vertical Slice | PASS | `pump_water` 已与 3 个替代候选比较并记录风险/必须证明项 |
 | Phase 0B | N/A | 没有满足条件的 Hotfix 被批准；无额外重构混入 |
 
