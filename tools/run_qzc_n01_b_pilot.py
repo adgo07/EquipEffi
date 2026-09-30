@@ -55,6 +55,7 @@ def main() -> None:
             "status": "EXPERIMENT_SEED_ONLY",
         },
         "cases": [],
+        "vectors": [],
     }
     rows = water["water"]["ci"]
     for case in cases:
@@ -97,9 +98,18 @@ def main() -> None:
             "ns_seed_pass": abs(p50["current_ns"] - p60["current_ns"]) <= tolerance_limit(p60["current_ns"], "T-NL-COMPOSITE"),
         }
         evidence["cases"].append(entry)
+        evidence["vectors"].append({
+            "vector_id": f"N01B-{case['id']}",
+            "category": "Exact" if case["id"] == "EXACT-NS" else "Composite",
+            "inputs": case,
+            "profile": "pump_water",
+            "operation": "specific_speed + clean_thresholds" if p50.get("thresholds") else "specific_speed",
+            "reference": {"precision50": p50, "precision60": p60},
+            "acceptance_mode": "EXACT" if case["id"] == "EXACT-NS" else "NUMERICAL_TOLERANCE_WITH_BUSINESS_EXACT",
+            "tolerance_purpose": None if case["id"] == "EXACT-NS" else "cross-implementation numerical conformance only",
+            "business_output": {"grade": p50.get("grade"), "rule_id": p50.get("rule_id")},
+        })
 
-    with localcontext(make_context(50)):
-        ln_q = Decimal("100").ln()
     eta_coeff = chemical["chemical"]["eta_b"]["单级"]
     evidence["chemical_polynomial"] = {}
     for precision in PRECISIONS:
@@ -114,16 +124,40 @@ def main() -> None:
             "seed_limit": tolerance_limit(current, "T-NL-COMPOSITE"),
             "seed_pass": abs(current - horner) <= tolerance_limit(current, "T-NL-COMPOSITE"),
         }
+    evidence["vectors"].append({
+        "vector_id": "N01B-CHEM-ETA-B-ORDER",
+        "category": "Operation-order sensitivity",
+        "inputs": {"QBEP": "100", "pump_kind": "单级"},
+        "profile": "pump_chemical",
+        "operation": "ln(Q) + eta_b polynomial current tree vs Horner",
+        "reference": evidence["chemical_polynomial"]["50"],
+        "acceptance_mode": "NUMERICAL_TOLERANCE_WITH_BUSINESS_EXACT",
+        "tolerance_purpose": "cross-implementation numerical conformance only",
+        "business_output": {"must_not_change_rule_or_grade": True},
+    })
 
     exact_threshold = Decimal("80.12345678901234567890123456789012345678901234567")
     delta = Decimal("1E-48")
     thresholds = [exact_threshold, Decimal("70"), Decimal("60")]
-    evidence["business_boundary_exact"] = {
-        "T-delta": grade_three(exact_threshold - delta, thresholds, ComparisonDirection.GREATER_OR_EQUAL)[0].value,
-        "T": grade_three(exact_threshold, thresholds, ComparisonDirection.GREATER_OR_EQUAL)[0].value,
-        "T+delta": grade_three(exact_threshold + delta, thresholds, ComparisonDirection.GREATER_OR_EQUAL)[0].value,
-        "epsilon_used": False,
-    }
+    with localcontext(make_context(50)):
+        boundary = {
+            "T-delta": grade_three(exact_threshold - delta, thresholds, ComparisonDirection.GREATER_OR_EQUAL)[0].value,
+            "T": grade_three(exact_threshold, thresholds, ComparisonDirection.GREATER_OR_EQUAL)[0].value,
+            "T+delta": grade_three(exact_threshold + delta, thresholds, ComparisonDirection.GREATER_OR_EQUAL)[0].value,
+            "epsilon_used": False,
+        }
+    evidence["business_boundary_exact"] = boundary
+    evidence["vectors"].append({
+        "vector_id": "N01B-BOUNDARY-TDELTA",
+        "category": "Business boundary",
+        "inputs": {"threshold": str(exact_threshold), "delta": str(delta)},
+        "profile": "pump_water",
+        "operation": "grade comparison T-delta / T / T+delta",
+        "reference": boundary,
+        "acceptance_mode": "EXACT_BUSINESS_OUTPUT",
+        "tolerance_purpose": "none; numerical tolerance is forbidden for business comparison",
+        "business_output": boundary,
+    })
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out = OUT_DIR / "execution_evidence.json"
