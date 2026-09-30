@@ -1,16 +1,16 @@
 # QZC-N01-B — EquipEffi Transcendental Numeric Pilot Execution Report
 
-状态：**EXECUTION COMPLETE / READY FOR INDEPENDENT ACCEPTANCE**  
-Pilot：`QZC-N01-B`  
-代表 Profile：GB 19762—2025 离心泵  
-执行分支：`qzc-n01-b/transcendental-execution`  
-Execution tested head：`96db30a4c63730c8693f0fc1fbebb5301e1809b7`  
-Execution report/vector-only follow-up：报告提交后 head 高于 tested head；正式独立验收应以 PR 最终固定 SHA 与实际 diff 为准。  
-Design baseline：`b336fd313ea8e3ee1c688786c05d126d76dc2699`  
-Execution start master：`77acc7d31a687dbe43c878b809109afe2bd13ae0`  
-Golden：`golden-case-0.4`（Approved pump_water Golden 保持不变）  
-Current local numeric profile：`EQUIPEFFI_PUMP_DECIMAL50_V2`  
-Reference procedure candidate：`PUMP-RP-0.1`  
+状态：**EXECUTION COMPLETE / READY FOR INDEPENDENT ACCEPTANCE**
+Pilot：`QZC-N01-B`
+代表 Profile：GB 19762—2025 离心泵
+执行分支：`qzc-n01-b/transcendental-execution`
+Execution tested head：`96db30a4c63730c8693f0fc1fbebb5301e1809b7`
+Execution report/vector-only follow-up：报告提交后 head 高于 tested head；正式独立验收应以 PR 最终固定 SHA 与实际 diff 为准。
+Design baseline：`b336fd313ea8e3ee1c688786c05d126d76dc2699`
+Execution start master：`77acc7d31a687dbe43c878b809109afe2bd13ae0`
+Golden：`golden-case-0.4`（Approved pump_water Golden 保持不变）
+Current local numeric profile：`EQUIPEFFI_PUMP_DECIMAL50_V2`
+Reference procedure candidate：`PUMP-RP-0.1`
 Central lock：`0cd74d783fa23add6dc881b408a8c8ba8503f8e8`，本任务未修改 `platform-lock.json`。
 
 > 本报告记录真实 Windows/Python 3.12 GitHub Actions 数值执行。没有修改中央 Contract 仓，没有启动 Phase 2，没有修改 GB 19762—2025 正式业务算法、Canonical 或 Approved Golden。
@@ -238,7 +238,7 @@ Vector 字段已经包含：`inputs / profile / operation / reference / acceptan
 
 ## 8. Real test execution
 
-最终 tested head：`96db30a4c63730c8693f0fc1fbebb5301e1809b7`。  
+最终 tested head：`96db30a4c63730c8693f0fc1fbebb5301e1809b7`。
 GitHub Actions run：`36680958245`，Windows latest / Python 3.12。
 
 | Test group | Actual result |
