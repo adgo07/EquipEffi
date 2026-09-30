@@ -1,0 +1,99 @@
+{
+  "schema_version": "qzc-n01-b-candidate-0.1",
+  "pilot": "QZC-N01-B",
+  "reference_procedure": "PUMP-RP-0.1",
+  "status": "CANDIDATE_NOT_PLATFORM_FROZEN",
+  "precision_set": [28, 34, 40, 50, 60],
+  "tolerance_seed": {
+    "T-NL-ATOM": "max(1E-13, 1E-13*abs(reference))",
+    "T-NL-COMPOSITE": "max(1E-10, 1E-12*abs(reference))",
+    "status": "EXPERIMENT_SEED_ONLY"
+  },
+  "vectors": [
+    {
+      "vector_id": "N01B-EXACT-NS",
+      "category": "Exact",
+      "inputs": {"id":"EXACT-NS","category":"多级","QBEP":"7200","HBEP":"32","speed":"10","suction":"双吸","stages":"2","efficiency":"80"},
+      "profile": "pump_water",
+      "operation": "specific_speed",
+      "reference": {
+        "precision50": {"current_ns":"4.5625","alt_ns":"4.56250","ns_abs_diff":"0.00000","h_pow_current":"8.0000000000000000000000000000000000000000000000000","h_pow_alt":"8","h_pow_abs_diff":"0E-49"},
+        "precision60": {"current_ns":"4.5625","alt_ns":"4.56250","ns_abs_diff":"0.00000","h_pow_current":"8.00000000000000000000000000000000000000000000000000000000000","h_pow_alt":"8","h_pow_abs_diff":"0E-59"}
+      },
+      "acceptance_mode": "EXACT",
+      "tolerance_purpose": null,
+      "business_output": {"grade":null,"rule_id":null}
+    },
+    {
+      "vector_id": "N01B-WATER-TYPICAL",
+      "category": "Composite",
+      "inputs": {"id":"WATER-TYPICAL","category":"单级单吸","QBEP":"100","HBEP":"50","speed":"2900","suction":"单吸","stages":"1","efficiency":"80"},
+      "profile": "pump_water",
+      "operation": "specific_speed + clean_thresholds",
+      "reference": {
+        "precision50": {"current_ns":"93.823603448604507505014701083136622423532335781578","alt_ns":"93.823603448604507505014701083136622423532335781584","ns_abs_diff":"6E-48","h_pow_current":"18.803015465431967840623046172586126260021272336970","h_pow_alt":"18.803015465431967840623046172586126260021272336969","h_pow_abs_diff":"1E-48","thresholds":["79.78616520331852907378831138801700817769648093823","77.78616520331852907378831138801700817769648093823","72.78616520331852907378831138801700817769648093823"],"thresholds_alt":["79.78616520331852907378831138801700817769648093822","77.78616520331852907378831138801700817769648093822","72.78616520331852907378831138801700817769648093822"],"threshold_max_abs_diff":"1E-47","grade":"1级","grade_alt":"1级","rule_id":"GB19762-T3-01"},
+        "precision60": {"current_ns":"93.8236034486045075050147010831366224235323357815764624706762","alt_ns":"93.8236034486045075050147010831366224235323357815764624706761","ns_abs_diff":"1E-58","h_pow_current":"18.8030154654319678406230461725861262600212723369699537321976","h_pow_alt":"18.8030154654319678406230461725861262600212723369699537321976","h_pow_abs_diff":"0E-58","thresholds":["79.786165203318529073788311388017008177696480938222873018530","77.786165203318529073788311388017008177696480938222873018530","72.786165203318529073788311388017008177696480938222873018530"],"thresholds_alt":["79.786165203318529073788311388017008177696480938222873018529","77.786165203318529073788311388017008177696480938222873018529","72.786165203318529073788311388017008177696480938222873018529"],"threshold_max_abs_diff":"1E-57","grade":"1级","grade_alt":"1级","rule_id":"GB19762-T3-01"}
+      },
+      "acceptance_mode": "NUMERICAL_TOLERANCE_WITH_BUSINESS_EXACT",
+      "tolerance_purpose": "cross-implementation numerical conformance only",
+      "business_output": {"grade":"1级","rule_id":"GB19762-T3-01"}
+    },
+    {
+      "vector_id": "N01B-WATER-MULTI",
+      "category": "Composite",
+      "inputs": {"id":"WATER-MULTI","category":"多级","QBEP":"100","HBEP":"150","speed":"2900","suction":"双吸","stages":"3","efficiency":"80"},
+      "profile": "pump_water",
+      "operation": "specific_speed + clean_thresholds",
+      "reference": {
+        "precision50": {"current_ns":"66.343306233865793197664981245608048820775055895608","alt_ns":"66.343306233865793197664981245608048820775055895613","ns_abs_diff":"5E-48","h_pow_current":"18.803015465431967840623046172586126260021272336970","h_pow_alt":"18.803015465431967840623046172586126260021272336969","h_pow_abs_diff":"1E-48","thresholds":["72.01056093590234571842342752996143895371097778566","69.01056093590234571842342752996143895371097778566","61.01056093590234571842342752996143895371097778566"],"thresholds_alt":["72.01056093590234571842342752996143895371097778566","69.01056093590234571842342752996143895371097778566","61.01056093590234571842342752996143895371097778566"],"threshold_max_abs_diff":"0E-47","grade":"1级","grade_alt":"1级","rule_id":"GB19762-T3-07"},
+        "precision60": {"current_ns":"66.3433062338657931976649812456080488207750558956089867517704","alt_ns":"66.3433062338657931976649812456080488207750558956089867517706","ns_abs_diff":"2E-58","h_pow_current":"18.8030154654319678406230461725861262600212723369699537321976","h_pow_alt":"18.8030154654319678406230461725861262600212723369699537321976","h_pow_abs_diff":"0E-58","thresholds":["72.010560935902345718423427529961438953710977785659814069454","69.010560935902345718423427529961438953710977785659814069454","61.010560935902345718423427529961438953710977785659814069454"],"thresholds_alt":["72.010560935902345718423427529961438953710977785659814069454","69.010560935902345718423427529961438953710977785659814069454","61.010560935902345718423427529961438953710977785659814069454"],"threshold_max_abs_diff":"0E-57","grade":"1级","grade_alt":"1级","rule_id":"GB19762-T3-07"}
+      },
+      "acceptance_mode": "NUMERICAL_TOLERANCE_WITH_BUSINESS_EXACT",
+      "tolerance_purpose": "cross-implementation numerical conformance only",
+      "business_output": {"grade":"1级","rule_id":"GB19762-T3-07"}
+    },
+    {
+      "vector_id": "N01B-WATER-HIGH-FLOW",
+      "category": "Composite",
+      "inputs": {"id":"WATER-HIGH-FLOW","category":"单级双吸","QBEP":"5000","HBEP":"90","speed":"1480","suction":"双吸","stages":"1","efficiency":"88"},
+      "profile": "pump_water",
+      "operation": "specific_speed + clean_thresholds",
+      "reference": {
+        "precision50": {"current_ns":"154.06055275072227591360795718982117594159062769505","alt_ns":"154.06055275072227591360795718982117594159062769505","ns_abs_diff":"0E-47","h_pow_current":"29.220112392758902932681185891990286693940361651831","h_pow_alt":"29.220112392758902932681185891990286693940361651831","h_pow_abs_diff":"0E-48","thresholds":["91.25388622021999386618178451973680086027457106948","90.25388622021999386618178451973680086027457106948","85.25388622021999386618178451973680086027457106948"],"thresholds_alt":["91.25388622021999386618178451973680086027457106948","90.25388622021999386618178451973680086027457106948","85.25388622021999386618178451973680086027457106948"],"threshold_max_abs_diff":"0E-47","grade":"3级","grade_alt":"3级","rule_id":"GB19762-T3-04"},
+        "precision60": {"current_ns":"154.060552750722275913607957189821175941590627695053070442911","alt_ns":"154.060552750722275913607957189821175941590627695053070442911","ns_abs_diff":"0E-57","h_pow_current":"29.2201123927589029326811858919902866939403616518310154236350","h_pow_alt":"29.2201123927589029326811858919902866939403616518310154236350","h_pow_abs_diff":"0E-58","thresholds":["91.253886220219993866181784519736800860274571069471479824305","90.253886220219993866181784519736800860274571069471479824305","85.253886220219993866181784519736800860274571069471479824305"],"thresholds_alt":["91.253886220219993866181784519736800860274571069471479824305","90.253886220219993866181784519736800860274571069471479824305","85.253886220219993866181784519736800860274571069471479824305"],"threshold_max_abs_diff":"0E-57","grade":"3级","grade_alt":"3级","rule_id":"GB19762-T3-04"}
+      },
+      "acceptance_mode": "NUMERICAL_TOLERANCE_WITH_BUSINESS_EXACT",
+      "tolerance_purpose": "cross-implementation numerical conformance only",
+      "business_output": {"grade":"3级","rule_id":"GB19762-T3-04"}
+    },
+    {
+      "vector_id": "N01B-CHEM-ETA-B-ORDER",
+      "category": "Operation-order sensitivity",
+      "inputs": {"QBEP":"100","pump_kind":"单级"},
+      "profile": "pump_chemical",
+      "operation": "ln(Q) + eta_b polynomial current tree vs Horner",
+      "reference": {"current":"72.994964439329567466446659598229238364944975446517","horner":"72.994964439329567466446659598229238364944975446520","abs_diff":"3E-48","seed_limit":"1E-10","seed_pass":true},
+      "acceptance_mode": "NUMERICAL_TOLERANCE_WITH_BUSINESS_EXACT",
+      "tolerance_purpose": "cross-implementation numerical conformance only",
+      "business_output": {"must_not_change_rule_or_grade":true}
+    },
+    {
+      "vector_id": "N01B-BOUNDARY-TDELTA",
+      "category": "Business boundary",
+      "inputs": {"threshold":"80.12345678901234567890123456789012345678901234567","delta":"1E-48"},
+      "profile": "pump_water",
+      "operation": "grade comparison T-delta / T / T+delta",
+      "reference": {"T-delta":"2级","T":"1级","T+delta":"1级","epsilon_used":false},
+      "acceptance_mode": "EXACT_BUSINESS_OUTPUT",
+      "tolerance_purpose": "none; numerical tolerance is forbidden for business comparison",
+      "business_output": {"T-delta":"2级","T":"1级","T+delta":"1级","epsilon_used":false}
+    }
+  ],
+  "chemical_polynomial_precision_sensitivity": {
+    "28":{"current":"72.99496443932956746644665952","horner":"72.99496443932956746644665960","abs_diff":"8E-26"},
+    "34":{"current":"72.99496443932956746644665959822921","horner":"72.99496443932956746644665959822925","abs_diff":"4E-32"},
+    "40":{"current":"72.99496443932956746644665959822923836490","horner":"72.99496443932956746644665959822923836493","abs_diff":"3E-38"},
+    "50":{"current":"72.994964439329567466446659598229238364944975446517","horner":"72.994964439329567466446659598229238364944975446520","abs_diff":"3E-48"},
+    "60":{"current":"72.9949644393295674664466595982292383649449754465201426801398","horner":"72.9949644393295674664466595982292383649449754465201426801408","abs_diff":"1.0E-57"}
+  }
+}
