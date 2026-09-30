@@ -128,9 +128,10 @@ class QZCN01BTranscendentalTests(unittest.TestCase):
         threshold = Decimal("80.12345678901234567890123456789012345678901234567")
         delta = Decimal("1E-48")
         thresholds = [threshold, Decimal("70"), Decimal("60")]
-        below = grade_three(threshold - delta, thresholds, ComparisonDirection.GREATER_OR_EQUAL)[0].value
-        equal = grade_three(threshold, thresholds, ComparisonDirection.GREATER_OR_EQUAL)[0].value
-        above = grade_three(threshold + delta, thresholds, ComparisonDirection.GREATER_OR_EQUAL)[0].value
+        with localcontext(PUMP_DECIMAL_CONTEXT):
+            below = grade_three(threshold - delta, thresholds, ComparisonDirection.GREATER_OR_EQUAL)[0].value
+            equal = grade_three(threshold, thresholds, ComparisonDirection.GREATER_OR_EQUAL)[0].value
+            above = grade_three(threshold + delta, thresholds, ComparisonDirection.GREATER_OR_EQUAL)[0].value
         self.assertNotEqual(below, equal)
         self.assertEqual(equal, above)
 
@@ -144,11 +145,13 @@ class QZCN01BTranscendentalTests(unittest.TestCase):
 
     def test_multiple_approved_golden_water_cases_replay(self):
         golden_dir = ROOT / "specs/equipment_efficiency/golden/pump_water"
-        files = sorted(golden_dir.glob("*.json"))
+        files = sorted(golden_dir.glob("GC-PUMP-V4-*.json"))
         self.assertGreaterEqual(len(files), 3)
         checked = 0
-        for path in files[:6]:
+        for path in files:
             payload = json.loads(path.read_text(encoding="utf-8"))
+            if payload.get("approval_status") != "APPROVED":
+                continue
             raw = payload.get("raw_inputs", {})
             expected = payload.get("expected_result", {})
             if expected.get("evaluation_status") != "SUCCESS":
@@ -161,6 +164,8 @@ class QZCN01BTranscendentalTests(unittest.TestCase):
                 if trace.get("ns_raw"):
                     self.assertEqual(result.calculated_metrics["ns_raw"], Decimal(trace["ns_raw"]))
             checked += 1
+            if checked >= 6:
+                break
         self.assertGreaterEqual(checked, 3)
 
 
