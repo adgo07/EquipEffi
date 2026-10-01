@@ -1,8 +1,8 @@
 # EquipEffi 参考标准开发路线
 
-状态：**CURRENT INVENTORY / GOVERNANCE ROADMAP**  
-盘点日期：2026-10-01  
-盘点基线：`master@66835d2ae2e0a8eaee50260f43ee0c52b4858d85`  
+状态：**CURRENT INVENTORY / GOVERNANCE ROADMAP**
+盘点日期：2026-10-01
+盘点基线：`master@66835d2ae2e0a8eaee50260f43ee0c52b4858d85`
 参考标准：`GB 19762—2025 离心泵能效限定值及能效等级`
 
 > 本文件只盘点当前真实状态并固定后续交付顺序，不启动 Phase 2，不修改 Pump evaluator、Canonical、Golden、数据库、Excel、UI 或 Numeric Profile。
