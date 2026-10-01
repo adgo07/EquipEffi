@@ -56,3 +56,102 @@
 - 当前 Phase 1 `PHASE_1_PASS` 是既有独立复验和 Solution/Product Review 后记录的状态，不是本次 adoption 自行批准。`PHASE_2_READY` 不代表开始或授权；自动继续保持 `DISABLED`，只有用户明确授权后才能进入 Phase 2。
 - 发现跨产品公共语义缺口时，在本仓记录 RFC candidate 并交由 Qingzhou-contracts 治理；普通设备能效业务问题仍在本仓处理。
 - 本次 Numeric v1 adoption 只允许必要治理、锁文件、Conformance/验证和最小兼容修复，不授权重设计泵、批量迁移其他设备、修改 Schema/Canonical/Golden、数据库、Excel、UI 或 Phase 2 功能。
+
+## 青舟平台开发前置检查（Qingzhou Platform Contract Preflight）
+
+本节是后续所有正式设计、开发、重构、修复、标准接入、Calculator、Numeric、Excel、Record、数据库、Schema、Module、Package、跨平台和导入导出任务的统一前置要求。
+
+### 1. 开工前检查顺序
+
+```text
+读取本仓 platform-lock.json
+→ 确认锁定的 Qingzhou-contracts commit SHA
+→ 按 locked SHA 读取相关 Frozen Contract
+→ 提取适用于当前任务的 MUST / MUST NOT
+→ 检查冲突并分类
+→ 确认后再开始设计或编码
+```
+
+不得直接读取中央 `main` 最新内容并认为本仓必须自动跟随。只有用户明确授权中央 Contract 升级任务时，才允许通过独立治理变更 `PLATFORM_BASELINE.md` 和 `platform-lock.json`。
+
+中央产品交付治理文件：
+
+`docs/governance/PRODUCT_DELIVERY_POLICY_V1.md`
+
+它是 Architecture V2.1 下的 **ACTIVE GOVERNANCE POLICY**，不是 Frozen Contract，不改变本仓锁定的 Frozen Contract SHA。
+
+### 2. 当前产品交付优先级
+
+- **Windows-first**：Windows Desktop 是当前第一功能、GUI、测试、打包、文件/Excel 和用户验收平台；
+- **Reference Standard first**：当前参考标准为 `GB 19762—2025 离心泵能效限定值及能效等级`；
+- **Product-core-first**：先完成离心泵软件核心纵向闭环，再完成参考标准 Excel 闭环；
+- **Excel-as-adapter**：Excel 只承担 Import/Export Adapter 角色，必须通过 Application 契约调用同一个 evaluator/Calculator，不得复制第二套能效算法；
+- **Cross-platform-ready**：当前不全面开发 Android/iOS/HarmonyOS，但 Domain/Application 不得依赖 Windows UI 或 Windows-only API；
+- **逐标准扩展**：Reference Standard 完成正式 Windows + Excel 闭环前，不以批量迁移 17 个 Profile 或大量增加标准为主要目标。
+
+当前真实状态统一见：
+
+`REFERENCE_STANDARD_ROADMAP.md`
+
+当前仍保持：
+
+```text
+Phase 1 = PHASE_1_PASS
+Phase 2 = PHASE_2_READY / NOT STARTED
+Automatic continuation = DISABLED
+```
+
+本治理同步不构成 Phase 2 启动授权。
+
+### 3. Contract 冲突分类
+
+发现业务仓与中央规则不一致时，必须使用以下分类：
+
+- `LOCAL DEFECT`：本地实现违反本仓已采用 Frozen Contract；修本地；
+- `ALLOWED PROJECT DIFFERENCE`：中央明确允许项目配置差异，例如 Pump Decimal50；不得为表面统一强改；
+- `REGISTERED DEVIATION`：偏差已正式登记但未关闭；按当前治理状态处理；
+- `CENTRAL CONTRACT GAP`：真实业务需求无法由当前中央 Contract 正确表达；不得在 EquipEffi 私自发明另一套公共规则，应整理实际案例/业务证据/Contract 缺口/Candidate 返回中央仓。
+
+### 4. 正式报告必须包含平台预检查
+
+后续 Design、Execution Report、Acceptance Report 至少记录：
+
+- 当前业务仓 SHA；
+- `platform-lock.json` / locked central SHA；
+- 本任务相关 Frozen Contract；
+- 适用 MUST / MUST NOT；
+- 是否发现冲突及其分类；
+- 是否需要中央 Contract 修改。
+
+如果任务确实与中央公共语义无关，也必须明确写：`本任务不涉及中央公共 Contract。`
+
+### 5. 中文优先
+
+在不影响 Python/JSON/YAML/schema/API/enum/stable ID、自动化测试和跨平台兼容的前提下，用户界面文字、治理文档、路线、执行/验收报告、PR/Issue 描述、错误/校验提示和面向人的说明应优先使用中文。
+
+机器字段与稳定技术标识继续保持英文；在人阅读的文档中优先采用“中文名称（英文标识）”。
+
+### 6. 标准问题与解释治理
+
+开工前必须读取根目录 `STANDARD_ISSUES_REGISTER.md`，确认当前任务是否涉及已有 Standard Issue。
+
+正式 Design、Execution Report、Acceptance Report 的“平台 / Contract 预检查”必须增加：
+
+```text
+是否存在与当前任务相关的 Standard Issue：是 / 否
+涉及的问题编号：……
+本任务是否改变既有软件解释：是 / 否
+```
+
+发现新的标准疑似笔误、歧义、冲突、未规定、术语、引用或软件实现解释问题时，必须先登记台账，再完成正式实现说明。必须分开记录“标准原文事实”“技术判断”“软件实现决定”，不得把内部判断或软件选择写成标准明文，也不得静默纠正标准。
+
+影响正式业务结果的问题必须能追踪：
+
+```text
+Standard Issue
+→ Software Decision
+→ Rule / Calculator
+→ Test / Golden Case
+```
+
+解释变化时必须同步检查相关测试和历史结果兼容性。本治理同步不授权 Phase 2，也不授权修复台账中的问题。
