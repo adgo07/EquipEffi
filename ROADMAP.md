@@ -9,7 +9,7 @@
 - **State:** `PHASE_1_PASS`
 - **Next State:** `PHASE_2_READY`
 - **Automatic continuation:** `DISABLED`
-- **Allowed Work:** Roadmap V2.3 alignment only. Phase 2 is READY but has not started; begin Phase 2 only after explicit user authorization. Automatic continuation remains DISABLED.
+- **Allowed Work:** Numeric Contract v1 adoption/compatibility verification only. Phase 2 is READY but has not started; begin Phase 2 only after explicit user authorization. Automatic continuation remains DISABLED.
 
 ## 治理切换
 
@@ -36,11 +36,11 @@ platform-lock.json
 ADR/
 ```
 
-## Roadmap V2.3 Alignment（2026-09-28）
+## Roadmap V2.3 Alignment（2026-09-28；Numeric v1 adoption 更新于 2026-10-01）
 
 V2.3 不重新编号或改变 Phase 0～10。它只把已经发生的真实进展反馈回总体路线：Phase 0 PASS、Phase 1 PASS、QZC-A01 COMPLETE、Phase 2 READY/NOT_STARTED；用 Phase 1 已验证的多维状态模型替代旧单一 Support Status；明确 Phase 1 `pump_water` 是业务真相样板、Phase 3 `pump_water` 是工程/生命周期纵向样板；正式 Excel 仍在 Phase 8，但 Phase 2～4 必须保持 contract-driven 输入/结果接口。
 
-Qingzhou-contracts 继续锁定 `0cd74d783fa23add6dc881b408a8c8ba8503f8e8`，Architecture `V2.1 FROZEN`；其余公共 Contract 仍为 `DRAFT / NOT YET RELEASED`。中央 DRAFT 只作为兼容方向和设计约束，不授权 EquipEffi 一次性完整实现。升级仍须显式更新 `PLATFORM_BASELINE.md` 与 `platform-lock.json`。
+Qingzhou-contracts 当前显式锁定 `ee5feb0cc34dbd99790500fadd0c4c932e202a20`。Architecture 继续为 `V2.1 FROZEN`；Numeric Contract 已正式采用 `v1 / FROZEN`（`contracts/numeric/NUMERIC_CONTRACT_V1_FROZEN.md`）；Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack 等其余公共 Contract 仍为 `DRAFT / NOT YET RELEASED`，不得借 Numeric adoption 一并升级。EquipEffi Pump 保留 `EQUIPEFFI_PUMP_DECIMAL50_V2`，但 Decimal50/ROUND_HALF_EVEN 不是平台全局默认，其他设备按自身证据声明 Numeric Profile。中央升级仍须显式更新 `PLATFORM_BASELINE.md` 与 `platform-lock.json`。
 
 ## Phase 0 结论
 
