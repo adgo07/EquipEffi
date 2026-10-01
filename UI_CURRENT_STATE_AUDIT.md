@@ -1,8 +1,11 @@
 # 当前 UI 状态盘点
 
-任务：`Qingzhou Desktop UI Guidelines v0.1` 配套 UI Audit  
-Execution base：`master@d5d765910b1d80b31300c4c9a70dcbcc2f3d8b29`  
-Reference Standard：`GB 19762—2025 离心泵能效限定值及能效等级`  
+任务：`Qingzhou Desktop UI Guidelines v0.1` 配套 UI Audit
+
+Execution base：`master@d5d765910b1d80b31300c4c9a70dcbcc2f3d8b29`
+
+Reference Standard：`GB 19762—2025 离心泵能效限定值及能效等级`
+
 状态：**AUDIT ONLY / 只盘点，不修改 UI**
 
 > 本文件记录当前默认分支真实 UI 结构，不启动 Phase 2，不修改 Pump evaluator、Canonical、Golden、Excel、数据库、正式 UI 代码或 Frozen Contract。
