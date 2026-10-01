@@ -92,21 +92,26 @@ class NumericContractV1AdoptionTests(unittest.TestCase):
         threshold = Decimal("80.12345678901234567890123456789012345678901234567")
         delta = Decimal("1E-48")
         thresholds = [threshold, Decimal("70"), Decimal("60")]
-        below = grade_three(
-            threshold - delta,
-            thresholds,
-            ComparisonDirection.GREATER_OR_EQUAL,
-        )[0].value
-        equal = grade_three(
-            threshold,
-            thresholds,
-            ComparisonDirection.GREATER_OR_EQUAL,
-        )[0].value
-        above = grade_three(
-            threshold + delta,
-            thresholds,
-            ComparisonDirection.GREATER_OR_EQUAL,
-        )[0].value
+        with localcontext(PUMP_DECIMAL_CONTEXT):
+            below_value = threshold - delta
+            above_value = threshold + delta
+            below = grade_three(
+                below_value,
+                thresholds,
+                ComparisonDirection.GREATER_OR_EQUAL,
+            )[0].value
+            equal = grade_three(
+                threshold,
+                thresholds,
+                ComparisonDirection.GREATER_OR_EQUAL,
+            )[0].value
+            above = grade_three(
+                above_value,
+                thresholds,
+                ComparisonDirection.GREATER_OR_EQUAL,
+            )[0].value
+        self.assertNotEqual(below_value, threshold)
+        self.assertNotEqual(above_value, threshold)
         self.assertNotEqual(below, equal)
         self.assertEqual(equal, above)
 
