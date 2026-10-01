@@ -6,7 +6,7 @@ next_status: PHASE_2_READY
 base_sha: 9efc6260b03d9e0a895abdb294a70cda39aa7598
 baseline_ref: pre-v2-rebaseline
 working_tree_at_start: branch chore/numeric-contract-v1-adoption from exact master@9efc6260b03d9e0a895abdb294a70cda39aa7598
-allowed_next: complete Numeric Contract v1 adoption and independent acceptance; do not start Phase 2 automatically
+allowed_next: Numeric Contract v1 Adoption independent acceptance only; do not start Phase 2 automatically
 automatic_continuation: DISABLED
 phase_0b: NOT_EXECUTED
 phase_1_hotfix: NOT_EXECUTED
@@ -14,12 +14,12 @@ fixed_sha_independent_review: RESOLVED
 golden_case_named_human_approval: RESOLVED
 solution_product_review: RESOLVED
 blocked_by: []
-evidence_needed: verify central frozen Numeric v1 at ee5feb0cc34dbd99790500fadd0c4c932e202a20; verify platform-lock only promotes Numeric; verify EQUIPEFFI_PUMP_DECIMAL50_V2 remains compatible; run adoption, N01-B, Pump Numeric, evaluator, Golden/Phase, full suite and CI; record Adoption Report
+evidence_needed: independent review of PR latest head, actual diff, central Frozen Numeric v1, final CI and docs/governance/NUMERIC_CONTRACT_V1_ADOPTION_REPORT.md
 
-affected_scope: platform-lock.json; PLATFORM_BASELINE.md; governance pointers; Numeric v1 adoption conformance/tests/report. No Pump production evaluator change unless a real Frozen Contract conflict is proven. No Schema/Canonical/Approved Golden/database/Excel/UI/Phase 2 implementation.
-next_action: finish Numeric Contract v1 adoption verification, publish fixed execution SHA and stop for independent acceptance; do not merge automatically
+affected_scope: platform-lock.json; PLATFORM_BASELINE.md; ROADMAP.md; AGENTS.md; TASK_STATE.md; Numeric v1 Pump profile declaration; adoption conformance/tests/workflow/report. No Pump production evaluator, decimal_math, Canonical, Approved Golden, database, Excel, UI or Phase 2 implementation changes.
+next_action: stop for Numeric Contract v1 Adoption independent acceptance; do not merge automatically
 
-authoritative_files: ROADMAP.md; HANDOFF.md; TASK_STATE.md; AGENTS.md; BASELINE.md; ASSET_AUDIT.md; QA_BACKLOG.md; V1_SCOPE.md; PLATFORM_BASELINE.md; platform-lock.json; ADR/
+authoritative_files: ROADMAP.md; HANDOFF.md; TASK_STATE.md; AGENTS.md; BASELINE.md; ASSET_AUDIT.md; QA_BACKLOG.md; V1_SCOPE.md; PLATFORM_BASELINE.md; platform-lock.json; ADR/; docs/governance/NUMERIC_CONTRACT_V1_ADOPTION_REPORT.md
 historical_routes: EquipEffi V2.2 (inherited baseline); v7-v15; T04.xx; HANDOFF_20260831.md; numbered execution checklists
 
 roadmap_v2_3:
@@ -45,9 +45,11 @@ qzc_a01:
   phase_2_state: PHASE_2_READY; NOT_STARTED
 
 numeric_contract_v1_adoption:
-  status: EXECUTION_IN_PROGRESS
+  status: EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE
   task_kind: compatibility/adoption; not a new Numeric Pilot
   equip_efffi_start_master_sha: 9efc6260b03d9e0a895abdb294a70cda39aa7598
+  technical_tested_sha: b1683e89ee72fa6ae5e5be7f073c123590fc2a23
+  adoption_report_commit_sha: 44be0234d401174d3487b32eeaddc4ca1caad7cb
   platform_repository: https://github.com/adgo07/Qingzhou-contracts.git
   platform_commit_sha: ee5feb0cc34dbd99790500fadd0c4c932e202a20
   numeric_contract_version: v1
@@ -58,6 +60,7 @@ numeric_contract_v1_adoption:
   record_contract: draft-v1 / DRAFT
   package_contract: draft-v1 / DRAFT
   pump_numeric_profile_id: EQUIPEFFI_PUMP_DECIMAL50_V2
+  pump_profile_declaration: specs/equipment_efficiency/numeric/equipeffi_pump_numeric_profile_v1.json
   pump_reference_procedure: PUMP-RP-0.1
   pump_working_precision: 50
   pump_working_rounding: ROUND_HALF_EVEN
@@ -65,9 +68,33 @@ numeric_contract_v1_adoption:
   pump_display_rounding: independent presentation only
   pump_tolerance: numerical/test conformance only; never grade/rule/bucket epsilon
   decimal50_platform_default: false
-  production_pump_evaluator_change: none planned; minimum necessary fix only if a real Frozen Contract conflict is demonstrated
-  other_device_decimal50_migration: prohibited by this task
+  traceability: machine-readable profile + exact platform lock + EvaluationResult.standard_reference + lookup/trace rule data IDs
+  production_pump_evaluator_change: NONE
+  production_decimal_math_change: NONE
+  canonical_or_approved_golden_change: NONE
+  other_device_decimal50_migration: NONE
   auto_follow_central_main: false
+  phase_2_started: false
   merge_authorized: false
 
-acceptance_history: Phase 0 PASS; Phase 1 PASS; 王玮 approved all 18 pump_water Golden 0.4 on 2026-09-28; P1-SR01 PASS; PR #1 merged; QZC-A01 PR #2 merged; QZC-N01-B execution PR #4 merged at master@9efc6260b03d9e0a895abdb294a70cda39aa7598. Numeric Contract v1 adoption starts from that exact master and does not reopen Pump design.
+  technical_ci:
+    adoption_push_run: 36811317025 / PASS targeted gates
+    adoption_pr_run: 36811320886 / PASS
+    phase1_pump_windows_run: 36811320889 / PASS
+    qzc_n01_b_run: 36811320954 / PASS
+    adoption_tests: 6/6 PASS
+    n01_b_tests: 8/8 PASS
+    pump_numeric_tests: 15/15 PASS
+    pump_evaluator_api_tests: 408/408 PASS
+    golden_phase_tests: 138/138 PASS
+    compile_and_diff_check: PASS
+    full_suite: 945 run / 9 failures / 6 errors / 3 skipped
+    prior_n01_b_full_suite_baseline: 939 run / 9 failures / 6 errors / 3 skipped
+    regression_delta: +6 tests / +0 failures / +0 errors / +0 skips
+    full_suite_workflow_note: full suite command remains failure; continue-on-error is used only to preserve/upload evidence and must not be interpreted as a green full suite
+
+  execution_test_notes:
+    initial_boundary_test_issue: T-delta was initially constructed under ambient Decimal context; fixed in adoption test only by using Pump context; production unaffected
+    profile_wording_test_issue: numerical tolerance declaration clarified from purpose-specific only to purpose-specific conformance only; governance wording only; production unaffected
+
+acceptance_history: Phase 0 PASS; Phase 1 PASS; 王玮 approved all 18 pump_water Golden 0.4 on 2026-09-28; P1-SR01 PASS; PR #1 merged; QZC-A01 PR #2 merged; QZC-N01-B execution PR #4 merged at master@9efc6260b03d9e0a895abdb294a70cda39aa7598. Numeric Contract v1 adoption starts from that exact master, adopts central Frozen Numeric v1 only, preserves the N01-B Pump Profile, does not reopen Pump design, does not migrate other devices to Decimal50, does not start Phase 2, and is now stopped for independent acceptance.
