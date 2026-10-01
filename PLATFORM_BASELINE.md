@@ -33,6 +33,8 @@ Numeric Contract v1 明确禁止把单一 precision / rounding 配置解释为�
 
 ## 3. Pump Numeric Profile adoption
 
+机器可读声明：`specs/equipment_efficiency/numeric/equipeffi_pump_numeric_profile_v1.json`。
+
 本项目现有并经 QZC-N01-B 实证验证的 Pump Profile 继续作为正式本地 Profile：
 
 ```text
@@ -51,6 +53,8 @@ binary_float_policy       = reject raw Python float/non-finite authoritative Pum
 ```
 
 `precision=50` 和 `ROUND_HALF_EVEN` 是 EquipEffi Pump Profile 的具体配置，不是 Numeric Contract v1 的平台默认，也不要求变压器、电机、风机或未来设备照搬。
+
+本次采用使用等价不可变 trace/reference 结构满足 Numeric v1 的可追溯要求：机器可读 Profile 声明固定 `numeric_contract_version / numeric_profile_id / rule_version` 与中央 SHA；`platform-lock.json` 固定中央 Contract；Pump `EvaluationResult.standard_reference` 与 lookup/trace data IDs 继续固定实际标准/规则来源。中央 Frozen Contract 对最终统一 Result/Record 字段位置仍保持 OPEN，因此本任务不借 adoption 新增统一 Result Envelope 字段。
 
 ## 4. Upgrade Rule
 
