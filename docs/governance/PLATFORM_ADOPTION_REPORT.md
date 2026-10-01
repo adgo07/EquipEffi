@@ -1,5 +1,10 @@
 # PLATFORM_ADOPTION_REPORT — QZC-A01 reapplication
 
+> 状态：`HISTORICAL-SUPERSEDED`
+> 用途：`QZC-A01` 公共治理接入的历史审计证据（记录 2026-09-28 当时的真实接入事实）
+> 注意：不得作为当前正式规则依据。本报告记录的 locked commit `0cd74d783fa23add6dc881b408a8c8ba8503f8e8` 与“Numeric Contract `draft-v1 / DRAFT / NOT YET RELEASED`”均为当时口径，已被 2026-10-01 的 Numeric Contract v1 Adoption 取代；历史正文保留，不得改写。
+> 当前权威：`platform-lock.json` / `PLATFORM_BASELINE.md`（locked `ee5feb0cc34dbd99790500fadd0c4c932e202a20`；Numeric Contract `v1 FROZEN`）、`docs/governance/NUMERIC_CONTRACT_V1_ADOPTION_REPORT.md`、`ROADMAP.md`。
+
 日期：2026-09-28
 业务仓：`adgo07/EquipEffi`
 公共治理仓：`adgo07/Qingzhou-contracts`

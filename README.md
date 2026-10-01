@@ -1,8 +1,8 @@
 # EquipEffi 设备能效分析工具
 
-交接与继续开发的首选入口是 [HANDOFF](HANDOFF.md) 和 [后续 Agent 和大模型可直接照做交付清单 v15](docs/27_后续Agent和大模型可直接照做交付清单_v15_20260905.md)。该手册把 15 类公共接口、17 个内部 profile、逐 profile 任务卡、标准证据卡、固定低 CPU 命令、结果契约和 HANDOFF 模板拆成可直接执行的步骤。
+交接与继续开发的首选权威入口是 [AGENTS.md](AGENTS.md)、[ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[HANDOFF.md](HANDOFF.md) 和 [PLATFORM_BASELINE.md](PLATFORM_BASELINE.md)（配合 `platform-lock.json`）。历史口径（2026-09-05 及更早）曾把 [后续 Agent 和大模型可直接照做交付清单 v15](docs/27_后续Agent和大模型可直接照做交付清单_v15_20260905.md) 作为交接入口。该手册把 15 类公共接口、17 个内部 profile、逐 profile 任务卡、标准证据卡、固定低 CPU 命令、结果契约和 HANDOFF 模板拆成可直接执行的步骤；该手册与 v14 及更早的编号清单现统一标记为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`，只保留历史事实价值。当前权威来源：`ROADMAP.md`、`HANDOFF.md`、`TASK_STATE.md`、`AGENTS.md`。
 
-交接与继续开发请先阅读 [多 Agent 可直接照做交付清单 v14（执行手册）](docs/26_多Agent可直接照做交付清单_v14_执行手册_20260905.md)，再阅读 [后续 Agent / 大模型可直接执行交付清单 v13](docs/25_后续Agent可直接执行交付清单_v13_20260905.md)、[后续 Agent 直接照做交付清单 v12](docs/24_后续Agent直接照做交付清单_v12_20260904.md)、[多 Agent 详细交付清单 v11（可直接派发）](docs/23_多Agent详细交付清单_v10_可直接照做_20260901.md)（文件名保留 v10 以兼容既有链接）、[多 Agent 详细交付清单 v9（可直接照做）](docs/22_多Agent详细交付清单_v9_可直接照做_20260901.md)、[多 Agent 逐项交付清单 v8（可直接执行）](docs/21_多Agent逐项交付清单_v8_可直接执行_20260901.md) 和 [交接执行清单 v7（可直接照做）](docs/20_交接执行清单_v7_可直接照做_20260901.md)。v14及更早文档保留历史基线；历史实现记录仍见 `HANDOFF_20260831.md`。
+以下编号交付清单为历史基线（`HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`），仅作历史证据保留：[多 Agent 可直接照做交付清单 v14（执行手册）](docs/26_多Agent可直接照做交付清单_v14_执行手册_20260905.md)、[后续 Agent / 大模型可直接执行交付清单 v13](docs/25_后续Agent可直接执行交付清单_v13_20260905.md)、[后续 Agent 直接照做交付清单 v12](docs/24_后续Agent直接照做交付清单_v12_20260904.md)、[多 Agent 详细交付清单 v11（可直接派发）](docs/23_多Agent详细交付清单_v10_可直接照做_20260901.md)（文件名保留 v10 以兼容既有链接）、[多 Agent 详细交付清单 v9（可直接照做）](docs/22_多Agent详细交付清单_v9_可直接照做_20260901.md)、[多 Agent 逐项交付清单 v8（可直接执行）](docs/21_多Agent逐项交付清单_v8_可直接执行_20260901.md) 和 [交接执行清单 v7（可直接照做）](docs/20_交接执行清单_v7_可直接照做_20260901.md)。历史实现记录仍见 `HANDOFF_20260831.md`。
 
 当前版本提供15类V4公共设备接口、可追溯的标准查表/计算判定、第一至第四批机电淘汰目录及用户提供的2024年产业目录条目匹配，以及Tk桌面窗口。若目标Python缺少可用Tcl/Tk运行库，`--gui`会自动降级为同一API的Web窗口。Excel读写位于独立适配器层，核心判定不依赖Excel。
 

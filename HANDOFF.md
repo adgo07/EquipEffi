@@ -45,7 +45,7 @@ Excel 不复制评价算法；
 
 本节记录公共治理接入，不替代或回退 Phase 1 已合并的现行事实。QZC-A01 新分支以最新 `master` / Phase 1 PR #1 merge SHA `1a74ff4cc07e9068783a370ec4269e89245cef38` 为基线；旧 `chore/qingzhou-contracts-adoption` 只作为中央治理接入内容参考，其过时的 Phase 1 状态和旧治理文件不覆盖当前版本。
 
-- Qingzhou-contracts 锁定：`0cd74d783fa23add6dc881b408a8c8ba8503f8e8`；Architecture `V2.1 FROZEN`；Numeric、Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack v1 均为 `DRAFT / NOT YET RELEASED`。详见 `PLATFORM_BASELINE.md`、`platform-lock.json` 和 `docs/governance/PLATFORM_ADOPTION_REPORT.md`。
+- Qingzhou-contracts 锁定（**QZC-A01 当时口径，2026-09-28**）：`0cd74d783fa23add6dc881b408a8c8ba8503f8e8`；Architecture `V2.1 FROZEN`；Numeric、Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack v1 均为 `DRAFT / NOT YET RELEASED`。**当前口径（2026-10-01 Numeric Contract v1 Adoption 起）：锁定 `ee5feb0cc34dbd99790500fadd0c4c932e202a20`；Numeric Contract 已正式采用 `v1 / FROZEN`；Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack 仍为 `DRAFT / NOT YET RELEASED`。当前权威：`platform-lock.json`、`PLATFORM_BASELINE.md`、`ROADMAP.md`、`docs/governance/NUMERIC_CONTRACT_V1_ADOPTION_REPORT.md`。** 详见 `PLATFORM_BASELINE.md`、`platform-lock.json` 和 `docs/governance/PLATFORM_ADOPTION_REPORT.md`（后者为 QZC-A01 历史报告）。
 - 公共 Contract 仅约束公共外围，不改变 Phase 1 已冻结的泵业务契约、Canonical/Golden、V1 Scope、QA 决策或既有业务算法。
 - 当前状态仍为 `PHASE_1_PASS` / `PHASE_2_READY`。这不代表自动开始 Phase 2；自动继续保持 `DISABLED`，进入 Phase 2 仍须用户明确授权。
 
