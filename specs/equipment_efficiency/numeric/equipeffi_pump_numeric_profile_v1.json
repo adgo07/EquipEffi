@@ -28,7 +28,7 @@
   },
   "tolerance_policy": {
     "business_boundary": "none by default",
-    "numerical_conformance": "purpose-specific only",
+    "numerical_conformance": "purpose-specific conformance only",
     "business_mismatch_within_numerical_tolerance": "FAIL"
   },
   "display_policy": {
