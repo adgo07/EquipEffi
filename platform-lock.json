@@ -1,16 +1,16 @@
 {
   "module_id": "qz.equipment_efficiency",
   "repository": "https://github.com/adgo07/Qingzhou-contracts.git",
-  "baseline_kind": "pre-release-bootstrap",
+  "baseline_kind": "frozen-numeric-v1-adoption",
   "contracts_release": null,
   "contracts_tag": null,
-  "commit_sha": "0cd74d783fa23add6dc881b408a8c8ba8503f8e8",
+  "commit_sha": "ee5feb0cc34dbd99790500fadd0c4c932e202a20",
   "architecture_version": "2.1",
   "architecture_status": "FROZEN",
   "numeric_contract": {
-    "version": "draft-v1",
-    "status": "DRAFT",
-    "path": "contracts/numeric/NUMERIC_CONTRACT_V1_DRAFT.md"
+    "version": "v1",
+    "status": "FROZEN",
+    "path": "contracts/numeric/NUMERIC_CONTRACT_V1_FROZEN.md"
   },
   "unit_contract": {
     "version": "draft-v1",
@@ -32,12 +32,13 @@
     "status": "DRAFT",
     "path": "contracts/package/QZPACK_CONTRACT_V1_DRAFT.md"
   },
-  "adopted_at": "2026-09-28",
+  "adopted_at": "2026-10-01",
   "auto_follow_main": false,
   "notes": [
-    "This is the user-approved pre-release bootstrap baseline pinned to an exact central commit; it is not a formal Contract release.",
-    "Architecture V2.1 is FROZEN; all listed Contract v1 documents remain DRAFT and are not promoted by this adoption.",
-    "Future central changes have no effect until PLATFORM_BASELINE.md and this lock are explicitly upgraded.",
-    "Phase 1 product governance on EquipEffi master remains authoritative for local business contracts and release scope."
+    "This project explicitly adopts Numeric Contract v1 FROZEN from the pinned central commit; the central repository is still locked by exact SHA and is not followed automatically.",
+    "Architecture V2.1 remains FROZEN. Unit, Module/Capability, Record and qzpack contracts remain DRAFT and are not upgraded by this task.",
+    "EquipEffi Pump keeps the evidence-backed EQUIPEFFI_PUMP_DECIMAL50_V2 profile: Decimal, precision 50, ROUND_HALF_EVEN working context, full-value business comparison, isolated display rounding, PUMP-RP-0.1 nonlinear reference procedure, and numerical tolerance only for conformance.",
+    "Decimal50 is Pump-profile-specific and is not a platform-wide default or a requirement for transformer, motor, fan, or future equipment calculators.",
+    "Future central changes have no effect until PLATFORM_BASELINE.md and this lock are explicitly upgraded."
   ]
 }

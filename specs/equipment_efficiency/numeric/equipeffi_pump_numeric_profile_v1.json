@@ -1,0 +1,59 @@
+{
+  "profile_schema_version": "numeric-profile-adoption-1.0",
+  "numeric_profile_id": "EQUIPEFFI_PUMP_DECIMAL50_V2",
+  "numeric_contract_version": "v1",
+  "numeric_contract_status": "FROZEN",
+  "numeric_contract_source": {
+    "repository": "https://github.com/adgo07/Qingzhou-contracts.git",
+    "commit_sha": "ee5feb0cc34dbd99790500fadd0c4c932e202a20",
+    "path": "contracts/numeric/NUMERIC_CONTRACT_V1_FROZEN.md"
+  },
+  "authoritative_scopes": [
+    "pump_water",
+    "pump_chemical"
+  ],
+  "representation": "strict Decimal text / Decimal / exact integer",
+  "working_precision": 50,
+  "rounding_mode": "ROUND_HALF_EVEN",
+  "comparison_policy": "full-value exact rule/bucket/grade comparison",
+  "explicit_rounding_policy": "no hidden pre-grade rounding; governing Rule only",
+  "transcendental_policy": {
+    "reference_procedure": "PUMP-RP-0.1",
+    "functions": [
+      "sqrt",
+      "ln",
+      "fractional_pow"
+    ],
+    "operation_order": "PUMP-RP-0.1 / current production expression tree"
+  },
+  "tolerance_policy": {
+    "business_boundary": "none by default",
+    "numerical_conformance": "purpose-specific conformance only",
+    "business_mismatch_within_numerical_tolerance": "FAIL"
+  },
+  "display_policy": {
+    "rounding_mode": "ROUND_HALF_UP",
+    "places": 6,
+    "authority": "presentation only; MUST NOT feed authoritative grade/rule/bucket comparison"
+  },
+  "ingress_policy": {
+    "python_float": "REJECT",
+    "non_finite": "REJECT",
+    "decimal_lexical_text": "AUTHORITATIVE"
+  },
+  "normalization_policy": "Q/H remain total inputs; Pump-specific suction/stage transforms follow approved Pump contract and PUMP-RP-0.1",
+  "rule_version": "GB19762-2025",
+  "trace_reference": {
+    "profile_declaration": "specs/equipment_efficiency/numeric/equipeffi_pump_numeric_profile_v1.json",
+    "platform_lock": "platform-lock.json",
+    "rule_trace": "EvaluationResult.standard_reference / lookup and trace rule data_ids",
+    "note": "Numeric Contract v1 permits an equivalent immutable trace/reference structure. This adoption does not introduce a new Result schema field while public Result/Record field placement remains separately governed."
+  },
+  "platform_default": false,
+  "other_device_policy": "Transformer, motor, fan and future calculators do not inherit Decimal50. Each authoritative calculator scope declares its own Numeric Profile based on its evidence and governing rules.",
+  "provenance": {
+    "evidence_program": "QZC-N01-B",
+    "reference_report": "QZC_N01_B_EXECUTION_REPORT.md",
+    "adoption_task": "Numeric Contract v1 Adoption"
+  }
+}

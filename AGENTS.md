@@ -2,7 +2,7 @@
 
 ## 当前治理
 
-- 当前路线只有 `EquipEffi V2.2`。
+- 当前路线只有 `EquipEffi V2.3`。
 - 当前 Phase 为 `Phase 1`；Phase 0 已完成并作为不可变基线保留。
 - Phase 1 必须按 `P1-G01 → G02 → G03 → G04 → G05 → G06` 顺序执行；本阶段最终只能交付 `READY_FOR_SOL_REVIEW` 或明确 `BLOCKED`，不得自行宣布 Phase 1 PASS。
 - v15 / T04.xx / 历史 HANDOFF 不拥有自动任务调度权。
@@ -44,12 +44,15 @@
 - 性能问题先登记实测结果，不能在 Phase 0 直接做 Repository 或缓存重构。
 - 依赖方向：Domain 不依赖 UI/Excel/SQLite；Presentation 只能通过 Application 契约调用核心；装配层不得制造新的包级环。
 
-## Qingzhou-contracts 公共治理（QZC-A01）
+## Qingzhou-contracts 公共治理（QZC-A01 / Numeric v1 Adoption）
 
 - 本仓采用 `https://github.com/adgo07/Qingzhou-contracts.git` 的公共治理基线；精确锁定以 `PLATFORM_BASELINE.md` 和 `platform-lock.json` 为准，不得实时跟随中央仓 `main`。
-- 当前中央基线为 `0cd74d783fa23add6dc881b408a8c8ba8503f8e8`：Architecture `V2.1 FROZEN`；Numeric、Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack v1 均保持 `DRAFT / NOT YET RELEASED`。
+- 当前中央基线为 `ee5feb0cc34dbd99790500fadd0c4c932e202a20`：Architecture `V2.1 FROZEN`；Numeric Contract `v1 FROZEN`；Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack 等仍保持 `DRAFT / NOT YET RELEASED`。
+- Numeric Contract v1 冻结的是 Numeric Profile 机制、full-value 比较默认、rounding/tolerance taxonomy、Profile consistency、ambient independence、nonlinear/reference-procedure 与 operation-order 等公共语义；它不规定全平台统一 precision、rounding mode 或 epsilon。
+- EquipEffi Pump 使用 `EQUIPEFFI_PUMP_DECIMAL50_V2`：Decimal、working precision=50、`ROUND_HALF_EVEN` working context、full-value business comparison、display rounding 隔离、`PUMP-RP-0.1` nonlinear reference procedure，numerical tolerance 只用于 Conformance；Decimal50 不是平台全局默认。
+- 变压器、电机、风机及未来设备不得因本次 adoption 被强制改成 Decimal50；每个 Calculator 应按自身证据声明有效 Numeric Profile。
 - 公共治理只约束跨产品的架构和公共外围 Contract，不覆盖标准原文、Canonical、已批准 Golden、单标准规则、EquipEffi 业务结果语义或 V1 Scope 决策。
-- Phase 1 的已批准治理和业务结论仍由当前 `master` 上的 `ROADMAP.md`、`TASK_STATE.md`、`HANDOFF.md`、业务规范及其明确引用的冻结资产共同记录；QZC-A01 不得删除、弱化或重新解释 P1-G01～G06 顺序、Solution/Product Review 门禁、Pump Numeric & Decision Contract、Canonical/Golden/QA 要求或 Phase 2 进入条件。
+- Phase 1 的已批准治理和业务结论仍由当前 `master` 上的 `ROADMAP.md`、`TASK_STATE.md`、`HANDOFF.md`、业务规范及其明确引用的冻结资产共同记录；Numeric v1 adoption 不得删除、弱化或重新解释 P1-G01～G06、Solution/Product Review、Pump Numeric & Decision Contract、Canonical/Golden/QA 要求或 Phase 2 进入条件。
 - 当前 Phase 1 `PHASE_1_PASS` 是既有独立复验和 Solution/Product Review 后记录的状态，不是本次 adoption 自行批准。`PHASE_2_READY` 不代表开始或授权；自动继续保持 `DISABLED`，只有用户明确授权后才能进入 Phase 2。
-- 发现跨产品公共语义缺口时，在本仓记录 RFC candidate 并交由 Qingzhou-contracts 治理；普通设备能效业务问题仍在本仓处理。中央 DRAFT 不得在本仓升格为 FROZEN/RELEASED。
-- QZC-A01 adoption 只更新治理文档与中央基线锁，不授权修改业务实现、Schema、Canonical、Golden、数据库、Excel、UI 或 Phase 2 功能。
+- 发现跨产品公共语义缺口时，在本仓记录 RFC candidate 并交由 Qingzhou-contracts 治理；普通设备能效业务问题仍在本仓处理。
+- 本次 Numeric v1 adoption 只允许必要治理、锁文件、Conformance/验证和最小兼容修复，不授权重设计泵、批量迁移其他设备、修改 Schema/Canonical/Golden、数据库、Excel、UI 或 Phase 2 功能。
