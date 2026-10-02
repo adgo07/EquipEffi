@@ -8,7 +8,7 @@
 
 ### 平台 / Contract 预检查
 
-中央锁 ee5feb0cc34dbd99790500fadd0c4c932e202a20 不变。按此 SHA 读取 Architecture V2.1 FROZEN、Numeric Contract v1 FROZEN；按当前合并版本读取 GUIDE_INDEX、PRODUCT_DELIVERY_POLICY、UI_DESIGN_GUIDELINES。
+中央锁 ee5feb0cc34dbd99790500fadd0c4c932e202a20 不变。按此 SHA 读取 Architecture V2.1 FROZEN、Numeric Contract v1 FROZEN；按中央 main@4516e204ab20ca61c5931a46c0b28d1c06459727 读取 GUIDE_INDEX、PRODUCT_DELIVERY_POLICY、UI_DESIGN_GUIDELINES。
 
 MUST：Domain/Application 与具体 UI、SQL 和外层实现隔离；外层统一装配；中文优先；UI 状态与业务 Workspace 分离；既有业务结果受 Golden/Conformance 保护。MUST NOT：隐式改变数值配置、业务比较、标准事实；把 DRAFT 契约当 Frozen；自动升级锁或 Phase。
 
@@ -51,7 +51,7 @@ Phase 2 != pump_water 完整产品闭环；!= pump_chemical 支持；!= Record �
 
 ## 8. QA_BACKLOG Phase 2 Disposition
 
-完整编号和处置同步到 QA_BACKLOG 的 Phase 2 处置表。034/035/036/037 CLOSE_IN_P2；022/024 PARTIAL_IN_P2；其余按实际职责 DEFER_TO_P3/P4/P8 或 KEEP_OPEN_FUTURE。延期不等于关闭；不为清空台账改业务算法或扩大范围。
+共 51 项（包括 Phase 1/2 等组合目标）的完整编号和处置同步到 QA_BACKLOG 的 Phase 2 处置表。034/035/036/037 CLOSE_IN_P2；022/024 PARTIAL_IN_P2；其余按实际职责 DEFER_TO_P3/P4/P8 或 KEEP_OPEN_FUTURE。延期不等于关闭；不为清空台账改业务算法或扩大范围。
 
 ## 9. Known Regression Baseline Mechanism
 

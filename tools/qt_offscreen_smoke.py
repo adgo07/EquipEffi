@@ -7,7 +7,7 @@ import sys
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QApplication
 
-from equipeffi.composition import create_settings_runtime
+from equipeffi.composition import create_settings_runtime, launch_qt
 from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
 from equipeffi.infrastructure.runtime_logging import close_logging
 from equipeffi.presentation.qt.app import install_qt_message_handler
@@ -19,9 +19,18 @@ from PySide6.QtCore import qInstallMessageHandler
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-root", type=Path, required=True)
-    parser.add_argument("--mode", choices=("write", "restore"), required=True)
+    parser.add_argument("--mode", choices=("write", "restore", "entry"), required=True)
     args = parser.parse_args()
     assert sys.version_info[:2] == (3, 12), sys.version
+    if args.mode == "entry":
+        application = QApplication([])
+        QTimer.singleShot(0, application.closeAllWindows)
+        previous_hook = sys.excepthook
+        code = launch_qt(paths=AppDataPaths(args.data_root))
+        assert sys.excepthook is previous_hook
+        assert code == 0
+        print(json.dumps({"mode": "entry", "exit": code, "python": sys.version, "executable": sys.executable}))
+        return code
     settings, logger = create_settings_runtime(paths=AppDataPaths(args.data_root))
     application = QApplication([])
     previous = install_qt_message_handler(logger)

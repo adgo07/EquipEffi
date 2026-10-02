@@ -13,6 +13,7 @@ name: Windows Core
 #   - full-suite-baseline : "Full suite baseline (NON-GATING BASELINE / KNOWN BASELINE)"
 #     设 continue-on-error: true，仅用于保存并展示真实 run / failure / error / skipped。
 #     仓库当前存在已知失败，**workflow green 不得被解释为 "Full suite PASS"**。
+# windows-core 内的按 ID 回归比较器为 GATING；未知失败/错误/跳过会使其失败。
 
 on:
   push:
@@ -40,6 +41,7 @@ jobs:
       PYTHONPATH: src
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONIOENCODING: utf-8
+      QT_QPA_PLATFORM: offscreen
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,7 +55,7 @@ jobs:
       - name: Install project dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[tools]" jsonschema==4.26.0
+          python -m pip install -e ".[tools,desktop]" jsonschema==4.26.0
 
       - name: Confirm interpreter and import path
         run: |
@@ -78,6 +80,25 @@ jobs:
             tests.unit.test_public_device_types `
             tests.unit.test_device_evaluator_matrix -q
 
+      - name: Phase 2 settings, migrations, logging and Qt offscreen (gating)
+        run: |
+          python -m unittest `
+            tests.unit.test_composition `
+            tests.unit.test_phase2_settings `
+            tests.unit.test_phase2_logging `
+            tests.unit.test_phase2_qt `
+            tests.unit.test_windows_regression_comparator -v
+
+      - name: Full suite known-regression comparator (gating)
+        run: python tools/check_windows_regressions.py --output artifacts/phase2-regression
+
+      - name: Upload exact regression evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-regression-evidence
+          path: artifacts/phase2-regression/
+
       - name: Package and resource smoke
         run: |
           python -m equipeffi --status
@@ -95,6 +116,7 @@ jobs:
       PYTHONPATH: src
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONIOENCODING: utf-8
+      QT_QPA_PLATFORM: offscreen
     steps:
       - uses: actions/checkout@v4
 
@@ -106,7 +128,7 @@ jobs:
       - name: Install project dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[tools]" jsonschema==4.26.0
+          python -m pip install -e ".[tools,desktop]" jsonschema==4.26.0
 
       # continue-on-error 只用于保留真实基线证据；本 job 的名称已显式标注 NON-GATING，
       # 不得据此把 workflow green 解释为 "Full suite PASS"。

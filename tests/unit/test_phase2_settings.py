@@ -77,6 +77,9 @@ class SettingsTests(unittest.TestCase):
             migrate_user_database(self.paths.user_db, app_version="0.2.1")
 
     def test_only_user_database_is_created(self):
+        for path in (self.paths.catalog_db, self.paths.records_db):
+            with self.assertRaises(MigrationError):
+                migrate_user_database(path, app_version="0.2.1")
         self.assertEqual(DB_POLICIES[self.paths.catalog_db.name], "REBUILDABLE_DERIVED")
         self.assertEqual(DB_POLICIES[self.paths.records_db.name], "NEVER_DESTRUCTIVE_RECORD_ASSET")
         self.assertFalse(self.paths.catalog_db.exists())

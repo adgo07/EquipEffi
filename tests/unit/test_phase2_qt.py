@@ -83,7 +83,7 @@ class QtShellTests(unittest.TestCase):
         # 与单进程重建窗口不同，两个独立解释器检验真正的跨启动恢复。
         root = Path(__file__).resolve().parents[2]
         environment = {**os.environ, "QT_QPA_PLATFORM": "offscreen", "PYTHONPATH": str(root / "src"), "PYTHONIOENCODING": "utf-8"}
-        for mode in ("write", "restore"):
+        for mode in ("write", "restore", "entry"):
             result = subprocess.run([sys.executable, str(root / "tools/qt_offscreen_smoke.py"),
                                      "--data-root", str(self.paths.root / "process"), "--mode", mode],
                                     cwd=root, env=environment, capture_output=True, text=True, encoding="utf-8", timeout=30)

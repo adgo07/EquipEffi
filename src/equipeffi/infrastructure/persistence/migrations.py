@@ -35,6 +35,8 @@ USER_MIGRATIONS = (Migration(1, "001_create_settings", (
 
 def migrate_user_database(path: Path, *, app_version: str, migrations=USER_MIGRATIONS) -> None:
     path = Path(path)
+    if path.name != "user.sqlite":
+        raise MigrationError("本 runner 只管理 user.sqlite；catalog 与 records 禁止接入此迁移链")
     path.parent.mkdir(parents=True, exist_ok=True)
     with closing(sqlite3.connect(path)) as connection, connection:
         connection.execute("BEGIN IMMEDIATE")
