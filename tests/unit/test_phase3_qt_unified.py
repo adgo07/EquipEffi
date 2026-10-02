@@ -47,6 +47,15 @@ class UnifiedAnalysisPageTests(unittest.TestCase):
     def setUp(self):
         self.page = AnalysisPage(_service())
 
+    def test_no_category_is_preselected(self):
+        """软件不得替用户猜泵型：初始必须无选中类别。"""
+
+        self.assertIsNone(self.page.current_category())
+        self.assertEqual(self.page.category.currentIndex(), 0)
+        self.assertIn("请选择", self.page.category.itemText(0))
+        self.assertEqual(self.page.stages.text(), "")
+        self.assertIsNone(self.page.evaluate())
+
     def test_all_eight_formal_categories_are_present_in_one_selector(self):
         offered = [self.page.category.itemData(i)
                    for i in range(self.page.category.count())
@@ -56,6 +65,27 @@ class UnifiedAnalysisPageTests(unittest.TestCase):
                 self.assertIn(name, offered)
         self.assertIn("其他类别", offered)
         self.assertIn("不确定类别", offered)
+
+    def test_ordinary_result_area_hides_internal_rule_ids(self):
+        """普通结果区不得出现内部 rule / data id；审计信息归技术详情。"""
+
+        self.page.category.setCurrentIndex(self.page.category.findData("单级单吸清水离心泵"))
+        self.page.as_of.setText(AS_OF)
+        self.page.point_inputs["QBEP"].setText("100")
+        self.page.point_inputs["HBEP"].setText("50")
+        self.page.point_inputs["speed"].setText("2900")
+        self.page.point_inputs["efficiency"].setText("90")
+        self.page.suction.setCurrentIndex(self.page.suction.findData("单吸"))
+        self.page.evaluate()
+
+        ordinary = "\n".join([self.page.conclusion.text(), self.page.summary.text(),
+                              self.page.basis.text()])
+        self.assertNotIn("GB19762-T3-01", ordinary)
+        self.assertNotIn("pump_water", ordinary)
+        self.assertIn("等级阈值", ordinary)
+        # 审计能力保留
+        self.assertIn("GB19762-T3-01", self.page.technical.text())
+        self.assertIn("命中规则", self.page.technical.text())
 
     def test_no_internal_profile_or_rule_identifier_is_visible(self):
         """普通 UI 不得出现内部 profile / rule / field id。"""
@@ -135,9 +165,122 @@ class UnifiedAnalysisPageTests(unittest.TestCase):
         self.assertFalse(self.page.finalize_button.isEnabled())
 
     def test_invalid_evaluation_date_is_reported_without_crashing(self):
+        self.page.category.setCurrentIndex(self.page.category.findData("单级单吸清水离心泵"))
         self.page.as_of.setText("not-a-date")
         self.assertIsNone(self.page.evaluate())
         self.assertIn("YYYY-MM-DD", self.page.summary.text())
+
+    def test_missing_category_is_reported_before_any_calculation(self):
+        self.page.as_of.setText(AS_OF)
+        self.assertIsNone(self.page.evaluate())
+        self.assertIn("请先选择产品类别", self.page.summary.text())
+        self.assertFalse(self.page.finalize_button.isEnabled())
+
+    def test_new_analysis_defaults_to_local_current_date(self):
+        """新建分析默认使用本机当前日期，且允许用户修改。"""
+
+        self.assertEqual(self.page.as_of.text(), date.today().isoformat())
+        self.assertTrue(self.page.as_of.isEnabled())
+
+    def test_user_edited_date_is_used_instead_of_the_default(self):
+        self.page.category.setCurrentIndex(self.page.category.findData("单级单吸清水离心泵"))
+        self.page.as_of.setText(AS_OF)
+        request = self.page._collect_request()
+        self.assertIsNotNone(request)
+        self.assertEqual(request.as_of, date.fromisoformat(AS_OF))
+
+
+class AnalysisSaveFlowTests(unittest.TestCase):
+    """Qt 保存按钮必须走真实 Finalize（不是占位）。"""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.app = _app()
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
+        db = Path(self.tmp.name) / "records.sqlite"
+        migrate_records_database(db, app_version="test")
+        self.service = _service(SqliteWorkspaceRepository(db), SqliteRecordRepository(db))
+        self.page = AnalysisPage(self.service, workspace_id="W-qt")
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def _fill_water(self, efficiency: str = "90"):
+        self.page.category.setCurrentIndex(self.page.category.findData("单级单吸清水离心泵"))
+        self.page.as_of.setText(AS_OF)
+        self.page.point_inputs["QBEP"].setText("100")
+        self.page.point_inputs["HBEP"].setText("50")
+        self.page.point_inputs["speed"].setText("2900")
+        self.page.point_inputs["efficiency"].setText(efficiency)
+        self.page.suction.setCurrentIndex(self.page.suction.findData("单吸"))
+
+    def test_save_button_creates_a_real_formal_record(self):
+        self._fill_water()
+        self.page.evaluate()
+        status = self.page.finalize()
+        self.assertEqual(status, "SAVED")
+        self.assertIsNotNone(self.page.last_saved_record_id)
+
+        record = self.service.open_record(self.page.last_saved_record_id)
+        self.assertEqual(record.ui_conclusion, "1级")
+        self.assertEqual(record.product_category, "单级单吸清水离心泵")
+        self.assertEqual(record.as_of, AS_OF)
+        self.assertEqual(record.input_snapshot["efficiency"], "90")
+        self.assertTrue(record.input_snapshot["request_fingerprint"])
+
+    def test_saved_record_appears_in_history(self):
+        self._fill_water()
+        self.page.evaluate()
+        self.page.finalize()
+        records = self.service.list_records()
+        self.assertEqual(len(records), 1)
+        self.assertEqual(records[0].record_id, self.page.last_saved_record_id)
+
+    def test_save_without_analysis_is_refused(self):
+        self._fill_water()
+        self.assertEqual(self.page.finalize(), "NO_RESULT")
+        self.assertEqual(self.service.list_records(), [])
+
+    def test_save_refused_when_input_changed_after_analysis(self):
+        """改了输入但未重新分析时，保存必须被拒绝，不能把旧结果当新输入保存。"""
+
+        self._fill_water(efficiency="90")
+        self.page.evaluate()
+        self.page.point_inputs["efficiency"].setText("70")  # 未重新分析
+        self.assertEqual(self.page.finalize(), "STALE_RESULT")
+        self.assertEqual(self.service.list_records(), [])
+        self.assertIn("重新分析", self.page.summary.text())
+
+    def test_uncertain_category_cannot_be_saved(self):
+        self.page.category.setCurrentIndex(self.page.category.findData("不确定类别"))
+        self.page.evaluate()
+        self.assertEqual(self.page.finalize(), "NOT_FINALIZABLE")
+        self.assertEqual(self.service.list_records(), [])
+
+    def test_workspace_round_trip_through_the_page(self):
+        """保存草稿 → 新页面 load_workspace → 全部输入恢复。"""
+
+        self._fill_water(efficiency="82.5")
+        self.page.project_name.setText("页面往返项目")
+        self.page.equipment_no.setText("P-QT-9")
+        self.page.evaluate()
+        self.assertEqual(self.page.finalize(), "SAVED")
+
+        fresh = AnalysisPage(self.service, workspace_id="W-qt")
+        self.assertTrue(fresh.load_workspace("W-qt"))
+        self.assertEqual(fresh.current_category(), "单级单吸清水离心泵")
+        self.assertEqual(fresh.as_of.text(), AS_OF)
+        self.assertEqual(fresh.point_inputs["QBEP"].text(), "100")
+        self.assertEqual(fresh.point_inputs["HBEP"].text(), "50")
+        self.assertEqual(fresh.point_inputs["efficiency"].text(), "82.5")
+        self.assertEqual(fresh.suction.currentData(), "单吸")
+        self.assertEqual(fresh.project_name.text(), "页面往返项目")
+        self.assertEqual(fresh.equipment_no.text(), "P-QT-9")
+
+    def test_load_missing_workspace_returns_false(self):
+        self.assertFalse(self.page.load_workspace("does-not-exist"))
 
 
 class RecordsPageTests(unittest.TestCase):

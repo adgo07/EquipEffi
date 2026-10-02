@@ -108,7 +108,8 @@ jobs:
           python -m unittest `
             tests.unit.test_device_evaluator_matrix `
             tests.unit.test_application_api `
-            tests.unit.test_phase3_unified_analysis -v
+            tests.unit.test_phase3_unified_analysis `
+            tests.unit.test_phase3_r3_closure -v
 
 # pump_chemical 扩展占位（Phase 5 接入后在此追加）：
 #   - pump_chemical Golden 具名批准后的批准门禁测试

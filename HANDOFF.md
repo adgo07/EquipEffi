@@ -1,10 +1,10 @@
 # EquipEffi 当前交接
 
-路线 EquipEffi V2.3；Phase 1 = PHASE_1_PASS；Phase 2 = PHASE_2_PASS；**Phase 3 = IN_PROGRESS**；automatic_continuation = DISABLED。
+路线 EquipEffi V2.3；Phase 1 = PHASE_1_PASS；Phase 2 = PHASE_2_PASS；**Phase 3 = EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE**（尚未经独立验收，不是 PHASE_3_PASS）；automatic_continuation = DISABLED。
 
 ## 当前任务
 
-用户已明确授权执行 **Phase 3：GB 19762—2025 离心泵统一正式纵向闭环**（`pump_water` + `pump_chemical` 共用同一产品、UI、Application Use Case、Workspace、Record、History、Result Contract）。
+用户已明确授权执行 **Phase 3：GB 19762—2025 离心泵统一正式纵向闭环**；**执行已完成，状态 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`**（尚未经独立验收，不得写成 `PHASE_3_PASS`）（`pump_water` + `pump_chemical` 共用同一产品、UI、Application Use Case、Workspace、Record、History、Result Contract）。
 
 - 分支 `phase3/gb19762-unified-vertical-slice`；start master SHA `7e16418aa32ced5512e26bd70227f01a329fbdfc`
 - 设计见 [docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md](docs/32_Phase%203%20GB19762%E7%A6%BB%E5%BF%83%E6%B3%B5%E7%BB%9F%E4%B8%80%E6%AD%A3%E5%BC%8F%E7%BA%B5%E5%90%91%E9%97%AD%E7%8E%AF.md)
@@ -38,7 +38,7 @@ transformer   : scope_status=POST_V1 | support_status=NOT_IN_RELEASE_SCOPE
 
 `ee5feb0cc34dbd99790500fadd0c4c932e202a20` 不变；Architecture V2.1 / Numeric v1 FROZEN，其余 DRAFT。ACTIVE 指南按中央当前合并版读取。Numeric adoption PR #5 的独立验收记录仍为 `INDEPENDENT_ACCEPTANCE_RECORD_PENDING`，不以任何执行替代该证据。
 
-## 关键事实（Phase 3 执行中）
+## 关键事实（Phase 3 已交付，等待独立验收）
 
 - 公开 Application 路径对 `pump_chemical` 仍**短路**返回 `NOT_IN_RELEASE_SCOPE` 且不计算（由 `tests/unit/test_pump_golden_case_0_3.py` 冻结）；因此 11 条化学 Golden 的 `evaluation_layer` 为 `PROFILE_EVALUATOR_TECHNICAL`，`support_status = null`，**未**谎报为 `APPLICATION_E2E`。
 - 统一类别路由必须使用**精确名称**映射，不得用“清水/化工/多级”等子串猜测。

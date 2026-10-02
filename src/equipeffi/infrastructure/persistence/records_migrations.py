@@ -100,6 +100,13 @@ RECORDS_MIGRATIONS: tuple[RecordsMigration, ...] = (
         "CREATE INDEX IF NOT EXISTS idx_record_finalized_at ON record (finalized_at_utc DESC)",
         "CREATE INDEX IF NOT EXISTS idx_workspace_updated_at ON workspace (updated_at_utc DESC)",
     )),
+    # 002：为 workspace 增加修订号。必须作为**新迁移**追加，不得改写 001，
+    # 否则已存在的 records.sqlite 会因 001 的 checksum 变化而被拒绝打开。
+    # `ALTER TABLE ... ADD COLUMN` 是 additive / compatible，符合
+    # NEVER_DESTRUCTIVE_RECORD_ASSET；已有草稿行取默认值 1。
+    RecordsMigration(2, "002_add_workspace_revision", (
+        "ALTER TABLE workspace ADD COLUMN revision INTEGER NOT NULL DEFAULT 1",
+    )),
 )
 
 

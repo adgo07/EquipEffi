@@ -9,6 +9,8 @@ Domain 层。Qt 不得复制任何业务算法。
 from __future__ import annotations
 
 from datetime import date
+from typing import Callable
+from uuid import uuid4
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
@@ -22,6 +24,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QPushButton,
     QScrollArea,
+    QToolBox,
     QVBoxLayout,
     QWidget,
 )
@@ -29,6 +32,7 @@ from PySide6.QtWidgets import (
 from ....application.services.centrifugal_pump_analysis_service import (
     PUMP_CATEGORIES,
     PUMP_CATEGORY_GROUPS,
+    AnalysisError,
     CentrifugalPumpAnalysisService,
     PumpAnalysisRequest,
     PumpAnalysisResult,
@@ -55,9 +59,18 @@ _SINGLE_STAGE_CATEGORIES = frozenset(
 class AnalysisPage(QWidget):
     """统一离心泵分析页。"""
 
-    def __init__(self, service: CentrifugalPumpAnalysisService):
+    def __init__(self, service: CentrifugalPumpAnalysisService,
+                 *, workspace_id: str | None = None,
+                 record_id_factory: Callable[[], str] | None = None):
         super().__init__()
         self.service = service
+        self._workspace_id = workspace_id
+        self._record_id_factory = record_id_factory
+        self._last_request: PumpAnalysisRequest | None = None
+        self._last_result: PumpAnalysisResult | None = None
+        self._saved_record_id: str | None = None
+        #: 最近一次保存成功的正式记录编号（供 shell / 测试读取）。
+        self.last_saved_record_id: str | None = None
         self._build()
 
     # -- 构建 ---------------------------------------------------------------
@@ -111,6 +124,8 @@ class AnalysisPage(QWidget):
         group = QGroupBox("产品类别")
         layout = QVBoxLayout(group)
         self.category = QComboBox()
+        # 不预选任何正式类别：软件不得替用户猜泵型（猜错会把用户导向错误规则）。
+        self.category.addItem("请选择产品类别…", None)
         group_labels = dict(PUMP_CATEGORY_GROUPS)
         for group_key, _ in PUMP_CATEGORY_GROUPS:
             entries = [c for c in PUMP_CATEGORIES if c.group == group_key]
@@ -123,7 +138,7 @@ class AnalysisPage(QWidget):
                 model.setEnabled(False)
             for category in entries:
                 self.category.addItem(category.visible_name, category.visible_name)
-        self.category.setCurrentIndex(self._first_selectable_index())
+        self.category.setCurrentIndex(0)
         layout.addWidget(self.category)
         self.category_help = QLabel("")
         self.category_help.setWordWrap(True)
@@ -183,17 +198,24 @@ class AnalysisPage(QWidget):
         self.basis.setWordWrap(True)
         self.basis.setTextFormat(Qt.TextFormat.PlainText)
         layout.addWidget(self.basis)
+
+        # 技术详情渐进展示：内部 rule / data id / Numeric Profile 归此处，
+        # 默认折叠，不占据普通业务结果区（但审计能力保留）。
+        self.technical_box = QToolBox()
+        technical_page = QWidget()
+        technical_layout = QVBoxLayout(technical_page)
+        self.technical = QLabel("")
+        self.technical.setWordWrap(True)
+        self.technical.setTextFormat(Qt.TextFormat.PlainText)
+        self.technical.setAlignment(Qt.AlignmentFlag.AlignTop)
+        technical_layout.addWidget(self.technical)
+        technical_layout.addStretch()
+        self.technical_box.addItem(technical_page, "技术详情（规则编号、数据版本、数值配置）")
+        self.technical_box.setCurrentIndex(-1)
+        layout.addWidget(self.technical_box)
         return group
 
     # -- 交互 ---------------------------------------------------------------
-
-    def _first_selectable_index(self) -> int:
-        """第一个可选项索引（跳过组标题分隔项）。"""
-
-        for index in range(self.category.count()):
-            if self.category.itemData(index):
-                return index
-        return 0
 
     def current_category(self) -> str | None:
         return self.category.currentData()
@@ -201,7 +223,11 @@ class AnalysisPage(QWidget):
     def _on_category_changed(self, *_: object) -> None:
         category = self.current_category()
         entry = next((c for c in PUMP_CATEGORIES if c.visible_name == category), None)
-        self.category_help.setText(entry.help_text if entry else "请选择产品类别。")
+        if entry is None:
+            self.category_help.setText(
+                "请选择产品类别。若无法判断，可选“不确定类别”查看判断说明。")
+        else:
+            self.category_help.setText(entry.help_text)
         if category in _SINGLE_STAGE_CATEGORIES:
             # 类别本身已唯一决定级数；这是既有业务契约，不是 UI 新造规则。
             self.stages.setText("1")
@@ -238,14 +264,102 @@ class AnalysisPage(QWidget):
         if request is None:
             return None
         result = self.service.evaluate(request)
+        self._last_request = request
+        self._last_result = result
         self._render(result)
         self.finalize_button.setEnabled(result.finalizable)
         return result
 
-    def finalize(self) -> None:
-        """由外部注入 Record 写入前不执行；Phase 3 在 shell 层装配。"""
+    def finalize(self) -> str:
+        """把当前分析固化为正式记录；返回状态说明文本（同时显示在结果区）。
 
-        self._show_error("保存需要先装配正式记录存储。")
+        必须携带产生该结果的 request（指纹核对）与草稿修订号；任何不一致都会被
+        Application 层拒绝，本页不自行放宽。
+        """
+
+        if self._last_result is None or self._last_request is None:
+            self._show_error("请先执行分析，再保存正式记录。")
+            return "NO_RESULT"
+        if not self._last_result.finalizable:
+            self._show_error(self._last_result.not_finalizable_reason or "当前结果不允许保存。")
+            return "NOT_FINALIZABLE"
+
+        # 保存前必须确认表单自分析后没有被修改，否则会把旧结果当成新输入保存。
+        current = self._collect_request()
+        if current is None:
+            return "REJECTED"
+        if current.request_fingerprint() != self._last_result.request_fingerprint:
+            self._show_error(
+                "输入已在分析之后被修改，当前结果已过期；请重新分析后再保存正式记录。")
+            return "STALE_RESULT"
+
+        workspace_id = self._workspace_id
+        if workspace_id is not None:
+            try:
+                # 草稿必须先落盘，Finalize 才能核对修订号。
+                workspace = self.service.save_workspace_from_request(
+                    workspace_id, self._last_request)
+                request = self.service.request_from_workspace(workspace)
+                result = self.service.evaluate(request)
+                self._last_request, self._last_result = request, result
+                if not result.finalizable:
+                    self._show_error(result.not_finalizable_reason or "当前结果不允许保存。")
+                    return "NOT_FINALIZABLE"
+
+                record_id = self._next_record_id()
+                record = self.service.finalize(record_id=record_id, workspace_id=workspace_id,
+                                               request=request, result=result)
+            except AnalysisError as error:
+                self._show_error(str(error))
+                return "REJECTED"
+        else:
+            try:
+                record_id = self._next_record_id()
+                record = self.service.finalize(
+                    record_id=record_id, workspace_id=None,
+                    request=self._last_request, result=self._last_result)
+            except AnalysisError as error:
+                self._show_error(str(error))
+                return "REJECTED"
+
+        self._saved_record_id = record.record_id
+        self.last_saved_record_id = record.record_id
+        self.finalize_button.setEnabled(False)
+        self.summary.setText(
+            f"{self.summary.text()}\n正式记录已保存：{record.record_id}"
+            f"（{record.finalized_at_utc}）")
+        return "SAVED"
+
+    def load_workspace(self, workspace_id: str) -> bool:
+        """把草稿载入表单（Reopen/继续编辑入口）。"""
+
+        workspace = self.service.load_workspace(workspace_id)
+        if workspace is None:
+            return False
+        self._workspace_id = workspace_id
+        index = self.category.findData(workspace.product_category)
+        if index >= 0:
+            self.category.setCurrentIndex(index)
+        self.as_of.setText(workspace.as_of)
+        payload = workspace.payload
+        for key, edit in self.point_inputs.items():
+            edit.setText("" if payload.get(key) in (None, "") else str(payload[key]))
+        suction = payload.get("suction")
+        suction_index = self.suction.findData(suction) if suction else 0
+        self.suction.setCurrentIndex(max(suction_index, 0))
+        if self.stages.isEnabled():
+            stages = payload.get("stages")
+            self.stages.setText("" if stages in (None, "") else str(stages))
+        self.project_name.setText(str(payload.get("project_name") or ""))
+        self.equipment_no.setText(str(payload.get("equipment_no") or ""))
+        self._last_request = self._last_result = None
+        self.finalize_button.setEnabled(False)
+        return True
+
+    def _next_record_id(self) -> str:
+        if self._record_id_factory is not None:
+            return self._record_id_factory()
+        return f"{self._workspace_id or 'ANALYSIS'}-{uuid4().hex[:12]}"
 
     # -- 展示 ---------------------------------------------------------------
 
@@ -253,6 +367,7 @@ class AnalysisPage(QWidget):
         self.conclusion.setText("—")
         self.summary.setText(message)
         self.basis.setText("")
+        self.technical.setText("")
         self.finalize_button.setEnabled(False)
 
     def _render(self, result: PumpAnalysisResult) -> None:
@@ -261,8 +376,6 @@ class AnalysisPage(QWidget):
                  f"评价日期：{result.as_of.isoformat()}"]
         if result.grade:
             lines.append(f"能效等级：{result.grade}")
-        if result.evaluation_status:
-            lines.append(f"评价状态：{result.evaluation_status}")
         if result.missing_fields:
             lines.append("缺失信息：" + "、".join(result.missing_fields))
         if result.issue_codes:
@@ -281,8 +394,24 @@ class AnalysisPage(QWidget):
         if result.extra_metrics:
             basis_lines.append("实际参数：" + "；".join(
                 f"{name} {value}" for name, value in result.extra_metrics.items()))
-        if result.matched_rule_id:
-            basis_lines.append(f"标准依据：GB 19762—2025（命中规则 {result.matched_rule_id}）")
+        basis_lines.append("标准依据：GB 19762—2025《离心泵能效限定值及能效等级》")
         if not result.finalizable and result.not_finalizable_reason:
             basis_lines.append("不可保存原因：" + result.not_finalizable_reason)
         self.basis.setText("\n".join(basis_lines))
+
+        # 内部 Rule / data id 属于技术详情，不占普通业务结果区。
+        self._render_technical(result)
+
+    def _render_technical(self, result: PumpAnalysisResult) -> None:
+        standard = result.references.get("standard") or {}
+        rows = [
+            ("评价状态", result.evaluation_status or "—"),
+            ("类别状态", result.category_status or "—"),
+            ("命中规则", result.matched_rule_id or "—"),
+            ("规则集", standard.get("rule_profile") or "—"),
+            ("标准包", standard.get("pack_id") or "—"),
+            ("数据版本", standard.get("data_version") or "—"),
+            ("数值配置", result.references.get("numeric_profile_id") or "—"),
+            ("结果契约", result.references.get("result_contract_version") or "—"),
+        ]
+        self.technical.setText("\n".join(f"{name}：{value}" for name, value in rows))

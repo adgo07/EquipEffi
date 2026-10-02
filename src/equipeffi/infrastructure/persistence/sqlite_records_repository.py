@@ -40,8 +40,8 @@ class SqliteWorkspaceRepository:
                 INSERT INTO workspace (
                     workspace_id, standard_code, device_type, product_category,
                     rule_profile, as_of, payload_json, schema_version,
-                    created_at_utc, updated_at_utc
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    created_at_utc, updated_at_utc, revision
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(workspace_id) DO UPDATE SET
                     standard_code = excluded.standard_code,
                     device_type = excluded.device_type,
@@ -50,13 +50,14 @@ class SqliteWorkspaceRepository:
                     as_of = excluded.as_of,
                     payload_json = excluded.payload_json,
                     schema_version = excluded.schema_version,
-                    updated_at_utc = excluded.updated_at_utc
+                    updated_at_utc = excluded.updated_at_utc,
+                    revision = excluded.revision
                 """,
                 (
                     snapshot.workspace_id, snapshot.standard_code, snapshot.device_type,
                     snapshot.product_category, snapshot.rule_profile, snapshot.as_of,
                     _dumps(snapshot.payload), snapshot.schema_version,
-                    snapshot.created_at_utc, snapshot.updated_at_utc,
+                    snapshot.created_at_utc, snapshot.updated_at_utc, snapshot.revision,
                 ),
             )
 
@@ -66,7 +67,7 @@ class SqliteWorkspaceRepository:
                 """
                 SELECT workspace_id, standard_code, device_type, product_category,
                        rule_profile, as_of, payload_json, schema_version,
-                       created_at_utc, updated_at_utc
+                       created_at_utc, updated_at_utc, revision
                 FROM workspace WHERE workspace_id = ?
                 """,
                 (workspace_id,),
@@ -79,7 +80,7 @@ class SqliteWorkspaceRepository:
                 """
                 SELECT workspace_id, standard_code, device_type, product_category,
                        rule_profile, as_of, payload_json, schema_version,
-                       created_at_utc, updated_at_utc
+                       created_at_utc, updated_at_utc, revision
                 FROM workspace ORDER BY updated_at_utc DESC LIMIT ?
                 """,
                 (int(limit),),
@@ -99,6 +100,7 @@ def _workspace_from_row(row) -> WorkspaceSnapshot:
         product_category=row[3], rule_profile=row[4], as_of=row[5],
         payload=_loads(row[6]), schema_version=int(row[7]),
         created_at_utc=row[8], updated_at_utc=row[9],
+        revision=int(row[10]) if len(row) > 10 and row[10] is not None else 1,
     )
 
 

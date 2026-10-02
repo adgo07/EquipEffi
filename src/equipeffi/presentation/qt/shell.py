@@ -15,7 +15,8 @@ from .tokens import TOKENS
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, settings: SettingsService, analysis=None):
+    def __init__(self, settings: SettingsService, analysis=None,
+                 *, workspace_id: str | None = None):
         super().__init__()
         self.settings = settings
         self.setWindowTitle("设备能效分析工具 · GB 19762—2025 离心泵能效分析")
@@ -30,7 +31,8 @@ class MainWindow(QMainWindow):
         self.navigation.setFixedWidth(TOKENS.navigation_width)
         self.navigation.addItems(PAGES)
         self.pages = QStackedWidget()
-        self.analysis_page = AnalysisPage(analysis) if analysis is not None else None
+        self.analysis_page = (AnalysisPage(analysis, workspace_id=workspace_id)
+                              if analysis is not None else None)
         self.records_page = RecordsPage(analysis) if analysis is not None else None
         for title in PAGES:
             if title == "新建分析" and self.analysis_page is not None:

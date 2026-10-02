@@ -334,7 +334,8 @@ class RecordsMigrationTests(unittest.TestCase):
         self.assertIn("workspace", tables)
         self.assertIn("record", tables)
         self.assertIn(RECORDS_HISTORY_TABLE, tables)
-        self.assertEqual(history, [(1, "001_create_workspace_and_record")])
+        self.assertEqual(history, [(1, "001_create_workspace_and_record"),
+                                   (2, "002_add_workspace_revision")])
 
     def test_migration_is_idempotent(self):
         db = self._db()
@@ -376,11 +377,13 @@ class RecordsMigrationTests(unittest.TestCase):
         db = self._db()
         migrate_records_database(db, app_version="test")
         service = _service(SqliteWorkspaceRepository(db), SqliteRecordRepository(db))
-        request = _water_request()
-        service.create_workspace("W-1", request)
-        result = service.evaluate(request)
-        service.finalize(record_id="R-keep", workspace_id="W-1",
-                         request=request, result=result)
+        service.create_workspace("W-1", _water_request())
+        # 从草稿评价：结果绑定草稿修订号，Finalize 才能核对一致性。
+        result = service.evaluate_workspace("W-1")
+        service.finalize(
+            record_id="R-keep", workspace_id="W-1",
+            request=service.request_from_workspace(service.load_workspace("W-1")),
+            result=result)
         service._workspaces.delete_workspace("W-1")
         self.assertIsNone(service.load_workspace("W-1"))
         self.assertIsNotNone(service.open_record("R-keep"))

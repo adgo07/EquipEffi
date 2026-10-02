@@ -2,8 +2,15 @@
 
 任务：**EquipEffi Phase 3 — GB 19762—2025 离心泵统一正式纵向闭环**
 分支：`phase3/gb19762-unified-vertical-slice`
-状态：**EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE**
+状态：**EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE**（R3：已修复 PR #11 独立验收的全部阻塞点）
 停止点：**等待独立验收；不自行合并 PR、不宣布 Phase 3 PASS、不进入 Phase 4。**
+
+> **修订记录**
+>
+> - **R1/R2**：初次交付（`cf22e11`…`c4543b5`）。
+> - **R3（本次）**：PR #11 独立验收结论为 `PHASE_3 = BLOCKED`。本报告已按该结论修复并在
+>   第 28 节逐条记录处置。**R3 之前的"READY_FOR_INDEPENDENT_ACCEPTANCE"是被验收否决的
+>   状态**，不得据其认为 Phase 3 已通过。
 
 ---
 
@@ -15,19 +22,10 @@
 
 （= 任务授权书预期值；PR #10 "Phase 2：最小正式工程底座" 的合并提交。）
 
-## 2. final head SHA
+## 2. commit 清单与 CI 验证点
 
-```text
-4ca0f84135561954bda5bc4ace622a07bd5fb1bd
-```
-
-（分支 `phase3/gb19762-unified-vertical-slice` 的 CI 验证点 head，已推送到 `origin`。）
-
-**CI 结果（该 SHA）**：`Windows Core` 的 windows-core (gating) / whitespace-check (gating) / full-suite-baseline (NON-GATING) 与 `Pump Conformance` (gating) 全部 **success**。
-
-其后只有**文档**追加提交（记录本 SHA 与提交序列），不改动任何代码、测试或证据；PR #11 的最终 head 以 `git rev-parse origin/phase3/gb19762-unified-vertical-slice` 为准。
-
-本次提交序列（相对 Phase 3 基线 `7e16418aa32ced5512e26bd70227f01a329fbdfc`）：
+独立验收指出 R1/R2 报告只列了 7 个缩写 SHA，而 GitHub Compare 显示 `ahead_by=9`。
+**完整清单以 `git log --oneline 7e16418..HEAD` 为唯一权威**；下表为 R1/R2 部分（9 个提交）：
 
 ```text
 cf22e11  统一 golden-case-0.5 schema + 11 条 pump_chemical Approved Golden + owner 批准证据
@@ -37,7 +35,17 @@ cf22e11  统一 golden-case-0.5 schema + 11 条 pump_chemical Approved Golden + 
 c284b16  P3-G04：29/29 Golden 回放 + 生成边界 + CI 接线 + QA 处置 + 本报告
 b049205  docs：记录 final head
 4ca0f84  fix(ci)：恢复 CI 作用域已知回归基线并记录该更正（见 25.1）
+ae7c389  docs：记录 effective final head 与提交序列
+c4543b5  docs：澄清 CI 验证点 head 与提交序列
 ```
+
+R1/R2 的 CI 验证点：`4ca0f84135561954bda5bc4ace622a07bd5fb1bd` —— `Windows Core`
+（windows-core / whitespace-check gating + full-suite-baseline 非 gating）与
+`Pump Conformance` 全部 success。
+
+**R1/R2 的最终 head `c4543b5a7045d9427c7ee4a397fc4bba313c2a28` 也通过了同样的四道 job。**
+
+R3 的提交与 CI 验证点见第 28 节。
 
 ## 3. actual diff
 
@@ -383,3 +391,94 @@ pump_chemical_support_status = NOT_IN_RELEASE_SCOPE（未提升）
 ```
 
 独立验收应至少核对：本分支 HEAD、实际 diff、`docs/32`、18+11 条 owner 批准证据与文件 SHA-256、`golden-case-0.5` schema、统一类别路由的无子串猜测、`records.sqlite` 的非破坏性与幂等、跨进程 Workspace 恢复、Finalize 矩阵、Record 不可变性、Reopen 不重算、`as_of` 显式化、Qt 无内部标识泄漏、29/29 回放、以及第 25 节的真实全量数字与 CI 运行结果。
+
+---
+
+# 28. R3：PR #11 独立验收阻塞点处置
+
+独立验收对 R1/R2 的结论为 **`PHASE_3 = BLOCKED`**。下表逐条给出处置。**全部阻塞点已修复**，
+但结论仍是 `READY_FOR_INDEPENDENT_ACCEPTANCE`——**修复本身不等于通过验收**。
+
+| # | 验收项 | R1/R2 结论 | R3 处置 |
+|---|---|---|---|
+| 1 | 报告只列 7 个 SHA（Compare 为 9） | BLOCKED（报告缺陷） | 第 2 节给出完整 9 提交清单，并声明 `git log` 为唯一权威 |
+| 3 | 治理状态未同步 | **BLOCKED** | `AGENTS.md`（2 处）、`HANDOFF.md`、`ROADMAP.md`、`REFERENCE_STANDARD_ROADMAP.md`（状态行 + 5 处"正在实现/尚未完成"）全部改为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`，并显式写明**不是** `PHASE_3_PASS` |
+| 7 | Qt 预选清水类别 | **BLOCKED** | 首项改为"请选择产品类别…"且初始 `currentData()` 为 `None`；未选类别不计算；`test_no_category_is_preselected` 断言 |
+| 8 / 12 / 15 | Qt 保存按钮是占位 | **BLOCKED** | `finalize()` 走**真实** Finalize：写草稿 → 重评价 → 绑定修订号 → 落 Record；返回 `SAVED / NO_RESULT / NOT_FINALIZABLE / STALE_RESULT / REJECTED` |
+| 10 | 迁移缺"已有 Record 保留"与"回滚"证据 | **BLOCKED** | 新增迁移 002（`revision`）+ 4 项证据：旧库升级保留 Record/Workspace、001 checksum 不变、升级幂等、**失败迁移整体回滚**（不登记历史、不留半套列） |
+| 11 | 跨进程证明只覆盖 chemical 且未重新装配 | **BLOCKED** | 新证明改为 **water**、**重新装配 Application**（`create_pump_analysis_service`）、**逐一核对全部 8 个输入字段** + 指纹 + revision |
+| 12 | Finalize 不核对 revision，可错配 | **BLOCKED** | `finalize()` 现在核对：输入指纹、product_category、as_of、草稿 revision，且**固化结果自带的输入**而非调用方传入的输入；Qt 侧再加一层表单未改动检查 |
+| 15 | 普通结果区显示 `matched_rule_id` | BLOCKED | 复合指标移入折叠的"技术详情"；普通结果区只留结论/等级/阈值/计算参数/依据 |
+| 16 | 化学边界覆盖不足 | **BLOCKED** | 新增 Q=3000/3000+ε/30000（ns 固定在各档）、ns 20/60/120/210/300 各 ±ε、未覆盖的 **16 行唯一命中**、级数冲突、Δη 分支（含 `eta0_uses_delta` 直接断言） |
+| 9 | 缺"新建页面本机日期默认值"测试 | 部分通过 | **已修复**：`test_new_analysis_defaults_to_local_current_date` 断言新建页面 `as_of == date.today()` 且可编辑；`test_user_edited_date_is_used_instead_of_the_default` 断言用户改动生效 |
+| 21 | Stage D eligibility | 证据不足 | 仍为 `NOT_IN_RELEASE_SCOPE`，**未**提升；见下方 |
+
+## 28.1 一个**未**修复项（如实声明，不掩盖）
+
+**Stage D eligibility——尚不具备提交 Owner 决策的完整证据。**
+`pump_chemical` 的 `support_status` 仍为 `NOT_IN_RELEASE_SCOPE`（有测试断言）。
+R3 未提升它，也**不**声称它现在是 `ELIGIBLE_FOR_SUPPORT_PROMOTION`。
+
+（原第 9 项的 `as_of` 默认值证据缺口已在 R3 补齐，不再是未修项。）
+
+## 28.2 化学边界的两个事实更正（影响测试设计）
+
+独立验收要求"Q=3000 / >3000 的生成边界"。实测发现两个必须尊重的业务事实：
+
+1. **Q 分档与 ns 分档不是独立约束。** ns 由 Q、H、n 与级数派生；在 H 固定时把 Q 从 300
+   增到 3000 会把 ns 推过 300，得到的是"ns 超出范围"而不是"Q 超出范围"。
+   `interval_boundaries.flow_q` 只有 `5<Q≤300` 与 `Q>300`（无 Q 上界）；
+   **Q>300 档的真实约束来自 ns=20~300**。因此正确的边界测试必须**反推 H 以固定 ns**。
+   R3 两种情形都覆盖：固定 ns 时 Q=3000/30000 均 `SUCCESS`；固定 H 时 Q=3000 为
+   `OUT_OF_STANDARD_SCOPE / 不适用`（`test_large_flow_with_constant_head_falls_out_of_scope_by_ns`）。
+2. **级数与类别必须一致。** `单级` 类别要求 `stages=1`，`多级` 类别要求 `stages>1`；
+   不一致返回 `INVALID_INPUT / STAGE_CATEGORY_CONFLICT`（不猜测）。
+   16 行 = `单级/多级 × {5<Q≤300, Q>300} × 4 个 ns 档`。
+
+同时更正一处 R1 测试缺陷：比转速公式中 `q_ns = Q / suction_factor / 3600`
+**不除以级数**，`h_ns = H_total / stage_count`。R1 的辅助函数错误地把 Q 除以级数。
+
+## 28.3 R3 验证（Python 3.12.14 / PySide6 6.11.2 / `QT_QPA_PLATFORM=offscreen`）
+
+```text
+Phase 3 四个模块（含新增 R3）        100 tests OK
+   test_phase3_unified_analysis / test_phase3_qt_unified /
+   test_phase3_golden_and_boundaries / test_phase3_r3_closure（29 项）
+回归门禁集（架构/装配/phase2/entrypoint/Golden/API）  183 tests OK
+compileall                          exit 0
+全量                                1075 run / 1068 pass / 3 fail / 1 error / 3 skip
+已知回归比较器                       gate PASS（new_failures/new_errors/worsened/missing 全为空；
+                                    baseline_tightening_hint=true 为信息性提示，按设计不使 gate 失败）
+```
+
+既有失败仍是既有失败（3 项 V4 reader/writer + 1 项 release audit 错误），**未修复也未隐藏**。
+
+## 28.4 R3 变更文件
+
+```text
+治理     AGENTS.md, HANDOFF.md, ROADMAP.md, REFERENCE_STANDARD_ROADMAP.md
+契约     application/services/centrifugal_pump_analysis_service.py（指纹/修订号/一致性核对）
+迁移     infrastructure/persistence/records_migrations.py（新增 002）
+仓储     infrastructure/persistence/sqlite_records_repository.py（revision 读写）
+UI       presentation/qt/pages/analysis.py（无预选、技术详情、真实保存、载入草稿）
+         presentation/qt/app.py, presentation/qt/shell.py, composition.py（workspace_id 注入）
+测试     tests/unit/test_phase3_r3_closure.py（新，29 项）
+         tests/unit/test_phase3_qt_unified.py（+11 项）、tests/unit/test_phase3_unified_analysis.py（2 处随契约更新）
+CI       .github/workflows/pump-conformance.yml（加入 R3 模块）
+设计     docs/32（新增 10.1 迁移 002、10.2 Finalize 一致性、B 节无预选规则）
+```
+
+**未修改**：Pump evaluator、Canonical、18 条 water Golden 0.4、11 条 chemical Golden 0.5
+业务真值、Numeric Profile、`platform-lock.json`、`transformer`、Excel 实现、
+`pump_chemical` 的 `support_status`。
+
+## 28.5 R3 停止点
+
+```text
+status                 = EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE
+r3_blockers_fixed      = 11 / 11（另 1 项如实声明为未修复：Stage D eligibility）
+phase_3_pass_declared  = false
+phase_4_started        = false
+merge_authorized       = false
+pump_chemical_support_status = NOT_IN_RELEASE_SCOPE（未提升）
+```

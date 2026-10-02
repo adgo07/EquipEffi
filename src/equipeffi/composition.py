@@ -167,12 +167,15 @@ def launch_qt(*, paths=None) -> int:
     from .infrastructure.runtime_logging import close_logging, install_exception_hook
     from .presentation.qt.app import run
     import sys
+    from uuid import uuid4
 
     service, logger = create_settings_runtime(paths=paths)
     analysis = create_pump_analysis_service(paths=paths)
+    # 每个应用会话一个草稿标识：保存正式记录时用它核对草稿修订号。
+    workspace_id = f"SESSION-{uuid4().hex[:12]}"
     previous = install_exception_hook(logger)
     try:
-        return run(service, logger, analysis)
+        return run(service, logger, analysis, workspace_id=workspace_id)
     finally:
         sys.excepthook = previous
         close_logging(logger)

@@ -13,6 +13,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import date
 from decimal import Decimal
+from hashlib import sha256
+import json
 from typing import Any, Protocol
 
 from ...domain.common.enums import Conclusion
@@ -154,6 +156,8 @@ class PumpAnalysisRequest:
     equipment_no: str | None = None
     record_id: str = "analysis"
     standard_code: str = GB19762_STANDARD_CODE
+    #: 绑定草稿修订号；从 Workspace 评价时由 `request_from_workspace` 填入。
+    workspace_revision: int | None = None
 
     def raw_values(self) -> dict[str, Any]:
         """转成领域 evaluator 消费的原始字段字典。"""
@@ -164,6 +168,29 @@ class PumpAnalysisRequest:
             if value is not None and str(value) != "":
                 values[key] = value
         return values
+
+    def input_snapshot(self) -> dict[str, Any]:
+        """完整输入快照（Workspace / Record 共用同一形状）。"""
+
+        return self.raw_values() | {
+            "product_category": self.product_category,
+            "as_of": self.as_of.isoformat(),
+            "project_name": self.project_name,
+            "equipment_no": self.equipment_no,
+        }
+
+    def request_fingerprint(self) -> str:
+        """输入指纹：对影响业务结论的全部输入取稳定哈希。
+
+        Finalize 用它证明"被固化的结果确实对应当前 Workspace 的输入"，
+        防止新输入与旧结果错配进入同一正式 Record。
+        """
+
+        keys = ("product_category", "as_of", "QBEP", "HBEP", "speed", "efficiency",
+                "suction", "stages")
+        payload = {key: str(getattr(self, key)) for key in keys}
+        blob = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        return sha256(blob.encode("utf-8")).hexdigest()
 
 
 @dataclass(frozen=True)
@@ -191,6 +218,9 @@ class PumpAnalysisResult:
     extra_metrics: dict[str, Any] = field(default_factory=dict)
     explanation: str = ""
     references: dict[str, Any] = field(default_factory=dict)
+    raw_values: dict[str, Any] = field(default_factory=dict)
+    workspace_revision: int | None = None
+    request_fingerprint: str = ""
     requires_category_confirmation: bool = False
     finalizable: bool = False
     not_finalizable_reason: str = ""
@@ -216,6 +246,9 @@ class PumpAnalysisResult:
             "extra_metrics": dict(self.extra_metrics),
             "explanation": self.explanation,
             "references": dict(self.references),
+            "raw_values": dict(self.raw_values),
+            "workspace_revision": self.workspace_revision,
+            "request_fingerprint": self.request_fingerprint,
             "requires_category_confirmation": self.requires_category_confirmation,
             "finalizable": self.finalizable,
             "not_finalizable_reason": self.not_finalizable_reason,
@@ -239,6 +272,30 @@ class WorkspaceSnapshot:
     schema_version: int
     created_at_utc: str
     updated_at_utc: str
+    #: 单调递增修订号；每次 save 都 +1。Finalize 用它拒绝"旧结果 + 新输入"。
+    revision: int = 1
+
+    def request_fingerprint(self) -> str:
+        """草稿当前输入的指纹；形状必须与 `PumpAnalysisRequest.request_fingerprint()` 一致。"""
+
+        payload = {
+            "product_category": str(self.product_category),
+            "as_of": str(self.as_of),
+            "QBEP": _opt(self.payload.get("QBEP")),
+            "HBEP": _opt(self.payload.get("HBEP")),
+            "speed": _opt(self.payload.get("speed")),
+            "efficiency": _opt(self.payload.get("efficiency")),
+            "suction": _opt(self.payload.get("suction")),
+            "stages": _opt(self.payload.get("stages")),
+        }
+        blob = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        return sha256(blob.encode("utf-8")).hexdigest()
+
+
+def _opt(value: Any) -> str:
+    """与 `PumpAnalysisRequest.request_fingerprint()` 的取值规则保持一致。"""
+
+    return "None" if value is None else str(value)
 
 
 @dataclass(frozen=True)
@@ -375,6 +432,11 @@ class CentrifugalPumpAnalysisService:
             "standard_code": request.standard_code,
             "product_category": request.product_category,
             "as_of": request.as_of,
+            # 固化本次评价所用的完整输入与指纹：Finalize 必须核对它们，
+            # 否则可能把"新输入 + 旧结果"写进同一正式 Record。
+            "raw_values": request.input_snapshot(),
+            "request_fingerprint": request.request_fingerprint(),
+            "workspace_revision": request.workspace_revision,
             "references": {
                 "standard": self._pack_reference(pack, rule_profile or ""),
                 "numeric_profile_id": "EQUIPEFFI_PUMP_DECIMAL50_V2",
@@ -472,6 +534,16 @@ class CentrifugalPumpAnalysisService:
 
     # -- 特殊结果 -----------------------------------------------------------
 
+    @staticmethod
+    def _frozen_fields(request: PumpAnalysisRequest) -> dict[str, Any]:
+        """所有结果路径都必须携带的输入冻结字段。"""
+
+        return {
+            "raw_values": request.input_snapshot(),
+            "request_fingerprint": request.request_fingerprint(),
+            "workspace_revision": request.workspace_revision,
+        }
+
     def _uncertain(self, request: PumpAnalysisRequest) -> PumpAnalysisResult:
         return PumpAnalysisResult(
             rule_profile=None,
@@ -488,6 +560,7 @@ class CentrifugalPumpAnalysisService:
                 "尚未确认实际泵型，未执行计算。请对照下列说明确认类别后重新分析："
                 "单级/多级看叶轮数量；单吸/双吸看入口方向；清水泵与石油化工泵看输送介质与标准适用范围。"
             ),
+            **self._frozen_fields(request),
             requires_category_confirmation=True,
             finalizable=False,
             not_finalizable_reason="类别未确认，不构成正式评价结论。",
@@ -506,6 +579,7 @@ class CentrifugalPumpAnalysisService:
             grade=None,
             issue_codes=("CATEGORY_NOT_APPLICABLE",),
             explanation="已确认该产品类别不属于 GB 19762—2025 列出的泵型，不执行标准公式。",
+            **self._frozen_fields(request),
         )
 
     def _unresolved(self, request: PumpAnalysisRequest, *, reason: str,
@@ -536,6 +610,7 @@ class CentrifugalPumpAnalysisService:
             issue_codes=issue_codes,
             missing_fields=missing_fields,
             explanation=reason,
+            **self._frozen_fields(request),
         )
 
     # -- 投影 ---------------------------------------------------------------
@@ -624,6 +699,7 @@ class CentrifugalPumpAnalysisService:
             schema_version=1,
             created_at_utc=now,
             updated_at_utc=now,
+            revision=1,
         )
         self._workspaces.save_workspace(snapshot)
         return snapshot
@@ -647,6 +723,7 @@ class CentrifugalPumpAnalysisService:
             schema_version=1,
             created_at_utc=existing.created_at_utc if existing else now,
             updated_at_utc=now,
+            revision=(existing.revision + 1) if existing else 1,
         )
         self._workspaces.save_workspace(snapshot)
         return snapshot
@@ -661,17 +738,98 @@ class CentrifugalPumpAnalysisService:
             return []
         return self._workspaces.list_workspaces(limit)
 
+    # -- Workspace <- -> 契约 转换 ------------------------------------------
+
+    def request_from_workspace(self, workspace: WorkspaceSnapshot,
+                               *, record_id: str = "analysis") -> PumpAnalysisRequest:
+        """把草稿还原成统一输入，并绑定草稿修订号。"""
+
+        payload = workspace.payload
+        return PumpAnalysisRequest(
+            product_category=workspace.product_category,
+            as_of=date.fromisoformat(workspace.as_of),
+            QBEP=payload.get("QBEP"),
+            HBEP=payload.get("HBEP"),
+            speed=payload.get("speed"),
+            efficiency=payload.get("efficiency"),
+            suction=payload.get("suction"),
+            stages=payload.get("stages"),
+            project_name=payload.get("project_name"),
+            equipment_no=payload.get("equipment_no"),
+            record_id=record_id,
+            standard_code=workspace.standard_code,
+            workspace_revision=workspace.revision,
+        )
+
+    def save_workspace_from_request(self, workspace_id: str,
+                                    request: PumpAnalysisRequest) -> WorkspaceSnapshot:
+        """按 workspace_id 是否存在决定新建或更新（Qt 保存草稿入口）。"""
+
+        existing = self.load_workspace(workspace_id)
+        if existing is None:
+            return self.create_workspace(workspace_id, request)
+        return self.update_workspace(workspace_id, request)
+
+    def evaluate_workspace(self, workspace_id: str,
+                           *, record_id: str = "analysis") -> PumpAnalysisResult:
+        """从草稿读取输入并评价；结果绑定该草稿的当前修订号。"""
+
+        workspace = self.load_workspace(workspace_id)
+        if workspace is None:
+            raise AnalysisError(f"草稿不存在: {workspace_id}")
+        return self.evaluate(self.request_from_workspace(workspace, record_id=record_id))
+
     def finalize(self, *, record_id: str, workspace_id: str | None,
                  request: PumpAnalysisRequest, result: PumpAnalysisResult) -> RecordSnapshot:
         """把一次评价固化为不可变 Record。
 
-        只允许 `FINALIZABLE_STATUSES`；`INVALID_INPUT` 与执行异常被拒绝。
+        只有同时满足以下条件才允许固化：
+
+        1. 结果状态属于 `FINALIZABLE_STATUSES`（`INVALID_INPUT` 与执行异常被拒绝）；
+        2. **传入的 request 与产生 result 的那次评价完全一致**（指纹比对）；
+        3. 若绑定 Workspace，则该 Workspace 的当前 revision 与评价时的 revision 一致。
+
+        第 2、3 条用于防止"新输入 + 旧结果"被写进同一正式 Record。
         """
 
         if self._records is None:
             raise AnalysisError("未装配 Record 仓储，无法固化正式记录")
         if not result.finalizable:
             raise AnalysisError(result.not_finalizable_reason or "当前结果不允许形成正式记录")
+
+        # (2) 输入指纹必须与产生该结果的输入一致，否则拒绝固化。
+        expected = request.request_fingerprint()
+        if not result.request_fingerprint:
+            raise AnalysisError(
+                "结果未携带输入指纹，无法证明它对应本次输入；拒绝固化正式记录"
+            )
+        if result.request_fingerprint != expected:
+            raise AnalysisError(
+                "输入已在分析之后被修改，当前结果不再对应当前输入；"
+                "请重新分析后再保存正式记录"
+            )
+        if result.product_category != request.product_category:
+            raise AnalysisError("结果与输入的设备类别不一致，拒绝固化正式记录")
+        if result.as_of != request.as_of:
+            raise AnalysisError("结果与输入的评价日期不一致，拒绝固化正式记录")
+
+        # (3) 绑定 Workspace 时必须核对 revision，防止草稿在分析后又被改动。
+        if workspace_id is not None:
+            if self._workspaces is None:
+                raise AnalysisError("未装配 Workspace 仓储，无法核对草稿修订号")
+            workspace = self._workspaces.load_workspace(workspace_id)
+            if workspace is None:
+                raise AnalysisError(f"草稿不存在，无法固化正式记录: {workspace_id}")
+            if result.workspace_revision is None:
+                raise AnalysisError(
+                    "结果未绑定草稿修订号，无法证明它对应当前草稿；拒绝固化正式记录"
+                )
+            if workspace.revision != result.workspace_revision:
+                raise AnalysisError(
+                    "草稿已在分析之后被修改，当前结果已过期；请重新分析后再保存正式记录"
+                )
+            if workspace.request_fingerprint() != expected:
+                raise AnalysisError("草稿输入与待固化结果不一致，拒绝固化正式记录")
 
         now = _utc_now()
         snapshot = RecordSnapshot(
@@ -686,11 +844,10 @@ class CentrifugalPumpAnalysisService:
             evaluation_status=str(result.evaluation_status),
             grade=result.grade,
             ui_conclusion=result.ui_conclusion,
-            input_snapshot=request.raw_values() | {
-                "project_name": request.project_name,
-                "equipment_no": request.equipment_no,
-                "as_of": request.as_of.isoformat(),
-                "product_category": request.product_category,
+            # 固化结果自带的那次输入，而不是调用方此刻传入的输入。
+            input_snapshot=dict(result.raw_values) | {
+                "request_fingerprint": result.request_fingerprint,
+                "workspace_revision": result.workspace_revision,
             },
             result_snapshot=result.as_snapshot(),
             reference_snapshot=dict(result.references),
