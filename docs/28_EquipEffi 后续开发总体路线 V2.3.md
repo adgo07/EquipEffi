@@ -65,6 +65,8 @@ automatic continuation:
 DISABLED
 ```
 
+> **口径更正（2026-10-01）**：上方摘要中的 `Qingzhou-contracts locked commit` 为 V2.3 校准当时（2026-09-28）口径；历史口径 `0cd74d783fa23add6dc881b408a8c8ba8503f8e8` 已被 2026-10-01 的 Numeric Contract v1 Adoption 取代。当前 locked commit 为 `ee5feb0cc34dbd99790500fadd0c4c932e202a20`。当前权威来源：`platform-lock.json`、`PLATFORM_BASELINE.md`、`ROADMAP.md`、`docs/governance/NUMERIC_CONTRACT_V1_ADOPTION_REPORT.md`。历史正文保留不改写。
+
 Phase 2 只有在用户明确授权后才能开始。
 
 ---
@@ -101,6 +103,8 @@ Numeric、Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack �
 ```text
 DRAFT / NOT YET RELEASED
 ```
+
+> **口径更正（2026-10-01）**：本节“当前锁定”的 commit 与 Contract 状态均为 V2.3 校准当时（2026-09-28）口径。当前 locked commit 为 `ee5feb0cc34dbd99790500fadd0c4c932e202a20`；Numeric Contract 已由本仓正式采用为 `v1 / FROZEN`，Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack 仍为 `DRAFT / NOT YET RELEASED`。当前权威来源：`platform-lock.json`、`PLATFORM_BASELINE.md`、`ROADMAP.md`、`docs/governance/NUMERIC_CONTRACT_V1_ADOPTION_REPORT.md`。历史正文保留不改写。
 
 因此：
 

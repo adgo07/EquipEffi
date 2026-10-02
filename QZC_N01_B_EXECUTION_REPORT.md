@@ -1,5 +1,10 @@
 # QZC-N01-B — EquipEffi Transcendental Numeric Pilot Execution Report
 
+> 状态：`HISTORICAL-SUPERSEDED`
+> 用途：`QZC-N01-B` Transcendental Numeric Pilot 的历史审计证据（记录当时真实执行与数值结果）
+> 注意：不得作为当前正式规则依据。本报告的 `Central lock：0cd74d783fa23add6dc881b408a8c8ba8503f8e8` 与“READY FOR INDEPENDENT ACCEPTANCE / Gate 2 NOT YET DECIDED”均为当时状态，已被后续 Numeric Contract v1 Adoption 与独立验收结论取代；历史正文与当时结论不得改写。
+> 当前权威：`platform-lock.json` / `PLATFORM_BASELINE.md`（locked `ee5feb0cc34dbd99790500fadd0c4c932e202a20`）、`docs/governance/NUMERIC_CONTRACT_V1_ADOPTION_REPORT.md`、`REFERENCE_STANDARD_ROADMAP.md`、`TASK_STATE.md`。
+
 状态：**EXECUTION COMPLETE / READY FOR INDEPENDENT ACCEPTANCE**
 Pilot：`QZC-N01-B`
 代表 Profile：GB 19762—2025 离心泵
