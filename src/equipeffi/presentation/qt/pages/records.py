@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
     QListWidget,
     QListWidgetItem,
     QPushButton,
+    QToolBox,
     QVBoxLayout,
     QWidget,
 )
@@ -56,6 +57,20 @@ class RecordsPage(QWidget):
         self.detail.setTextFormat(Qt.TextFormat.PlainText)
         self.detail.setAlignment(Qt.AlignmentFlag.AlignTop)
         detail_layout.addWidget(self.detail)
+
+        # 技术详情渐进展示：内部 rule / data id / Numeric 配置归此处，默认折叠。
+        self.technical_box = QToolBox()
+        technical_page = QWidget()
+        technical_layout = QVBoxLayout(technical_page)
+        self.technical = QLabel("")
+        self.technical.setWordWrap(True)
+        self.technical.setTextFormat(Qt.TextFormat.PlainText)
+        self.technical.setAlignment(Qt.AlignmentFlag.AlignTop)
+        technical_layout.addWidget(self.technical)
+        technical_layout.addStretch()
+        self.technical_box.addItem(technical_page, "技术详情（规则编号、数据版本、数值配置）")
+        self.technical_box.setCurrentIndex(-1)
+        detail_layout.addWidget(self.technical_box)
         detail_layout.addStretch()
         holder.addWidget(detail_group, 3)
         layout.addLayout(holder, 1)
@@ -89,6 +104,9 @@ class RecordsPage(QWidget):
 
         snapshot = self.service.open_record(record_id)
         result = snapshot.result_snapshot
+        input_snapshot = snapshot.input_snapshot
+
+        # 业务详情：面向用户，不出现内部 rule / data id / profile 名。
         lines = [
             f"记录编号：{snapshot.record_id}",
             f"采用标准：{snapshot.standard_code}",
@@ -98,13 +116,18 @@ class RecordsPage(QWidget):
         ]
         if snapshot.grade:
             lines.append(f"能效等级：{snapshot.grade}")
-        if snapshot.evaluation_status:
-            lines.append(f"评价状态：{snapshot.evaluation_status}")
-        input_snapshot = snapshot.input_snapshot
-        lines.append("原输入：" + "；".join(
-            f"{key} {input_snapshot[key]}"
-            for key in ("QBEP", "HBEP", "speed", "efficiency", "suction", "stages")
-            if input_snapshot.get(key) not in (None, "")))
+        for label, key in (("规定点流量 Q_BEP（m³/h）", "QBEP"),
+                           ("规定点扬程 H_BEP（m）", "HBEP"),
+                           ("规定点转速 n（r/min）", "speed"),
+                           ("规定点泵效率 η（%）", "efficiency"),
+                           ("吸入方式", "suction"), ("级数", "stages")):
+            value = input_snapshot.get(key)
+            if value not in (None, ""):
+                lines.append(f"{label}：{value}")
+        if input_snapshot.get("project_name"):
+            lines.append(f"企业/项目名称：{input_snapshot['project_name']}")
+        if input_snapshot.get("equipment_no"):
+            lines.append(f"设备编号：{input_snapshot['equipment_no']}")
         thresholds = result.get("thresholds") or {}
         if thresholds:
             lines.append("原等级阈值：" + "；".join(
@@ -113,9 +136,27 @@ class RecordsPage(QWidget):
         if derived:
             lines.append("原关键计算参数：" + "；".join(
                 f"{name} {value}" for name, value in derived.items()))
-        if result.get("matched_rule_id"):
-            lines.append(f"原标准依据：GB 19762—2025（命中规则 {result['matched_rule_id']}）")
+        lines.append("原标准依据：GB 19762—2025《离心泵能效限定值及能效等级》")
         lines.append(f"保存时间：{snapshot.finalized_at_utc}")
         text = "\n".join(lines)
         self.detail.setText(text)
+        self._render_technical(snapshot, result)
         return text
+
+    def _render_technical(self, snapshot, result) -> None:
+        """技术详情：审计需要的内部标识集中在此，不进入普通业务详情。"""
+
+        standard = snapshot.reference_snapshot.get("standard") or {}
+        rows = [
+            ("评价状态", snapshot.evaluation_status or "—"),
+            ("命中规则", result.get("matched_rule_id") or "—"),
+            ("类别状态", result.get("category_status") or "—"),
+            ("规则集", standard.get("rule_profile") or "—"),
+            ("标准包", standard.get("pack_id") or "—"),
+            ("数据版本", snapshot.canonical_version or "—"),
+            ("数值配置", snapshot.numeric_profile_id or "—"),
+            ("结果契约", snapshot.result_contract_version or "—"),
+            ("输入指纹", snapshot.input_snapshot.get("request_fingerprint") or "—"),
+            ("草稿修订号", snapshot.input_snapshot.get("workspace_revision", "—")),
+        ]
+        self.technical.setText("\n".join(f"{name}：{value}" for name, value in rows))

@@ -510,3 +510,76 @@ failures (9): desktop_form_model, release_audit ×4, v4_reader, v4_template_reso
 R1/R2 时本机 1036 与其 head CI 同样存在 2 项差异）。
 
 PR #11 在 R3 后：`open` / `merged=false` / head `97d62e2` / 11 commits / 41 files / +7685 −118。
+
+---
+
+# 29. R4：第二次独立验收阻塞点处置
+
+第二次独立验收（head `e628b5e`）结论仍为 **`PHASE_3 = BLOCKED`**，并给出 3 个关键阻塞。
+R4 逐条修复。**修复不等于通过验收。**
+
+| # | 验收项 | R3 结论 | R4 处置 |
+|---|---|---|---|
+| 1 | **草稿不能经用户流程保存并在重启后恢复** | BLOCKED | 新增"分析草稿"区（草稿名称 / 保存草稿 / 新建草稿 / 已有草稿列表 + 载入 / 刷新 / 删除草稿）。草稿在**分析之前**即可独立保存；`launch_qt` **不再生成随机 session id**；启动时列出全部历史草稿，用户可载入继续。删除草稿不影响正式记录 |
+| 2 | **chemical 跨进程证明不完整** + 名为 restart 的测试未启动子进程 | BLOCKED | 新增 `ChemicalWorkspaceCrossProcessTests`：全新解释器**重新装配 Application**、逐一核对**全部 8 个输入字段** + 指纹 + revision，并在子进程内真实评价（断言 `SUCCESS / 2级 / grade=2`）。原误导性测试更名为 `..._in_the_same_process` 并明确声明不声称跨进程；`test_phase3_unified_analysis` 中原名 `..._separate_process` 但实际未起子进程的测试更名为 `..._across_a_fresh_connection`，同时补齐全部字段断言 |
+| 3 | **ns 生成样本不能证明区间归属** | BLOCKED | 端点/±ε 全部改为**断言具体规则行**：期望档位由标准开闭语义显式给出，规则行由 `NS_RULE_TABLE` 推出，并用 `_canonical_band_index` 独立复核。删除"允许 SUCCESS 或 OOS"的模糊断言。新增 Canonical 开闭标志断言与区间判定谓词直测 |
+| 12 | EXECUTION_ERROR 矩阵证明不足 | 部分 | 保留：`FINALIZABLE_STATUSES` 不含 `INVALID_INPUT`/`EXECUTION_ERROR`，且构造的 `EXECUTION_ERROR` 结果被拒绝。**仍非真实 evaluator 异常链**，如实声明 |
+| 14 / 15 | 历史页普通详情仍显示内部字段名 / rule ID | 部分 | 记录页拆为"记录详情"（业务语言，含中文参数名）与折叠的"技术详情"（命中规则、规则集、数据包、数值配置、输入指纹、修订号）。新增测试断言普通详情不含 `GB19762-T3-01` / `pump_water` / `EQUIPEFFI_PUMP_DECIMAL50_V2`，且技术详情仍可审计 |
+
+## 29.1 ns 边界的一条重要方法论更正
+
+R3 的 ns 边界测试是**无效证据**，验收指出的问题成立且比表面更严重：
+
+- 用 float 反推 H 再截为 10 位小数，会产生约 1e-10 量级的 ns 偏差——**远大于**测试声称的
+  `±1e-4` 意图，端点样本实际上落在"端点附近"而不是端点；
+- R4 改为对**完整精度字符串**（`.50f`）二分搜索，实测可把实际 ns 收敛到目标端点约
+  **2e-25** 以内；
+- 但即便如此，**精确命中端点仍不可达**（HBEP 字符串与 Decimal 计算链限制）。若在端点
+  附近断言"某一侧"，样本会因 2e-25 的方向不确定而变成噪声。因此 R4 的样本设计是：
+  - **±ε 样本**（ε=1e-15，比可达精度大 10 个数量级）：断言**确定的**目标档位；
+  - **端点探针**（±5e-16）：同样断言确定的档位；
+  - 断言前先检查 `|actual - target| <= 1e-24`，精度不足则**测试失败并说明样本无效**，
+    绝不静默放宽。
+
+## 29.2 R4 验证（Python 3.12.14 / PySide6 6.11.2 / `QT_QPA_PLATFORM=offscreen`）
+
+```text
+Phase 3 四个模块                   112 tests OK
+  test_phase3_qt_unified          33（新增草稿用户流程 7 项 + 历史技术分层 1 项）
+  test_phase3_r3_closure          39（化学跨进程 1 项 + ns 端点/±ε 重写）
+门禁集（架构/元数据/装配/设置/日志/Qt/批准 Golden/API/entrypoint/矩阵）  578 tests OK
+compileall                         exit 0
+全量                               1087 run / 1080 pass / 3 fail / 1 error / 3 skip
+已知回归比较器                      gate PASS（无新增/恶化/缺失）
+```
+
+既有失败仍是既有失败（3 项 V4 reader/writer + 1 项 release audit 错误），**未修复也未隐藏**。
+
+## 29.3 R4 变更文件
+
+```text
+UI       presentation/qt/pages/analysis.py（草稿区：保存/新建/列表/载入/刷新/删除；finalize 前核对表单）
+         presentation/qt/pages/records.py（业务详情与技术详情分层）
+         composition.py（移除随机 session id）
+契约     application/services/centrifugal_pump_analysis_service.py（delete_workspace）
+设计     docs/32（新增 7.1 草稿用户流程与双 Profile 跨进程 Gate）
+测试     tests/unit/test_phase3_qt_unified.py（草稿用户流程 + 历史技术分层）
+         tests/unit/test_phase3_r3_closure.py（化学跨进程 + ns 端点/±ε 重写）
+         tests/unit/test_phase3_unified_analysis.py（测试更名，消除"跨进程"误导）
+```
+
+**未修改**：Pump evaluator、Canonical、18 条 water Golden 0.4、11 条 chemical Golden 0.5
+业务真值、Numeric Profile、`platform-lock.json`、`transformer`、Excel 实现、
+`pump_chemical` 的 `support_status`。
+
+## 29.4 R4 停止点
+
+```text
+status                 = EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE
+r4_blockers_fixed      = 3 / 3
+known_residual_gaps    = EXECUTION_ERROR 仍为构造结果而非真实 evaluator 异常链（如实声明）
+phase_3_pass_declared  = false
+phase_4_started        = false
+merge_authorized       = false
+pump_chemical_support_status = NOT_IN_RELEASE_SCOPE（未提升）
+```

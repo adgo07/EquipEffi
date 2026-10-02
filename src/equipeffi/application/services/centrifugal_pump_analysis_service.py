@@ -738,6 +738,13 @@ class CentrifugalPumpAnalysisService:
             return []
         return self._workspaces.list_workspaces(limit)
 
+    def delete_workspace(self, workspace_id: str) -> None:
+        """删除未正式化的草稿。正式 Record 不可删除，也不受影响。"""
+
+        if self._workspaces is None:
+            raise AnalysisError("未装配 Workspace 仓储，无法删除草稿")
+        self._workspaces.delete_workspace(workspace_id)
+
     # -- Workspace <- -> 契约 转换 ------------------------------------------
 
     def request_from_workspace(self, workspace: WorkspaceSnapshot,

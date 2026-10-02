@@ -95,6 +95,7 @@ class AnalysisPage(QWidget):
         body = QWidget()
         layout = QVBoxLayout(body)
         layout.setSpacing(TOKENS.section_gap)
+        layout.addWidget(self._draft_group())
         layout.addWidget(self._basic_group())
         layout.addWidget(self._category_group())
         layout.addWidget(self._points_group())
@@ -105,6 +106,46 @@ class AnalysisPage(QWidget):
         outer.addWidget(scroll, 1)
         # 先建好输入控件再应用一次类别联动，避免信号早于控件创建。
         self._on_category_changed()
+        self.refresh_drafts()
+
+    def _draft_group(self) -> QGroupBox:
+        """草稿（Workspace）用户入口：新建 / 保存 / 载入 / 删除。
+
+        草稿必须在**分析之前**就能独立保存，并在程序重启后重新列出与恢复；
+        它不是"保存正式记录"的副产物。
+        """
+
+        group = QGroupBox("分析草稿")
+        layout = QGridLayout(group)
+        layout.addWidget(QLabel("草稿名称"), 0, 0)
+        self.draft_name = QLineEdit()
+        self.draft_name.setPlaceholderText("例如：3号循环水泵-2026Q4")
+        layout.addWidget(self.draft_name, 0, 1, 1, 3)
+
+        self.save_draft_button = QPushButton("保存草稿")
+        self.save_draft_button.clicked.connect(self.save_draft)
+        self.new_draft_button = QPushButton("新建草稿")
+        self.new_draft_button.clicked.connect(self.new_draft)
+        layout.addWidget(self.save_draft_button, 0, 4)
+        layout.addWidget(self.new_draft_button, 0, 5)
+
+        layout.addWidget(QLabel("已有草稿"), 1, 0)
+        self.draft_list = QComboBox()
+        layout.addWidget(self.draft_list, 1, 1, 1, 2)
+        self.load_draft_button = QPushButton("载入")
+        self.load_draft_button.clicked.connect(self.load_selected_draft)
+        self.refresh_drafts_button = QPushButton("刷新")
+        self.refresh_drafts_button.clicked.connect(self.refresh_drafts)
+        self.delete_draft_button = QPushButton("删除草稿")
+        self.delete_draft_button.clicked.connect(self.delete_selected_draft)
+        layout.addWidget(self.load_draft_button, 1, 3)
+        layout.addWidget(self.refresh_drafts_button, 1, 4)
+        layout.addWidget(self.delete_draft_button, 1, 5)
+
+        self.draft_status = QLabel("尚未保存草稿。")
+        self.draft_status.setWordWrap(True)
+        layout.addWidget(self.draft_status, 2, 0, 1, 6)
+        return group
 
     def _basic_group(self) -> QGroupBox:
         group = QGroupBox("基本信息")
@@ -337,6 +378,7 @@ class AnalysisPage(QWidget):
         if workspace is None:
             return False
         self._workspace_id = workspace_id
+        self.draft_name.setText(workspace_id)
         index = self.category.findData(workspace.product_category)
         if index >= 0:
             self.category.setCurrentIndex(index)
@@ -360,6 +402,89 @@ class AnalysisPage(QWidget):
         if self._record_id_factory is not None:
             return self._record_id_factory()
         return f"{self._workspace_id or 'ANALYSIS'}-{uuid4().hex[:12]}"
+
+    # -- 草稿（Workspace）用户流程 -------------------------------------------
+
+    def new_draft(self) -> None:
+        """清空表单并开始一个新草稿（不落盘，直到用户点"保存草稿"）。"""
+
+        self._workspace_id = None
+        self.draft_name.setText("")
+        self.project_name.setText("")
+        self.equipment_no.setText("")
+        self.as_of.setText(date.today().isoformat())
+        self.category.setCurrentIndex(0)
+        for edit in self.point_inputs.values():
+            edit.clear()
+        self.suction.setCurrentIndex(0)
+        self.stages.setEnabled(True)
+        self.stages.clear()
+        self._last_request = self._last_result = None
+        self._show_error("已新建草稿：填写内容后点“保存草稿”即可保存。")
+
+    def save_draft(self) -> str:
+        """独立保存草稿（不需要先分析，也不需要 Finalize）。"""
+
+        name = self.draft_name.text().strip()
+        if not name:
+            self.draft_status.setText("请先填写草稿名称。")
+            return "NO_NAME"
+        request = self._collect_request()
+        if request is None:
+            self.draft_status.setText("草稿内容不完整或日期格式不正确，未保存。")
+            return "INCOMPLETE"
+        workspace = self.service.save_workspace_from_request(name, request)
+        self._workspace_id = workspace.workspace_id
+        self.draft_status.setText(
+            f"草稿已保存：{workspace.workspace_id}（修订 {workspace.revision}，"
+            f"{workspace.updated_at_utc}）")
+        self.refresh_drafts()
+        return "SAVED"
+
+    def refresh_drafts(self) -> None:
+        """重新列出全部草稿（跨重启可见）。"""
+
+        current = self._workspace_id
+        self.draft_list.clear()
+        for workspace in self.service.list_workspaces():
+            self.draft_list.addItem(
+                f"{workspace.workspace_id}｜{workspace.product_category or '未选类别'}"
+                f"｜{workspace.updated_at_utc[:19]}",
+                workspace.workspace_id)
+        if current is not None:
+            index = self.draft_list.findData(current)
+            if index >= 0:
+                self.draft_list.setCurrentIndex(index)
+        if self.draft_list.count() == 0:
+            self.draft_status.setText("尚未保存草稿。")
+        else:
+            self.draft_status.setText(f"共 {self.draft_list.count()} 个草稿。")
+
+    def load_selected_draft(self) -> bool:
+        workspace_id = self.draft_list.currentData()
+        if not workspace_id:
+            self.draft_status.setText("请先选择一个草稿。")
+            return False
+        if not self.load_workspace(workspace_id):
+            self.draft_status.setText(f"草稿不存在或已删除：{workspace_id}")
+            return False
+        self.draft_status.setText(f"已载入草稿：{workspace_id}")
+        return True
+
+    def delete_selected_draft(self) -> str:
+        workspace_id = self.draft_list.currentData()
+        if not workspace_id:
+            self.draft_status.setText("请先选择一个草稿。")
+            return "NO_SELECTION"
+        if workspace_id == self._workspace_id:
+            self._workspace_id = None
+        self.service.delete_workspace(workspace_id)
+        self.refresh_drafts()
+        self.draft_status.setText(f"已删除草稿：{workspace_id}（正式记录不受影响）")
+        return "DELETED"
+
+    def delete_workspace(self, workspace_id: str) -> None:
+        self.service.delete_workspace(workspace_id)
 
     # -- 展示 ---------------------------------------------------------------
 

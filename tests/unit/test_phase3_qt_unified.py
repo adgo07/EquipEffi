@@ -283,6 +283,129 @@ class AnalysisSaveFlowTests(unittest.TestCase):
         self.assertFalse(self.page.load_workspace("does-not-exist"))
 
 
+class DraftUserFlowTests(unittest.TestCase):
+    """草稿必须在**用户流程**里独立保存、列出、跨重启恢复。"""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.app = _app()
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
+        self.db = Path(self.tmp.name) / "records.sqlite"
+        migrate_records_database(self.db, app_version="test")
+        self.page = self._new_page()
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def _new_page(self) -> AnalysisPage:
+        """模拟一次程序启动：全新 Service + 全新页面（不传任何 session id）。"""
+
+        return AnalysisPage(_service(SqliteWorkspaceRepository(self.db),
+                                    SqliteRecordRepository(self.db)))
+
+    def _fill(self, category: str = "单级石油化工离心泵", **overrides) -> None:
+        values = {"QBEP": "123.5", "HBEP": "14.25", "speed": "2950",
+                  "efficiency": "73.5", "suction": "单吸", "stages": "1"}
+        values.update(overrides)
+        self.page.category.setCurrentIndex(self.page.category.findData(category))
+        if self.page.stages.isEnabled():
+            self.page.stages.setText(values["stages"])
+        self.page.as_of.setText(AS_OF)
+        for key in ("QBEP", "HBEP", "speed", "efficiency"):
+            self.page.point_inputs[key].setText(values[key])
+        self.page.suction.setCurrentIndex(self.page.suction.findData(values["suction"]))
+
+    def test_draft_can_be_saved_without_analysing_or_finalizing(self):
+        self.page.draft_name.setText("草稿A")
+        self._fill()
+        self.assertEqual(self.page.save_draft(), "SAVED")
+        # 草稿不产生正式记录
+        self.assertEqual(_service(SqliteWorkspaceRepository(self.db),
+                                  SqliteRecordRepository(self.db)).list_records(), [])
+
+    def test_draft_requires_a_name(self):
+        self._fill()
+        self.assertEqual(self.page.save_draft(), "NO_NAME")
+        self.assertEqual(self.page.draft_list.count(), 0)
+
+    def test_draft_is_listed_and_fully_restored_after_restart(self):
+        """核心用户链：保存草稿 → 关程序 → 重开 → 列表可见 → 载入恢复全部输入。"""
+
+        self.page.draft_name.setText("3号循环水泵-2026Q4")
+        self.page.project_name.setText("示例项目")
+        self.page.equipment_no.setText("P-777")
+        self._fill()
+        self.assertEqual(self.page.save_draft(), "SAVED")
+
+        restarted = self._new_page()          # 等价于重新启动程序
+        self.assertEqual(restarted.draft_list.count(), 1)
+        self.assertIn("3号循环水泵-2026Q4", restarted.draft_list.itemText(0))
+        self.assertTrue(restarted.load_selected_draft())
+
+        self.assertEqual(restarted.current_category(), "单级石油化工离心泵")
+        self.assertEqual(restarted.as_of.text(), AS_OF)
+        self.assertEqual(restarted.point_inputs["QBEP"].text(), "123.5")
+        self.assertEqual(restarted.point_inputs["HBEP"].text(), "14.25")
+        self.assertEqual(restarted.point_inputs["speed"].text(), "2950")
+        self.assertEqual(restarted.point_inputs["efficiency"].text(), "73.5")
+        self.assertEqual(restarted.suction.currentData(), "单吸")
+        self.assertEqual(restarted.stages.text(), "1")
+        self.assertEqual(restarted.project_name.text(), "示例项目")
+        self.assertEqual(restarted.equipment_no.text(), "P-777")
+        self.assertEqual(restarted.draft_name.text(), "3号循环水泵-2026Q4")
+
+    def test_restored_draft_can_be_evaluated_and_finalized(self):
+        self.page.draft_name.setText("草稿B")
+        self._fill()
+        self.page.save_draft()
+
+        restarted = self._new_page()
+        restarted.load_selected_draft()
+        result = restarted.evaluate()
+        self.assertEqual(result.evaluation_status, "SUCCESS")
+        self.assertEqual(restarted.finalize(), "SAVED")
+        record = restarted.service.open_record(restarted.last_saved_record_id)
+        self.assertEqual(record.input_snapshot["QBEP"], "123.5")
+        self.assertEqual(record.input_snapshot["equipment_no"], None)
+
+    def test_new_draft_clears_the_form(self):
+        self.page.draft_name.setText("草稿C")
+        self._fill()
+        self.page.save_draft()
+        self.page.new_draft()
+        self.assertIsNone(self.page.current_category())
+        self.assertEqual(self.page.draft_name.text(), "")
+        self.assertEqual(self.page.point_inputs["QBEP"].text(), "")
+        self.assertEqual(self.page.project_name.text(), "")
+        # 已有草稿不受影响
+        self.assertEqual(self.page.draft_list.count(), 1)
+
+    def test_delete_draft_keeps_formal_records(self):
+        self.page.draft_name.setText("草稿D")
+        self._fill()
+        self.page.save_draft()
+        self.page.evaluate()
+        self.assertEqual(self.page.finalize(), "SAVED")
+        record_id = self.page.last_saved_record_id
+
+        self.page.refresh_drafts()
+        self.page.draft_list.setCurrentIndex(0)
+        self.assertEqual(self.page.delete_selected_draft(), "DELETED")
+        self.assertEqual(self.page.draft_list.count(), 0)
+        # 正式记录不可被草稿删除影响
+        self.assertIsNotNone(self.page.service.open_record(record_id))
+
+    def test_multiple_drafts_are_all_listed_after_restart(self):
+        for name in ("草稿-1", "草稿-2"):
+            self.page.draft_name.setText(name)
+            self._fill()
+            self.page.save_draft()
+        restarted = self._new_page()
+        self.assertEqual(restarted.draft_list.count(), 2)
+
+
 class RecordsPageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -323,7 +446,23 @@ class RecordsPageTests(unittest.TestCase):
         self.assertIn("评价结论：1级", text)
         self.assertIn("原等级阈值", text)
         self.assertIn("原标准依据", text)
+        self.assertIn("规定点流量 Q_BEP（m³/h）：100", text)
+        self.assertNotIn("QBEP：", text)          # 内部字段名不得原样出现在普通详情
         self.assertNotIn("pump_water", text)
+
+    def test_ordinary_record_detail_hides_internal_rule_ids(self):
+        """普通记录详情不得出现内部 rule / data id；它们归技术详情。"""
+
+        record = self._finalize("单级单吸清水离心泵", QBEP="100", HBEP="50",
+                                speed="2900", efficiency="90", suction="单吸", stages="1")
+        text = self.page.show_record(record.record_id)
+        self.assertNotIn("GB19762-T3-01", text)
+        self.assertNotIn("pump_water", text)
+        self.assertNotIn("EQUIPEFFI_PUMP_DECIMAL50_V2", text)
+        # 审计能力保留在技术详情
+        self.assertIn("GB19762-T3-01", self.page.technical.text())
+        self.assertIn("命中规则", self.page.technical.text())
+        self.assertIn("数值配置", self.page.technical.text())
 
     def test_reopen_does_not_recalculate_when_evaluator_is_broken(self):
         record = self._finalize("单级石油化工离心泵", QBEP="100", HBEP="14",

@@ -424,8 +424,8 @@ class WorkspaceRoundTripTests(unittest.TestCase):
             self.assertEqual(updated.product_category, CHEMICAL)
             self.assertEqual(updated.rule_profile, "pump_chemical")
 
-    def test_workspace_inputs_survive_a_separate_process(self):
-        """跨进程恢复：进程 A 写入，进程 B 在全新解释器中读回。"""
+    def test_workspace_repository_round_trip_across_a_fresh_connection(self):
+        """同一草稿在**新建连接**上仍可完整读回（非跨进程；跨进程见 R3 模块）。"""
 
         with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
             db = Path(tmp) / "records.sqlite"
@@ -434,29 +434,24 @@ class WorkspaceRoundTripTests(unittest.TestCase):
             request = PumpAnalysisRequest(
                 CHEMICAL, AS_OF, QBEP="100", HBEP="14", speed="2900",
                 efficiency="73", suction="单吸", stages="1",
-                project_name="跨进程项目", equipment_no="P-777")
+                project_name="跨连接项目", equipment_no="P-777")
             service.create_workspace("W-proc", request)
 
-            script = (
-                "import json,sys;"
-                "from pathlib import Path;"
-                f"sys.path.insert(0, r'{ROOT / 'src'}');"
-                "from equipeffi.infrastructure.persistence.sqlite_records_repository import "
-                "SqliteWorkspaceRepository;"
-                f"ws = SqliteWorkspaceRepository(Path(r'{db}')).load_workspace('W-proc');"
-                "print(json.dumps({'category': ws.product_category, 'as_of': ws.as_of,"
-                " 'profile': ws.rule_profile, 'payload': ws.payload}, ensure_ascii=False))"
-            )
-            completed = subprocess.run(
-                [sys.executable, "-c", script], capture_output=True, text=True,
-                encoding="utf-8", check=True)
-            payload = json.loads(completed.stdout)
-            self.assertEqual(payload["category"], CHEMICAL)
-            self.assertEqual(payload["as_of"], "2026-08-23")
-            self.assertEqual(payload["profile"], "pump_chemical")
-            self.assertEqual(payload["payload"]["HBEP"], "14")
-            self.assertEqual(payload["payload"]["project_name"], "跨进程项目")
-            self.assertEqual(payload["payload"]["equipment_no"], "P-777")
+            # 用全新的 Repository/Service 实例（新连接）读回，逐字段核对。
+            reloaded = _service(SqliteWorkspaceRepository(db),
+                               SqliteRecordRepository(db)).load_workspace("W-proc")
+            self.assertIsNotNone(reloaded)
+            self.assertEqual(reloaded.product_category, CHEMICAL)
+            self.assertEqual(reloaded.as_of, "2026-08-23")
+            self.assertEqual(reloaded.rule_profile, "pump_chemical")
+            self.assertEqual(reloaded.revision, 1)
+            for key, expected in (("QBEP", "100"), ("HBEP", "14"), ("speed", "2900"),
+                                  ("efficiency", "73"), ("suction", "单吸"),
+                                  ("stages", "1"), ("project_name", "跨连接项目"),
+                                  ("equipment_no", "P-777")):
+                with self.subTest(field=key):
+                    self.assertEqual(reloaded.payload[key], expected)
+            self.assertEqual(reloaded.request_fingerprint(), request.request_fingerprint())
 
 
 def _history_rows(db: Path):
