@@ -52,7 +52,7 @@ Qt 单窗口测试验证导航、保存恢复、坏设置警告、保存失败�
 
 本机最终真实：975 run / 968 pass / 3 failure / 1 error / 3 skip；236.203s；expected_fail=0，unexpected_success=0。比较 gate PASS，new_failures=[]、new_errors=[]、unexpected_skips=[]、worsened=[]、missing_baseline_tests=[]。
 
-本机有10个 Windows起点已知问题未重现，仅提示收紧候选，不能凭本机就宣称 Windows 问题修复；基线未擅自收紧。最终 GitHub Windows CI 结果在后续交付补记。
+本机有10个 Windows起点已知问题未重现，仅提示收紧候选，不能凭本机就宣称 Windows 问题修复；基线未擅自收紧。最终 GitHub Windows CI 已核对，详见第11节。
 
 既有3失败：V4 reader copied-row、V4 writer1500rows、writer locked-results；1错误：release audit source_and_bundled_wheel；3跳过：未构建 release wheel 的 portable bundle。保持 QA-P0-001/002 与 QA-P1-003，不扩范围修复。
 
@@ -104,3 +104,17 @@ Qt 单窗口测试验证导航、保存恢复、坏设置警告、保存失败�
 50 个重点 protected文件规范文本 SHA256 与 start master 相同；git diff 对全部 Domain/resources/specs/lock/PLATFORM_BASELINE/evaluation_service/evaluation_facade 为空。BASELINE 已记录关键资源起终同哈希。既有 docs/planning/ 未跟踪且未修改/提交；没有覆盖标准、模板、用户工作簿或发布产物。
 
 退出状态为 READY_FOR_INDEPENDENT_ACCEPTANCE。独立验收前本线程停止，不自动推进。
+
+## 11. GitHub Windows CI 正式证据补记
+
+已执行提交 6b6dc8b6a02a6b41f0467e4f15769655b4423742（含执行报告/治理收口）；PR #10 的当前完整交付 SHA 由 PR description 固定，后续仅补记此 CI 证据，无代码变化。
+
+- Windows Core [run36980446262](https://github.com/adgo07/EquipEffi/actions/runs/36980446262)：architecture/metadata、application/core、settings/migration/logging/Qt offscreen、full-suite comparator、compile、whitespace、package smoke 均 SUCCESS。
+- Pump Conformance [run36980446377](https://github.com/adgo07/EquipEffi/actions/runs/36980446377)：Numeric锁一致性、非线性参考过程、边界/规则、批准Golden、仓库契约与API均 SUCCESS。
+- 正式远端解释器 C:\hostedtoolcache\windows\Python\3.12.10\x64\python.exe，CPython3.12.10 x64；实际 PySide6 6.11.2。
+- Required comparator 实际全量975 run / 958 pass / 9 fail / 5 error / 3 skip；raw_suite_success=false，comparison gate=PASS；new_failures/new_errors/worsened_failure_to_error/unexpected_skips/missing_baseline_tests 均空。远端已知问题未减少，不据本机10项未重现就收紧 Windows 基线。
+- 原始 nongating job 独立重跑975项，同样9失败/5错误/3跳过（162.889s）；保持真实失败展示，没有隐藏或宣告 full-suite PASS。
+- comparison证据 artifact11215004326：full_suite.log、actual.json、comparison.json 已下载核对；原始证据 artifact11215128945。
+- 该 PR 初始实际 diff：45 files，1369 additions / 186 deletions；后续只有报告、治理指针补记，完整最终 diff 以 PR Files changed 为准。
+
+上述是执行和回归证据，不替代独立验收，不宣布 Phase 2 PASS。最终提交保持 PR OPEN / UNMERGED。

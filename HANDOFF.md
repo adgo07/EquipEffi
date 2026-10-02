@@ -10,7 +10,7 @@
 
 本轮实现：外层 composition、AST 分层门禁、SettingsService/Repository、可注入 AppDataPaths、user.sqlite 001_create_settings、控制台与轮转日志、optional PySide6 6.11.2、--qt 五页占位。--gui 仍 Tk；默认入口不切换。catalog/records 只声明路径和策略，不建业务表；没有 Workspace/Record、草稿保存、设备评价页或 Excel 实现。
 
-测试：Python 3.12.14；foundation 30/30、architecture/metadata/application/core 598/598、Pump/Numeric/Golden 59/59 与18批准案例直接回放、compile 和 whitespace 通过。full suite 975 run / 968 pass / 3 fail / 1 error / 3 skip，编号比较 gate PASS；既有失败仍是 V4 reader/writer 三项与 release audit 一项错误。Windows CI 起点基线为 Python 3.12.10 的 945 run / 9 fail / 5 error / 3 skip，来自 run36970415483。最终 PR CI 见执行报告。
+测试：Python 3.12.14；foundation 30/30、architecture/metadata/application/core 598/598、Pump/Numeric/Golden 59/59 与18批准案例直接回放、compile 和 whitespace 通过。full suite 975 run / 968 pass / 3 fail / 1 error / 3 skip，编号比较 gate PASS；既有失败仍是 V4 reader/writer 三项与 release audit 一项错误。Windows CI 起点基线为 Python 3.12.10 的 945 run / 9 fail / 5 error / 3 skip，来自 run36970415483。远端 Windows975 run / 958 pass / 9 fail / 5 error / 3 skip，Required比较器PASS；Windows Core run36980446262与Pump Conformance run36980446377均SUCCESS，原始全量不是PASS。完整证据见执行报告第11节。
 
 QA：51 项原 Phase 2 OPEN/VERIFY 逐项处置；034/035/036/037 CLOSED，其余开放、部分完成或延期。QA-P0-001/002 与 QA-P1-003 保留 Phase 8 发布前处理；QA-EXCEL-001 的 Decimal→float 保留，Phase 8 前关闭。EQP-STD-GB19762-001 as_of 仍 PROVISIONAL，不改变软件解释。性能/缓存未重构。
 

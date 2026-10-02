@@ -210,7 +210,7 @@ automatic_scope_expansion: DISABLED
 
 ### 7.3 Review result and phase boundary
 
-Windows V1 Profile 范围决策已由 2026-10-02 产品决定收口；Phase 1 的 Solution/Product Review 结论（P1-SR01=PASS）继续有效，Phase 1 Exit Gate 仍为已满足。当前状态为 `PHASE_1_PASS`，下一状态为 `PHASE_2_READY`；Phase 2 不会自动开始，须取得用户明确授权。本次范围收口不构成 Phase 2 启动授权。
+Windows V1 Profile 范围决策已由 2026-10-02 产品决定收口；Phase 1 的 Solution/Product Review 结论（P1-SR01=PASS）继续有效，Phase 1 Exit Gate 仍为已满足。Phase 1 的状态仍为 `PHASE_1_PASS`；Phase 2 后续已获用户明确授权并完成执行，当前为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`。范围收口本身不构成执行授权，执行证据见 `PHASE2_EXECUTION_REPORT.md`。
 
 ## 8. Python Windows V1 运行环境冻结
 

@@ -19,7 +19,7 @@ current_task:
   execution_report: PHASE2_EXECUTION_REPORT.md
   next_action: READY_FOR_INDEPENDENT_ACCEPTANCE; do not merge; do not start Phase 3
 
-allowed_next: approved Phase 2 scope only; no Phase 3; no automatic merge
+allowed_next: independent Phase 2 acceptance only; no Phase 3; no automatic merge
 automatic_continuation: DISABLED
 phase_0b: NOT_EXECUTED
 phase_1_hotfix: NOT_EXECUTED
