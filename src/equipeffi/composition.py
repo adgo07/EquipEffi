@@ -92,3 +92,34 @@ def create_application_api(
         contract, resource_manager = load_v4_contract()
     facade = EvaluationFacade(EvaluationService(repository), contract=contract)
     return ApplicationApi(facade, contract=contract), contract, resource_manager
+
+
+def create_settings_runtime(*, paths=None, stream=None):
+    """唯一 Phase 2 切片装配；不实例化旧 SQLite 空桩或评价服务。"""
+    from . import __version__
+    from .application.services.settings_service import SettingsService
+    from .config.logging import LoggingConfig
+    from .infrastructure.persistence.app_data_paths import AppDataPaths
+    from .infrastructure.persistence.migrations import migrate_user_database
+    from .infrastructure.persistence.sqlite_settings_repository import SqliteSettingsRepository
+    from .infrastructure.runtime_logging import configure_logging
+
+    paths = paths if paths is not None else AppDataPaths.default()
+    migrate_user_database(paths.user_db, app_version=__version__)
+    service = SettingsService(SqliteSettingsRepository(paths.user_db))
+    logger = configure_logging(LoggingConfig(paths.logs_dir, service.get("log.level", "INFO")), stream=stream)
+    return service, logger
+
+
+def launch_qt(*, paths=None) -> int:
+    from .infrastructure.runtime_logging import close_logging, install_exception_hook
+    from .presentation.qt.app import run
+    import sys
+
+    service, logger = create_settings_runtime(paths=paths)
+    previous = install_exception_hook(logger)
+    try:
+        return run(service, logger)
+    finally:
+        sys.excepthook = previous
+        close_logging(logger)
