@@ -1,0 +1,111 @@
+name: Pump Conformance
+
+# 长期 Pump Conformance CI（2026-10-02 建立）
+#
+# 本 workflow 是 EquipEffi 参考标准 GB 19762—2025 的长期业务门禁，语义与历史任务名解耦：
+# 不再以 Phase 1 / N01-B Pilot / Numeric Adoption 作为未来 PR 的主要 CI 身份。
+#
+# 长期覆盖范围（对应 AGENTS.md 与 REFERENCE_STANDARD_ROADMAP.md）：
+#   - Pump Numeric Contract Profile 与 platform-lock 一致性
+#   - PUMP-RP-0.1 非线性 / transcendental conformance
+#   - generated boundaries
+#   - rule integrity
+#   - pump_water Approved Golden 0.4 与 schema / 批准门禁
+#   - Pump evaluator 与 Application API
+#   - 后续加入 pump_chemical Golden 时在此扩展（占位见文末注释）
+#
+# 全部 job 均为 GATING：任一失败使 workflow FAIL。
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pump-conformance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pump-conformance:
+    name: Pump Conformance (gating)
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      # 参考执行器 tools/run_qzc_n01_b_pilot.py 以 `from tools.qzc_n01_b_reference import ...`
+      # 导入同目录模块，因此仓库根目录也必须在 PYTHONPATH 上（沿用历史 workflow 的 'src;.'）。
+      PYTHONPATH: src;.
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[tools]" jsonschema==4.26.0
+
+      # Pump Numeric Profile 与 platform-lock.json 的锁定 SHA / profile 声明一致性。
+      - name: Numeric Contract v1 adoption lock and profile consistency
+        run: python -m unittest tests.unit.test_numeric_contract_v1_adoption -v
+
+      # PUMP-RP-0.1 非线性参考过程：先运行参考执行器，再跑 conformance 测试。
+      - name: PUMP-RP-0.1 nonlinear reference procedure
+        run: |
+          python tools/run_qzc_n01_b_pilot.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest tests.unit.test_qzc_n01_b_transcendental -v
+
+      - name: Pump numeric contract, generated boundaries and rule integrity
+        run: |
+          python -m unittest `
+            tests.unit.test_pump_numeric_contract_v2 `
+            tests.unit.test_pump_generated_boundaries_v2 `
+            tests.unit.test_pump_rule_integrity_v2 -v
+
+      # pump_water Approved Golden 0.4 + schema + 批准门禁（候选仍为 DRAFT/PENDING）。
+      - name: Approved Golden 0.4 and Golden schema gates
+        run: |
+          python -m unittest `
+            tests.unit.test_pump_golden_case_0_3 `
+            tests.unit.test_golden_case_schema_0_2 `
+            tests.unit.test_golden_case_0_4_approval `
+            tests.unit.test_pump_source_pages -v
+
+      # 契约与来源证据：仓库内结构、registry pins 与负例探针。
+      # 外部 GB PDF 字节校验需要额外 evidence root，CI 不提供该文件，故显式跳过并如实报告。
+      - name: Phase 1 contract, registry pins and repository evidence
+        run: >-
+          python tools/validate_phase1_contracts.py
+          --negative-probe
+          --candidate-jsonl specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl
+          --candidate-jsonl specs/equipment_efficiency/golden/pump_water_replacement_candidates_v0_1.jsonl
+          --approval-review-dir specs/equipment_efficiency/golden/pump_water_approval_review
+          --skip-external-evidence
+
+      # Pump evaluator 与 Application API 门面（pump_water 与 pump_chemical 共用矩阵）。
+      - name: Pump evaluator and Application API
+        run: |
+          python -m unittest `
+            tests.unit.test_device_evaluator_matrix `
+            tests.unit.test_application_api -v
+
+# pump_chemical 扩展占位（Phase 5 接入后在此追加）：
+#   - pump_chemical Golden 具名批准后的批准门禁测试
+#   - pump_chemical Conformance 向量测试
+# 在 pump_chemical 的 support_status 由 NOT_IN_RELEASE_SCOPE 切换为 SUPPORTED 之前，
+# 不得因为本 workflow 绿灯而宣称 pump_chemical 已正式支持。

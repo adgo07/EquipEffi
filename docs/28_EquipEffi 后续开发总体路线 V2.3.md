@@ -67,6 +67,8 @@ DISABLED
 
 > **口径更正（2026-10-01）**：上方摘要中的 `Qingzhou-contracts locked commit` 为 V2.3 校准当时（2026-09-28）口径；历史口径 `0cd74d783fa23add6dc881b408a8c8ba8503f8e8` 已被 2026-10-01 的 Numeric Contract v1 Adoption 取代。当前 locked commit 为 `ee5feb0cc34dbd99790500fadd0c4c932e202a20`。当前权威来源：`platform-lock.json`、`PLATFORM_BASELINE.md`、`ROADMAP.md`、`docs/governance/NUMERIC_CONTRACT_V1_ADOPTION_REPORT.md`。历史正文保留不改写。
 
+> **产品范围更正（2026-10-02）**：上方摘要中的 `Windows V1 IN_V1 Profile`（`transformer`、`pump_water`）为 V2.3 校准当时（2026-09-28）口径，已被 2026-10-02 产品决定取代。当前 Windows V1 产品目标为**完整支持 `GB 19762—2025`**，`IN_V1` Profile 为 **`pump_water` 与 `pump_chemical`**；`transformer` 调整为 `POST_V1`（本轮暂缓，代码、标准数据、测试与历史资产保留，不删除、不重构）。当前权威来源：`V1_SCOPE.md`、`ROADMAP.md`、`REFERENCE_STANDARD_ROADMAP.md`。历史正文保留不改写。
+
 Phase 2 只有在用户明确授权后才能开始。
 
 ---
@@ -105,6 +107,12 @@ DRAFT / NOT YET RELEASED
 ```
 
 > **口径更正（2026-10-01）**：本节“当前锁定”的 commit 与 Contract 状态均为 V2.3 校准当时（2026-09-28）口径。当前 locked commit 为 `ee5feb0cc34dbd99790500fadd0c4c932e202a20`；Numeric Contract 已由本仓正式采用为 `v1 / FROZEN`，Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack 仍为 `DRAFT / NOT YET RELEASED`。当前权威来源：`platform-lock.json`、`PLATFORM_BASELINE.md`、`ROADMAP.md`、`docs/governance/NUMERIC_CONTRACT_V1_ADOPTION_REPORT.md`。历史正文保留不改写。
+
+> **双轨读取（2026-10-02 补充）**：中央文件按**读取方式**分两类，不得混用（中央 `docs/GUIDE_INDEX.md` 第 2.1 节的 A / B 分类）：
+>
+> - **Frozen 权威文件**（Architecture / Numeric Contract / Frozen Schema / Frozen Conformance）→ 按本仓 `platform-lock.json` 的 **locked SHA** 读取；不得直接套用中央 `main`；
+> - **ACTIVE / ACTIVE-EVOLVING 指南**（`docs/GUIDE_INDEX.md`、`docs/governance/PRODUCT_DELIVERY_POLICY_V1.md`、`docs/governance/STANDARD_DEVELOPMENT_GUIDE_V0.1.md`、`docs/ui/UI_DESIGN_GUIDELINES_V0.1.md`）→ 读取中央仓**当前已合并、当前适用**的版本；它们**不在** `platform-lock` 锁定范围内，也不应被按历史 SHA 读取。这四份文件在 locked SHA `ee5feb0` 上**不存在**。
+> - 读取 ACTIVE 指南**不修改** `platform-lock.json`、**不构成** Frozen Contract adoption、**不得覆盖** locked Frozen 权威文件；两者冲突时**以 locked Frozen 权威文件为准**。
 
 因此：
 
@@ -350,9 +358,21 @@ Python 导入校验又一套
 6. 结果长期按 stable `result_field_id` 回写；
 7. 正式模板生成、批量读取、逐行错误、结果写回、Word/PDF 等仍在 Phase 8 实施。
 
+## 7.1 Excel 数值入口前置要求（2026-10-02 补充，不改变 Phase 8 门禁）
+
+以下要求不把 Excel 提前到 Phase 2，只固定正式实施前必须先解决的问题：
+
+- Excel 的正式定位是 **Import / Export Adapter**，必须调用与 GUI 相同的 Application / `EvaluationService` / evaluator，不得复制第二套算法；
+- 数值入口（单元格原始类型、文本数字、百分比、日期、空值、科学计数法、公式/缓存值、非有限值）必须先完成**独立设计与证据验证**，再进入正式实现；
+- **不得因为 Excel 库返回 Python `float` 就默认认为满足精确十进制要求**；若上游已物化为 binary float，除非能证明保真，不得声称保留了原始十进制词法（对应中央 Numeric Contract v1 §2.1 ingress boundary）；
+- 本仓现有 `src/equipeffi/infrastructure/excel/ooxml_reader.py` 的 `_parse_number` 已先 `Decimal(text)` 再返回 `float(number)`，属已定位的 **float 物化点**（`NOT_SHIPPED` 路径）。正式 Excel 阶段必须先在最小范围内处理该入口并给出证据，不得沿用该行为；
+- 中央公共无损 Excel/openpyxl 词法交换方案仍为 `OPEN`；本仓不得宣称解决全平台问题，`REFERENCE_STANDARD_ROADMAP.md` 必须如实标注 `PARTIAL` / `BLOCKED`。
+
 ---
 
 # 8. Phase 0～10 总体阶段结构保持不变
+
+Phase 0～10 的**编号与数量不得改变**。以下为各阶段在 2026-10-02 产品范围收口后的**当前语义**；Phase 0～2 为已完成或已就绪，Phase 3～10 为后续安排。
 
 ```text
 Phase 0
@@ -365,31 +385,46 @@ Phase 2
 最小正式工程底座
         ↓
 Phase 3
-真实纵向样板
+pump_water 正式工程 / 生命周期纵向样板
         ↓
 Phase 4
-经过样板验证后的通用化
+基于 pump_water 真实样板做必要通用化
         ↓
 Phase 5
-V1 Profile 渐进迁移
+pump_chemical 接入同一正式工程链，完成 GB 19762—2025 全标准业务能力覆盖
         ↓
 Phase 6
-完整产品 Shell
+围绕完整 GB 19762 建立完整产品 Shell
         ↓
 Phase 7
-生命周期与质量收口
+完整 GB 19762 的生命周期与质量收口
         ↓
 Phase 8
-Excel / 报告 / 发布外围能力
+完整 GB 19762 Excel / 报告 / 发布外围能力
         ↓
 Phase 9
-Windows V1 全量验收
+完整 GB 19762 Windows V1 正式验收与发布
         ↓
 Phase 10
-公共包 / 综合版 / 多平台
+后续标准 / 公共包 / 综合版 / 多平台
 ```
 
+## 8.1 Phase 3～10 语义定义（2026-10-02 产品范围收口后）
+
+| Phase | 当前语义 | 边界与说明 |
+|---|---|---|
+| **Phase 3** | `pump_water` 正式工程 / 生命周期纵向样板 | 验证新正式架构能完整承载已批准业务真相：规范 → Canonical → Product/Profile Schema → Ruleset → Approved Golden → Domain → Application → PySide6 → Workspace → Record → Reopen/Reproduce。**Phase 3 PASS 不等于完整 GB 19762 PASS** —— 它只覆盖 `pump_water`。不得重新设计 GB 19762—2025 泵算法。 |
+| **Phase 4** | 基于 `pump_water` **真实样板**做必要通用化 | 只通用化已被样板证明的重复结构；不做事前理论式大通用化。 |
+| **Phase 5** | 将 `pump_chemical` 接入**同一正式工程链**，完成 GB 19762—2025 **全标准业务能力覆盖** | 复用 Phase 3/4 已验证的 Workspace / Record / 存储 / 导航 / 输入与结果投影契约，补齐 `pump_chemical` 的 Mapping、Standard Issues、Golden 具名批准与 Conformance。**`transformer` 不进入 Phase 5。** Phase 5 完成前，`pump_chemical` 的 `support_status` 保持 `NOT_IN_RELEASE_SCOPE`。 |
+| **Phase 6** | 围绕**完整 GB 19762**（`pump_water` + `pump_chemical`）建立完整产品 Shell | 产品级导航、标准库、记录入口、结果层级与高级技术详情；按真实用户任务组织，不按数据库/JSON 组织。 |
+| **Phase 7** | **完整 GB 19762** 的 Record、历史、恢复、结果解释、标准依据、异常状态与质量收口 | 覆盖两个 Profile 的 Workspace/Attempt/Record 生命周期、不可变记录、历史恢复与 EXECUTION_ERROR 与业务“无法判定”的分离。 |
+| **Phase 8** | **完整 GB 19762** Excel 闭环 | **必须同时覆盖 `pump_water` + `pump_chemical`**；Excel 只作 Import/Export Adapter，GUI 与 Excel **共用同一业务内核**；数值入口须先完成设计与证据验证（见第 7.1 节）。 |
+| **Phase 9** | **完整 GB 19762** Windows V1 正式验收与发布 | 覆盖两个 Profile 的业务层 / 计算层 / 产品层 / Windows 交付层验收；`pump_chemical` 在此阶段通过 Stage D 后才切换 `support_status = SUPPORTED`。 |
+| **Phase 10** | 后续标准、公共包、综合版、多平台 | 参考标准完整闭环通过后，再逐个扩展其他标准，并验证架构可复用性。 |
+
 V2.3 **不新增阶段、不删除阶段、不重新编号**。
+
+> **取代声明（2026-10-02）**：本表取代此前把 Phase 5 泛化为“迁移全部 IN_V1 Profile”的表达。在该旧表达下，`transformer` 曾属 `IN_V1`，因而在形式上落入 Phase 5；现行产品范围已把 `transformer` 调整为 `POST_V1`，**Phase 5 只针对 `pump_chemical`，`transformer` 不进入 Phase 5**。Phase 6～9 的覆盖对象同样由“若干 Profile”收窄并明确为**完整 GB 19762（两个 Profile）**。
 
 ---
 
@@ -411,9 +446,9 @@ V2.3 **不新增阶段、不删除阶段、不重新编号**。
 - 三库职责继续保持；
 - 先薄 AppShell，再扩展完整产品页面；
 - Phase 4 之前不进行脱离真实样板的理论式大通用化；
-- Phase 5 只迁移 IN_V1 Profile；
-- Phase 8 正式实现 Excel / 报告等外围能力；
-- Phase 9 Windows V1 全量验收；
+- **Phase 5 接入 `pump_chemical`，完成 GB 19762—2025 全标准业务能力覆盖**（2026-10-02 语义；取代旧的“Phase 5 只迁移 IN_V1 Profile”泛化表达；`transformer` 不进入 Phase 5，见第 8.1 节）；
+- Phase 8 正式实现 Excel / 报告等外围能力，且必须同时覆盖 `pump_water` + `pump_chemical`；
+- Phase 9 完整 GB 19762 Windows V1 正式验收与发布；
 - Phase 10 才考虑综合版和多平台产品。
 
 ---
