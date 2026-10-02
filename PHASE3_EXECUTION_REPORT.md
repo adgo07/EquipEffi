@@ -45,7 +45,7 @@ R1/R2 的 CI 验证点：`4ca0f84135561954bda5bc4ace622a07bd5fb1bd` —— `Wind
 
 **R1/R2 的最终 head `c4543b5a7045d9427c7ee4a397fc4bba313c2a28` 也通过了同样的四道 job。**
 
-R3 的提交与 CI 验证点见第 28 节。
+R3 的提交与 CI 验证点见第 28 节（R3 提交：`840a305`）。
 
 ## 3. actual diff
 
