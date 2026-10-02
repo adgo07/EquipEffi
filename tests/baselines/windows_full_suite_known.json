@@ -13,18 +13,49 @@
     "skip": 3
   },
   "known_failure_ids": [
+    "tests.unit.test_desktop_form_model.DesktopFormModelTests.test_builtin_template_download_is_available_without_excel_callbacks",
+    "tests.unit.test_release_audit.ReleaseAuditTests.test_build_release_auto_selects_latest_review_book",
+    "tests.unit.test_release_audit.ReleaseAuditTests.test_build_release_portable_output_builds_and_embeds_zipapp",
+    "tests.unit.test_release_audit.ReleaseAuditTests.test_sync_review_book_copies_audited_book_without_touching_source",
+    "tests.unit.test_release_audit.ReleaseAuditTests.test_write_release_report_uses_delivery_directory_name",
     "tests.unit.test_v4_reader.V4ReaderTests.test_copied_v4_row_is_read_and_evaluated",
+    "tests.unit.test_v4_template_resource.V4TemplateResourceTests.test_download_copies_to_new_file_without_overwriting_source",
     "tests.unit.test_v4_writer.V4WriterTests.test_end_to_end_v4_1500_rows_read_evaluate_write_and_reopen",
     "tests.unit.test_v4_writer.V4WriterTests.test_writer_creates_new_workbook_with_locked_results"
   ],
   "known_error_ids": [
-    "tests.unit.test_release_audit.ReleaseAuditTests.test_source_and_bundled_wheel_pass_release_audit"
+    "tests.unit.test_build_lock.BuildLockTests.test_second_process_is_rejected_without_waiting",
+    "tests.unit.test_jsonl_smoke.JsonlSmokeToolTests.test_source_entrypoint_protocol_smoke",
+    "tests.unit.test_jsonl_smoke.JsonlSmokeToolTests.test_source_entrypoint_runs_in_isolated_python_mode",
+    "tests.unit.test_release_audit.ReleaseAuditTests.test_source_and_bundled_wheel_pass_release_audit",
+    "tests.unit.test_zipapp.ZipappTests.test_zipapp_contains_package_resources_and_runs_status"
   ],
   "known_skip_ids": [
     "tests.unit.test_portable_bundle.PortableBundleTests.test_bundle_can_include_zipapp_and_mentions_direct_command",
     "tests.unit.test_portable_bundle.PortableBundleTests.test_bundle_contains_runtime_files_and_checksums",
     "tests.unit.test_portable_bundle.PortableBundleTests.test_bundle_is_byte_stable_for_same_inputs"
   ],
-  "tightened_at": "2026-10-02",
-  "tightening_note": "Phase 3 P3-G04 按真实重放收紧固定 id 列表：移除 10 项已在 Python 3.12.14 本机通过的旧失败，保留仍真实失败的 3 项 V4 reader/writer 与 1 项 release audit 错误。source_counts 仍是 Phase 2 的 Windows CI 起点计数，未改写。"
+  "phase3_note": "Phase 3 曾尝试按本机（Python 3.12.14）重放收紧固定 id 列表，但 windows-core 的 known-regression gate 是在 Windows CI（Python 3.12.10）上运行的：收紧后 CI 出现 new_failures/new_errors，gate 为 FAIL。因此已恢复为 Phase 2 真实 CI 观测到的完整列表。",
+  "known_id_scope": {
+    "applies_to": "Windows CI（windows-latest / Python 3.12.10），即 known-regression gate 的运行环境",
+    "environment_only": [
+      "tests.unit.test_build_lock.BuildLockTests.test_second_process_is_rejected_without_waiting",
+      "tests.unit.test_jsonl_smoke.JsonlSmokeToolTests.test_source_entrypoint_protocol_smoke",
+      "tests.unit.test_jsonl_smoke.JsonlSmokeToolTests.test_source_entrypoint_runs_in_isolated_python_mode",
+      "tests.unit.test_zipapp.ZipappTests.test_zipapp_contains_package_resources_and_runs_status",
+      "tests.unit.test_release_audit.ReleaseAuditTests.test_build_release_auto_selects_latest_review_book",
+      "tests.unit.test_release_audit.ReleaseAuditTests.test_build_release_portable_output_builds_and_embeds_zipapp",
+      "tests.unit.test_release_audit.ReleaseAuditTests.test_sync_review_book_copies_audited_book_without_touching_source",
+      "tests.unit.test_release_audit.ReleaseAuditTests.test_write_release_report_uses_delivery_directory_name",
+      "tests.unit.test_desktop_form_model.DesktopFormModelTests.test_builtin_template_download_is_available_without_excel_callbacks",
+      "tests.unit.test_v4_template_resource.V4TemplateResourceTests.test_download_copies_to_new_file_without_overwriting_source"
+    ],
+    "fails_in_both_environments": [
+      "tests.unit.test_v4_reader.V4ReaderTests.test_copied_v4_row_is_read_and_evaluated",
+      "tests.unit.test_v4_writer.V4WriterTests.test_end_to_end_v4_1500_rows_read_evaluate_write_and_reopen",
+      "tests.unit.test_v4_writer.V4WriterTests.test_writer_creates_new_workbook_with_locked_results",
+      "tests.unit.test_release_audit.ReleaseAuditTests.test_source_and_bundled_wheel_pass_release_audit"
+    ],
+    "note": "environment_only 的 10 项在 Python 3.12.14 本机通过（runner 的 8.3 短名路径与控制台编码差异）；不可据此从基线删除，否则 CI gate 会把它们当成 new_failure/new_error。Phase 3 未修复这 14 项中的任何一项，也未隐藏它们。"
+  }
 }

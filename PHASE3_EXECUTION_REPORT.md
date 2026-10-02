@@ -279,9 +279,27 @@ new_failures / new_errors / worsened_failure_to_error / unexpected_skips
 
 run 数由 945 增至 1036（Phase 3 新增 91 项测试，全部通过）。
 
-比较器曾提示 `baseline_tightening_hint: true`（有 10 项基线登记的失败在本机已通过）。已按真实重放**收紧** `tests/baselines/windows_full_suite_known.json` 的固定 id 列表（`fail 9→3`、`error 5→1`、`skip` 不变），保留仍真实失败的 3 项 V4 reader/writer 与 1 项 release audit 错误；`source_counts` 仍是 Phase 2 的 Windows CI 起点计数，**未改写**。收紧后重跑比较器：`gate PASS`、`baseline_tightening_hint: false`。
+### 25.1 基线收紧尝试与回退（重要，如实记录）
 
-**既有失败仍是既有失败，未被修复也未被隐藏。** 本机与 Windows CI 的全量结果本来就不同（CI 另有 8.3 短名、控制台编码等环境性差异），不得混读。
+Phase 3 期间我曾按**本机**（Python 3.12.14）重放结果"收紧" `tests/baselines/windows_full_suite_known.json` 的固定 id 列表（`fail 9→3`、`error 5→1`）。**该收紧是错误的，已回退**：
+
+- `windows-core` 的 known-regression gate 运行在 **Windows CI（Python 3.12.10）**；
+- 收紧后 CI 上出现 `new_failures` / `new_errors`，gate 为 **FAIL**（run `37006790779`，job `110836841263`，"Full suite known-regression comparator (gating)" 步骤失败）；
+- 原因是 10 项 CI 环境特有失败（runner 的 8.3 短名路径 `RUNNER~1` 与控制台编码差异）在本机通过，但它们**只在本机通过**，在 CI 上仍真实失败。
+
+因此基线已**恢复为 Phase 2 真实 CI 观测到的完整列表**（9 fail / 5 error / 3 skip），并新增 `known_id_scope` 显式区分：
+
+```text
+applies_to                : Windows CI（windows-latest / Python 3.12.10）
+environment_only (10 项)  : 仅 CI 环境失败；本机通过；不得从基线删除
+fails_in_both (4 项)      : 本机与 CI 均失败（3 项 V4 reader/writer + 1 项 release audit 错误）
+```
+
+比较器在本机重跑：`gate PASS`、`baseline_tightening_hint: true`（该提示是**信息性**的，按 `tools/check_windows_regressions.py` 设计不使 gate 失败）。`source_counts` 仍为 Phase 2 CI 起点计数，**未改写**。
+
+**教训**：gate 的基线必须与被 gate 的运行环境一致；不得用另一个环境的证据删减基线 id。
+
+**既有失败仍是既有失败，未被修复也未被隐藏。** 本机与 Windows CI 的全量结果本来就不同，不得混读。
 
 ## 26. QA disposition
 
