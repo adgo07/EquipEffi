@@ -7,7 +7,7 @@ from pathlib import Path
 from equipeffi.application.services.evaluation_facade import EvaluationFacade
 from equipeffi.application.services.evaluation_service import EvaluationService
 from equipeffi.application.services.batch_evaluation_service import BatchEvaluationService
-from equipeffi.application.bootstrap import create_application_api
+from equipeffi.composition import create_application_api
 from equipeffi.infrastructure.standards.json_repository import JsonStandardRepository
 from equipeffi.infrastructure.excel.v4_reader import V4WorkbookReaderImpl
 from equipeffi.presentation.api.application_api import ApplicationApi, ApiRequestError

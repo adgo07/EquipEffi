@@ -1,4 +1,4 @@
-"""应用装配入口。
+"""正式外层装配入口。
 
 核心判定不需要读取V4工作簿，也不应因启动JSON/JSONL服务而触发Excel
 资源解析。模板契约作为可选能力由本模块按需加载，供CLI、桌面和Web
@@ -6,13 +6,15 @@
 """
 from __future__ import annotations
 
+import logging
 from pathlib import Path
+from xml.etree.ElementTree import ParseError
 from typing import Any
 
-from ..infrastructure.standards.json_repository import JsonStandardRepository
-from ..presentation.api.application_api import ApplicationApi
-from .services.evaluation_facade import EvaluationFacade
-from .services.evaluation_service import EvaluationService
+from .infrastructure.standards.json_repository import JsonStandardRepository
+from .presentation.api.application_api import ApplicationApi
+from .application.services.evaluation_facade import EvaluationFacade
+from .application.services.evaluation_service import EvaluationService
 
 
 def _default_project_root() -> Path:
@@ -39,13 +41,16 @@ def load_v4_contract() -> tuple[Any, Any] | tuple[None, None]:
 
     # These imports are deliberately local: importing the core API must not
     # initialize the Excel/template adapter or inspect an XLSX file.
-    from ..infrastructure.excel.template_resource import V4TemplateResource
-    from ..infrastructure.excel.v4_reader import V4WorkbookReaderImpl
+    from .infrastructure.excel.template_resource import V4TemplateResource
+    from .infrastructure.excel.v4_reader import V4WorkbookReaderImpl
+    from .infrastructure.excel.ooxml_reader import OOXMLReadError
+    from .infrastructure.excel.template_resource import TemplateResourceError
 
-    template_resource = V4TemplateResource()
     try:
+        template_resource = V4TemplateResource()
         contract = V4WorkbookReaderImpl().read_contract(template_resource.template_path)
-    except Exception:
+    except (OOXMLReadError, TemplateResourceError, OSError, ParseError) as exc:
+        logging.getLogger("equipeffi.composition").warning("V4 契约加载失败，保留兼容回退：%s", exc)
         return None, None
     return contract, template_resource
 
@@ -54,7 +59,7 @@ def create_core_api(*, project_root: Path | None = None) -> ApplicationApi:
     """Create the core JSON/API service without loading the V4 workbook."""
 
     root = Path(project_root).resolve() if project_root is not None else _default_project_root()
-    package_manifest = Path(__file__).resolve().parents[1] / "standard_manifest.json"
+    package_manifest = Path(__file__).resolve().parent / "standard_manifest.json"
     if package_manifest.is_file():
         repository = JsonStandardRepository(package_manifest.parent, manifest=package_manifest)
     else:
@@ -77,7 +82,7 @@ def create_application_api(
     """
 
     root = Path(project_root).resolve() if project_root is not None else _default_project_root()
-    package_manifest = Path(__file__).resolve().parents[1] / "standard_manifest.json"
+    package_manifest = Path(__file__).resolve().parent / "standard_manifest.json"
     if package_manifest.is_file():
         repository = JsonStandardRepository(package_manifest.parent, manifest=package_manifest)
     else:

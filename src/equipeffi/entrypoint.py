@@ -13,7 +13,7 @@ from pathlib import Path
 import sys
 from typing import Sequence
 
-from .application.bootstrap import create_application_api
+from .composition import create_application_api
 from .domain.common.enums import EliminationScope
 from .domain.evaluation.device_specs import get_device_spec
 from .domain.evaluation.device_types import PUBLIC_DEVICE_TYPES, profiles_for_public_type, public_device_types

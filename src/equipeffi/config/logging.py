@@ -1,4 +1,11 @@
-"""日志配置占位。
+"""外层日志初始化契约；不是业务 Record Audit。"""
+from dataclasses import dataclass
+from pathlib import Path
 
-日志文件应写入用户数据目录，不写入源码仓库。
-"""
+
+@dataclass(frozen=True)
+class LoggingConfig:
+    logs_dir: Path
+    level: str = "INFO"
+    max_bytes: int = 2 * 1024 * 1024
+    backup_count: int = 3

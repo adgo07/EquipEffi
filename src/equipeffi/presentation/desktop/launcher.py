@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 import shutil
 
-from ...application.bootstrap import create_application_api
+from ...composition import create_application_api
 from ...presentation.api.application_api import ApplicationApi
 from ...infrastructure.excel.template_resource import V4TemplateResource
 try:

@@ -40,16 +40,16 @@
 | QA-AUD-002 | AUD-002 | shared | `device_evaluators.py` + evaluators | 兼容门面与延迟反向导入；维护变化可能影响评价 | 可能影响发布可靠性或长期维护；业务影响待证 | H | V1_RUNTIME | P1 | Future (原 Phase 2) | OPEN | CSV#2 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：当前仍是运行依赖，禁止 0A 删除 |
 | QA-AUD-003 | AUD-003 | motor | `evaluators/motor.py` | 字符串 `getattr` 动态 helper；改名可能静默失效 | 可能影响发布可靠性或长期维护；业务影响待证 | H | V1_RUNTIME | P1 | Future (原 Phase 2) | OPEN | CSV#3 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：改为静态契约前保留回归 |
 | QA-AUD-004 | AUD-004 | shared | `evaluation_engine.py` | `inspect.signature` 兼容 2/3 参数掩盖契约错误 | 可能影响发布可靠性或长期维护；业务影响待证 | H | V1_RUNTIME | P1 | Phase 4 | OPEN | CSV#4 | DEFER_TO_P4：真实样板后再通用化；不在薄壳阶段重构业务；原决定：唯一 evaluate 契约留 Phase 2 |
-| QA-AUD-005 | AUD-005 | shared | `device_types.py` | 15 公共类型、17 Profile 和旧 fan 入口并存；路由理解成本高 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 1/2 | OPEN | CSV#5 | Phase 0 已确认映射权威，暂不合并 |
+| QA-AUD-005 | AUD-005 | shared | `device_types.py` | 15 公共类型、17 Profile 和旧 fan 入口并存；路由理解成本高 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 3 | OPEN | CSV#5 | DEFER_TO_P3：非 settings 切片，保持既有风险与证据；原决定：Phase 0 已确认映射权威，暂不合并 |
 | QA-AUD-006 | AUD-006 | shared | `domain/common/models.py` | `EvaluationResult` 混合结果、轨迹、淘汰和质量 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 3 | OPEN | CSV#6 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：保持现有契约，未来按职责拆分 |
-| QA-AUD-007 | AUD-007 | shared | `metadata.py` | 1687 行混合枚举、V4 映射、展示和 profile 构建 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 1/2 | OPEN | CSV#7 | 已在 ASSET_AUDIT 完成职责分类，暂不迁移 |
+| QA-AUD-007 | AUD-007 | shared | `metadata.py` | 1687 行混合枚举、V4 映射、展示和 profile 构建 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 4 | OPEN | CSV#7 | DEFER_TO_P4：非 settings 切片，保持既有风险与证据；原决定：已在 ASSET_AUDIT 完成职责分类，暂不迁移 |
 | QA-AUD-008 | AUD-008 | shared | `device_specs.py:179-188` | 导入时就地修改 `DEVICE_SPECS` | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 4 | OPEN | CSV#8 | DEFER_TO_P4：真实样板后再通用化；不在薄壳阶段重构业务；原决定：记录为导入副作用，不在 0A 重写 |
-| QA-AUD-009 | AUD-009 | all | `device_specs.py`、`metadata.py`、`entrypoint.py` | 标准/字段/示例硬编码多份，可能产生数据漂移 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 1/2 | OPEN | CSV#9 | Python 数据先盘点，不能直接删除 |
+| QA-AUD-009 | AUD-009 | all | `device_specs.py`、`metadata.py`、`entrypoint.py` | 标准/字段/示例硬编码多份，可能产生数据漂移 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 3 | OPEN | CSV#9 | DEFER_TO_P3：非 settings 切片，保持既有风险与证据；原决定：Python 数据先盘点，不能直接删除 |
 | QA-AUD-010 | AUD-010 | shared | `evaluators/shared.py:_interval_hit` | 核心区间解析难验证，边界错误可能给错结论 | 可能影响业务结论；需标准/Golden 证据 | M | V1_RUNTIME | P0 | Phase 1 | VERIFY | CSV#10 + source；Phase 1 已执行 12 个开闭端点 probe，全部符合预期 | Phase 1 review=`NEEDS_MORE_EVIDENCE`；现有 probe 未发现错误，但尚缺跨标准/Golden 的完整覆盖；不进入 Hotfix |
-| QA-AUD-011 | AUD-011 | shared | `v4_validation.py` / `input_normalization.py` | 规范化重复实现，差异可能改变输入含义 | 可能影响业务结论；需标准/Golden 证据 | H | NOT_SHIPPED | P0 | Phase 1/2 | VERIFY | CSV#11；pump_water 的完整别名与 canonical 输入输出一致，V4 validation valid/invalid probe 有预期结果 | Phase 1 review=`NEEDS_MORE_EVIDENCE`；样板证据不能代表全 Profile 的共享风险；不重构 |
+| QA-AUD-011 | AUD-011 | shared | `v4_validation.py` / `input_normalization.py` | 规范化重复实现，差异可能改变输入含义 | 可能影响业务结论；需标准/Golden 证据 | H | NOT_SHIPPED | P0 | Phase 8 | VERIFY | CSV#11；pump_water 的完整别名与 canonical 输入输出一致，V4 validation valid/invalid probe 有预期结果 | DEFER_TO_P8：非 settings 切片，保持既有风险与证据；原决定：Phase 1 review=`NEEDS_MORE_EVIDENCE`；样板证据不能代表全 Profile 的共享风险；不重构 |
 | QA-AUD-012 | AUD-012 | shared | `evaluation_service.py:148-426` | 279 行上帝方法，门禁分支难审计 | 可能影响发布可靠性或长期维护；业务影响待证 | H | V1_RUNTIME | P1 | Phase 3 | OPEN | CSV#12 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：结构债务，不因严重度直接 Hotfix |
 | QA-AUD-013 | AUD-013 | shared | `v4_validation.py` | 882 行、多 sheet 特例链，新增规则易漏 | 可能影响发布可靠性或长期维护；业务影响待证 | H | NOT_SHIPPED | P1 | Phase 8 | OPEN | CSV#13 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：Import Contract 冻结后拆分 |
-| QA-AUD-014 | AUD-014 | shared | `input_normalization.py` | 226 行、16 类转换硬编码，输入错误风险 | 可能影响发布可靠性或长期维护；业务影响待证 | H | NOT_SHIPPED | P1 | Phase 1/2 | OPEN | CSV#14 | 先建立 Product/Profile Schema |
+| QA-AUD-014 | AUD-014 | shared | `input_normalization.py` | 226 行、16 类转换硬编码，输入错误风险 | 可能影响发布可靠性或长期维护；业务影响待证 | H | NOT_SHIPPED | P1 | Phase 8 | OPEN | CSV#14 | DEFER_TO_P8：非 settings 切片，保持既有风险与证据；原决定：先建立 Product/Profile Schema |
 | QA-AUD-015 | AUD-015 | shared | `application_api.py` / `main_window.py` | fallback 表单构建重复，UI 可能与 API 不一致 | 当前未确认影响 V1 业务结论；维护风险待证 | H | PROTOTYPE | P2 | Phase 3 | OPEN | CSV#15 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：暂由 `metadata_projection` 共享，UI 非 V1 门禁 |
 | QA-AUD-016 | AUD-016 | shared | 多处 conclusion label | 同一结论列标题重复，展示可能漂移 | 当前未确认影响 V1 业务结论；维护风险待证 | M | PROTOTYPE | P2 | Phase 3 | OPEN | CSV#16 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：Presentation 清理阶段处理 |
 | QA-AUD-017 | AUD-017 | shared | `application_api.py` / `main_window.py` | 基础信息字段元组重复 | 当前未确认影响 V1 业务结论；维护风险待证 | M | PROTOTYPE | P2 | Phase 3 | OPEN | CSV#17 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：不影响当前核心评价 |
@@ -57,16 +57,16 @@
 | QA-AUD-019 | AUD-019 | shared | `infrastructure/excel/v4_writer.py` | 完整 writer 生产链 0 引用，V4 结果可能无法交付 | 可能影响发布可靠性或长期维护；业务影响待证 | H | NOT_SHIPPED | P1 | Phase 8 | OPEN | CSV#19 + QA-P0-002 | V4 未纳入当前首发，不接线 |
 | QA-AUD-020 | AUD-020 | shared | `excel/legacy_*`、`report_exporter.py`、`template_builder.py` | 4 个 FeatureNotEnabled 空桩，制造能力错觉 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Phase 8 | OPEN | CSV#20 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：DELETE_CANDIDATE，先查契约/构建/测试 |
 | QA-AUD-021 | AUD-021 | shared | `strict_importer.py` | 3 行别名子类无 runtime 引用 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Phase 8 | OPEN | CSV#21 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：暂保兼容名，后续统一 |
-| QA-AUD-022 | AUD-022 | shared | SQLite repositories | 两个空桩仓储，实际持久化不存在 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 1/2/3 | OPEN | CSV#22 + ADR-005 | 按已批准三库方向设计，不在 0A 删除 |
+| QA-AUD-022 | AUD-022 | shared | SQLite repositories | 两个空桩仓储，实际持久化不存在 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 4 | OPEN | CSV#22 + ADR-005 | DEFER_TO_P4：非 settings 切片，保持既有风险与证据；原决定：按已批准三库方向设计，不在 0A 删除 |
 | QA-AUD-023 | AUD-023 | shared | `cleaning_service.py` / `import_service.py` | 0 引用服务，可能是未完成能力或死代码 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Future (原 Phase 2) | OPEN | CSV#23 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：DELETE_CANDIDATE，先查外部契约 |
 | QA-AUD-024 | AUD-024 | shared | `application/ports/*.py` | Protocol 0 引用，实际实现未显式接入 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 2/3 | OPEN | CSV#24 | PARTIAL_IN_P2：仅完成 settings 端口/存储；原业务仓储与其他端口仍开放；原决定：保留契约方向，阶段性补接线 |
 | QA-AUD-025 | AUD-025 | shared | `v4_template_audit.py` / `config/settings.py` | 0 引用包装和默认设置 | 当前未确认影响 V1 业务结论；维护风险待证 | L | DEV_ONLY | P2 | Future (原 Phase 2) | OPEN | CSV#25 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：不影响 V1，删除前做动态引用检查 |
-| QA-AUD-026 | AUD-026 | shared | `v4_input_adapter.py` | `adapt_many`、`validate_draft` 未接线 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 1/2 | OPEN | CSV#26 | Import Contract 确认后接入或删除 |
+| QA-AUD-026 | AUD-026 | shared | `v4_input_adapter.py` | `adapt_many`、`validate_draft` 未接线 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 8 | OPEN | CSV#26 | DEFER_TO_P8：非 settings 切片，保持既有风险与证据；原决定：Import Contract 确认后接入或删除 |
 | QA-AUD-027 | AUD-027 | shared | OOXML 解析三处 | sheet 名和 rels 解析重复，修复容易不一致 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Phase 8 | OPEN | CSV#27 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：不在冻结 V4 端口中重构 |
 | QA-AUD-028 | AUD-028 | shared | `ooxml_reader.py` / `v4_writer.py` | 列号互换换算重复 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Phase 8 | OPEN | CSV#28 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：归入 OOXML 工具清理 |
-| QA-AUD-029 | AUD-029 | shared | `template_resource.py` / `v4_template_contract.py` | 模板名、sheet 清单和说明重复配置 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 1/2 | OPEN | CSV#29 | Import Contract 单一来源 |
+| QA-AUD-029 | AUD-029 | shared | `template_resource.py` / `v4_template_contract.py` | 模板名、sheet 清单和说明重复配置 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 8 | OPEN | CSV#29 | DEFER_TO_P8：非 settings 切片，保持既有风险与证据；原决定：Import Contract 单一来源 |
 | QA-AUD-030 | AUD-030 | shared | `v4_validation.py` | 手工规则表和 metadata 派生规则双真相源 | 可能影响业务结论；需标准/Golden 证据 | M | NOT_SHIPPED | P0 | Phase 1 | VERIFY | CSV#30；pump_water 元数据字段约束与 V4 valid/zero/fraction/percent probes 未发现当前输入差异 | Phase 1 review=`NEEDS_MORE_EVIDENCE`；样板路径未证明全 Profile 无差异；待 Import/Profile 矩阵；未授权 Hotfix |
-| QA-AUD-031 | AUD-031 | shared | 多处默认判定日期 | 日期硬编码可能选错标准生效状态 | 可能影响业务结论；需标准/Golden 证据 | M | V1_RUNTIME | P0 | Phase 1/2 | VERIFY | CSV#31；default/explicit `2026-08-23` 一致，`2026-02-28` 与 `2026-03-01` 明确跨过实施日期 | Phase 1 review=`NEEDS_MORE_EVIDENCE`；Golden 已显式填写 `as_of`，但默认日期是否允许仍需产品/业务决策；不改实现 |
+| QA-AUD-031 | AUD-031 | shared | 多处默认判定日期 | 日期硬编码可能选错标准生效状态 | 可能影响业务结论；需标准/Golden 证据 | M | V1_RUNTIME | P0 | Phase 3 | VERIFY | CSV#31；default/explicit `2026-08-23` 一致，`2026-02-28` 与 `2026-03-01` 明确跨过实施日期 | DEFER_TO_P3：非 settings 切片，保持既有风险与证据；原决定：Phase 1 review=`NEEDS_MORE_EVIDENCE`；Golden 已显式填写 `as_of`，但默认日期是否允许仍需产品/业务决策；不改实现 |
 | QA-AUD-032 | AUD-032 | shared | `__init__.py`、`pyproject.toml`、`build_msi.py` | 版本号 0.2.1 多处硬编码，追溯可能漂移 | 当前未确认影响 V1 业务结论；维护风险待证 | M | DEV_ONLY | P2 | Future (原 Phase 2) | OPEN | CSV#32 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：版本模型由 ADR-003 进入 Phase 1 |
 | QA-AUD-033 | AUD-033 | shared | `main_window.py:339` | UI 写死公共类型数量 15 | 当前未确认影响 V1 业务结论；维护风险待证 | L | PROTOTYPE | P2 | Future (原 Phase 2) | OPEN | CSV#33 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：非业务结论问题 |
 | QA-AUD-034 | AUD-034 | shared | `application/bootstrap.py` | Application 直接导入 infrastructure | 可能影响发布可靠性或长期维护；业务影响待证 | H | V1_RUNTIME | P1 | Phase 2 | OPEN | CSV#34 | CLOSE_IN_P2：按 docs/31 实施；通过对应测试后才关闭，当前 OPEN；原决定：装配方向重做时处理 |
@@ -76,7 +76,7 @@
 | QA-AUD-038 | AUD-038 | shared | writer / JSON repository | 损坏文件异常根因可能丢失 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 3 | OPEN | CSV#38 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：统一异常模型，保留根因 |
 | QA-AUD-039 | AUD-039 | shared | `evaluation_service.py` / `v4_validation.py` | 裸 KeyError/ValueError 可能中断整批 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 3 | OPEN | CSV#39 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：改为领域 issue 需 Golden 保护 |
 | QA-AUD-040 | AUD-040 | shared | `JsonStandardRepository.get_pack` | 每次解析完整 JSON，批量性能随数据量增长 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Future (原 Phase 2) | OPEN | CSV#40 + QA-P1-007 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：先保留实测，再设计缓存 |
-| QA-AUD-041 | AUD-041 | shared | `json_repository.py` | manifest 缺键直接 KeyError；缺文件静默空记录；find 线性 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 1/2 | OPEN | CSV#41 | Schema/错误语义进入 Phase 1 |
+| QA-AUD-041 | AUD-041 | shared | `json_repository.py` | manifest 缺键直接 KeyError；缺文件静默空记录；find 线性 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 3 | OPEN | CSV#41 | DEFER_TO_P3：非 settings 切片，保持既有风险与证据；原决定：Schema/错误语义进入 Phase 1 |
 | QA-AUD-042 | AUD-042 | shared | `v4_writer.py` / `template_resource.py` | 整体读写 xlsx 内存高、临时目录生命周期隐含 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 8 | OPEN | CSV#42 | Excel 后置，不在 0A 优化 |
 | QA-AUD-043 | AUD-043 | shared | `web/server.py` / `entrypoint.py` | `--host 0.0.0.0` 无鉴权，可暴露服务 | 可能影响发布可靠性或长期维护；业务影响待证 | M | PROTOTYPE | P1 | Future (原 Phase 2/9) | OPEN | CSV#43 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：Web 非当前 V1 入口，仍需安全处理 |
 | QA-AUD-044 | AUD-044 | shared | Web upload `X-Filename` | 文件名拼接宿主路径，存在路径穿越风险 | 可能影响发布可靠性或长期维护；业务影响待证 | M | PROTOTYPE | P1 | Future (原 Phase 2/9) | OPEN | CSV#44 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：上传功能未作为 V1 发布，但不得带风险发布 |
@@ -89,7 +89,7 @@
 | QA-AUD-051 | AUD-051 | shared | OOXML reader / template audit | inline 字符串和 namespace 重复实现 | 当前未确认影响 V1 业务结论；维护风险待证 | L | NOT_SHIPPED | P2 | Phase 8 | OPEN | CSV#51 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：V4 后置处理 |
 | QA-AUD-052 | AUD-052 | shared | `v4_writer.py:450-451` | 恒假分支，维护噪音 | 当前未确认影响 V1 业务结论；维护风险待证 | L | NOT_SHIPPED | P2 | Phase 8 | OPEN | CSV#52 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：不得在 0A 顺手删除 |
 | QA-AUD-053 | AUD-053 | shared | `application/ports/__init__.py` | 端口导出策略不一致，外部导入可能遗漏 | 当前未确认影响 V1 业务结论；维护风险待证 | L | DEV_ONLY | P2 | Phase 4 | OPEN | CSV#53 | DEFER_TO_P4：真实样板后再通用化；不在薄壳阶段重构业务；原决定：契约整理时修 |
-| QA-AUD-054 | AUD-054 | shared | `schema_constraints.py` 等 | 缺专门单测，死代码也缺验证 | 可能影响发布可靠性或长期维护；业务影响待证 | M | DEV_ONLY | P1 | Phase 1/2 | OPEN | CSV#54 | Golden/契约测试规划时补齐 |
+| QA-AUD-054 | AUD-054 | shared | `schema_constraints.py` 等 | 缺专门单测，死代码也缺验证 | 可能影响发布可靠性或长期维护；业务影响待证 | M | DEV_ONLY | P1 | Phase 4 | OPEN | CSV#54 | DEFER_TO_P4：非 settings 切片，保持既有风险与证据；原决定：Golden/契约测试规划时补齐 |
 | QA-EVID-055 | AUD-055 | shared | `tests/` | 第三方认为存在 60 个真实 unittest，用于保护重构 | 不表示缺陷；仅为测试基线事实 | UNKNOWN / NEEDS_EVIDENCE | DEV_ONLY | EVIDENCE | Phase 0 | MAPPED | CSV#55 | Phase 0 实测为 54 module、887 项，历史数字不作当前事实 |
 
 ## P0 Hotfix Lane 状态
@@ -234,3 +234,14 @@ authoritative path impact = 尚待验证
 | QA-AUD-051 | DEFER_TO_P8 | Phase 8 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
 | QA-AUD-052 | DEFER_TO_P8 | Phase 8 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
 | QA-AUD-053 | DEFER_TO_P4 | Phase 4 | 真实样板后再通用化；不在薄壳阶段重构业务 |
+| QA-AUD-005 | DEFER_TO_P3 | Phase 3 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-007 | DEFER_TO_P4 | Phase 4 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-009 | DEFER_TO_P3 | Phase 3 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-011 | DEFER_TO_P8 | Phase 8 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-014 | DEFER_TO_P8 | Phase 8 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-022 | DEFER_TO_P4 | Phase 4 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-026 | DEFER_TO_P8 | Phase 8 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-029 | DEFER_TO_P8 | Phase 8 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-031 | DEFER_TO_P3 | Phase 3 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-041 | DEFER_TO_P3 | Phase 3 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-054 | DEFER_TO_P4 | Phase 4 | 非 settings 切片，保留 OPEN/VERIFY |
