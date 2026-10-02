@@ -169,9 +169,10 @@ def launch_qt(*, paths=None) -> int:
     import sys
 
     service, logger = create_settings_runtime(paths=paths)
+    analysis = create_pump_analysis_service(paths=paths)
     previous = install_exception_hook(logger)
     try:
-        return run(service, logger)
+        return run(service, logger, analysis)
     finally:
         sys.excepthook = previous
         close_logging(logger)
