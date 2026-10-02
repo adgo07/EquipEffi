@@ -1,0 +1,225 @@
+{
+  "evidence_id": "USER_PROVIDED_OWNER_APPROVAL_2026-10-02_PUMP_CHEMICAL",
+  "evidence_type": "PRODUCT_OWNER_BUSINESS_TRUTH_APPROVAL",
+  "decision_owner": "王玮",
+  "decision_role": "总经理",
+  "decision_date": "2026-10-02",
+  "scope": "pump_chemical GB 19762-2025 approved business truth",
+  "result": "11 / 11 PASS",
+  "business_truth_changed_by_execution": false,
+  "candidate_derived_cases": [
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-BELOW-MINIMUM",
+      "file": "GC-PUMP-V5-CHEMICAL-BELOW-MINIMUM.json",
+      "profile_id": "pump_chemical",
+      "evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "expected_result": {
+        "support_status": null,
+        "category_status": "APPLICABLE",
+        "evaluation_status": "SUCCESS",
+        "ui_conclusion": "未达标",
+        "grade": "BELOW_MINIMUM",
+        "issue_codes": []
+      },
+      "matched_rule_id": "GB19762-R000020",
+      "file_sha256": "4A382F38FEEFA3A7C0DA49A13F99B9287255C07FE71F6EF01EA5E0B02F4539E7",
+      "source_candidate_case_id": "GC-PUMP-V3-CHEMICAL-BELOW-MINIMUM",
+      "source_candidate_line": 20
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-DOUBLE-SUCTION",
+      "file": "GC-PUMP-V5-CHEMICAL-DOUBLE-SUCTION.json",
+      "profile_id": "pump_chemical",
+      "evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "expected_result": {
+        "support_status": null,
+        "category_status": "APPLICABLE",
+        "evaluation_status": "SUCCESS",
+        "ui_conclusion": "1级",
+        "grade": "1",
+        "issue_codes": []
+      },
+      "matched_rule_id": "GB19762-R000013",
+      "file_sha256": "0F28EF0740353776E74CE49D5E464C3E46260935683788E7838EB5443ECF17F5",
+      "source_candidate_case_id": "GC-PUMP-V3-CHEMICAL-DOUBLE-SUCTION",
+      "source_candidate_line": 17
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-FLOW-OOS",
+      "file": "GC-PUMP-V5-CHEMICAL-FLOW-OOS.json",
+      "profile_id": "pump_chemical",
+      "evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "expected_result": {
+        "support_status": null,
+        "category_status": "APPLICABLE",
+        "evaluation_status": "OUT_OF_STANDARD_SCOPE",
+        "ui_conclusion": "不适用",
+        "grade": null,
+        "issue_codes": [
+          "OUT_OF_STANDARD_SCOPE"
+        ]
+      },
+      "matched_rule_id": null,
+      "file_sha256": "BEB29899B5ED5566B427907449D7B80FCCAA49062901FBA4623E314D4885B926",
+      "source_candidate_case_id": "GC-PUMP-V3-CHEMICAL-FLOW-OOS",
+      "source_candidate_line": 22
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-GRADE3",
+      "file": "GC-PUMP-V5-CHEMICAL-GRADE3.json",
+      "profile_id": "pump_chemical",
+      "evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "expected_result": {
+        "support_status": null,
+        "category_status": "APPLICABLE",
+        "evaluation_status": "SUCCESS",
+        "ui_conclusion": "3级",
+        "grade": "3",
+        "issue_codes": []
+      },
+      "matched_rule_id": "GB19762-R000012",
+      "file_sha256": "9F425A9F34351DD13F9A4CCBCAF52E558181E1FBB292B5B838AE0FEE5C26C6F5",
+      "source_candidate_case_id": "GC-PUMP-V3-CHEMICAL-GRADE3",
+      "source_candidate_line": 19
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-MULTISTAGE-L2",
+      "file": "GC-PUMP-V5-CHEMICAL-MULTISTAGE-L2.json",
+      "profile_id": "pump_chemical",
+      "evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "expected_result": {
+        "support_status": null,
+        "category_status": "APPLICABLE",
+        "evaluation_status": "SUCCESS",
+        "ui_conclusion": "2级",
+        "grade": "2",
+        "issue_codes": []
+      },
+      "matched_rule_id": "GB19762-R000020",
+      "file_sha256": "51D7E1D64823B99EEA40606A7032CDA6242B499755A85122998F23A4138489AC",
+      "source_candidate_case_id": "GC-PUMP-V3-CHEMICAL-MULTISTAGE-L2",
+      "source_candidate_line": 18
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-Q-ABOVE-3000-CAP",
+      "file": "GC-PUMP-V5-CHEMICAL-Q-ABOVE-3000-CAP.json",
+      "profile_id": "pump_chemical",
+      "evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "expected_result": {
+        "support_status": null,
+        "category_status": "APPLICABLE",
+        "evaluation_status": "SUCCESS",
+        "ui_conclusion": "1级",
+        "grade": "1",
+        "issue_codes": []
+      },
+      "matched_rule_id": "GB19762-R000016",
+      "file_sha256": "FFE322C22AA6F43C1CAE30208502020D307FA4E258D0C5978936D4EA7C4DBB8C",
+      "source_candidate_case_id": "GC-PUMP-V3-CHEMICAL-Q-ABOVE-3000-CAP",
+      "source_candidate_line": 21
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-SINGLE-L1",
+      "file": "GC-PUMP-V5-CHEMICAL-SINGLE-L1.json",
+      "profile_id": "pump_chemical",
+      "evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "expected_result": {
+        "support_status": null,
+        "category_status": "APPLICABLE",
+        "evaluation_status": "SUCCESS",
+        "ui_conclusion": "1级",
+        "grade": "1",
+        "issue_codes": []
+      },
+      "matched_rule_id": "GB19762-R000012",
+      "file_sha256": "DC0045CD0662D00D0CE43865EDBC0EF8E0184952979746AF2F3D6B99C2C4F47A",
+      "source_candidate_case_id": "GC-PUMP-V3-CHEMICAL-SINGLE-L1",
+      "source_candidate_line": 16
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-STAGE-CONFLICT",
+      "file": "GC-PUMP-V5-CHEMICAL-STAGE-CONFLICT.json",
+      "profile_id": "pump_chemical",
+      "evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "expected_result": {
+        "support_status": null,
+        "category_status": "APPLICABLE",
+        "evaluation_status": "INVALID_INPUT",
+        "ui_conclusion": "无法判定",
+        "grade": null,
+        "issue_codes": [
+          "STAGE_CATEGORY_CONFLICT"
+        ]
+      },
+      "matched_rule_id": null,
+      "file_sha256": "FBA09F93502364BD5FE8EE0AC91550C1483F0BBD6D018902BC5965E1EA912F9F",
+      "source_candidate_case_id": "GC-PUMP-V3-CHEMICAL-STAGE-CONFLICT",
+      "source_candidate_line": 23
+    }
+  ],
+  "owner_defined_cases": [
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-SINGLE-NS-ABOVE-300",
+      "file": "GC-PUMP-V5-CHEMICAL-SINGLE-NS-ABOVE-300.json",
+      "profile_id": "pump_chemical",
+      "evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "expected_result": {
+        "support_status": null,
+        "category_status": "APPLICABLE",
+        "evaluation_status": "OUT_OF_STANDARD_SCOPE",
+        "ui_conclusion": "不适用",
+        "grade": null,
+        "issue_codes": [
+          "OUT_OF_STANDARD_SCOPE"
+        ]
+      },
+      "matched_rule_id": null,
+      "file_sha256": "F9D4DEF8437E2D8E346304FAAC14BC254F5089668C1A666AEE303AD130B99FA9",
+      "owner_defined_case_ref": "C10",
+      "standard_evidence": "GB 19762-2025 表2：ns>300 超出标准适用范围，不生成等级",
+      "canonical_evidence": "interval_boundaries.specific_speed_ns 上限 300"
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-SINGLE-NS-BELOW-20",
+      "file": "GC-PUMP-V5-CHEMICAL-SINGLE-NS-BELOW-20.json",
+      "profile_id": "pump_chemical",
+      "evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "expected_result": {
+        "support_status": null,
+        "category_status": "APPLICABLE",
+        "evaluation_status": "OUT_OF_STANDARD_SCOPE",
+        "ui_conclusion": "不适用",
+        "grade": null,
+        "issue_codes": [
+          "OUT_OF_STANDARD_SCOPE"
+        ]
+      },
+      "matched_rule_id": null,
+      "file_sha256": "651C9C5AEE57A6122B796B35F742DC0EFD1A2A839E80788B558809B946EA78C5",
+      "owner_defined_case_ref": "C11",
+      "standard_evidence": "GB 19762-2025 表2：ns<20 超出标准适用范围，不生成等级",
+      "canonical_evidence": "interval_boundaries.specific_speed_ns 下限 20"
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-SINGLE-NS210-300-L2",
+      "file": "GC-PUMP-V5-CHEMICAL-SINGLE-NS210-300-L2.json",
+      "profile_id": "pump_chemical",
+      "evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "expected_result": {
+        "support_status": null,
+        "category_status": "APPLICABLE",
+        "evaluation_status": "SUCCESS",
+        "ui_conclusion": "2级",
+        "grade": "2",
+        "issue_codes": []
+      },
+      "matched_rule_id": "GB19762-R000014",
+      "file_sha256": "95888EFA94D57B066941AD87A031F230B3D291EE511A4884AC2B3CE8116F4909",
+      "owner_defined_case_ref": "C9",
+      "standard_evidence": "GB 19762-2025 表2、公式(1)、公式(4)~(7)：单级石化泵 5<Q<=300、210<ns<=300 行（η0 = η_b - Δη，公式(7)）",
+      "canonical_evidence": "GB19762-R000014"
+    }
+  ],
+  "support_status_note": "pump_chemical 的 scope_status=IN_V1、support_status=NOT_IN_RELEASE_SCOPE、standard_maturity=READY_FOR_IMPLEMENTATION 不因本批准改变；正式支持提升仍需 Stage D 独立验收。",
+  "case_count": 11
+}

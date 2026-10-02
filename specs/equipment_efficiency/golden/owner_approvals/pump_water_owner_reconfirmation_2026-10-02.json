@@ -1,0 +1,177 @@
+{
+  "evidence_id": "USER_PROVIDED_OWNER_RECONFIRMATION_2026-10-02_PUMP_WATER",
+  "evidence_type": "PRODUCT_OWNER_RECONFIRMATION",
+  "decision_owner": "王玮",
+  "decision_role": "总经理",
+  "decision_date": "2026-10-02",
+  "scope": "pump_water Golden 0.4 owner reconfirmation",
+  "result": "18 / 18 PASS",
+  "business_truth_changed": false,
+  "golden_files_regenerated": false,
+  "note": "本轮仅重新确认既有 18 条已批准 Golden 0.4 的业务真值；未修改任何 Golden 内容，未新增重复 Golden。",
+  "cases": [
+    {
+      "case_id": "GC-PUMP-V4-WATER-BELOW-MINIMUM",
+      "file": "GC-PUMP-V4-WATER-BELOW-MINIMUM.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "2C78AB9A4558F5EFB2645B839F0B93F6F0D897CE60C2CECA5BE9A6D4FF95DC17"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-CATEGORY-MISSING",
+      "file": "GC-PUMP-V4-WATER-CATEGORY-MISSING.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "AE9C88969D2DE3FD3DEDFE5459A4E16DD7FF52E3F47B75DA51BB24361710D604"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-CATEGORY-OTHER",
+      "file": "GC-PUMP-V4-WATER-CATEGORY-OTHER.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "CD608B27C2AAB99132A8ACE89DDDFF40EEAEA1ECBB5ABD9C45A525F99B52C5D3"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-CATEGORY-UNKNOWN",
+      "file": "GC-PUMP-V4-WATER-CATEGORY-UNKNOWN.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "8B08F50A308660C93A88E615C0CCB448F73066192EABE03E8B689DD7A0B03B69"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-DOUBLE-SUCTION-L1",
+      "file": "GC-PUMP-V4-WATER-DOUBLE-SUCTION-L1.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "19AB8D296EE36798FB990D16A18E506B5DA37972C2DD6C66AE7C474508252C14"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-FLOW-OOS",
+      "file": "GC-PUMP-V4-WATER-FLOW-OOS.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "BA2531265F90C90381837BB452E419FAE7B53AFAB97A7B003A6BF6683C80E4FF"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-LIGHT-HORIZONTAL-L3",
+      "file": "GC-PUMP-V4-WATER-LIGHT-HORIZONTAL-L3.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "35D82824715D2880F5262F8F5C6D02CCD377BB6E68255D85613BEEF291567071"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-LIGHT-VERTICAL-L2",
+      "file": "GC-PUMP-V4-WATER-LIGHT-VERTICAL-L2.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "EACA2E8076B5431D533E0FA23B61DFD4F5821CBDAFE26D91E32C14CEE74AA0F1"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-MISSING-EFFICIENCY",
+      "file": "GC-PUMP-V4-WATER-MISSING-EFFICIENCY.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "E751731C5983FAA840A380B657A00D4BEEFA33B6D4013D43E6769A498C54413F"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-MISSING-STAGES",
+      "file": "GC-PUMP-V4-WATER-MISSING-STAGES.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "A96C564B3111E2CB47711D2B9BE7279CDBD72E665314C3B00F7F225AB029663B"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-MISSING-SUCTION",
+      "file": "GC-PUMP-V4-WATER-MISSING-SUCTION.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "65EF6EFE0B49991D3F100755D9133EF09BE91FD5FFA88D49473501D6F468434B"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-MULTISTAGE-C2-142-33",
+      "file": "GC-PUMP-V4-WATER-MULTISTAGE-C2-142-33.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "75E596B7356097C6E70E4DAB52FD9DC3A25AA264660C4733C48F63FA8714F196"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-PIPELINE-L1",
+      "file": "GC-PUMP-V4-WATER-PIPELINE-L1.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "8C6FEDBDD8BB57BB71D7D080AA820781C80ACEEB861DDB6110F82E4F23EF1A7B"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-SINGLE-L2",
+      "file": "GC-PUMP-V4-WATER-SINGLE-L2.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "7287F0FFE08372F7537561F437A4100E33236C8503A89B1AFB168E3DBAEDBD2B"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-SINGLE-L3",
+      "file": "GC-PUMP-V4-WATER-SINGLE-L3.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "D1BC7064CC6FFBB821360A4C8E32F4956E9997CA056965E319B24F0DA2437179"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-SINGLE-SUCTION-L1",
+      "file": "GC-PUMP-V4-WATER-SINGLE-SUCTION-L1.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "AD2C832368521A1825FE5A81DFA87D33EE736437FD8AA8A96E076DDAD600455C"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-STAGE-CONFLICT",
+      "file": "GC-PUMP-V4-WATER-STAGE-CONFLICT.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "BE62971A90268DEBB116DE2E4DA550E69367DE36E4790A4B8F908BB7F0680797"
+    },
+    {
+      "case_id": "GC-PUMP-V4-WATER-SUCTION-CONFLICT",
+      "file": "GC-PUMP-V4-WATER-SUCTION-CONFLICT.json",
+      "approval_status": "APPROVED",
+      "review_owner": "王玮",
+      "approved_at": "2026-09-28T11:03:04+08:00",
+      "review_flags": [],
+      "file_sha256": "6BBDDAFB6997F6E20A88FB613ADB6EDA9544FAB58B25A1DF6676BDDC610F8452"
+    }
+  ],
+  "case_count": 18
+}
