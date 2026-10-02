@@ -1,8 +1,12 @@
 name: Numeric Contract v1 Adoption
 
+# 历史 CI 收口（2026-10-02）：
+# 原 push 触发指向已合并的历史分支 chore/numeric-contract-v1-adoption，该分支不会再收到
+# push，触发器已失效。保留 pull_request 与手动重放能力，并补上 master push，使合并后仍有
+# 可核对的证据。
 on:
   push:
-    branches: [chore/numeric-contract-v1-adoption]
+    branches: [master]
   pull_request:
     branches: [master]
   workflow_dispatch:

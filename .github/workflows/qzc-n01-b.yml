@@ -1,8 +1,10 @@
 name: QZC-N01-B Transcendental Numeric Pilot
 
+# 历史 CI 收口（2026-10-02）：
+# 原 push 触发指向已合并的历史分支 qzc-n01-b/transcendental-execution，该分支不会再收到
+# push，触发器已失效。该 pilot 是一次性历史实证，不重复在 master push 上运行；保留
+# pull_request（用于后续受控变更）与 workflow_dispatch 手动重放能力。
 on:
-  push:
-    branches: [qzc-n01-b/transcendental-execution]
   pull_request:
     branches: [master]
   workflow_dispatch:

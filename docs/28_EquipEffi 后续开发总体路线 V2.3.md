@@ -67,6 +67,8 @@ DISABLED
 
 > **口径更正（2026-10-01）**：上方摘要中的 `Qingzhou-contracts locked commit` 为 V2.3 校准当时（2026-09-28）口径；历史口径 `0cd74d783fa23add6dc881b408a8c8ba8503f8e8` 已被 2026-10-01 的 Numeric Contract v1 Adoption 取代。当前 locked commit 为 `ee5feb0cc34dbd99790500fadd0c4c932e202a20`。当前权威来源：`platform-lock.json`、`PLATFORM_BASELINE.md`、`ROADMAP.md`、`docs/governance/NUMERIC_CONTRACT_V1_ADOPTION_REPORT.md`。历史正文保留不改写。
 
+> **产品范围更正（2026-10-02）**：上方摘要中的 `Windows V1 IN_V1 Profile`（`transformer`、`pump_water`）为 V2.3 校准当时（2026-09-28）口径，已被 2026-10-02 产品决定取代。当前 Windows V1 产品目标为**完整支持 `GB 19762—2025`**，`IN_V1` Profile 为 **`pump_water` 与 `pump_chemical`**；`transformer` 调整为 `POST_V1`（本轮暂缓，代码、标准数据、测试与历史资产保留，不删除、不重构）。当前权威来源：`V1_SCOPE.md`、`ROADMAP.md`、`REFERENCE_STANDARD_ROADMAP.md`。历史正文保留不改写。
+
 Phase 2 只有在用户明确授权后才能开始。
 
 ---
@@ -105,6 +107,12 @@ DRAFT / NOT YET RELEASED
 ```
 
 > **口径更正（2026-10-01）**：本节“当前锁定”的 commit 与 Contract 状态均为 V2.3 校准当时（2026-09-28）口径。当前 locked commit 为 `ee5feb0cc34dbd99790500fadd0c4c932e202a20`；Numeric Contract 已由本仓正式采用为 `v1 / FROZEN`，Unit、Module/Capability、Workspace/Attempt/Record/Result、qzpack 仍为 `DRAFT / NOT YET RELEASED`。当前权威来源：`platform-lock.json`、`PLATFORM_BASELINE.md`、`ROADMAP.md`、`docs/governance/NUMERIC_CONTRACT_V1_ADOPTION_REPORT.md`。历史正文保留不改写。
+
+> **双轨读取（2026-10-02 补充）**：中央文件按**读取方式**分两类，不得混用（中央 `docs/GUIDE_INDEX.md` 第 2.1 节的 A / B 分类）：
+>
+> - **Frozen 权威文件**（Architecture / Numeric Contract / Frozen Schema / Frozen Conformance）→ 按本仓 `platform-lock.json` 的 **locked SHA** 读取；不得直接套用中央 `main`；
+> - **ACTIVE / ACTIVE-EVOLVING 指南**（`docs/GUIDE_INDEX.md`、`docs/governance/PRODUCT_DELIVERY_POLICY_V1.md`、`docs/governance/STANDARD_DEVELOPMENT_GUIDE_V0.1.md`、`docs/ui/UI_DESIGN_GUIDELINES_V0.1.md`）→ 读取中央仓**当前已合并、当前适用**的版本；它们**不在** `platform-lock` 锁定范围内，也不应被按历史 SHA 读取。这四份文件在 locked SHA `ee5feb0` 上**不存在**。
+> - 读取 ACTIVE 指南**不修改** `platform-lock.json`、**不构成** Frozen Contract adoption、**不得覆盖** locked Frozen 权威文件；两者冲突时**以 locked Frozen 权威文件为准**。
 
 因此：
 
@@ -349,6 +357,16 @@ Python 导入校验又一套
 5. Excel 不复制标准公式、查表、等级比较或结论逻辑；
 6. 结果长期按 stable `result_field_id` 回写；
 7. 正式模板生成、批量读取、逐行错误、结果写回、Word/PDF 等仍在 Phase 8 实施。
+
+## 7.1 Excel 数值入口前置要求（2026-10-02 补充，不改变 Phase 8 门禁）
+
+以下要求不把 Excel 提前到 Phase 2，只固定正式实施前必须先解决的问题：
+
+- Excel 的正式定位是 **Import / Export Adapter**，必须调用与 GUI 相同的 Application / `EvaluationService` / evaluator，不得复制第二套算法；
+- 数值入口（单元格原始类型、文本数字、百分比、日期、空值、科学计数法、公式/缓存值、非有限值）必须先完成**独立设计与证据验证**，再进入正式实现；
+- **不得因为 Excel 库返回 Python `float` 就默认认为满足精确十进制要求**；若上游已物化为 binary float，除非能证明保真，不得声称保留了原始十进制词法（对应中央 Numeric Contract v1 §2.1 ingress boundary）；
+- 本仓现有 `src/equipeffi/infrastructure/excel/ooxml_reader.py` 的 `_parse_number` 已先 `Decimal(text)` 再返回 `float(number)`，属已定位的 **float 物化点**（`NOT_SHIPPED` 路径）。正式 Excel 阶段必须先在最小范围内处理该入口并给出证据，不得沿用该行为；
+- 中央公共无损 Excel/openpyxl 词法交换方案仍为 `OPEN`；本仓不得宣称解决全平台问题，`REFERENCE_STANDARD_ROADMAP.md` 必须如实标注 `PARTIAL` / `BLOCKED`。
 
 ---
 

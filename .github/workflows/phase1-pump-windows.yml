@@ -1,10 +1,14 @@
 name: Phase 1 pump Windows checks
 
+# 历史 CI 收口（2026-10-02）：
+# 原 push 触发指向已合并的历史分支 phase1/pump-v2-r01-r06，该分支不会再收到 push，
+# 触发器已失效。保留 pull_request 与手动重放能力，并补上 master push，使泵保护门禁在
+# 合并后仍然执行（此前直接 push 到 master 不会触发任何 workflow）。
 on:
   pull_request:
     branches: [master]
   push:
-    branches: [phase1/pump-v2-r01-r06]
+    branches: [master]
   workflow_dispatch:
 
 permissions:

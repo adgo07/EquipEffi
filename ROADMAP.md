@@ -5,11 +5,35 @@
 - **Current Roadmap:** EquipEffi V2.3
 - **路线原文:** [docs/28_EquipEffi 后续开发总体路线 V2.3.md](docs/28_EquipEffi%20后续开发总体路线%20V2.3.md)
 - **V2.2 继承基线:** [docs/28_EquipEffi 后续开发总体路线 V2.2.md](docs/28_EquipEffi%20后续开发总体路线%20V2.2.md)
+- **Windows V1 产品目标:** 首个正式版**完整支持 `GB 19762—2025《离心泵能效限定值及能效等级》`**，覆盖 `pump_water` 与 `pump_chemical` 两个 Profile；`transformer` 本轮暂缓（资产保留）。详见 [V1_SCOPE.md](V1_SCOPE.md) 第 0、4 节
+- **Reference Standard 真实状态:** [REFERENCE_STANDARD_ROADMAP.md](REFERENCE_STANDARD_ROADMAP.md)（当前总体 `PARTIAL`）
 - **Current Phase:** Phase 1 (complete)
 - **State:** `PHASE_1_PASS`
 - **Next State:** `PHASE_2_READY`
 - **Automatic continuation:** `DISABLED`
-- **Allowed Work:** Numeric Contract v1 adoption/compatibility verification only. Phase 2 is READY but has not started; begin Phase 2 only after explicit user authorization. Automatic continuation remains DISABLED.
+- **Allowed Work:** 产品范围收口、V2.3 同步修订、治理减负与历史 CI 收口（文档/治理/CI 层面）。Phase 2 为 READY 但尚未开始；不得开发新功能、不得修改 Pump 业务算法、不得修改中央 Contract。进入 Phase 2 必须由用户明确授权。
+
+## Windows V1 产品目标（2026-10-02 产品决定）
+
+Windows V1 的正式产品目标已收口为**完整支持一个参考标准**，而不是“支持多个设备的浅层功能”：
+
+```text
+产品目标   = 完整支持 GB 19762—2025《离心泵能效限定值及能效等级》
+完整范围   = pump_water + pump_chemical
+本轮暂缓   = transformer（POST_V1；资产保留，不删除、不重构）
+```
+
+“完整”必须覆盖适用范围、类别、输入、校验、公式、查表、修正、等级、未达标、不适用、无法判定/输入不足、标准依据、结果解释、Record、历史恢复与 Excel。
+
+三个维度必须分开记录，不得互相冒充：
+
+| 维度 | 含义 | 定义来源 |
+|---|---|---|
+| `scope_status` | 产品范围决策 | 本仓产品决策（`V1_SCOPE.md`） |
+| `support_status` | 当前发布能力 | 本仓发布门禁 |
+| 标准开发成熟度 | Stage A→D 阶段成熟度 | 中央 `STANDARD_DEVELOPMENT_GUIDE_V0.1.md` §19 |
+
+**`pump_chemical` 的范围状态为 `IN_V1`，但在 Golden 具名批准与 Stage D 独立验收通过前，其 `support_status` 保持 `NOT_IN_RELEASE_SCOPE`，不得写为 `SUPPORTED`。**
 
 ## 治理切换
 
@@ -31,10 +55,15 @@ BASELINE.md
 ASSET_AUDIT.md
 QA_BACKLOG.md
 V1_SCOPE.md
+REFERENCE_STANDARD_ROADMAP.md
+STANDARD_ISSUES_REGISTER.md
+UI_CURRENT_STATE_AUDIT.md
 PLATFORM_BASELINE.md
 platform-lock.json
 ADR/
 ```
+
+中央治理入口按 `AGENTS.md` 第 3 节与中央 `docs/GUIDE_INDEX.md` 路由：**Frozen 权威文件**（Architecture / Numeric Contract / Schema / Conformance）按本仓 `platform-lock.json` 的 locked SHA 读取；**ACTIVE / ACTIVE-EVOLVING 指南**（`GUIDE_INDEX.md`、`PRODUCT_DELIVERY_POLICY_V1.md`、`STANDARD_DEVELOPMENT_GUIDE_V0.1.md`、`UI_DESIGN_GUIDELINES_V0.1.md`）按中央当前已合并版本读取。两者冲突时以 locked Frozen 权威文件为准。
 
 ## Roadmap V2.3 Alignment（2026-09-28；Numeric v1 adoption 更新于 2026-10-01）
 
@@ -92,7 +121,7 @@ Phase 2 只建立最小正式工程底座：Python 3.12、PySide6 薄 AppShell�
 | Vertical Slice | PASS | `pump_water` 已与 3 个替代候选比较并记录风险/必须证明项 |
 | Phase 0B | N/A | 没有满足条件的 Hotfix 被批准；无额外重构混入 |
 
-Phase 0 保持 PHASE_0_PASS；Phase 1 Exit Gate 已满足，当前为 PHASE_1_PASS；下一状态为 PHASE_2_READY。Windows V1 产品决策与 Profile 映射保持不变；Phase 2 不会自动启动，须由用户明确授权。
+Phase 0 保持 PHASE_0_PASS；Phase 1 Exit Gate 已满足，当前为 PHASE_1_PASS；下一状态为 PHASE_2_READY。Windows V1 产品范围已由 2026-10-02 产品决定收口为“完整支持 GB 19762—2025（`pump_water` + `pump_chemical`）”，`transformer` 本轮暂缓且资产保留；详见 `V1_SCOPE.md`。Phase 2 不会自动启动，须由用户明确授权。
 
 ## Phase 0 保护边界
 
@@ -101,3 +130,4 @@ Phase 0 保持 PHASE_0_PASS；Phase 1 Exit Gate 已满足，当前为 PHASE_1_PA
 - `Legacy Regression` 保护旧行为；`Approved Golden Case` 才保护业务真相。
 - P0 只有在有明确标准/测试证据、修改最小、不改变架构且有回归测试时才可进入 0B。本次没有执行 0B。
 - Windows V1 Scope 采用显式状态；未进入 Scope 的 Profile 必须显示“当前版本未支持”。
+- 已暂缓的 `transformer` 属于资产保留范围：其代码、标准数据、测试与历史资产不得因本轮范围收口而删除或重构。

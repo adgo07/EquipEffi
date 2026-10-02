@@ -1,12 +1,14 @@
 # EquipEffi 项目交接说明
 
-> Phase 1 执行（2026-09-22～2026-09-28）
+> **当前唯一权威路线：EquipEffi V2.3；状态 `PHASE_1_PASS`；下一状态 `PHASE_2_READY`；`automatic_continuation = DISABLED`。**
 >
-当前唯一权威路线：EquipEffi V2.3；Phase 1 状态：PHASE_1_PASS；下一状态：PHASE_2_READY（待用户明确授权后开始）。自动继续保持 DISABLED。
+> **当前 Windows V1 产品目标（2026-10-02 产品决定）：首个正式版完整支持 `GB 19762—2025《离心泵能效限定值及能效等级》`，覆盖 `pump_water` 与 `pump_chemical`；`transformer` 本轮暂缓、资产保留。** 详见 [V1_SCOPE.md](V1_SCOPE.md) 与 [REFERENCE_STANDARD_ROADMAP.md](REFERENCE_STANDARD_ROADMAP.md)。
 >
-> V2.2 保留为 V2.3 的继承基线；旧 v7–v15、T04.xx、旧 HANDOFF 和编号执行清单均为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`。它们保留事实，不再拥有自动任务调度权。请先读取 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[BASELINE.md](BASELINE.md)、[ASSET_AUDIT.md](ASSET_AUDIT.md)、[QA_BACKLOG.md](QA_BACKLOG.md)、[V1_SCOPE.md](V1_SCOPE.md)、[PLATFORM_BASELINE.md](PLATFORM_BASELINE.md) 和 `platform-lock.json`。
+> **当前任务：`V2.3-PRODUCT-SCOPE-CLEANUP`（产品范围收口 / V2.3 同步修订 / 治理减负 / 历史 CI 收口），分支 `governance/v2.3-product-scope-cleanup`，基线 `origin/master@f5c34277d35c9a7a1bcfbe4331297de2ad1fcf4f`。本任务不是 Phase 2 执行，不开发新功能，不修改 Pump 业务算法，不修改中央 Contract。完成后停止等待独立验收，不自行合并 PR。**
 >
-R01–R07 技术独立复验固定 SHA 为 3101e05abd7f33262a9449c390d61ec00008fb75；P1-SR01 Solution/Product Review 通过的固定基线为 38bdfc28e078fee067743d30055fb39337881c7c。FIXED_SHA_INDEPENDENT_REVIEW、GOLDEN_CASE_NAMED_HUMAN_APPROVAL 和 SOLUTION_PRODUCT_REVIEW 均为 RESOLVED。王玮于 2026-09-28T11:03:04+08:00 批准全部 18 条 pump_water Golden 0.4。Golden 0.1 七例、原 0.3 的 26 条记录及 3 条 replacement candidates 不变，8 条 pump_chemical 候选未获 V1 Golden 批准。Phase 1 Exit Gate 已满足；PR #1 与 QZC-A01 PR #2 均已合并。Roadmap V2.3 只校准总体路线与治理指针，不改生产代码、Schema、Canonical、Golden、evaluator、Numeric Contract、V1 Scope 映射或测试预期。Phase 2 READY 不代表自动开始，必须由用户明确授权。
+> V2.2 保留为 V2.3 的继承基线；旧 v7–v15、T04.xx、旧 HANDOFF 和编号执行清单均为 `HISTORICAL / NOT AUTHORITATIVE FOR NEXT TASK`。它们保留事实，不再拥有自动任务调度权。请先读取 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md)、[AGENTS.md](AGENTS.md)、[BASELINE.md](BASELINE.md)、[ASSET_AUDIT.md](ASSET_AUDIT.md)、[QA_BACKLOG.md](QA_BACKLOG.md)、[V1_SCOPE.md](V1_SCOPE.md)、[REFERENCE_STANDARD_ROADMAP.md](REFERENCE_STANDARD_ROADMAP.md)、[STANDARD_ISSUES_REGISTER.md](STANDARD_ISSUES_REGISTER.md)、[PLATFORM_BASELINE.md](PLATFORM_BASELINE.md) 和 `platform-lock.json`。
+>
+> R01–R07 技术独立复验固定 SHA 为 `3101e05abd7f33262a9449c390d61ec00008fb75`；P1-SR01 Solution/Product Review 通过的固定基线为 `38bdfc28e078fee067743d30055fb39337881c7c`。FIXED_SHA_INDEPENDENT_REVIEW、GOLDEN_CASE_NAMED_HUMAN_APPROVAL 和 SOLUTION_PRODUCT_REVIEW 均为 RESOLVED。王玮于 2026-09-28T11:03:04+08:00 批准全部 18 条 pump_water Golden 0.4。Golden 0.1 七例、原始 0.3 的 26 条记录及 3 条 replacement candidates 不变，8 条 pump_chemical 候选**仍未获 V1 Golden 批准**。Phase 1 Exit Gate 已满足；PR #1～#8 均已合并。**Numeric Contract v1 adoption（PR #5，合并于 `66835d2ae2e0a8eaee50260f43ee0c52b4858d85`）的独立验收记录仓库内未找到，状态为 `INDEPENDENT_ACCEPTANCE_RECORD_PENDING`——合并事实不等同于独立验收证据，不得报告为验收 PASS。** Phase 2 READY 不代表自动开始，必须由用户明确授权。
 
 ## 当前权威状态
 
@@ -14,13 +16,23 @@ R01–R07 技术独立复验固定 SHA 为 3101e05abd7f33262a9449c390d61ec00008f
 |---|---|
 | 当前路线 | `EquipEffi V2.3` |
 | 继承基线 | `EquipEffi V2.2`；未被 V2.3 明确修改的原则与阶段结构继续有效 |
+| Windows V1 产品目标 | 完整支持 `GB 19762—2025`，覆盖 `pump_water` + `pump_chemical`；`transformer` 暂缓（`POST_V1`，资产保留） |
 | 当前阶段 | `Phase 1 complete / Phase 2 ready` |
-| 当前 Goal | Roadmap V2.3 Alignment |
 | 状态 | `PHASE_1_PASS` |
 | 下一状态 | `PHASE_2_READY / NOT_STARTED` |
-| 唯一下一步 | 完成 V2.3 路线文档与治理指针校准后停止；Phase 2 只有用户明确授权后才能开始；automatic continuation 继续 DISABLED |
-| 业务样板 | `pump_water`；Phase 1 已完成业务真相样板，Phase 3 才做正式工程/生命周期纵向样板 |
-| 本轮边界 | 仅路线/治理 Markdown；不修改生产代码、Schema、Golden、Canonical、V1范围决策、泵算法、数据库、Excel实现、UI实现或 Phase 2 功能 |
+| 唯一下一步 | 完成本治理任务并停止，等待独立验收；Phase 2 只有用户明确授权后才能开始；automatic continuation 继续 `DISABLED` |
+| 业务样板 | `pump_water`（Phase 1 业务真相样板）；`pump_chemical` 已进入 V1 范围但标准开发成熟度仅 `READY_FOR_IMPLEMENTATION` |
+| 本轮边界 | 仅范围/治理 Markdown 与 CI 触发配置；不修改生产代码、Schema、Golden、Canonical、V1 范围以外的决策、泵算法、数据库、Excel 实现、UI 实现或 Phase 2 功能 |
+
+### 三个状态维度不得互相冒充
+
+| 维度 | 含义 | 定义来源 |
+|---|---|---|
+| `scope_status` | 产品范围决策 | 本仓产品决策（`V1_SCOPE.md`） |
+| `support_status` | 当前发布能力 | 本仓发布门禁 |
+| 标准开发成熟度 | Stage A→D 阶段成熟度 | 中央 `STANDARD_DEVELOPMENT_GUIDE_V0.1.md` §19 |
+
+**`pump_chemical`：`scope_status = IN_V1` 且 `standard maturity = READY_FOR_IMPLEMENTATION`，但 `support_status = NOT_IN_RELEASE_SCOPE`** —— 在其 Golden 具名批准与 Stage D 独立验收通过前不得写为 `SUPPORTED`。
 
 R01–R06 清单见 PUMP_V2_R01_R06_COMMIT_MANIFEST.md，R07 清单见 PUMP_V2_R07_COMMIT_MANIFEST.md，P1-G04 来源与批准清单见 PUMP_V2_G04_APPROVAL_MANIFEST.md。Golden 0.1 七例保持历史冻结，原始 0.3 的 26 条候选保持 DRAFT/PENDING，3 条 replacement candidates 未改；18 条正式 pump_water Golden 0.4 均为 APPROVED，8 条 pump_chemical technical-only 候选未获 V1 Golden 批准。精确表3边界由 generated boundary test 负责，首批人工 Golden 不要求重复穷举端点。标准 PDF 不入仓库，validator 支持 external-evidence-root。Phase 1 Exit Gate 已满足；三个评审门禁均为 RESOLVED。
 
