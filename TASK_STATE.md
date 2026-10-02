@@ -1,8 +1,8 @@
 roadmap: EquipEffi V2.3
-phase: Phase 1 complete / Phase 2 ready
-goal: V2.3 Product Scope & Governance Cleanup (R1 final closure); no Phase 2 execution
-status: PHASE_1_PASS
-next_status: PHASE_2_READY
+phase: Phase 2
+goal: Minimum Formal Engineering Foundation
+status: IN_PROGRESS
+next_status: READY_FOR_INDEPENDENT_ACCEPTANCE
 
 # ---------------------------------------------------------------------------
 # 本文件只承担“当前状态”。历史执行细节、run ID、历史测试数字与旧 SHA 一律
@@ -10,25 +10,15 @@ next_status: PHASE_2_READY
 # ---------------------------------------------------------------------------
 
 current_task:
-  task_id: V2.3-PRODUCT-SCOPE-CLEANUP-R1
-  branch: governance/v2.3-product-scope-cleanup
-  task_kind: independent pre-acceptance fix round (R1 final closure)
-  phase_2_execution: false
-  new_features: NONE
-  pump_business_algorithm_change: NONE
-  central_contract_change: NONE
-  deliverables:
-    - TASK_STATE deliverables wording corrected
-    - docs/28 V2.3 Phase 3-9 semantics synchronised to complete GB 19762-2025 coverage
-    - TASK_STATE / ROADMAP / HANDOFF reduced to current-state-only, history via links
-    - long-term CI established: windows-core.yml + pump-conformance.yml
-    - three historical task workflows removed
-    - historical fixed diff baselines removed; dynamic whitespace check adopted
-    - full suite explicitly marked NON-GATING BASELINE / KNOWN BASELINE
-    - QA_BACKLOG stale Excel Decimal risk registered with a stable QA ID
-  next_action: stop for independent acceptance; do not merge automatically
+  task_id: PHASE2-MINIMUM-FORMAL-ENGINEERING-FOUNDATION
+  branch: phase2/minimal-engineering-foundation
+  task_kind: authorised Phase 2 execution
+  phase_2_execution: true
+  design: docs/31_Phase 2 最小正式工程底座.md
+  start_master_sha: 78831af1778255e1b19a904e9135d56a9672eaf2
+  next_action: execute P2-G01 through G04; independent acceptance follows
 
-allowed_next: independent acceptance of this branch only; do not start Phase 2 automatically
+allowed_next: approved Phase 2 scope only; no Phase 3; no automatic merge
 automatic_continuation: DISABLED
 phase_0b: NOT_EXECUTED
 phase_1_hotfix: NOT_EXECUTED
