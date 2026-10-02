@@ -21,7 +21,11 @@
 4ca0f84135561954bda5bc4ace622a07bd5fb1bd
 ```
 
-（分支 `phase3/gb19762-unified-vertical-slice` 的 final head，已推送到 `origin`；PR #11 的 head 与此一致。）
+（分支 `phase3/gb19762-unified-vertical-slice` 的 CI 验证点 head，已推送到 `origin`。）
+
+**CI 结果（该 SHA）**：`Windows Core` 的 windows-core (gating) / whitespace-check (gating) / full-suite-baseline (NON-GATING) 与 `Pump Conformance` (gating) 全部 **success**。
+
+其后只有**文档**追加提交（记录本 SHA 与提交序列），不改动任何代码、测试或证据；PR #11 的最终 head 以 `git rev-parse origin/phase3/gb19762-unified-vertical-slice` 为准。
 
 本次提交序列（相对 Phase 3 基线 `7e16418aa32ced5512e26bd70227f01a329fbdfc`）：
 
