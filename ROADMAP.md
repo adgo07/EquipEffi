@@ -32,22 +32,34 @@
 
 ```text
 Phase 0 = PASS
-Phase 1 = PASS          (PHASE_1_PASS)
-Phase 2 = EXECUTION_COMPLETE
-Next = READY_FOR_INDEPENDENT_ACCEPTANCE
+Phase 1 = PHASE_1_PASS
+Phase 2 = PHASE_2_PASS          (PR #10 独立验收并合并 @ 7e16418a)
+Phase 3 = IN_PROGRESS           (GB 19762-2025 离心泵统一正式纵向闭环)
 Automatic continuation = DISABLED
 ```
 
-Phase 2 已由用户本次提示明确授权并完成 G01～G04；下一步只允许独立验收。尚未宣告 Phase 2 PASS，不合并 PR，不进入 Phase 3。设计见 docs/31，证据见 PHASE2_EXECUTION_REPORT.md。
+Phase 2 已由独立验收通过并合并（PR #10）。Phase 3 已获用户明确执行授权；执行者**不得**自行宣布 Phase 3 PASS、不得合并最终 PR、不得进入 Phase 4、不得发布、不得把 `pump_chemical` 的 `support_status` 提升为 `SUPPORTED`。Phase 3 设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`。
+
+### 3.1 增量修正：Phase 3 前移 pump_chemical 正式产品接入（2026-10-02）
+
+产品负责人已明确：清水泵与石油化工泵必须在**同一个正式 UI** 中出现，因为普通用户通常**无法预先判断**自己属于 water 还是 chemical。
+
+- **Phase 3** = GB 19762—2025 离心泵**统一**正式纵向闭环（`pump_water` + `pump_chemical` 共用同一产品、UI、Application Use Case、Workspace、Record、History、Result Contract）；
+- 两条规则**不得强行合并成一个巨型 evaluator**；`pump_water` / `pump_chemical` 只作为**内部 rule profile / ruleset identity**，不得再设计为两个独立用户产品；
+- **Phase 5** 不再承担 `pump_chemical` 的「首次接入」，改为承担其**正式发布支持收口（Stage D）**；Phase 5 其余职责暂不重新设计；
+- **不创建 V2.4**，**不改变 Phase 0～10 编号**，**不提前 Phase 4/6/7/8/9**；
+- 三个状态维度**数值不变**：`pump_water` = `IN_V1` / `SUPPORTED` / `SUPPORTED`；`pump_chemical` = `IN_V1` / `NOT_IN_RELEASE_SCOPE` / `READY_FOR_IMPLEMENTATION`；`transformer` = `POST_V1`。
+
+完整修正记录见路线原文第 8.2 节。
 
 ## 4. Phase 2～10 接下来怎么走
 
 | Phase | 语义 | 说明 |
 |---|---|---|
-| Phase 2 | 最小正式工程底座 | Python 3.12、PySide6 薄 AppShell、Design Token、Repository Protocol、三库职责、Migration 基础、Logging、有限工程清理。不得批量迁移 Profile、批量重写 evaluator、实现完整 Excel/产品 Shell/移动端/Suite，或一次性实现全部中央 DRAFT Contract。 |
-| Phase 3 | `pump_water` 正式工程/生命周期纵向样板 | **Phase 3 PASS 不等于完整 GB 19762 PASS。** 不得重新设计泵算法；Approved Golden 是业务 Oracle。 |
+| Phase 2 | 最小正式工程底座 | **已完成**（`PHASE_2_PASS`）。Python 3.12、PySide6 薄 AppShell、设计 Token、Repository Protocol、三库职责、Migration 基础、Logging、有限工程清理。 |
+| Phase 3 | **GB 19762—2025 离心泵统一正式纵向闭环**（`pump_water` + `pump_chemical`） | 产品层/UI/Application Use Case/Workspace/Record/History/Result Contract **合并**；两条规则不合并成巨型 evaluator。**Phase 3 PASS 不等于完整 GB 19762 的产品发布 PASS。** 不得重新设计泵算法；Approved Golden 是业务 Oracle。 |
 | Phase 4 | 基于 `pump_water` 真实样板做必要通用化 | 只通用化已被样板证明的重复结构。 |
-| Phase 5 | `pump_chemical` 接入同一正式工程链，完成 GB 19762—2025 全标准业务能力覆盖 | **`transformer` 不进入 Phase 5。** 完成前 `pump_chemical` 保持 `NOT_IN_RELEASE_SCOPE`。 |
+| Phase 5 | `pump_chemical` 的**正式发布支持收口（Stage D）**（不再承担首次接入，首次接入已前移到 Phase 3） | **`transformer` 不进入 Phase 5。** 收口完成前 `pump_chemical` 保持 `NOT_IN_RELEASE_SCOPE`。 |
 | Phase 6 | 围绕完整 GB 19762 建立完整产品 Shell | 按真实用户任务组织。 |
 | Phase 7 | 完整 GB 19762 的 Record、历史、恢复、结果解释、标准依据、异常状态与质量收口 | — |
 | Phase 8 | 完整 GB 19762 Excel 闭环 | 必须同时覆盖 `pump_water` + `pump_chemical`；GUI/Excel 共用同一业务内核；数值入口须先完成设计与证据验证。 |
