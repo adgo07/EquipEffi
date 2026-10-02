@@ -157,3 +157,26 @@ pass=880; fail=3; error=1; skip=3; not_run=0
 | R07-05 | 增加面向 PR #1 的 Windows 3.12 workflow，覆盖 contract/schema、泵 route/numeric/boundary/Golden、metadata/architecture、evaluator matrix、compileall 和 diff check。首轮 Windows CI 暴露临时目录短路径与 `.resolve()` 长路径比较差异，现已把测试期望改为规范化路径。 | 修复后的 GitHub Actions 正在对新 SHA 重跑；CI 不验证外部 PDF 原始字节。 |
 
 R07 本机 isolated-worktree 定向泵组为 157 pass；metadata/architecture/evaluator matrix 为 394 pass。外部证据根目录模式验证 7 条旧案例和 26 条候选、0 错误；显式 skip 模式也为 0 结构/hash 错误，分别标记跳过 7 和 26 项 PDF 字节检查。全量 unittest 更新为 921 total：914 pass、3 fail、1 error、3 skip；既有 3 个 V4 motor 失败和 wheel `wheel_pmsm_status` 错误保持原样。详见 `IMPLEMENTATION_REPORT.md` 与逐文件 `PUMP_V2_R07_COMMIT_MANIFEST.md`。Golden 仍全部 `DRAFT/PENDING`，Phase 1 仍 `BLOCKED`，不启动 Phase 2。
+
+## Excel Decimal Ingress（2026-10-02 登记）
+
+本节登记 Excel 数值入口的 Decimal 保真风险。**只登记，不在本轮修改任何 Python 实现。**
+
+| issue_id | legacy_id/audit_id | profile_id | location | description | business_risk | engineering_risk | release_surface | classification | target_phase | status | evidence | decision |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `QA-EXCEL-001` | `V2.3-CLEANUP-R1` | `pump_water`（`pump_chemical` 同路径） | `src/equipeffi/infrastructure/excel/ooxml_reader.py::_parse_number`（第 35–45 行），调用点 `ooxml_reader.py:144`；上层 `v4_reader.OOXMLV4Reader.read_rows`（`v4_reader.py:62`）、`v4_writer.py:421` | 该函数先 `Decimal(text)` 解析单元格词法文本，再 `return float(number)`，在可无损的位置物化为 binary float。xlsx 数值本身是 XML 词法文本，`Decimal` 已在手，转 float 是纯损失 | 可能影响业务结论：若该 float 进入权威链并参与 full-value 比较或表 3 边界，存在翻转分档的可能 | M | `NOT_SHIPPED` | P1（暂定；视影响面验证结果可上调） | Phase 8 前 | OPEN | 源码定位；`git grep` 确认 `src` 内无 openpyxl，该链路为自研标准库读取器，入口完全可控 | 保留登记；**Phase 8 前必须关闭**。不因本条目在治理任务中修改 Python |
+
+```text
+QA-EXCEL-001
+表面            = NOT_SHIPPED（V4 Excel 读写路径，生产链 0 引用）
+authoritative path impact = 尚待验证
+  —— 需先确认该 float 是否经 V4 输入适配器进入权威数值链；
+     若适配器已转为 Decimal 字符串，则属潜在缺陷；若直接消费，则属活跃缺陷
+最小修法候选    = 保留 Decimal 或返回词法文本，不转 float（不需改架构）
+关闭时点        = Phase 8 正式 Excel 实现前
+本轮约束        = 不改 Python 实现、不改测试期望、不改 V4 行为
+关联            = Numeric Contract v1 §2.1 ingress boundary；
+                  docs/28_EquipEffi 后续开发总体路线 V2.3.md 第 7.1 节
+```
+
+该条目与 `QA-P0-002`（V4 writer 写回测试失败）同属 `NOT_SHIPPED` 表面，但**根因不同**：`QA-P0-002` 是结果写回，`QA-EXCEL-001` 是数值入口保真。两者不得合并关闭。
