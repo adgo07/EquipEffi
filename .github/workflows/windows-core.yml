@@ -59,7 +59,7 @@ jobs:
 
       - name: Confirm interpreter and import path
         run: |
-          python -c "import sys; print(sys.version); assert sys.version_info[:2] == (3, 12)"
+          python -c "import sys, PySide6; print(sys.executable); print(sys.version); print('PySide6', PySide6.__version__); assert sys.version_info[:2] == (3, 12)"
           python -c "import equipeffi; print(equipeffi.__file__)"
 
       - name: Compileall
