@@ -17,7 +17,15 @@
 
 ## 2. final head SHA
 
-见本次交付的最后一个提交（本报告所在提交）。分支 `phase3/gb19762-unified-vertical-slice` 的 HEAD 即最终 head。
+分支 `phase3/gb19762-unified-vertical-slice` 的 final head **即包含本报告的提交**。
+
+报告无法在不产生自引用循环的前提下写入"包含自身的那个提交"的 SHA，因此以"本文件所在提交"为权威标识；推送后在 PR 上可读取最终 head SHA。
+
+```text
+用户给定 Phase 3 基线 : 7e16418aa32ced5512e26bd70227f01a329fbdfc
+本分支相对基线的提交   : git log --oneline 7e16418..HEAD
+最终 head              : git rev-parse HEAD（分支 phase3/gb19762-unified-vertical-slice）
+```
 
 ## 3. actual diff
 
