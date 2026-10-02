@@ -1,6 +1,6 @@
 # EquipEffi QA_BACKLOG
 
-**状态：** Phase 1 acceptance blocked by Golden Case approval；Phase 0 已入库；未执行 Phase 0B Hotfix；未批准 Phase 1 Hotfix
+**状态：** `Phase 1 = PASS`（18 条 `pump_water` Golden 0.4 已具名批准，Phase 1 Exit Gate 已满足）；**当前开放的 QA 条目不追溯性地阻塞 Phase 1**，按各条目的 `target_phase` / 发布门禁处理。Phase 0B = `NOT_EXECUTED`；未批准 Phase 1 Hotfix。
 **来源：** v7–v15 / T04.xx 历史材料、第三方 `docs/重构问题清单_20260921.csv` 的 55 项、Phase 0 重跑和资产审计。
 
 ## 字段规则
@@ -157,6 +157,13 @@ pass=880; fail=3; error=1; skip=3; not_run=0
 | R07-05 | 增加面向 PR #1 的 Windows 3.12 workflow，覆盖 contract/schema、泵 route/numeric/boundary/Golden、metadata/architecture、evaluator matrix、compileall 和 diff check。首轮 Windows CI 暴露临时目录短路径与 `.resolve()` 长路径比较差异，现已把测试期望改为规范化路径。 | 修复后的 GitHub Actions 正在对新 SHA 重跑；CI 不验证外部 PDF 原始字节。 |
 
 R07 本机 isolated-worktree 定向泵组为 157 pass；metadata/architecture/evaluator matrix 为 394 pass。外部证据根目录模式验证 7 条旧案例和 26 条候选、0 错误；显式 skip 模式也为 0 结构/hash 错误，分别标记跳过 7 和 26 项 PDF 字节检查。全量 unittest 更新为 921 total：914 pass、3 fail、1 error、3 skip；既有 3 个 V4 motor 失败和 wheel `wheel_pmsm_status` 错误保持原样。详见 `IMPLEMENTATION_REPORT.md` 与逐文件 `PUMP_V2_R07_COMMIT_MANIFEST.md`。Golden 仍全部 `DRAFT/PENDING`，Phase 1 仍 `BLOCKED`，不启动 Phase 2。
+
+> **后续状态更正（2026-10-02）**：上段末句是 **R07 当时（2026-09-28）的状态快照**，**已被取代**，不要按当前状态解读：
+> - Phase 1 已 `PHASE_1_PASS`（Exit Gate 已满足），不再是 `BLOCKED`；
+> - 18 条 `pump_water` Golden 0.4 已于 2026-09-28T11:03:04+08:00 由王玮具名批准为 `APPROVED`；Golden 0.1 七例与原始 0.3 的 26 条候选仍为历史冻结 / `DRAFT`；
+> - `pump_chemical` 的 8 条候选**仍未获 V1 Golden 批准**，其 `support_status` 保持 `NOT_IN_RELEASE_SCOPE`。
+>
+> 历史正文保留不改写；当前权威状态见 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md) 与 [V1_SCOPE.md](V1_SCOPE.md)。
 
 ## Excel Decimal Ingress（2026-10-02 登记）
 

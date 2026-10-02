@@ -5,9 +5,14 @@ name: Windows Core
 # 本 workflow 是 EquipEffi 面向所有 PR 的长期 Windows 门禁，语义与历史任务名解耦：
 # 不再以 Phase 1 / N01-B Pilot / Numeric Adoption 作为未来 PR 的主要 CI 身份。
 #
-# GATING JOBS：windows-core、full-suite-baseline、whitespace-check 失败会使 workflow FAIL。
-# 其中 full-suite-baseline 的 job 名称已显式标注 NON-GATING，用于保留真实基线数字；
-# 仓库当前存在已知失败，full suite 通过前不得被解释为“全部测试通过”。
+# GATING JOBS（失败会使 workflow FAIL）：
+#   - windows-core      : Windows Core (gating)
+#   - whitespace-check  : Whitespace check (gating)
+#
+# NON-GATING JOB（失败不会使 workflow FAIL）：
+#   - full-suite-baseline : "Full suite baseline (NON-GATING BASELINE / KNOWN BASELINE)"
+#     设 continue-on-error: true，仅用于保存并展示真实 run / failure / error / skipped。
+#     仓库当前存在已知失败，**workflow green 不得被解释为 "Full suite PASS"**。
 
 on:
   push:
@@ -105,26 +110,43 @@ jobs:
 
       # continue-on-error 只用于保留真实基线证据；本 job 的名称已显式标注 NON-GATING，
       # 不得据此把 workflow green 解释为 "Full suite PASS"。
+      #
+      # 注意：Python unittest 的 "Ran ... / OK / FAILED" 摘要通常写到 **stderr**，
+      # 因此这里必须合并 stdout + stderr 后再提取，否则会保存了真实失败却显示不出数字。
       - name: Run full unittest suite and record real counts
         run: |
           New-Item -ItemType Directory -Force artifacts/full-suite-baseline | Out-Null
           $p = Start-Process -FilePath python `
-            -ArgumentList @('-m','unittest','discover','-s','tests','-t','.') `
+            -ArgumentList @('-m','unittest','discover','-s','tests','-t','.','-v') `
             -NoNewWindow -Wait -PassThru `
             -RedirectStandardOutput artifacts/full-suite-baseline/full_suite.log `
             -RedirectStandardError artifacts/full-suite-baseline/full_suite.err
           $code = $p.ExitCode
-          $log = Get-Content artifacts/full-suite-baseline/full_suite.log -Raw
-          $tail = ($log -split "`n" | Where-Object { $_ -match '^(Ran |OK|FAILED)' }) -join "`n"
+
+          $stdout = if (Test-Path artifacts/full-suite-baseline/full_suite.log) { Get-Content artifacts/full-suite-baseline/full_suite.log -Raw } else { "" }
+          $stderr = if (Test-Path artifacts/full-suite-baseline/full_suite.err) { Get-Content artifacts/full-suite-baseline/full_suite.err -Raw } else { "" }
+          $merged = $stdout + "`n" + $stderr
+          $merged | Out-File -Encoding utf8 artifacts/full-suite-baseline/full_suite_merged.log
+
+          $summary = ($merged -split "`n" | Where-Object { $_ -match '^Ran |^OK|^FAILED' })
+          $failed = ($merged -split "`n" | Where-Object { $_ -match '^(ERROR|FAIL): ' })
+
+          Write-Output "===== FULL SUITE (NON-GATING / KNOWN BASELINE) ====="
           Write-Output "exit_code=$code"
-          Write-Output $tail
+          if ($summary) { $summary | ForEach-Object { Write-Output $_.Trim() } } else { Write-Output "WARNING: 未在合并输出中找到 Ran/OK/FAILED 摘要" }
+          if ($failed) {
+            Write-Output "----- known failures / errors -----"
+            $failed | ForEach-Object { Write-Output $_.Trim() }
+          }
+
           @(
             "job=full-suite-baseline",
             "gating=false",
             "exit_code=$code",
             "head_sha=${{ github.sha }}",
-            $tail
-          ) | Out-File -Encoding utf8 artifacts/full-suite-baseline/outcome.txt
+            "--- summary (stdout+stderr merged) ---"
+          ) + $summary + @("--- failures/errors ---") + $failed |
+            Out-File -Encoding utf8 artifacts/full-suite-baseline/outcome.txt
           if ($code -ne 0) { Write-Output "KNOWN BASELINE FAILURES PRESERVED (non-gating)" }
 
       - name: Upload baseline evidence

@@ -50,19 +50,42 @@ git fetch origin                   # 同步远端
 
 ## 2. 本仓专属硬规则（完整保留，不得弱化）
 
+### 2.0 Single-owner lightweight governance（单人项目轻治理）
+
+本仓是**单人负责项目**（`decision_owner` / 产品负责人 / 风险接受人同为一人）。产品范围已经批准；**普通开发任务不再需要同一个人反复以多个身份确认。**
+
+**默认无需再次确认**（在已批准的产品范围内自主执行）：
+
+- 普通 Phase 内的 UI、Repository、测试、Bug 修复、重构、文档与治理文件维护；
+- 既有契约内的实现细节、内部结构、命名、日志、错误提示与测试补强；
+- 已登记 QA 项的常规处理。
+
+**仍需用户明确决策**（只有这七类）：
+
+1. **产品范围变化**（Profile 的 `scope_status` 变化、新增/移出 Windows V1 范围）；
+2. **标准解释变化**（`STANDARD_ISSUES_REGISTER.md` 中影响正式结果的解释变化）；
+3. **Approved Golden 业务真值变化**（已批准 Golden 的结论、输入或预期结果变化）；
+4. **Frozen Contract 升级**（`platform-lock.json` / `PLATFORM_BASELINE.md` 的中央基线升级）；
+5. **破坏性数据迁移**（用户数据、正式记录、数据库结构的不可逆变更）；
+6. **正式发布**（对外发布、版本号发布、发布产物）；
+7. **`support_status` 提升为 `SUPPORTED`**（须按中央 Standard Development Guide Stage D 有独立验收证据）。
+
+历史 Phase 1 的多角色审批流程（`P1-G01 → G02 → G03 → G04 → G05 → G06`、Solution/Product Review、固定 SHA 独立复验、具名业务批准）**属于已完成的 Phase 1 历史程序**，由 `HANDOFF_20260831.md`、`PUMP_V2_*_MANIFEST.md` 与 `docs/governance/` 报告承载，**不再作为当前长期硬规则反复执行**。其业务结论继续有效（见 2.3）。
+
 ### 2.1 Phase 与顺序纪律
 
-- 路线只有 `EquipEffi V2.3`；Phase 0 已完成，作为不可变基线。
-- 状态继续按此记录：`Phase 1 = PHASE_1_PASS`；`Phase 2 = PHASE_2_READY`；automatic continuation = `DISABLED`。
-- `PHASE_1_PASS` 是既有独立复验与 Solution/Product Review 后的记录，不是任何 adoption / 治理任务自行批准；`PHASE_2_READY` 不代表开始或授权。
-- Phase 1 按 `P1-G01 → G02 → G03 → G04 → G05 → G06` 顺序执行，只能交付 `READY_FOR_SOL_REVIEW` 或 `BLOCKED`，不得自行宣布 Phase 1 PASS；未完成 Solution/Product Review 不得越级实施 Phase 2，进入 Phase 2 须用户明确授权。
+- 路线只有 `EquipEffi V2.3`；Phase 0 已完成，作为不可变基线。Phase 0～10 **编号不得改变**。
+- 当前状态：`Phase 1 = PHASE_1_PASS`；`Phase 2 = PHASE_2_READY / NOT_STARTED`；automatic continuation = `DISABLED`。
+- `PHASE_1_PASS` 是既有独立复验与 Solution/Product Review 后的记录，**不是任何 adoption / 治理任务自行批准的结果**；`PHASE_2_READY` 不代表开始或授权。
+- **Phase 1 已经结束**：`P1-G01 → G02 → G03 → G04 → G05 → G06` 与 Solution/Product Review 是**历史完成程序**，不再作为当前例行门禁（见 2.0）。
+- **进入 Phase 2 及以后阶段仍须用户明确授权**；不得自行宣布任何 Phase PASS。
 - v15 / T04.xx / 历史 HANDOFF / 编号清单无自动调度权，不得据其“下一边界任务”自动继续。
-- Phase 1 只允许业务规范、数据契约、`pump_water` 映射、Golden Case、P0 复核与 Python/版本/V1 Scope 冻结；不批量迁移 17 个 Profile、不批量重构 evaluator，不开发 PySide6 / SQLite / Excel / 报告。
+- 当前 Windows V1 产品目标与各 Profile 状态以 `V1_SCOPE.md` / `ROADMAP.md` 为唯一权威（完整支持 GB 19762—2025，覆盖 `pump_water` + `pump_chemical`；`transformer` 为 `POST_V1`，资产保留）。
 - 旧资产先分类（KEEP / VERIFY / MIGRATE / REWORK / DEPRECATE / DELETE_CANDIDATE / OBSOLETE），不因零引用直接删除。
 
 ### 2.2 P0 Hotfix 条件
 
-全部满足才可改业务代码，Phase 1 默认不改业务实现：① 有明确标准或回归测试证据；② 已在 `QA_BACKLOG.md` 登记 P0；③ 范围最小、不改架构、不顺手清理；④ 有针对性回归测试；⑤ 修改前后结果、标准引用、影响范围均已记录。Phase 0B = `NOT_EXECUTED`；P0 复核只允许 `CONFIRMED_P0` / `NOT_P0` / `NEEDS_MORE_EVIDENCE`，不自动授权修改。
+改动可能影响业务结论的业务代码时须全部满足：① 有明确标准或回归测试证据；② 已在 `QA_BACKLOG.md` 登记；③ 范围最小、不改架构、不顺手清理；④ 有针对性回归测试；⑤ 修改前后结果、标准引用、影响范围均已记录。Phase 0B = `NOT_EXECUTED`；P0 复核只允许 `CONFIRMED_P0` / `NOT_P0` / `NEEDS_MORE_EVIDENCE`，复核结论不自动授权修改。
 
 ### 2.3 业务正确性与受保护资产
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 from contextlib import redirect_stdout
 from io import StringIO
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -215,10 +216,27 @@ class EntrypointTests(unittest.TestCase):
             "'category':'单级双支撑低速离心鼓风机','polytropic_efficiency':80,"
             "'impeller_width_mm':100,'impeller_diameter_mm':1000}})['conclusion'])"
         )
-        env = {"PYTHONPATH": str(source_root)}
+        # 子进程仍然使用 -S 运行，因此本测试依旧证明“没有 optional site-packages
+        # 也能导入核心 JSON API”。这里只修复 Windows CI 可移植性：继承父环境而不是
+        # 构造只含 PYTHONPATH 的空环境（Windows 上缺少 SystemRoot 等变量会影响子进程），
+        # 并显式固定 UTF-8，避免依赖 runner 默认代码页（cp1252）导致中文输出编解码失败。
+        env = os.environ.copy()
+        env["PYTHONPATH"] = str(source_root)
+        env["PYTHONIOENCODING"] = "utf-8"
+        env["PYTHONUTF8"] = "1"
         completed = subprocess.run(
             [sys.executable, "-S", "-c", code],
-            check=True, capture_output=True, text=True, env=env,
+            capture_output=True, text=True, encoding="utf-8", env=env,
+        )
+        # 失败时把 stderr 带进断言信息，避免只看到一个 CalledProcessError。
+        self.assertEqual(
+            completed.returncode,
+            0,
+            msg=(
+                "isolated python (-S) failed with exit "
+                f"{completed.returncode}\n--- stdout ---\n{completed.stdout}"
+                f"\n--- stderr ---\n{completed.stderr}"
+            ),
         )
         self.assertEqual(completed.stdout.splitlines(), ["15", "节能评价值"])
 
