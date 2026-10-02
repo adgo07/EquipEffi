@@ -17,14 +17,22 @@
 
 ## 2. final head SHA
 
-分支 `phase3/gb19762-unified-vertical-slice` 的 final head **即包含本报告的提交**。
+```text
+4ca0f84135561954bda5bc4ace622a07bd5fb1bd
+```
 
-报告无法在不产生自引用循环的前提下写入"包含自身的那个提交"的 SHA，因此以"本文件所在提交"为权威标识；推送后在 PR 上可读取最终 head SHA。
+（分支 `phase3/gb19762-unified-vertical-slice` 的 final head，已推送到 `origin`；PR #11 的 head 与此一致。）
+
+本次提交序列（相对 Phase 3 基线 `7e16418aa32ced5512e26bd70227f01a329fbdfc`）：
 
 ```text
-用户给定 Phase 3 基线 : 7e16418aa32ced5512e26bd70227f01a329fbdfc
-本分支相对基线的提交   : git log --oneline 7e16418..HEAD
-最终 head              : git rev-parse HEAD（分支 phase3/gb19762-unified-vertical-slice）
+cf22e11  统一 golden-case-0.5 schema + 11 条 pump_chemical Approved Golden + owner 批准证据
+107fe7c  治理基线：Phase 2 PASS / Phase 3 IN_PROGRESS / V2.3 8.2 增量修正 / EQP-STD-GB19762-001 更正
+6299cbd  P3-G01/G03：统一 Application 契约 + records.sqlite + Workspace/Record/History/Reopen + docs/32
+9b7cb3c  P3-G02：统一 GB 19762 Qt 分析页 + 分析记录页
+c284b16  P3-G04：29/29 Golden 回放 + 生成边界 + CI 接线 + QA 处置 + 本报告
+b049205  docs：记录 final head
+4ca0f84  fix(ci)：恢复 CI 作用域已知回归基线并记录该更正（见 25.1）
 ```
 
 ## 3. actual diff
