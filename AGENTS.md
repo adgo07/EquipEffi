@@ -5,9 +5,48 @@
 ## 1. 仓库身份
 
 - 产品：EquipEffi 设备能效分析工具（Module ID `qz.equipment_efficiency`）。
+- Canonical repository：`https://github.com/adgo07/EquipEffi.git`。
 - 当前 Reference Standard：`GB 19762—2025 离心泵能效限定值及能效等级`。
 - 当前主要产品阶段：`EquipEffi V2.3` 下 `Phase 1 = PHASE_1_PASS`、`Phase 2 = PHASE_2_READY`。
 - 本仓独立开发、发布、离线运行，不是中央仓的第四个业务产品。
+
+### 1.1 仓库身份与本地执行环境
+
+**仓库身份**以 GitHub owner/repository 与 `git origin` 为准，**不以本地文件夹名或绝对路径为准**：
+
+| 仓库 | Canonical repository |
+|---|---|
+| 本仓（EquipEffi） | `https://github.com/adgo07/EquipEffi.git` |
+| 中央治理仓（Qingzhou-contracts） | `https://github.com/adgo07/Qingzhou-contracts.git` |
+| 兄弟业务仓 | `https://github.com/adgo07/ECQuota-Insight.git`、`https://github.com/adgo07/GHGTOOL.git` |
+
+规则：
+
+1. 本仓长期身份以 GitHub owner/repository + `git origin` 为准；**本地绝对路径只是当前运行环境，不是仓库身份**；
+2. **不得**把某台电脑的 `C:\` / `D:\` / `E:\` / `G:\` 等绝对路径当成跨机器固定路径；
+3. 历史 HANDOFF / 报告中的绝对路径只是**历史执行环境记录**，不得直接作为当前 checkout 地址；本仓历史文档中的盘符与目录记录同理；
+4. **不得仅凭文件夹名判断仓库**；
+5. **不得假设** `Qingzhou-contracts` 一定位于 `../Qingzhou-contracts` 或任何固定相对位置。
+
+**本地正式任务开始前必须实际确认**（不得凭记忆或上次会话推断）：
+
+```powershell
+git rev-parse --show-toplevel      # 实际工作树根
+git remote get-url origin          # 实际 origin
+git branch --show-current          # 当前分支
+git rev-parse HEAD                 # 当前 head
+git status --short                 # 工作区状态
+git fetch origin                   # 同步远端
+```
+
+6. 必须确认当前 `origin` 与本任务指定的 GitHub 仓库**一致**；
+7. **若 `origin` 不一致，必须 `BLOCKED` 停止，不得继续修改错误仓库**；
+8. `fetch` 后检查默认分支 / `origin` 默认分支是否同步，并核对默认分支名（**本仓默认分支为 `master`，不是 `main`**）；
+9. 需要读取 `Qingzhou-contracts` 或其他青舟仓库时：
+   - **已存在本地 clone**：先验证其 `origin` 指向预期 GitHub 仓库，再读取；
+   - **没有可信本地 clone**：从 GitHub 读取；
+   - 不得仅凭文件夹名判断仓库；
+   - 不得假设中央仓位于任何固定相对路径。
 
 ## 2. 本仓专属硬规则（完整保留，不得弱化）
 
