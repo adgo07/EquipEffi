@@ -482,3 +482,31 @@ phase_4_started        = false
 merge_authorized       = false
 pump_chemical_support_status = NOT_IN_RELEASE_SCOPE（未提升）
 ```
+
+## 28.6 R3 CI 结果（head `97d62e2156d69004bd6bece34bd45d015e7445b6`）
+
+```text
+Pump Conformance (gating)                       -> success
+Windows Core  windows-core (gating)             -> success
+Windows Core  whitespace-check (gating)         -> success
+Windows Core  Full suite baseline (NON-GATING)  -> success
+```
+
+**CI 全量真实数字**：`Ran 1077 tests` → `FAILED (failures=9, errors=5, skipped=3)`，
+且 CI 报告的失败/错误**逐条**等于基线登记的固定 id：
+
+```text
+errors   (5): build_lock, jsonl_smoke ×2, release_audit(source_and_bundled_wheel), zipapp
+failures (9): desktop_form_model, release_audit ×4, v4_reader, v4_template_resource, v4_writer ×2
+```
+
+与 Phase 2 基线（9 fail / 5 error / 3 skip）**完全一致**，因此
+`new_failures / new_errors / worsened_failure_to_error / missing_baseline_tests` 全为空。
+
+**这同时证明第 25.1 节"恢复 CI 作用域基线"是正确的**：本机全量为 1075 run / 3 fail / 1 error
+（10 项 CI 环境特有失败在本机通过），若按本机数字收紧基线，CI 反而会 gate FAIL。
+
+本机 `Ran 1075` 与 CI `Ran 1077` 相差 2 项，是环境相关的条件收集差异（与本 Phase 新增测试无关；
+R1/R2 时本机 1036 与其 head CI 同样存在 2 项差异）。
+
+PR #11 在 R3 后：`open` / `merged=false` / head `97d62e2` / 11 commits / 41 files / +7685 −118。
