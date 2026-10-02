@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from pathlib import Path
+import ast
+from importlib.util import resolve_name
 import unittest
 
 from equipeffi.application.services.v4_template_contract import V4_DEVICE_SHEETS
@@ -13,17 +15,53 @@ from equipeffi.domain.evaluation.device_types import (
 from equipeffi.domain.evaluation.evaluator_registry import EVALUATOR_FACTORIES
 
 
+def modules_from_ast(tree, package: str) -> list[str]:
+    modules = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            modules.extend(alias.name for alias in node.names)
+        elif isinstance(node, ast.ImportFrom):
+            module = node.module or ""
+            if node.level:
+                module = resolve_name("." * node.level + module, package)
+            modules.extend(module + "." + alias.name for alias in node.names)
+    return modules
+
+
+def imported_modules(path: Path, source_root: Path) -> list[str]:
+    relative = path.relative_to(source_root).with_suffix("")
+    package = ".".join(relative.parts[:-1])
+    return modules_from_ast(ast.parse(path.read_text(encoding="utf-8-sig")), package)
+
+
 class ArchitectureBoundaryTests(unittest.TestCase):
     ROOT = Path(__file__).resolve().parents[2]
 
     def test_core_layers_do_not_import_optional_ui_web_or_excel(self):
-        forbidden = ("tkinter", "openpyxl", "http.server", "BaseHTTPRequestHandler")
-        for directory in (self.ROOT / "src" / "equipeffi" / "domain", self.ROOT / "src" / "equipeffi" / "application"):
+        for layer in ("domain", "application"):
+            forbidden = ["equipeffi.infrastructure", "equipeffi.presentation", "PySide6", "sqlite3", "openpyxl", "tkinter", "http.server"]
+            if layer == "domain":
+                forbidden.append("equipeffi.application")
+            directory = self.ROOT / "src" / "equipeffi" / layer
             for path in directory.rglob("*.py"):
-                source = path.read_text(encoding="utf-8")
-                for token in forbidden:
-                    with self.subTest(path=path.relative_to(self.ROOT), token=token):
-                        self.assertNotIn(token, source)
+                for module in imported_modules(path, self.ROOT / "src"):
+                    for token in forbidden:
+                        with self.subTest(path=path.relative_to(self.ROOT), module=module):
+                            self.assertFalse(module == token or module.startswith(token + "."))
+
+    def test_qt_has_only_settings_application_contract(self):
+        directory = self.ROOT / "src/equipeffi/presentation/qt"
+        for path in directory.rglob("*.py"):
+            for module in imported_modules(path, self.ROOT / "src"):
+                with self.subTest(path=path, module=module):
+                    self.assertFalse(module.startswith(("equipeffi.infrastructure", "equipeffi.domain", "equipeffi.presentation.api", "equipeffi.composition")))
+                    if module.startswith("equipeffi.application"):
+                        self.assertEqual(module, "equipeffi.application.services.settings_service.SettingsService")
+
+    def test_ast_resolves_relative_imports_and_ignores_comments(self):
+        source = '# import sqlite3\nfrom ...infrastructure import persistence\nimport PySide6.QtCore as qt\n'
+        self.assertEqual(modules_from_ast(ast.parse(source), "equipeffi.application.services"),
+                         ["equipeffi.infrastructure.persistence", "PySide6.QtCore"])
 
     def test_public_device_names_match_v4_sheet_order(self):
         self.assertEqual(tuple(PUBLIC_DEVICE_NAMES[code] for code in PUBLIC_DEVICE_TYPES), V4_DEVICE_SHEETS)
@@ -49,7 +87,7 @@ class ArchitectureBoundaryTests(unittest.TestCase):
     def test_desktop_launcher_uses_shared_application_factory(self):
         launcher = self.ROOT / "src" / "equipeffi" / "presentation" / "desktop" / "launcher.py"
         source = launcher.read_text(encoding="utf-8")
-        self.assertIn("from ...application.bootstrap import create_application_api", source)
+        self.assertIn("from ...composition import create_application_api", source)
         self.assertIn("create_application_api(", source)
         self.assertNotIn("V4WorkbookReaderImpl", source)
         self.assertNotIn("EvaluationService(", source)

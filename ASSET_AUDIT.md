@@ -160,3 +160,7 @@ V4 Sheet、列名、别名、模板版本 → Import Contract
 - 17 个标准包“可加载”不等于 17 个 Profile 已业务验收；Canon、来源、Golden 和 V1 Scope 仍需 Phase 1。
 - 所有第三方 55 项均已进入 `QA_BACKLOG.md`，并重新区分工程严重度、业务风险和发布表面。
 - 没有业务代码 Hotfix、目录搬迁或大规模删除混入 Phase 0。
+
+## Phase 2 工程增量（2026-10-02）
+
+历史 Phase 0 运行链不改写。当前装配入口为 equipeffi.composition，application/bootstrap.py 在内部引用迁移及 598 项核心回归后删除；无反向兼容桥。Qt 唯一正式切片是 SettingsService / SettingsRepository / SqliteSettingsRepository。原 SQLite 项目与标准仓储保留为 DEPRECATED / NOT_SHIPPED / NOT_WIRED，不被新 composition 实例化。其他 DELETE_CANDIDATE 不删除。Qt 五页仍占位，旧 Tk/Web/JSON 业务行为保留；完整分类和证据见 docs/31、QA_BACKLOG、PHASE2_EXECUTION_REPORT.md。

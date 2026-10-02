@@ -124,3 +124,19 @@ Phase 0B 若未执行，本文件保持起始事实；本次确实未执行 0B�
 | `src/equipeffi/application/services/evaluation_service.py` | inherited from base | `EEF8731E5A162C81441D83BAC4C493D0F9EA5A0014CEC1E44BF5E82535DEB8ED` | SHA-256 为提交中 LF 规范文本字节；应用路由状态修订；清水泵公开准入、化工泵未发布状态在应用边界明确表达。 |
 
 本轮正式命令、环境、用时、统计和全量测试已有失败详见 [IMPLEMENTATION_REPORT.md](IMPLEMENTATION_REPORT.md)。该快照不构成 Golden 批准或 Phase 1 PASS。七个旧 Golden 0.1 文件和其 hash 未改；validator 仅通过版本化来源登记识别一项确切历史 Canonical 指纹，未知指纹仍失败。
+
+## Phase 2 非破坏性工程增量（2026-10-02）
+
+起点 master@78831af1778255e1b19a904e9135d56a9672eaf2。Windows CI 基线来自 run 36970415483 / artifact 11212005437（Python 3.12.10，945 run / 9 fail / 5 error / 3 skip），编号固定于 tests/baselines/windows_full_suite_known.json。本机 Python 3.12.14 最终 975 run / 968 pass / 3 fail / 1 error / 3 skip，比较门禁 PASS；不表示 raw full-suite PASS。
+
+关键资源 Git 规范文本 SHA-256 起点/终点相同；未修改任何 protected resource。
+
+| 资源 | 起点与终点相同 SHA-256 |
+|---|---|
+| src/equipeffi/domain/evaluation/evaluators/pump.py | 615f7ec884cf4eb103ffd74804dfe1a5e2616e0b317ad9c457e16213edb1ffbb |
+| src/equipeffi/resources/standards/pump.json | 5d91f01b1c5f26dc4f364a3156c4e974b159fa1005bd840489c0bc3465c18c0f |
+| platform-lock.json | 87a8786f9d630609204b240a496f92bdcbc75904ffc2db71f6f318b596e2c3f4 |
+| specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl | e8096d18e4b62a6986222c6e5adec9519fa842ae44860a736d45afa3ae712c8d |
+| specs/equipment_efficiency/golden/pump_water_replacement_candidates_v0_1.jsonl | 2600e577b25926263823aa7c42a59b8cd1433b5a6d49c2c0075d14543103ced9 |
+
+18 条批准 Golden、7 条历史 Golden、26 条候选与 3 条 replacement provenance 均保持；完整证据见 PHASE2_EXECUTION_REPORT.md。

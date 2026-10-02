@@ -3,7 +3,7 @@
 状态：**CURRENT INVENTORY / GOVERNANCE ROADMAP**
 盘点日期：2026-10-02（本次同步）
 首次盘点日期：2026-10-01
-盘点基线：`master@f5c34277d35c9a7a1bcfbe4331297de2ad1fcf4f`
+盘点基线：`master@78831af1778255e1b19a904e9135d56a9672eaf2`；Phase 2 执行增量见 PHASE2_EXECUTION_REPORT.md
 参考标准：`GB 19762—2025 离心泵能效限定值及能效等级`
 参考标准覆盖范围：**`pump_water`（清水离心泵）与 `pump_chemical`（石化离心泵）** —— 见 `V1_SCOPE.md` 第 0 节
 
@@ -112,3 +112,7 @@ GB 19762—2025 的 `pump_water` **业务规则、Pump Calculator、Numeric Conf
 **`pump_chemical` 的 `support_status` 只有在第 2 步的 Golden 具名批准与 Stage D 独立验收通过后，才可切换为 `SUPPORTED`**；在此之前保持 `NOT_IN_RELEASE_SCOPE`。
 
 本治理任务不自动启动 Phase 2 或上述实现。
+
+## Phase 2 执行增量（2026-10-02，取代上文“尚未授权/未开始”的时点说明）
+
+用户已明确授权并完成 G01～G04，状态 EXECUTION_COMPLETE，下一步 READY_FOR_INDEPENDENT_ACCEPTANCE。仅 Qt 占位导航、应用设置 SQLite、迁移、日志和 CI 工程底座已实现；标准库/分析/记录页面没有业务功能，正式记录未实现，Excel 未实现，as_of 未决定，两个 Profile 的业务能力不变。因此 GB 19762 总体仍 PARTIAL，不将工程底座当参考标准闭环 PASS。上方初始盘点表保留为起点事实，当前实现与真实测试数字以 PHASE2_EXECUTION_REPORT.md 为准。不进入 Phase 3。

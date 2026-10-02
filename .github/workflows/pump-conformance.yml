@@ -81,6 +81,7 @@ jobs:
       - name: Approved Golden 0.4 and Golden schema gates
         run: |
           python -m unittest `
+            tests.unit.test_phase2_approved_golden `
             tests.unit.test_pump_golden_case_0_3 `
             tests.unit.test_golden_case_schema_0_2 `
             tests.unit.test_golden_case_0_4_approval `

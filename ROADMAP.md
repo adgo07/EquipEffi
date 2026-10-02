@@ -33,11 +33,12 @@
 ```text
 Phase 0 = PASS
 Phase 1 = PASS          (PHASE_1_PASS)
-Phase 2 = PHASE_2_READY / NOT_STARTED
+Phase 2 = EXECUTION_COMPLETE
+Next = READY_FOR_INDEPENDENT_ACCEPTANCE
 Automatic continuation = DISABLED
 ```
 
-Phase 2 **不会自动开始**，进入 Phase 2 须用户明确授权。当前允许的工作是治理/范围/文档与 CI 收口，不是 Phase 2 执行。
+Phase 2 已由用户本次提示明确授权并完成 G01～G04；下一步只允许独立验收。尚未宣告 Phase 2 PASS，不合并 PR，不进入 Phase 3。设计见 docs/31，证据见 PHASE2_EXECUTION_REPORT.md。
 
 ## 4. Phase 2～10 接下来怎么走
 

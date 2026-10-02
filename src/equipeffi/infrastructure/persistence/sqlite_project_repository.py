@@ -1,3 +1,4 @@
+"""DEPRECATED / NOT_SHIPPED / NOT_WIRED：历史空桩，仅保留兼容资产。"""
 from ...application.errors import FeatureNotEnabledError
 
 

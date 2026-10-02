@@ -53,7 +53,7 @@ class EntrypointTests(unittest.TestCase):
 
     def test_core_api_can_skip_v4_template_loading(self):
         """JSON/status callers must not parse the XLSX template eagerly."""
-        from equipeffi.application import bootstrap
+        from equipeffi import composition as bootstrap
         from equipeffi.entrypoint import _api
 
         with patch.object(bootstrap, "load_v4_contract", side_effect=AssertionError("template must stay lazy")):
@@ -62,7 +62,7 @@ class EntrypointTests(unittest.TestCase):
         self.assertEqual(len(api.device_types()), 15)
 
     def test_status_path_does_not_load_v4_template(self):
-        from equipeffi.application import bootstrap
+        from equipeffi import composition as bootstrap
 
         with patch.object(bootstrap, "load_v4_contract", side_effect=AssertionError("template must stay lazy")):
             payload = json.loads(self.run_entrypoint("--status"))

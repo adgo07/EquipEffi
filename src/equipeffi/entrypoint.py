@@ -13,7 +13,7 @@ from pathlib import Path
 import sys
 from typing import Sequence
 
-from .application.bootstrap import create_application_api
+from .composition import create_application_api
 from .domain.common.enums import EliminationScope
 from .domain.evaluation.device_specs import get_device_spec
 from .domain.evaluation.device_types import PUBLIC_DEVICE_TYPES, profiles_for_public_type, public_device_types
@@ -89,7 +89,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--audit-template", help="只读审计V4工作簿结构、保护、公式和禁用字段")
     parser.add_argument("--elimination-scope", choices=[item.value for item in EliminationScope], default=EliminationScope.MOTOR_BATCHES_1_4.value)
     parser.add_argument("--gui", action="store_true", help="从源码工作区转交桌面窗口入口")
+    parser.add_argument("--qt", action="store_true", help="启动 Phase 2 Qt 工程薄壳（仅应用设置）")
     args = parser.parse_args(argv)
+
+    if args.qt:
+        if any((args.gui, args.web, args.jsonl, args.batch_json_text, args.json_text, args.device_type,
+                args.v4_sheet, args.schema, args.example, args.list_device_types, args.status, args.audit_template)):
+            parser.error("--qt 不能与业务输入或其他入口同时使用")
+        from .composition import launch_qt
+        return launch_qt()
 
     if args.jsonl and any((args.batch_json_text, args.list_device_types, args.status, args.schema, args.example, args.audit_template, args.gui, args.web, args.json_text, args.device_type, args.v4_sheet)):
         parser.error("--jsonl不能与其他输入或操作选项同时使用")

@@ -1,4 +1,4 @@
-"""应用装配入口。
+"""正式外层装配入口。
 
 核心判定不需要读取V4工作簿，也不应因启动JSON/JSONL服务而触发Excel
 资源解析。模板契约作为可选能力由本模块按需加载，供CLI、桌面和Web
@@ -6,13 +6,15 @@
 """
 from __future__ import annotations
 
+import logging
 from pathlib import Path
+from xml.etree.ElementTree import ParseError
 from typing import Any
 
-from ..infrastructure.standards.json_repository import JsonStandardRepository
-from ..presentation.api.application_api import ApplicationApi
-from .services.evaluation_facade import EvaluationFacade
-from .services.evaluation_service import EvaluationService
+from .infrastructure.standards.json_repository import JsonStandardRepository
+from .presentation.api.application_api import ApplicationApi
+from .application.services.evaluation_facade import EvaluationFacade
+from .application.services.evaluation_service import EvaluationService
 
 
 def _default_project_root() -> Path:
@@ -39,13 +41,16 @@ def load_v4_contract() -> tuple[Any, Any] | tuple[None, None]:
 
     # These imports are deliberately local: importing the core API must not
     # initialize the Excel/template adapter or inspect an XLSX file.
-    from ..infrastructure.excel.template_resource import V4TemplateResource
-    from ..infrastructure.excel.v4_reader import V4WorkbookReaderImpl
+    from .infrastructure.excel.template_resource import V4TemplateResource
+    from .infrastructure.excel.v4_reader import V4WorkbookReaderImpl
+    from .infrastructure.excel.ooxml_reader import OOXMLReadError
+    from .infrastructure.excel.template_resource import TemplateResourceError
 
-    template_resource = V4TemplateResource()
     try:
+        template_resource = V4TemplateResource()
         contract = V4WorkbookReaderImpl().read_contract(template_resource.template_path)
-    except Exception:
+    except (OOXMLReadError, TemplateResourceError, OSError, ParseError) as exc:
+        logging.getLogger("equipeffi.composition").warning("V4 契约加载失败，保留兼容回退：%s", exc)
         return None, None
     return contract, template_resource
 
@@ -54,7 +59,7 @@ def create_core_api(*, project_root: Path | None = None) -> ApplicationApi:
     """Create the core JSON/API service without loading the V4 workbook."""
 
     root = Path(project_root).resolve() if project_root is not None else _default_project_root()
-    package_manifest = Path(__file__).resolve().parents[1] / "standard_manifest.json"
+    package_manifest = Path(__file__).resolve().parent / "standard_manifest.json"
     if package_manifest.is_file():
         repository = JsonStandardRepository(package_manifest.parent, manifest=package_manifest)
     else:
@@ -77,7 +82,7 @@ def create_application_api(
     """
 
     root = Path(project_root).resolve() if project_root is not None else _default_project_root()
-    package_manifest = Path(__file__).resolve().parents[1] / "standard_manifest.json"
+    package_manifest = Path(__file__).resolve().parent / "standard_manifest.json"
     if package_manifest.is_file():
         repository = JsonStandardRepository(package_manifest.parent, manifest=package_manifest)
     else:
@@ -87,3 +92,34 @@ def create_application_api(
         contract, resource_manager = load_v4_contract()
     facade = EvaluationFacade(EvaluationService(repository), contract=contract)
     return ApplicationApi(facade, contract=contract), contract, resource_manager
+
+
+def create_settings_runtime(*, paths=None, stream=None):
+    """唯一 Phase 2 切片装配；不实例化旧 SQLite 空桩或评价服务。"""
+    from . import __version__
+    from .application.services.settings_service import SettingsService
+    from .config.logging import LoggingConfig
+    from .infrastructure.persistence.app_data_paths import AppDataPaths
+    from .infrastructure.persistence.migrations import migrate_user_database
+    from .infrastructure.persistence.sqlite_settings_repository import SqliteSettingsRepository
+    from .infrastructure.runtime_logging import configure_logging
+
+    paths = paths if paths is not None else AppDataPaths.default()
+    migrate_user_database(paths.user_db, app_version=__version__)
+    service = SettingsService(SqliteSettingsRepository(paths.user_db))
+    logger = configure_logging(LoggingConfig(paths.logs_dir, service.get("log.level", "INFO")), stream=stream)
+    return service, logger
+
+
+def launch_qt(*, paths=None) -> int:
+    from .infrastructure.runtime_logging import close_logging, install_exception_hook
+    from .presentation.qt.app import run
+    import sys
+
+    service, logger = create_settings_runtime(paths=paths)
+    previous = install_exception_hook(logger)
+    try:
+        return run(service, logger)
+    finally:
+        sys.excepthook = previous
+        close_logging(logger)

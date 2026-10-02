@@ -1,6 +1,6 @@
 # Windows V1 Scope
 
-**状态：** 产品范围已于 2026-10-02 由产品负责人正式收口并取代 2026-09-23 范围映射；Phase 1 Solution/Product Review 结论（P1-SR01=PASS；review baseline 38bdfc28e078fee067743d30055fb39337881c7c）继续有效。当前 `Phase 1 = PHASE_1_PASS`、`Phase 2 = PHASE_2_READY / NOT_STARTED`；本次范围收口**不构成 Phase 2 启动授权**，Phase 2 仍须用户明确授权。
+**状态：** 产品范围已于 2026-10-02 由产品负责人正式收口并取代 2026-09-23 范围映射；Phase 1 Solution/Product Review 结论（P1-SR01=PASS；review baseline 38bdfc28e078fee067743d30055fb39337881c7c）继续有效。当前 `Phase 1 = PHASE_1_PASS`、`Phase 2 = EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`；范围收口本身不构成执行授权；Phase 2 后由用户明确授权，执行证据见 `PHASE2_EXECUTION_REPORT.md`，尚未独立验收。
 **原则：** 不默认 15 类公共设备或 17 个内部 Profile 全部首发；不允许“半支持”。
 
 ## 0. Windows V1 正式产品目标（2026-10-02）
@@ -210,7 +210,7 @@ automatic_scope_expansion: DISABLED
 
 ### 7.3 Review result and phase boundary
 
-Windows V1 Profile 范围决策已由 2026-10-02 产品决定收口；Phase 1 的 Solution/Product Review 结论（P1-SR01=PASS）继续有效，Phase 1 Exit Gate 仍为已满足。当前状态为 `PHASE_1_PASS`，下一状态为 `PHASE_2_READY`；Phase 2 不会自动开始，须取得用户明确授权。本次范围收口不构成 Phase 2 启动授权。
+Windows V1 Profile 范围决策已由 2026-10-02 产品决定收口；Phase 1 的 Solution/Product Review 结论（P1-SR01=PASS）继续有效，Phase 1 Exit Gate 仍为已满足。Phase 1 的状态仍为 `PHASE_1_PASS`；Phase 2 后续已获用户明确授权并完成执行，当前为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`。范围收口本身不构成执行授权，执行证据见 `PHASE2_EXECUTION_REPORT.md`。
 
 ## 8. Python Windows V1 运行环境冻结
 
