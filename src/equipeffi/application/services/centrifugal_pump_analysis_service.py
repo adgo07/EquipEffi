@@ -416,6 +416,7 @@ class CentrifugalPumpAnalysisService:
             return self._unresolved(
                 request,
                 reason="产品类别未精确匹配 GB 19762—2025 已登记的泵型，无法确定适用规则。",
+                invalid=True,
             )
 
         pack = self._pack(rule_profile)
@@ -507,19 +508,33 @@ class CentrifugalPumpAnalysisService:
             explanation="已确认该产品类别不属于 GB 19762—2025 列出的泵型，不执行标准公式。",
         )
 
-    def _unresolved(self, request: PumpAnalysisRequest, *, reason: str) -> PumpAnalysisResult:
+    def _unresolved(self, request: PumpAnalysisRequest, *, reason: str,
+                    invalid: bool = False) -> PumpAnalysisResult:
+        """类别无法解析。
+
+        必须区分「未填写」与「填了但不认识」：
+        未填写 → `INSUFFICIENT_DATA` + `CATEGORY_MISSING`；
+        填了但不认识 → `INVALID_INPUT` + `CATEGORY_UNRESOLVED`。两者不得混为一个状态。
+        """
+
+        if invalid:
+            issue_codes = ("CATEGORY_UNRESOLVED",)
+            missing_fields: tuple[str, ...] = ()
+        else:
+            issue_codes = ("CATEGORY_UNRESOLVED", "CATEGORY_MISSING")
+            missing_fields = ("产品类别",)
         return PumpAnalysisResult(
             rule_profile=None,
             standard_code=request.standard_code,
             product_category=request.product_category,
             as_of=request.as_of,
-            evaluation_status="INSUFFICIENT_DATA",
+            evaluation_status="INVALID_INPUT" if invalid else "INSUFFICIENT_DATA",
             category_status="UNRESOLVED",
             support_status=None,
             ui_conclusion=Conclusion.UNABLE_TO_JUDGE.value,
             grade=None,
-            issue_codes=("CATEGORY_UNRESOLVED",),
-            missing_fields=("产品类别",),
+            issue_codes=issue_codes,
+            missing_fields=missing_fields,
             explanation=reason,
         )
 

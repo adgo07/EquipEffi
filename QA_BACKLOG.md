@@ -161,7 +161,7 @@ R07 本机 isolated-worktree 定向泵组为 157 pass；metadata/architecture/ev
 > **后续状态更正（2026-10-02）**：上段末句是 **R07 当时（2026-09-28）的状态快照**，**已被取代**，不要按当前状态解读：
 > - Phase 1 已 `PHASE_1_PASS`（Exit Gate 已满足），不再是 `BLOCKED`；
 > - 18 条 `pump_water` Golden 0.4 已于 2026-09-28T11:03:04+08:00 由王玮具名批准为 `APPROVED`；Golden 0.1 七例与原始 0.3 的 26 条候选仍为历史冻结 / `DRAFT`；
-> - `pump_chemical` 的 8 条候选**仍未获 V1 Golden 批准**，其 `support_status` 保持 `NOT_IN_RELEASE_SCOPE`。
+> - `pump_chemical` 的 C1–C11 已于 2026-10-02 获产品负责人 **11/11** 业务真值批准，并形式化为 11 条正式 `golden-case-0.5`；其 `support_status` 仍保持 `NOT_IN_RELEASE_SCOPE`（业务真值 blocker 已关闭，剩余 blocker 为 Stage D 独立验收）。
 >
 > 历史正文保留不改写；当前权威状态见 [ROADMAP.md](ROADMAP.md)、[TASK_STATE.md](TASK_STATE.md) 与 [V1_SCOPE.md](V1_SCOPE.md)。
 
@@ -245,3 +245,43 @@ authoritative path impact = 尚待验证
 | QA-AUD-031 | DEFER_TO_P3 | Phase 3 | 非 settings 切片，保留 OPEN/VERIFY |
 | QA-AUD-041 | DEFER_TO_P3 | Phase 3 | 非 settings 切片，保留 OPEN/VERIFY |
 | QA-AUD-054 | DEFER_TO_P4 | Phase 4 | 非 settings 切片，保留 OPEN/VERIFY |
+
+## Phase 3 统一纵向闭环处置（2026-10-02）
+
+来源：用户 Phase 3 执行授权与 `docs/32`；下表覆盖所有 `target_phase` 含 Phase 3 的项，以及 Phase 2 延后到 Phase 3 的项。
+
+处置口径：只有**真实完成并有测试证据**的项才 `CLOSE_IN_P3`；实际只做了一部分的记 `PARTIAL_IN_P3` 并保留 OPEN；不在本轮范围的记 `DEFER` / `NOT_APPLICABLE`。**不为 Phase 3 PASS 虚假清空台账。**
+
+| issue_id | disposition | target_phase | decision |
+|---|---|---|---|
+| QA-AUD-005 | PARTIAL_IN_P3 | Phase 3 | 新增统一 `AnalysisService` 经 profile 查询路由（不复制映射，架构门禁已断言）；旧 `device_types`/兼容入口仍在，路由理解成本未消除 |
+| QA-AUD-006 | PARTIAL_IN_P3 | Phase 3/4 | 新增独立 `PumpAnalysisResult` / `RecordSnapshot` 契约并把 Decimal 归一为文本；`EvaluationResult` 混合职责的拆分仍留 Phase 4 |
+| QA-AUD-009 | DEFER_TO_P4 | Phase 4 | `device_specs`/`metadata` 硬编码未迁移；Phase 3 未授权数据迁移 |
+| QA-AUD-012 | PARTIAL_IN_P3 | Phase 3/4 | Phase 3 以新增薄编排服务承载统一入口；`evaluation_service` 279 行上帝方法未重写（避免大规模重写，符合 Non-goals） |
+| QA-AUD-015 | PARTIAL_IN_P3 | Phase 3/6 | 新 Qt 统一分析页不再重复 fallback 表单；遗留 Tk/Web 重复仍在 |
+| QA-AUD-016 | PARTIAL_IN_P3 | Phase 3/6 | 新统一结果页使用单一结论投影；遗留多份结论标签仍在 |
+| QA-AUD-017 | PARTIAL_IN_P3 | Phase 3/6 | 新页面字段来自 Application 契约；遗留基础信息元组重复仍在 |
+| QA-AUD-018 | PARTIAL_IN_P3 | Phase 3/6 | 新页面摘要由 Application 结果直接投影；Python/JS 重复摘要仍在 |
+| QA-AUD-038 | PARTIAL_IN_P3 | Phase 3/4 | 统一入口用 `AnalysisError` 显式区分业务与执行错误；损坏文件/仓储异常根因归一仍留后续 |
+| QA-AUD-039 | PARTIAL_IN_P3 | Phase 3/4 | 统一入口不抛裸 `KeyError`；旧 `evaluation_service`/`v4_validation` 裸异常仍 OPEN |
+| QA-AUD-045 | PARTIAL_IN_P3 | Phase 3/6 | Qt 侧新增统一页面；遗留 Tk `main_window` 270 行上帝窗口按 Non-goals **未动** |
+| QA-AUD-031 | PARTIAL_IN_P3 | Phase 5 | `as_of` 产品口径已由 `EQP-STD-GB19762-001` 关闭为 `RESOLVED`（软件产品决定）；统一入口要求显式 `as_of` 且无隐式默认。**遗留 CLI/API 的 5 处兼容默认值仍按 `AGENTS.md §2.0` 登记保留**，全局取消须另立任务做兼容影响评估 |
+| QA-AUD-041 | DEFER | Phase 4/8 | `json_repository` 缺键/缺文件语义与线性 find 未在 Phase 3 处理 |
+| QA-AUD-011 | DEFER_TO_P8 | Phase 8 | 规范化重复实现属 Import/V4 路径；统一入口未新增第三套规范化，但未消除既有重复 |
+| QA-AUD-014 | DEFER_TO_P8 | Phase 8 | `input_normalization` 16 类硬编码未拆分 |
+| QA-AUD-026 | DEFER_TO_P8 | Phase 8 | `adapt_many`/`validate_draft` 未接线；属 V4 适配 |
+| QA-AUD-029 | DEFER_TO_P8 | Phase 8 | 模板名/sheet 清单重复配置；属 Import Contract 单一来源 |
+| QA-AUD-013 | DEFER_TO_P8 | Phase 8 | `v4_validation` 882 行特例链；Phase 3 未动 |
+| QA-EXCEL-001 | DEFER_TO_P8 | Phase 8 | Excel 数值入口 Decimal→float；按既定约束 Phase 8 前必须关闭，本 Phase 不改 Python |
+| QA-P0-001 / QA-P0-002 | DEFER | Phase 8 | V4 motor reader/writer 失败，`NOT_SHIPPED`；不在 Phase 3 范围 |
+| QA-P1-003 | DEFER_TO_P8 | Phase 8 | 发布审计 `wheel_pmsm_status`，`DEV_ONLY` |
+| QA-P1-007 / QA-AUD-040 | DEFER | Future | 标准包缓存/解析性能；Phase 3 先登记实测，不做缓存重构 |
+| QA-AUD-034 / 035 / 036 / 037 | ALREADY_CLOSED_IN_P2 | Phase 2 | Phase 2 已 `CLOSE_IN_P2`，Phase 3 未回退 |
+
+### Phase 3 新增登记
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-P3-001` | `V1_RUNTIME` | OPEN | **遗留兼容默认日期**：`date(2026,8,23)` 仍作为隐式默认出现在 6 处源码位置（`evaluation_service.py:13`、`evaluation_facade.py:27/68`、`v4_workbook_service.py:34/67`、`application_api.py:539`）。统一 `AnalysisService` 已要求显式 `as_of`；遗留入口按 `AGENTS.md §2.0` 登记保留，全局取消须另立任务并附兼容影响评估 |
+
+未完成项保持 OPEN/VERIFY；本表不因 Phase 3 交付而关闭任何缺乏测试证据的条目。

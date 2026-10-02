@@ -155,10 +155,23 @@ class UnifiedAnalysisContractTests(unittest.TestCase):
         self.assertEqual(result.ui_conclusion, "不适用")
         self.assertFalse(result.finalizable)
 
-    def test_unknown_category_is_unresolved(self):
+    def test_unknown_category_is_invalid_input(self):
+        """填了但不认识的类别 = INVALID_INPUT（与“未填写”区分）。"""
+
         result = self.service.evaluate(PumpAnalysisRequest("某未知泵", AS_OF))
         self.assertEqual(result.category_status, "UNRESOLVED")
+        self.assertEqual(result.evaluation_status, "INVALID_INPUT")
+        self.assertIn("CATEGORY_UNRESOLVED", result.issue_codes)
+        self.assertNotIn("CATEGORY_MISSING", result.issue_codes)
+        self.assertEqual(result.missing_fields, ())
+
+    def test_missing_category_is_insufficient_data(self):
+        """未填写类别 = INSUFFICIENT_DATA + CATEGORY_MISSING。"""
+
+        result = self.service.evaluate(PumpAnalysisRequest("", AS_OF))
+        self.assertEqual(result.category_status, "UNRESOLVED")
         self.assertEqual(result.evaluation_status, "INSUFFICIENT_DATA")
+        self.assertIn("CATEGORY_MISSING", result.issue_codes)
         self.assertIn("产品类别", result.missing_fields)
 
     def test_as_of_earlier_than_effective_date_does_not_calculate(self):

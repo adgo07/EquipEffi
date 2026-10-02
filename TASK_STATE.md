@@ -1,7 +1,7 @@
 roadmap: EquipEffi V2.3
 phase: Phase 3
 goal: GB 19762-2025 离心泵统一正式纵向闭环
-status: IN_PROGRESS
+status: EXECUTION_COMPLETE
 next_status: READY_FOR_INDEPENDENT_ACCEPTANCE
 
 # ---------------------------------------------------------------------------
@@ -18,8 +18,15 @@ current_task:
   start_master_sha: 7e16418aa32ced5512e26bd70227f01a329fbdfc
   execution_report: PHASE3_EXECUTION_REPORT.md
   phase_3_pass_self_declared: false
+  phase_4_started: false
+  merge_authorized: false
   pump_chemical_support_status_self_promoted: false
-  next_action: execute P3-G01..G04; then READY_FOR_INDEPENDENT_ACCEPTANCE; do not merge; do not start Phase 4
+  goals:
+    P3-G01: COMPLETE
+    P3-G02: COMPLETE
+    P3-G03: COMPLETE
+    P3-G04: COMPLETE
+  next_action: READY_FOR_INDEPENDENT_ACCEPTANCE; do not merge; do not start Phase 4
 
 phase_2:
   status: PHASE_2_PASS

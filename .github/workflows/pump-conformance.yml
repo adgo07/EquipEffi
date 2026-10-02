@@ -44,6 +44,8 @@ jobs:
       PYTHONPATH: src;.
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONIOENCODING: utf-8
+      # 统一分析契约测试不需要 GUI；Qt 相关断言在 windows-core 的 offscreen 任务中运行。
+      QT_QPA_PLATFORM: offscreen
     steps:
       - uses: actions/checkout@v4
         with:
@@ -77,14 +79,16 @@ jobs:
             tests.unit.test_pump_generated_boundaries_v2 `
             tests.unit.test_pump_rule_integrity_v2 -v
 
-      # pump_water Approved Golden 0.4 + schema + 批准门禁（候选仍为 DRAFT/PENDING）。
-      - name: Approved Golden 0.4 and Golden schema gates
+      # pump_water Approved Golden 0.4 + schema + 批准门禁（候选仍为 DRAFT/PENDING）
+      # + pump_chemical Approved Golden 0.5 + 统一入口 29/29 回放与生成边界（Phase 3 P3-G04）。
+      - name: Approved Golden 0.4/0.5 and unified boundary gates
         run: |
           python -m unittest `
             tests.unit.test_phase2_approved_golden `
             tests.unit.test_pump_golden_case_0_3 `
             tests.unit.test_golden_case_schema_0_2 `
             tests.unit.test_golden_case_0_4_approval `
+            tests.unit.test_phase3_golden_and_boundaries `
             tests.unit.test_pump_source_pages -v
 
       # 契约与来源证据：仓库内结构、registry pins 与负例探针。
@@ -99,11 +103,12 @@ jobs:
           --skip-external-evidence
 
       # Pump evaluator 与 Application API 门面（pump_water 与 pump_chemical 共用矩阵）。
-      - name: Pump evaluator and Application API
+      - name: Pump evaluator, Application API and unified analysis contract
         run: |
           python -m unittest `
             tests.unit.test_device_evaluator_matrix `
-            tests.unit.test_application_api -v
+            tests.unit.test_application_api `
+            tests.unit.test_phase3_unified_analysis -v
 
 # pump_chemical 扩展占位（Phase 5 接入后在此追加）：
 #   - pump_chemical Golden 具名批准后的批准门禁测试
