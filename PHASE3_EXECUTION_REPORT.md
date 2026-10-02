@@ -572,7 +572,25 @@ UI       presentation/qt/pages/analysis.py（草稿区：保存/新建/列表/�
 业务真值、Numeric Profile、`platform-lock.json`、`transformer`、Excel 实现、
 `pump_chemical` 的 `support_status`。
 
-## 29.4 R4 停止点
+## 29.4 R4 CI 结果（head `e000822d101887e0adc126e8ef24d1432265bdff`）
+
+```text
+Pump Conformance (gating)                       -> success
+Windows Core  windows-core (gating)             -> success
+Windows Core  whitespace-check (gating)         -> success
+Windows Core  Full suite baseline (NON-GATING)  -> success
+```
+
+**CI 全量真实数字**：`Ran 1087 tests` → `FAILED (failures=9, errors=5, skipped=3)`，
+仍与 Phase 2 基线登记的固定 id 一致（`KNOWN BASELINE FAILURES PRESERVED`）。
+
+值得注意：R4 之后 **CI 与本机的 run 数一致（两者均为 1087）**——R1/R3 时存在的 2 项
+环境差异在本轮采样中未复现。这不改变基线策略：基线仍按 CI 作用域维护，
+`baseline_tightening_hint` 仍可能出现，且按设计不使 gate 失败。
+
+PR #11 在 R4 后：`open` / `merged=false` / head `e000822` / 13 commits / 41 files / +8374 −118。
+
+## 29.5 R4 停止点
 
 ```text
 status                 = EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE
