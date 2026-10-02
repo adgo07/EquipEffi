@@ -1,7 +1,7 @@
 roadmap: EquipEffi V2.3
 phase: Phase 2
 goal: Minimum Formal Engineering Foundation
-status: IN_PROGRESS
+status: EXECUTION_COMPLETE
 next_status: READY_FOR_INDEPENDENT_ACCEPTANCE
 
 # ---------------------------------------------------------------------------
@@ -16,7 +16,8 @@ current_task:
   phase_2_execution: true
   design: docs/31_Phase 2 最小正式工程底座.md
   start_master_sha: 78831af1778255e1b19a904e9135d56a9672eaf2
-  next_action: execute P2-G01 through G04; independent acceptance follows
+  execution_report: PHASE2_EXECUTION_REPORT.md
+  next_action: READY_FOR_INDEPENDENT_ACCEPTANCE; do not merge; do not start Phase 3
 
 allowed_next: approved Phase 2 scope only; no Phase 3; no automatic merge
 automatic_continuation: DISABLED
