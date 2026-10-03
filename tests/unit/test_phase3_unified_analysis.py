@@ -150,10 +150,18 @@ class UnifiedAnalysisContractTests(unittest.TestCase):
         self.assertIn("CATEGORY_UNCERTAIN", result.issue_codes)
 
     def test_other_category_is_not_applicable(self):
+        """类别级正式结论：状态在白名单内，可按状态形成 Record（无 ruleset provenance）。"""
+
         result = self.service.evaluate(PumpAnalysisRequest("其他类别", AS_OF))
         self.assertEqual(result.category_status, "NOT_APPLICABLE")
         self.assertEqual(result.ui_conclusion, "不适用")
-        self.assertFalse(result.finalizable)
+        self.assertEqual(result.evaluation_status, "OUT_OF_STANDARD_SCOPE")
+        self.assertTrue(result.finalizable)
+        # 未执行任何规则集：不得伪造 Canonical / ruleset provenance
+        self.assertFalse(result.provenance["ruleset_executed"])
+        self.assertIsNone(result.provenance["rule_profile"])
+        self.assertTrue(result.provenance["no_ruleset_reason"])
+        self.assertFalse(result.references.get("standard", {}).get("pack_hash"))
 
     def test_unknown_category_is_invalid_input(self):
         """填了但不认识的类别 = INVALID_INPUT（与“未填写”区分）。"""

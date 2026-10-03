@@ -158,11 +158,15 @@ class UnifiedAnalysisPageTests(unittest.TestCase):
         self.assertFalse(self.page.finalize_button.isEnabled())
         self.assertIn("确认", self.page.summary.text())
 
-    def test_other_category_is_not_applicable(self):
+    def test_other_category_is_not_applicable_and_can_be_saved(self):
+        """其他类别是类别级正式结论：状态在白名单内，允许保存（无 ruleset provenance）。"""
+
         self.page.category.setCurrentIndex(self.page.category.findData("其他类别"))
         result = self.page.evaluate()
         self.assertEqual(result.ui_conclusion, "不适用")
-        self.assertFalse(self.page.finalize_button.isEnabled())
+        self.assertEqual(result.evaluation_status, "OUT_OF_STANDARD_SCOPE")
+        self.assertFalse(result.provenance["ruleset_executed"])
+        self.assertTrue(self.page.finalize_button.isEnabled())
 
     def test_invalid_evaluation_date_is_reported_without_crashing(self):
         self.page.category.setCurrentIndex(self.page.category.findData("单级单吸清水离心泵"))
