@@ -24,7 +24,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: pump-conformance-${{ github.ref }}
@@ -61,7 +61,15 @@ jobs:
       - name: Install project dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[tools]" jsonschema==4.26.0
+          # desktop extra 提供 PySide6：本 workflow 会运行
+          # tests.unit.test_phase3_r1_blockers，其中包含 Qt offscreen 断言。
+          # 缺少该 extra 会导致该模块 import 失败，使 gating 步骤恒红。
+          python -m pip install -e ".[tools,desktop]" jsonschema==4.26.0
+
+      - name: Confirm interpreter and import path
+        run: |
+          python -c "import sys, PySide6; print(sys.version); print('PySide6', PySide6.__version__)"
+          python -c "import equipeffi; print(equipeffi.__file__)"
 
       # Pump Numeric Profile 与 platform-lock.json 的锁定 SHA / profile 声明一致性。
       - name: Numeric Contract v1 adoption lock and profile consistency
@@ -117,46 +125,12 @@ jobs:
       # Qt stale result、Canonical pack_hash、技术详情折叠。
       - name: Pump evaluator, Application API and unified analysis contract
         run: |
-          $mods = @(
-            'tests.unit.test_device_evaluator_matrix',
-            'tests.unit.test_application_api',
-            'tests.unit.test_phase3_unified_analysis',
-            'tests.unit.test_phase3_r3_closure',
-            'tests.unit.test_phase3_r1_blockers')
-          $bad = 0
-          $digest = @()
-          foreach ($m in $mods) {
-            $log = "$m.log"
-            & python -m unittest $m -v *>&1 | Tee-Object -FilePath $log | Out-Null
-            if ($LASTEXITCODE -ne 0) { $bad = 1 }
-            $digest += "### $m exit=$LASTEXITCODE"
-          }
-          if ($bad -ne 0) {
-            $digest += ''
-            $digest += '## failure detail'
-            foreach ($m in $mods) {
-              $log = "$m.log"
-              if (-not (Test-Path $log)) { continue }
-              $hits = Select-String -Path $log -Pattern '^(FAIL|ERROR):'
-              if (-not $hits) { continue }
-              $digest += '```'
-              $digest += ($hits | ForEach-Object { $_.Line })
-              $first = $hits[0].LineNumber
-              $digest += (Get-Content $log |
-                Select-Object -Skip ([Math]::Max(0, $first - 1)) -First 20)
-              $digest += '```'
-            }
-            if ($env:GITHUB_EVENT_NAME -eq 'push') {
-              $digest | Out-File -Encoding utf8 .ci-contract-digest.md
-              git config user.name 'ci-diag'
-              git config user.email 'ci-diag@users.noreply.github.com'
-              git add -f .ci-contract-digest.md
-              git commit -m 'ci(diag): publish contract failure digest [skip ci]' | Out-Null
-              git push | Out-Null
-            }
-          }
-          $digest | Out-File -Append $env:GITHUB_STEP_SUMMARY
-          exit $bad
+          python -m unittest `
+            tests.unit.test_device_evaluator_matrix `
+            tests.unit.test_application_api `
+            tests.unit.test_phase3_unified_analysis `
+            tests.unit.test_phase3_r3_closure `
+            tests.unit.test_phase3_r1_blockers -v
 
 # pump_chemical 扩展占位（Phase 5 接入后在此追加）：
 #   - pump_chemical Golden 具名批准后的批准门禁测试
