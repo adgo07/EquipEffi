@@ -783,3 +783,230 @@ phase_4_started        = false
 merge_authorized       = false
 pump_chemical_support_status = NOT_IN_RELEASE_SCOPE（未提升）
 ```
+
+---
+
+# 31. R2 — 最终阻塞收口（三个根因）
+
+## 31.1 根因 1：Golden 历史 provenance 与当前源码解耦
+
+**Root cause**：validator 把 `CURRENT_IMPLEMENTATION` 的 `artifact_sha256` 与**当前工作树**
+比较。该字段记录的是"审批/回放该 Golden 时实际使用的实现快照"，而不是"当前 HEAD 必须
+永远等于该 hash"。因此任何后续实现演进都会让已批准的 Golden 证据失效：
+
+- R1 为 Canonical hash 改动 `json_repository.py` 后，18 条 water `golden-case-0.4`
+  立刻产生 18 个 `ERROR`；
+- 0.3 候选 JSONL 也钉住同一文件，同样失败。
+
+**修复方式**（`tools/validate_phase1_contracts.py`）：
+
+```text
+对 evidence_role=CURRENT_IMPLEMENTATION 且 artifact_kind=REPOSITORY_FILE 的引用：
+  expected = reference.artifact_sha256
+  actual   = sha256(git show <case.provenance.source_baseline_sha>:<artifact_path> 的 CRLF→LF 字节)
+  actual == expected  → Gate 1 historical provenance valid
+  actual != expected  → 报错（不得静默通过）
+```
+
+- 新增 `_git_blob(repo_root, commit, path)`（带 `(commit, path)` 缓存，避免逐案例重复调用）
+  与 `_source_baseline_sha(case)`；
+- 历史 baseline 无法解析时**明确报错**，不静默通过；
+- 当工作树 digest 与固定的历史值不同时，记录一条 informational 说明，指明
+  当前正确性由 Golden 回放负责，而**不是**由这个 hash 负责。
+
+**0.3 候选（无 provenance 块）**：候选条目没有 `provenance`，因此 `git show` 路径不适用。
+其 `json_repository.py` 记录值经核对在候选冻结提交 `72e8e49` / `90af7f8` 上**未变**，
+故在 `evidence_registry.json` 的 `historical_repository_hashes` 增加
+`golden-case-0.3 + json_repository.py + 466A6E51…` 的历史登记（并写明验证依据）。
+已核对 0.1 案例**不**钉该文件，因此新条目不会放宽 0.1 的检查。
+
+**未修改任何 Golden**：
+
+```text
+git status --porcelain specs/          → 空
+未把 18 条旧 implementation hash 批量更新为当前 HEAD
+```
+
+**两个 Gate 均保留且独立**：
+
+| Gate | 内容 | 证据 |
+|---|---|---|
+| 1 historical provenance valid | 按 `source_baseline_sha` 校验实现快照 | `GoldenHistoricalProvenanceTests`（4 项）+ validator `cases=25 errors=0` |
+| 2 current Golden replay valid | 当前 HEAD 的 18/18 water + 11/11 chemical 回放 | `test_phase3_golden_and_boundaries`（14 项，0 fail） |
+
+新增 `test_historical_hashes_are_not_bulk_rewritten_to_current_head`：断言**至少存在**
+一条实现文件的记录 hash 与当前 HEAD 不同。一旦有人批量把历史 hash 改成当前 HEAD，
+该测试立即失败——用测试锁死"不得批量更新"。
+
+CI 侧：所有运行历史 gate 的 job 显式 `fetch-depth: 0`（`git show` 的硬依赖）。
+
+## 31.2 根因 2：Finalize 完整状态矩阵
+
+**统一 policy**：`finalizable == (evaluation_status ∈ {SUCCESS, OUT_OF_STANDARD_SCOPE,
+INSUFFICIENT_DATA})`。
+
+**按已批准规则修正的实际行为**：此前"其他类别"（`OUT_OF_STANDARD_SCOPE`）与
+"类别缺失"（`INSUFFICIENT_DATA`）为 `finalizable=False`，与 docs/32 的规则矛盾。
+现按状态允许形成 Record。**未知类别（`INVALID_INPUT`）与不确定类别（`None`）仍拒绝。**
+
+**新增 `PumpAnalysisResult.provenance`**，并据此在 `finalize()` 加第 4 道检查：
+
+```text
+ruleset_executed = True   → 必须携带 Canonical hash，缺失即拒绝
+ruleset_executed = False  → 必须显式记录 no_ruleset_reason，
+                            且**不得**携带 Canonical hash（携带即视为伪造 provenance，拒绝）
+```
+
+对 `as_of` 早于实施日期的情形：`rule_profile` 已知但**未执行任何规则集**，
+因此 provenance 标为未执行并清空 `pack_hash`（此前会错误携带该 Pack 的 hash）。
+
+**表驱动矩阵**（`FinalizeStateMatrixTests`，15 条真实 producer）——每条同时断言
+`evaluation_status` + `finalizable` + **Finalize 实际结果**：
+
+| 用例 | 状态 | finalizable | Finalize |
+|---|---|---|---|
+| water normal level 1 | `SUCCESS` | True | SAVED |
+| water below minimum | `SUCCESS` | True | SAVED |
+| water flow out of range | `OUT_OF_STANDARD_SCOPE` | True | SAVED |
+| water missing efficiency | `INSUFFICIENT_DATA` | True | SAVED |
+| water missing stages | `INSUFFICIENT_DATA` | True | SAVED |
+| water missing suction | `INSUFFICIENT_DATA` | True | SAVED |
+| water stage conflict | `INVALID_INPUT` | False | REJECTED |
+| chemical normal level 2 | `SUCCESS` | True | SAVED |
+| chemical ns out of range | `OUT_OF_STANDARD_SCOPE` | True | SAVED |
+| chemical missing stages | `INSUFFICIENT_DATA` | True | SAVED |
+| other category | `OUT_OF_STANDARD_SCOPE` | True | SAVED（无 ruleset provenance） |
+| category missing | `INSUFFICIENT_DATA` | True | SAVED（无 ruleset provenance） |
+| unknown category | `INVALID_INPUT` | False | REJECTED |
+| uncertain category | `None` | False | REJECTED |
+| as_of before effective date | `INSUFFICIENT_DATA` | False | REJECTED（见下） |
+
+**一个具名例外（如实声明）**：`as_of before effective date` 的状态是
+`INSUFFICIENT_DATA`（白名单内），但 `finalizable=False`。理由：评价日期早于标准实施日期时
+本版本标准对该日期不可用、**未执行任何计算**，固化它会产生"标准尚未实施却已出正式结论"
+的记录。该偏离在测试中以 `WHITELIST_EXCEPTIONS` 常量**显式具名**，并断言其
+`ruleset_executed=False` 且 `no_ruleset_reason` 非空——可见、可复核、被锁定，
+而不是藏在条件分支里。其余 14 行仍严格断言白名单等价关系。
+
+另加负例：有 ruleset 但 hash 为空 → 拒绝；无 ruleset 却携带 hash → 拒绝；
+无 ruleset 但缺 `no_ruleset_reason` → 拒绝；三类均断言 Record 数不增加。
+
+## 31.3 根因 3：治理状态全文收口
+
+CURRENT 文件统一为：
+
+```text
+Phase 3 implementation         = EXECUTION_COMPLETE
+previous acceptance            = PHASE_3_BLOCKED
+Phase 3 R2 status              = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+（不得出现 PHASE_3_PASS / PHASE_4_READY 作为当前状态）
+```
+
+清除的、**冒充当前事实**的旧表述（`REFERENCE_STANDARD_ROADMAP.md`）：
+
+```text
+第 6 行  "Phase 3 执行中"
+第 88 行 "Phase 3 正在把…变为真实统一页面"
+第 99 行 "产品工程缺口—— Phase 3 正在闭合"
+第 119 行 "当前阶段门禁是：Phase 3 执行中，完成后须经独立验收"
+第 126 行 "Phase 3（执行中）"
+```
+
+全文复查 `Phase 3 执行中 / Phase 3 正在 / Phase 3（执行中）` 已无残留；
+`PHASE_3_PASS` / `PHASE_4_READY` 仅出现在**否定说明**与 `*_declared: false` 状态位中。
+
+## 31.4 Required CI 的一个真实缺陷（R2 期间定位并修复）
+
+R1/R2 期间 `Pump Conformance` 的 gating 步骤 "Pump evaluator, Application API and
+unified analysis contract" **持续失败**，而该步骤的 5 个模块在本机
+（工作树 / `git archive` 干净检出 / 真实 `git clone` / 逐字复现 PowerShell 步骤逻辑）
+稳定 **493/493 通过**，无法复现。
+
+**根因**：`tests/unit/test_phase3_r1_blockers.py` 在类级别
+`from PySide6.QtWidgets import QApplication`（R1 的 Qt stale-result 与折叠断言），
+该模块被列入 `pump-conformance` 的 gating 步骤，但该 workflow 只安装 `.[tools]`；
+`PySide6` 属于 `[project.optional-dependencies].desktop`。因此该模块在
+`pump-conformance` 环境**无法 import**，该 gating 步骤恒红。
+`windows-core` 安装 `.[tools,desktop]`，所以同一测试在那里通过；本机开发环境也装有
+PySide6，故本地始终全绿。
+
+**修复**：`pump-conformance` 安装步骤改为 `-e ".[tools,desktop]"`，并新增
+"Confirm interpreter and import path" 步骤显式断言 PySide6 可导入，避免同类缺口
+再次以"测试无法 import"的形式静默变红。
+
+这是 **CI 配置缺陷**，不是 Golden、业务逻辑或测试期望的问题。定位过程中临时加入的
+CI 诊断代码（step summary 摘要、把失败摘要 push 回分支的流程）已全部移除，
+workflow 权限已恢复为最小 `contents: read`。
+
+## 31.5 R2 验证
+
+**最终 head**：`e1a553f5c245117c4895391355ff06ff…`（完整 SHA 见下）；R2 代码提交为
+`a5156cd`（三个根因）+ `a34c0f5` / `2d0f5c5`（测试与历史登记修正）。
+
+**Required CI（head `e1a553f`）全部 success**：
+
+```text
+Pump Conformance (gating)  — 12 个步骤全部 success，含：
+    step  9 Approved Golden 0.4/0.5 and unified boundary gates
+    step 10 Phase 1 contract, registry pins and repository evidence
+    step 11 Historical provenance and Finalize state matrix (gating)
+    step 12 Pump evaluator, Application API and unified analysis contract
+Windows Core (gating)      — 12 个步骤全部 success，含 compileall / 架构 /
+    Phase 2/3 settings+Qt offscreen / known-regression comparator
+Whitespace check (gating)  — success
+Full suite baseline (NON-GATING) — success
+```
+
+**本机全量**：`1118 run / 1111 pass / 3 fail / 1 error / 3 skip`；
+known-regression 比较器 `gate=PASS`，`new_failures / new_errors /
+worsened_failure_to_error / missing_baseline_tests` 全为 0。
+既有失败仍是既有失败（3 项 V4 reader/writer + 1 项 release audit 错误），
+**未修复也未隐藏，且未把任何新失败加入 known baseline**。
+
+**门禁逐项**：
+
+| 门禁 | 结果 |
+|---|---|
+| 29/29 Golden replay | PASS（`test_phase3_golden_and_boundaries` 14 tests OK；CI step 9 success） |
+| historical provenance validation | PASS（validator `cases=25 errors=0`；CI step 11 success） |
+| Finalize 全状态矩阵 | PASS（`FinalizeStateMatrixTests` 11 tests OK） |
+| Workspace / Record / Reopen | PASS（`test_phase3_unified_analysis` 34 OK） |
+| Windows Core | PASS |
+| Pump Conformance | PASS |
+| known regression comparator 无 new failures/errors | PASS |
+| 未把本轮新失败加入 known baseline | 已确认（baseline 文件未改动） |
+
+## 31.6 R2 变更文件
+
+```text
+tools/validate_phase1_contracts.py                历史 blob provenance（根因 1）
+specs/equipment_efficiency/evidence_registry.json 0.3 候选历史实现 hash 登记（根因 1）
+application/services/centrifugal_pump_analysis_service.py
+                                                  provenance + Finalize 第 4 道检查（根因 2）
+tests/unit/test_phase3_r2_final_closure.py        两个 Gate + 状态矩阵（新增）
+tests/unit/test_golden_case_schema_0_2.py         0.3 候选历史归类断言
+tests/unit/test_phase3_unified_analysis.py        类别级 finalizable 陈旧断言
+tests/unit/test_phase3_qt_unified.py              类别级 finalizable 陈旧断言
+AGENTS.md / HANDOFF.md / ROADMAP.md / REFERENCE_STANDARD_ROADMAP.md / TASK_STATE.md
+                                                  治理收口（根因 3）
+.github/workflows/pump-conformance.yml            desktop extra + 历史 gate + R2 步骤
+.github/workflows/windows-core.yml                R2 步骤 + 全历史 checkout
+```
+
+**未修改**：Golden 真值（`specs/` 下 Golden 文件字节未变）、Canonical 业务数据
+（`pump.json` 内容未改）、Numeric Profile、`platform-lock.json`、known baseline、
+`pump_chemical` 的 `support_status`。
+
+## 31.7 R2 停止点
+
+```text
+status                 = EXECUTION_COMPLETE
+previous_acceptance    = PHASE_3_BLOCKED
+r2_status              = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+r2_root_causes_closed  = 3 / 3
+required_ci            = ALL GREEN（Pump Conformance / Windows Core / Whitespace / baseline）
+phase_3_pass_declared  = false
+phase_4_started        = false
+merge_authorized       = false
+pump_chemical_support_status = NOT_IN_RELEASE_SCOPE（未提升）
+```
