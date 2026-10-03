@@ -234,7 +234,13 @@ class GoldenCaseSchema02Tests(unittest.TestCase):
         self.assertEqual(count, 26)
         self.assertEqual(error_count, 0, "\n".join(errors))
         self.assertEqual(errors, [])
-        self.assertEqual(historical, [])
+        # 0.3 候选集合是不可变历史证据：其 CURRENT_IMPLEMENTATION 记录的是**当时**
+        # 回放的实现快照。后续实现演进（例如 R1 为 Canonical hash 改动
+        # json_repository.py）不得让已记录的候选 provenance 失效，因此这些引用
+        # 按 registry 的历史哈希归类（Gate: historical provenance valid）。
+        self.assertTrue(historical, "应至少有一条历史实现哈希被归类为 historical provenance")
+        for message in historical:
+            self.assertIn("historical", message)
         self.assertEqual(external_skipped, 26)
 
     def test_external_evidence_root_is_portable_and_sha256_is_verified(self) -> None:

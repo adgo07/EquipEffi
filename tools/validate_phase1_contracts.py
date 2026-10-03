@@ -12,6 +12,7 @@ import copy
 import hashlib
 import json
 import os
+import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path, PurePosixPath
@@ -140,6 +141,47 @@ def _historical_hash_reason(
     return None
 
 
+# ``git show`` results keyed by (commit, path).  A batch may resolve the same
+# implementation snapshot for dozens of cases, so cache the resolved bytes.
+_GIT_BLOB_CACHE: dict[tuple[str, str], bytes | None] = {}
+
+
+def _git_blob(repo_root: Path, commit: str, artifact_path: str) -> bytes | None:
+    """Return ``git show <commit>:<path>`` bytes, or ``None`` if unavailable.
+
+    Used to verify historical implementation provenance against the commit a
+    Golden case was approved at, instead of the current working tree.
+    """
+
+    key = (commit, artifact_path)
+    if key in _GIT_BLOB_CACHE:
+        return _GIT_BLOB_CACHE[key]
+    try:
+        completed = subprocess.run(
+            ["git", "show", f"{commit}:{artifact_path}"],
+            cwd=repo_root,
+            capture_output=True,
+            check=False,
+        )
+    except OSError:
+        _GIT_BLOB_CACHE[key] = None
+        return None
+    payload = completed.stdout if completed.returncode == 0 else None
+    _GIT_BLOB_CACHE[key] = payload
+    return payload
+
+
+def _source_baseline_sha(case: dict[str, Any]) -> str | None:
+    """Implementation baseline commit pinned by a case's provenance, if any."""
+
+    provenance = case.get("provenance")
+    if isinstance(provenance, dict):
+        baseline = str(provenance.get("source_baseline_sha", "") or "").strip()
+        if baseline:
+            return baseline
+    return None
+
+
 def _artifact_path(
     repo_root: Path,
     reference: dict[str, Any],
@@ -245,6 +287,50 @@ def _source_errors(
             continue
         actual = _reference_sha256(target, reference)
         expected = str(reference["artifact_sha256"]).upper()
+
+        # Historical implementation provenance: a CURRENT_IMPLEMENTATION
+        # repository file records the implementation that was actually replayed
+        # when the case was approved.  Verify it against the commit pinned by
+        # the case's ``provenance.source_baseline_sha``, not against the current
+        # working tree -- otherwise every later refactor would invalidate
+        # already-approved Golden evidence.  Current-HEAD correctness is proven
+        # separately by the Golden replay gate.
+        baseline = _source_baseline_sha(case)
+        reference_artifact_path = str(reference.get("artifact_path", "")).replace("\\", "/")
+        if (
+            reference.get("evidence_role") == "CURRENT_IMPLEMENTATION"
+            and reference.get("artifact_kind") == "REPOSITORY_FILE"
+            and baseline is not None
+        ):
+            historical_bytes = _git_blob(repo_root, baseline, reference_artifact_path)
+            if historical_bytes is None:
+                errors.append(
+                    f"{label}: cannot resolve historical baseline {baseline} for "
+                    f"{reference_artifact_path}; fetch full history (git fetch --unshallow) "
+                    "or the historical provenance gate cannot be verified"
+                )
+                continue
+            historical_digest = hashlib.sha256(
+                historical_bytes.replace(b"\r\n", b"\n")
+            ).hexdigest().upper()
+            if historical_digest != expected:
+                errors.append(
+                    f"{label}: historical SHA-256 {historical_digest} at baseline "
+                    f"{baseline} != recorded {expected}"
+                )
+                continue
+            historical.append(
+                f"{label}: historical implementation hash {expected} verified against "
+                f"baseline {baseline} ({reference_artifact_path})"
+            )
+            if actual != expected:
+                historical.append(
+                    f"{label}: working-tree digest {actual} differs from the pinned "
+                    f"historical {expected}; current correctness is proven by the "
+                    "Golden replay gate, not by this hash"
+                )
+            continue
+
         if actual != expected:
             historical_reason = _historical_hash_reason(registry, version, case, reference)
             if reference.get("artifact_kind") == "REPOSITORY_FILE" and historical_reason is not None:

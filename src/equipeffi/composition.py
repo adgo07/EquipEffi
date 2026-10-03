@@ -111,15 +111,70 @@ def create_settings_runtime(*, paths=None, stream=None):
     return service, logger
 
 
+def create_records_runtime(*, paths=None):
+    """Phase 3 记录运行时：迁移并装配 records.sqlite 的 Workspace / Record 仓储。
+
+    与 `create_settings_runtime` 的 `user.sqlite` 迁移链**完全独立**；records 使用
+    自己的 forward-only runner 与自己的历史表。
+    """
+
+    from . import __version__
+    from .infrastructure.persistence.app_data_paths import AppDataPaths
+    from .infrastructure.persistence.records_migrations import migrate_records_database
+    from .infrastructure.persistence.sqlite_records_repository import (
+        SqliteRecordRepository,
+        SqliteWorkspaceRepository,
+    )
+
+    paths = paths if paths is not None else AppDataPaths.default()
+    migrate_records_database(paths.records_db, app_version=__version__)
+    return (
+        SqliteWorkspaceRepository(paths.records_db),
+        SqliteRecordRepository(paths.records_db),
+    )
+
+
+def create_pump_analysis_service(*, paths=None, with_persistence: bool = True):
+    """装配统一 GB 19762 离心泵分析服务。
+
+    返回 `CentrifugalPumpAnalysisService`；`with_persistence=True` 时同时接入
+    records.sqlite 的 Workspace / Record 仓储。标准仓库复用与核心 API 相同的
+    `JsonStandardRepository`，不建立第二套标准加载路径。
+    """
+
+    from . import __version__
+    from .application.services.centrifugal_pump_analysis_service import (
+        CentrifugalPumpAnalysisService,
+    )
+    from .infrastructure.standards.json_repository import JsonStandardRepository
+
+    root = _default_project_root()
+    package_manifest = Path(__file__).resolve().parent / "standard_manifest.json"
+    if package_manifest.is_file():
+        repository = JsonStandardRepository(package_manifest.parent, manifest=package_manifest)
+    else:
+        repository = JsonStandardRepository(root)
+
+    workspaces = records = None
+    if with_persistence:
+        workspaces, records = create_records_runtime(paths=paths)
+    return CentrifugalPumpAnalysisService(
+        repository, workspaces, records, version=__version__
+    )
+
+
 def launch_qt(*, paths=None) -> int:
     from .infrastructure.runtime_logging import close_logging, install_exception_hook
     from .presentation.qt.app import run
     import sys
 
     service, logger = create_settings_runtime(paths=paths)
+    analysis = create_pump_analysis_service(paths=paths)
     previous = install_exception_hook(logger)
     try:
-        return run(service, logger)
+        # 草稿身份由用户在"分析草稿"区显式命名，不使用随机 session id：
+        # 启动时不绑定任何草稿，用户可新建或从已有草稿列表载入。
+        return run(service, logger, analysis)
     finally:
         sys.excepthook = previous
         close_logging(logger)

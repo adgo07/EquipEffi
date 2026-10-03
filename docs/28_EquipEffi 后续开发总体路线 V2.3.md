@@ -413,9 +413,9 @@ Phase 10
 
 | Phase | 当前语义 | 边界与说明 |
 |---|---|---|
-| **Phase 3** | `pump_water` 正式工程 / 生命周期纵向样板 | 验证新正式架构能完整承载已批准业务真相：规范 → Canonical → Product/Profile Schema → Ruleset → Approved Golden → Domain → Application → PySide6 → Workspace → Record → Reopen/Reproduce。**Phase 3 PASS 不等于完整 GB 19762 PASS** —— 它只覆盖 `pump_water`。不得重新设计 GB 19762—2025 泵算法。 |
+| **Phase 3** | **GB 19762—2025 离心泵统一正式纵向闭环**（`pump_water` + `pump_chemical`） | 验证新正式架构能完整承载已批准业务真相：规范 → Canonical → Product/Profile Schema → Ruleset → Approved Golden → Domain → Application → PySide6 → Workspace → Record → Reopen/Reproduce。**产品层合并、UI 合并、Application Use Case 合并、Workspace/Record 合并、History/Reopen 合并、Result Contract 合并**；`pump_water` 与 `pump_chemical` 只作为**内部 rule profile / ruleset identity**，不得再设计为两个独立用户产品。**Phase 3 PASS 不等于完整 GB 19762 的产品发布 PASS**（`pump_chemical` 的发布支持仍待 Stage D）。不得重新设计 GB 19762—2025 泵算法。 |
 | **Phase 4** | 基于 `pump_water` **真实样板**做必要通用化 | 只通用化已被样板证明的重复结构；不做事前理论式大通用化。 |
-| **Phase 5** | 将 `pump_chemical` 接入**同一正式工程链**，完成 GB 19762—2025 **全标准业务能力覆盖** | 复用 Phase 3/4 已验证的 Workspace / Record / 存储 / 导航 / 输入与结果投影契约，补齐 `pump_chemical` 的 Mapping、Standard Issues、Golden 具名批准与 Conformance。**`transformer` 不进入 Phase 5。** Phase 5 完成前，`pump_chemical` 的 `support_status` 保持 `NOT_IN_RELEASE_SCOPE`。 |
+| **Phase 5** | `pump_chemical` 的**正式发布支持收口**（不再承担“首次接入”） | **首次接入已在 Phase 3 完成**（见 8.2）。Phase 5 承担其剩余职责：补齐并关闭 `pump_chemical` 的 Mapping/Standard Issues 遗留项、按 Standard Development Guide 完成 **Stage D 正式验收**，并据此切换 `support_status = SUPPORTED`。**`transformer` 不进入 Phase 5。** Phase 5 其余职责本轮**不重新设计**。 |
 | **Phase 6** | 围绕**完整 GB 19762**（`pump_water` + `pump_chemical`）建立完整产品 Shell | 产品级导航、标准库、记录入口、结果层级与高级技术详情；按真实用户任务组织，不按数据库/JSON 组织。 |
 | **Phase 7** | **完整 GB 19762** 的 Record、历史、恢复、结果解释、标准依据、异常状态与质量收口 | 覆盖两个 Profile 的 Workspace/Attempt/Record 生命周期、不可变记录、历史恢复与 EXECUTION_ERROR 与业务“无法判定”的分离。 |
 | **Phase 8** | **完整 GB 19762** Excel 闭环 | **必须同时覆盖 `pump_water` + `pump_chemical`**；Excel 只作 Import/Export Adapter，GUI 与 Excel **共用同一业务内核**；数值入口须先完成设计与证据验证（见第 7.1 节）。 |
@@ -425,6 +425,44 @@ Phase 10
 V2.3 **不新增阶段、不删除阶段、不重新编号**。
 
 > **取代声明（2026-10-02）**：本表取代此前把 Phase 5 泛化为“迁移全部 IN_V1 Profile”的表达。在该旧表达下，`transformer` 曾属 `IN_V1`，因而在形式上落入 Phase 5；现行产品范围已把 `transformer` 调整为 `POST_V1`，**Phase 5 只针对 `pump_chemical`，`transformer` 不进入 Phase 5**。Phase 6～9 的覆盖对象同样由“若干 Profile”收窄并明确为**完整 GB 19762（两个 Profile）**。
+
+## 8.2 增量修正：Phase 3 前移 pump_chemical 正式产品接入（2026-10-02）
+
+本节是对第 8.1 节的**增量修正说明**，不重写 V2.3 正文，**不创建 V2.4**，**不改变 Phase 0～10 编号**。
+
+```text
+decision_owner: 王玮（总经理）
+decision_date: 2026-10-02
+amendment_id: PHASE3_UNIFIED_GB19762_SCOPE_AMENDMENT
+authority: 用户 Phase 3 正式执行授权
+```
+
+**修正原因（产品负责人已明确）**：清水泵与石油化工泵必须在**同一个正式 UI** 中出现，因为普通用户通常**无法预先判断**自己属于 water 还是 chemical。把两者做成两个入口会让用户在第一步就走错路。
+
+**修正内容**：
+
+| 项 | V2.3 原语义 | 修正后语义 |
+|---|---|---|
+| Phase 3 | `pump_water` 纵向样板 | **GB 19762—2025 离心泵统一正式纵向闭环**，同时覆盖 `pump_water` + `pump_chemical` |
+| Phase 5 | `pump_chemical` **首次接入**同一正式工程链 | 「首次接入」**已前移到 Phase 3**；Phase 5 不再承担首次接入，改为承担 `pump_chemical` 的**正式发布支持收口（Stage D）** |
+| Phase 5 其余职责 | — | **暂不重新设计**，留待后续独立治理 |
+
+**明确不做**（边界）：
+
+- 不创建 `V2.4`；
+- 不提前 Phase 4 / 6 / 7 / 8 / 9 的工作；
+- 不修改 Phase 0～10 的编号或数量；
+- 不因本次修正改变 `pump_chemical` 的 `scope_status` / `support_status` / `standard_maturity` 三个维度中的任何一个值。
+
+**维度保持不变**（本次修正只改阶段归属，不改状态）：
+
+```text
+pump_water     : scope_status=IN_V1 | support_status=SUPPORTED            | standard_maturity=SUPPORTED
+pump_chemical  : scope_status=IN_V1 | support_status=NOT_IN_RELEASE_SCOPE | standard_maturity=READY_FOR_IMPLEMENTATION
+transformer    : scope_status=POST_V1 | support_status=NOT_IN_RELEASE_SCOPE
+```
+
+**同步位置**：本节的修正同时反映在 `ROADMAP.md` 与 `REFERENCE_STANDARD_ROADMAP.md`；Phase 3 的正式设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`。
 
 ---
 
@@ -446,7 +484,7 @@ V2.3 **不新增阶段、不删除阶段、不重新编号**。
 - 三库职责继续保持；
 - 先薄 AppShell，再扩展完整产品页面；
 - Phase 4 之前不进行脱离真实样板的理论式大通用化；
-- **Phase 5 接入 `pump_chemical`，完成 GB 19762—2025 全标准业务能力覆盖**（2026-10-02 语义；取代旧的“Phase 5 只迁移 IN_V1 Profile”泛化表达；`transformer` 不进入 Phase 5，见第 8.1 节）；
+- **Phase 3 完成 GB 19762—2025 离心泵统一正式纵向闭环（`pump_water` + `pump_chemical` 同一产品/UI/Workspace/Record/History 链）**；**Phase 5 承担 `pump_chemical` 的正式发布支持收口（Stage D）**（2026-10-02 语义与 8.2 增量修正；取代旧的“Phase 5 只迁移 IN_V1 Profile”泛化表达与“Phase 5 首次接入 pump_chemical”表达；`transformer` 不进入 Phase 5，见第 8.1、8.2 节）；
 - Phase 8 正式实现 Excel / 报告等外围能力，且必须同时覆盖 `pump_water` + `pump_chemical`；
 - Phase 9 完整 GB 19762 Windows V1 正式验收与发布；
 - Phase 10 才考虑综合版和多平台产品。

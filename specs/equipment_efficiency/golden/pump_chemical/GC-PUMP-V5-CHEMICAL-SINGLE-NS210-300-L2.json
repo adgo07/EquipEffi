@@ -1,0 +1,107 @@
+{
+  "case_schema_version": "golden-case-0.5",
+  "case_id": "GC-PUMP-V5-CHEMICAL-SINGLE-NS210-300-L2",
+  "case_status": "APPROVED",
+  "approval_status": "APPROVED",
+  "review_status": "APPROVED",
+  "device_type": "centrifugal_pump",
+  "profile_id": "pump_chemical",
+  "numeric_contract_id": "PUMP_NUMERIC_AND_DECISION_CONTRACT_V2",
+  "evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+  "raw_inputs": {
+    "product_type": "单级石油化工离心泵",
+    "suction": "单吸",
+    "stages": "1",
+    "QBEP": "100",
+    "HBEP": "14",
+    "speed": "2900",
+    "efficiency": "73",
+    "input_basis": "STANDARD_BEP",
+    "measurement_point": "BEP"
+  },
+  "expected_result": {
+    "support_status": null,
+    "category_status": "APPLICABLE",
+    "evaluation_status": "SUCCESS",
+    "ui_conclusion": "2级",
+    "grade": "2",
+    "issue_codes": []
+  },
+  "expected_calculation_trace": {
+    "execution_basis": "BUSINESS_DRAFT",
+    "derived": {
+      "suction_factor": "1",
+      "stage_count": "1",
+      "q_for_ns_m3s": "0.027777777777777777777777777777777777777777777777778",
+      "h_for_ns_m": "14",
+      "ns_raw": "243.74941676825332898685199437408275053726415450165",
+      "eta_b": "72.994964439329567466446659598229238364944975446517",
+      "delta_eta": "1.15658876378297471615156146180272346644966298",
+      "eta_0": "71.838375675546592750295098136426514898495312466517",
+      "output_power_kw": "3.8150"
+    },
+    "matched_rule_id": "GB19762-R000014",
+    "grade_thresholds_internal": [
+      "74.838375675546592750295098136426514898495312466517",
+      "72.838375675546592750295098136426514898495312466517",
+      "65.838375675546592750295098136426514898495312466517"
+    ]
+  },
+  "source_sidecar": {
+    "source_references": [
+      {
+        "source_id": "GB19762-2025-PDF",
+        "artifact_kind": "EXTERNAL_FILE",
+        "artifact_path": "6 7. GB 19762-2025 离心泵能效限定值及能效等级.pdf",
+        "artifact_sha256": "7F515D8B9D6B4D2AB97FFA7BECB78520BA0579CFBD6D5ECA10C7E7CC77895FEC",
+        "clause_or_table": "表2、公式(1)、公式(4)~(7)",
+        "pages": [
+          "8-9"
+        ],
+        "stable_data_ids": [],
+        "evidence_role": "STANDARD",
+        "note": "标准身份/哈希与相关印刷页；业务解释仍以 Canonical 与已批准真值为准。"
+      },
+      {
+        "source_id": "pump-canonical-v1",
+        "artifact_kind": "REPOSITORY_FILE",
+        "artifact_path": "src/equipeffi/resources/standards/pump.json",
+        "artifact_sha256": "5D91F01B1C5F26DC4F364A3156C4E974B159FA1005BD840489C0BC3465C18C0F",
+        "clause_or_table": "石油化工泵表2及公式(4)~(7)",
+        "pages": [
+          "8-9"
+        ],
+        "stable_data_ids": [
+          "GB19762-R000014"
+        ],
+        "evidence_role": "CANONICAL_PACK",
+        "note": "Canonical 提供表2行与系数；不构成对本案例的业务批准。"
+      }
+    ]
+  },
+  "notes": [
+    "产品负责人定义的石化单级泵 210<ns<=300 档位案例；预期结论由产品负责人批准。",
+    "owner_defined_case_ref=C9（ns 区间 210 < ns <= 300）"
+  ],
+  "review_owner": "王玮",
+  "reviewed_at": "2026-10-02T12:00:00+08:00",
+  "approved_at": "2026-10-02T12:00:00+08:00",
+  "approval_basis": [
+    "王玮作为产品负责人，于 2026-10-02 逐条批准本记录的业务真值（C1-C11 共 11 条全部通过）。",
+    "预期结论与 GB 19762-2025 表2及公式(1)、(4)~(7) 的可追溯 Canonical 行一致。",
+    "本记录不改动 pump_water 已批准的 18 条 golden-case-0.4，也不改变 pump_chemical 的 support_status。"
+  ],
+  "known_limits": [
+    "pump_chemical 的 support_status 仍为 NOT_IN_RELEASE_SCOPE；本 Golden 不构成发布支持声明。",
+    "正式支持提升仍需 Standard Development Guide Stage D 独立验收。",
+    "表2精确边界由 generated boundary tests 负责，人工 Golden 不重复穷举全部端点。"
+  ],
+  "provenance": {
+    "provenance_kind": "OWNER_DEFINED",
+    "owner_approval_evidence_id": "USER_PROVIDED_OWNER_APPROVAL_2026-10-02_PUMP_CHEMICAL",
+    "owner_defined_case_ref": "C9",
+    "standard_evidence": "GB 19762-2025 表2、公式(1)、公式(4)~(7)：单级石化泵 5<Q<=300、210<ns<=300 行（η0 = η_b - Δη，公式(7)）",
+    "canonical_evidence": "GB19762-R000014"
+  },
+  "review_flags": []
+}

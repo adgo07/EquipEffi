@@ -1,4 +1,4 @@
-"""薄壳：占位导航与窗口状态；不接设备评价。"""
+"""薄壳：统一 GB 19762 分析页与分析记录页；窗口状态经 SettingsService 持久化。"""
 import base64
 import binascii
 import logging
@@ -9,14 +9,17 @@ from PySide6.QtWidgets import QHBoxLayout, QListWidget, QMainWindow, QStackedWid
 from ...application.services.settings_service import SettingsService
 from .navigation import PAGES
 from .pages import placeholder_page
+from .pages.analysis import AnalysisPage
+from .pages.records import RecordsPage
 from .tokens import TOKENS
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, settings: SettingsService):
+    def __init__(self, settings: SettingsService, analysis=None,
+                 *, workspace_id: str | None = None):
         super().__init__()
         self.settings = settings
-        self.setWindowTitle("设备能效分析工具 · Phase 2 工程薄壳")
+        self.setWindowTitle("设备能效分析工具 · GB 19762—2025 离心泵能效分析")
         self.resize(1000, 700)
         font = self.font()
         font.setPixelSize(TOKENS.font_size)
@@ -28,8 +31,16 @@ class MainWindow(QMainWindow):
         self.navigation.setFixedWidth(TOKENS.navigation_width)
         self.navigation.addItems(PAGES)
         self.pages = QStackedWidget()
+        self.analysis_page = (AnalysisPage(analysis, workspace_id=workspace_id)
+                              if analysis is not None else None)
+        self.records_page = RecordsPage(analysis) if analysis is not None else None
         for title in PAGES:
-            self.pages.addWidget(placeholder_page(title))
+            if title == "新建分析" and self.analysis_page is not None:
+                self.pages.addWidget(self.analysis_page)
+            elif title == "分析记录" and self.records_page is not None:
+                self.pages.addWidget(self.records_page)
+            else:
+                self.pages.addWidget(placeholder_page(title))
         layout.addWidget(self.navigation)
         layout.addWidget(self.pages, 1)
         self.setCentralWidget(container)

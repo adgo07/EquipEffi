@@ -25,6 +25,13 @@
       "artifact_path": "src/equipeffi/domain/evaluation/evaluators/pump.py",
       "artifact_sha256": "66F84899DA5FE411340311075346D75216F1335577669CF3CC2C16F1129611EF",
       "reason": "Pump evaluator snapshot referenced by the immutable 0.1 historical cases"
+    },
+    {
+      "case_schema_version": "golden-case-0.3",
+      "catalog_data_version": "",
+      "artifact_path": "src/equipeffi/infrastructure/standards/json_repository.py",
+      "artifact_sha256": "466A6E5154E0040F5529D689E61B3C68B0B0C18CAEC369AA1C59E0D582AB2F4A",
+      "reason": "Implementation snapshot pinned by the immutable 0.3 candidate set (verified unchanged at the candidate freeze commits 72e8e49 / 90af7f8); later implementation changes must not invalidate already-recorded candidate provenance"
     }
   ]
 }

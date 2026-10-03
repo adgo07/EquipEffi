@@ -7,7 +7,7 @@
 - 产品：EquipEffi 设备能效分析工具（Module ID `qz.equipment_efficiency`）。
 - Canonical repository：`https://github.com/adgo07/EquipEffi.git`。
 - 当前 Reference Standard：`GB 19762—2025 离心泵能效限定值及能效等级`。
-- 当前主要产品阶段：`EquipEffi V2.3` 下 `Phase 1 = PHASE_1_PASS`、`Phase 2 = EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`。
+- 当前主要产品阶段：`EquipEffi V2.3` 下 `Phase 1 = PHASE_1_PASS`、`Phase 2 = PHASE_2_PASS`、`Phase 3 implementation = EXECUTION_COMPLETE`。**Phase 3 的独立验收结论曾为 `PHASE_3_BLOCKED`；R1/R2/R3 收口后状态为 `READY_FOR_INDEPENDENT_RE_ACCEPTANCE`。**不得写成 `PHASE_3_PASS` 或 `PHASE_4_READY`。
 - 本仓独立开发、发布、离线运行，不是中央仓的第四个业务产品。
 
 ### 1.1 仓库身份与本地执行环境
@@ -75,11 +75,11 @@ git fetch origin                   # 同步远端
 ### 2.1 Phase 与顺序纪律
 
 - 路线只有 `EquipEffi V2.3`；Phase 0 已完成，作为不可变基线。Phase 0～10 **编号不得改变**。
-- 当前状态：`Phase 1 = PHASE_1_PASS`；`Phase 2 = EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`；automatic continuation = `DISABLED`。
-- `PHASE_1_PASS` 是既有独立复验与 Solution/Product Review 后的记录，**不是任何 adoption / 治理任务自行批准的结果**；`PHASE_2_READY` 不代表开始或授权。
-- **Phase 1 已经结束**：`P1-G01 → G02 → G03 → G04 → G05 → G06` 与 Solution/Product Review 是**历史完成程序**，不再作为当前例行门禁（见 2.0）。
-- **进入 Phase 2 及以后阶段仍须用户明确授权**；不得自行宣布任何 Phase PASS。
-- 本次 Phase 2 已获用户明确执行授权；G01～G04 已完成，等待独立验收，不自行宣布 PASS、合并或进入 Phase 3。
+- 当前状态：`Phase 1 = PHASE_1_PASS`；`Phase 2 = PHASE_2_PASS`；`Phase 3 implementation = EXECUTION_COMPLETE`；**Phase 3 独立验收结论 = `PHASE_3_BLOCKED`（已由 R1/R2/R3 修复，待复验）**；`Phase 3 R3 status = READY_FOR_INDEPENDENT_RE_ACCEPTANCE`；automatic continuation = `DISABLED`。
+- `PHASE_1_PASS` / `PHASE_2_PASS` 是既有独立验收后的记录，**不是任何 adoption / 治理任务自行批准的结果**；`PHASE_2_PASS` 依 PR #10 独立验收与合并（`7e16418a`）。任何 Phase 的 PASS 均不得由执行者自行宣布。
+- **Phase 1 / Phase 2 均已结束**：`P1-G01 → G06`、`P2-G01 → G04` 与 Solution/Product Review 是**历史完成程序**，不再作为当前例行门禁（见 2.0）。
+- **Phase 3 已获用户明确执行授权**（设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`）：范围是 **GB 19762—2025 离心泵统一正式纵向闭环**，即 `pump_water` + `pump_chemical` 共用同一产品、UI、Workspace、Record、History 链。
+- Phase 3 执行者**不得**自行宣布 Phase 3 PASS、不得合并最终 PR、不得进入 Phase 4、不得发布、**不得自行把 `pump_chemical` 的 `support_status` 提升为 `SUPPORTED`**（须待独立验收）。
 - v15 / T04.xx / 历史 HANDOFF / 编号清单无自动调度权，不得据其“下一边界任务”自动继续。
 - 当前 Windows V1 产品目标与各 Profile 状态以 `V1_SCOPE.md` / `ROADMAP.md` 为唯一权威（完整支持 GB 19762—2025，覆盖 `pump_water` + `pump_chemical`；`transformer` 为 `POST_V1`，资产保留）。
 - 旧资产先分类（KEEP / VERIFY / MIGRATE / REWORK / DEPRECATE / DELETE_CANDIDATE / OBSOLETE），不因零引用直接删除。

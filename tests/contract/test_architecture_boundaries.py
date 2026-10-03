@@ -49,14 +49,30 @@ class ArchitectureBoundaryTests(unittest.TestCase):
                         with self.subTest(path=path.relative_to(self.ROOT), module=module):
                             self.assertFalse(module == token or module.startswith(token + "."))
 
-    def test_qt_has_only_settings_application_contract(self):
+    def test_qt_has_only_settings_and_analysis_application_contracts(self):
+        """Qt 只能经应用契约访问核心。
+
+        Phase 3 起允许 Qt 导入统一离心泵分析契约
+        (`centrifugal_pump_analysis_service`) 与设置服务 (`settings_service`)；
+        仍禁止导入 Domain、Infrastructure、presentation.api 与装配层。
+        """
+
+        allowed_application_prefixes = (
+            "equipeffi.application.services.settings_service",
+            "equipeffi.application.services.centrifugal_pump_analysis_service",
+        )
         directory = self.ROOT / "src/equipeffi/presentation/qt"
         for path in directory.rglob("*.py"):
             for module in imported_modules(path, self.ROOT / "src"):
                 with self.subTest(path=path, module=module):
                     self.assertFalse(module.startswith(("equipeffi.infrastructure", "equipeffi.domain", "equipeffi.presentation.api", "equipeffi.composition")))
                     if module.startswith("equipeffi.application"):
-                        self.assertEqual(module, "equipeffi.application.services.settings_service.SettingsService")
+                        with self.subTest(path=path, module=module):
+                            self.assertTrue(
+                                any(module == prefix or module.startswith(prefix + ".")
+                                    for prefix in allowed_application_prefixes),
+                                f"{module} 不是允许的 Application 契约",
+                            )
 
     def test_ast_resolves_relative_imports_and_ignores_comments(self):
         source = '# import sqlite3\nfrom ...infrastructure import persistence\nimport PySide6.QtCore as qt\n'
