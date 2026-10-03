@@ -15,6 +15,7 @@ from __future__ import annotations
 import hashlib
 import json
 import subprocess
+import sys
 import tempfile
 import unittest
 from datetime import date
@@ -88,9 +89,32 @@ class GoldenHistoricalProvenanceTests(unittest.TestCase):
         cls.cases = _load_cases()
 
     def test_cases_with_pinned_baseline_exist(self):
-        pinned = [c for c in self.cases if _baseline_sha(c)]
-        self.assertGreaterEqual(len(pinned), 29,
-                                "18 water 0.4 + 11 chemical 0.5 都应锁定 source_baseline_sha")
+        """18 条 water 0.4 与 8 条候选派生 chemical 0.5 都锁定 source_baseline_sha。
+
+        C9–C11 是 **owner-defined** 案例，没有候选来源，因此按设计**不带**
+        `source_baseline_sha`；它们的历史 provenance 由 owner 批准证据承载。
+        """
+
+        water = [c for c in self.cases if c.get("case_schema_version") == "golden-case-0.4"]
+        chemical = [c for c in self.cases if c.get("case_schema_version") == "golden-case-0.5"]
+        self.assertEqual(len(water), 18)
+        self.assertEqual(len(chemical), 11)
+        self.assertTrue(all(_baseline_sha(c) for c in water),
+                        "18 条 water 0.4 必须全部锁定 source_baseline_sha")
+        candidate_derived = [
+            c for c in chemical
+            if (c.get("provenance") or {}).get("provenance_kind") == "CANDIDATE_DERIVED"
+            or c.get("provenance", {}).get("source_candidate_case_id")
+        ]
+        self.assertEqual(len(candidate_derived), 8)
+        self.assertTrue(all(_baseline_sha(c) for c in candidate_derived),
+                        "候选派生的 chemical 案例必须锁定 source_baseline_sha")
+        owner_defined = [c for c in chemical
+                         if (c.get("provenance") or {}).get("provenance_kind") == "OWNER_DEFINED"]
+        self.assertEqual(len(owner_defined), 3)
+        self.assertTrue(all(_baseline_sha(c) is None for c in owner_defined),
+                        "owner-defined 案例不得伪造 source_baseline_sha")
+        self.assertEqual(sum(1 for c in self.cases if _baseline_sha(c)), 26)
 
     def test_implementation_hashes_verify_against_their_pinned_baseline(self):
         """逐条核对 CURRENT_IMPLEMENTATION 与历史 blob 一致。"""
@@ -157,7 +181,7 @@ class GoldenHistoricalProvenanceTests(unittest.TestCase):
         """Validator 的 Gate 1 必须在无外部 evidence root 时也通过。"""
 
         completed = subprocess.run(
-            ["python", "tools/validate_phase1_contracts.py", "--skip-external-evidence"],
+            [sys.executable, "tools/validate_phase1_contracts.py", "--skip-external-evidence"],
             cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(
             completed.returncode, 0,
@@ -168,6 +192,12 @@ class GoldenHistoricalProvenanceTests(unittest.TestCase):
 
 class FinalizeStateMatrixTests(unittest.TestCase):
     """Gate 2：表驱动覆盖全部真实 result producer 的 Finalize 状态矩阵。"""
+
+    #: 唯一不受「finalizable == 状态在白名单内」约束的具名例外。
+    #: 理由：评价日期早于标准实施日期时，本版本标准对该日期不可用，
+    #: 结果虽有 INSUFFICIENT_DATA 状态，但**未执行任何计算**，
+    #: 固化它会产生"标准尚未实施却已出正式结论"的记录。
+    WHITELIST_EXCEPTIONS = frozenset({"as_of before effective date"})
 
     #: (用例标签, 请求工厂, 期望 evaluation_status, 期望 finalizable, 是否执行了 ruleset)
     def _cases(self):
@@ -225,8 +255,18 @@ class FinalizeStateMatrixTests(unittest.TestCase):
                 result = self.service.evaluate(request)
                 self.assertEqual(result.evaluation_status, status, label)
                 self.assertEqual(result.finalizable, finalizable, label)
-                # 与统一 policy 一致：finalizable 必须等价于「状态在白名单内」
-                self.assertEqual(finalizable, status in FINALIZABLE_STATUSES, label)
+                # 统一 policy：finalizable == (evaluation_status 在白名单内)。
+                # 唯一的**具名例外**见 WHITELIST_EXCEPTIONS：
+                #   "as_of before effective date" 的状态是 INSUFFICIENT_DATA，
+                #   但评价日期早于标准实施日期、本版本标准对该日期不可用、
+                #   未执行任何计算，因此不构成可固化的正式结论。
+                if label in self.WHITELIST_EXCEPTIONS:
+                    self.assertFalse(finalizable, label)
+                    self.assertFalse(result.provenance["ruleset_executed"], label)
+                    self.assertTrue(
+                        str(result.provenance.get("no_ruleset_reason") or "").strip(), label)
+                else:
+                    self.assertEqual(finalizable, status in FINALIZABLE_STATUSES, label)
 
                 before = len(self.service.list_records())
                 if finalizable:
