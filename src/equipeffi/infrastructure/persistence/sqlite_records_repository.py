@@ -1,18 +1,29 @@
-"""`records.sqlite` 的 Workspace / Record 仓储实现（Phase 3 P3-G03）。
+"""`records.sqlite` 的 Workspace / Record 仓储实现（Phase 3 P3-G03；Phase 4 G03 解耦）。
 
-本模块属于 infrastructure，实现 application 层的 `WorkspaceRepository` /
-`RecordRepository` Protocol。Record 写入后不可变：不提供 update / delete 记录
-的入口，重复写入同一 `record_id` 会被显式拒绝。
+本模块属于 infrastructure，实现 application 生命周期层的
+`WorkspaceRepository` / `RecordRepository` Protocol。
+
+**Phase 4 起本模块只依赖设备无关的 lifecycle 契约**，不再 import 任何
+`*_analysis_service` 产品模块——该约束由
+`tests/contract/test_architecture_boundaries.py` 的架构门禁强制。
+
+Record 写入后不可变：不提供 update / delete 记录的入口，重复写入同一
+`record_id` 会被显式拒绝。持久化失败一律保留根因（`raise ... from`），
+**不得**让调用方在失败后认为保存成功。
+
+数据库形态：Phase 4 未新增列、未新增迁移、未修改既有 migration checksum；
+`schema_version` 保持 2，Phase 3 已创建的数据库可直接读取。
 """
 from __future__ import annotations
 
-from contextlib import closing
+from contextlib import closing, contextmanager
 import json
 from pathlib import Path
 import sqlite3
 
-from ...application.services.centrifugal_pump_analysis_service import (
-    AnalysisError,
+from ...application.lifecycle import (
+    LifecyclePersistenceError,
+    RecordConflictError,
     RecordSnapshot,
     WorkspaceSnapshot,
 )
@@ -27,6 +38,22 @@ def _loads(text: str) -> dict:
     return value if isinstance(value, dict) else {}
 
 
+@contextmanager
+def _persistence(operation: str, database: Path):
+    """把底层存储失败转成生命周期错误，**始终保留根因**。
+
+    `raise ... from error` 保证 `__cause__` 与 traceback 不丢失，调用方可以据此
+    区分"保存失败"与"保存成功"——不允许失败后静默当作成功。
+    """
+
+    try:
+        yield
+    except sqlite3.Error as error:
+        raise LifecyclePersistenceError(
+            f"{operation} 失败（{database}）：{error}"
+        ) from error
+
+
 class SqliteWorkspaceRepository:
     """可变 Workspace 草稿仓储。"""
 
@@ -34,7 +61,8 @@ class SqliteWorkspaceRepository:
         self.database = Path(database)
 
     def save_workspace(self, snapshot: WorkspaceSnapshot) -> None:
-        with closing(sqlite3.connect(self.database)) as connection, connection:
+        with _persistence("保存草稿", self.database), \
+                closing(sqlite3.connect(self.database)) as connection, connection:
             connection.execute(
                 """
                 INSERT INTO workspace (
@@ -62,7 +90,8 @@ class SqliteWorkspaceRepository:
             )
 
     def load_workspace(self, workspace_id: str) -> WorkspaceSnapshot | None:
-        with closing(sqlite3.connect(self.database)) as connection:
+        with _persistence("读取草稿", self.database), \
+                closing(sqlite3.connect(self.database)) as connection:
             row = connection.execute(
                 """
                 SELECT workspace_id, standard_code, device_type, product_category,
@@ -75,7 +104,8 @@ class SqliteWorkspaceRepository:
         return None if row is None else _workspace_from_row(row)
 
     def list_workspaces(self, limit: int = 50) -> list[WorkspaceSnapshot]:
-        with closing(sqlite3.connect(self.database)) as connection:
+        with _persistence("列出草稿", self.database), \
+                closing(sqlite3.connect(self.database)) as connection:
             rows = connection.execute(
                 """
                 SELECT workspace_id, standard_code, device_type, product_category,
@@ -90,7 +120,8 @@ class SqliteWorkspaceRepository:
     def delete_workspace(self, workspace_id: str) -> None:
         """只删除尚未正式化的草稿；正式 Record 不受影响。"""
 
-        with closing(sqlite3.connect(self.database)) as connection, connection:
+        with _persistence("删除草稿", self.database), \
+                closing(sqlite3.connect(self.database)) as connection, connection:
             connection.execute("DELETE FROM workspace WHERE workspace_id = ?", (workspace_id,))
 
 
@@ -115,12 +146,13 @@ class SqliteRecordRepository:
         self.database = Path(database)
 
     def append_record(self, snapshot: RecordSnapshot) -> None:
-        with closing(sqlite3.connect(self.database)) as connection, connection:
+        with _persistence("追加正式记录", self.database), \
+                closing(sqlite3.connect(self.database)) as connection, connection:
             existing = connection.execute(
                 "SELECT 1 FROM record WHERE record_id = ?", (snapshot.record_id,)
             ).fetchone()
             if existing is not None:
-                raise AnalysisError(
+                raise RecordConflictError(
                     f"正式记录已存在且不可变，拒绝覆盖: {snapshot.record_id}"
                 )
             connection.execute(
@@ -150,14 +182,16 @@ class SqliteRecordRepository:
             )
 
     def load_record(self, record_id: str) -> RecordSnapshot | None:
-        with closing(sqlite3.connect(self.database)) as connection:
+        with _persistence("读取正式记录", self.database), \
+                closing(sqlite3.connect(self.database)) as connection:
             row = connection.execute(
                 f"SELECT {_RECORD_COLUMNS} FROM record WHERE record_id = ?", (record_id,)
             ).fetchone()
         return None if row is None else _record_from_row(row)
 
     def list_records(self, limit: int = 200) -> list[RecordSnapshot]:
-        with closing(sqlite3.connect(self.database)) as connection:
+        with _persistence("列出正式记录", self.database), \
+                closing(sqlite3.connect(self.database)) as connection:
             rows = connection.execute(
                 f"SELECT {_RECORD_COLUMNS} FROM record ORDER BY finalized_at_utc DESC LIMIT ?",
                 (int(limit),),

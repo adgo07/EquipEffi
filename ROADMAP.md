@@ -34,13 +34,17 @@
 Phase 0 = PASS
 Phase 1 = PHASE_1_PASS
 Phase 2 = PHASE_2_PASS          (PR #10 独立验收并合并 @ 7e16418a)
-Phase 3 = implementation EXECUTION_COMPLETE  (GB 19762-2025 离心泵统一正式纵向闭环)
-          independent acceptance = PHASE_3_BLOCKED  (5 blockers)
-          R3 status = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+Phase 3 = PHASE_3_PASS          (PR #11 独立验收并合并 @ 87d9ef1b)
+          accepted head = 728680dabf7b18e47ce9a5a23b296e405bc644a8
+          merge SHA     = 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
+          acceptance record = docs/phase3_acceptance_record.md
+Phase 4 = IN_PROGRESS           (GB19762 真实样板后的最小生命周期通用化)
+          branch = phase4/minimal-lifecycle-generalization
+          base   = 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
 Automatic continuation = DISABLED
 ```
 
-Phase 2 已由独立验收通过并合并（PR #10）。Phase 3 已获用户明确执行授权；执行者**不得**自行宣布 Phase 3 PASS、不得合并最终 PR、不得进入 Phase 4、不得发布、不得把 `pump_chemical` 的 `support_status` 提升为 `SUPPORTED`。Phase 3 设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`。
+Phase 2 已由独立验收通过并合并（PR #10）。**Phase 3 已由独立验收通过（`PHASE_3_PASS`）并以 PR #11 合并于 `87d9ef1b`**；验收落档见 `docs/phase3_acceptance_record.md`（轻量格式，后续每个 Phase 沿用）。Phase 4 已获用户明确执行授权，范围限于**最小生命周期通用化**：执行者**不得**自行宣布 Phase 4 PASS、不得合并 PR、不得进入 Phase 5、不得发布、不得把 `pump_chemical` 的 `support_status` 提升为 `SUPPORTED`。Phase 3 设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`。
 
 ### 3.1 增量修正：Phase 3 前移 pump_chemical 正式产品接入（2026-10-02）
 
