@@ -117,21 +117,35 @@ jobs:
       # Qt stale result、Canonical pack_hash、技术详情折叠。
       - name: Pump evaluator, Application API and unified analysis contract
         run: |
-          python -m unittest `
-            tests.unit.test_device_evaluator_matrix `
-            tests.unit.test_application_api `
-            tests.unit.test_phase3_unified_analysis `
-            tests.unit.test_phase3_r3_closure `
-            tests.unit.test_phase3_r1_blockers -v 2>&1 | Tee-Object -FilePath contract.log
-          $code = $LASTEXITCODE
-          if ($code -ne 0) {
-            "### contract step failed (exit $code)" | Out-File -Append $env:GITHUB_STEP_SUMMARY
-            '```' | Out-File -Append $env:GITHUB_STEP_SUMMARY
-            Get-Content contract.log | Select-Object -Last 120 |
-              Out-File -Append $env:GITHUB_STEP_SUMMARY
-            '```' | Out-File -Append $env:GITHUB_STEP_SUMMARY
+          $mods = @(
+            'tests.unit.test_device_evaluator_matrix',
+            'tests.unit.test_application_api',
+            'tests.unit.test_phase3_unified_analysis',
+            'tests.unit.test_phase3_r3_closure',
+            'tests.unit.test_phase3_r1_blockers')
+          $bad = 0
+          foreach ($m in $mods) {
+            $log = "$m.log"
+            & python -m unittest $m -v *>&1 | Tee-Object -FilePath $log | Out-Null
+            if ($LASTEXITCODE -ne 0) { $bad = 1 }
+            "### $m exit=$LASTEXITCODE" | Out-File -Append $env:GITHUB_STEP_SUMMARY
           }
-          exit $code
+          if ($bad -ne 0) {
+            '## failure detail' | Out-File -Append $env:GITHUB_STEP_SUMMARY
+            foreach ($m in $mods) {
+              $log = "$m.log"
+              if (-not (Test-Path $log)) { continue }
+              $hits = Select-String -Path $log -Pattern '^(FAIL|ERROR):'
+              if (-not $hits) { continue }
+              '```' | Out-File -Append $env:GITHUB_STEP_SUMMARY
+              $hits | ForEach-Object { $_.Line } | Out-File -Append $env:GITHUB_STEP_SUMMARY
+              $first = $hits[0].LineNumber
+              Get-Content $log | Select-Object -Skip ([Math]::Max(0, $first - 1)) -First 25 |
+                Out-File -Append $env:GITHUB_STEP_SUMMARY
+              '```' | Out-File -Append $env:GITHUB_STEP_SUMMARY
+            }
+          }
+          exit $bad
 
 # pump_chemical 扩展占位（Phase 5 接入后在此追加）：
 #   - pump_chemical Golden 具名批准后的批准门禁测试
