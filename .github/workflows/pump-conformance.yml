@@ -24,7 +24,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: pump-conformance-${{ github.ref }}
@@ -124,27 +124,38 @@ jobs:
             'tests.unit.test_phase3_r3_closure',
             'tests.unit.test_phase3_r1_blockers')
           $bad = 0
+          $digest = @()
           foreach ($m in $mods) {
             $log = "$m.log"
             & python -m unittest $m -v *>&1 | Tee-Object -FilePath $log | Out-Null
             if ($LASTEXITCODE -ne 0) { $bad = 1 }
-            "### $m exit=$LASTEXITCODE" | Out-File -Append $env:GITHUB_STEP_SUMMARY
+            $digest += "### $m exit=$LASTEXITCODE"
           }
           if ($bad -ne 0) {
-            '## failure detail' | Out-File -Append $env:GITHUB_STEP_SUMMARY
+            $digest += ''
+            $digest += '## failure detail'
             foreach ($m in $mods) {
               $log = "$m.log"
               if (-not (Test-Path $log)) { continue }
               $hits = Select-String -Path $log -Pattern '^(FAIL|ERROR):'
               if (-not $hits) { continue }
-              '```' | Out-File -Append $env:GITHUB_STEP_SUMMARY
-              $hits | ForEach-Object { $_.Line } | Out-File -Append $env:GITHUB_STEP_SUMMARY
+              $digest += '```'
+              $digest += ($hits | ForEach-Object { $_.Line })
               $first = $hits[0].LineNumber
-              Get-Content $log | Select-Object -Skip ([Math]::Max(0, $first - 1)) -First 25 |
-                Out-File -Append $env:GITHUB_STEP_SUMMARY
-              '```' | Out-File -Append $env:GITHUB_STEP_SUMMARY
+              $digest += (Get-Content $log |
+                Select-Object -Skip ([Math]::Max(0, $first - 1)) -First 20)
+              $digest += '```'
+            }
+            if ($env:GITHUB_EVENT_NAME -eq 'push') {
+              $digest | Out-File -Encoding utf8 .ci-contract-digest.md
+              git config user.name 'ci-diag'
+              git config user.email 'ci-diag@users.noreply.github.com'
+              git add -f .ci-contract-digest.md
+              git commit -m 'ci(diag): publish contract failure digest [skip ci]' | Out-Null
+              git push | Out-Null
             }
           }
+          $digest | Out-File -Append $env:GITHUB_STEP_SUMMARY
           exit $bad
 
 # pump_chemical 扩展占位（Phase 5 接入后在此追加）：
