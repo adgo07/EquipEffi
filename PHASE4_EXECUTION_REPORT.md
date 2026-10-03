@@ -269,7 +269,68 @@ known-regression comparator                              gate=PASS
 | Phase 5/6/7/8 职责未被提前实现 | PASS（未接入其他设备 / 未新增标准 / 未做 Excel / 未做 lineage·audit·reproduce / 未做 qzpack / 未建 Product Shell / 未升级 Frozen Contract） |
 | Required CI 无新增未知 regression | 见 §10 |
 
-## 10. 状态
+## 10. GitHub 交付
+
+| 项 | 值 |
+|---|---|
+| Repo | `https://github.com/adgo07/EquipEffi.git` |
+| Base SHA | `87d9ef1bf32fb3f765d4f8ef3f97aa222913152a`（master） |
+| Branch | `phase4/minimal-lifecycle-generalization` |
+| PR | **#12** — https://github.com/adgo07/EquipEffi/pull/12 |
+| final Head SHA | 见文末「Final Head」一节（本报告与 final Head 同属一个提交） |
+
+### 10.1 Base → final Head 实际 diff 摘要
+
+```text
+16 files changed, 1134 insertions(+), 144 deletions(-)
+```
+
+### 10.2 changed files
+
+| 状态 | 文件 |
+|---|---|
+| A | `PHASE4_EXECUTION_REPORT.md` |
+| A | `docs/phase3_acceptance_record.md` |
+| A | `src/equipeffi/application/lifecycle/__init__.py` |
+| A | `src/equipeffi/application/lifecycle/errors.py` |
+| A | `src/equipeffi/application/lifecycle/models.py` |
+| A | `src/equipeffi/application/lifecycle/ports.py` |
+| A | `tests/unit/test_phase4_lifecycle_generalization.py` |
+| M | `.github/workflows/windows-core.yml` |
+| M | `AGENTS.md` |
+| M | `HANDOFF.md` |
+| M | `QA_BACKLOG.md` |
+| M | `REFERENCE_STANDARD_ROADMAP.md` |
+| M | `ROADMAP.md` |
+| M | `TASK_STATE.md` |
+| M | `src/equipeffi/application/services/centrifugal_pump_analysis_service.py` |
+| M | `src/equipeffi/infrastructure/persistence/sqlite_records_repository.py` |
+
+### 10.3 实际 GitHub CI / workflow 结果
+
+head `0ca04e2ba32d5ea76edd40f8a1320f71fbdb27b8`：
+
+```text
+Pump Conformance                     success
+  JOB Pump Conformance (gating)      success
+    [ 6] Numeric Contract v1 adoption lock and profile consistency       success
+    [ 8] Pump numeric contract, generated boundaries and rule integrity   success
+    [ 9] Approved Golden 0.4/0.5 and unified boundary gates               success
+    [10] Phase 1 contract, registry pins and repository evidence          success
+    [11] Historical provenance, Finalize state matrix and as_of lifecycle success
+    [12] Pump evaluator, Application API and unified analysis contract    success
+Windows Core                         success
+  JOB Windows Core (gating)          success
+    [ 6] Compileall                                                      success
+    [ 7] Architecture boundaries and metadata contract                    success
+    [ 8] Application and core tests                                       success
+    [ 9] Phase 2/3/4 settings, migrations, logging, lifecycle, Qt offscreen success
+    [10] Full suite known-regression comparator (gating)                  success
+  JOB Whitespace check (gating)      success
+  JOB Full suite baseline (NON-GATING) success
+```
+
+## 11. 状态
 
 ```text
 Phase 4 implementation = EXECUTION_COMPLETE
@@ -277,3 +338,14 @@ READY_FOR_INDEPENDENT_ACCEPTANCE
 ```
 
 **不合并 PR。不自宣 `PHASE_4_PASS`。不进入 Phase 5。**
+
+## 12. Final Head
+
+本报告的最终提交 SHA 即独立验收的**唯一对象**：
+
+```text
+final Head SHA = 由本报告所在提交决定（见 GitHub PR #12 的 head）
+```
+
+报告完成后**不得**再向该分支追加提交。如 final Head 改变，必须重新声明新的
+final Head 并重新等待对应 CI。
