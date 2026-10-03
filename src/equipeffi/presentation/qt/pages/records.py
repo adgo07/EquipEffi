@@ -13,7 +13,6 @@ from PySide6.QtWidgets import (
     QListWidget,
     QListWidgetItem,
     QPushButton,
-    QToolBox,
     QVBoxLayout,
     QWidget,
 )
@@ -22,6 +21,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
     CentrifugalPumpAnalysisService,
 )
 from ..tokens import TOKENS
+from ..widgets.collapsible import CollapsibleSection
 
 
 class RecordsPage(QWidget):
@@ -58,18 +58,14 @@ class RecordsPage(QWidget):
         self.detail.setAlignment(Qt.AlignmentFlag.AlignTop)
         detail_layout.addWidget(self.detail)
 
-        # 技术详情渐进展示：内部 rule / data id / Numeric 配置归此处，默认折叠。
-        self.technical_box = QToolBox()
-        technical_page = QWidget()
-        technical_layout = QVBoxLayout(technical_page)
+        # 技术详情渐进展示：内部 rule / data id / Numeric 配置归此处，默认真正收起。
+        self.technical_box = CollapsibleSection(
+            "技术详情（规则编号、数据版本、数值配置）", expanded=False)
         self.technical = QLabel("")
         self.technical.setWordWrap(True)
         self.technical.setTextFormat(Qt.TextFormat.PlainText)
         self.technical.setAlignment(Qt.AlignmentFlag.AlignTop)
-        technical_layout.addWidget(self.technical)
-        technical_layout.addStretch()
-        self.technical_box.addItem(technical_page, "技术详情（规则编号、数据版本、数值配置）")
-        self.technical_box.setCurrentIndex(-1)
+        self.technical_box.set_content(self.technical)
         detail_layout.addWidget(self.technical_box)
         detail_layout.addStretch()
         holder.addWidget(detail_group, 3)

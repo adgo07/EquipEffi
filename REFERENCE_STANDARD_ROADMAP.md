@@ -34,7 +34,9 @@
 ```text
 Phase 1: PHASE_1_PASS
 Phase 2: PHASE_2_PASS            (PR #10 独立验收并合并)
-Phase 3: EXECUTION_COMPLETE       (GB 19762-2025 离心泵统一正式纵向闭环；READY_FOR_INDEPENDENT_ACCEPTANCE)
+Phase 3: implementation EXECUTION_COMPLETE  (GB 19762-2025 离心泵统一正式纵向闭环)
+         independent acceptance = PHASE_3_BLOCKED  (5 blockers)
+         R1 status = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
 Automatic continuation: DISABLED
 ```
 
@@ -137,6 +139,6 @@ Phase 2 的 G01～G04 已完成，并经独立验收通过、以 PR #10 合并�
 
 **Phase 2 不等于参考标准闭环**：标准库/分析/记录页面当时没有业务功能，正式记录未实现，Excel 未实现，`as_of` 未决定，两个 Profile 的业务能力不变；因此 GB 19762 总体仍为 `PARTIAL`，不把工程底座当作参考标准闭环 PASS。历史执行证据见 `PHASE2_EXECUTION_REPORT.md`。
 
-## Phase 3 执行增量（2026-10-02，已交付待独立验收）
+## Phase 3 执行增量（2026-10-02；已交付，独立验收曾判 BLOCKED，R1 已修复待复验）
 
-Phase 3 已获用户明确执行授权，**执行已完成**，状态为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`（**尚未经独立验收**）。范围与设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`；阶段语义增量修正见路线原文第 8.2 节。本文件第 4 节已按 Phase 3 当前进展更新；**未完成的项不得在此标记为 `DONE`**。
+Phase 3 已获用户明确执行授权，**实现已完成**（`implementation = EXECUTION_COMPLETE`）。独立验收结论曾为 **`PHASE_3_BLOCKED`**；其确认的 5 个 blocker 已由 **R1** 修复，当前状态 **`READY_FOR_INDEPENDENT_RE_ACCEPTANCE`**（等待独立复验）。**不得写成 `PHASE_3_PASS` 或 `PHASE_4_READY`。** 范围与设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`；阶段语义增量修正见路线原文第 8.2 节。本文件第 4 节已按 Phase 3 当前进展更新；**未完成的项不得在此标记为 `DONE`**。

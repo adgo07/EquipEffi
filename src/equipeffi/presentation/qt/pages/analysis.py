@@ -24,7 +24,6 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QPushButton,
     QScrollArea,
-    QToolBox,
     QVBoxLayout,
     QWidget,
 )
@@ -38,6 +37,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
     PumpAnalysisResult,
 )
 from ..tokens import TOKENS
+from ..widgets.collapsible import CollapsibleSection
 
 #: 规定点参数字段（用户可见标签 + 内部字段名）。
 POINT_FIELDS: tuple[tuple[str, str, str], ...] = (
@@ -241,18 +241,14 @@ class AnalysisPage(QWidget):
         layout.addWidget(self.basis)
 
         # 技术详情渐进展示：内部 rule / data id / Numeric Profile 归此处，
-        # 默认折叠，不占据普通业务结果区（但审计能力保留）。
-        self.technical_box = QToolBox()
-        technical_page = QWidget()
-        technical_layout = QVBoxLayout(technical_page)
+        # 默认真正收起（不是 QToolBox 的名义折叠），审计能力保留。
+        self.technical_box = CollapsibleSection(
+            "技术详情（规则编号、数据版本、数值配置）", expanded=False)
         self.technical = QLabel("")
         self.technical.setWordWrap(True)
         self.technical.setTextFormat(Qt.TextFormat.PlainText)
         self.technical.setAlignment(Qt.AlignmentFlag.AlignTop)
-        technical_layout.addWidget(self.technical)
-        technical_layout.addStretch()
-        self.technical_box.addItem(technical_page, "技术详情（规则编号、数据版本、数值配置）")
-        self.technical_box.setCurrentIndex(-1)
+        self.technical_box.set_content(self.technical)
         layout.addWidget(self.technical_box)
         return group
 
@@ -301,10 +297,25 @@ class AnalysisPage(QWidget):
         )
 
     def evaluate(self) -> PumpAnalysisResult | None:
+        """重新分析。
+
+        开始前必须先作废上一次结果：清空 `_last_request` / `_last_result` 并禁用
+        Finalize。否则一次失败的新分析会**保留**旧的 SUCCESS 结果，用户随后点
+        "保存为正式记录"就会把旧结果当成新输入固化。
+        """
+
+        self._last_request = None
+        self._last_result = None
+        self.finalize_button.setEnabled(False)
+
         request = self._collect_request()
         if request is None:
             return None
-        result = self.service.evaluate(request)
+        try:
+            result = self.service.evaluate(request)
+        except Exception as error:  # noqa: BLE001 - 任何异常都不得留下旧结果
+            self._show_error(f"分析失败：{error}")
+            return None
         self._last_request = request
         self._last_result = result
         self._render(result)

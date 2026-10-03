@@ -103,13 +103,16 @@ jobs:
           --skip-external-evidence
 
       # Pump evaluator 与 Application API 门面（pump_water 与 pump_chemical 共用矩阵）。
+      # test_phase3_r1_blockers 为 R1 对抗性门禁：Finalize 状态白名单 fail-closed、
+      # Qt stale result、Canonical pack_hash、技术详情折叠。
       - name: Pump evaluator, Application API and unified analysis contract
         run: |
           python -m unittest `
             tests.unit.test_device_evaluator_matrix `
             tests.unit.test_application_api `
             tests.unit.test_phase3_unified_analysis `
-            tests.unit.test_phase3_r3_closure -v
+            tests.unit.test_phase3_r3_closure `
+            tests.unit.test_phase3_r1_blockers -v
 
 # pump_chemical 扩展占位（Phase 5 接入后在此追加）：
 #   - pump_chemical Golden 具名批准后的批准门禁测试

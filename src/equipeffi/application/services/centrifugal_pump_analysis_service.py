@@ -801,8 +801,20 @@ class CentrifugalPumpAnalysisService:
 
         if self._records is None:
             raise AnalysisError("未装配 Record 仓储，无法固化正式记录")
+
+        # (1) 独立按 evaluation_status 白名单判断，**不得**只信 result.finalizable。
+        #     与结果对象自报的 finalizable 矛盾时 fail closed（拒绝）。
+        status = result.evaluation_status
+        if not isinstance(status, str) or status not in FINALIZABLE_STATUSES:
+            raise AnalysisError(
+                f"评价状态 {status!r} 不在允许固化的白名单内"
+                f"（仅允许 {'/'.join(sorted(FINALIZABLE_STATUSES))}）；拒绝固化正式记录"
+            )
         if not result.finalizable:
-            raise AnalysisError(result.not_finalizable_reason or "当前结果不允许形成正式记录")
+            raise AnalysisError(
+                result.not_finalizable_reason
+                or "结果自报不可固化，与评价状态矛盾；拒绝固化正式记录"
+            )
 
         # (2) 输入指纹必须与产生该结果的输入一致，否则拒绝固化。
         expected = request.request_fingerprint()
@@ -819,6 +831,15 @@ class CentrifugalPumpAnalysisService:
             raise AnalysisError("结果与输入的设备类别不一致，拒绝固化正式记录")
         if result.as_of != request.as_of:
             raise AnalysisError("结果与输入的评价日期不一致，拒绝固化正式记录")
+
+        # (4) 实际执行了具体 ruleset 的结果必须带真实 Canonical hash，缺失即拒绝。
+        canonical_hash = str(
+            result.references.get("standard", {}).get("pack_hash", "") or ""
+        ).strip()
+        if not canonical_hash:
+            raise AnalysisError(
+                "结果未携带 Canonical 包哈希，无法证明业务真值来源；拒绝固化正式记录"
+            )
 
         # (3) 绑定 Workspace 时必须核对 revision，防止草稿在分析后又被改动。
         if workspace_id is not None:

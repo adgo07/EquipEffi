@@ -601,3 +601,166 @@ phase_4_started        = false
 merge_authorized       = false
 pump_chemical_support_status = NOT_IN_RELEASE_SCOPE（未提升）
 ```
+
+---
+
+# 30. R1 — 独立验收确认的 5 个 blocker 修复
+
+独立验收对 PR #11 的结论为 **`PHASE_3_BLOCKED`**，确认 5 个 blocker。本节逐条记录
+root cause、修复方式、新增负例与证据。
+
+## 30.1 B1 — Finalize 状态校验（不能只信 `result.finalizable`）
+
+**Root cause**：`finalize()` 只检查 `if not result.finalizable: raise`。`finalizable` 是
+**结果对象自报**的字段，而 `evaluation_status` 才是权威状态。二者一旦不一致（伪造、
+反序列化、未来改动引入的 bug），自报字段就能单独决定"能否成为正式记录"。
+
+**修复方式**：`finalize()` 改为**独立按状态白名单判断**，并在矛盾时 fail closed：
+
+```text
+允许：SUCCESS / OUT_OF_STANDARD_SCOPE / INSUFFICIENT_DATA
+拒绝：INVALID_INPUT / EXECUTION_ERROR / None / 未知状态
+矛盾（finalizable 与 evaluation_status 不一致）→ 拒绝
+```
+
+判定顺序为：白名单 → 自报字段一致性 → 输入指纹 → 类别/日期一致 → Canonical hash → 草稿 revision。
+
+**新增负例**（`tests/unit/test_phase3_r1_blockers.py::FinalizeStatusWhitelistTests`）：
+
+| 负例 | 期望 |
+|---|---|
+| `INVALID_INPUT` + `finalizable=True` | 拒绝，Record 不增加 |
+| `EXECUTION_ERROR` + `finalizable=True` | 拒绝，Record 不增加 |
+| 未知状态 + `finalizable=True` | 拒绝，Record 不增加 |
+| `None` + `finalizable=True` | 拒绝，Record 不增加 |
+| `SUCCESS` + `finalizable=False` | 拒绝，Record 不增加 |
+
+另有正例：三个白名单状态均可正常固化。
+
+## 30.2 B2 — Qt stale result
+
+**Root cause**：`evaluate()` 先调用 `service.evaluate()`，成功后才写 `_last_request` /
+`_last_result`。若本次分析失败或抛异常，**旧的 SUCCESS 结果仍留在页面上**，用户点
+"保存为正式记录"就会把旧结果当成新输入固化。
+
+**修复方式**：`evaluate()` **开头**即清空 `_last_request` / `_last_result` 并禁用 Finalize；
+`service.evaluate()` 包在 `try/except` 中，任何异常都走 `_show_error` 且不留下旧结果。
+
+**新增负例**（`QtStaleResultTests`，water 与 chemical 各一组）：
+
+- 成功分析 → 改成非法输入再分析 → 旧 SUCCESS 作废，`finalize()` 返回 `NOT_FINALIZABLE`，Record 数为 0；
+- 成功分析 → evaluator 抛异常 → `finalize()` 返回 `NO_RESULT`，Record 数为 0；
+- 分析失败后 `_last_request` / `_last_result` 均为 `None`，Finalize 按钮禁用。
+
+## 30.3 B3 — Canonical hash
+
+**Root cause**：`pump.json` 的 `pack_hash` **为空**。`JsonStandardRepository.get_pack()`
+只注入 `pack_id` / `device_type` / `status` / `data_version` / `source_file`，从未计算内容
+哈希。因此 Record 的 `canonical_package_hash` 一直是空串，正式记录无法证明自己用的是哪份
+Canonical 内容。
+
+**修复方式**：在 `get_pack()` 注入由**实际 Canonical 源文件**计算的 SHA-256，使用仓库既有
+文本哈希规则（**UTF-8、CRLF→LF 后 SHA-256、大写十六进制**），与
+`tools/validate_phase1_contracts.py::_sha256(normalize_repository_text=True)` 及
+`tools/build_phase3_chemical_golden.py::canonical_file_sha256` 一致：
+
+```text
+repository_text_sha256(data) = sha256(data.replace(b"\r\n", b"\n")).hexdigest().upper()
+pack_hash = repository_text_sha256(pump.json 的实际字节)
+```
+
+- **未修改 `pump.json` 内容**；
+- **未用 commit SHA 冒充**内容哈希；
+- 包以 zip 资源导入时从包资源读取字节，同一哈希规则；读取失败**明确报错**，不返回空值；
+- `finalize()` 增加第 4 道检查：**实际执行了具体 ruleset 的结果若 hash 缺失即拒绝**。
+
+**证据**：实测 `pack_hash` = `5D91F01B1C5F26DC4F364A3156C4E974B159FA1005BD840489C0BC3465C18C0F`，
+与独立对 `pump.json` 计算的值一致；water 与 chemical 两个 Record 的
+`canonical_package_hash` 均非空且等于该值；空 `pack_hash` 的结果被拒绝且 Record 不增加。
+
+## 30.4 B4 — 技术详情默认折叠
+
+**Root cause**：用 `QToolBox.setCurrentIndex(-1)` 表达"默认折叠"。该控件会在某些平台上
+自行选中第一页，且"折叠"只是当前页为空——内容控件本身仍参与布局，并非真正隐藏。
+
+**修复方式**：新增 `src/equipeffi/presentation/qt/widgets/collapsible.py::CollapsibleSection`：
+显式切换按钮 + `content` 容器，构造后 `setVisible(False)`。分析页与记录页均改用它。
+
+**证据**（`CollapsibleTechnicalDetailTests`）：`show()` + `processEvents()` 后
+`content.isVisible()` 仍为 `False`；点击一次变为 `True`，再点击回到 `False`；普通默认页面
+文本不含 `pump_water` / `pump_chemical` / `rule_id` / `GB19762-T3-01` /
+`EQUIPEFFI_PUMP_DECIMAL50_V2`。
+
+## 30.5 B5 — 治理状态一致性
+
+**Root cause**：`TASK_STATE.md` 写 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`，
+而 `AGENTS.md` / `HANDOFF.md` / `ROADMAP.md` / `REFERENCE_STANDARD_ROADMAP.md` 仍写
+`Phase 3 = IN_PROGRESS` 或含糊的"尚未经独立验收"，与真实状态（已验收且被判 BLOCKED）矛盾。
+
+**修复方式**：五份文件统一为四段式表达：
+
+```text
+Phase 3 implementation         = EXECUTION_COMPLETE
+Phase 3 independent acceptance = PHASE_3_BLOCKED
+Phase 3 R1 status              = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+（不得写 PHASE_3_PASS / PHASE_4_READY）
+```
+
+`TASK_STATE.md` 新增 `previous_acceptance: PHASE_3_BLOCKED` 与 `r1_fixes` 块；
+`REFERENCE_STANDARD_ROADMAP.md` 第 4 节相关行同步。
+
+## 30.6 新增/变更文件
+
+```text
+新增  src/equipeffi/presentation/qt/widgets/__init__.py
+新增  src/equipeffi/presentation/qt/widgets/collapsible.py
+新增  tests/unit/test_phase3_r1_blockers.py（B1-B4 对抗性证据）
+变更  application/services/centrifugal_pump_analysis_service.py（B1 白名单 + B3 hash 门禁）
+变更  infrastructure/standards/json_repository.py（B3 pack_hash 注入与哈希助手）
+变更  presentation/qt/pages/analysis.py（B2 stale result + B4 折叠）
+变更  presentation/qt/pages/records.py（B4 折叠）
+变更  AGENTS.md / HANDOFF.md / ROADMAP.md / REFERENCE_STANDARD_ROADMAP.md / TASK_STATE.md（B5）
+变更  .github/workflows/windows-core.yml、pump-conformance.yml（R1 模块接入 Required CI）
+```
+
+**未修改**：Golden 真值、Canonical 业务数据（`pump.json` 内容未改）、Numeric Profile、
+`platform-lock.json`、known baseline（未放宽）、`pump_chemical` 的 `support_status`。
+
+## 30.7 R1 本地验证
+
+Python 3.12.14，定向驱动已完成的验证：
+
+```text
+架构边界门禁（含新增 widgets 子包）   11 tests OK
+B1 Finalize 白名单 fail-closed        直接驱动 8/8：5 个伪造/矛盾负例全部拒绝
+                                      且 Record 不增加；2 个白名单正例正常固化
+B3 Canonical hash                     pack_hash == 独立计算值；
+                                      water/chemical Record hash 非空且一致；
+                                      空 hash 被拒绝
+B4 折叠                               控件级：默认 hidden、show+processEvents 后仍 hidden、
+                                      点击展开/收起；分析页与记录页均成立
+```
+
+**本机无法完整运行临时目录相关测试**（如实声明）：本会话的 DSH 文件沙箱把
+`tempfile.mkdtemp()` 创建的目录设为仅创建者可写，受限令牌随后无法在其中读写或 `chmod`，
+导致所有使用 `TemporaryDirectory` 的用例在 `setUp`/`tearDown` 报 `PermissionError`。
+这是**沙箱环境限制，不是仓库缺陷**（CI runner 不受影响），因此 B1/B2/B3 的完整套件
+以 CI 结果为准。
+
+## 30.8 R1 CI 结果
+
+见本次推送后的 `Windows Core` 与 `Pump Conformance` 两个 Required 工作流；具体 run 与
+全量数字在 CI 完成后补记于本小节。
+
+## 30.9 R1 停止点
+
+```text
+status                 = EXECUTION_COMPLETE
+previous_acceptance    = PHASE_3_BLOCKED
+r1_status              = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+r1_blockers_fixed      = 5 / 5
+phase_3_pass_declared  = false
+phase_4_started        = false
+merge_authorized       = false
+pump_chemical_support_status = NOT_IN_RELEASE_SCOPE（未提升）
+```

@@ -2,7 +2,8 @@ roadmap: EquipEffi V2.3
 phase: Phase 3
 goal: GB 19762-2025 离心泵统一正式纵向闭环
 status: EXECUTION_COMPLETE
-next_status: READY_FOR_INDEPENDENT_ACCEPTANCE
+previous_acceptance: PHASE_3_BLOCKED
+next_status: READY_FOR_INDEPENDENT_RE_ACCEPTANCE
 
 # ---------------------------------------------------------------------------
 # 本文件只承担“当前状态”。历史执行细节、run ID、历史测试数字与旧 SHA 一律
@@ -26,7 +27,12 @@ current_task:
     P3-G02: COMPLETE
     P3-G03: COMPLETE
     P3-G04: COMPLETE
-  next_action: READY_FOR_INDEPENDENT_ACCEPTANCE; do not merge; do not start Phase 4
+  next_action: READY_FOR_INDEPENDENT_RE_ACCEPTANCE; do not merge; do not start Phase 4
+  r1_fixes:
+    status: COMPLETE
+    blockers: 5
+    scope: Finalize 状态白名单 fail-closed / Qt stale result / Canonical pack_hash / 技术详情真折叠 / 治理状态一致性
+    evidence: tests/unit/test_phase3_r1_blockers.py
 
 phase_2:
   status: PHASE_2_PASS

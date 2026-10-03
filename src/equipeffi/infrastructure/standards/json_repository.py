@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from copy import deepcopy
 from decimal import Decimal
@@ -9,6 +10,22 @@ from typing import Any
 
 from ...domain.common.enums import StandardDataStatus
 from .pack_validator import StandardPackValidator
+
+
+def repository_text_sha256(data: bytes) -> str:
+    """仓库既有文本哈希规则：UTF-8 文本、CRLF→LF 归一后 SHA-256（大写十六进制）。
+
+    与 `tools/validate_phase1_contracts.py::_sha256(normalize_repository_text=True)`
+    和 `tools/build_phase3_chemical_golden.py::canonical_file_sha256` 保持一致。
+    """
+
+    return hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest().upper()
+
+
+def canonical_source_sha256(path: Path) -> str:
+    """对实际 Canonical 源文件计算 SHA-256（不改写文件内容）。"""
+
+    return repository_text_sha256(Path(path).read_bytes())
 
 
 class StandardPackError(RuntimeError):
@@ -89,6 +106,9 @@ class JsonStandardRepository:
         data["status"] = entry.get("status", StandardDataStatus.NORMALIZED.value)
         data["data_version"] = entry.get("data_version", entry["pack_id"])
         data["source_file"] = entry.get("source_file", str(source))
+        # 注入实际 Canonical 源的 SHA-256（UTF-8、CRLF→LF）。这是业务真值来源
+        # 的客观指纹，供 Record 固化与审计；不得用 commit SHA 或空值冒充。
+        data["pack_hash"] = self._source_sha256(source)
         validation_key = str(source)
         if validation_key not in self._validated_sources:
             issues = self._validator.validate(data)
@@ -97,10 +117,34 @@ class JsonStandardRepository:
             self._validated_sources.add(validation_key)
         return deepcopy(data)
 
+    def _source_sha256(self, source: Path) -> str:
+        """Canonical 源文件的 SHA-256（UTF-8、CRLF→LF）。
+
+        包以 zip 资源形式导入时无法按路径读取，此时从包资源读取字节，
+        仍使用同一哈希规则；任何读取失败都明确报错，不返回空值冒充。
+        """
+
+        if self._package_resource_root is None:
+            try:
+                return canonical_source_sha256(source)
+            except OSError as exc:
+                raise StandardPackError(f"无法读取 Canonical 源以计算哈希: {source}") from exc
+        relative = str(source).replace("\\", "/")
+        marker = "/equipeffi/"
+        index = relative.find(marker)
+        resource_name = relative[index + len(marker):] if index >= 0 else source.name
+        try:
+            resource = self._package_resource_root.joinpath(*resource_name.split("/"))
+            raw = resource.read_bytes()
+        except (FileNotFoundError, ModuleNotFoundError, OSError) as exc:
+            raise StandardPackError(f"无法读取 Canonical 包资源以计算哈希: {resource_name}") from exc
+        return repository_text_sha256(raw)
+
     def find(self, device_type: str, criteria: dict[str, Any]) -> list[dict[str, Any]]:
         pack = self.get_pack(device_type)
         rows = pack.get("records") or pack.get("rows") or []
-        return [row for row in rows if all(row.get(key) == expected for key, expected in criteria.items())]
+        return [row for row in rows
+                if all(row.get(key) == expected for key, expected in criteria.items())]
 
     def list_packs(self) -> tuple[dict[str, Any], ...]:
         return tuple(deepcopy(item) for item in self._entries.values())

@@ -1,10 +1,12 @@
 # EquipEffi 当前交接
 
-路线 EquipEffi V2.3；Phase 1 = PHASE_1_PASS；Phase 2 = PHASE_2_PASS；**Phase 3 = EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE**（尚未经独立验收，不是 PHASE_3_PASS）；automatic_continuation = DISABLED。
+路线 EquipEffi V2.3；Phase 1 = PHASE_1_PASS；Phase 2 = PHASE_2_PASS；**Phase 3 implementation = EXECUTION_COMPLETE**；**Phase 3 独立验收结论 = `PHASE_3_BLOCKED`（已由 R1 修复）**；**Phase 3 R1 status = `READY_FOR_INDEPENDENT_RE_ACCEPTANCE`**；automatic_continuation = DISABLED。
 
 ## 当前任务
 
-用户已明确授权执行 **Phase 3：GB 19762—2025 离心泵统一正式纵向闭环**；**执行已完成，状态 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`**（尚未经独立验收，不得写成 `PHASE_3_PASS`）（`pump_water` + `pump_chemical` 共用同一产品、UI、Application Use Case、Workspace、Record、History、Result Contract）。
+用户已明确授权执行 **Phase 3：GB 19762—2025 离心泵统一正式纵向闭环**（`pump_water` + `pump_chemical` 共用同一产品、UI、Application Use Case、Workspace、Record、History、Result Contract）。
+
+**状态**：实现已完成（`EXECUTION_COMPLETE`）；独立验收曾判定 **`PHASE_3_BLOCKED`**，其确认的 5 个 blocker 已由 **R1** 修复，当前状态 **`READY_FOR_INDEPENDENT_RE_ACCEPTANCE`**（等待独立复验）。**不得写成 `PHASE_3_PASS` 或 `PHASE_4_READY`。**
 
 - 分支 `phase3/gb19762-unified-vertical-slice`；start master SHA `7e16418aa32ced5512e26bd70227f01a329fbdfc`
 - 设计见 [docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md](docs/32_Phase%203%20GB19762%E7%A6%BB%E5%BF%83%E6%B3%B5%E7%BB%9F%E4%B8%80%E6%AD%A3%E5%BC%8F%E7%BA%B5%E5%90%91%E9%97%AD%E7%8E%AF.md)
