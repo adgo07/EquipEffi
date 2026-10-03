@@ -1,27 +1,41 @@
-"""GB 19762-2025 离心泵统一应用分析契约（Phase 3 P3-G01）。
+"""GB 19762-2025 离心泵统一应用分析契约（Phase 3 P3-G01；Phase 4 接入生命周期契约）。
 
 本模块是 Phase 3 的**唯一**离心泵产品级入口：清水泵与石油化工泵共用同一
 Use Case、同一输入契约与同一结果契约；`pump_water` / `pump_chemical` 只作为
 内部 rule profile identity 存在，不作为两个用户产品。
 
+Phase 4：设备无关的 Workspace / Record 生命周期（快照模型、仓储端口、
+错误语义、稳定指纹算法）已抽到 `equipeffi.application.lifecycle`。
+本模块只保留 **pump-specific** 内容：请求/结果契约、类别目录与路由、
+evaluator 装配、阈值 / trace / grade、GB19762 provenance，
+以及 Finalize 的**具体业务允许状态政策**。
+
 分层边界（由 tests/contract/test_architecture_boundaries.py 强制）：
 本模块位于 application 层，**不得**导入 `sqlite3`、`equipeffi.infrastructure`
-或 `equipeffi.presentation`。持久化只能经 ports 中的 Protocol。
+或 `equipeffi.presentation`。持久化只能经 lifecycle ports 中的 Protocol。
 """
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import date
 from decimal import Decimal
-from hashlib import sha256
 import json
-from typing import Any, Protocol
+from typing import Any
 
 from ...domain.common.enums import Conclusion
 from ...domain.common.models import DeviceDraft
 from ...domain.evaluation.device_types import (
     DeviceTypeResolutionError,
     resolve_device_type,
+)
+from ..lifecycle import (
+    AnalysisError,
+    RecordRepository,
+    RecordSnapshot,
+    WorkspaceRepository,
+    WorkspaceSnapshot,
+    register_business_keys,
+    stable_fingerprint,
 )
 
 PUMP_PUBLIC_DEVICE_TYPE = "centrifugal_pump"
@@ -31,14 +45,24 @@ GB19762_PACK_ID = "gb19762_2025_water_v1"
 #: 内部 rule profile；只有这两个值可以出现在 result.rule_profile 中。
 RULE_PROFILES: tuple[str, ...] = ("pump_water", "pump_chemical")
 
+#: **唯一**一处声明"哪些输入字段会影响泵业务结论"。
+#:
+#: 生命周期层不认识这些字段：它只是把它们当作需要纳入指纹的不透明键。
+#: `PumpAnalysisRequest.request_fingerprint()` 与 `WorkspaceSnapshot` 的指纹
+#: 都经此集合 + `stable_fingerprint()` 计算，因此不存在第二处业务字段清单。
+PUMP_FINGERPRINT_KEYS: tuple[str, ...] = (
+    "QBEP", "HBEP", "speed", "efficiency", "suction", "stages"
+)
+
+#: 让生命周期层在**跨进程恢复**后仍能重建同一指纹（Phase 4 G02）。
+#: `WorkspaceSnapshot.request_fingerprint()` 不带参数时使用这份登记；
+#: 生命周期模型本身不认识这些字段名。
+register_business_keys(PUMP_FINGERPRINT_KEYS)
+
 #: 已确认“不适用”的类别文本（沿用 evaluator 既有契约，不在此新造规则）。
 OTHER_CATEGORY_VALUES: frozenset[str] = frozenset(
     {"OTHER", "其他类别", "其他（请备注说明）", "其他(请备注说明)"}
 )
-
-
-class AnalysisError(ValueError):
-    """统一分析入口的输入/状态错误；不得与业务“无法判定”混淆。"""
 
 
 # ---------------------------------------------------------------------------
@@ -160,10 +184,14 @@ class PumpAnalysisRequest:
     workspace_revision: int | None = None
 
     def raw_values(self) -> dict[str, Any]:
-        """转成领域 evaluator 消费的原始字段字典。"""
+        """转成领域 evaluator 消费的原始字段字典。
+
+        字段清单复用 `PUMP_FINGERPRINT_KEYS`，避免同一份业务字段集合
+        在本模块出现第二个字面量。
+        """
 
         values: dict[str, Any] = {"product_type": self.product_category}
-        for key in ("QBEP", "HBEP", "speed", "efficiency", "suction", "stages"):
+        for key in PUMP_FINGERPRINT_KEYS:
             value = getattr(self, key)
             if value is not None and str(value) != "":
                 values[key] = value
@@ -184,13 +212,18 @@ class PumpAnalysisRequest:
 
         Finalize 用它证明"被固化的结果确实对应当前 Workspace 的输入"，
         防止新输入与旧结果错配进入同一正式 Record。
+
+        算法在 `lifecycle.models.stable_fingerprint`，业务键集合在本模块
+        `PUMP_FINGERPRINT_KEYS`——**各只有一处**。
         """
 
-        keys = ("product_category", "as_of", "QBEP", "HBEP", "speed", "efficiency",
-                "suction", "stages")
-        payload = {key: str(getattr(self, key)) for key in keys}
-        blob = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
-        return sha256(blob.encode("utf-8")).hexdigest()
+        values: dict[str, Any] = {
+            "product_category": self.product_category,
+            "as_of": self.as_of,
+        }
+        for key in PUMP_FINGERPRINT_KEYS:
+            values[key] = getattr(self, key)
+        return stable_fingerprint(values)
 
 
 @dataclass(frozen=True)
@@ -263,89 +296,6 @@ class PumpAnalysisResult:
             "finalizable": self.finalizable,
             "not_finalizable_reason": self.not_finalizable_reason,
         }
-
-
-# ---------------------------------------------------------------------------
-# 持久化端口（应用层只依赖 Protocol；SQLite 实现在 infrastructure）
-# ---------------------------------------------------------------------------
-
-
-@dataclass(frozen=True)
-class WorkspaceSnapshot:
-    workspace_id: str
-    standard_code: str
-    device_type: str
-    product_category: str
-    rule_profile: str | None
-    as_of: str
-    payload: dict[str, Any]
-    schema_version: int
-    created_at_utc: str
-    updated_at_utc: str
-    #: 单调递增修订号；每次 save 都 +1。Finalize 用它拒绝"旧结果 + 新输入"。
-    revision: int = 1
-
-    def request_fingerprint(self) -> str:
-        """草稿当前输入的指纹；形状必须与 `PumpAnalysisRequest.request_fingerprint()` 一致。"""
-
-        payload = {
-            "product_category": str(self.product_category),
-            "as_of": str(self.as_of),
-            "QBEP": _opt(self.payload.get("QBEP")),
-            "HBEP": _opt(self.payload.get("HBEP")),
-            "speed": _opt(self.payload.get("speed")),
-            "efficiency": _opt(self.payload.get("efficiency")),
-            "suction": _opt(self.payload.get("suction")),
-            "stages": _opt(self.payload.get("stages")),
-        }
-        blob = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
-        return sha256(blob.encode("utf-8")).hexdigest()
-
-
-def _opt(value: Any) -> str:
-    """与 `PumpAnalysisRequest.request_fingerprint()` 的取值规则保持一致。"""
-
-    return "None" if value is None else str(value)
-
-
-@dataclass(frozen=True)
-class RecordSnapshot:
-    record_id: str
-    workspace_id: str | None
-    standard_code: str
-    standard_version: str
-    device_type: str
-    product_category: str
-    rule_profile: str | None
-    as_of: str
-    evaluation_status: str
-    grade: str | None
-    ui_conclusion: str
-    input_snapshot: dict[str, Any]
-    result_snapshot: dict[str, Any]
-    reference_snapshot: dict[str, Any]
-    ruleset_version: str
-    calculator_version: str
-    numeric_profile_id: str
-    canonical_version: str
-    canonical_package_hash: str
-    result_contract_version: str
-    schema_version: int
-    created_at_utc: str
-    finalized_at_utc: str
-
-
-class WorkspaceRepository(Protocol):
-    def save_workspace(self, snapshot: WorkspaceSnapshot) -> None: ...
-    def load_workspace(self, workspace_id: str) -> WorkspaceSnapshot | None: ...
-    def list_workspaces(self, limit: int = 50) -> list[WorkspaceSnapshot]: ...
-    def delete_workspace(self, workspace_id: str) -> None: ...
-
-
-class RecordRepository(Protocol):
-    def append_record(self, snapshot: RecordSnapshot) -> None: ...
-    def load_record(self, record_id: str) -> RecordSnapshot | None: ...
-    def list_records(self, limit: int = 200) -> list[RecordSnapshot]: ...
 
 
 # ---------------------------------------------------------------------------
@@ -943,7 +893,7 @@ class CentrifugalPumpAnalysisService:
                 raise AnalysisError(
                     "草稿已在分析之后被修改，当前结果已过期；请重新分析后再保存正式记录"
                 )
-            if workspace.request_fingerprint() != expected:
+            if workspace.request_fingerprint(PUMP_FINGERPRINT_KEYS) != expected:
                 raise AnalysisError("草稿输入与待固化结果不一致，拒绝固化正式记录")
 
         now = _utc_now()

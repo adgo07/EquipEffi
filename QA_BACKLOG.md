@@ -283,5 +283,12 @@ authoritative path impact = 尚待验证
 | issue_id | 表面 | 状态 | 说明 |
 |---|---|---|---|
 | `QA-P3-001` | `V1_RUNTIME` | OPEN | **遗留兼容默认日期**：`date(2026,8,23)` 仍作为隐式默认出现在 6 处源码位置（`evaluation_service.py:13`、`evaluation_facade.py:27/68`、`v4_workbook_service.py:34/67`、`application_api.py:539`）。统一 `AnalysisService` 已要求显式 `as_of`；遗留入口按 `AGENTS.md §2.0` 登记保留，全局取消须另立任务并附兼容影响评估 |
+| `QA-P3-002` | `V1_RUNTIME` | OPEN | **标准生命周期元数据缺失**：Canonical Pack 目前只提供 `effective_date`，没有 `superseded_by` / 废止日期等生命周期元数据，因此软件只能对"评价日期早于实施日期"给出非阻断提示，**无法**自动识别"已废止 / 已被替代"。Phase 3 R3 Owner 决定明确不为凑齐提示而私造公共规则；补齐须走标准映射流程 |
 
-未完成项保持 OPEN/VERIFY；本表不因 Phase 3 交付而关闭任何缺乏测试证据的条目。
+### Phase 4 新增登记
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-P4-001` | `V1_RUNTIME` | `REGISTERED_DEVIATION` | **ADR-002 的完整 lineage / audit event 长期目标继续有效，但 Phase 3 / Phase 4 均未完整实现。** ADR-002 要求 Finalize 时把输入快照、结果快照、数据引用、规则引用、lineage 与 audit event 在**同一事务**中写入；当前只实现了输入/结果/引用快照与不可变追加，**没有** lineage 表与 audit event。Phase 4 明确**不实现** lineage / audit / reproduce，且不因此修改 `records.sqlite`（不新增表、不新增迁移、`schema_version` 保持 2）。<br>`target_phase`：**Phase 7**<br>`blocked_by`：Phase 7 的 lineage / audit / reproduce 任务设计<br>本条目为**已登记未关闭**的偏差：不得假装已解决，也不得据此阻塞 Phase 4 的 Exit Gate |
+
+未完成项保持 OPEN/VERIFY；本表不因 Phase 3 / Phase 4 交付而关闭任何缺乏测试证据的条目。

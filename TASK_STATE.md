@@ -1,9 +1,9 @@
 roadmap: EquipEffi V2.3
-phase: Phase 3
-goal: GB 19762-2025 离心泵统一正式纵向闭环
-status: EXECUTION_COMPLETE
-previous_acceptance: PHASE_3_BLOCKED
-next_status: READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+phase: Phase 4
+goal: GB19762 真实样板后的最小生命周期通用化
+status: IN_PROGRESS
+previous_acceptance: PHASE_3_PASS
+next_status: READY_FOR_INDEPENDENT_ACCEPTANCE
 
 # ---------------------------------------------------------------------------
 # 本文件只承担“当前状态”。历史执行细节、run ID、历史测试数字与旧 SHA 一律
@@ -11,23 +11,43 @@ next_status: READY_FOR_INDEPENDENT_RE_ACCEPTANCE
 # ---------------------------------------------------------------------------
 
 current_task:
+  task_id: PHASE4-MINIMAL-LIFECYCLE-GENERALIZATION
+  branch: phase4/minimal-lifecycle-generalization
+  task_kind: authorised Phase 4 execution
+  phase_4_execution: true
+  base_sha: 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
+  execution_report: PHASE4_EXECUTION_REPORT.md
+  evidence_claim: 一个 GB19762 产品级 E2E 样板，其中有 water + chemical 两个真实内部 rule profile（不得表述为两个独立设备/标准 E2E 样板）
+  phase_4_pass_self_declared: false
+  phase_5_started: false
+  merge_authorized: false
+  pump_chemical_support_status_self_promoted: false
+  goals:
+    P4-G00: IN_PROGRESS
+    P4-G01: IN_PROGRESS
+    P4-G02: IN_PROGRESS
+    P4-G03: IN_PROGRESS
+    P4-G04: IN_PROGRESS
+  next_action: 完成 G00-G04 并通过 Required CI 后 push + 创建 PR 到 master；do not merge; do not start Phase 5
+
+previous_task:
   task_id: PHASE3-GB19762-UNIFIED-VERTICAL-SLICE
   branch: phase3/gb19762-unified-vertical-slice
   task_kind: authorised Phase 3 execution
-  phase_3_execution: true
   design: docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md
   start_master_sha: 7e16418aa32ced5512e26bd70227f01a329fbdfc
   execution_report: PHASE3_EXECUTION_REPORT.md
+  verdict: PHASE_3_PASS
+  accepted_head: 728680dabf7b18e47ce9a5a23b296e405bc644a8
+  pr: "#11"
+  merge_sha: 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
+  acceptance_record: docs/phase3_acceptance_record.md
   phase_3_pass_self_declared: false
-  phase_4_started: false
-  merge_authorized: false
-  pump_chemical_support_status_self_promoted: false
   goals:
     P3-G01: COMPLETE
     P3-G02: COMPLETE
     P3-G03: COMPLETE
     P3-G04: COMPLETE
-  next_action: READY_FOR_INDEPENDENT_RE_ACCEPTANCE; do not merge; do not start Phase 4
   r1_fixes:
     status: COMPLETE
     blockers: 5

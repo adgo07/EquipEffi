@@ -3,7 +3,7 @@
 状态：**CURRENT INVENTORY / GOVERNANCE ROADMAP**
 盘点日期：2026-10-02（本次同步）
 首次盘点日期：2026-10-01
-盘点基线：`master@7e16418aa32ced5512e26bd70227f01a329fbdfc`（Phase 2 已 PASS 并合并）；Phase 3 实现已完成（`EXECUTION_COMPLETE`），独立验收曾判 `PHASE_3_BLOCKED`，R1/R2/R3 收口后为 `READY_FOR_INDEPENDENT_RE_ACCEPTANCE`
+盘点基线：`master@87d9ef1bf32fb3f765d4f8ef3f97aa222913152a`（Phase 2 = `PHASE_2_PASS` @ `7e16418a`；Phase 3 = `PHASE_3_PASS`，PR #11 合并）；**Phase 4 = `IN_PROGRESS`**（GB19762 真实样板后的最小生命周期通用化）
 参考标准：`GB 19762—2025 离心泵能效限定值及能效等级`
 参考标准覆盖范围：**`pump_water`（清水离心泵）与 `pump_chemical`（石化离心泵）** —— 见 `V1_SCOPE.md` 第 0 节
 
@@ -34,9 +34,12 @@
 ```text
 Phase 1: PHASE_1_PASS
 Phase 2: PHASE_2_PASS            (PR #10 独立验收并合并)
-Phase 3: implementation EXECUTION_COMPLETE  (GB 19762-2025 离心泵统一正式纵向闭环)
-         independent acceptance = PHASE_3_BLOCKED  (5 blockers)
-         R3 status = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+Phase 3: PHASE_3_PASS            (PR #11 独立验收并合并 @ 87d9ef1b)
+         accepted head = 728680dabf7b18e47ce9a5a23b296e405bc644a8
+         acceptance record = docs/phase3_acceptance_record.md
+Phase 4: IN_PROGRESS             (GB19762 真实样板后的最小生命周期通用化)
+         branch = phase4/minimal-lifecycle-generalization
+         base   = 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
 Automatic continuation: DISABLED
 ```
 
@@ -116,7 +119,7 @@ GB 19762—2025 的 `pump_water` **业务规则、Pump Calculator、Numeric Conf
 
 `PARTIAL`
 
-这不是中央 Contract 阻塞。当前阶段门禁是：**Phase 3 实现已完成；独立验收曾判 `PHASE_3_BLOCKED`，R1/R2/R3 收口后状态为 `READY_FOR_INDEPENDENT_RE_ACCEPTANCE`，仍须独立复验**；`pump_chemical` 的 `support_status` 提升须待 Phase 5 的 Stage D 独立验收。
+这不是中央 Contract 阻塞。当前阶段门禁是：**Phase 3 已 `PHASE_3_PASS`（PR #11 @ `87d9ef1b`）；Phase 4 = `IN_PROGRESS`（最小生命周期通用化），完成并通过 Required CI 后须经独立验收，执行者不得自宣 PASS**；`pump_chemical` 的 `support_status` 提升须待 Phase 5 的 Stage D 独立验收。
 
 ## 6. 后续交付顺序
 
@@ -139,6 +142,18 @@ Phase 2 的 G01～G04 已完成，并经独立验收通过、以 PR #10 合并�
 
 **Phase 2 不等于参考标准闭环**：标准库/分析/记录页面当时没有业务功能，正式记录未实现，Excel 未实现，`as_of` 未决定，两个 Profile 的业务能力不变；因此 GB 19762 总体仍为 `PARTIAL`，不把工程底座当作参考标准闭环 PASS。历史执行证据见 `PHASE2_EXECUTION_REPORT.md`。
 
-## Phase 3 执行增量（2026-10-02；已交付，独立验收曾判 BLOCKED，R1/R2/R3 已修复待复验）
+## Phase 3 执行增量（2026-10-02；`PHASE_3_PASS`，PR #11 @ `87d9ef1b`）
 
-Phase 3 已获用户明确执行授权，**实现已完成**（`implementation = EXECUTION_COMPLETE`）。独立验收结论曾为 **`PHASE_3_BLOCKED`**；其确认的 blocker 已由 **R1/R2/R3** 修复并收口，当前状态 **`READY_FOR_INDEPENDENT_RE_ACCEPTANCE`**（等待独立复验）。**不得写成 `PHASE_3_PASS` 或 `PHASE_4_READY`。** 范围与设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`；阶段语义增量修正见路线原文第 8.2 节。本文件第 4 节已按 Phase 3 当前进展更新；**未完成的项不得在此标记为 `DONE`**。
+Phase 3 已获用户明确执行授权并**已完成**。其独立验收结论曾为 `PHASE_3_BLOCKED`（5 个 blocker）；经 **R1/R2/R3** 逐项修复后，最终验收结论为 **`PHASE_3_PASS`**，并以 **PR #11** 合并于 `87d9ef1bf32fb3f765d4f8ef3f97aa222913152a`；accepted head 为 `728680dabf7b18e47ce9a5a23b296e405bc644a8`，轻量验收落档见 `docs/phase3_acceptance_record.md`。范围与设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`；阶段语义增量修正见路线原文第 8.2 节。执行细节与修复证据见 `PHASE3_EXECUTION_REPORT.md` 第 30～32 节。
+
+`Phase 3 implementation = EXECUTION_COMPLETE`（执行状态）与 `Phase 3 = PHASE_3_PASS`（独立验收结论）是两个维度，不得混用。
+
+## Phase 4 执行增量（进行中）
+
+Phase 4 = **GB19762 真实样板后的最小生命周期通用化**。目标只有一个：把 Phase 3 已真实证明属于公共工程结构、但仍寄生在 `centrifugal_pump_analysis_service.py` 中的生命周期能力抽离到设备无关的 `application/lifecycle/`，同时保证 GB 19762 的业务行为、数据库形态和历史记录语义**零漂移**。
+
+- **不做**理论式大通用化：禁止 `GenericAnalysisService` / `UniversalEngine` / 通用 evaluator 基类 / 插件式生命周期框架 / 通用动态表单引擎。
+- 数据库硬边界：不新增 records migration、不修改既有 migration checksum、`schema_version` 保持 2、Phase 3 已创建数据库可直接读取、不新增 lineage / audit 表。
+- 本阶段**不实现** lineage / audit / reproduce；ADR-002 的该部分长期目标登记为 `REGISTERED_DEVIATION`，`target_phase = Phase 7`（见 `QA_BACKLOG.md` 的 `QA-P4-001`）。
+- 证据口径：**一个 GB19762 产品级 E2E 样板，其中有 water + chemical 两个真实内部 rule profile**；**不得**表述为"已经有两个独立设备/标准 E2E 样板"。
+- Phase 4 执行者**不得**自行宣布 `PHASE_4_PASS`、不得合并 PR、不得进入 Phase 5。
