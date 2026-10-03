@@ -218,6 +218,10 @@ class PumpAnalysisResult:
     extra_metrics: dict[str, Any] = field(default_factory=dict)
     explanation: str = ""
     references: dict[str, Any] = field(default_factory=dict)
+    #: 结果来源声明：是否实际执行了具体 rule_profile。
+    #: 类别级结论（其他类别 / 类别缺失等）没有 ruleset，必须显式记录 no-ruleset 原因，
+    #: 且不得携带 Canonical 包哈希（禁止伪造 provenance）。
+    provenance: dict[str, Any] = field(default_factory=dict)
     raw_values: dict[str, Any] = field(default_factory=dict)
     workspace_revision: int | None = None
     request_fingerprint: str = ""
@@ -246,6 +250,7 @@ class PumpAnalysisResult:
             "extra_metrics": dict(self.extra_metrics),
             "explanation": self.explanation,
             "references": dict(self.references),
+            "provenance": dict(self.provenance),
             "raw_values": dict(self.raw_values),
             "workspace_revision": self.workspace_revision,
             "request_fingerprint": self.request_fingerprint,
@@ -437,12 +442,34 @@ class CentrifugalPumpAnalysisService:
             "raw_values": request.input_snapshot(),
             "request_fingerprint": request.request_fingerprint(),
             "workspace_revision": request.workspace_revision,
+            "provenance": self._ruleset_provenance(rule_profile),
             "references": {
                 "standard": self._pack_reference(pack, rule_profile or ""),
                 "numeric_profile_id": "EQUIPEFFI_PUMP_DECIMAL50_V2",
                 "calculator_version": rule_profile or "",
                 "result_contract_version": "1.0",
             },
+        }
+
+    @staticmethod
+    def _ruleset_provenance(rule_profile: str) -> dict[str, Any]:
+        """实际执行了具体规则集的结果来源声明。"""
+
+        return {
+            "ruleset_executed": True,
+            "rule_profile": rule_profile,
+            "no_ruleset_reason": None,
+        }
+
+    @staticmethod
+    def _category_provenance(reason: str, *, status: str) -> dict[str, Any]:
+        """类别级结论的来源声明：没有 ruleset，也不得伪造 Canonical provenance。"""
+
+        return {
+            "ruleset_executed": False,
+            "rule_profile": None,
+            "no_ruleset_reason": reason,
+            "category_level_status": status,
         }
 
     @staticmethod
@@ -485,6 +512,14 @@ class CentrifugalPumpAnalysisService:
         effective = self._effective_date(pack)
         if effective is not None and request.as_of < effective:
             base = self._base_result(request, pack, rule_profile)
+            # 早于实施日期时**未执行任何规则集**：不得声称 ruleset provenance，
+            # 也不得把该 Pack 的 Canonical hash 当作已执行规则的证据。
+            base["provenance"] = self._category_provenance(
+                f"评价日期早于标准实施日期 {effective.isoformat()}，未执行任何规则集",
+                status="INSUFFICIENT_DATA")
+            base["references"] = dict(base["references"])
+            base["references"]["standard"] = dict(base["references"]["standard"])
+            base["references"]["standard"]["pack_hash"] = ""
             return PumpAnalysisResult(
                 **base,
                 evaluation_status="INSUFFICIENT_DATA",
@@ -545,6 +580,7 @@ class CentrifugalPumpAnalysisService:
         }
 
     def _uncertain(self, request: PumpAnalysisRequest) -> PumpAnalysisResult:
+        # `None` 状态不在白名单内，因此不可固化：类别未确认不构成正式结论。
         return PumpAnalysisResult(
             rule_profile=None,
             standard_code=request.standard_code,
@@ -561,18 +597,21 @@ class CentrifugalPumpAnalysisService:
                 "单级/多级看叶轮数量；单吸/双吸看入口方向；清水泵与石油化工泵看输送介质与标准适用范围。"
             ),
             **self._frozen_fields(request),
+            **self._category_provenance_dict("类别未确认，未执行任何规则集", status="UNRESOLVED"),
             requires_category_confirmation=True,
             finalizable=False,
             not_finalizable_reason="类别未确认，不构成正式评价结论。",
         )
 
     def _not_applicable(self, request: PumpAnalysisRequest) -> PumpAnalysisResult:
+        # 类别级正式结论：状态在白名单内，允许形成 Record（不伪造 ruleset provenance）。
+        status = "OUT_OF_STANDARD_SCOPE"
         return PumpAnalysisResult(
             rule_profile=None,
             standard_code=request.standard_code,
             product_category=request.product_category,
             as_of=request.as_of,
-            evaluation_status="OUT_OF_STANDARD_SCOPE",
+            evaluation_status=status,
             category_status="NOT_APPLICABLE",
             support_status=None,
             ui_conclusion=Conclusion.NOT_APPLICABLE.value,
@@ -580,6 +619,9 @@ class CentrifugalPumpAnalysisService:
             issue_codes=("CATEGORY_NOT_APPLICABLE",),
             explanation="已确认该产品类别不属于 GB 19762—2025 列出的泵型，不执行标准公式。",
             **self._frozen_fields(request),
+            **self._category_provenance_dict(
+                "已确认类别不在 GB 19762—2025 列出的泵型内，未执行任何规则集", status=status),
+            finalizable=True,
         )
 
     def _unresolved(self, request: PumpAnalysisRequest, *, reason: str,
@@ -587,8 +629,8 @@ class CentrifugalPumpAnalysisService:
         """类别无法解析。
 
         必须区分「未填写」与「填了但不认识」：
-        未填写 → `INSUFFICIENT_DATA` + `CATEGORY_MISSING`；
-        填了但不认识 → `INVALID_INPUT` + `CATEGORY_UNRESOLVED`。两者不得混为一个状态。
+        未填写 → `INSUFFICIENT_DATA` + `CATEGORY_MISSING`（白名单内，可形成 Record）；
+        填了但不认识 → `INVALID_INPUT` + `CATEGORY_UNRESOLVED`（不可固化）。
         """
 
         if invalid:
@@ -597,12 +639,14 @@ class CentrifugalPumpAnalysisService:
         else:
             issue_codes = ("CATEGORY_UNRESOLVED", "CATEGORY_MISSING")
             missing_fields = ("产品类别",)
+        status = "INVALID_INPUT" if invalid else "INSUFFICIENT_DATA"
+        finalizable = status in FINALIZABLE_STATUSES
         return PumpAnalysisResult(
             rule_profile=None,
             standard_code=request.standard_code,
             product_category=request.product_category,
             as_of=request.as_of,
-            evaluation_status="INVALID_INPUT" if invalid else "INSUFFICIENT_DATA",
+            evaluation_status=status,
             category_status="UNRESOLVED",
             support_status=None,
             ui_conclusion=Conclusion.UNABLE_TO_JUDGE.value,
@@ -611,7 +655,16 @@ class CentrifugalPumpAnalysisService:
             missing_fields=missing_fields,
             explanation=reason,
             **self._frozen_fields(request),
+            **self._category_provenance_dict(
+                "类别未解析，未执行任何规则集", status=status),
+            finalizable=finalizable,
+            not_finalizable_reason="" if finalizable else "类别状态为 INVALID_INPUT，不构成正式评价结论。",
         )
+
+    @staticmethod
+    def _category_provenance_dict(reason: str, *, status: str) -> dict[str, Any]:
+        return {"provenance": CentrifugalPumpAnalysisService._category_provenance(
+            reason, status=status)}
 
     # -- 投影 ---------------------------------------------------------------
 
@@ -833,13 +886,34 @@ class CentrifugalPumpAnalysisService:
             raise AnalysisError("结果与输入的评价日期不一致，拒绝固化正式记录")
 
         # (4) 实际执行了具体 ruleset 的结果必须带真实 Canonical hash，缺失即拒绝。
-        canonical_hash = str(
-            result.references.get("standard", {}).get("pack_hash", "") or ""
-        ).strip()
-        if not canonical_hash:
-            raise AnalysisError(
-                "结果未携带 Canonical 包哈希，无法证明业务真值来源；拒绝固化正式记录"
-            )
+        # (4) Canonical hash 只在**实际执行了具体 rule_profile** 时才是必需证据。
+        #     类别级结论（其他类别 / 类别缺失等）没有 ruleset，不得伪造 provenance，
+        #     但必须显式记录 no-ruleset 原因。
+        provenance = dict(result.provenance or {})
+        ruleset_executed = bool(provenance.get("ruleset_executed"))
+        if ruleset_executed:
+            if not str(provenance.get("rule_profile") or "").strip():
+                raise AnalysisError(
+                    "结果声明执行了规则集但未记录 rule_profile；拒绝固化正式记录"
+                )
+            canonical_hash = str(
+                result.references.get("standard", {}).get("pack_hash", "") or ""
+            ).strip()
+            if not canonical_hash:
+                raise AnalysisError(
+                    "实际执行了规则集的结果未携带 Canonical 包哈希，"
+                    "无法证明业务真值来源；拒绝固化正式记录"
+                )
+        else:
+            if not str(provenance.get("no_ruleset_reason") or "").strip():
+                raise AnalysisError(
+                    "结果未执行规则集但未记录 no-ruleset 原因；拒绝固化正式记录"
+                )
+            if str(result.references.get("standard", {}).get("pack_hash", "") or "").strip():
+                raise AnalysisError(
+                    "未执行规则集的结果不得携带 Canonical 包哈希（禁止伪造 provenance）；"
+                    "拒绝固化正式记录"
+                )
 
         # (3) 绑定 Workspace 时必须核对 revision，防止草稿在分析后又被改动。
         if workspace_id is not None:

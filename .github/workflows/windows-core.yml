@@ -89,6 +89,7 @@ jobs:
             tests.unit.test_phase2_qt `
             tests.unit.test_phase3_qt_unified `
             tests.unit.test_phase3_r1_blockers `
+            tests.unit.test_phase3_r2_final_closure `
             tests.unit.test_windows_regression_comparator -v
 
       - name: Full suite known-regression comparator (gating)
@@ -120,7 +121,10 @@ jobs:
       PYTHONIOENCODING: utf-8
       QT_QPA_PLATFORM: offscreen
     steps:
+      # 完整历史：历史 provenance 门禁需要 `git show <source_baseline_sha>:<path>`。
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:

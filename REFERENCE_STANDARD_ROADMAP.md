@@ -3,7 +3,7 @@
 状态：**CURRENT INVENTORY / GOVERNANCE ROADMAP**
 盘点日期：2026-10-02（本次同步）
 首次盘点日期：2026-10-01
-盘点基线：`master@7e16418aa32ced5512e26bd70227f01a329fbdfc`（Phase 2 已 PASS 并合并）；Phase 3 执行中
+盘点基线：`master@7e16418aa32ced5512e26bd70227f01a329fbdfc`（Phase 2 已 PASS 并合并）；Phase 3 实现已完成（`EXECUTION_COMPLETE`），独立验收曾判 `PHASE_3_BLOCKED`，R2 收口后为 `READY_FOR_INDEPENDENT_RE_ACCEPTANCE`
 参考标准：`GB 19762—2025 离心泵能效限定值及能效等级`
 参考标准覆盖范围：**`pump_water`（清水离心泵）与 `pump_chemical`（石化离心泵）** —— 见 `V1_SCOPE.md` 第 0 节
 
@@ -36,7 +36,7 @@ Phase 1: PHASE_1_PASS
 Phase 2: PHASE_2_PASS            (PR #10 独立验收并合并)
 Phase 3: implementation EXECUTION_COMPLETE  (GB 19762-2025 离心泵统一正式纵向闭环)
          independent acceptance = PHASE_3_BLOCKED  (5 blockers)
-         R1 status = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+         R2 status = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
 Automatic continuation: DISABLED
 ```
 
@@ -85,7 +85,7 @@ transformer   : scope_status=POST_V1 | support_status=NOT_IN_RELEASE_SCOPE
 | 无法判定 | `PARTIAL` | 业务状态模型/契约已有明确语义；正式产品层输入不足/无法判定提示、结果页与记录边界已由 Phase 3 实现，等待独立验收。 |
 | 结果解释 | `PARTIAL` | Golden/trace/规则证据可解释技术结果；面向用户的统一结果解释、标准依据与来源展示已由 Phase 3 实现，等待独立验收。 |
 | 正式记录 | `PARTIAL` | Phase 3 首次正式启用 `records.sqlite`（独立 forward-only、`NEVER_DESTRUCTIVE_RECORD_ASSET`）与 Workspace/Record/History/Reopen。中央 Record Contract 仍 DRAFT，本路线未擅自采用其未冻结字段。 |
-| Windows | `PARTIAL` | Windows V1 是明确产品目标；Phase 2 已提供最小 PySide6 薄壳，Phase 3 正在把"新建分析"与"分析记录"变为真实统一页面。 |
+| Windows | `PARTIAL` | Windows V1 是明确产品目标；Phase 2 已提供最小 PySide6 薄壳，Phase 3 已把"新建分析"与"分析记录"变为真实统一页面（实现完成，等待独立复验）。 |
 | Excel | `NOT STARTED` | Phase 1 已有 Import Contract，证明未来 Excel 应 contract-driven；现行 V2.3 仍把正式 Excel 放在 Phase 8。当前未进入正式 Excel 开发。Excel 数值入口的公共无损方案仍 OPEN，且本仓读取器存在 float 物化点（见 `QA-EXCEL-001`），正式开发前须先设计并验证。 |
 | Conformance | `PARTIAL` | N01-B Independent Acceptance PASS；Pump Numeric/Decision Contract、precision/operation-order/reference procedure 和 Numeric v1 adoption 均有执行测试证据。`pump_chemical` 的 Conformance 已由 Phase 3 的 generated boundary tests（Q/ns 端点与 ±epsilon）与 11 条批准 Golden 增强，尚未完成统一端到端验收。 |
 | Golden Case | `PARTIAL` | `pump_water`：18 条 Golden 0.4 具名批准 + 2026-10-02 Owner Reconfirmation **18/18 PASS**。`pump_chemical`：C1–C11 于 2026-10-02 获 Owner **11/11 PASS**，形式化为 11 条 `golden-case-0.5`（8 条候选派生 + 3 条 owner-defined）。两端业务真值均已批准；剩余为产品闭环与 Stage D。 |
@@ -96,7 +96,7 @@ transformer   : scope_status=POST_V1 | support_status=NOT_IN_RELEASE_SCOPE
 GB 19762—2025 的 `pump_water` **业务规则、Pump Calculator、Numeric Conformance 与 Golden Case 已经是当前最成熟资产**；`pump_chemical` 的 Calculator 与标准包已存在，且其业务真值已于 2026-10-02 获 **11/11** Owner 批准并形式化为正式 Golden。参考标准的剩余缺口集中在**产品工程层**与 **Stage D**：
 
 ```text
-产品工程缺口（两个 Profile 共同）—— Phase 3 正在闭合
+产品工程缺口（两个 Profile 共同）—— Phase 3 已闭合（实现完成，等待独立复验）
   统一的 GB 19762 分析入口（pump_water + pump_chemical 同页）
   + 统一类别路由（8 类 + 其他/不确定）
   + 统一 Workspace / Record / History / Reopen
@@ -116,14 +116,14 @@ GB 19762—2025 的 `pump_water` **业务规则、Pump Calculator、Numeric Conf
 
 `PARTIAL`
 
-这不是中央 Contract 阻塞。当前阶段门禁是：**Phase 3 执行中，完成后须经独立验收**；`pump_chemical` 的 `support_status` 提升须待 Phase 5 的 Stage D 独立验收。
+这不是中央 Contract 阻塞。当前阶段门禁是：**Phase 3 实现已完成；独立验收曾判 `PHASE_3_BLOCKED`，R2 收口后状态为 `READY_FOR_INDEPENDENT_RE_ACCEPTANCE`，仍须独立复验**；`pump_chemical` 的 `support_status` 提升须待 Phase 5 的 Stage D 独立验收。
 
 ## 6. 后续交付顺序
 
 Phase 2 已完成（`PHASE_2_PASS`）。Phase 3 增量修正把 `pump_chemical` 的正式产品接入前移到 Phase 3，因此顺序调整为：
 
 1. ~~进入 Phase 2~~ **已完成**（`PHASE_2_PASS`）；
-2. **Phase 3（执行中）**：建立统一的 GB 19762—2025 分析链——统一类别路由（8 类 + 其他/不确定）、统一 `AnalysisService` 契约、统一 Workspace / Record / History / Reopen、`records.sqlite` 首次启用、统一 Qt 分析页与分析记录页；`pump_water` 与 `pump_chemical` 同页共存；
+2. **Phase 3（实现已完成，等待独立复验）**：建立统一的 GB 19762—2025 分析链——统一类别路由（8 类 + 其他/不确定）、统一 `AnalysisService` 契约、统一 Workspace / Record / History / Reopen、`records.sqlite` 首次启用、统一 Qt 分析页与分析记录页；`pump_water` 与 `pump_chemical` 同页共存；
 3. **Phase 4**：基于 Phase 3 真实样板做必要通用化；
 4. **Phase 5**：完成 `pump_chemical` 的 **Stage D 正式验收与发布支持收口**，通过后方可切换 `support_status = SUPPORTED`；
 5. **Phase 6～7**：围绕完整 GB 19762 建立完整产品 Shell，并完成生命周期与质量收口；
@@ -139,6 +139,6 @@ Phase 2 的 G01～G04 已完成，并经独立验收通过、以 PR #10 合并�
 
 **Phase 2 不等于参考标准闭环**：标准库/分析/记录页面当时没有业务功能，正式记录未实现，Excel 未实现，`as_of` 未决定，两个 Profile 的业务能力不变；因此 GB 19762 总体仍为 `PARTIAL`，不把工程底座当作参考标准闭环 PASS。历史执行证据见 `PHASE2_EXECUTION_REPORT.md`。
 
-## Phase 3 执行增量（2026-10-02；已交付，独立验收曾判 BLOCKED，R1 已修复待复验）
+## Phase 3 执行增量（2026-10-02；已交付，独立验收曾判 BLOCKED，R1/R2 已修复待复验）
 
-Phase 3 已获用户明确执行授权，**实现已完成**（`implementation = EXECUTION_COMPLETE`）。独立验收结论曾为 **`PHASE_3_BLOCKED`**；其确认的 5 个 blocker 已由 **R1** 修复，当前状态 **`READY_FOR_INDEPENDENT_RE_ACCEPTANCE`**（等待独立复验）。**不得写成 `PHASE_3_PASS` 或 `PHASE_4_READY`。** 范围与设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`；阶段语义增量修正见路线原文第 8.2 节。本文件第 4 节已按 Phase 3 当前进展更新；**未完成的项不得在此标记为 `DONE`**。
+Phase 3 已获用户明确执行授权，**实现已完成**（`implementation = EXECUTION_COMPLETE`）。独立验收结论曾为 **`PHASE_3_BLOCKED`**；其确认的 blocker 已由 **R1/R2** 修复并收口，当前状态 **`READY_FOR_INDEPENDENT_RE_ACCEPTANCE`**（等待独立复验）。**不得写成 `PHASE_3_PASS` 或 `PHASE_4_READY`。** 范围与设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`；阶段语义增量修正见路线原文第 8.2 节。本文件第 4 节已按 Phase 3 当前进展更新；**未完成的项不得在此标记为 `DONE`**。
