@@ -191,13 +191,12 @@ class GoldenHistoricalProvenanceTests(unittest.TestCase):
 
 
 class FinalizeStateMatrixTests(unittest.TestCase):
-    """Gate 2：表驱动覆盖全部真实 result producer 的 Finalize 状态矩阵。"""
+    """Gate 2：表驱动覆盖全部真实 result producer 的 Finalize 状态矩阵。
 
-    #: 唯一不受「finalizable == 状态在白名单内」约束的具名例外。
-    #: 理由：评价日期早于标准实施日期时，本版本标准对该日期不可用，
-    #: 结果虽有 INSUFFICIENT_DATA 状态，但**未执行任何计算**，
-    #: 固化它会产生"标准尚未实施却已出正式结论"的记录。
-    WHITELIST_EXCEPTIONS = frozenset({"as_of before effective date"})
+    **不存在任何 as_of 例外。** Owner 决定（2026-10-02）：评价日期不是标准执行门禁，
+    因此 `finalizable` 严格等价于「`evaluation_status` 在统一白名单内」，
+    对 15 条真实 producer 一律成立。
+    """
 
     #: (用例标签, 请求工厂, 期望 evaluation_status, 期望 finalizable, 是否执行了 ruleset)
     def _cases(self):
@@ -233,10 +232,13 @@ class FinalizeStateMatrixTests(unittest.TestCase):
              "INVALID_INPUT", False, False),
             ("uncertain category", PumpAnalysisRequest("不确定类别", AS_OF),
              None, False, False),
+            # Owner 决定（2026-10-02）：评价日期不是执行门禁。
+            # as_of 早于实施日期时**照常执行同一 ruleset**，业务状态与等级不变，
+            # 因此它不是 INSUFFICIENT_DATA，也不构成任何 Finalize 例外。
             ("as_of before effective date", PumpAnalysisRequest(
                 WATER, date(2026, 2, 28), QBEP="100", HBEP="50", speed="2900",
                 efficiency="90", suction="单吸", stages="1"),
-             "INSUFFICIENT_DATA", False, False),
+             "SUCCESS", True, True),
         ]
 
     def setUp(self):
@@ -255,18 +257,10 @@ class FinalizeStateMatrixTests(unittest.TestCase):
                 result = self.service.evaluate(request)
                 self.assertEqual(result.evaluation_status, status, label)
                 self.assertEqual(result.finalizable, finalizable, label)
-                # 统一 policy：finalizable == (evaluation_status 在白名单内)。
-                # 唯一的**具名例外**见 WHITELIST_EXCEPTIONS：
-                #   "as_of before effective date" 的状态是 INSUFFICIENT_DATA，
-                #   但评价日期早于标准实施日期、本版本标准对该日期不可用、
-                #   未执行任何计算，因此不构成可固化的正式结论。
-                if label in self.WHITELIST_EXCEPTIONS:
-                    self.assertFalse(finalizable, label)
-                    self.assertFalse(result.provenance["ruleset_executed"], label)
-                    self.assertTrue(
-                        str(result.provenance.get("no_ruleset_reason") or "").strip(), label)
-                else:
-                    self.assertEqual(finalizable, status in FINALIZABLE_STATUSES, label)
+                # 统一 policy，无任何例外：
+                #   finalizable == (evaluation_status 在统一白名单内)
+                # `as_of` 不参与该判定（Owner 决定：评价日期不是标准执行门禁）。
+                self.assertEqual(finalizable, status in FINALIZABLE_STATUSES, label)
 
                 before = len(self.service.list_records())
                 if finalizable:

@@ -90,6 +90,7 @@ jobs:
             tests.unit.test_phase3_qt_unified `
             tests.unit.test_phase3_r1_blockers `
             tests.unit.test_phase3_r2_final_closure `
+            tests.unit.test_phase3_r3_as_of_lifecycle `
             tests.unit.test_windows_regression_comparator -v
 
       - name: Full suite known-regression comparator (gating)

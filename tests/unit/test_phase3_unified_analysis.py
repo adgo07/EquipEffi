@@ -182,15 +182,29 @@ class UnifiedAnalysisContractTests(unittest.TestCase):
         self.assertIn("CATEGORY_MISSING", result.issue_codes)
         self.assertIn("产品类别", result.missing_fields)
 
-    def test_as_of_earlier_than_effective_date_does_not_calculate(self):
-        result = self.service.evaluate(_water_request())
-        self.assertTrue(result.finalizable)
+    def test_as_of_earlier_than_effective_date_still_calculates(self):
+        """Owner 决定（2026-10-02）：评价日期不是标准执行门禁。
+
+        此前该用例断言提前日期被短路为 INSUFFICIENT_DATA 且不计算；
+        Owner 正式决定取代该设计——提前日期照常执行同一 ruleset，
+        业务结果与实施后日期一致，只多一条非阻断 warning。
+        """
+
+        normal = self.service.evaluate(_water_request())
         early = self.service.evaluate(PumpAnalysisRequest(
             WATER, date(2026, 2, 28), QBEP="100", HBEP="50", speed="2900",
             efficiency="90", suction="单吸", stages="1"))
-        self.assertEqual(early.evaluation_status, "INSUFFICIENT_DATA")
-        self.assertIn("STANDARD_NOT_YET_EFFECTIVE", early.issue_codes)
-        self.assertEqual(early.calculation_trace, {})
+
+        self.assertEqual(early.evaluation_status, normal.evaluation_status)
+        self.assertEqual(early.grade, normal.grade)
+        self.assertEqual(early.matched_rule_id, normal.matched_rule_id)
+        self.assertEqual(early.thresholds, normal.thresholds)
+        self.assertEqual(early.issue_codes, normal.issue_codes)
+        self.assertNotEqual(early.calculation_trace, {})
+        # 生命周期提示是非阻断的，且不进入 issue_codes
+        self.assertTrue(early.warnings)
+        self.assertNotIn("STANDARD_NOT_YET_EFFECTIVE", early.issue_codes)
+        self.assertTrue(early.finalizable)
 
     def test_trace_uses_user_readable_names_not_internal_keys(self):
         result = self.service.evaluate(_water_request())

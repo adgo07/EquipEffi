@@ -33,6 +33,19 @@ current_task:
     blockers: 5
     scope: Finalize 状态白名单 fail-closed / Qt stale result / Canonical pack_hash / 技术详情真折叠 / 治理状态一致性
     evidence: tests/unit/test_phase3_r1_blockers.py
+  r2_fixes:
+    status: COMPLETE
+    root_causes: 3
+    scope: Golden 历史 provenance 与当前源码解耦 / Finalize 完整状态矩阵（provenance + Canonical hash 归属）/ 治理状态全文收口
+    evidence: tests/unit/test_phase3_r2_final_closure.py
+  r3_fixes:
+    status: COMPLETE
+    root_causes: 1
+    owner_decision: USER_PROVIDED_OWNER_DECISION_2026-10-02_R3
+    scope: 删除 as_of < effective_date → INSUFFICIENT_DATA 门禁；评价日期改为仅用于记录与追溯；标准生命周期只做非阻断提示
+    supersedes: 此前"评价日期早于标准实施日期则不执行计算"的产品规则
+    evidence: tests/unit/test_phase3_r3_as_of_lifecycle.py
+    scope_limit: 仅统一离心泵分析链（pump_water / pump_chemical）；遗留 EvaluationService 对 motor / transformer 的生效日期门禁未改动
 
 phase_2:
   status: PHASE_2_PASS
@@ -142,7 +155,8 @@ known_blockers:
     python_change_this_round: NONE
   as_of_implicit_default_legacy_entries:
     standard_issue: EQP-STD-GB19762-001
-    status: RESOLVED (软件产品决定 2026-10-02)
+    status: RESOLVED (软件产品决定 2026-10-02；R3 补充决定：as_of 不是标准执行门禁)
+    r3_supplement: 评价日期仅用于记录与追溯；标准生命周期只做非阻断提示；已删除提前日期不执行计算的门禁与对应的 Finalize 白名单例外
     remaining: 既有 CLI/API/JSONL 入口的兼容默认值登记保留，全局取消须另立任务做兼容影响评估
     locations:
       - src/equipeffi/application/services/evaluation_service.py:13

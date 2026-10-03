@@ -54,10 +54,10 @@
 | 确认程度 | 标准实施日期与现有运行行为有仓库证据；**软件产品决定已由产品负责人于 2026-10-02 作出**；**不存在发布机构对软件默认日期的官方解释** |
 | 业务影响 | 高：错误默认日期可能导致在标准未实施时使用该版本，或在版本切换时选择错误标准，进而影响正式评价结果 |
 | 关联 Rule / Calculator | 标准版本选择 / Application request；`pump_water`；Pump Calculator/evaluator 路由 |
-| 关联测试 / Golden Case | `QA-AUD-031` 记录的日期 probe；Phase 3 的 `as_of` 默认/注入/Finalize/Reopen 测试；本台账的更正不影响任何已批准 Golden |
-| 状态 | `RESOLVED`（已有充分依据确认；依软件产品决定关闭，非发布机构官方确认） |
+| 关联测试 / Golden Case | `QA-AUD-031` 记录的日期 probe；Phase 3 的 `as_of` 默认/注入/Finalize/Reopen 测试；R3 `tests/unit/test_phase3_r3_as_of_lifecycle.py`（water + chemical × 2026-02-28 / 2026-03-01 / 2026-10-03 业务结果一致性、Record/Reopen 保留 `as_of`、非阻断 warning）；本台账的更正不影响任何已批准 Golden |
+| 状态 | `RESOLVED`（已有充分依据确认；依软件产品决定关闭，非发布机构官方确认；R3 补充决定见下） |
 | 首次发现日期 | 2026-09-22（`QA_BACKLOG.md` Phase 1 P0 Evidence Review） |
-| 最后更新日期 | 2026-10-02 |
+| 最后更新日期 | 2026-10-02（R3） |
 
 #### 软件产品决定（2026-10-02）
 
@@ -70,6 +70,35 @@
 - **Golden / regression replay**：测试 harness **显式**传入固定日期 `2026-08-23`；该日期**只属于测试条件**，不是产品默认日期。
 
 因此正式产品模型中**不得**存在把 `date(2026, 8, 23)` 当作隐式默认的行为。Phase 3 新增的统一 `AnalysisService` 采用显式 `as_of`；既有 CLI/API 的兼容默认值按 `AGENTS.md §2.0` 作为兼容边界**登记保留**，其全局取消须单独做兼容影响评估（见“事实更正与源码核实”第 3 条）。
+
+#### 软件产品决定补充（2026-10-02，R3）：`as_of` 不是标准执行门禁
+
+产品负责人作出后续正式决定，**取代**此前"评价日期早于标准实施日期则不执行计算"的设计：
+
+> **评价日期仅用于记录与追溯，不是标准执行门禁；标准生命周期状态只做非阻断提示。**
+
+- `as_of` **只用于**：默认新建分析日期、用户手动修改、Record 历史追溯、Reopen 显示原评价日期；
+- `as_of` **不再决定所选标准能否执行**。用户可以主动使用**尚未实施**、**当前现行**、
+  **已废止或已被替代**的标准版本进行评价；只要用户明确选择某个标准版本，
+  软件就按**该版本的冻结规则正常计算**；
+- 标准的未实施 / 已废止 / 已被替代状态只作为**非阻断提示**（`PumpAnalysisResult.warnings`），
+  **不得**阻止计算、**不得**改成 `INSUFFICIENT_DATA`、**不得**改变 `evaluation_status`、
+  **不得**改变 Finalize 权限、**不得**自动切换到其他标准版本；
+- 同一输入在实施日之前与之后必须调用**同一规则集**并得到**相同业务计算结果**；
+  日期本身**不得**参与泵效率、等级、范围判断；
+- 生命周期提示**不得**进入 `evaluation_status` / `issue_codes` / `missing_fields`，
+  也不得影响 `finalizable`；本决定**不新建状态体系**，只复用结果契约的一个纯展示字段。
+
+被删除的旧门禁：`as_of < effective_date → INSUFFICIENT_DATA → 不执行 evaluator`
+（连同 `STANDARD_NOT_YET_EFFECTIVE` 这一 `issue_code`，以及此前为它设的
+Finalize 白名单例外 `WHITELIST_EXCEPTIONS`）。删除后 `finalizable` 严格等价于
+"`evaluation_status` 在统一白名单内"，**不存在任何 `as_of` 特例**。
+
+**作用域**：本决定作用于**统一离心泵分析链**（`pump_water` / `pump_chemical`）。
+遗留 `EvaluationService` 对**其他设备**（motor / transformer）的生效日期门禁**不在本 Phase 范围**，
+未作改动；如需同样调整须另立任务并做兼容影响评估。
+
+**本条决定不改变**任何已批准 Golden、泵算法、Canonical 或 Numeric Profile。
 
 #### 事实更正与源码核实（2026-10-02）
 

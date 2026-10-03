@@ -222,6 +222,10 @@ class PumpAnalysisResult:
     #: 类别级结论（其他类别 / 类别缺失等）没有 ruleset，必须显式记录 no-ruleset 原因，
     #: 且不得携带 Canonical 包哈希（禁止伪造 provenance）。
     provenance: dict[str, Any] = field(default_factory=dict)
+    #: 非阻断提示（例如所选标准版本相对评价日期的生命周期状态）。
+    #: **不是**业务判定结果：不得进入 `evaluation_status` / `issue_codes` /
+    #: `missing_fields`，也不得影响 Finalize 权限。
+    warnings: tuple[str, ...] = ()
     raw_values: dict[str, Any] = field(default_factory=dict)
     workspace_revision: int | None = None
     request_fingerprint: str = ""
@@ -251,6 +255,7 @@ class PumpAnalysisResult:
             "explanation": self.explanation,
             "references": dict(self.references),
             "provenance": dict(self.provenance),
+            "warnings": list(self.warnings),
             "raw_values": dict(self.raw_values),
             "workspace_revision": self.workspace_revision,
             "request_fingerprint": self.request_fingerprint,
@@ -430,6 +435,29 @@ class CentrifugalPumpAnalysisService:
         except (TypeError, ValueError):
             return None
 
+    def _lifecycle_warnings(self, pack: dict[str, Any], as_of: date) -> tuple[str, ...]:
+        """标准生命周期提示：**非阻断**。
+
+        Owner 规则：未实施 / 已废止 / 已被替代只作为提示，不得阻止计算、不得改写
+        `evaluation_status`、`issue_codes`、`missing_fields` 或 Finalize 权限，
+        也不得自动切换到其他标准版本。
+
+        这些提示刻意**不**进入 `issue_codes`：那是业务判定结果的一部分，
+        而生命周期只是所选标准版本相对评价日期的元信息。
+        """
+
+        effective = self._effective_date(pack)
+        if effective is None:
+            return ()
+        if as_of < effective:
+            return (
+                f"当前评价日期（{as_of.isoformat()}）早于所选标准实施日期"
+                f"（{effective.isoformat()}），仍将按所选标准版本进行评价。",
+            )
+        # 已废止 / 已被替代需要标准生命周期元数据（superseded_by 等），
+        # 当前 Pack 只提供 effective_date，因此不对"晚于实施日期"做推测性提示。
+        return ()
+
     def _base_result(self, request: PumpAnalysisRequest, pack: dict[str, Any],
                      rule_profile: str | None) -> dict[str, Any]:
         return {
@@ -509,33 +537,15 @@ class CentrifugalPumpAnalysisService:
             )
 
         pack = self._pack(rule_profile)
-        effective = self._effective_date(pack)
-        if effective is not None and request.as_of < effective:
-            base = self._base_result(request, pack, rule_profile)
-            # 早于实施日期时**未执行任何规则集**：不得声称 ruleset provenance，
-            # 也不得把该 Pack 的 Canonical hash 当作已执行规则的证据。
-            base["provenance"] = self._category_provenance(
-                f"评价日期早于标准实施日期 {effective.isoformat()}，未执行任何规则集",
-                status="INSUFFICIENT_DATA")
-            base["references"] = dict(base["references"])
-            base["references"]["standard"] = dict(base["references"]["standard"])
-            base["references"]["standard"]["pack_hash"] = ""
-            return PumpAnalysisResult(
-                **base,
-                evaluation_status="INSUFFICIENT_DATA",
-                category_status="APPLICABLE",
-                support_status=self._release_support(rule_profile),
-                ui_conclusion=Conclusion.UNABLE_TO_JUDGE.value,
-                grade=None,
-                issue_codes=("STANDARD_NOT_YET_EFFECTIVE",),
-                missing_fields=(),
-                explanation=(
-                    f"评价日期早于标准实施日期 {effective.isoformat()}，"
-                    "该日期不允许使用本版本标准，不执行计算。"
-                ),
-                finalizable=False,
-                not_finalizable_reason="评价日期早于标准实施日期，不构成正式评价结论。",
-            )
+        # Owner 正式决定（2026-10-02，取代此前"提前日期不执行计算"的设计）：
+        # 评价日期 `as_of` **只用于**默认新建日期、用户手动修改、Record 追溯与
+        # Reopen 显示，**不是标准执行门禁**。用户可以主动使用未实施、现行或已废止的
+        # 标准版本；只要明确选定版本，软件就按该版本的冻结规则正常计算。
+        #
+        # 因此这里**不再**以 `as_of < effective_date` 短路，也不再改写
+        # evaluation_status / issue_codes / missing_fields / Finalize 权限。
+        # 标准生命周期状态只作为**非阻断提示**（`warnings`）。
+        lifecycle_warnings = self._lifecycle_warnings(pack, request.as_of)
 
         evaluator = build_pump_evaluator(rule_profile)
         result = evaluator.evaluate(dict(request.raw_values()), pack)
@@ -563,6 +573,9 @@ class CentrifugalPumpAnalysisService:
             calculation_trace=self._trace(result, rule_profile),
             extra_metrics=self._extra_metrics(result),
             explanation=result.explanation,
+            # 生命周期提示与业务判定严格分离：不进入 issue_codes / missing_fields，
+            # 也不参与 finalizable 计算。
+            warnings=lifecycle_warnings,
             finalizable=finalizable,
             not_finalizable_reason=reason,
         )
@@ -885,10 +898,10 @@ class CentrifugalPumpAnalysisService:
         if result.as_of != request.as_of:
             raise AnalysisError("结果与输入的评价日期不一致，拒绝固化正式记录")
 
-        # (4) 实际执行了具体 ruleset 的结果必须带真实 Canonical hash，缺失即拒绝。
         # (4) Canonical hash 只在**实际执行了具体 rule_profile** 时才是必需证据。
         #     类别级结论（其他类别 / 类别缺失等）没有 ruleset，不得伪造 provenance，
         #     但必须显式记录 no-ruleset 原因。
+        #     `as_of` 不参与本判定：日期不是执行门禁，实际执行了规则集就必须有 hash。
         provenance = dict(result.provenance or {})
         ruleset_executed = bool(provenance.get("ruleset_executed"))
         if ruleset_executed:

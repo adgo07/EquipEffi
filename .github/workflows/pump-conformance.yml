@@ -113,12 +113,14 @@ jobs:
           --skip-external-evidence
 
       # Gate 1 历史 provenance（按 source_baseline_sha 校验实现快照）+ Gate 2 当前
-      # Golden 回放（由上面 Approved Golden 步骤覆盖）+ Finalize 全状态矩阵。
-      - name: Historical provenance and Finalize state matrix (gating)
+      # Golden 回放（由上面 Approved Golden 步骤覆盖）+ Finalize 全状态矩阵
+      # + R3 as_of 生命周期规则（评价日期不是标准执行门禁）。
+      - name: Historical provenance, Finalize state matrix and as_of lifecycle (gating)
         run: |
           python -m unittest `
             tests.unit.test_phase3_r2_final_closure.GoldenHistoricalProvenanceTests `
-            tests.unit.test_phase3_r2_final_closure.FinalizeStateMatrixTests -v
+            tests.unit.test_phase3_r2_final_closure.FinalizeStateMatrixTests `
+            tests.unit.test_phase3_r3_as_of_lifecycle -v
 
       # Pump evaluator 与 Application API 门面（pump_water 与 pump_chemical 共用矩阵）。
       # test_phase3_r1_blockers 为 R1 对抗性门禁：Finalize 状态白名单 fail-closed、

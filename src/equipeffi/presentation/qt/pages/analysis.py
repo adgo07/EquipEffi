@@ -235,6 +235,15 @@ class AnalysisPage(QWidget):
         self.summary.setWordWrap(True)
         self.summary.setTextFormat(Qt.TextFormat.PlainText)
         layout.addWidget(self.summary)
+
+        # 非阻断提示（标准生命周期）。默认隐藏；不参与判定，也不阻止保存。
+        self.warning_label = QLabel("")
+        self.warning_label.setWordWrap(True)
+        self.warning_label.setTextFormat(Qt.TextFormat.PlainText)
+        self.warning_label.setStyleSheet("color: #8a6d00;")
+        self.warning_label.setVisible(False)
+        layout.addWidget(self.warning_label)
+
         self.basis = QLabel("")
         self.basis.setWordWrap(True)
         self.basis.setTextFormat(Qt.TextFormat.PlainText)
@@ -504,6 +513,8 @@ class AnalysisPage(QWidget):
         self.summary.setText(message)
         self.basis.setText("")
         self.technical.setText("")
+        self.warning_label.setText("")
+        self.warning_label.setVisible(False)
         self.finalize_button.setEnabled(False)
 
     def _render(self, result: PumpAnalysisResult) -> None:
@@ -518,6 +529,12 @@ class AnalysisPage(QWidget):
             lines.append("提示：" + "、".join(result.issue_codes))
         lines.append(f"判定说明：{result.explanation}")
         self.summary.setText("\n".join(lines))
+
+        # 标准生命周期提示：非阻断。单独展示，不与判定结果混排，
+        # 也不进入 issue_codes / missing_fields。
+        self.warning_label.setText(
+            "\n".join(f"⚠ {text}" for text in result.warnings))
+        self.warning_label.setVisible(bool(result.warnings))
 
         basis_lines: list[str] = []
         if result.thresholds:

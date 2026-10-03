@@ -3,7 +3,7 @@
 状态：**CURRENT INVENTORY / GOVERNANCE ROADMAP**
 盘点日期：2026-10-02（本次同步）
 首次盘点日期：2026-10-01
-盘点基线：`master@7e16418aa32ced5512e26bd70227f01a329fbdfc`（Phase 2 已 PASS 并合并）；Phase 3 实现已完成（`EXECUTION_COMPLETE`），独立验收曾判 `PHASE_3_BLOCKED`，R2 收口后为 `READY_FOR_INDEPENDENT_RE_ACCEPTANCE`
+盘点基线：`master@7e16418aa32ced5512e26bd70227f01a329fbdfc`（Phase 2 已 PASS 并合并）；Phase 3 实现已完成（`EXECUTION_COMPLETE`），独立验收曾判 `PHASE_3_BLOCKED`，R1/R2/R3 收口后为 `READY_FOR_INDEPENDENT_RE_ACCEPTANCE`
 参考标准：`GB 19762—2025 离心泵能效限定值及能效等级`
 参考标准覆盖范围：**`pump_water`（清水离心泵）与 `pump_chemical`（石化离心泵）** —— 见 `V1_SCOPE.md` 第 0 节
 
@@ -36,7 +36,7 @@ Phase 1: PHASE_1_PASS
 Phase 2: PHASE_2_PASS            (PR #10 独立验收并合并)
 Phase 3: implementation EXECUTION_COMPLETE  (GB 19762-2025 离心泵统一正式纵向闭环)
          independent acceptance = PHASE_3_BLOCKED  (5 blockers)
-         R2 status = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+         R3 status = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
 Automatic continuation: DISABLED
 ```
 
@@ -116,7 +116,7 @@ GB 19762—2025 的 `pump_water` **业务规则、Pump Calculator、Numeric Conf
 
 `PARTIAL`
 
-这不是中央 Contract 阻塞。当前阶段门禁是：**Phase 3 实现已完成；独立验收曾判 `PHASE_3_BLOCKED`，R2 收口后状态为 `READY_FOR_INDEPENDENT_RE_ACCEPTANCE`，仍须独立复验**；`pump_chemical` 的 `support_status` 提升须待 Phase 5 的 Stage D 独立验收。
+这不是中央 Contract 阻塞。当前阶段门禁是：**Phase 3 实现已完成；独立验收曾判 `PHASE_3_BLOCKED`，R1/R2/R3 收口后状态为 `READY_FOR_INDEPENDENT_RE_ACCEPTANCE`，仍须独立复验**；`pump_chemical` 的 `support_status` 提升须待 Phase 5 的 Stage D 独立验收。
 
 ## 6. 后续交付顺序
 
@@ -139,6 +139,6 @@ Phase 2 的 G01～G04 已完成，并经独立验收通过、以 PR #10 合并�
 
 **Phase 2 不等于参考标准闭环**：标准库/分析/记录页面当时没有业务功能，正式记录未实现，Excel 未实现，`as_of` 未决定，两个 Profile 的业务能力不变；因此 GB 19762 总体仍为 `PARTIAL`，不把工程底座当作参考标准闭环 PASS。历史执行证据见 `PHASE2_EXECUTION_REPORT.md`。
 
-## Phase 3 执行增量（2026-10-02；已交付，独立验收曾判 BLOCKED，R1/R2 已修复待复验）
+## Phase 3 执行增量（2026-10-02；已交付，独立验收曾判 BLOCKED，R1/R2/R3 已修复待复验）
 
-Phase 3 已获用户明确执行授权，**实现已完成**（`implementation = EXECUTION_COMPLETE`）。独立验收结论曾为 **`PHASE_3_BLOCKED`**；其确认的 blocker 已由 **R1/R2** 修复并收口，当前状态 **`READY_FOR_INDEPENDENT_RE_ACCEPTANCE`**（等待独立复验）。**不得写成 `PHASE_3_PASS` 或 `PHASE_4_READY`。** 范围与设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`；阶段语义增量修正见路线原文第 8.2 节。本文件第 4 节已按 Phase 3 当前进展更新；**未完成的项不得在此标记为 `DONE`**。
+Phase 3 已获用户明确执行授权，**实现已完成**（`implementation = EXECUTION_COMPLETE`）。独立验收结论曾为 **`PHASE_3_BLOCKED`**；其确认的 blocker 已由 **R1/R2/R3** 修复并收口，当前状态 **`READY_FOR_INDEPENDENT_RE_ACCEPTANCE`**（等待独立复验）。**不得写成 `PHASE_3_PASS` 或 `PHASE_4_READY`。** 范围与设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`；阶段语义增量修正见路线原文第 8.2 节。本文件第 4 节已按 Phase 3 当前进展更新；**未完成的项不得在此标记为 `DONE`**。

@@ -36,7 +36,7 @@ Phase 1 = PHASE_1_PASS
 Phase 2 = PHASE_2_PASS          (PR #10 独立验收并合并 @ 7e16418a)
 Phase 3 = implementation EXECUTION_COMPLETE  (GB 19762-2025 离心泵统一正式纵向闭环)
           independent acceptance = PHASE_3_BLOCKED  (5 blockers)
-          R2 status = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+          R3 status = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
 Automatic continuation = DISABLED
 ```
 

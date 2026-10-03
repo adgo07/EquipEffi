@@ -1010,3 +1010,213 @@ phase_4_started        = false
 merge_authorized       = false
 pump_chemical_support_status = NOT_IN_RELEASE_SCOPE（未提升）
 ```
+
+---
+
+# 32. R3 — as_of / 标准生命周期规则收口
+
+## 32.1 Owner 正式决定（本提示词即产品负责人正式决策）
+
+> **评价日期仅用于记录与追溯，不是标准执行门禁；标准生命周期状态只做非阻断提示。**
+
+该决定**取代**此前"评价日期早于标准实施日期则不执行计算"的产品规则
+（此前登记于 `STANDARD_ISSUES_REGISTER.md` / `EQP-STD-GB19762-001` 与 `docs/32` 第 14 节）。
+
+`as_of` 只用于：
+
+```text
+默认新建分析日期
+用户手动修改
+Record 历史追溯
+Reopen 显示原评价日期
+```
+
+用户可以主动使用**尚未实施** / **当前现行** / **已废止或已被替代**的标准版本进行评价；
+只要明确选定版本，软件就按**该版本的冻结规则正常计算**。
+
+## 32.2 删除的门禁
+
+此前 `CentrifugalPumpAnalysisService.evaluate()` 中存在：
+
+```text
+as_of < effective_date
+  → evaluation_status = INSUFFICIENT_DATA
+  → issue_codes = ("STANDARD_NOT_YET_EFFECTIVE",)
+  → 不执行 evaluator，calculation_trace 为空
+  → finalizable = False（并清空 Canonical pack_hash）
+```
+
+**该分支已整体删除。** 随之删除：
+
+- `STANDARD_NOT_YET_EFFECTIVE` 这一 `issue_code` 的产生路径；
+- `test_phase3_r2_final_closure.FinalizeStateMatrixTests.WHITELIST_EXCEPTIONS`
+  （`{"as_of before effective date"}`）以及矩阵中的等价特殊 Finalize 例外；
+- `test_phase3_unified_analysis` 中"提前日期不计算"的陈旧断言。
+
+删除后 **`finalizable` 严格等价于「`evaluation_status` 在统一白名单内」**，
+对全部真实 producer 一律成立，**不存在任何 `as_of` 特例**：
+
+```text
+SUCCESS / OUT_OF_STANDARD_SCOPE / INSUFFICIENT_DATA  → 允许
+INVALID_INPUT / EXECUTION_ERROR / 未确认类别 / 未知状态 → 拒绝
+```
+
+## 32.3 同一输入在实施日前后必须得到相同业务结果
+
+`as_of` 不参与泵效率、等级、范围判断。验证（water + chemical × 三个日期）：
+
+| 日期 | 相对实施日（2026-03-01） | water | chemical |
+|---|---|---|---|
+| `2026-02-28` | 实施前 | `SUCCESS` / 等级 1 / `GB19762-T3-01` / 1 条 warning | `SUCCESS` / 等级 2 / `GB19762-R000014` / 1 条 warning |
+| `2026-03-01` | 实施当日 | 同上，0 条 warning | 同上，0 条 warning |
+| `2026-10-03` | 实施后 | 同上，0 条 warning | 同上，0 条 warning |
+
+`test_phase3_r3_as_of_lifecycle.AsOfIsNotAnExecutionGateTests` 对 12 个业务字段
+（`evaluation_status` / `grade` / `ui_conclusion` / `category_status` / `matched_rule_id` /
+`thresholds` / `issue_codes` / `missing_fields` / `extra_metrics` / `calculation_trace` /
+`support_status` / `rule_profile`）逐一断言跨日期完全一致；并用范围外输入
+（`QBEP=3`）再验证一次阈值与范围判定不受日期影响。
+
+## 32.4 非阻断 warning 的边界
+
+标准生命周期提示存放在 `PumpAnalysisResult.warnings`（新增的纯展示字段），
+**不是业务判定结果**：
+
+```text
+不得进入 evaluation_status / issue_codes / missing_fields
+不得影响 finalizable 或任何 Finalize 判定
+不新建状态体系（不新增 enum / 不新增 severity 语义）
+```
+
+早于实施日期时的提示文本：
+
+```text
+当前评价日期（2026-02-28）早于所选标准实施日期（2026-03-01），
+仍将按所选标准版本进行评价。
+```
+
+**未对"晚于实施日期"做推测性提示**：判断"已废止 / 已被替代"需要标准生命周期元数据
+（如 `superseded_by`），当前 Canonical Pack 只提供 `effective_date`；不为凑齐提示而
+私造公共规则或发明语义。
+
+UI（`AnalysisPage`）：新增独立 `warning_label`，以 `⚠` 前缀单独展示、无提示时隐藏，
+**不与业务结论混排**；`_show_error` 路径会清空该标签。测试断言
+warning 文本不出现在 `conclusion` / `summary` / `basis` 中，且提前日期时
+`finalize_button` 仍可用、`finalize()` 返回 `SAVED`。
+
+## 32.5 Record / Reopen
+
+三个日期各自 Finalize 后：
+
+```text
+record.as_of == 该次评价的 as_of
+record.input_snapshot["as_of"] == 该次评价的 as_of
+reopen(record).as_of == 原 as_of（不得重新取今天）
+reopen(record).result_snapshot["as_of"] == 原 as_of
+```
+
+`test_phase3_r3_as_of_lifecycle.AsOfIsNotAnExecutionGateTests.test_all_three_dates_are_finalizable_and_preserved`
+对 water + chemical × 三个日期共 6 组逐一断言。
+
+## 32.6 作用域限制（如实声明）
+
+本决定作用于**统一离心泵分析链**（`pump_water` / `pump_chemical`），即
+`CentrifugalPumpAnalysisService`。
+
+遗留 `EvaluationService` 对**其他设备**的生效日期门禁**不在本 Phase 范围，未作改动**：
+
+```text
+tests.unit.test_application_api::test_as_of_before_standard_effective_date_is_structured_unable
+    → device_type = "motor"，走遗留 ApplicationApi / EvaluationService 路径
+tests.unit.test_evaluation_engine::...
+    → 同一遗留引擎路径
+```
+
+`AGENTS.md §2.5 / §2.6` 要求各设备按自身证据声明行为，不得因本次决定把泵规则外推到
+motor / transformer。如需同样调整，须另立任务并做兼容影响评估（已记入 `TASK_STATE.md`）。
+
+## 32.7 更新的治理与设计文件
+
+```text
+docs/32_Phase 3 …统一正式纵向闭环.md   第 14 节重写：Owner 规则、行为表、
+                                        warning 边界、作用域限制
+STANDARD_ISSUES_REGISTER.md            EQP-STD-GB19762-001 增加
+                                        "软件产品决定补充（2026-10-02，R3）"
+AGENTS.md                              §1 与 §2.1 状态改为 R1/R2/R3 收口
+HANDOFF.md                             Phase 3 R3 status
+ROADMAP.md / REFERENCE_STANDARD_ROADMAP.md   R3 status = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+TASK_STATE.md                          r3_fixes 段；as_of blocker 增加 R3 补充
+```
+
+共同明确：**"评价日期仅用于记录与追溯，不是标准执行门禁；标准生命周期状态只做非阻断提示"**，
+并声明该 Owner 决定取代此前"提前日期不执行计算"的设计。
+
+## 32.8 R3 验证
+
+**新增测试** `tests/unit/test_phase3_r3_as_of_lifecycle.py`（18 tests）：
+
+```text
+AsOfIsNotAnExecutionGateTests   6  提前日期进入 evaluator；water/chemical × 三日期
+                                    业务结果一致；日期不影响阈值/范围；finalizable 与
+                                    日期无关；三日期均可 Finalize 且 Record/Reopen 保留 as_of
+LifecycleWarningTests           6  warning 产生条件；不属于业务状态；不改变结果载荷；
+                                    Record 可追溯；类别级结论无生命周期提示
+AsOfFinalizePolicyTests         3  无 as_of 特例；INVALID_INPUT 与不确定类别
+                                    在三个日期一律拒绝
+LifecycleWarningUiTests         3  Qt offscreen：非阻断 warning 展示、仍可保存、
+                                    无 warning 时隐藏、不混入业务摘要
+```
+
+**受影响的既有测试**（按新规则更新，非放宽）：
+
+```text
+test_phase3_r2_final_closure  矩阵 "as_of before effective date" 行
+                              改为 SUCCESS / finalizable=True / ruleset=True
+                              删除 WHITELIST_EXCEPTIONS，改回白名单严格等价断言
+test_phase3_unified_analysis  test_as_of_earlier_than_effective_date_does_not_calculate
+                              → 改名并断言"照常计算且结果一致"
+```
+
+**本地回归**：
+
+```text
+test_phase3_r3_as_of_lifecycle      18 run / 0 fail
+test_phase3_unified_analysis        34 run / 0 fail
+test_phase3_r2_final_closure        11 run / 0 fail
+test_phase3_r1_blockers             20 run / 0 fail
+test_phase3_qt_unified              33 run / 0 fail
+test_phase3_golden_and_boundaries   14 run / 0 fail（29/29 Golden replay）
+test_phase3_r3_closure              31 run / 0 fail
+全量                                1136 run / 1129 pass / 3 fail / 1 error / 3 skip
+known-regression comparator         gate=PASS，
+                                    new_failures / new_errors / worsened / missing 全为 0
+```
+
+既有失败仍是既有失败（3 项 V4 reader/writer + 1 项 release audit 错误），
+**未修复也未隐藏，且未把任何新失败加入 known baseline**。
+
+**CI 接线**：`test_phase3_r3_as_of_lifecycle` 加入两处 gating：
+
+```text
+windows-core.yml      "Phase 2/3 settings, migrations, logging, Qt offscreen (gating)"
+pump-conformance.yml  "Historical provenance, Finalize state matrix and as_of lifecycle (gating)"
+```
+
+**未修改**：Golden 真值、Canonical 业务数据、Numeric Profile、`platform-lock.json`、
+known baseline、`pump_chemical` 的 `support_status`。
+
+## 32.9 R3 停止点
+
+```text
+status                    = EXECUTION_COMPLETE
+previous_acceptance       = PHASE_3_BLOCKED
+r3_status                 = READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+r3_owner_rule_closed      = 1 / 1
+as_of_is_execution_gate   = false
+as_of_finalize_exception  = none
+required_ci               = ALL GREEN
+phase_3_pass_declared     = false
+phase_4_started           = false
+merge_authorized          = false
+pump_chemical_support_status = NOT_IN_RELEASE_SCOPE（未提升）
+```
