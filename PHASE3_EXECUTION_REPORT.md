@@ -749,8 +749,20 @@ B4 折叠                               控件级：默认 hidden、show+process
 
 ## 30.8 R1 CI 结果
 
-见本次推送后的 `Windows Core` 与 `Pump Conformance` 两个 Required 工作流；具体 run 与
-全量数字在 CI 完成后补记于本小节。
+**final head**：`1f8c5a84c5cfdce12c6325dd479fe787c27c8265`（本地 `HEAD` 与
+`origin/phase3/gb19762-unified-vertical-slice` 一致，已确认 push 成功；分支相对基线
+`7e16418a` 共 15 个提交）。
+
+**CI 结果：本会话未能核验，如实声明。** 推送完成后，本会话到 `api.github.com` 的网络连接
+持续失败（`The SSL connection could not be established`，连续 20 次重试跨约 6 分钟），
+因此**无法读取 `Windows Core` 与 `Pump Conformance` 的运行结论与全量数字**。
+
+本报告**不预填 CI 结论**。请以 PR #11 上 head `1f8c5a8` 的实际 Actions 运行结果为准；
+若 `Windows Core (gating)` 或 `Pump Conformance (gating)` 失败，本节即为未完成证据，
+需要复验方据此退回。
+
+已知的本地证据见 30.7；其中**临时目录相关用例在本会话沙箱内无法运行**，
+这些用例（B1 的 DB 侧负例、B2 全部、B3 的 Record 侧、record 迁移相关）**完全依赖 CI**。
 
 ## 30.9 R1 停止点
 
