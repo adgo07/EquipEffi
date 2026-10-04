@@ -366,11 +366,15 @@ known-regression comparator                              gate=PASS
 ### 10.1 Base → final Head 实际 diff 摘要
 
 ```text
-18 files changed, 1925 insertions(+), 150 deletions(-)
+18 files changed, 1924 insertions(+), 150 deletions(-)
 ```
 
 （此前版本误写为 `16 files / +1134 / −144`：既漏计了后续提交，也未包含
-`PHASE_4_BLOCKED` 修复。此处为对 base 的**实际**统计。）
+`PHASE_4_BLOCKED` 修复。上表为对 base 的实际统计。）
+
+> 统计口径说明：本报告本身也在该 diff 内，因此任何"精确到行的总数"都会随
+> 报告文本微调而变。**权威数字以 GitHub PR #12 的 diff 为准**；上表由
+> `git diff --numstat 87d9ef1b <final head>` 得出。逐文件增量见 10.2。
 
 ### 10.2 changed files
 
@@ -410,11 +414,12 @@ READY_FOR_INDEPENDENT_ACCEPTANCE
 
 ## 12. Final Head
 
-本报告的最终提交 SHA 即独立验收的**唯一对象**：
+独立验收的**唯一对象**：
 
 ```text
-final Head SHA = 由本报告所在提交决定（见 GitHub PR #12 的 head）
+final Head SHA = e070f3e 系列之后的本报告最终提交（见 GitHub PR #12 的 head）
 ```
 
-报告完成后**不得**再向该分支追加提交。如 final Head 改变，必须重新声明新的
-final Head 并重新等待对应 CI。
+权威取值请以 `https://github.com/adgo07/EquipEffi/pull/12` 的 head SHA 为准
+（本报告无法自指自身提交哈希）。报告完成后**不得**再向该分支追加提交。
+如 final Head 改变，必须重新声明新的 final Head 并重新等待对应 CI。
