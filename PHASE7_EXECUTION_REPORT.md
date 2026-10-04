@@ -364,3 +364,112 @@ READY_FOR_INDEPENDENT_ACCEPTANCE
 
 报告完成后**不得**再向该分支追加提交。如 Head 改变，必须重新声明新的 final Head、
 重新执行必要测试，并等待该 Head 对应的 CI。
+
+---
+
+# Phase 7 复验修复（Re-verification）
+
+独立验收对 head `515229e2e08c8685bed7f8b7c4d0ee28e539f89d` 给出
+`PHASE_7_BLOCKED`，提出 3 项阻断。三项**均成立**（其中第 1 项是我无授权改动了
+业务输入），逐项修复如下。
+
+## R-B1 类别联动改变合法输入
+
+**问题**：`CATEGORY_FIELD_CONSTRAINTS` 把 `单级石油化工离心泵` 的吸入方式强制锁为
+`单吸`。已批准 Golden `GC-PUMP-V5-CHEMICAL-DOUBLE-SUCTION` 的合法输入正是
+**「单级石油化工离心泵 + 双吸」**；锁定后 Qt 无法原样输入，Record 被写成单吸，
+比转速从 `135.8439…` 变成 `192.1123…`。
+
+**根因**：我把**清水类**的规则错误套用到了石化类。核对域路由
+`domain/evaluation/evaluators/pump.py`：
+
+- 清水分支有 `category_suction` 一致性检查（类别含「单吸」/「双吸」必须与字段一致，
+  否则按"设备类别与单双吸字段冲突"拒绝）；
+- **石化分支没有该检查**，只校验 `suction ∈ {单吸, 双吸}` 并把它用于吸入方式系数。
+
+因此「单级石油化工离心泵 + 双吸」在标准与已批准真值下都是**合法**的，
+把它锁死属越权约束。
+
+**修复**：石化类**不再约束吸入方式**（保留级数由类别名中的"单级"唯一决定）：
+
+| 泵型 | 级数 | 吸入方式 |
+|---|---|---|
+| 单级石油化工离心泵 | `1` 自动 | **用户选择**（原为强制单吸） |
+| 多级石油化工离心泵 | 用户填 `>1` | **用户选择** |
+
+清水类的锁定**保留**（域层确有一致性检查，且类别名显式声明单/双吸）。
+
+**验证**：以已批准 Golden 原输入走 Qt 路径，`request.suction == "双吸"`、
+级数 `1`、`evaluation_status = SUCCESS`、`grade = 1`、
+`比转速 ns` 以 `135.84` 开头——与 Golden 完全一致（回归测试
+`test_approved_double_suction_chemical_golden_input_is_preserved`）。
+
+## R-B2 两位小数显示未落实
+
+**问题**：`analysis.py` 的 `_TWO_DECIMAL_METRICS` 是一份**按显示名维护的白名单**，
+与实际派生量名称不匹配，因此普通结果仍打印数十位小数。
+
+**根因**：白名单必然漏键。实测真实派生量键为
+「吸入方式系数 / 级数 / 比转速用流量（m³/s）/ 单级扬程（m）/ 比转速 ns / 输出功率（kW）」，
+而白名单里写的是 `比转速` / `输出功率_kW` 等，一个都没命中。
+
+**修复**：改为**基于数值类型**判定（`labels.format_metric`），不再依赖名字白名单：
+
+```text
+非数值 / None / 非有限   -> 原样（None -> "—"）
+整数值（级数=1 等）       -> 不补小数位（"1"）
+其它数值（含小数部分）     -> 固定 2 位小数（"93.82"）
+```
+
+分析页的「实际泵效率」「对应等级效率限值」「关键计算参数」与记录页的
+「原等级阈值」「原关键计算参数」统一使用该实现。
+
+**验证**：`format_metric` 覆盖整数 / 小数 / 非数值；分析页断言**每一个**派生量
+都出现其名称与 2 位格式化值，且不得再出现未格式化的长小数串（回归测试
+`test_every_derived_metric_is_rendered_with_two_decimals`）。
+**未改变** Decimal 原始值、Numeric Profile、等级比较、Record 快照、Golden 真值。
+
+## R-B3 历史详情不完整
+
+**问题**：`records.py` 未展示冻结的缺失信息与判定解释；资料不足 Record 只显示
+「无法判定」，用户看不到原因。派生参数还丢失名称，只显示数值串。
+
+**根因**：
+
+- 详情渲染从未输出 `result_snapshot["missing_fields"]` 与 `["explanation"]`；
+- 「原关键计算参数」只 join 了 `derived.values()`，把键名丢掉了。
+
+**修复**：
+
+- 普通详情新增「缺失信息：…」与「判定说明：…」两行（取自不可变快照）；
+- 「原关键计算参数」改为 `名称 数值` 成对输出，并使用 R-B2 的格式化。
+
+**验证**：资料不足 Record 的详情包含「缺失信息：泵效率」与
+「判定说明：缺少泵效率，无法进行能效等级比较」；派生参数的每个名称都出现在该行，
+且不再出现 `：50；1；` 这类只有数值串的形态（回归测试
+`test_insufficient_data_record_shows_reason_and_missing_fields`、
+`test_record_derived_parameters_keep_their_names`）。
+
+## 复验修复后的本地结果
+
+```text
+tests.unit.test_phase7_analysis_history                44 项，全通过（含本轮新增 8 项）
+CI gating 模块列表（同 CI 形态）                          284 项  OK / exit 0
+全量 unittest                        1309 run / 1302 pass / 3 fail / 1 error / 3 skip
+known-regression comparator          gate=PASS（new_failures=0 new_errors=0）
+compileall -q src tools              exit 0
+git diff --check                     clean
+```
+
+**未修改**：Golden 业务真值、候选文件、Approved Golden provenance、Canonical、
+Numeric Profile、pump 公式 / 边界 / 等级判断、`platform-lock`、
+`records_migrations.py`（records schema 仍为 **NO**）。
+
+## 复验修复后的状态
+
+```text
+Phase 7 implementation = EXECUTION_COMPLETE
+READY_FOR_INDEPENDENT_ACCEPTANCE
+```
+
+**不合并 PR。不自宣 `PHASE_7_PASS`。不进入 Phase 8。**

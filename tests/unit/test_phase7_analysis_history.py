@@ -48,10 +48,12 @@ FORMAL_CATEGORIES: tuple[str, ...] = tuple(
 SINGLE_STAGE_LOCKED = (
     "单级单吸清水离心泵", "单级双吸清水离心泵",
     "管道清水离心泵", "单级石油化工离心泵")
+#: **只有清水类**的类别名显式含「单吸」/「双吸」时才由类别唯一决定吸入方式。
+#: 石化类不约束吸入方式（域层无类别↔吸入方式一致性检查；已批准 Golden
+#: `GC-PUMP-V5-CHEMICAL-DOUBLE-SUCTION` 即「单级石油化工离心泵 + 双吸」）。
 SUCTION_LOCKED = {
     "单级单吸清水离心泵": "单吸",
     "单级双吸清水离心泵": "双吸",
-    "单级石油化工离心泵": "单吸",
 }
 STAGES_FREE = (
     "多级清水离心泵", "轻型多级清水离心泵（立式）",
@@ -374,7 +376,8 @@ class DisplayPrecisionTests(Phase7TestCase):
 
         self.assertEqual(format_display_number("79.786165"), "79.79")
         self.assertEqual(format_display_number(Decimal("13.6250")), "13.62")
-        self.assertEqual(format_display_number("100"), "100.00")
+        # 整数值不补小数位（"级数 = 1" 不应显示成 "1.00"）
+        self.assertEqual(format_display_number("100"), "100")
         self.assertEqual(format_display_number(None), "—")
         self.assertEqual(format_display_number("abc"), "abc")
 
@@ -562,3 +565,128 @@ class Phase7ScopeGuardTests(Phase7TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+# --------------------------------------------------------------------------
+# 复验 blocker 回归（类别联动越权 / 显示精度 / 历史详情完整性）
+# --------------------------------------------------------------------------
+
+class ReVerificationBlockerTests(Phase7TestCase):
+    """独立验收提出的三项阻断的回归证据。"""
+
+    # ---- B1：类别联动不得改变合法业务输入 ----
+    def test_single_stage_chemical_keeps_suction_selectable(self):
+        """单级石化泵的吸入方式**不**由类别决定，必须保持可选。
+
+        已批准 Golden `GC-PUMP-V5-CHEMICAL-DOUBLE-SUCTION` 是
+        「单级石油化工离心泵 + 双吸」；若把它锁成单吸，比转速会从
+        135.8439… 变成 192.1123…，即无授权改动业务输入。
+        """
+
+        page = self.page()
+        page.category.setCurrentIndex(page.category.findData("单级石油化工离心泵"))
+        self.assertTrue(page.suction.isEnabled())
+        self.assertNotIn("suction", category_field_constraints("单级石油化工离心泵"))
+        # 级数仍由类别唯一决定
+        self.assertFalse(page.stages.isEnabled())
+        self.assertEqual(page.stages.text(), "1")
+
+    def test_multistage_chemical_keeps_suction_selectable(self):
+        page = self.page()
+        page.category.setCurrentIndex(page.category.findData("多级石油化工离心泵"))
+        self.assertTrue(page.suction.isEnabled())
+        self.assertEqual(category_field_constraints("多级石油化工离心泵"), {})
+
+    def test_approved_double_suction_chemical_golden_input_is_preserved(self):
+        """用已批准 Golden 的原输入走 Qt 路径：吸入方式与比转速都不得被改写。"""
+
+        import json
+
+        golden = json.loads(
+            (ROOT / "specs" / "equipment_efficiency" / "golden" / "pump_chemical"
+             / "GC-PUMP-V5-CHEMICAL-DOUBLE-SUCTION.json").read_text(encoding="utf-8"))
+        raw = golden["raw_inputs"]
+
+        page = self.page()
+        page.category.setCurrentIndex(page.category.findData(raw["product_type"]))
+        for key in ("QBEP", "HBEP", "speed", "efficiency"):
+            page.point_inputs[key].setText(str(raw[key]))
+        page.suction.setCurrentIndex(page.suction.findData(raw["suction"]))
+        request = page._collect_request()
+
+        self.assertEqual(request.suction, raw["suction"], "吸入方式被改写")
+        self.assertEqual(request.stages, str(raw["stages"]))
+
+        result = self.service.evaluate(request)
+        self.assertEqual(result.evaluation_status, golden["expected_result"]["evaluation_status"])
+        self.assertEqual(result.grade, golden["expected_result"]["grade"])
+        derived = result.calculation_trace.get("derived") or {}
+        ns = next(str(v) for k, v in derived.items() if "比转速 ns" in str(k))
+        self.assertTrue(ns.startswith("135.84"), ns)
+
+    def test_water_suction_lock_still_holds(self):
+        """清水类类别名显式含单吸/双吸时仍由类别决定（域层有一致性检查）。"""
+
+        page = self.page()
+        for category, expected in (("单级单吸清水离心泵", "单吸"),
+                                   ("单级双吸清水离心泵", "双吸")):
+            with self.subTest(category=category):
+                page.category.setCurrentIndex(page.category.findData(category))
+                self.assertFalse(page.suction.isEnabled())
+                self.assertEqual(page.suction.currentData(), expected)
+
+    # ---- B2：两位小数必须真正落实 ----
+    def test_every_derived_metric_is_rendered_with_two_decimals(self):
+        from equipeffi.presentation.qt.labels import format_metric
+
+        page = self.page()
+        self.fill(page, "单级单吸清水离心泵")
+        result = page.evaluate()
+        derived = result.calculation_trace.get("derived") or {}
+        self.assertTrue(derived)
+        basis = page.basis.text()
+        for name, value in derived.items():
+            with self.subTest(metric=name):
+                # 每个派生量都必须出现其**名称**
+                self.assertIn(str(name), basis)
+                # 且数值部分按 2 位（或整数值不补位）显示
+                self.assertIn(format_metric(value, name=str(name)), basis)
+        # 不得出现未格式化的长小数
+        self.assertNotIn("93.823603448604507505014701083136622423532335781578", basis)
+        self.assertNotIn("0.027777777777777777777777777777777777777777777777778", basis)
+
+    def test_format_metric_handles_integers_and_non_numerics(self):
+        from equipeffi.presentation.qt.labels import format_metric
+
+        self.assertEqual(format_metric("1", name="级数"), "1")
+        self.assertEqual(format_metric("50", name="单级扬程（m）"), "50")
+        self.assertEqual(format_metric("13.6250", name="输出功率（kW）"), "13.62")
+        self.assertEqual(format_metric(None), "—")
+        self.assertEqual(format_metric("abc"), "abc")
+
+    # ---- B3：历史详情必须完整 ----
+    def test_insufficient_data_record_shows_reason_and_missing_fields(self):
+        page = self.page()
+        self.fill(page, "单级单吸清水离心泵")
+        page.point_inputs["efficiency"].clear()
+        result = page.evaluate()
+        self.assertEqual(result.evaluation_status, "INSUFFICIENT_DATA")
+
+        records = RecordsPage(self.service)
+        text = records.show_record(page.last_saved_record_id)
+        self.assertIn("缺失信息：", text)
+        self.assertIn("泵效率", text)
+        self.assertIn("判定说明：", text)
+        self.assertIn(str(result.explanation), text)
+
+    def test_record_derived_parameters_keep_their_names(self):
+        page = self.page()
+        self.fill(page, "单级单吸清水离心泵")
+        result = page.evaluate()
+        records = RecordsPage(self.service)
+        text = records.show_record(page.last_saved_record_id)
+        line = next(ln for ln in text.splitlines() if ln.startswith("原关键计算参数："))
+        for name in (result.calculation_trace.get("derived") or {}):
+            with self.subTest(metric=name):
+                self.assertIn(str(name), line)
+        # 不得只显示数值串
+        self.assertNotIn("：50；1；", line)

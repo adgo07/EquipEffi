@@ -30,7 +30,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
     THRESHOLD_DISPLAY_NAMES,
 )
 from ..labels import support_status_text
-from .analysis import _TWO_DECIMAL_METRICS, format_display_number
+from ..labels import format_metric
 from ..widgets.collapsible import CollapsibleSection
 
 #: 结论筛选项 → 匹配的 evaluation_status 集合（"全部" 不筛选）。
@@ -227,6 +227,14 @@ class RecordsPage(QWidget):
         ]
         if snapshot.grade:
             lines.append(f"能效等级：{snapshot.grade}")
+        # 冻结的判定解释与缺失信息：这是"为什么是这个结论"的唯一依据，
+        # 资料不足（INSUFFICIENT_DATA）的 Record 尤其必须能看到缺了什么。
+        missing = result.get("missing_fields") or []
+        if missing:
+            lines.append("缺失信息：" + "、".join(str(item) for item in missing))
+        explanation = str(result.get("explanation") or "").strip()
+        if explanation:
+            lines.append(f"判定说明：{explanation}")
         for label, key in (("规定点流量 Q_BEP（m³/h）", "QBEP"),
                            ("规定点扬程 H_BEP（m）", "HBEP"),
                            ("规定点转速 n（r/min）", "speed"),
@@ -244,12 +252,13 @@ class RecordsPage(QWidget):
             # 只格式化**显示**；快照里的原值保持完整精度，不写回。
             lines.append("原等级阈值：" + "；".join(
                 f"{THRESHOLD_DISPLAY_NAMES.get(name, name)} "
-                f"{format_display_number(value)}"
+                f"{format_metric(value, name=str(name))}"
                 for name, value in thresholds.items()))
         derived = (result.get("calculation_trace") or {}).get("derived") or {}
         if derived:
+            # 必须保留**名称**：只显示数值串会让用户无法理解该参数是什么。
             lines.append("原关键计算参数：" + "；".join(
-                f"{format_display_number(value) if name in _TWO_DECIMAL_METRICS else value}"
+                f"{name} {format_metric(value, name=str(name))}"
                 for name, value in derived.items()))
 
         # 标准依据：只展示快照里**真实存在**的依据，不伪造。

@@ -54,7 +54,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
     category_field_constraints,
 )
 from ..tokens import TOKENS
-from ..labels import issue_code_texts
+from ..labels import format_metric, issue_code_texts
 
 _LOGGER = logging.getLogger("equipeffi.qt.analysis")
 
@@ -69,34 +69,14 @@ POINT_FIELDS: tuple[tuple[str, str, str], ...] = (
 #: 吸入方式选项（沿用已批准业务枚举，不在 UI 新造值）。
 SUCTION_OPTIONS: tuple[str, ...] = ("单吸", "双吸")
 
-#: 普通结果区需要按 2 位小数显示的派生量显示名（Presentation 层格式化）。
-_TWO_DECIMAL_METRICS: frozenset[str] = frozenset({
-    "泵效率_%", "实际泵效率", "规定点效率", "基准效率", "效率修正",
-    "比转速", "输出功率_kW", "单级扬程_m",
-})
-
 #: 系统执行失败的统一用户文案（真实原因只进日志）。
 SYSTEM_FAILURE_TEXT = "分析未能完成，请检查输入或联系技术人员。"
 
 
-def format_display_number(value: Any) -> str:
-    """把连续型派生数值格式化为 2 位小数（**仅用于显示**）。
+def format_display_number(value: Any, *, name: str = "") -> str:
+    """把计算派生量显示为 2 位小数（转发到共享实现，保留旧调用点兼容）。"""
 
-    只影响本页文本：不改变 `Decimal` 原始值、Numeric Profile、等级比较值、
-    Record 精确快照或 Golden business truth。非数值原样返回。
-    """
-
-    if value is None:
-        return "—"
-    try:
-        from decimal import Decimal, InvalidOperation
-
-        number = Decimal(str(value).strip())
-    except (InvalidOperation, ValueError, TypeError):
-        return str(value)
-    if not number.is_finite():
-        return str(value)
-    return f"{number:.2f}"
+    return format_metric(value, name=name)
 
 
 class AnalysisPage(QWidget):
@@ -449,9 +429,10 @@ class AnalysisPage(QWidget):
 
         # 第二层：关键实际值与对应限值（派生量显示 2 位小数；限值保持原文精度）。
         second: list[str] = []
-        actual_efficiency = (result.extra_metrics or {}).get("泵效率_%")
+        actual_key = "泵效率_%"
+        actual_efficiency = (result.extra_metrics or {}).get(actual_key)
         if actual_efficiency is not None:
-            second.append(f"实际泵效率：{format_display_number(actual_efficiency)}%")
+            second.append(f"实际泵效率：{format_metric(actual_efficiency, name=str(actual_key))}%")
         if result.thresholds:
             second.append("对应等级效率限值：" + "；".join(
                 f"{THRESHOLD_DISPLAY_NAMES.get(name, name)} {value}"
@@ -473,6 +454,6 @@ class AnalysisPage(QWidget):
         derived = result.calculation_trace.get("derived") or {}
         if derived:
             basis_lines.append("关键计算参数：" + "；".join(
-                f"{name} {format_display_number(value) if name in _TWO_DECIMAL_METRICS else value}"
+                f"{name} {format_metric(value, name=str(name))}"
                 for name, value in derived.items()))
         self.basis.setText("\n".join(basis_lines))
