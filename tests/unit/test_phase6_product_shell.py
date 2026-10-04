@@ -912,3 +912,129 @@ class SettingsCompositionWiringTests(ProductShellTestCase):
         page = self.window().settings_page
         self.assertNotIn("窗口位置", _visible_text(page))
         self.assertNotIn("窗口大小", _visible_text(page))
+
+class R1SecondRoundBlockerTests(ProductShellTestCase):
+    """复验 blocker 回归：内部标识泄露 / 共享门禁真实性 / 治理同步。"""
+
+    def test_ordinary_result_never_shows_raw_issue_code(self):
+        """普通结果区不得出现 `CATEGORY_UNCERTAIN` 等内部提示码。"""
+
+        page = AnalysisPage(self.service)
+        self.addCleanup(lambda: page.deleteLater())
+        page.category.setCurrentIndex(page.category.findData("不确定类别"))
+        page.as_of.setText(WATER_AS_OF())
+        result = page.evaluate()
+        self.assertIn("CATEGORY_UNCERTAIN", result.issue_codes)
+
+        ordinary = "\n".join([
+            page.conclusion.text(), page.summary.text(), page.values_label.text(),
+            page.reason_label.text(), page.basis.text(),
+        ])
+        self.assertNotIn("CATEGORY_UNCERTAIN", ordinary)
+        self.assertNotIn("CATEGORY_", ordinary)
+        # 应显示中文说明
+        self.assertIn("尚未确认产品类别", ordinary)
+
+    def test_raw_issue_code_remains_available_in_technical_detail(self):
+        """审计能力不删：原始提示码保留在折叠技术详情区。"""
+
+        page = AnalysisPage(self.service)
+        self.addCleanup(lambda: page.deleteLater())
+        page.category.setCurrentIndex(page.category.findData("不确定类别"))
+        page.as_of.setText(WATER_AS_OF())
+        page.evaluate()
+        self.assertIn("CATEGORY_UNCERTAIN", page.technical.text())
+        self.assertFalse(page.technical_box.is_expanded())
+
+    def test_all_mapped_issue_codes_are_chinese(self):
+        """所有已知内部码都必须有中文映射，且映射值不得是内部英文码。"""
+
+        from equipeffi.presentation.qt.labels import ISSUE_CODE_LABELS
+
+        known = (
+            "CATEGORY_UNCERTAIN", "CATEGORY_UNRESOLVED", "CATEGORY_MISSING",
+            "CATEGORY_NOT_APPLICABLE", "SUCTION_CATEGORY_CONFLICT",
+            "STAGE_CATEGORY_CONFLICT", "FLOW_INVALID", "HEAD_INVALID",
+            "SPEED_INVALID", "STAGES_INVALID", "EFFICIENCY_INVALID",
+            "SUCTION_INVALID", "STAGES_MISSING", "SUCTION_MISSING", "INVALID_INPUT",
+        )
+        for code in known:
+            with self.subTest(code=code):
+                self.assertIn(code, ISSUE_CODE_LABELS)
+                label = ISSUE_CODE_LABELS[code]
+                self.assertNotIn("_", label)
+                self.assertTrue(any("\u4e00" <= ch <= "\u9fff" for ch in label))
+
+    def test_unmapped_issue_code_is_suppressed_not_shown_raw(self):
+        from equipeffi.presentation.qt.labels import issue_code_texts
+
+        self.assertEqual(issue_code_texts(["TOTALLY_UNKNOWN_CODE"]), [])
+        self.assertEqual(issue_code_texts(["CATEGORY_UNCERTAIN"]), ["尚未确认产品类别"])
+
+    def test_shared_release_gate_is_actually_used_by_both_paths(self):
+        """内存替换共享策略后，两条路径必须**同步**变化。
+
+        这是"共用单一事实源"的机械证明：如果任一路径仍硬编码，
+        替换后两者就会分叉。
+        """
+
+        from equipeffi.application.services import pump_release_gate as gate
+        from equipeffi.application.services.evaluation_service import EvaluationService
+        from equipeffi.domain.common.models import DeviceDraft
+
+        values = {"category": "单级石油化工离心泵", "suction": "单吸", "stages": "1",
+                  "flow_m3h": 100, "head_m": 14, "rated_speed_rpm": 2900,
+                  "pump_efficiency": 73}
+        legacy = EvaluationService(JsonStandardRepository(SRC))
+        original = gate.PUMP_RELEASE_SUPPORT["pump_chemical"]
+
+        def observe():
+            unified = CentrifugalPumpAnalysisService._release_support("pump_chemical")
+            shared = legacy.evaluate(DeviceDraft(
+                record_id="GATE", device_type="pump_chemical",
+                raw_values=values)).support_status
+            return unified, shared
+
+        try:
+            gate.PUMP_RELEASE_SUPPORT["pump_chemical"] = "SUPPORTED"
+            self.assertEqual(observe(), ("SUPPORTED", "SUPPORTED"))
+            gate.PUMP_RELEASE_SUPPORT["pump_chemical"] = "NOT_IN_RELEASE_SCOPE"
+            self.assertEqual(observe(), ("NOT_IN_RELEASE_SCOPE", "NOT_IN_RELEASE_SCOPE"))
+        finally:
+            gate.PUMP_RELEASE_SUPPORT["pump_chemical"] = original
+
+    def test_unified_service_does_not_hardcode_release_support(self):
+        source = (SRC / "equipeffi" / "application" / "services"
+                  / "centrifugal_pump_analysis_service.py").read_text(encoding="utf-8")
+        self.assertIn("return pump_release_support(rule_profile)", source)
+        self.assertNotIn('if rule_profile == "pump_chemical":', source)
+
+    def test_governance_docs_record_the_closures(self):
+        """治理状态必须与关闭记录一致，不得自相矛盾。"""
+
+        task = (ROOT / "TASK_STATE.md").read_text(encoding="utf-8")
+        self.assertIn("P6-G06: COMPLETE", task)
+        self.assertNotIn("P6-G06: PARTIAL", task)
+        # 不得再把这些 QA 描述成 blocker / 延期。
+        self.assertNotIn("BLOCKER", task)
+        self.assertNotIn("仍不能关闭", task)
+        # 合并条目（QA-P5-001 / QA-P5-002 / QA-P3-003 同行）与 QA-P6-002 各一条，
+        # 都必须显式标注 CLOSED。
+        closure_lines = [ln.strip() for ln in task.splitlines()
+                         if ln.strip().startswith("QA-P5-001 /")
+                         or ln.strip().startswith("QA-P6-002:")]
+        self.assertEqual(len(closure_lines), 2)
+        for line in closure_lines:
+            with self.subTest(line=line[:48]):
+                self.assertIn("CLOSED", line)
+        for qa in ("QA-P5-001", "QA-P5-002", "QA-P3-003", "QA-P6-002"):
+            with self.subTest(qa=qa):
+                self.assertIn(qa, task)
+
+        backlog = (ROOT / "QA_BACKLOG.md").read_text(encoding="utf-8")
+        for qa in ("QA-P5-001", "QA-P5-002", "QA-P3-003", "QA-P6-002"):
+            with self.subTest(backlog=qa):
+                row = next(ln for ln in backlog.splitlines()
+                           if ln.startswith("| `" + qa + "` |"))
+                self.assertIn("`CLOSED`", row)
+                self.assertNotIn("BLOCKER", row)

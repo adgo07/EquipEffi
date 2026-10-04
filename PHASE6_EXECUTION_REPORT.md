@@ -573,3 +573,73 @@ UnicodeDecodeError: 'charmap' codec can't decode byte 0x81 in position 403
 pwsh 显式模块数组（与原先的单行命令等价，行为不变）。
 
 教训：任何跨进程读取中文输出的测试都必须显式指定编码，不得依赖平台默认代码页。
+
+---
+
+# Phase 6 R1 复验修复（第二轮）
+
+第二轮复验提出 3 项阻断，均**成立**，逐项修复如下。
+
+## R1-2-B1 普通 UI 泄露内部标识
+
+**问题**：`analysis.py` 把 `result.issue_codes` 直接拼进普通结果区，
+选择「不确定类别」后用户看到 `提示：CATEGORY_UNCERTAIN`。
+
+**修复**：
+
+- `presentation/qt/labels.py` 新增 `ISSUE_CODE_LABELS`（内部提示码 → 中文说明）
+  与 `issue_code_texts()`；**没有映射的内部码一律不展示**，
+  而不是退化显示内部英文码。
+- 普通结果区改用 `issue_code_texts(result.issue_codes)`，只显示中文说明。
+- **审计能力不删**：原始码与缺失字段移入默认折叠的技术详情区
+  （新增「判定提示码」/「缺失字段」两行）。
+
+实测：选择「不确定类别」后普通区显示「提示：尚未确认产品类别」，
+普通区不含 `CATEGORY_UNCERTAIN`，技术详情区仍含该原始码。
+
+## R1-2-B2 共享门禁声明与代码不符
+
+**问题**：`CentrifugalPumpAnalysisService._release_support` 仍硬编码
+`pump_water` / `pump_chemical` → `SUPPORTED`，**并未调用**新增的
+`pump_release_gate`。在内存中替换共享策略后，两条路径返回不同状态，
+因此执行报告与 QA 台账中"共同使用单一事实源"的说法当时**不成立**。
+
+**修复**：统一服务的 `_release_support` 改为
+`return pump_release_support(rule_profile)`，真正委托给共享策略。
+
+**机械证明**（`R1SecondRoundBlockerTests::test_shared_release_gate_is_actually_used_by_both_paths`）：
+在内存中把 `PUMP_RELEASE_SUPPORT['pump_chemical']` 改为 `NOT_IN_RELEASE_SCOPE` 后，
+`CentrifugalPumpAnalysisService._release_support` 与遗留 `EvaluationService` 的
+`support_status` **同步**变为 `NOT_IN_RELEASE_SCOPE`；恢复后两者同步回到
+`SUPPORTED`。硬编码无法通过该断言。
+
+## R1-2-B3 治理状态未同步
+
+**问题**：`TASK_STATE.md` 仍写 `P6-G06: PARTIAL`，并把 `QA-P6-002` 标为 `BLOCKER`、
+把 `QA-P5-001 / QA-P5-002(b) / QA-P3-003` 标为"仍不能关闭"，与 R1 的关闭记录矛盾。
+
+**修复**：`TASK_STATE.md` 同步为 `P6-G06: COMPLETE`；四项 QA 全部记为 `CLOSED`
+并指向 `QA_BACKLOG.md` 的 `closed_by`；`deviations_registered` 不再含 `BLOCKER`。
+新增机械断言 `test_governance_docs_record_the_closures`，
+同时校验 `TASK_STATE.md` 与 `QA_BACKLOG.md` 的关闭状态一致，
+防止治理文件再次与关闭记录脱节。
+
+## 第二轮修复后的本地结果
+
+```text
+tests.unit.test_phase6_product_shell        69 项，全通过（含本轮新增 7 项）
+全量 unittest                                1263 run / 1256 pass / 3 fail / 1 error / 3 skip
+known-regression comparator                  gate=PASS（new_failures/new_errors/worsened/missing 全 0）
+```
+
+**未修改**：Golden 业务真值、候选文件、Approved Golden provenance、Canonical、
+Numeric、platform-lock、records migrations。
+
+## 状态
+
+```text
+Phase 6 R1 implementation = EXECUTION_COMPLETE
+READY_FOR_REACCEPTANCE
+```
+
+**不合并 PR。不自宣 `PHASE_6_PASS`。不进入 Phase 7。**

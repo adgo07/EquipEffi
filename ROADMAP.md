@@ -29,7 +29,7 @@
 Stage D 证据闭环已在 Phase 5 完成并交独立验收。**独立验收通过前，`support_status`
 已随 Phase 5 Stage D 独立验收通过而**正式生效**（PR #13 @ `f3e32f84`）。**
 正式发布用户表面 = PySide6 Qt Desktop（`--qt`）；非正式表面的 support 差异
-登记为 `REGISTERED_DEVIATION`（见 `QA_BACKLOG.md` 的 `QA-P5-001`～`005`）。
+`QA-P5-001` / `QA-P5-002` / `QA-P3-003` 已由 Phase 6 R1 真正关闭；`QA-P5-003`～`005` 仍登记 `REGISTERED_DEVIATION`（见 `QA_BACKLOG.md`）。
 
 - 权威范围文件：[V1_SCOPE.md](V1_SCOPE.md)
 - 参考标准真实状态：[REFERENCE_STANDARD_ROADMAP.md](REFERENCE_STANDARD_ROADMAP.md)（当前总体 `PARTIAL`）

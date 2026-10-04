@@ -38,7 +38,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
     PumpAnalysisResult,
 )
 from ..tokens import TOKENS
-from ..labels import support_status_text
+from ..labels import issue_code_texts, support_status_text
 from ..widgets.collapsible import CollapsibleSection
 
 #: 规定点参数字段（用户可见标签 + 内部字段名）。
@@ -551,8 +551,11 @@ class AnalysisPage(QWidget):
             first.append(f"能效等级：{result.grade}")
         if result.missing_fields:
             first.append("缺失信息：" + "、".join(result.missing_fields))
-        if result.issue_codes:
-            first.append("提示：" + "、".join(result.issue_codes))
+        # 普通结果区只显示用户可读的中文说明；内部 `issue_codes` 是审计标识，
+        # 只允许出现在折叠的技术详情区（见 _render_technical）。
+        hints = issue_code_texts(result.issue_codes)
+        if hints:
+            first.append("提示：" + "、".join(hints))
         # 结论区保留契约给出的判定说明：类别未确认等场景的"请先确认"指引必须
         # 出现在用户第一眼看到的位置，不能被折叠或降级。
         first.append(f"判定说明：{result.explanation}")
@@ -613,5 +616,9 @@ class AnalysisPage(QWidget):
             ("数据版本", standard.get("data_version") or "—"),
             ("数值配置", result.references.get("numeric_profile_id") or "—"),
             ("结果契约", result.references.get("result_contract_version") or "—"),
+            # 原始判定提示码是审计标识：普通区只显示中文说明，
+            # 原始码归此处，审计能力不删。
+            ("判定提示码", "、".join(result.issue_codes) or "—"),
+            ("缺失字段", "、".join(result.missing_fields) or "—"),
         ]
         self.technical.setText("\n".join(f"{name}：{value}" for name, value in rows))

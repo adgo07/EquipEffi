@@ -35,14 +35,14 @@ current_task:
     P6-G03: COMPLETE
     P6-G04: COMPLETE
     P6-G05: COMPLETE
-    P6-G06: PARTIAL（QA-P6-002：共享 Application/CLI 语义因 Golden provenance 冻结无法在 Phase 6 收口）
+    P6-G06: COMPLETE（R1 已关闭 QA-P5-001 / QA-P5-002 / QA-P3-003；见 QA_BACKLOG.md 的 closed_by）
     P6-G07: COMPLETE
   deviations_registered:
     QA-P6-001: legacy Tk 保留但不接线；disposition Phase 8
-    QA-P6-002: 候选层 Golden 实现哈希冻结；BLOCKER；disposition Phase 7
+    QA-P6-002: CLOSED（R1：补登记历史实现哈希，实现可演进；见 QA_BACKLOG.md）
     QA-P6-003: 草稿 identity 名称即 ID；disposition Phase 7
     QA-P6-004: 非正式 adapter 未升级为正式 UI；disposition Phase 8 / 9
-    QA-P5-001 / QA-P5-002(b) / QA-P3-003: Phase 6 复核后仍不能关闭，附具体 blocker
+    QA-P5-001 / QA-P5-002 / QA-P3-003: CLOSED（R1：入口语义收口，机械测试证明）
   next_action: 等待独立验收；do not merge; do not start Phase 7
 
 previous_task:

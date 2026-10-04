@@ -37,6 +37,7 @@ from ..lifecycle import (
     business_keys_metadata,
     stable_fingerprint,
 )
+from .pump_release_gate import pump_release_support
 
 PUMP_PUBLIC_DEVICE_TYPE = "centrifugal_pump"
 GB19762_STANDARD_CODE = "GB 19762-2025"
@@ -790,29 +791,16 @@ class CentrifugalPumpAnalysisService:
 
     @staticmethod
     def _release_support(rule_profile: str) -> str | None:
-        """发布门禁：统一离心泵正式产品路径（PySide6 Qt Desktop `--qt`）。
+        """发布门禁：**委托**给共享单一事实源。
 
-        Phase 5（pump_chemical Stage D）把 `pump_chemical` 置为
-        `SUPPORTED` 作为**支持提升候选**：
+        Phase 6 R1：这里曾经硬编码 `pump_water` / `pump_chemical` → `SUPPORTED`。
+        那使"与遗留 `EvaluationService` 共用同一份门禁策略"只停留在注释里：
+        在内存中替换共享策略后，两条路径会返回不同状态。现在改为直接调用
+        `pump_release_gate.pump_release_support`，使该声明可被机械证明。
 
-        - 依据 Stage D Evidence Matrix（见 `docs/phase5_stage_d_evidence_matrix.md`）
-          与 `FORMAL_APPLICATION_E2E` 证据
-          （`specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json`）；
-        - 该结论在**独立验收通过并合并前**属于
-          `SUPPORT_PROMOTION_CANDIDATE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`，
-          不得表述为"正式支持已经生效"。
-
-        只影响这一个统一路径。遗留 `EvaluationService` / `ApplicationApi` /
-        `--json` / `--web` / JSONL / legacy Tk `--gui` / V4 等非正式发布表面
-        仍返回 `NOT_IN_RELEASE_SCOPE`，已登记为 `REGISTERED_DEVIATION`
-        （见 `QA_BACKLOG.md` 的 `QA-P5-00x`）。
+        策略本体与依据见 `application/services/pump_release_gate.py`。
         """
-
-        if rule_profile == "pump_water":
-            return "SUPPORTED"
-        if rule_profile == "pump_chemical":
-            return "SUPPORTED"
-        return None
+        return pump_release_support(rule_profile)
 
     # -- Workspace / Record 编排（持久化经 Protocol） ------------------------
 
