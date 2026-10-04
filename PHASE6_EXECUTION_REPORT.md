@@ -530,3 +530,46 @@ READY_FOR_REACCEPTANCE
 ```
 
 **不合并 PR。不自宣 `PHASE_6_PASS`。不进入 Phase 7。**
+
+## R1 实际 GitHub CI 结果
+
+最终 head 的 Required CI（全部 `success`）：
+
+```text
+Windows Core
+  [ 6] Compileall                                                          success
+  [ 7] Architecture boundaries and metadata contract                       success
+  [ 8] Application and core tests                                          success
+  [ 9] Phase 2/3/4/5/6 settings, lifecycle, Stage D, Product Shell, Qt offscreen (gating)  success
+  [10] Full suite known-regression comparator (gating)                     success
+Pump Conformance
+  [12] pump_chemical Stage D support + Phase 6 product shell (gating)      success
+Whitespace check (gating)                                                  success
+Full suite baseline (NON-GATING)                                           success
+```
+
+### R1 过程中发现并修复的一个 CI-only 缺陷（如实记录）
+
+R1 首次推送后 `Windows Core` 的 gating 步骤失败，但**本机以完全相同的模块列表、
+在默认 TEMP 下运行 231 项全部通过**。由于该仓的 GitHub token 只有 `gho_` 级别、
+缺少 `actions:read`：job log（`/actions/jobs/{id}/logs`）返回 401，artifact 下载
+同样 401，step summary 由前端 JavaScript 渲染因而无法直接抓取。
+
+定位手段：先用「逐模块拆分诊断步骤」确认**每个模块单独通过、合并调用也通过**，
+从而排除测试与算法问题；随后改用 **workflow `::error::` 注解**，经
+`GET /repos/{owner}/{repo}/check-runs/{id}/annotations`（该接口可用）取得真实错误：
+
+```text
+ERROR: test_cli_json_entrypoint_returns_supported_for_chemical
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x81 in position 403
+```
+
+根因：新增的 CLI 子进程测试用 `subprocess.run(text=True)` 读取 `main.py` 输出却
+**未指定编码**。本机默认编码为 UTF-8，CI runner 的默认代码页不是，中文结论因此
+触发 `charmap` 解码失败。该测试在本地恒通过，故此前未被发现。
+
+修复：`subprocess.run(..., encoding="utf-8")` 并显式设置子进程
+`PYTHONIOENCODING="utf-8"`。同时**移除全部临时诊断脚手架**；gating 步骤改为
+pwsh 显式模块数组（与原先的单行命令等价，行为不变）。
+
+教训：任何跨进程读取中文输出的测试都必须显式指定编码，不得依赖平台默认代码页。
