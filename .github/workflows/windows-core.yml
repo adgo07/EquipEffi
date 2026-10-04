@@ -80,6 +80,18 @@ jobs:
             tests.unit.test_public_device_types `
             tests.unit.test_device_evaluator_matrix -q
 
+      # TEMP DIAGNOSTIC (R1): capture the exact unittest output into the job summary
+      # so an environment-specific failure is visible without log access.
+      - name: DIAGNOSTIC phase 6 shell tests
+        if: always()
+        continue-on-error: true
+        run: |
+          python -m unittest tests.unit.test_phase6_product_shell -v 2>&1 | Tee-Object -FilePath diag6.txt
+          python -m unittest tests.unit.test_phase2_qt tests.unit.test_phase3_qt_unified tests.unit.test_phase5_chemical_stage_d -v 2>&1 | Tee-Object -FilePath diag-other.txt -Append
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value '```text'
+          Get-Content diag6.txt,diag-other.txt | Select-Object -Last 120 | Add-Content -Path $env:GITHUB_STEP_SUMMARY
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value '```'
+
       - name: Phase 2/3/4/5/6 settings, lifecycle, Stage D, Product Shell, Qt offscreen (gating)
         run: |
           python -m unittest `
