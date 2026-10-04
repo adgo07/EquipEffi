@@ -82,6 +82,13 @@ jobs:
 
       # TEMP DIAGNOSTIC (R1): run each gating module separately so the failing
       # module is identifiable from the step outcome alone (no log access).
+      # TEMP DIAGNOSTIC (R1b): the exact combined invocation of the real step.
+      - name: DIAGNOSTIC combined invocation
+        if: always()
+        continue-on-error: true
+        run: |
+          python -m unittest tests.unit.test_phase6_product_shell tests.unit.test_composition tests.unit.test_phase2_settings tests.unit.test_phase2_logging tests.unit.test_phase2_qt tests.unit.test_phase3_qt_unified tests.unit.test_phase3_r1_blockers tests.unit.test_phase3_r2_final_closure tests.unit.test_phase3_r3_as_of_lifecycle tests.unit.test_phase4_lifecycle_generalization tests.unit.test_phase4_fingerprint_decoupling tests.unit.test_phase5_chemical_stage_d tests.unit.test_windows_regression_comparator -v
+
       - name: DIAGNOSTIC phase 6 shell tests
         if: always()
         continue-on-error: true
