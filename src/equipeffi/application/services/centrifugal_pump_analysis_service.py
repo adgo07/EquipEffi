@@ -18,6 +18,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import date
+from uuid import uuid4
 from decimal import Decimal
 import json
 from typing import Any
@@ -130,6 +131,43 @@ PUMP_CATEGORIES: tuple[PumpCategory, ...] = (
          "暂时无法判断实际泵型。请先确认泵型说明后再进行分析；本项不执行计算。",
          special="uncertain"),
 )
+
+#: 类别**唯一决定**的输入字段。键为 `PUMP_CATEGORIES` 的 `visible_name`。
+#:
+#: 依据是既有领域路由（`domain/evaluation/evaluators/pump.py`），不是 UI 新造的规则：
+#:
+#: - 级数：`"多级" in category` 为假时，级数必须恰好为 1
+#:   （见 `pump.py` 的 `is_multistage` 分支）；为真时级数由用户填写且必须 > 1。
+#: - **吸入方式**：只有**清水类**的类别名显式含「单吸」/「双吸」时才由类别唯一决定
+#:   （领域层 `category_suction` 会据此判定冲突，见 `pump.py`）。
+#:   **石油化工类不约束吸入方式**：`pump.py` 的石化分支只校验 `suction ∈ {单吸, 双吸}`
+#:   并把它用于吸入方式系数，**没有**类别↔吸入方式一致性检查；已批准 Golden
+#:   `GC-PUMP-V5-CHEMICAL-DOUBLE-SUCTION` 正是「单级石油化工离心泵 + 双吸」。
+#:   因此把石化泵锁成单吸会**改变合法业务输入**（并改变比转速与结果），属越权约束。
+#: - **管道清水离心泵**的类别名既不含「单吸」也不含「双吸」→ 只锁定级数。
+#:
+#: 注意：锁定只表示"该值由类别唯一决定、界面默认填入并禁止改成**与类别冲突**的值"，
+#: 它**不得**被用来抹掉标准与已批准真值允许的其它合法取值。
+CATEGORY_FIELD_CONSTRAINTS: dict[str, dict[str, str]] = {
+    "单级单吸清水离心泵": {"stages": "1", "suction": "单吸"},
+    "单级双吸清水离心泵": {"stages": "1", "suction": "双吸"},
+    "管道清水离心泵": {"stages": "1"},
+    "多级清水离心泵": {},
+    "轻型多级清水离心泵（立式）": {},
+    "轻型多级清水离心泵（卧式）": {},
+    # 石化类：级数由类别名中的"单级"唯一决定；吸入方式**不**由类别决定。
+    "单级石油化工离心泵": {"stages": "1"},
+    "多级石油化工离心泵": {},
+}
+
+#: 用户可填写的数值字段（其余为类别锁定字段）。
+LOCKABLE_FIELDS: tuple[str, ...] = ("stages", "suction")
+
+
+def category_field_constraints(product_category: str | None) -> dict[str, str]:
+    """返回该类别被唯一决定的字段；无约束时返回空字典。"""
+
+    return dict(CATEGORY_FIELD_CONSTRAINTS.get(str(product_category or ""), {}))
 
 _CATEGORY_BY_NAME = {category.visible_name: category for category in PUMP_CATEGORIES}
 UNCERTAIN_CATEGORY = "不确定类别"
@@ -353,6 +391,36 @@ THRESHOLD_DISPLAY_NAMES: dict[str, str] = {
     "2级效率_%": "2级能效效率限值（%）",
     "3级效率_%": "3级能效效率限值（%）",
 }
+
+
+@dataclass(frozen=True)
+class AnalysisOutcome:
+    """「分析 + 自动固化」的返回契约（Phase 7）。
+
+    ``record_status`` 只允许三个取值：
+
+    ```text
+    RECORDED       已自动形成不可变历史 Record
+    NOT_RECORDED   合法评价但按业务规则不固化（状态不在白名单 / 业务拒绝）
+    SAVE_FAILED    计算结果已产生，但历史记录**保存失败**（系统失败）
+    ```
+
+    `SAVE_FAILED` 必须被调用方显示为"保存失败"，**不得**显示为已保存。
+    """
+
+    request: PumpAnalysisRequest
+    result: PumpAnalysisResult
+    record: RecordSnapshot | None
+    record_status: str
+    record_error: str = ""
+
+    @property
+    def recorded(self) -> bool:
+        return self.record_status == "RECORDED"
+
+    @property
+    def save_failed(self) -> bool:
+        return self.record_status == "SAVE_FAILED"
 
 
 class CentrifugalPumpAnalysisService:
@@ -902,6 +970,49 @@ class CentrifugalPumpAnalysisService:
         if workspace is None:
             raise AnalysisError(f"草稿不存在: {workspace_id}")
         return self.evaluate(self.request_from_workspace(workspace, record_id=record_id))
+
+    def analyze_and_record(self, request: PumpAnalysisRequest, *,
+                           record_id: str | None = None) -> "AnalysisOutcome":
+        """Phase 7 正式分析流程：评价 + **自动**固化合法业务终态。
+
+        产品规则（Owner，Phase 7）：用户点击「分析」后，只要形成**合法业务终态**，
+        就自动保存为不可变历史 Record；不存在用户手工「保存为正式记录」这一步。
+
+        本方法**不放宽任何既有安全门禁**：固化仍走 `finalize()`，因此业务状态白名单、
+        输入指纹比对、类别/日期一致性、Canonical provenance 检查一条不减。
+        它只是把触发者从"用户点击"改成"合法评价完成后自动执行"。
+
+        **系统异常与业务结论严格分离**：
+
+        - 评价阶段抛出的任何异常**不被转换**成业务状态（如 `INSUFFICIENT_DATA`
+          或"无法判定"），而是原样向上抛出，由调用方按系统失败处理；
+        - 固化阶段的 `AnalysisError` 是**业务拒绝**（状态不在白名单、指纹不一致等），
+          返回 `record_status = "NOT_RECORDED"`；
+        - 固化阶段的**其他**异常（`LifecyclePersistenceError` / `OSError` /
+          `sqlite3.Error` 等）是**系统失败**，返回 `record_status = "SAVE_FAILED"`
+          并携带根因，调用方**不得**显示为保存成功。
+        """
+
+        result = self.evaluate(request)
+
+        if not result.finalizable:
+            return AnalysisOutcome(request=request, result=result,
+                                   record=None, record_status="NOT_RECORDED",
+                                   record_error=result.not_finalizable_reason)
+
+        target_id = record_id or f"ANALYSIS-{uuid4().hex[:12]}"
+        try:
+            record = self.finalize(record_id=target_id, workspace_id=None,
+                                   request=request, result=result)
+        except AnalysisError as error:
+            return AnalysisOutcome(request=request, result=result, record=None,
+                                   record_status="NOT_RECORDED", record_error=str(error))
+        except Exception as error:  # noqa: BLE001 - 系统失败必须与业务结论分离
+            return AnalysisOutcome(request=request, result=result, record=None,
+                                   record_status="SAVE_FAILED",
+                                   record_error=f"{type(error).__name__}: {error}")
+        return AnalysisOutcome(request=request, result=result, record=record,
+                               record_status="RECORDED")
 
     def finalize(self, *, record_id: str, workspace_id: str | None,
                  request: PumpAnalysisRequest, result: PumpAnalysisResult) -> RecordSnapshot:

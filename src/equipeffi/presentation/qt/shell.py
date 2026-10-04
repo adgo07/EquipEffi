@@ -54,8 +54,8 @@ class MainWindow(QMainWindow):
         # 所有页面都真实构建；analysis 为 None 时仍构建（用于仅设置/关于场景）。
         self.home_page = HomePage(analysis, self) if analysis is not None else None
         self.standards_page = StandardsPage(analysis, self) if analysis is not None else None
-        self.analysis_page = AnalysisPage(analysis, workspace_id=workspace_id,
-                                          navigator=self) if analysis is not None else None
+        # Phase 7：普通流程没有草稿概念，分析页不接收 workspace_id。
+        self.analysis_page = AnalysisPage(analysis, navigator=self) if analysis is not None else None
         self.records_page = RecordsPage(analysis, navigator=self) if analysis is not None else None
         self.settings_page = SettingsPage(settings, analysis, app_version=self.app_version,
                                          data_location=data_location, navigator=self)
@@ -100,13 +100,14 @@ class MainWindow(QMainWindow):
         self._show_page("标准库")
 
     def open_analysis(self, workspace_id: str | None = None) -> None:
-        page = self.analysis_page
-        if page is None:
+        """切到「新建分析」页。
+
+        Phase 7：普通产品流程已取消草稿概念，因此这里只切页，不再载入草稿。
+        `workspace_id` 参数保留仅为兼容既有调用方，**不再**驱动任何草稿行为。
+        """
+
+        if self.analysis_page is None:
             return
-        if workspace_id:
-            page.load_workspace(workspace_id)
-        else:
-            page.new_draft()
         self._show_page("新建分析")
 
     def open_records(self, record_id: str | None = None) -> None:

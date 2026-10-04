@@ -67,6 +67,11 @@ def _spoof(result: PumpAnalysisResult, **changes) -> PumpAnalysisResult:
     return replace(result, **changes)
 
 
+from equipeffi.presentation.qt.pages.analysis import (  # noqa: E402
+    SYSTEM_FAILURE_TEXT,
+)
+
+
 class _DbCase(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
@@ -257,9 +262,8 @@ class QtStaleResultTests(_DbCase):
         from equipeffi.presentation.qt.pages.analysis import AnalysisPage
 
         svc = service or self._migrated_service()
-        page = AnalysisPage(svc)
+        page = AnalysisPage(svc, as_of=AS_OF)
         page.category.setCurrentIndex(page.category.findData(category))
-        page.as_of.setText(AS_OF.isoformat())
         return page, svc
 
     def _fill_water(self, page) -> None:
@@ -270,41 +274,53 @@ class QtStaleResultTests(_DbCase):
         page.suction.setCurrentIndex(page.suction.findData("单吸"))
 
     def test_evaluate_clears_previous_result_before_reanalysing(self):
+        """一次失败的新分析不得保留旧结果（否则旧结果会被当作新输入固化）。"""
+
         page, _ = self._page()
         self._fill_water(page)
         first = page.evaluate()
         self.assertEqual(first.evaluation_status, "SUCCESS")
-        self.assertTrue(page.finalize_button.isEnabled())
+        self.assertEqual(page.last_record_status, "RECORDED")
 
-        # 让下一次分析在收集阶段就失败（非法日期）
-        page.as_of.setText("not-a-date")
+        # 让下一次分析在收集阶段就失败（取消产品类别）
+        page.category.setCurrentIndex(0)
         self.assertIsNone(page.evaluate())
         self.assertIsNone(page._last_request)
         self.assertIsNone(page._last_result)
-        self.assertFalse(page.finalize_button.isEnabled())
-        self.assertEqual(page.finalize(), "NO_RESULT")
+        self.assertIsNone(page.last_saved_record_id)
+        self.assertIn("请先选择产品类别", page.summary.text())
 
     def test_failed_reanalysis_does_not_leave_old_success(self):
-        """新分析失败后旧 SUCCESS 必须作废，且不能据此新增 Record。"""
+        """新分析失败后旧 SUCCESS 必须作废，且不能据此新增 Record。
+
+        Phase 7：合法分析会自动形成 Record，因此第一次成功就已产生 1 条记录；
+        关键不变量是**失败的那一次不得新增记录**。
+        """
 
         page, svc = self._page()
         self._fill_water(page)
         self.assertEqual(page.evaluate().evaluation_status, "SUCCESS")
+        self.assertEqual(len(svc.list_records()), 1)
+        first_record = page.last_saved_record_id
 
         # 改成非法输入（效率 0 → INVALID_INPUT 路径），重新分析
         page.point_inputs["efficiency"].setText("0")
         stale = page.evaluate()
         self.assertIsNotNone(stale)
         self.assertEqual(stale.evaluation_status, "INVALID_INPUT")
-        self.assertFalse(page.finalize_button.isEnabled())
-        self.assertEqual(page.finalize(), "NOT_FINALIZABLE")
-        self.assertEqual(svc.list_records(), [])
+        self.assertEqual(page.last_record_status, "NOT_RECORDED")
+        self.assertIsNone(page.last_saved_record_id)
+        # 失败的分析不得新增记录
+        self.assertEqual(len(svc.list_records()), 1)
+        self.assertEqual(svc.open_record(first_record).evaluation_status, "SUCCESS")
 
-    def test_exception_during_evaluate_clears_state_and_blocks_finalize(self):
+    def test_exception_during_evaluate_clears_state_and_creates_no_record(self):
+        """系统异常（evaluator 崩溃）不得伪装成业务结论，也不得生成 Record。"""
+
         page, svc = self._page()
         self._fill_water(page)
         self.assertEqual(page.evaluate().evaluation_status, "SUCCESS")
-        self.assertEqual(len(svc.list_records()), 0)
+        self.assertEqual(len(svc.list_records()), 1)
 
         def _boom(_request):
             raise RuntimeError("模拟 evaluator 崩溃")
@@ -312,9 +328,11 @@ class QtStaleResultTests(_DbCase):
         page.service.evaluate = _boom
         self.assertIsNone(page.evaluate())
         self.assertIsNone(page._last_result)
-        self.assertFalse(page.finalize_button.isEnabled())
-        self.assertEqual(page.finalize(), "NO_RESULT")
-        self.assertEqual(svc.list_records(), [])
+        self.assertIsNone(page.last_saved_record_id)
+        # 明确显示为系统失败，而不是"无法判定"/"资料不足"
+        self.assertEqual(page.summary.text(), SYSTEM_FAILURE_TEXT)
+        self.assertNotIn("无法判定", page.summary.text())
+        self.assertEqual(len(svc.list_records()), 1)
 
     def test_chemical_failed_reanalysis_does_not_leave_old_success(self):
         page, svc = self._page(CHEMICAL)
@@ -324,14 +342,14 @@ class QtStaleResultTests(_DbCase):
         page.point_inputs["efficiency"].setText("73")
         page.suction.setCurrentIndex(page.suction.findData("单吸"))
         self.assertEqual(page.evaluate().evaluation_status, "SUCCESS")
+        self.assertEqual(len(svc.list_records()), 1)
 
         page.point_inputs["efficiency"].setText("0")
         self.assertEqual(page.evaluate().evaluation_status, "INVALID_INPUT")
-        self.assertFalse(page.finalize_button.isEnabled())
-        self.assertEqual(page.finalize(), "NOT_FINALIZABLE")
-        self.assertEqual(svc.list_records(), [])
+        self.assertEqual(page.last_record_status, "NOT_RECORDED")
+        self.assertEqual(len(svc.list_records()), 1)
 
-    def test_chemical_exception_blocks_finalize(self):
+    def test_chemical_exception_creates_no_record_and_is_not_a_business_state(self):
         page, svc = self._page(CHEMICAL)
         page.point_inputs["QBEP"].setText("100")
         page.point_inputs["HBEP"].setText("14")
@@ -339,14 +357,15 @@ class QtStaleResultTests(_DbCase):
         page.point_inputs["efficiency"].setText("73")
         page.suction.setCurrentIndex(page.suction.findData("单吸"))
         self.assertEqual(page.evaluate().evaluation_status, "SUCCESS")
+        before = len(svc.list_records())
 
         def _boom(_request):
             raise RuntimeError("模拟 evaluator 崩溃")
 
         page.service.evaluate = _boom
         self.assertIsNone(page.evaluate())
-        self.assertEqual(page.finalize(), "NO_RESULT")
-        self.assertEqual(svc.list_records(), [])
+        self.assertEqual(page.summary.text(), SYSTEM_FAILURE_TEXT)
+        self.assertEqual(len(svc.list_records()), before)
 
 
 class CollapsibleTechnicalDetailTests(_DbCase):
@@ -359,11 +378,20 @@ class CollapsibleTechnicalDetailTests(_DbCase):
         cls.app = QApplication.instance() or QApplication([])
 
     def _pages(self):
-        from equipeffi.presentation.qt.pages.analysis import AnalysisPage
         from equipeffi.presentation.qt.pages.records import RecordsPage
 
         svc = self._migrated_service()
-        return (("analysis", AnalysisPage(svc)), ("records", RecordsPage(svc)))
+        # Phase 7：分析页已不再显示技术详情，折叠能力只在「分析记录」页保留。
+        return (("records", RecordsPage(svc)),)
+
+    def test_analysis_page_has_no_technical_detail_section(self):
+        """Phase 7：普通新建分析页不再展示技术详情（审计信息归记录页）。"""
+
+        from equipeffi.presentation.qt.pages.analysis import AnalysisPage
+
+        page = AnalysisPage(self._migrated_service(), as_of=AS_OF)
+        self.assertFalse(hasattr(page, "technical_box"))
+        self.assertFalse(hasattr(page, "technical"))
 
     def test_technical_detail_is_hidden_by_default_and_stays_hidden(self):
         for name, page in self._pages():
@@ -391,12 +419,13 @@ class CollapsibleTechnicalDetailTests(_DbCase):
         from equipeffi.presentation.qt.pages.analysis import AnalysisPage
 
         svc = self._migrated_service()
-        page = AnalysisPage(svc)
+        page = AnalysisPage(svc, as_of=AS_OF)
         page.show()
         self.app.processEvents()
         visible_text = "\n".join([
             page.conclusion.text(), page.summary.text(), page.basis.text(),
-            page.category_help.text(), page.draft_status.text(),
+            page.values_label.text(), page.reason_label.text(),
+            page.category_help.text(), page.locked_hint.text(),
         ])
         for forbidden in ("pump_water", "pump_chemical", "profile_id", "rule_id",
                           "GB19762-T3-01", "EQUIPEFFI_PUMP_DECIMAL50_V2"):

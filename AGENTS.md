@@ -7,7 +7,7 @@
 - 产品：EquipEffi 设备能效分析工具（Module ID `qz.equipment_efficiency`）。
 - Canonical repository：`https://github.com/adgo07/EquipEffi.git`。
 - 当前 Reference Standard：`GB 19762—2025 离心泵能效限定值及能效等级`。
-- 当前主要产品阶段：`EquipEffi V2.3` 下 `Phase 1 = PHASE_1_PASS`、`Phase 2 = PHASE_2_PASS`、`Phase 3 = PHASE_3_PASS`（PR #11 合并 @ `87d9ef1b`，验收落档 `docs/phase3_acceptance_record.md`）、`Phase 4 = PHASE_4_PASS`（PR #12 合并 @ `d6112ea9`，验收落档 `docs/phase4_acceptance_record.md`）、**`Phase 5 = PHASE_5_PASS`**（PR #13 合并 @ `f3e32f84`，验收落档 `docs/phase5_acceptance_record.md`）、**`Phase 6 = IN_PROGRESS`**（完整 GB 19762 Product Shell）。**不得**自行宣布 `PHASE_6_PASS`。
+- 当前主要产品阶段：`EquipEffi V2.3` 下 `Phase 1 = PHASE_1_PASS`、`Phase 2 = PHASE_2_PASS`、`Phase 3 = PHASE_3_PASS`（PR #11 合并 @ `87d9ef1b`，验收落档 `docs/phase3_acceptance_record.md`）、`Phase 4 = PHASE_4_PASS`（PR #12 合并 @ `d6112ea9`，验收落档 `docs/phase4_acceptance_record.md`）、**`Phase 5 = PHASE_5_PASS`**（PR #13 合并 @ `f3e32f84`，验收落档 `docs/phase5_acceptance_record.md`）、**`Phase 6 = PHASE_6_PASS`**（PR #14 合并 @ `6ead21f`，验收落档 `docs/phase6_acceptance_record.md`）、**`Phase 7 = IN_PROGRESS`**（GB19762 分析流程与历史记录最终收口）。**不得**自行宣布 `PHASE_7_PASS`。
 - 本仓独立开发、发布、离线运行，不是中央仓的第四个业务产品。
 
 ### 1.1 仓库身份与本地执行环境
@@ -75,31 +75,21 @@ git fetch origin                   # 同步远端
 ### 2.1 Phase 与顺序纪律
 
 - 路线只有 `EquipEffi V2.3`；Phase 0 已完成，作为不可变基线。Phase 0～10 **编号不得改变**。
-- 当前状态：`Phase 1 = PHASE_1_PASS`；`Phase 2 = PHASE_2_PASS`；`Phase 3 = PHASE_3_PASS`（PR #11 @ `87d9ef1b`）；`Phase 4 = PHASE_4_PASS`（PR #12 @ `d6112ea9`）；**`Phase 5 = PHASE_5_PASS`**（PR #13 合并 @ `f3e32f84`，验收落档 `docs/phase5_acceptance_record.md`）、**`Phase 6 = IN_PROGRESS`**（完整 GB 19762 Product Shell，分支 `phase6/gb19762-product-shell`，base `f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`）；automatic continuation = `DISABLED`。
+- 当前状态：`Phase 1 = PHASE_1_PASS`；`Phase 2 = PHASE_2_PASS`；`Phase 3 = PHASE_3_PASS`（PR #11 @ `87d9ef1b`）；`Phase 4 = PHASE_4_PASS`（PR #12 @ `d6112ea9`）；**`Phase 5 = PHASE_5_PASS`**（PR #13 合并 @ `f3e32f84`，验收落档 `docs/phase5_acceptance_record.md`）、**`Phase 6 = PHASE_6_PASS`**（PR #14 合并 @ `6ead21f`，验收落档 `docs/phase6_acceptance_record.md`）、**`Phase 7 = IN_PROGRESS`**（GB19762 分析流程与历史记录最终收口，分支 `phase7/gb19762-analysis-history-closure`，base `6ead21fb6757d5d92ba81851f23e3c41d86598af`）；automatic continuation = `DISABLED`。
 - `PHASE_1_PASS` / `PHASE_2_PASS` 是既有独立验收后的记录，**不是任何 adoption / 治理任务自行批准的结果**；`PHASE_2_PASS` 依 PR #10 独立验收与合并（`7e16418a`）。任何 Phase 的 PASS 均不得由执行者自行宣布。
 - **Phase 1 / Phase 2 均已结束**：`P1-G01 → G06`、`P2-G01 → G04` 与 Solution/Product Review 是**历史完成程序**，不再作为当前例行门禁（见 2.0）。
 - **Phase 3 已结束并获独立验收通过（`PHASE_3_PASS`，PR #11 @ `87d9ef1b`）**；验收落档见 `docs/phase3_acceptance_record.md`。其设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`。
 - **Phase 4 已结束并获独立验收通过（`PHASE_4_PASS`，PR #12 @ `d6112ea9`）**；验收落档见 `docs/phase4_acceptance_record.md`；执行细节见 `PHASE4_EXECUTION_REPORT.md`。
 - **Phase 5 已结束并获独立验收通过（`PHASE_5_PASS`，PR #13 @ `f3e32f84`）**；验收落档见 `docs/phase5_acceptance_record.md`；执行细节见 `PHASE5_EXECUTION_REPORT.md`。`pump_chemical` 自此为 `scope_status = IN_V1` / `support_status = SUPPORTED` / `standard_maturity = SUPPORTED`。
 - **Windows V1 当前正式发布用户表面 = PySide6 Qt Desktop（`--qt`）**。`--json` / `ApplicationApi` / `--web` / JSONL / legacy Tk `--gui` / Android bridge / V4·Excel adapter 是**现存的 compatibility / development / future-adapter surfaces**，不是历史废代码；其与正式表面的 support 差异必须登记 `REGISTERED_DEVIATION` 并给出 disposition（Phase 6 / 8 / 9）。
-- **Phase 6 已获用户明确执行授权**：范围是 **完整 GB 19762 Product Shell**——把 Phase 2～5 已成立的完整 GB 19762（`pump_water` + `pump_chemical`）业务能力组织成正式、完整、可长期使用的 Windows PySide6 产品 Shell。分支 `phase6/gb19762-product-shell`，base `f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`。**不是重新设计业务算法**。
-- Phase 6 执行者**不得**自行宣布 `PHASE_6_PASS`、不得合并 PR、不得进入 Phase 7。最终状态只允许 `Phase 6 implementation = EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`。
-- **Phase 6 Owner 决定（Tk 退出）**：legacy Tk GUI **不再使用**。无参数启动、`--gui`、`--qt` 均进入同一正式 PySide6 Qt Desktop Shell；`--qt` 保留为显式兼容别名；Tk 不是任何用户产品入口；**不得**在 Tk 不可用时自动 fallback 到 Web。Tk 代码若经真实引用/构建/测试证明已无运行依赖可删除；若仍有真实兼容依赖则只断开正式运行路径并登记（见 `QA_BACKLOG.md` 的 `QA-P6-001`），不得盲删。
-- **候选层 Golden 的历史实现证据（Phase 6 建立，R1 澄清）**：
-  `specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl` 的
-  `source_sidecar.source_references` 以 `artifact_sha256` 记录了 0.3 候选冻结时
-  （提交 `72e8e49` / `90af7f8`）的 10 个实现文件快照，且 18 条已批准 `pump_water` Golden 用
-  `provenance.source_candidate_sha256` 锚定候选记录哈希。
-- **正确理解（不得再误读为「实现文件被永久冻结」）**：这些哈希是**历史证据**。
-  validator 通过 `tools/validate_phase1_contracts.py` 的 `_historical_hash_reason` 与
-  `specs/equipment_efficiency/evidence_registry.json` 的 `historical_repository_hashes`
-  **明确区分 historical provenance 与 current implementation**：
-  当前实现**可以演进**，历史证据**不可变**，两者不得混为一谈。
-- **规则**：① **不得**改写候选文件的历史哈希 pin；
-  ② **不得**改写任何 Approved Golden 的业务真值或历史 provenance；
-  ③ 若确需修改被记录过快照的实现文件（例如收口入口语义），应把**原记录哈希补登记**到
-  `historical_repository_hashes`（附可复核的冻结提交与理由），而**不是**改候选文件或重基线 Golden；
-  ④ 若某实现文件确需修改而登记机制无法表达，**立即 STOP 并报 Owner**。
+- **Phase 6 已结束并获独立验收通过（`PHASE_6_PASS`，PR #14 @ `6ead21f`）**；验收落档见
+  `docs/phase6_acceptance_record.md`；执行细节见 `PHASE6_EXECUTION_REPORT.md`（含两轮 blocker 修复）。
+- **Phase 7 已获用户明确执行授权**：范围是 **GB19762 分析流程与历史记录最终收口**——
+  选择泵型 → 填写参数 → 点击「分析」→ 显示清晰结果 → 合法结果**自动**形成不可变历史记录 →
+  以后从「分析记录」打开并查看当时的输入、结果和依据。分支 `phase7/gb19762-analysis-history-closure`，
+  base `6ead21fb6757d5d92ba81851f23e3c41d86598af`。
+- Phase 7 执行者**不得**自行宣布 `PHASE_7_PASS`、不得合并 PR、不得进入 Phase 8。
+  最终状态只允许 `Phase 7 implementation = EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`。
 - v15 / T04.xx / 历史 HANDOFF / 编号清单无自动调度权，不得据其“下一边界任务”自动继续。
 - 当前 Windows V1 产品目标与各 Profile 状态以 `V1_SCOPE.md` / `ROADMAP.md` 为唯一权威（完整支持 GB 19762—2025，覆盖 `pump_water` + `pump_chemical`；`transformer` 为 `POST_V1`，资产保留）。
 - 旧资产先分类（KEEP / VERIFY / MIGRATE / REWORK / DEPRECATE / DELETE_CANDIDATE / OBSOLETE），不因零引用直接删除。
@@ -138,6 +128,36 @@ git fetch origin                   # 同步远端
 - 尚未实施 / 已废止 / 已被替代的标准**仍允许按所选版本正常评价**；**不得**因此改变 `evaluation_status`、`grade`、Finalize 权限，或自动切换标准。
 - 遗留 `EvaluationService` / JSON / Web / V4 等非正式表面如仍保留旧 `as_of` 门禁，登记为 `REGISTERED_DEVIATION`，**不借 Phase 5 扩大重构**。
 
+### 2.8 分析流程与历史记录产品规则（Owner，Phase 7）
+
+以下为 Phase 7 正式产品决定，**不再重新讨论**：
+
+1. 普通用户界面**不存在「分析草稿」概念**。Workspace 如底层仍有必要可作为内部实现保留，
+   但不得继续作为普通用户产品概念。
+2. **删除「保存为正式记录」按钮**。用户点击「分析」后，只要形成合法业务终态，
+   就**自动**保存为不可变历史 Record。
+3. **每一次合法分析都是一次独立历史记录**。连续分析 3 次可形成 3 条 Record，
+   不得覆盖既有 Record。
+4. **评价日期不在「新建分析」页面显示**，不要求用户填写或选择；新分析自动采用
+   **本机当天日期**，写入 request / Record 用于历史追溯。
+5. **评价日期仍然不是业务计算门禁**。标准生命周期只做非阻断提示，
+   不改变等级、`evaluation_status` 或是否计算。
+6. 新建分析页普通计算结果：计算派生数值原则上显示 **2 位小数**。
+   只改变 Presentation 显示；**不改变** Decimal 原始值、Numeric Profile、等级比较值、
+   Record 精确快照、Golden business truth。标准原始限值本身有明确精度时不强行改。
+7. **新建分析页不再显示「技术详情」**。trace / provenance / rule / pack hash 等内部证据
+   **不得删除**，可继续保存在 Result / Record；普通用户分析页面不展示。
+8. **不建立**正式 Reproduce 功能、Attempt 模型、通用 Audit Framework；
+   **不为了理论上的未来能力扩展数据库**。
+9. 业务「资料不足」（`INSUFFICIENT_DATA`）是**合法业务终态**，可形成 Record；
+   系统执行失败（Python 异常 / 数据库失败 / 标准包读取失败）**不得**伪装成
+   `INSUFFICIENT_DATA` 或「无法判定」，也不得生成正式 Record。
+
+**records.sqlite 原则（Phase 7）**：默认**不修改** schema。执行者必须首先证明现有
+`input_snapshot_json` / `result_snapshot_json` / `reference_snapshot_json` 无法满足某个
+明确的 Phase 7 V1 需求，才允许提出新的 additive migration；若确需 migration，
+必须 **STOP 并报 Owner**，不得自行 `lineage table` / `audit_event table` /
+`workspace display_name` / `Attempt table` / 通用历史框架。`001` / `002` migration 绝对不得修改。
 ## 3. 青舟中央治理入口
 
 - 中央仓 `https://github.com/adgo07/Qingzhou-contracts.git`；锁定见本仓 `platform-lock.json` / `PLATFORM_BASELINE.md`，当前 locked SHA = `ee5feb0cc34dbd99790500fadd0c4c932e202a20`（Architecture `V2.1 FROZEN`、Numeric Contract `v1 FROZEN`，其余 Contract 仍 `DRAFT`）。

@@ -26,7 +26,11 @@ from ....application.services.centrifugal_pump_analysis_service import (
     CentrifugalPumpAnalysisService,
 )
 from ..tokens import TOKENS
+from ....application.services.centrifugal_pump_analysis_service import (
+    THRESHOLD_DISPLAY_NAMES,
+)
 from ..labels import support_status_text
+from ..labels import format_metric
 from ..widgets.collapsible import CollapsibleSection
 
 #: 结论筛选项 → 匹配的 evaluation_status 集合（"全部" 不筛选）。
@@ -105,8 +109,9 @@ class RecordsPage(QWidget):
         detail_layout.addWidget(self.detail)
 
         # 技术详情渐进展示：内部 rule / data id / Numeric 配置归此处，默认真正收起。
-        self.technical_box = CollapsibleSection(
-            "技术详情（规则编号、数据版本、数值配置）", expanded=False)
+        # Phase 7：普通页面重点是业务详情；内部标识集中在最底部**默认折叠**的
+        # 「审计信息」入口，保留审计能力但不再是普通页面重点。
+        self.technical_box = CollapsibleSection("审计信息（技术诊断用）", expanded=False)
         self.technical = QLabel("")
         self.technical.setWordWrap(True)
         self.technical.setTextFormat(Qt.TextFormat.PlainText)
@@ -222,6 +227,14 @@ class RecordsPage(QWidget):
         ]
         if snapshot.grade:
             lines.append(f"能效等级：{snapshot.grade}")
+        # 冻结的判定解释与缺失信息：这是"为什么是这个结论"的唯一依据，
+        # 资料不足（INSUFFICIENT_DATA）的 Record 尤其必须能看到缺了什么。
+        missing = result.get("missing_fields") or []
+        if missing:
+            lines.append("缺失信息：" + "、".join(str(item) for item in missing))
+        explanation = str(result.get("explanation") or "").strip()
+        if explanation:
+            lines.append(f"判定说明：{explanation}")
         for label, key in (("规定点流量 Q_BEP（m³/h）", "QBEP"),
                            ("规定点扬程 H_BEP（m）", "HBEP"),
                            ("规定点转速 n（r/min）", "speed"),
@@ -236,21 +249,79 @@ class RecordsPage(QWidget):
             lines.append(f"设备编号：{input_snapshot['equipment_no']}")
         thresholds = result.get("thresholds") or {}
         if thresholds:
+            # 只格式化**显示**；快照里的原值保持完整精度，不写回。
             lines.append("原等级阈值：" + "；".join(
-                f"{name} {value}" for name, value in thresholds.items()))
+                f"{THRESHOLD_DISPLAY_NAMES.get(name, name)} "
+                f"{format_metric(value, name=str(name))}"
+                for name, value in thresholds.items()))
         derived = (result.get("calculation_trace") or {}).get("derived") or {}
         if derived:
+            # 必须保留**名称**：只显示数值串会让用户无法理解该参数是什么。
             lines.append("原关键计算参数：" + "；".join(
-                f"{name} {value}" for name, value in derived.items()))
-        lines.append("原标准依据：GB 19762—2025《离心泵能效限定值及能效等级》")
+                f"{name} {format_metric(value, name=str(name))}"
+                for name, value in derived.items()))
+
+        # 标准依据：只展示快照里**真实存在**的依据，不伪造。
+        # Phase 3～6 的旧 Record 可能未冻结这些字段，此时降级说明而不是编造。
+        lines.extend(self._basis_lines(snapshot, result))
         lines.append(f"保存时间：{snapshot.finalized_at_utc}")
         text = "\n".join(lines)
         self.detail.setText(text)
         self._render_technical(snapshot, result)
         return text
 
+    @staticmethod
+    def _basis_lines(snapshot, result) -> list[str]:
+        """从**快照自身**还原标准依据；缺失时降级说明，不伪造。
+
+        只冻结运行时**真实存在且可信**的依据（标准号/名称、数据版本、
+        Canonical 包哈希、命中数据 ID、表号与来源页）。不快照整张标准表、
+        不建 Citation Framework、不为不存在的数据编造条款/页码。
+        """
+
+        standard = snapshot.reference_snapshot.get("standard") or {}
+        lines: list[str] = []
+        code = snapshot.standard_code or standard.get("standard_code") or ""
+        if code:
+            lines.append(f"原标准依据：{code}《离心泵能效限定值及能效等级》")
+        data_version = standard.get("data_version") or snapshot.canonical_version or ""
+        if data_version:
+            lines.append(f"标准数据版本：{data_version}")
+        if snapshot.canonical_package_hash:
+            lines.append(f"标准数据指纹：{snapshot.canonical_package_hash}")
+
+        # 命中依据来自快照自身的 trace「标准查询结果」步骤（真实存在才展示）。
+        data_ids: list[str] = []
+        tables: list[str] = []
+        clauses: list[str] = []
+        for step in (result.get("calculation_trace") or {}).get("steps") or []:
+            if not isinstance(step, dict) or step.get("step_type") != "标准查询结果":
+                continue
+            data_ids.extend(str(item) for item in (step.get("data_ids") or []))
+            if step.get("table"):
+                tables.append(str(step["table"]))
+            if step.get("clause"):
+                clauses.append(str(step["clause"]))
+        # 面向用户的标准依据用**标准表 / 条款**；内部 `data_id`
+        # （如 `GB19762-T3-01`）是审计标识，只允许出现在折叠的审计信息区。
+        if tables:
+            lines.append("标准表：" + "、".join(dict.fromkeys(tables)))
+        if clauses:
+            lines.append("标准条款：" + "、".join(dict.fromkeys(clauses)))
+        del data_ids  # 仅在审计信息区展示
+
+        # 依据类字段（数据版本 / 指纹 / 命中条目 / 表 / 条款）一个都没有时，
+        # 说明这是保存时未冻结依据的旧 Record：明确降级，不伪造。
+        has_detail = any(
+            marker in "\n".join(lines)
+            for marker in ("标准数据版本", "标准数据指纹",
+                           "标准表", "标准条款"))
+        if not has_detail:
+            lines.append("该历史记录保存时未包含完整标准依据。")
+        return lines
+
     def _render_technical(self, snapshot, result) -> None:
-        """技术详情：审计需要的内部标识集中在此，不进入普通业务详情。"""
+        """审计信息：内部标识集中在此，不进入普通业务详情。"""
 
         standard = snapshot.reference_snapshot.get("standard") or {}
         rows = [
@@ -262,12 +333,15 @@ class RecordsPage(QWidget):
             # `NOT_IN_RELEASE_SCOPE`，这里就显示"当前版本未支持"，
             # 不会被追溯改成"正式支持"。不重算、不改写 snapshot。
             ("支持状态", support_status_text(result.get("support_status"))),
-            ("规则集", standard.get("rule_profile") or "—"),
+            ("规则集标识", standard.get("rule_profile") or snapshot.ruleset_version or "—"),
             ("标准包", standard.get("pack_id") or "—"),
             ("数据版本", snapshot.canonical_version or "—"),
             ("数值配置", snapshot.numeric_profile_id or "—"),
             ("结果契约", snapshot.result_contract_version or "—"),
             ("输入指纹", snapshot.input_snapshot.get("request_fingerprint") or "—"),
-            ("草稿修订号", snapshot.input_snapshot.get("workspace_revision", "—")),
+            ("命中数据 ID", "、".join(
+                str(item) for step in (result.get("calculation_trace") or {}).get("steps") or []
+                if isinstance(step, dict) and step.get("step_type") == "标准查询结果"
+                for item in (step.get("data_ids") or [])) or "—"),
         ]
         self.technical.setText("\n".join(f"{name}：{value}" for name, value in rows))

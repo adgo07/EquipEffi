@@ -263,12 +263,18 @@ class LifecycleWarningUiTests(_DbCase):
 
         cls.app = QApplication.instance() or QApplication([])
 
-    def _page(self, as_of: date):
+    def _page(self, as_of: date | None = None):
+        """构造分析页。
+
+        Phase 7：普通页面不再有评价日期输入（自动取本机当天）。因此这里不再
+        通过 UI 设置日期；需要特定日期的用例直接在 Result 契约层验证
+        （见 `_service_request`）。
+        """
+
         from equipeffi.presentation.qt.pages.analysis import AnalysisPage
 
-        page = AnalysisPage(self.service)
+        page = AnalysisPage(self.service, as_of=as_of)
         page.category.setCurrentIndex(page.category.findData(WATER))
-        page.as_of.setText(as_of.isoformat())
         page.point_inputs["QBEP"].setText("100")
         page.point_inputs["HBEP"].setText("50")
         page.point_inputs["speed"].setText("2900")
@@ -277,14 +283,35 @@ class LifecycleWarningUiTests(_DbCase):
         return page
 
     def test_early_as_of_shows_non_blocking_warning_and_still_calculates(self):
+        """评价日期早于实施日时仍正常计算、仍自动形成 Record（非阻断）。"""
+
         page = self._page(BEFORE_EFFECTIVE)
         result = page.evaluate()
         self.assertEqual(result.evaluation_status, "SUCCESS")
         self.assertEqual(result.grade, "1")
         self.assertIn("该标准尚未实施", page.warning_label.text())
-        # 非阻断：仍可保存
-        self.assertTrue(page.finalize_button.isEnabled())
-        self.assertEqual(page.finalize(), "SAVED")
+        # 非阻断：合法终态已自动记录
+        self.assertEqual(page.last_record_status, "RECORDED")
+        self.assertIsNotNone(page.last_saved_record_id)
+
+    def test_lifecycle_warning_is_non_blocking_at_the_contract_level(self):
+        """直接以早于实施日的 as_of 调用 Application：计算与固化都不被阻断。"""
+
+        request = self._request(BEFORE_EFFECTIVE)
+        outcome = self.service.analyze_and_record(request)
+        self.assertEqual(outcome.result.evaluation_status, "SUCCESS")
+        self.assertEqual(outcome.result.grade, "1")
+        self.assertIn("该标准尚未实施", outcome.result.warnings)
+        self.assertEqual(outcome.record_status, "RECORDED")
+
+    def _request(self, as_of: date):
+        from equipeffi.application.services.centrifugal_pump_analysis_service import (
+            PumpAnalysisRequest,
+        )
+
+        return PumpAnalysisRequest(
+            product_category=WATER, as_of=as_of, QBEP="100", HBEP="50",
+            speed="2900", efficiency="90", suction="单吸", stages="1")
 
     def test_warning_label_hidden_when_no_warning(self):
         page = self._page(AFTER_EFFECTIVE)

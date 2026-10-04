@@ -51,16 +51,16 @@ Phase 4 = PHASE_4_PASS          (PR #12 独立验收并合并 @ d6112ea9)
 Phase 5 = PHASE_5_PASS           (PR #13 独立验收并合并 @ f3e32f84)
          accepted head = b064acf8f889c2c86335a8233eaf3eb8eb53f47b
          acceptance record = docs/phase5_acceptance_record.md
-Phase 6 = IN_PROGRESS             (完整 GB 19762 Product Shell)
-         branch = phase6/gb19762-product-shell
-         base   = f3e32f84123937ed6caa2b84b7cc0cd04c3100e0
-          branch = phase5/pump-chemical-stage-d-support
-          base   = d6112ea9c7c1c16f95d798c2229cdc54aaf6240a
-          stage D candidate = READY_FOR_INDEPENDENT_ACCEPTANCE
+Phase 6 = PHASE_6_PASS            (PR #14 独立验收并合并 @ 6ead21f)
+         accepted head = 05b40f91086bbdbe196793075e440de4473cbf96
+         acceptance record = docs/phase6_acceptance_record.md
+Phase 7 = IN_PROGRESS             (GB19762 分析流程与历史记录最终收口)
+         branch = phase7/gb19762-analysis-history-closure
+         base   = 6ead21fb6757d5d92ba81851f23e3c41d86598af
 Automatic continuation = DISABLED
 ```
 
-Phase 2 已由独立验收通过并合并（PR #10）。**Phase 3 已由独立验收通过（`PHASE_3_PASS`）并以 PR #11 合并于 `87d9ef1b`**；验收落档见 `docs/phase3_acceptance_record.md`（轻量格式，后续每个 Phase 沿用）。Phase 4 已获用户明确执行授权，范围限于**最小生命周期通用化**：执行者**不得**自行宣布 Phase 4 PASS、不得合并 PR、不得进入 Phase 5、不得发布、不得把 `pump_chemical` 的 `support_status` 提升为 `SUPPORTED`。Phase 3 设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`。
+Phase 2 已由独立验收通过并合并（PR #10）。**Phase 3 已由独立验收通过（`PHASE_3_PASS`）并以 PR #11 合并于 `87d9ef1b`**；验收落档见 `docs/phase3_acceptance_record.md`（轻量格式，后续每个 Phase 沿用）。Phase 4 / Phase 5 / Phase 6 均已获独立验收通过并合并。**Phase 7 已获用户明确执行授权**，范围是 **GB19762 分析流程与历史记录最终收口**：选泵型 → 填参数 → 点「分析」→ 显示结果 → **合法结果自动形成不可变历史记录** → 从「分析记录」查看当时的输入、结果与依据。执行者**不得**自行宣布 Phase 7 PASS、不得合并 PR、不得进入 Phase 8。Phase 3 设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`。
 
 ### 3.1 增量修正：Phase 3 前移 pump_chemical 正式产品接入（2026-10-02）
 

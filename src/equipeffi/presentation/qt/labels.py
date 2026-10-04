@@ -11,6 +11,8 @@ UI 只显示中文文案，不泄露内部英文枚举值。
 """
 from __future__ import annotations
 
+from typing import Any
+
 #: 发布支持状态文案。
 #:
 #: Record 详情直接使用同一张表：历史快照里存的是**当时的**发布门禁取值，
@@ -74,3 +76,37 @@ def issue_code_texts(codes) -> list[str]:
         if text and text not in texts:
             texts.append(text)
     return texts
+
+#: 整数型业务量（不补小数位）。
+_INTEGER_METRIC_NAMES: frozenset[str] = frozenset({"级数", "吸入方式系数"})
+
+
+def format_metric(value: Any, *, name: str = "") -> str:
+    """把计算派生量格式化为面向用户的 **2 位小数**文本（**仅用于显示**）。
+
+    判定基于**数值类型**而不是按名字维护白名单——白名单必然漏掉真实键名，
+    从而出现"该格式化的没格式化"。规则：
+
+    ```text
+    非数值 / None / 非有限   -> 原样返回（None -> "—"）
+    整数值（如 级数=1）       -> 不补小数位（"1"）
+    其它数值（含小数部分）     -> 固定 2 位小数（"79.79"）
+    ```
+
+    只影响本页文本：**不改变** `Decimal` 原始值、Numeric Profile、等级比较值、
+    Record 精确快照或 Golden business truth。
+    """
+
+    if value is None:
+        return "—"
+    try:
+        from decimal import Decimal, InvalidOperation
+
+        number = Decimal(str(value).strip())
+    except (InvalidOperation, ValueError, TypeError):
+        return str(value)
+    if not number.is_finite():
+        return str(value)
+    if name in _INTEGER_METRIC_NAMES or number == number.to_integral_value():
+        return str(number.to_integral_value())
+    return f"{number:.2f}"
