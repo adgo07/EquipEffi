@@ -1,13 +1,20 @@
 # EquipEffi 当前交接
 
-路线 EquipEffi V2.3；Phase 1 = PHASE_1_PASS；Phase 2 = PHASE_2_PASS；**Phase 3 implementation = EXECUTION_COMPLETE**；**Phase 3 独立验收结论 = `PHASE_3_BLOCKED`（已由 R1/R2/R3 修复）**；**Phase 3 R3 status = `READY_FOR_INDEPENDENT_RE_ACCEPTANCE`**；automatic_continuation = DISABLED。
+路线 EquipEffi V2.3；Phase 1 = PHASE_1_PASS；Phase 2 = PHASE_2_PASS；**Phase 3 = PHASE_3_PASS**（PR #11 合并 @ `87d9ef1bf32fb3f765d4f8ef3f97aa222913152a`）；**Phase 4 = IN_PROGRESS**；automatic_continuation = DISABLED。
 
 ## 当前任务
 
-用户已明确授权执行 **Phase 3：GB 19762—2025 离心泵统一正式纵向闭环**（`pump_water` + `pump_chemical` 共用同一产品、UI、Application Use Case、Workspace、Record、History、Result Contract）。
+用户已明确授权执行 **Phase 4：GB19762 真实样板后的最小生命周期通用化**（把 Phase 3 已真实证明属于公共工程结构、但仍寄生在 `centrifugal_pump_analysis_service.py` 中的生命周期能力抽离出来，同时保证 GB 19762 的业务行为、数据库形态和历史记录语义**零漂移**）。
 
-**状态**：实现已完成（`EXECUTION_COMPLETE`）；独立验收曾判定 **`PHASE_3_BLOCKED`**，其确认的 blocker 已由 **R1/R2/R3** 修复并收口，当前状态 **`READY_FOR_INDEPENDENT_RE_ACCEPTANCE`**（等待独立复验）。**不得写成 `PHASE_3_PASS` 或 `PHASE_4_READY`。**
+**状态**：`IN_PROGRESS`。**不得**自行宣布 `PHASE_4_PASS`，不得合并 PR，不得进入 Phase 5。
 
+- 分支 `phase4/minimal-lifecycle-generalization`；base `87d9ef1bf32fb3f765d4f8ef3f97aa222913152a`
+- 本阶段证据口径：**一个 GB19762 产品级 E2E 样板，其中有 water + chemical 两个真实内部 rule profile**（**不得**表述为已经有两个独立设备/标准 E2E 样板）
+
+## Phase 3（已完成）
+
+- 结论 `PHASE_3_PASS`；accepted head `728680dabf7b18e47ce9a5a23b296e405bc644a8`；PR #11 merge `87d9ef1b`
+- 验收落档见 `docs/phase3_acceptance_record.md`（轻量格式，后续每个 Phase 沿用）
 - 分支 `phase3/gb19762-unified-vertical-slice`；start master SHA `7e16418aa32ced5512e26bd70227f01a329fbdfc`
 - 设计见 [docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md](docs/32_Phase%203%20GB19762%E7%A6%BB%E5%BF%83%E6%B3%B5%E7%BB%9F%E4%B8%80%E6%AD%A3%E5%BC%8F%E7%BA%B5%E5%90%91%E9%97%AD%E7%8E%AF.md)
 - 执行者**不得**自行宣布 Phase 3 PASS、不得合并最终 PR、不得进入 Phase 4、不得发布、**不得自行把 `pump_chemical` 的 `support_status` 提升为 `SUPPORTED`**

@@ -1,9 +1,9 @@
 roadmap: EquipEffi V2.3
-phase: Phase 3
-goal: GB 19762-2025 离心泵统一正式纵向闭环
+phase: Phase 4
+goal: GB19762 真实样板后的最小生命周期通用化
 status: EXECUTION_COMPLETE
-previous_acceptance: PHASE_3_BLOCKED
-next_status: READY_FOR_INDEPENDENT_RE_ACCEPTANCE
+previous_acceptance: PHASE_4_BLOCKED
+next_status: READY_FOR_INDEPENDENT_ACCEPTANCE
 
 # ---------------------------------------------------------------------------
 # 本文件只承担“当前状态”。历史执行细节、run ID、历史测试数字与旧 SHA 一律
@@ -11,23 +11,57 @@ next_status: READY_FOR_INDEPENDENT_RE_ACCEPTANCE
 # ---------------------------------------------------------------------------
 
 current_task:
+  task_id: PHASE4-MINIMAL-LIFECYCLE-GENERALIZATION
+  branch: phase4/minimal-lifecycle-generalization
+  task_kind: authorised Phase 4 execution
+  phase_4_execution: true
+  base_sha: 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
+  execution_report: PHASE4_EXECUTION_REPORT.md
+  evidence_claim: 一个 GB19762 产品级 E2E 样板，其中有 water + chemical 两个真实内部 rule profile（不得表述为两个独立设备/标准 E2E 样板）
+  phase_4_pass_self_declared: false
+  phase_5_started: false
+  merge_authorized: false
+  pump_chemical_support_status_self_promoted: false
+  goals:
+    P4-G00: COMPLETE
+    P4-G01: COMPLETE
+    P4-G02: COMPLETE
+    P4-G03: COMPLETE
+    P4-G04: COMPLETE
+  blocker_fixes:
+    P4-B01:
+      finding: PHASE_4_BLOCKED —— 生命周期指纹依赖泵 service 的导入副作用
+      status: FIXED
+      root_cause: 首版用进程内全局注册（register_business_keys）提供业务键集合；注册为空时旧 Workspace 无参指纹漂移，且不同业务输入碰撞
+      fix: 移除全局注册；业务键集合作为 _business_keys 元数据随快照写入既有 payload_json 列；无元数据时不再猜测而是显式报错
+      evidence: tests/unit/test_phase4_fingerprint_decoupling.py; tools/verify_phase4_fingerprint_compat.py
+    P4-B02:
+      finding: PHASE_4_BLOCKED —— 旧 Workspace 兼容性回归（缺字段草稿被拒 Finalize）
+      status: FIXED
+      root_cause: P4-B01 的回退规则只投影"载荷中实际存在的键"，无法补出缺失业务字段的 "None"（Phase 3 指纹把缺失字段计为 "None"），导致缺 efficiency 的旧草稿指纹漂移、Finalize 被拒，破坏既有 INSUFFICIENT_DATA 草稿的合法固化
+      fix: 生命周期层不再猜测——缺元数据时 business_key_names() 返回 None 且 request_fingerprint() 显式抛 LifecycleError，删除 RESERVED_PAYLOAD_KEYS 与投影回退；finalize() 改为显式传 PUMP_FINGERPRINT_KEYS，由产品层提供业务键知识，恢复 Base 行为
+      evidence: tests/unit/test_phase4_fingerprint_decoupling.py 的缺字段回归用例；tools/verify_phase4_fingerprint_compat.py 覆盖完整输入 + 缺字段共 4 种场景
+      semantic_boundary: Phase 4 之前且无元数据的快照，无参 request_fingerprint() 会显式报错（拒绝给出无法确定的值）；不影响任何 Use Case，服务路径始终显式传键
+  next_action: 等待独立验收；do not merge; do not start Phase 5
+
+previous_task:
   task_id: PHASE3-GB19762-UNIFIED-VERTICAL-SLICE
   branch: phase3/gb19762-unified-vertical-slice
   task_kind: authorised Phase 3 execution
-  phase_3_execution: true
   design: docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md
   start_master_sha: 7e16418aa32ced5512e26bd70227f01a329fbdfc
   execution_report: PHASE3_EXECUTION_REPORT.md
+  verdict: PHASE_3_PASS
+  accepted_head: 728680dabf7b18e47ce9a5a23b296e405bc644a8
+  pr: "#11"
+  merge_sha: 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
+  acceptance_record: docs/phase3_acceptance_record.md
   phase_3_pass_self_declared: false
-  phase_4_started: false
-  merge_authorized: false
-  pump_chemical_support_status_self_promoted: false
   goals:
     P3-G01: COMPLETE
     P3-G02: COMPLETE
     P3-G03: COMPLETE
     P3-G04: COMPLETE
-  next_action: READY_FOR_INDEPENDENT_RE_ACCEPTANCE; do not merge; do not start Phase 4
   r1_fixes:
     status: COMPLETE
     blockers: 5
