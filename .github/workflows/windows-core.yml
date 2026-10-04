@@ -103,8 +103,12 @@ jobs:
           python -m unittest @mods -v *> $log
           $code = $LASTEXITCODE
           Write-Output "EXITCODE=$code"
-          Select-String -Path $log -Pattern 'FAIL:|ERROR:|^Ran |^OK|^FAILED|Traceback' | ForEach-Object { Write-Output $_.Line }
-          Get-Content $log -Tail 60 | ForEach-Object { Write-Output $_ }
+          Get-Content $log | ForEach-Object {
+            Write-Output $_
+            if ($_ -match 'FAIL:|ERROR:|AssertionError|Traceback|^Ran |^FAILED|^OK') {
+              Write-Output ('::error title=gating::' + ($_ -replace '%','%25' -replace "`r",'' -replace "`n",' '))
+            }
+          }
           exit $code
       - name: Full suite known-regression comparator (gating)
         run: python tools/check_windows_regressions.py --output artifacts/phase2-regression
