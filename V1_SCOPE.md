@@ -113,7 +113,7 @@ automatic_scope_expansion: DISABLED
 | Profile | `scope_status` | `support_status`（当前） | 标准开发成熟度 | 目标 |
 |---|---|---|---|---|
 | `pump_water` | `IN_V1` | `SUPPORTED` | `SUPPORTED` | 已达成 |
-| `pump_chemical` | `IN_V1` | `SUPPORT_PROMOTION_CANDIDATE`（统一 Qt 正式路径取值 `SUPPORTED`） | `IMPLEMENTED`（`SUPPORTED` 为候选） | `support_status = SUPPORTED` |
+| `pump_chemical` | `IN_V1` | `SUPPORTED` | `SUPPORTED` | 已达成（Phase 5 Stage D 独立验收通过，PR #13 @ `f3e32f84`） |
 | `transformer` | `POST_V1` | `NOT_IN_RELEASE_SCOPE` | 未进入本轮标准开发流程 | 本轮不排期；资产保留 |
 
 **`pump_chemical` 的当前状态说明（重要，Phase 5 更新）：**
@@ -124,7 +124,7 @@ automatic_scope_expansion: DISABLED
 - 第 2 项（Stage D 正式验收）的证据闭环已在 **Phase 5** 完成并交独立验收：
   `docs/phase5_stage_d_evidence_matrix.md` +
   `specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json`；
-- **在独立验收结论产生之前**，治理状态只能写 `SUPPORT_PROMOTION_CANDIDATE`；
+- Phase 5 Stage D **独立验收已通过**（`PHASE_5_PASS`，PR #13 @ `f3e32f84`），`support_status` 已正式切换为 `SUPPORTED`；
   **不得**写成"正式支持已经生效"。统一正式产品路径（Qt `--qt`）的运行时取值为
   `SUPPORTED`，这是**候选事实**而非已生效的支持声明；
 - 中央指南 §19 明确 **不得无证据跳级**，`SUPPORTED` 定义为"完整要求通过独立验收"。
@@ -269,7 +269,7 @@ Windows `py` 启动器不是本次门禁入口；验收统一使用项目 `.venv
 2026-10-02 产品决策将 Windows V1 正式产品目标统一为“完整支持 GB 19762—2025 离心泵标准”。因此 Profile 级 `IN_V1` 为 **`pump_water` 与 `pump_chemical`** 两者：
 
 - `pump_water` 已完成 Phase 1 纵向样板证据，标准开发成熟度为 `SUPPORTED`，`support_status = SUPPORTED`；
-- `pump_chemical` 已确定属于 Windows V1 范围；其 11 条 Golden 已于 2026-10-02 获 Owner 具名批准，Stage D 证据闭环在 Phase 5 完成并交独立验收，因此**当前**治理状态为 `SUPPORT_PROMOTION_CANDIDATE`（统一 Qt 正式路径取值 `SUPPORTED`），成熟度为 `IMPLEMENTED`、候选 `SUPPORTED`。**独立验收通过前不得写成"正式支持已经生效"。**
+- `pump_chemical` 已确定属于 Windows V1 范围；其 11 条 Golden 已于 2026-10-02 获 Owner 具名批准，Stage D 证据闭环在 Phase 5 完成并**通过独立验收**（`PHASE_5_PASS`，PR #13 @ `f3e32f84`）。因此治理状态为 `support_status = SUPPORTED`、成熟度 `SUPPORTED`，**已正式生效**。
 
 `transformer` 在本轮由 `IN_V1` 调整为 `POST_V1`（暂缓，资产保留）。
 

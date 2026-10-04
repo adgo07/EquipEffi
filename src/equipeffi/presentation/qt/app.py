@@ -20,11 +20,12 @@ def install_qt_message_handler(logger: logging.Logger):
 
 
 def run(settings: SettingsService, logger: logging.Logger, analysis=None,
-        *, workspace_id: str | None = None) -> int:
+        *, workspace_id: str | None = None, data_location=None) -> int:
     application = QApplication.instance() or QApplication([])
     previous = install_qt_message_handler(logger)
     try:
-        window = MainWindow(settings, analysis, workspace_id=workspace_id)
+        window = MainWindow(settings, analysis, workspace_id=workspace_id,
+                            data_location=data_location)
         window.show()
         return application.exec()
     finally:

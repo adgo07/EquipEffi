@@ -1,20 +1,8 @@
-from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
+"""产品页面。所有一级导航项都必须是这里的真实页面，不得有 placeholder。"""
+from .analysis import AnalysisPage
+from .home import HomePage
+from .records import RecordsPage
+from .settings import SettingsPage
+from .standards import StandardsPage
 
-from ..tokens import TOKENS
-
-
-def placeholder_page(title: str) -> QWidget:
-    page = QWidget()
-    layout = QVBoxLayout(page)
-    layout.setContentsMargins(*(TOKENS.page_margin,) * 4)
-    layout.setSpacing(TOKENS.section_gap)
-    heading = QLabel(title)
-    font = heading.font()
-    font.setPixelSize(TOKENS.title_font_size)
-    heading.setFont(font)
-    layout.addWidget(heading)
-    label = QLabel("尚未在 Phase 2 实现")
-    label.setWordWrap(True)
-    layout.addWidget(label)
-    layout.addStretch()
-    return page
+__all__ = ("AnalysisPage", "HomePage", "RecordsPage", "SettingsPage", "StandardsPage")

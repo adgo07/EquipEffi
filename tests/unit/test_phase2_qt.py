@@ -19,6 +19,20 @@ from equipeffi.presentation.qt.app import install_qt_message_handler
 from equipeffi.presentation.qt.navigation import PAGES
 from equipeffi.presentation.qt.shell import MainWindow
 
+ROOT = Path(__file__).resolve().parents[2]
+
+
+def _analysis_service():
+    """真实分析服务；首页/标准库/新建分析需要它才构建。"""
+
+    from equipeffi.application.services.centrifugal_pump_analysis_service import (
+        CentrifugalPumpAnalysisService,
+    )
+    from equipeffi.infrastructure.standards.json_repository import JsonStandardRepository
+
+    return CentrifugalPumpAnalysisService(
+        JsonStandardRepository(ROOT / "src" / "equipeffi"))
+
 
 class QtShellTests(unittest.TestCase):
     @classmethod
@@ -32,16 +46,38 @@ class QtShellTests(unittest.TestCase):
         self.service, self.logger = create_settings_runtime(paths=self.paths, stream=StringIO())
         self.addCleanup(close_logging, self.logger)
 
-    def test_navigation_and_all_pages_are_placeholders(self):
-        window = MainWindow(self.service)
+    def test_all_navigation_pages_are_real_pages(self):
+        """Phase 6：五个一级页面都必须是真实页面，不得有 placeholder。"""
+
+        analysis = _analysis_service()
+        window = MainWindow(self.service, analysis, data_location=self.paths.root)
         self.addCleanup(window.close)
-        self.assertEqual(window.pages.count(), 5)
+        self.assertEqual(window.pages.count(), len(PAGES))
         for index, name in enumerate(PAGES):
-            window.navigation.setCurrentRow(index)
-            self.assertEqual(window.pages.currentIndex(), index)
-            labels = [label.text() for label in window.pages.currentWidget().findChildren(QLabel)]
-            self.assertIn(name, labels)
-            self.assertIn("尚未在 Phase 2 实现", labels)
+            with self.subTest(page=name):
+                window.navigation.setCurrentRow(index)
+                self.assertEqual(window.pages.currentIndex(), index)
+                widget = window.pages.currentWidget()
+                labels = [label.text() for label in widget.findChildren(QLabel)]
+                self.assertIn(name, labels)
+                # 不得残留开发态占位文案
+                blob = "\n".join(labels)
+                self.assertNotIn("尚未在 Phase", blob)
+                self.assertNotIn("功能预留", blob)
+                self.assertNotIn("后续开发", blob)
+
+    def test_shell_exposes_the_minimal_navigation_contract(self):
+        analysis = _analysis_service()
+        window = MainWindow(self.service, analysis, data_location=self.paths.root)
+        self.addCleanup(window.close)
+        for method in ("open_home", "open_standards", "open_analysis",
+                       "open_records", "open_settings"):
+            with self.subTest(method=method):
+                self.assertTrue(callable(getattr(window, method)))
+        window.open_records()
+        self.assertEqual(window.pages.currentIndex(), PAGES.index("分析记录"))
+        window.open_standards()
+        self.assertEqual(window.pages.currentIndex(), PAGES.index("标准库"))
 
     def test_geometry_and_state_restore_on_new_window(self):
         first = MainWindow(self.service)

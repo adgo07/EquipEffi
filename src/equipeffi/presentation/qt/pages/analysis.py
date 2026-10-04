@@ -31,13 +31,14 @@ from PySide6.QtWidgets import (
 from ....application.services.centrifugal_pump_analysis_service import (
     PUMP_CATEGORIES,
     PUMP_CATEGORY_GROUPS,
+    THRESHOLD_DISPLAY_NAMES,
     AnalysisError,
     CentrifugalPumpAnalysisService,
     PumpAnalysisRequest,
     PumpAnalysisResult,
 )
 from ..tokens import TOKENS
-from ..labels import support_status_text
+from ..labels import issue_code_texts, support_status_text
 from ..widgets.collapsible import CollapsibleSection
 
 #: 规定点参数字段（用户可见标签 + 内部字段名）。
@@ -62,9 +63,11 @@ class AnalysisPage(QWidget):
 
     def __init__(self, service: CentrifugalPumpAnalysisService,
                  *, workspace_id: str | None = None,
-                 record_id_factory: Callable[[], str] | None = None):
+                 record_id_factory: Callable[[], str] | None = None,
+                 navigator=None):
         super().__init__()
         self.service = service
+        self.navigator = navigator
         self._workspace_id = workspace_id
         self._record_id_factory = record_id_factory
         self._last_request: PumpAnalysisRequest | None = None
@@ -81,9 +84,10 @@ class AnalysisPage(QWidget):
         outer.setContentsMargins(*(TOKENS.page_margin,) * 4)
         outer.setSpacing(TOKENS.section_gap)
 
-        heading = QLabel("离心泵能效分析")
+        heading = QLabel("新建分析")
         font = heading.font()
         font.setPixelSize(TOKENS.title_font_size)
+        font.setBold(True)
         heading.setFont(font)
         outer.addWidget(heading)
 
@@ -245,6 +249,19 @@ class AnalysisPage(QWidget):
         self.warning_label.setVisible(False)
         layout.addWidget(self.warning_label)
 
+        # 第二层：关键实际值与对应限值。
+        self.values_label = QLabel("")
+        self.values_label.setWordWrap(True)
+        self.values_label.setTextFormat(Qt.TextFormat.PlainText)
+        layout.addWidget(self.values_label)
+
+        # 第三层：普通工程语言解释"为什么得到这个结果"。
+        self.reason_label = QLabel("")
+        self.reason_label.setWordWrap(True)
+        self.reason_label.setTextFormat(Qt.TextFormat.PlainText)
+        layout.addWidget(self.reason_label)
+
+        # 第四层：所选标准与已有标准依据。
         self.basis = QLabel("")
         self.basis.setWordWrap(True)
         self.basis.setTextFormat(Qt.TextFormat.PlainText)
@@ -513,23 +530,36 @@ class AnalysisPage(QWidget):
         self.conclusion.setText("—")
         self.summary.setText(message)
         self.basis.setText("")
+        self.values_label.setText("")
+        self.reason_label.setText("")
         self.technical.setText("")
         self.warning_label.setText("")
         self.warning_label.setVisible(False)
         self.finalize_button.setEnabled(False)
 
     def _render(self, result: PumpAnalysisResult) -> None:
+        """按产品信息层级渲染：结论 → 实际值与限值 → 解释 → 标准依据 → 技术详情。
+
+        普通层只用 Result Contract 已提供的信息；**不由 UI 发明业务解释**。
+        """
+
+        # 第一层：最终结论 / 等级 / 不适用 / 无法判定。
         self.conclusion.setText(result.ui_conclusion)
-        lines = [f"设备类别：{result.product_category}",
+        first = [f"设备类别：{result.product_category}",
                  f"评价日期：{result.as_of.isoformat()}"]
         if result.grade:
-            lines.append(f"能效等级：{result.grade}")
+            first.append(f"能效等级：{result.grade}")
         if result.missing_fields:
-            lines.append("缺失信息：" + "、".join(result.missing_fields))
-        if result.issue_codes:
-            lines.append("提示：" + "、".join(result.issue_codes))
-        lines.append(f"判定说明：{result.explanation}")
-        self.summary.setText("\n".join(lines))
+            first.append("缺失信息：" + "、".join(result.missing_fields))
+        # 普通结果区只显示用户可读的中文说明；内部 `issue_codes` 是审计标识，
+        # 只允许出现在折叠的技术详情区（见 _render_technical）。
+        hints = issue_code_texts(result.issue_codes)
+        if hints:
+            first.append("提示：" + "、".join(hints))
+        # 结论区保留契约给出的判定说明：类别未确认等场景的"请先确认"指引必须
+        # 出现在用户第一眼看到的位置，不能被折叠或降级。
+        first.append(f"判定说明：{result.explanation}")
+        self.summary.setText("\n".join(first))
 
         # 标准生命周期提示：非阻断。单独展示，不与判定结果混排，
         # 也不进入 issue_codes / missing_fields。
@@ -537,23 +567,40 @@ class AnalysisPage(QWidget):
             "\n".join(f"⚠ {text}" for text in result.warnings))
         self.warning_label.setVisible(bool(result.warnings))
 
-        basis_lines: list[str] = []
+        # 第二层：关键实际值与对应限值。
+        second: list[str] = []
+        actual_efficiency = (result.extra_metrics or {}).get("泵效率_%")
+        if actual_efficiency is not None:
+            second.append(f"实际泵效率：{actual_efficiency}%")
         if result.thresholds:
-            basis_lines.append("等级阈值：" + "；".join(
-                f"{name} {value}" for name, value in result.thresholds.items()))
+            second.append("对应等级效率限值：" + "；".join(
+                f"{THRESHOLD_DISPLAY_NAMES.get(name, name)} {value}"
+                for name, value in result.thresholds.items()))
+        if not second:
+            second.append("本次评价没有可展示的实际值与限值对比。")
+        self.values_label.setText("\n".join(second))
+
+        # 第三层：普通工程语言解释"为什么得到这个结果"。
+        # 直接采用契约给出的 explanation，不由 UI 另写一套判定理由。
+        self.reason_label.setText(f"为什么是这个结果：{result.explanation}")
+
+        # 第四层：所选标准与已有标准依据。
+        standard = result.references.get("standard") or {}
+        basis_lines = [
+            f"所选标准：{standard.get('standard_code') or result.standard_code}"
+            f"《{standard.get('standard_name') or '离心泵能效限定值及能效等级'}》",
+            f"标准数据版本：{standard.get('data_version') or '—'}",
+            "标准依据：GB 19762—2025《离心泵能效限定值及能效等级》",
+        ]
         derived = result.calculation_trace.get("derived") or {}
         if derived:
             basis_lines.append("关键计算参数：" + "；".join(
                 f"{name} {value}" for name, value in derived.items()))
-        if result.extra_metrics:
-            basis_lines.append("实际参数：" + "；".join(
-                f"{name} {value}" for name, value in result.extra_metrics.items()))
-        basis_lines.append("标准依据：GB 19762—2025《离心泵能效限定值及能效等级》")
         if not result.finalizable and result.not_finalizable_reason:
             basis_lines.append("不可保存原因：" + result.not_finalizable_reason)
         self.basis.setText("\n".join(basis_lines))
 
-        # 内部 Rule / data id 属于技术详情，不占普通业务结果区。
+        # 第五层：默认折叠的高级技术详情。
         self._render_technical(result)
 
     def _render_technical(self, result: PumpAnalysisResult) -> None:
@@ -569,5 +616,9 @@ class AnalysisPage(QWidget):
             ("数据版本", standard.get("data_version") or "—"),
             ("数值配置", result.references.get("numeric_profile_id") or "—"),
             ("结果契约", result.references.get("result_contract_version") or "—"),
+            # 原始判定提示码是审计标识：普通区只显示中文说明，
+            # 原始码归此处，审计能力不删。
+            ("判定提示码", "、".join(result.issue_codes) or "—"),
+            ("缺失字段", "、".join(result.missing_fields) or "—"),
         ]
         self.technical.setText("\n".join(f"{name}：{value}" for name, value in rows))

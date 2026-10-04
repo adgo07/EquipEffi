@@ -70,6 +70,11 @@ def _public_example(device_type: str) -> dict[str, object]:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    # ``argv is None`` 表示"按控制台参数"，**不等于**"没有参数"。
+    # 必须先规范化为显式列表：否则 `main()` 无参调用（zipapp / runpy /
+    # `python -m equipeffi`）会把 `not None` 当成"无参数启动"而误入桌面 Shell，
+    # 使 `--status` / `--jsonl` / `--web` 等路径被 Qt 事件循环吞掉。
+    argv = list(sys.argv[1:]) if argv is None else list(argv)
     parser = argparse.ArgumentParser(description="EquipEffi 15类设备能效公共接口")
     parser.add_argument("--device-type", choices=PUBLIC_DEVICE_TYPES)
     parser.add_argument("--v4-sheet", help="V4设备sheet名称；与--device-type二选一")
@@ -88,14 +93,27 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--open-browser", action="store_true", help="--web启动后打开默认浏览器")
     parser.add_argument("--audit-template", help="只读审计V4工作簿结构、保护、公式和禁用字段")
     parser.add_argument("--elimination-scope", choices=[item.value for item in EliminationScope], default=EliminationScope.MOTOR_BATCHES_1_4.value)
-    parser.add_argument("--gui", action="store_true", help="从源码工作区转交桌面窗口入口")
-    parser.add_argument("--qt", action="store_true", help="启动 Phase 2 Qt 工程薄壳（仅应用设置）")
+    parser.add_argument("--gui", action="store_true",
+                        help="启动桌面窗口（Phase 6 起与无参数启动、--qt 相同：PySide6 Qt）")
+    parser.add_argument("--qt", action="store_true",
+                        help="启动 PySide6 Qt 桌面窗口（与 --gui 等价的显式别名）")
     args = parser.parse_args(argv)
 
-    if args.qt:
-        if any((args.gui, args.web, args.jsonl, args.batch_json_text, args.json_text, args.device_type,
-                args.v4_sheet, args.schema, args.example, args.list_device_types, args.status, args.audit_template)):
-            parser.error("--qt 不能与业务输入或其他入口同时使用")
+    # 无参数启动、--gui 与 --qt 都进入**同一个**正式 Windows Desktop Shell。
+    # Phase 6 Owner 决定：Tk GUI 不再使用；legacy Tk 不是任何用户产品入口；
+    # 也不存在"Tk 不可用时回退到 Web"的行为。
+    desktop_requested = bool(args.qt or args.gui)
+    other_entries = any((
+        args.web, args.jsonl, args.batch_json_text, args.json_text,
+        args.device_type, args.v4_sheet, args.schema, args.example,
+        args.list_device_types, args.status, args.audit_template))
+    if desktop_requested:
+        if other_entries:
+            parser.error("--gui/--qt 不能与业务输入或其他入口同时使用")
+        from .composition import launch_qt
+        return launch_qt()
+    if not argv:
+        # 无参数 = 启动正式产品 Shell。
         from .composition import launch_qt
         return launch_qt()
 
@@ -105,12 +123,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         parser.error("--web不能与其他输入或操作选项同时使用")
     if args.batch_json_text and (args.list_device_types or args.status or args.schema or args.example or args.audit_template or args.gui or args.web):
         parser.error("--batch-json不能与--list-device-types、--status、--schema、--example、--audit-template或--gui同时使用")
-
-    if args.gui:
-        # 使用包内启动器，避免安装wheel后依赖仓库根目录main.py。
-        from .presentation.desktop.launcher import launch_packaged_gui
-        launch_packaged_gui()
-        return 0
 
     if args.audit_template:
         # Template auditing is an Excel-adapter operation and does not need to

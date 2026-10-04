@@ -3,7 +3,9 @@
   "external_sources": {
     "GB19762-2025-PDF": {
       "artifact_kind": "EXTERNAL_FILE",
-      "aliases": ["GB 19762-2025"],
+      "aliases": [
+        "GB 19762-2025"
+      ],
       "default_locator": "EQUIPEFFI_EXTERNAL_EVIDENCE_ROOT",
       "relative_path": "6 7. GB 19762-2025 离心泵能效限定值及能效等级.pdf",
       "artifact_sha256": "7F515D8B9D6B4D2AB97FFA7BECB78520BA0579CFBD6D5ECA10C7E7CC77895FEC",
@@ -31,6 +33,13 @@
       "catalog_data_version": "",
       "artifact_path": "src/equipeffi/infrastructure/standards/json_repository.py",
       "artifact_sha256": "466A6E5154E0040F5529D689E61B3C68B0B0C18CAEC369AA1C59E0D582AB2F4A",
+      "reason": "Implementation snapshot pinned by the immutable 0.3 candidate set (verified unchanged at the candidate freeze commits 72e8e49 / 90af7f8); later implementation changes must not invalidate already-recorded candidate provenance"
+    },
+    {
+      "case_schema_version": "golden-case-0.3",
+      "catalog_data_version": "",
+      "artifact_path": "src/equipeffi/application/services/evaluation_service.py",
+      "artifact_sha256": "EEF8731E5A162C81441D83BAC4C493D0F9EA5A0014CEC1E44BF5E82535DEB8ED",
       "reason": "Implementation snapshot pinned by the immutable 0.3 candidate set (verified unchanged at the candidate freeze commits 72e8e49 / 90af7f8); later implementation changes must not invalidate already-recorded candidate provenance"
     }
   ]

@@ -1,4 +1,15 @@
-"""薄壳：统一 GB 19762 分析页与分析记录页；窗口状态经 SettingsService 持久化。"""
+"""正式 Windows Product Shell：五个真实一级页面。
+
+一级导航（顺序即产品任务顺序）：首页 / 标准库 / 新建分析 / 分析记录 / 设置。
+**每一个都是真实页面，没有 placeholder。**
+
+跨页导航只实现"切页 + 选择目标对象 + 载入已有对象"，
+不引入事件总线 / 通用 Router Framework / Page Base Class / DI 容器 / 导航状态机。
+
+Excel 导入属 Phase 8，参数库当前无独立用户需求，因此**不**出现在一级导航。
+"""
+from __future__ import annotations
+
 import base64
 import binascii
 import logging
@@ -8,22 +19,30 @@ from PySide6.QtWidgets import QHBoxLayout, QListWidget, QMainWindow, QStackedWid
 
 from ...application.services.settings_service import SettingsService
 from .navigation import PAGES
-from .pages import placeholder_page
 from .pages.analysis import AnalysisPage
+from .pages.home import HomePage
 from .pages.records import RecordsPage
+from .pages.settings import SettingsPage
+from .pages.standards import StandardsPage
 from .tokens import TOKENS
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, settings: SettingsService, analysis=None,
-                 *, workspace_id: str | None = None):
+    def __init__(self, settings: SettingsService, analysis=None, *,
+                 workspace_id: str | None = None, app_version: str = "",
+                 data_location=None):
         super().__init__()
         self.settings = settings
+        self.app_version = app_version or _app_version()
         self.setWindowTitle("设备能效分析工具 · GB 19762—2025 离心泵能效分析")
         self.resize(1000, 700)
+        # 允许用户把窗口缩小；页面内容由各自的滚动区域承载，
+        # 不得让内容的最小宽度把窗口锁在大尺寸上。
+        self.setMinimumSize(560, 420)
         font = self.font()
         font.setPixelSize(TOKENS.font_size)
         self.setFont(font)
+
         container = QWidget()
         layout = QHBoxLayout(container)
         layout.setSpacing(TOKENS.spacing)
@@ -31,23 +50,77 @@ class MainWindow(QMainWindow):
         self.navigation.setFixedWidth(TOKENS.navigation_width)
         self.navigation.addItems(PAGES)
         self.pages = QStackedWidget()
-        self.analysis_page = (AnalysisPage(analysis, workspace_id=workspace_id)
-                              if analysis is not None else None)
-        self.records_page = RecordsPage(analysis) if analysis is not None else None
+
+        # 所有页面都真实构建；analysis 为 None 时仍构建（用于仅设置/关于场景）。
+        self.home_page = HomePage(analysis, self) if analysis is not None else None
+        self.standards_page = StandardsPage(analysis, self) if analysis is not None else None
+        self.analysis_page = AnalysisPage(analysis, workspace_id=workspace_id,
+                                          navigator=self) if analysis is not None else None
+        self.records_page = RecordsPage(analysis, navigator=self) if analysis is not None else None
+        self.settings_page = SettingsPage(settings, analysis, app_version=self.app_version,
+                                         data_location=data_location, navigator=self)
+
+        self._page_widgets = {
+            "首页": self.home_page,
+            "标准库": self.standards_page,
+            "新建分析": self.analysis_page,
+            "分析记录": self.records_page,
+            "设置": self.settings_page,
+        }
         for title in PAGES:
-            if title == "新建分析" and self.analysis_page is not None:
-                self.pages.addWidget(self.analysis_page)
-            elif title == "分析记录" and self.records_page is not None:
-                self.pages.addWidget(self.records_page)
-            else:
-                self.pages.addWidget(placeholder_page(title))
+            widget = self._page_widgets[title]
+            self.pages.addWidget(widget if widget is not None else QWidget())
+
         layout.addWidget(self.navigation)
         layout.addWidget(self.pages, 1)
         self.setCentralWidget(container)
-        self.navigation.currentRowChanged.connect(self.pages.setCurrentIndex)
+        self.navigation.currentRowChanged.connect(self._on_navigation_changed)
         self.navigation.setCurrentRow(0)
         self._restore("window.geometry", self.restoreGeometry)
         self._restore("window.state", self.restoreState)
+
+    # -- 最小导航契约 -------------------------------------------------------
+
+    def _on_navigation_changed(self, row: int) -> None:
+        self.pages.setCurrentIndex(row)
+        widget = self.pages.currentWidget()
+        refresh = getattr(widget, "refresh", None)
+        if callable(refresh):
+            refresh()
+
+    def _show_page(self, title: str) -> None:
+        index = PAGES.index(title)
+        self.navigation.setCurrentRow(index)
+        self.pages.setCurrentIndex(index)
+
+    def open_home(self) -> None:
+        self._show_page("首页")
+
+    def open_standards(self, standard_code: str | None = None) -> None:
+        self._show_page("标准库")
+
+    def open_analysis(self, workspace_id: str | None = None) -> None:
+        page = self.analysis_page
+        if page is None:
+            return
+        if workspace_id:
+            page.load_workspace(workspace_id)
+        else:
+            page.new_draft()
+        self._show_page("新建分析")
+
+    def open_records(self, record_id: str | None = None) -> None:
+        page = self.records_page
+        if page is None:
+            return
+        self._show_page("分析记录")
+        if record_id:
+            page.show_record(record_id)
+
+    def open_settings(self) -> None:
+        self._show_page("设置")
+
+    # -- 窗口状态 -----------------------------------------------------------
 
     def _restore(self, key, restore):
         value = self.settings.get(key)
@@ -71,3 +144,12 @@ class MainWindow(QMainWindow):
             event.ignore()
             return
         super().closeEvent(event)
+
+
+def _app_version() -> str:
+    try:
+        from ... import __version__
+
+        return __version__
+    except Exception:  # pragma: no cover - 版本信息缺失不应阻止启动
+        return ""

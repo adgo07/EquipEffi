@@ -1,14 +1,14 @@
 # EquipEffi 当前交接
 
-路线 EquipEffi V2.3；Phase 1 = PHASE_1_PASS；Phase 2 = PHASE_2_PASS；**Phase 3 = PHASE_3_PASS**（PR #11 合并 @ `87d9ef1bf32fb3f765d4f8ef3f97aa222913152a`）；**Phase 4 = PHASE_4_PASS**（PR #12 合并 @ `d6112ea9c7c1c16f95d798c2229cdc54aaf6240a`）；**Phase 5 = IN_PROGRESS**；automatic_continuation = DISABLED。
+路线 EquipEffi V2.3；Phase 1 = PHASE_1_PASS；Phase 2 = PHASE_2_PASS；**Phase 3 = PHASE_3_PASS**（PR #11 合并 @ `87d9ef1bf32fb3f765d4f8ef3f97aa222913152a`）；**Phase 4 = PHASE_4_PASS**（PR #12 合并 @ `d6112ea9c7c1c16f95d798c2229cdc54aaf6240a`）；**Phase 5 = PHASE_5_PASS**（PR #13 合并 @ `f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`，验收落档 `docs/phase5_acceptance_record.md`）；**Phase 6 = IN_PROGRESS**；automatic_continuation = DISABLED。
 
 ## 当前任务
 
-用户已明确授权执行 **Phase 5：pump_chemical Stage D 正式支持与发布门禁收口**（在已有 Phase 3/4 实现基础上完成 Stage D 正式支持证据闭环，形成 **support promotion candidate** 并交独立验收）。**不是重新开发 pump_chemical。**
+用户已明确授权执行 **Phase 6：完整 GB 19762 Product Shell**——把 Phase 2～5 已成立的完整 GB 19762（`pump_water` + `pump_chemical`）业务能力组织成正式、完整、可长期使用的 Windows PySide6 产品 Shell。**不是重新设计业务算法。**
 
-**状态**：`EXECUTION_COMPLETE` / `Stage D candidate = READY_FOR_INDEPENDENT_ACCEPTANCE` / `support promotion candidate = READY`。**不得**自行宣布 `PHASE_5_PASS`、`Stage D PASS` 或 `pump_chemical officially SUPPORTED`；不得合并 PR；不得进入 Phase 6。
+**状态**：`Phase 6 implementation = EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`。**不得**自行宣布 `PHASE_6_PASS`；不得合并 PR；不得进入 Phase 7。
 
-- 分支 `phase5/pump-chemical-stage-d-support`；base `d6112ea9c7c1c16f95d798c2229cdc54aaf6240a`
+- 分支 `phase6/gb19762-product-shell`；base `f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`
 - Stage D 证据矩阵：`docs/phase5_stage_d_evidence_matrix.md`
 - FORMAL_APPLICATION_E2E 证据：`specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json`
 - **正式发布用户表面（Owner 决定）= PySide6 Qt Desktop（`--qt`）**；`--json` / `ApplicationApi` / `--web` / JSONL / legacy Tk `--gui` / Android bridge / V4·Excel 是现存的 compatibility / development / future-adapter surfaces，其 support 差异登记为 `REGISTERED_DEVIATION`（`QA-P5-001`～`005`）
@@ -42,7 +42,7 @@
 
 ```text
 pump_water    : scope_status=IN_V1   | support_status=SUPPORTED                    | standard_maturity=SUPPORTED
-pump_chemical : scope_status=IN_V1   | support_status=SUPPORT_PROMOTION_CANDIDATE  | standard_maturity=IMPLEMENTED
+pump_chemical : scope_status=IN_V1   | support_status=SUPPORTED                     | standard_maturity=SUPPORTED
                                       | 统一 Qt 正式路径取值 SUPPORTED；候选 SUPPORTED
 transformer   : scope_status=POST_V1 | support_status=NOT_IN_RELEASE_SCOPE
 ```
@@ -61,12 +61,12 @@ transformer   : scope_status=POST_V1 | support_status=NOT_IN_RELEASE_SCOPE
 
 ## 关键事实（Phase 5 已交付，等待独立验收）
 
-- **统一正式产品路径**（`CentrifugalPumpAnalysisService`，Qt `--qt` 所用入口）对 `pump_chemical` 的发布门禁为 `SUPPORTED`（支持提升候选）。
-- **非正式表面仍为 `NOT_IN_RELEASE_SCOPE`**：`--json` / `ApplicationApi` / JSONL / CLI / `--web` / legacy Tk `--gui`（Phase 6 收口，`QA-P5-001/002`）；V4·Excel（Phase 8，`QA-P5-003`）；Android bridge 与安装/签名/发布产物（Phase 9，`QA-P5-004/005`）。**不得误报为 Phase 5 已修复。**
+- **发布门禁为单一事实源** `application/services/pump_release_gate.py`；`CentrifugalPumpAnalysisService` 与 `EvaluationService` 都实际调用它。`pump_chemical` 在所有入口均为 `SUPPORTED`。
+- **非正式表面语义已同步**：`--json` / `ApplicationApi` / JSONL / CLI / `--web` 对 `pump_chemical` 同样返回 `SUPPORTED` 并正常评价（Phase 6 R1 收口，`QA-P5-001/002` 已 `CLOSED`）。V4·Excel 保持 Phase 8（`QA-P5-003`）；Android bridge 与安装/签名/发布产物保持 Phase 9（`QA-P5-004/005`）。
 - 11 条化学 Golden 的 `evaluation_layer` 仍为 `PROFILE_EVALUATOR_TECHNICAL`、`support_status = null`——它们表示**历史批准来源**；当前正式产品链的证据另见 `specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json`。
 - **历史 Record 冻结**：Phase 3/4 期间形成的 chemical Record 其 `result_snapshot.support_status` 仍为 `NOT_IN_RELEASE_SCOPE`，Reopen 不追溯改写、不重算。
 - 统一类别路由必须使用**精确名称**映射，不得用"清水/化工/多级"等子串猜测。
-- `as_of`：评价日期**不是业务门禁**（Owner，Phase 5）。正式 Qt 路径自动记录本机当前日期，用户无需关注；标准与日期不匹配时只给四字非阻断提醒（如"该标准尚未实施"），不改变 `evaluation_status` / `grade` / Finalize 权限，不自动切换标准。`EQP-STD-GB19762-001` 已 `RESOLVED`；遗留入口的旧门禁登记为 `QA-P3-003`（Phase 6 收口）。
+- `as_of`：评价日期**不是业务门禁**（Owner，Phase 5）。正式 Qt 路径自动记录本机当前日期，用户无需关注；标准与日期不匹配时只给四字非阻断提醒（如"该标准尚未实施"），不改变 `evaluation_status` / `grade` / Finalize 权限，不自动切换标准。`EQP-STD-GB19762-001` 已 `RESOLVED`；遗留入口的旧门禁已由 Phase 6 R1 对离心泵豁免，`QA-P3-003` 已 `CLOSED`。
 
 ## 长期操作参考
 

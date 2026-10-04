@@ -1,15 +1,20 @@
-"""分析记录（History / Reopen）页（Phase 3 P3-G02/G03）。
+"""分析记录（History / Reopen）页。
 
 清水泵与石油化工泵记录出现在**同一个列表**；打开记录只读原快照，
-不重新计算。
+不重新计算、不追溯改写当时的支持状态。
+
+Phase 6 补齐搜索与筛选。筛选只作用于**快照里已有的字段**，
+不新增 schema、不重算、不修改历史记录。
 """
 from __future__ import annotations
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
+    QComboBox,
     QGroupBox,
     QHBoxLayout,
     QLabel,
+    QLineEdit,
     QListWidget,
     QListWidgetItem,
     QPushButton,
@@ -24,14 +29,24 @@ from ..tokens import TOKENS
 from ..labels import support_status_text
 from ..widgets.collapsible import CollapsibleSection
 
+#: 结论筛选项 → 匹配的 evaluation_status 集合（"全部" 不筛选）。
+CONCLUSION_FILTERS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("全部结论", ()),
+    ("已判定等级", ("SUCCESS",)),
+    ("不适用（超出标准范围）", ("OUT_OF_STANDARD_SCOPE",)),
+    ("无法判定（信息不足）", ("INSUFFICIENT_DATA", "INVALID_INPUT")),
+)
+
 
 class RecordsPage(QWidget):
     """正式记录历史页。"""
 
-    def __init__(self, service: CentrifugalPumpAnalysisService):
+    def __init__(self, service: CentrifugalPumpAnalysisService, navigator=None):
         super().__init__()
         self.service = service
+        self.navigator = navigator
         self._records: list = []
+        self._visible: list = []
         self._build()
         self.refresh()
 
@@ -43,8 +58,38 @@ class RecordsPage(QWidget):
         heading = QLabel("分析记录")
         font = heading.font()
         font.setPixelSize(TOKENS.title_font_size)
+        font.setBold(True)
         heading.setFont(font)
         layout.addWidget(heading)
+
+        filters = QHBoxLayout()
+        filters.addWidget(QLabel("搜索"))
+        self.search = QLineEdit()
+        self.search.setPlaceholderText("按记录编号、设备类别或标准搜索")
+        self.search.textChanged.connect(self._apply_filters)
+        filters.addWidget(self.search, 2)
+
+        filters.addWidget(QLabel("泵型"))
+        self.category_filter = QComboBox()
+        self.category_filter.currentIndexChanged.connect(self._apply_filters)
+        filters.addWidget(self.category_filter, 1)
+
+        filters.addWidget(QLabel("结论"))
+        self.conclusion_filter = QComboBox()
+        for label, _ in CONCLUSION_FILTERS:
+            self.conclusion_filter.addItem(label)
+        self.conclusion_filter.currentIndexChanged.connect(self._apply_filters)
+        filters.addWidget(self.conclusion_filter, 1)
+
+        filters.addWidget(QLabel("评价日期"))
+        self.date_filter = QLineEdit()
+        self.date_filter.setPlaceholderText("YYYY-MM-DD")
+        self.date_filter.textChanged.connect(self._apply_filters)
+        filters.addWidget(self.date_filter, 1)
+        layout.addLayout(filters)
+
+        self.filter_summary = QLabel("")
+        layout.addWidget(self.filter_summary)
 
         holder = QHBoxLayout()
         self.list = QListWidget()
@@ -76,25 +121,88 @@ class RecordsPage(QWidget):
         self.refresh_button = QPushButton("刷新")
         self.refresh_button.clicked.connect(self.refresh)
         buttons.addWidget(self.refresh_button)
+        self.clear_filters_button = QPushButton("清除筛选")
+        self.clear_filters_button.clicked.connect(self.clear_filters)
+        buttons.addWidget(self.clear_filters_button)
         buttons.addStretch()
         layout.addLayout(buttons)
 
+    # -- 数据 ---------------------------------------------------------------
+
     def refresh(self) -> None:
         self._records = list(self.service.list_records())
-        self.list.clear()
+        self._sync_category_filter()
+        self._apply_filters()
+
+    def _sync_category_filter(self) -> None:
+        """泵型筛选项来自记录快照，不引入第二份泵型目录。"""
+
+        current = self.category_filter.currentText()
+        categories = sorted({record.product_category for record in self._records
+                             if record.product_category})
+        self.category_filter.blockSignals(True)
+        self.category_filter.clear()
+        self.category_filter.addItem("全部泵型")
+        self.category_filter.addItems(categories)
+        index = self.category_filter.findText(current)
+        self.category_filter.setCurrentIndex(index if index >= 0 else 0)
+        self.category_filter.blockSignals(False)
+
+    def filtered_records(self) -> list:
+        """当前筛选后的记录（只读筛选已有快照字段）。"""
+
+        keyword = self.search.text().strip().lower()
+        category = self.category_filter.currentText()
+        conclusion_index = max(self.conclusion_filter.currentIndex(), 0)
+        statuses = CONCLUSION_FILTERS[conclusion_index][1]
+        as_of = self.date_filter.text().strip()
+
+        selected = []
         for record in self._records:
-            item = QListWidgetItem(
-                f"{record.finalized_at_utc[:10]} | {record.standard_code} | "
-                f"{record.product_category} | {record.ui_conclusion}"
-            )
-            self.list.addItem(item)
-        if not self._records:
-            self.detail.setText("尚无正式记录。完成一次分析并保存后会显示在这里。")
+            if keyword:
+                haystack = " ".join([
+                    record.record_id, record.product_category, record.standard_code,
+                    record.ui_conclusion,
+                ]).lower()
+                if keyword not in haystack:
+                    continue
+            if category and category != "全部泵型" and record.product_category != category:
+                continue
+            if statuses and record.evaluation_status not in statuses:
+                continue
+            if as_of and not record.as_of.startswith(as_of):
+                continue
+            selected.append(record)
+        return selected
+
+    def _apply_filters(self, *_args) -> None:
+        self._visible = self.filtered_records()
+        self.list.blockSignals(True)
+        self.list.clear()
+        for record in self._visible:
+            grade = record.grade or record.ui_conclusion
+            self.list.addItem(QListWidgetItem(
+                f"{record.as_of} | {record.standard_code} | "
+                f"{record.product_category} | {grade}"))
+        self.list.blockSignals(False)
+        self.filter_summary.setText(
+            f"共 {len(self._records)} 条记录，当前显示 {len(self._visible)} 条。")
+        if not self._visible:
+            self.detail.setText("没有符合条件的记录。" if self._records
+                                else "尚无正式记录。完成一次分析并保存后会显示在这里。")
+            self.technical.setText("")
+
+    def clear_filters(self) -> None:
+        self.search.clear()
+        self.date_filter.clear()
+        self.conclusion_filter.setCurrentIndex(0)
+        self.category_filter.setCurrentIndex(0)
+        self._apply_filters()
 
     def _on_selected(self, row: int) -> None:
-        if row < 0 or row >= len(self._records):
+        if row < 0 or row >= len(self._visible):
             return
-        self.show_record(self._records[row].record_id)
+        self.show_record(self._visible[row].record_id)
 
     def show_record(self, record_id: str) -> str:
         """Reopen：只读原快照，不调用 evaluator、不按今天日期重算。"""
@@ -104,6 +212,7 @@ class RecordsPage(QWidget):
         input_snapshot = snapshot.input_snapshot
 
         # 业务详情：面向用户，不出现内部 rule / data id / profile 名。
+        # 全部取自**不可变快照**，因此天然是"当时"的事实，不重算、不改写。
         lines = [
             f"记录编号：{snapshot.record_id}",
             f"采用标准：{snapshot.standard_code}",

@@ -168,13 +168,18 @@ def launch_qt(*, paths=None) -> int:
     from .presentation.qt.app import run
     import sys
 
-    service, logger = create_settings_runtime(paths=paths)
-    analysis = create_pump_analysis_service(paths=paths)
+    from .infrastructure.persistence.app_data_paths import AppDataPaths
+
+    # 正式启动路径必须解析出**真实**数据目录并一路传到设置页，
+    # 不得让 UI 只在测试注入时才显示路径。
+    resolved = paths if paths is not None else AppDataPaths.default()
+    service, logger = create_settings_runtime(paths=resolved)
+    analysis = create_pump_analysis_service(paths=resolved)
     previous = install_exception_hook(logger)
     try:
         # 草稿身份由用户在"分析草稿"区显式命名，不使用随机 session id：
         # 启动时不绑定任何草稿，用户可新建或从已有草稿列表载入。
-        return run(service, logger, analysis)
+        return run(service, logger, analysis, data_location=resolved.root)
     finally:
         sys.excepthook = previous
         close_logging(logger)

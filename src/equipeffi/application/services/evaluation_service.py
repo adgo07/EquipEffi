@@ -8,6 +8,7 @@ from ...domain.evaluation.evaluator_registry import EVALUATOR_FACTORIES
 from ...domain.evaluation.device_types import DeviceTypeResolutionError, resolve_device_type
 from ...domain.evaluation.elimination import EliminationMatcher
 from .input_normalization import normalize_evaluation_input
+from .pump_release_gate import PUMP_RULE_PROFILES, pump_release_support
 
 
 DEFAULT_EVALUATION_DATE = date(2026, 8, 23)
@@ -67,11 +68,9 @@ def _standard_effective_date(pack: dict[str, Any]) -> date | None:
 
 
 def _pump_release_support(internal_device_type: str) -> str | None:
-    if internal_device_type == "pump_water":
-        return "SUPPORTED"
-    if internal_device_type == "pump_chemical":
-        return "NOT_IN_RELEASE_SCOPE"
-    return None
+    # Phase 6 G06：与统一纵向切片共用**同一份**发布门禁策略，
+    # 避免共享 Application/CLI 语义把石化泵错误短路成 NOT_IN_RELEASE_SCOPE。
+    return pump_release_support(internal_device_type)
 
 
 def _requested_pump_release_support(device_type: str, values: dict[str, Any]) -> str | None:
@@ -312,22 +311,20 @@ class EvaluationService:
                     missing_fields=["产品类别"] if missing_category else [],
                     trace=[{"step_type": "泵类别判定", "output": Conclusion.UNABLE_TO_JUDGE.value, "reason": "CATEGORY_UNRESOLVED"}],
                 )
-            # 化工泵已列入Windows V1目标范围，但V1发布支持仍受同等Phase 1门禁约束。
-            return EvaluationResult(
-                record_id=draft.record_id,
-                conclusion=Conclusion.NOT_IN_RELEASE_SCOPE,
-                public_device_type=public_device_type,
-                internal_device_type=internal_device_type,
-                support_status="NOT_IN_RELEASE_SCOPE",
-                category_status="APPLICABLE",
-                evaluation_status=None,
-                issue_codes=["PROFILE_NOT_IN_RELEASE_SCOPE"],
-                standard_reference={"standard_code": pack.get("standard_code", ""), "pack_id": pack.get("pack_id", ""), "data_version": pack.get("data_version", ""), "status": pack.get("status", "")},
-                explanation="pump_chemical已纳入Windows V1目标范围，但尚未通过等同于清水泵的Phase 1验收门槛；当前版本未支持",
-                trace=[{"step_type": "Profile范围", "output": Conclusion.NOT_IN_RELEASE_SCOPE.value, "reason": "PROFILE_NOT_IN_RELEASE_SCOPE"}],
-            )
+            # Phase 6 G06：石化泵与清水泵调用**同一**正式业务能力。
+            # 之前这里硬编码短路为 NOT_IN_RELEASE_SCOPE 且不计算，导致
+            # --json / ApplicationApi / JSONL / CLI / --web 等共享 Application
+            # 语义与统一纵向切片冲突（独立验收 QA-P5-001 / QA-P5-002(b)）。
+            # 发布支持状态仍由共享发布门禁（`pump_release_gate`）统一给出。
         decision = self.elimination.match(internal_device_type, values, elimination_scope)
         effective_date = _standard_effective_date(pack)
+
+        # Phase 6 G06 / Owner 规则：**评价日期不是业务门禁**。
+        # 离心泵（pump_water / pump_chemical）必须按所选标准正常计算；
+        # 生命周期不匹配只作为**非阻断提示**，不得改变 evaluation_status、
+        # 结论、等级或 Finalize 语义。剩余旧门禁只保留给其他 Profile。
+        if internal_device_type in PUMP_RULE_PROFILES:
+            effective_date = None
 
         # 标准实施日前不得调用评价器。尤其是产业目录处于非全文状态时，
         # 之前的“未覆盖”门禁会先调用评价器并把未来标准的阈值作为参考

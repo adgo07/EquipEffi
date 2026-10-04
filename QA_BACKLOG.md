@@ -284,7 +284,7 @@ authoritative path impact = 尚待验证
 |---|---|---|---|
 | `QA-P3-001` | `V1_RUNTIME` | OPEN | **遗留兼容默认日期**：`date(2026,8,23)` 仍作为隐式默认出现在 6 处源码位置（`evaluation_service.py:13`、`evaluation_facade.py:27/68`、`v4_workbook_service.py:34/67`、`application_api.py:539`）。统一 `AnalysisService` 已要求显式 `as_of`；遗留入口按 `AGENTS.md §2.0` 登记保留，全局取消须另立任务并附兼容影响评估 |
 | `QA-P3-002` | `V1_RUNTIME` | OPEN | **标准生命周期元数据缺失**：Canonical Pack 目前只提供 `effective_date`，没有 `superseded_by` / 废止日期等生命周期元数据，因此软件只能对"评价日期早于实施日期"给出非阻断提示（Phase 5 起为四字短语"该标准尚未实施"），**无法**自动识别"已废止 / 已被替代"。Owner 决定明确不为凑齐提示而私造公共规则；补齐须走标准映射流程 |
-| `QA-P3-003` | `REGISTERED_DEVIATION` | OPEN | **遗留非正式表面的旧 `as_of` 门禁**：Owner 规则（Phase 5）规定评价日期不是业务门禁，正式 Qt 路径已符合；遗留 `EvaluationService` / `--json` / `ApplicationApi` / `--web` / JSONL / V4 入口仍保留旧的生效日期短路行为。**不借 Phase 5 扩大重构**。<br>`disposition`：Phase 6（产品入口 / shipped surface 收口） |
+| `QA-P3-003` | `CLOSED`（Phase 6 R1） | **遗留非正式表面的旧 `as_of` 门禁**：Owner 规则规定评价日期不是业务门禁。R1 已让离心泵（`pump_water` / `pump_chemical`）在遗留 `EvaluationService` 中**豁免**该门禁（`internal_device_type in PUMP_RULE_PROFILES` 时不再短路标准评价）；该门禁仍保留给其他 Profile，本 Phase 不为它们改语义。实测：`as_of=2026-02-28` 时两个 rule profile 均正常计算、`evaluation_status = SUCCESS`，且 trace 中不再出现「标准生效日期」跳过步骤。<br>`closed_by`：`tests/unit/test_phase6_product_shell.py::QaClosureTests::test_qa_p3_003_legacy_as_of_gate_no_longer_blocks_pumps` |
 
 ### Phase 4 新增登记
 
@@ -301,8 +301,8 @@ authoritative path impact = 尚待验证
 
 | issue_id | 表面 | 状态 | 说明 |
 |---|---|---|---|
-| `QA-P5-001` | `REGISTERED_DEVIATION` | OPEN | **`--json` / `ApplicationApi` / JSONL / CLI 仍对 `pump_chemical` 返回 `NOT_IN_RELEASE_SCOPE`**：统一正式产品路径（Qt `--qt` 所用入口）已提升为 `SUPPORTED` 候选，但这些入口走遗留 `EvaluationService` / `ApplicationApi`，发布门禁未同步。<br>`disposition`：**Phase 6**（产品入口 / Shell / shipped surface 收口） |
-| `QA-P5-002` | `REGISTERED_DEVIATION` | OPEN | **`--web` 与 legacy Tk `--gui` 仍对 `pump_chemical` 返回 `NOT_IN_RELEASE_SCOPE`**：与 `QA-P5-001` 同源（遗留门禁未同步）。<br>`disposition`：**Phase 6** |
+| `QA-P5-001` | `CLOSED`（Phase 6 R1） | **`--json` / `ApplicationApi` / JSONL / CLI 曾对 `pump_chemical` 返回 `NOT_IN_RELEASE_SCOPE`**。根因是遗留 `EvaluationService` 中一段硬编码短路（`PROFILE_NOT_IN_RELEASE_SCOPE`）未与统一纵向切片同步。R1 已删除该短路，并把发布门禁收敛为**单一事实源** `application/services/pump_release_gate.py`；`EvaluationService` 与 `CentrifugalPumpAnalysisService` 都**实际调用** `pump_release_gate.pump_release_support`（后者在 R1 首轮仅声明而未调用，复验已指出并修正）。机械证据：在内存中替换 `PUMP_RELEASE_SUPPORT['pump_chemical']` 后两条路径同步变化；见 `R1SecondRoundBlockerTests::test_shared_release_gate_is_actually_used_by_both_paths`。<br>实测：同一石化泵输入经 `--json` CLI、`ApplicationApi` 与正式纵向切片得到**相同**的 `support_status = SUPPORTED` / 结论 / 等级。<br>`closed_by`：`tests/unit/test_phase6_product_shell.py::EntrySurfaceParityTests` |
+| `QA-P5-002` | `CLOSED`（Phase 6 / R1） | (a) **legacy Tk `--gui` 已收口**：不再启动 Tk，与无参数启动、`--qt` 相同进入正式 Qt Shell；Tk 不再是任何用户产品入口；已删除 Tk→Web fallback。(b) **`--web` 语义已同步**：`--web` 经 `ApplicationApi` → `EvaluationFacade` → `EvaluationService`，与 (a) 的 `--json` / CLI 走同一条链路，因此 `pump_chemical` 同样返回 `SUPPORTED` 并正常评价；见 `QA-P5-001`。<br>`closed_by`：`tests/unit/test_phase6_product_shell.py::EntrySurfaceParityTests` 与 `...::EntrypointTests::test_legacy_tk_launcher_is_not_a_product_entrypoint` |
 | `QA-P5-003` | `REGISTERED_DEVIATION` | OPEN | **V4 / Excel adapter 仍对 `pump_chemical` 返回 `NOT_IN_RELEASE_SCOPE`**：Excel 收口排在 Phase 8。<br>`disposition`：**Phase 8**（且 Phase 8 **必须**调用同一 Application / Calculator，**不得**建立第二套业务算法） |
 | `QA-P5-004` | `REGISTERED_DEVIATION` | OPEN | **Android bridge 未纳入本阶段正式支持表面**。正式发布前必须消除所有未声明的发布表面语义分歧。<br>`disposition`：**Phase 9** |
 | `QA-P5-005` | `REGISTERED_DEVIATION` | OPEN | **安装包 / 代码签名 / 正式发布产物**未产生：本 Phase 不声明可发布。<br>`disposition`：**Phase 9** |
@@ -310,3 +310,14 @@ authoritative path impact = 尚待验证
 **不得**把这些已登记 deviation 误报为 Phase 5 PASS 范围内已修复。
 
 未完成项保持 OPEN/VERIFY；本表不因 Phase 3 / Phase 4 / Phase 5 交付而关闭任何缺乏测试证据的条目。
+
+### Phase 6 新增登记
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-P6-001` | `LEGACY_TK` | `REGISTERED_DEVIATION` | **legacy Tk 桌面窗口实现保留但不接线**。Phase 6 已按 Owner 决定断开正式入口：`--gui` / 无参数 / `--qt` 均进入 Qt；`launcher.py` 不再导出 `launch_packaged_gui`，也不再回退 Web。<br>**未删除** `src/equipeffi/presentation/desktop/main_window.py`：该文件同时承载被 `tests/unit/test_desktop_form_model.py`（110 项）引用的**非 Tk 表单模型契约**（`form_fields_for_public_type` / `result_summary` / `capability_status_text` / `elimination_scope_options` / `download_builtin_template` / `conclusion_field_label`）与 1 项 Tk 实例测试，因此**不是零引用可盲删**的代码；按 Owner 规则"若仍有真实兼容依赖，只断开正式运行路径并登记，不得盲删"。<br>`disposition`：**Phase 8**（随 V4 / Excel 收口一并处置：迁移表单模型、删除 Tk 类） |
+| `QA-P6-002` | `CLOSED`（Phase 6 R1） | **候选层 Golden 以实现哈希 pin 冻结了 10 个实现文件，曾被误判为『Phase 6 无权限完成入口语义收口』。** R1 经真实代码审计确认：validator **本就**内置了「历史证据保持不可变、当前实现可以演进」的机制（`tools/validate_phase1_contracts.py` 的 `_historical_hash_reason` 配合 `specs/equipment_efficiency/evidence_registry.json` 的 `historical_repository_hashes`；注册表内既有一条 `golden-case-0.3` 记录，其 reason 已明确写着 later implementation changes must not invalidate already-recorded candidate provenance）。缺口只是**该登记未覆盖 `evaluation_service.py`**。<br>R1 的处理：**未**改写候选文件、**未**改写任何 Approved Golden，只把该实现文件的冻结哈希（`EEF8731E…`，已在冻结提交 `72e8e49` / `90af7f8` 处实测复核一致）补登记为历史证据。此后当前实现可正常演进，历史 provenance 校验仍对其锚定提交严格成立。<br>`closed_by`：`tests/unit/test_phase6_product_shell.py::QaClosureTests::test_evaluation_service_history_is_registered_not_rewritten` |
+| `QA-P6-003` | `WORKSPACE_IDENTITY` | `REGISTERED_DEVIATION` | **草稿 identity 为"名称即 ID / 改名等价于新建"**：`create_workspace(workspace_id, ...)` 以用户输入的草稿名作为主键；重命名会创建一个新草稿而不是重命名既有草稿，且删除/重建同名草稿会丢失既有修订链。<br>经真实代码复核**确实存在**。<br>Phase 6 **不改** Workspace identity 或 records schema（`records_migrations.py` 未修改，`schema_version` 保持 2）。<br>`disposition`：**Phase 7**（与 lineage / audit 一并设计稳定 identity） |
+| `QA-P6-004` | `NON_FORMAL_SURFACES` | `REGISTERED_DEVIATION` | **非正式 adapter 仍存在，但 Phase 6 未将其升级为正式 Windows UI**：`--web` / `--json` / `--jsonl` / `ApplicationApi` / 遗留 Tk 代码保留为 compatibility / development surface。Phase 6 已在启动入口与文档中明确：**正式发布用户表面 = PySide6 Qt Desktop**。<br>`disposition`：**Phase 8 / Phase 9**（随适配器与发布收口） |
+
+**Phase 6 R1 结论**：`QA-P5-001`、`QA-P5-002(a)(b)`、`QA-P3-003` 与 `QA-P6-002` 均已在 Phase 6 内**真正关闭**，关闭依据是可复现的机械测试（见各自 `closed_by`）。关闭方式**未**改写候选文件，也**未**改写任何 Approved Golden 的业务真值或历史 provenance；唯一新增的是一条历史实现哈希登记。

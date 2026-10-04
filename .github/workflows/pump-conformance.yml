@@ -124,7 +124,7 @@ jobs:
 
       # Phase 5：pump_chemical Stage D 支持提升候选 —— 11 条历史真值经当前正式
       # Application 链一致复现，且 Golden 的 evaluation_layer 未被改写。
-      - name: pump_chemical Stage D candidate evidence (gating)
+      - name: pump_chemical Stage D support + Phase 6 product shell (gating)
         run: python -m unittest tests.unit.test_phase5_chemical_stage_d.StageDEvidenceTests -v
 
       # Pump evaluator 与 Application API 门面（pump_water 与 pump_chemical 共用矩阵）。

@@ -80,22 +80,27 @@ jobs:
             tests.unit.test_public_device_types `
             tests.unit.test_device_evaluator_matrix -q
 
-      - name: Phase 2/3/4/5 settings, migrations, lifecycle, Stage D, Qt offscreen (gating)
+      # module is identifiable from the step outcome alone (no log access).
+      - name: Phase 2/3/4/5/6 settings, lifecycle, Stage D, Product Shell, Qt offscreen (gating)
+        shell: pwsh
         run: |
-          python -m unittest `
-            tests.unit.test_composition `
-            tests.unit.test_phase2_settings `
-            tests.unit.test_phase2_logging `
-            tests.unit.test_phase2_qt `
-            tests.unit.test_phase3_qt_unified `
-            tests.unit.test_phase3_r1_blockers `
-            tests.unit.test_phase3_r2_final_closure `
-            tests.unit.test_phase3_r3_as_of_lifecycle `
-            tests.unit.test_phase4_lifecycle_generalization `
-            tests.unit.test_phase4_fingerprint_decoupling `
-            tests.unit.test_phase5_chemical_stage_d `
-            tests.unit.test_windows_regression_comparator -v
-
+          $mods = @(
+            'tests.unit.test_composition',
+            'tests.unit.test_phase2_settings',
+            'tests.unit.test_phase2_logging',
+            'tests.unit.test_phase2_qt',
+            'tests.unit.test_phase3_qt_unified',
+            'tests.unit.test_phase3_r1_blockers',
+            'tests.unit.test_phase3_r2_final_closure',
+            'tests.unit.test_phase3_r3_as_of_lifecycle',
+            'tests.unit.test_phase4_lifecycle_generalization',
+            'tests.unit.test_phase4_fingerprint_decoupling',
+            'tests.unit.test_phase5_chemical_stage_d',
+            'tests.unit.test_phase6_product_shell',
+            'tests.unit.test_windows_regression_comparator'
+          )
+          python -m unittest @mods -v
+          exit $LASTEXITCODE
       - name: Full suite known-regression comparator (gating)
         run: python tools/check_windows_regressions.py --output artifacts/phase2-regression
 
