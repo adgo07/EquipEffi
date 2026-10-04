@@ -366,11 +366,10 @@ known-regression comparator                              gate=PASS
 ### 10.1 Base → final Head 实际 diff 摘要
 
 ```text
-18 files changed, 1849 insertions(+), 151 deletions(-)
+18 files changed, 1925 insertions(+), 150 deletions(-)
 ```
 
-（此前版本误写为 `16 files / +1134 / −144`：既漏计了 `PHASE4_EXECUTION_REPORT.md`
-与 `docs/phase3_acceptance_record.md` 之外的后续提交，也未包含本轮
+（此前版本误写为 `16 files / +1134 / −144`：既漏计了后续提交，也未包含
 `PHASE_4_BLOCKED` 修复。此处为对 base 的**实际**统计。）
 
 ### 10.2 changed files
