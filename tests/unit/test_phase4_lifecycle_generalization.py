@@ -18,6 +18,8 @@ from hashlib import sha256
 import json
 from pathlib import Path
 import sqlite3
+import subprocess
+import sys
 import tempfile
 import unittest
 from importlib.util import resolve_name
@@ -27,6 +29,8 @@ from equipeffi.application.lifecycle import (
     LifecyclePersistenceError,
     RecordConflictError,
     WorkspaceSnapshot,
+    business_key_names,
+    business_keys_metadata,
     stable_fingerprint,
 )
 from equipeffi.application.services.centrifugal_pump_analysis_service import (
@@ -44,6 +48,7 @@ from equipeffi.infrastructure.standards.json_repository import JsonStandardRepos
 
 ROOT = Path(__file__).resolve().parents[2]
 WATER = "单级单吸清水离心泵"
+CHEMICAL = "单级石油化工离心泵"
 AS_OF = date(2026, 8, 23)
 VALUES = {"QBEP": "100", "HBEP": "50", "speed": "2900",
           "efficiency": "90", "suction": "单吸", "stages": "1"}
@@ -190,14 +195,189 @@ class FingerprintSingleSourceTests(unittest.TestCase):
             device_type="centrifugal_pump", product_category=request.product_category,
             rule_profile="pump_water", as_of=request.as_of.isoformat(), payload=payload,
             schema_version=2, created_at_utc="c", updated_at_utc="u")
-        self.assertEqual(snapshot.request_fingerprint(), request.request_fingerprint())
-        # 显式传入与依赖登记必须给出同一结果（跨进程恢复路径）
         self.assertEqual(snapshot.request_fingerprint(PUMP_FINGERPRINT_KEYS),
-                         snapshot.request_fingerprint())
+                         request.request_fingerprint())
 
     def test_helper_normalizes_none_exactly_like_phase3(self):
         self.assertEqual(stable_fingerprint({"a": None}),
                          self._phase3_reference({"a": "None"}))
+
+
+class FingerprintHasNoProductImportCouplingTests(unittest.TestCase):
+    """Phase 4 阻塞回归：指纹**不得**依赖产品 service 的导入副作用。
+
+    独立验收在 head `855f259` 上的复现：只 import Repository 的新进程里，
+    业务键注册为空 → 旧 Workspace 无参指纹漂移，且不同业务输入得到相同指纹。
+
+    本类把该复现固定为回归：子进程**断言泵 service 未被导入**，并核对
+    无参指纹与"带产品模块计算"的期望值逐字节一致、且互不碰撞。
+    """
+
+    #: Phase 4 阻塞修复后，业务键集合随快照一起持久化在该保留键下。
+    GENERIC_PAYLOAD_KEYS = ("project_name", "equipment_no", "product_type")
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
+        self.db = Path(self.tmp.name) / "records.sqlite"
+        migrate_records_database(self.db, app_version="test")
+        self.service = _service(self.db)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def _request(self, category: str, **overrides) -> PumpAnalysisRequest:
+        values = dict(VALUES)
+        values.update(overrides)
+        return PumpAnalysisRequest(category, AS_OF, **values)
+
+    def test_repository_only_process_reproduces_expected_fingerprints(self):
+        """新进程只加载 Repository：无参指纹必须与产品侧一致且互不碰撞。"""
+
+        expected: dict[str, str] = {}
+        for workspace_id, category, overrides in (
+            ("W-water", WATER, {}),
+            ("W-chem", CHEMICAL, {"HBEP": "14", "efficiency": "73"}),
+            # 同一 rule profile、不同业务输入：必须得到**不同**指纹
+            ("W-water-b", WATER, {"efficiency": "70"}),
+        ):
+            request = self._request(category, **overrides)
+            self.service.create_workspace(workspace_id, request)
+            expected[workspace_id] = request.request_fingerprint()
+
+        self.assertEqual(len(set(expected.values())), 3,
+                         "三种业务输入必须得到三个不同指纹（防碰撞）")
+
+        child = (
+            "import json, sys\n"
+            "from pathlib import Path\n"
+            f"sys.path.insert(0, r'{ROOT / 'src'}')\n"
+            "from equipeffi.infrastructure.persistence.sqlite_records_repository"
+            " import SqliteWorkspaceRepository\n"
+            f"repo = SqliteWorkspaceRepository(Path(r'{self.db}'))\n"
+            "out = {}\n"
+            "for wid in ('W-water', 'W-chem', 'W-water-b'):\n"
+            "    out[wid] = repo.load_workspace(wid).request_fingerprint()\n"
+            "assert 'equipeffi.application.services.centrifugal_pump_analysis_service'"
+            " not in sys.modules, 'pump service must not be imported'\n"
+            "print(json.dumps(out))\n"
+        )
+        completed = subprocess.run([sys.executable, "-c", child], capture_output=True,
+                                   text=True, encoding="utf-8")
+        self.assertEqual(completed.returncode, 0,
+                         f"子进程失败:\n{completed.stdout}\n{completed.stderr}")
+        actual = json.loads(completed.stdout)
+        for workspace_id, value in expected.items():
+            with self.subTest(workspace=workspace_id):
+                self.assertEqual(actual[workspace_id], value,
+                                 "只加载 Repository 时指纹不得漂移")
+
+    def test_workspace_persists_its_own_business_key_metadata(self):
+        """业务键集合必须随快照持久化，而不是靠进程内注册。"""
+
+        self.service.create_workspace("W-meta", self._request(WATER))
+        workspace = self.service.load_workspace("W-meta")
+        self.assertEqual(business_key_names(workspace.payload), PUMP_FINGERPRINT_KEYS)
+        self.assertEqual(workspace.request_fingerprint(), workspace.request_fingerprint(
+            PUMP_FINGERPRINT_KEYS))
+
+    def test_legacy_snapshot_without_metadata_is_derived_from_the_snapshot(self):
+        """Phase 4 之前、未携带元数据的旧快照：无参指纹必须由**快照自身**确定性推出。
+
+        旧快照的载荷只记录"写入时非空"的字段，因此对当时非空的输入，
+        回退结果与写入当次 `PumpAnalysisRequest.request_fingerprint()` 一致。
+        """
+
+        request = self._request(WATER)
+        payload = request.raw_values() | {
+            "project_name": request.project_name,
+            "equipment_no": request.equipment_no,
+        }
+        self.assertNotIn("_business_keys", payload)
+        legacy = WorkspaceSnapshot(
+            workspace_id="W-legacy", standard_code="GB 19762-2025",
+            device_type="centrifugal_pump", product_category=WATER,
+            rule_profile="pump_water", as_of=AS_OF.isoformat(), payload=payload,
+            schema_version=2, created_at_utc="c", updated_at_utc="u")
+        self.assertEqual(legacy.request_fingerprint(), request.request_fingerprint())
+        # 显式传入业务键是等价的另一种调用方式
+        self.assertEqual(legacy.request_fingerprint(PUMP_FINGERPRINT_KEYS),
+                         legacy.request_fingerprint())
+
+    def test_legacy_workspace_can_still_finalize_and_reopen(self):
+        """真实旧库路径：无元数据草稿必须仍能 evaluate → finalize → Reopen。"""
+
+        request = self._request(WATER)
+        payload = request.raw_values() | {
+            "project_name": request.project_name,
+            "equipment_no": request.equipment_no,
+        }
+        with sqlite3.connect(self.db) as connection:
+            connection.execute(
+                """
+                INSERT INTO workspace (
+                    workspace_id, standard_code, device_type, product_category,
+                    rule_profile, as_of, payload_json, schema_version,
+                    created_at_utc, updated_at_utc, revision
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                ("W-legacy", "GB 19762-2025", "centrifugal_pump", WATER, "pump_water",
+                 AS_OF.isoformat(),
+                 json.dumps(payload, ensure_ascii=False, sort_keys=True,
+                            separators=(",", ":")),
+                 2, "2026-08-23T00:00:00Z", "2026-08-23T00:00:00Z", 1),
+            )
+
+        workspace = self.service.load_workspace("W-legacy")
+        rebuilt = self.service.request_from_workspace(workspace)
+        self.assertEqual(rebuilt.request_fingerprint(), request.request_fingerprint())
+        result = self.service.evaluate_workspace("W-legacy")
+        self.assertEqual(result.evaluation_status, "SUCCESS")
+        record = self.service.finalize(record_id="R-legacy", workspace_id="W-legacy",
+                                       request=rebuilt, result=result)
+        self.assertEqual(record.input_snapshot["request_fingerprint"],
+                         request.request_fingerprint())
+        reopened = self.service.open_record("R-legacy")
+        self.assertEqual(reopened.result_snapshot["evaluation_status"], "SUCCESS")
+
+    def test_legacy_fallback_is_deterministic_across_processes(self):
+        """回退分支不得依赖导入顺序：子进程只加载 lifecycle 也得到同一指纹。"""
+
+        request = self._request(WATER)
+        payload = request.raw_values() | {"project_name": None, "equipment_no": None}
+        expected = WorkspaceSnapshot(
+            workspace_id="W", standard_code="GB 19762-2025",
+            device_type="centrifugal_pump", product_category=WATER,
+            rule_profile="pump_water", as_of=AS_OF.isoformat(), payload=payload,
+            schema_version=2, created_at_utc="c", updated_at_utc="u").request_fingerprint()
+
+        child = (
+            "import json, sys\n"
+            f"sys.path.insert(0, r'{ROOT / 'src'}')\n"
+            "from equipeffi.application.lifecycle import WorkspaceSnapshot\n"
+            f"payload = json.loads(r'''{json.dumps(payload, ensure_ascii=False)}''')\n"
+            "ws = WorkspaceSnapshot(workspace_id='W', standard_code='GB 19762-2025',\n"
+            "    device_type='centrifugal_pump', product_category="
+            f"{WATER!r},\n"
+            "    rule_profile='pump_water', as_of='2026-08-23', payload=payload,\n"
+            "    schema_version=2, created_at_utc='c', updated_at_utc='u')\n"
+            "assert 'equipeffi.application.services.centrifugal_pump_analysis_service'"
+            " not in sys.modules\n"
+            "print(ws.request_fingerprint())\n"
+        )
+        completed = subprocess.run([sys.executable, "-c", child], capture_output=True,
+                                   text=True, encoding="utf-8")
+        self.assertEqual(completed.returncode, 0, completed.stderr[-600:])
+        self.assertEqual(completed.stdout.strip(), expected)
+
+    def test_lifecycle_module_has_no_ambient_registration(self):
+        """生命周期层不得再提供全局可变注册点。"""
+
+        for name in ("models.py", "ports.py", "errors.py", "__init__.py"):
+            source = (ROOT / "src/equipeffi/application/lifecycle" / name).read_text("utf-8")
+            with self.subTest(file=name):
+                self.assertNotIn("register_business_keys", source)
+                self.assertNotIn("_registered_business_keys", source)
+                self.assertNotIn("global ", source)
 
 
 class Phase3WorkspaceFixtureCompatibilityTests(unittest.TestCase):
@@ -246,10 +426,15 @@ class Phase3WorkspaceFixtureCompatibilityTests(unittest.TestCase):
         self.assertEqual(int(version), 2, "records schema_version 必须保持 2")
 
     def _insert_phase3_workspace_row(self, workspace_id: str, revision: int = 1) -> None:
-        """直接写入 Phase 3 形态的行，模拟"Phase 3 已创建数据库"。"""
+        """直接写入 Phase 3 形态的行，模拟"Phase 3 已创建数据库"。
+
+        载荷额外带上 Phase 4 起持久化的业务键元数据（`_business_keys`），
+        这与 Phase 3 同属既有 `payload_json` 列，**不涉及新增列或迁移**。
+        """
 
         request = PumpAnalysisRequest(WATER, AS_OF, **VALUES)
         payload = {key: getattr(request, key) for key in PUMP_FINGERPRINT_KEYS}
+        payload.update(business_keys_metadata(PUMP_FINGERPRINT_KEYS))
         with sqlite3.connect(self.db) as connection:
             connection.execute(
                 """

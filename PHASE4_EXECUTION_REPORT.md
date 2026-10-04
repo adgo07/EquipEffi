@@ -121,10 +121,71 @@ Phase 3 中 `PumpAnalysisRequest.request_fingerprint()` 与
 真正成立（否则该门禁只是形式）。
 
 **跨进程恢复**：`WorkspaceSnapshot` 从 `records.sqlite` 读回后必须能自行重建指纹，
-而 Phase 4 **不允许新增列 / 新增迁移**，因此字段清单只能来自进程内登记
-（`register_business_keys`，由产品模块在模块级调用一次）。
-生命周期模型仍不认识字段名——注册点存的是调用方声明的不透明键。
-这是为满足"不新增数据库列"而做的**显式且已文档化**的取舍，不是隐藏耦合。
+而 Phase 4 **不允许新增列 / 新增迁移**。
+
+### 4.1 独立验收阻塞的修复（`PHASE_4_BLOCKED`，head `855f259`）
+
+独立验收在 head `855f259` 上复现的阻塞是**真实缺陷**，本轮已修复。
+
+**缺陷**：首版实现用**进程内全局注册**（`register_business_keys`）让生命周期层
+在跨进程恢复时取得业务键集合。结果是：
+
+```text
+只 import Repository 的新进程（未 import 泵 service）
+  → 注册为空 → 旧 Workspace 无参指纹漂移
+  → 不同业务输入（efficiency 90 / 70）得到**相同**指纹
+  → 只有 import 泵 service 后指纹才恢复
+```
+
+即：源码 import 已解耦，**运行时指纹仍耦合**，且是全局可变状态。
+验收复现结果（修复前）：
+
+```text
+W-water    expected e23ffa0d…  actual 23833c30…   DRIFT
+W-chem     expected 36f260c0…  actual 5dabec10…   DRIFT
+W-water-b  expected 60a1ed8c…  actual 23833c30…   DRIFT（与 W-water 碰撞）
+distinct fingerprints = 2（应为 3）
+```
+
+**修复**：彻底移除进程内注册，改为**自描述持久化 + 快照内确定性回退**：
+
+1. 业务键集合作为保留元数据键 `_business_keys` 随快照写入**既有的
+   `payload_json` 列**——不新增列、不新增迁移、不依赖导入顺序、无全局状态；
+2. 无参 `request_fingerprint()` 优先读该元数据；
+3. Phase 4 之前、未携带元数据的历史快照，回退为"载荷中除生命周期级登记键
+   （`project_name` / `equipment_no` / `product_type`）以外的全部键"——
+   该规则**只由快照自身内容决定**，因此同一快照在任意进程、任意导入顺序下
+   得到同一指纹。历史快照里"当时为空的字段"本就未写入载荷，
+   故回退值与写入当次 `PumpAnalysisRequest.request_fingerprint()` 一致。
+
+**修复后复现结果**：
+
+```text
+W-water    OK   e23ffa0dc130b4b8d0a8d28fd3eb9a8c9c66bb47338e325f86e112670c6513d3
+W-chem     OK   36f260c0936c2616a575631abc47f65902c7865f839df644854f72f4cdb169de
+W-water-b  OK   60a1ed8cfa88209769faadf63fbd080b2fee3ed8a0c7299894fd906fd8395458
+distinct fingerprints = 3 ✓
+（子进程断言泵 service 未被导入）
+```
+
+**真实 base 数据库兼容验证**（`tools/verify_phase4_fingerprint_compat.py`）：
+用 **base 提交 `87d9ef1b` 的代码**写出真实 `records.sqlite`（其 workspace 行
+**不含**元数据），再用当前代码走完整链路，结果 **全部一致、无漂移**：
+
+```text
+W-base-water  base=e23ffa0d…  无参指纹一致  重建输入一致  Finalize Record 一致  Reopen SUCCESS/1级
+W-base-chem   base=36f260c0…  无参指纹一致  重建输入一致  Finalize Record 一致  Reopen SUCCESS/2级
+更新一次草稿后带上 _business_keys，指纹仍与 base 一致
+```
+
+**新增回归测试**：`tests/unit/test_phase4_fingerprint_decoupling.py`（8 tests）
+把上述复现固定下来：只加载 Repository 的无参指纹不漂移、不同业务输入不碰撞、
+业务键随快照持久化、旧快照由快照自身确定性推出、回退跨进程一致、
+生命周期层不存在全局可变注册点。
+
+> 说明：业务键集合因此同时存在于“持久化元数据”与产品模块常量中，
+> 但两者由同一处常量写入（`_pump_payload()` 使用 `PUMP_FINGERPRINT_KEYS`），
+> 且元数据是**数据**而非第二处声明。
 
 **数据库**：未新增 `input_fingerprint` 列；未新增 migration；未修改既有 checksum。
 
@@ -200,7 +261,7 @@ lifecycle 包不得依赖 infrastructure / presentation / domain / sqlite3 / PyS
 
 ### 8.1 新增测试
 
-`tests/unit/test_phase4_lifecycle_generalization.py`（16 tests / 5 类）：
+`tests/unit/test_phase4_lifecycle_generalization.py`（22 tests / 5 类）：
 
 ```text
 InfrastructureDecouplingGateTests               3  架构门禁（AST 级）
@@ -209,6 +270,27 @@ FingerprintSingleSourceTests                    4  单一算法 / 单一业务�
 Phase3WorkspaceFixtureCompatibilityTests        3  旧 fixture load→rebuild→evaluate→finalize
 PersistenceRootCauseTests                       3  根因保留 + RecordConflictError
 ```
+
+`tests/unit/test_phase4_fingerprint_decoupling.py`（8 tests）——
+`PHASE_4_BLOCKED` 阻塞的回归：
+
+```text
+FingerprintImportDecouplingTests
+  只加载 Repository 的无参指纹不漂移（子进程断言泵 service 未导入）
+  不同业务输入（efficiency 90 / 70）不得碰撞
+  业务键集合随快照持久化，而非进程内注册
+  无元数据旧快照由快照自身确定性推出，且等于写入当次指纹
+  真实旧库路径仍能 evaluate → finalize → Reopen
+  回退分支跨进程一致
+  生命周期级登记键必须设备无关
+  生命周期层不存在全局可变注册点
+```
+
+### 8.1.1 新增验证工具
+
+`tools/verify_phase4_fingerprint_compat.py`——用 **base 提交代码**写真实数据库、
+再用当前代码走完整 Use Case 的兼容验证入口（`git worktree` 临时检出，运行后清理）。
+退出码 0 表示无漂移。
 
 ### 8.2 Phase 3 关键测试：**未修改任何业务期望**
 
@@ -223,7 +305,7 @@ git diff --name-only -- tests   （相对 base）
 
 ### 8.3 本地实际结果
 
-受影响的 Phase 3 关键套件（全部 0 fail / 0 error）：
+受影响套件（全部 0 fail / 0 error）：
 
 ```text
 test_phase3_unified_analysis         34
@@ -235,7 +317,8 @@ test_phase3_qt_unified               33
 test_phase3_golden_and_boundaries    14   （29/29 Approved Golden 回放）
 test_architecture_boundaries         11
 test_composition                      3
-test_phase4_lifecycle_generalization 16
+test_phase4_lifecycle_generalization 22
+test_phase4_fingerprint_decoupling    8
 ```
 
 其他门禁：
@@ -243,9 +326,10 @@ test_phase4_lifecycle_generalization 16
 ```text
 validator（--skip-external-evidence --negative-probe）  cases=25 errors=0
                                                          negative_probe_errors=3
+tools/verify_phase4_fingerprint_compat.py                exit 0（base 数据库零漂移）
 compileall -q src tools tests                            exit 0
 git diff --check                                         clean
-全量 unittest                                            1152 run / 1145 pass
+全量 unittest                                            1166 run / 1159 pass
                                                          3 fail / 1 error / 3 skip
 known-regression comparator                              gate=PASS
                                                          new_failures=0 new_errors=0
@@ -282,8 +366,12 @@ known-regression comparator                              gate=PASS
 ### 10.1 Base → final Head 实际 diff 摘要
 
 ```text
-16 files changed, 1134 insertions(+), 144 deletions(-)
+18 files changed, 1849 insertions(+), 151 deletions(-)
 ```
+
+（此前版本误写为 `16 files / +1134 / −144`：既漏计了 `PHASE4_EXECUTION_REPORT.md`
+与 `docs/phase3_acceptance_record.md` 之外的后续提交，也未包含本轮
+`PHASE_4_BLOCKED` 修复。此处为对 base 的**实际**统计。）
 
 ### 10.2 changed files
 
@@ -295,7 +383,9 @@ known-regression comparator                              gate=PASS
 | A | `src/equipeffi/application/lifecycle/errors.py` |
 | A | `src/equipeffi/application/lifecycle/models.py` |
 | A | `src/equipeffi/application/lifecycle/ports.py` |
+| A | `tests/unit/test_phase4_fingerprint_decoupling.py` |
 | A | `tests/unit/test_phase4_lifecycle_generalization.py` |
+| A | `tools/verify_phase4_fingerprint_compat.py` |
 | M | `.github/workflows/windows-core.yml` |
 | M | `AGENTS.md` |
 | M | `HANDOFF.md` |
@@ -308,27 +398,7 @@ known-regression comparator                              gate=PASS
 
 ### 10.3 实际 GitHub CI / workflow 结果
 
-head `0ca04e2ba32d5ea76edd40f8a1320f71fbdb27b8`：
-
-```text
-Pump Conformance                     success
-  JOB Pump Conformance (gating)      success
-    [ 6] Numeric Contract v1 adoption lock and profile consistency       success
-    [ 8] Pump numeric contract, generated boundaries and rule integrity   success
-    [ 9] Approved Golden 0.4/0.5 and unified boundary gates               success
-    [10] Phase 1 contract, registry pins and repository evidence          success
-    [11] Historical provenance, Finalize state matrix and as_of lifecycle success
-    [12] Pump evaluator, Application API and unified analysis contract    success
-Windows Core                         success
-  JOB Windows Core (gating)          success
-    [ 6] Compileall                                                      success
-    [ 7] Architecture boundaries and metadata contract                    success
-    [ 8] Application and core tests                                       success
-    [ 9] Phase 2/3/4 settings, migrations, logging, lifecycle, Qt offscreen success
-    [10] Full suite known-regression comparator (gating)                  success
-  JOB Whitespace check (gating)      success
-  JOB Full suite baseline (NON-GATING) success
-```
+见文末「Final Head」一节（本报告与 final Head 同属一个提交，CI 在最终 head 上重跑）。
 
 ## 11. 状态
 

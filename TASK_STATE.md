@@ -1,8 +1,8 @@
 roadmap: EquipEffi V2.3
 phase: Phase 4
 goal: GB19762 真实样板后的最小生命周期通用化
-status: IN_PROGRESS
-previous_acceptance: PHASE_3_PASS
+status: EXECUTION_COMPLETE
+previous_acceptance: PHASE_4_BLOCKED
 next_status: READY_FOR_INDEPENDENT_ACCEPTANCE
 
 # ---------------------------------------------------------------------------
@@ -23,12 +23,19 @@ current_task:
   merge_authorized: false
   pump_chemical_support_status_self_promoted: false
   goals:
-    P4-G00: IN_PROGRESS
-    P4-G01: IN_PROGRESS
-    P4-G02: IN_PROGRESS
-    P4-G03: IN_PROGRESS
-    P4-G04: IN_PROGRESS
-  next_action: 完成 G00-G04 并通过 Required CI 后 push + 创建 PR 到 master；do not merge; do not start Phase 5
+    P4-G00: COMPLETE
+    P4-G01: COMPLETE
+    P4-G02: COMPLETE
+    P4-G03: COMPLETE
+    P4-G04: COMPLETE
+  blocker_fixes:
+    P4-B01:
+      finding: PHASE_4_BLOCKED —— 生命周期指纹依赖泵 service 的导入副作用
+      status: FIXED
+      root_cause: 首版用进程内全局注册（register_business_keys）提供业务键集合；注册为空时旧 Workspace 无参指纹漂移，且不同业务输入碰撞
+      fix: 移除全局注册；业务键集合作为 _business_keys 元数据随快照写入既有 payload_json 列；无元数据的历史快照按快照自身内容确定性回退
+      evidence: tests/unit/test_phase4_fingerprint_decoupling.py; tools/verify_phase4_fingerprint_compat.py
+  next_action: 等待独立验收；do not merge; do not start Phase 5
 
 previous_task:
   task_id: PHASE3-GB19762-UNIFIED-VERTICAL-SLICE

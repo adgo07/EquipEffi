@@ -34,7 +34,7 @@ from ..lifecycle import (
     RecordSnapshot,
     WorkspaceRepository,
     WorkspaceSnapshot,
-    register_business_keys,
+    business_keys_metadata,
     stable_fingerprint,
 )
 
@@ -54,10 +54,19 @@ PUMP_FINGERPRINT_KEYS: tuple[str, ...] = (
     "QBEP", "HBEP", "speed", "efficiency", "suction", "stages"
 )
 
-#: 让生命周期层在**跨进程恢复**后仍能重建同一指纹（Phase 4 G02）。
-#: `WorkspaceSnapshot.request_fingerprint()` 不带参数时使用这份登记；
-#: 生命周期模型本身不认识这些字段名。
-register_business_keys(PUMP_FINGERPRINT_KEYS)
+
+def _pump_payload(request: "PumpAnalysisRequest") -> dict[str, Any]:
+    """构造成 Workspace 持久化的载荷。
+
+    业务键集合作为**自描述元数据**随载荷一起持久化（Phase 4 阻塞修复）：
+    这样跨进程恢复时 `WorkspaceSnapshot.request_fingerprint()` 无需任何产品模块
+    被导入，也不依赖全局可变状态，且不同业务输入不会碰撞。
+    """
+
+    return request.raw_values() | {
+        "project_name": request.project_name,
+        "equipment_no": request.equipment_no,
+    } | business_keys_metadata(PUMP_FINGERPRINT_KEYS)
 
 #: 已确认“不适用”的类别文本（沿用 evaluator 既有契约，不在此新造规则）。
 OTHER_CATEGORY_VALUES: frozenset[str] = frozenset(
@@ -708,10 +717,7 @@ class CentrifugalPumpAnalysisService:
             product_category=request.product_category,
             rule_profile=resolve_rule_profile(request.product_category),
             as_of=request.as_of.isoformat(),
-            payload=request.raw_values() | {
-                "project_name": request.project_name,
-                "equipment_no": request.equipment_no,
-            },
+            payload=_pump_payload(request),
             schema_version=1,
             created_at_utc=now,
             updated_at_utc=now,
@@ -732,10 +738,7 @@ class CentrifugalPumpAnalysisService:
             product_category=request.product_category,
             rule_profile=resolve_rule_profile(request.product_category),
             as_of=request.as_of.isoformat(),
-            payload=request.raw_values() | {
-                "project_name": request.project_name,
-                "equipment_no": request.equipment_no,
-            },
+            payload=_pump_payload(request),
             schema_version=1,
             created_at_utc=existing.created_at_utc if existing else now,
             updated_at_utc=now,
@@ -893,7 +896,7 @@ class CentrifugalPumpAnalysisService:
                 raise AnalysisError(
                     "草稿已在分析之后被修改，当前结果已过期；请重新分析后再保存正式记录"
                 )
-            if workspace.request_fingerprint(PUMP_FINGERPRINT_KEYS) != expected:
+            if workspace.request_fingerprint() != expected:
                 raise AnalysisError("草稿输入与待固化结果不一致，拒绝固化正式记录")
 
         now = _utc_now()

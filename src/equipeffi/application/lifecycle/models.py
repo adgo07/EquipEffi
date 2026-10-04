@@ -24,30 +24,50 @@ from typing import Any
 #: 否则既有 Workspace 的指纹会漂移。
 _MISSING = "None"
 
-#: 当前生命周期使用方的业务字段集合注册点。
+#: `payload` 中存放"哪些键参与业务指纹"的保留元数据键。
 #:
-#: 为什么需要它：`WorkspaceSnapshot` 在**跨进程恢复**后（只从 `records.sqlite`
-#: 读回）必须能自己重建指纹，而 Phase 4 又不允许新增列 / 新增迁移，因此这份
-#: 字段清单只能来自进程内的注册，而不能写进数据库。
+#: 为什么必须随快照持久化：`WorkspaceSnapshot` 在**跨进程恢复**后（只从
+#: `records.sqlite` 读回）必须能自建指纹，而 Phase 4 不允许新增数据库列 /
+#: 新增迁移。若改用进程内的全局注册，指纹就会依赖"某个产品模块是否恰好被
+#: import 过"——这是运行时耦合，且会让不同业务输入算出相同指纹。
 #:
-#: 本模块仍然**不认识**任何具体字段名——这里存的只是"调用方声明的不透明键"。
-#: 目前只有一个产品级入口，其内部各 rule profile 共用一套业务键，
-#: 因此注册点是单值的；若将来出现第二个真实设备，应改为按 device/profile 分派，
-#: 而不是在这里堆叠字段名。
-_registered_business_keys: tuple[str, ...] = ()
+#: 因此业务键集合作为**已持久化的自描述元数据**存放在既有 JSON 载荷里：
+#: 不新增列、不新增迁移、不依赖导入顺序、不依赖全局可变状态。
+BUSINESS_KEYS_METADATA_KEY = "_business_keys"
+
+#: `payload` 中**不参与**业务指纹的生命周期级登记键（设备无关，故可在此声明）。
+#:
+#: 仅用于 Phase 4 之前、未携带 `BUSINESS_KEYS_METADATA_KEY` 的历史快照回退。
+RESERVED_PAYLOAD_KEYS: frozenset[str] = frozenset(
+    {BUSINESS_KEYS_METADATA_KEY, "project_name", "equipment_no", "product_type"}
+)
 
 
-def register_business_keys(keys: tuple[str, ...]) -> None:
-    """登记业务字段集合（由产品模块在模块级调用一次）。"""
+def business_keys_metadata(keys: "tuple[str, ...]") -> dict[str, list[str]]:
+    """构造随快照持久化的业务键元数据载荷片段。
 
-    global _registered_business_keys
-    _registered_business_keys = tuple(keys)
+    由产品模块在写 Workspace 时合并进 `payload`；生命周期层不自行决定字段清单。
+    """
+
+    return {BUSINESS_KEYS_METADATA_KEY: list(keys)}
 
 
-def registered_business_keys() -> tuple[str, ...]:
-    """当前登记的业务字段集合。"""
+def business_key_names(payload: dict[str, Any]) -> tuple[str, ...]:
+    """从已持久化的载荷中读出业务键名。
 
-    return _registered_business_keys
+    1. 优先使用快照自己持久化的 `BUSINESS_KEYS_METADATA_KEY`（Phase 4 起写入）；
+    2. 否则回退到"载荷中除生命周期级登记键以外的全部键"。
+
+    回退分支只服务 Phase 4 之前的历史快照，且**完全由快照自身内容决定**：
+    不读取任何进程内全局状态，因此同一份快照在任意进程、任意导入顺序下
+    都得到同一指纹。历史快照里"当时为空的字段"本就未写入载荷，故该回退
+    与写入当次 `PumpAnalysisRequest.request_fingerprint()` 的取值一致。
+    """
+
+    recorded = payload.get(BUSINESS_KEYS_METADATA_KEY)
+    if isinstance(recorded, (list, tuple)):
+        return tuple(str(name) for name in recorded)
+    return tuple(sorted(name for name in payload if name not in RESERVED_PAYLOAD_KEYS))
 
 
 def normalize_fingerprint_value(value: Any) -> str:
@@ -110,11 +130,13 @@ class WorkspaceSnapshot:
     def request_fingerprint(self, business_keys: tuple[str, ...] | None = None) -> str:
         """草稿当前输入的指纹；与 `PumpAnalysisRequest.request_fingerprint()` 同源。
 
-        `business_keys` 省略时使用当前登记的业务字段集合（见
-        `register_business_keys`），使跨进程恢复场景无需外部上下文即可重建指纹。
+        `business_keys` 省略时，使用**该快照自己持久化**的业务键元数据
+        （`BUSINESS_KEYS_METADATA_KEY`），因此跨进程恢复不需要产品模块被导入，
+        也不存在全局可变状态；未携带该元数据的历史快照按
+        `business_key_names()` 的回退规则处理。
         """
 
-        keys = registered_business_keys() if business_keys is None else business_keys
+        keys = business_key_names(self.payload) if business_keys is None else business_keys
         return stable_fingerprint(self.business_key_values(keys))
 
 

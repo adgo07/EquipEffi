@@ -31,26 +31,30 @@ from .errors import (
     RecordConflictError,
 )
 from .models import (
+    BUSINESS_KEYS_METADATA_KEY,
+    RESERVED_PAYLOAD_KEYS,
     RecordSnapshot,
     WorkspaceSnapshot,
+    business_key_names,
+    business_keys_metadata,
     normalize_fingerprint_value,
-    register_business_keys,
-    registered_business_keys,
     stable_fingerprint,
 )
 from .ports import RecordRepository, WorkspaceRepository
 
 __all__ = (
     "AnalysisError",
+    "BUSINESS_KEYS_METADATA_KEY",
     "LifecycleError",
     "LifecyclePersistenceError",
+    "RESERVED_PAYLOAD_KEYS",
     "RecordConflictError",
     "RecordRepository",
     "RecordSnapshot",
     "WorkspaceRepository",
     "WorkspaceSnapshot",
+    "business_key_names",
+    "business_keys_metadata",
     "normalize_fingerprint_value",
-    "register_business_keys",
-    "registered_business_keys",
     "stable_fingerprint",
 )
