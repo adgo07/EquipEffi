@@ -395,11 +395,12 @@ class CentrifugalPumpAnalysisService:
             return None
 
     def _lifecycle_warnings(self, pack: dict[str, Any], as_of: date) -> tuple[str, ...]:
-        """标准生命周期提示：**非阻断**。
+        """标准生命周期提示：**非阻断**、**只需几个字**。
 
-        Owner 规则：未实施 / 已废止 / 已被替代只作为提示，不得阻止计算、不得改写
-        `evaluation_status`、`issue_codes`、`missing_fields` 或 Finalize 权限，
-        也不得自动切换到其他标准版本。
+        Owner 规则（Phase 5）：评价日期不是业务门禁。未实施 / 已废止 / 已被替代
+        只作为提示，不得阻止计算、不得改写 `evaluation_status`、`issue_codes`、
+        `missing_fields` 或 Finalize 权限，也不得自动切换到其他标准版本；
+        不做复杂确认流程。
 
         这些提示刻意**不**进入 `issue_codes`：那是业务判定结果的一部分，
         而生命周期只是所选标准版本相对评价日期的元信息。
@@ -409,12 +410,12 @@ class CentrifugalPumpAnalysisService:
         if effective is None:
             return ()
         if as_of < effective:
-            return (
-                f"当前评价日期（{as_of.isoformat()}）早于所选标准实施日期"
-                f"（{effective.isoformat()}），仍将按所选标准版本进行评价。",
-            )
-        # 已废止 / 已被替代需要标准生命周期元数据（superseded_by 等），
-        # 当前 Pack 只提供 effective_date，因此不对"晚于实施日期"做推测性提示。
+            # Owner 指定的简短短语，不含日期、不要求确认。
+            return ("该标准尚未实施",)
+        # 已废止 / 已被替代需要标准生命周期元数据（`superseded_by` / 废止日期等）。
+        # 当前 Canonical Pack 只提供 `effective_date`，因此**不**对"晚于实施日期"
+        # 做推测性提示——不为凑齐短语而私造公共规则。补齐须走标准映射流程
+        # （已登记 QA-P3-002）。
         return ()
 
     def _base_result(self, request: PumpAnalysisRequest, pack: dict[str, Any],
@@ -692,16 +693,28 @@ class CentrifugalPumpAnalysisService:
 
     @staticmethod
     def _release_support(rule_profile: str) -> str | None:
-        """发布门禁：Phase 3 不得改动。
+        """发布门禁：统一离心泵正式产品路径（PySide6 Qt Desktop `--qt`）。
 
-        `pump_chemical` 的 `support_status` 在 Standard Development Guide
-        Stage D 独立验收通过前保持 `NOT_IN_RELEASE_SCOPE`。
+        Phase 5（pump_chemical Stage D）把 `pump_chemical` 置为
+        `SUPPORTED` 作为**支持提升候选**：
+
+        - 依据 Stage D Evidence Matrix（见 `docs/phase5_stage_d_evidence_matrix.md`）
+          与 `FORMAL_APPLICATION_E2E` 证据
+          （`specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json`）；
+        - 该结论在**独立验收通过并合并前**属于
+          `SUPPORT_PROMOTION_CANDIDATE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`，
+          不得表述为"正式支持已经生效"。
+
+        只影响这一个统一路径。遗留 `EvaluationService` / `ApplicationApi` /
+        `--json` / `--web` / JSONL / legacy Tk `--gui` / V4 等非正式发布表面
+        仍返回 `NOT_IN_RELEASE_SCOPE`，已登记为 `REGISTERED_DEVIATION`
+        （见 `QA_BACKLOG.md` 的 `QA-P5-00x`）。
         """
 
         if rule_profile == "pump_water":
             return "SUPPORTED"
         if rule_profile == "pump_chemical":
-            return "NOT_IN_RELEASE_SCOPE"
+            return "SUPPORTED"
         return None
 
     # -- Workspace / Record 编排（持久化经 Protocol） ------------------------

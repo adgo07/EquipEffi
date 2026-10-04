@@ -20,10 +20,16 @@
 | Profile | `scope_status` | `support_status`（当前） | 标准开发成熟度 | 目标 |
 |---|---|---|---|---|
 | `pump_water` | `IN_V1` | `SUPPORTED` | `SUPPORTED` | 已达成 |
-| `pump_chemical` | `IN_V1` | `NOT_IN_RELEASE_SCOPE` | `READY_FOR_IMPLEMENTATION` | `SUPPORTED` |
+| `pump_chemical` | `IN_V1` | `SUPPORT_PROMOTION_CANDIDATE`（统一 Qt 正式路径取值 `SUPPORTED`） | `IMPLEMENTED`（`SUPPORTED` 为候选） | `SUPPORTED` |
 | `transformer` | `POST_V1` | `NOT_IN_RELEASE_SCOPE` | 未进入本轮标准开发流程 | 本轮暂缓，资产保留 |
 
-三个维度（`scope_status` / `support_status` / 标准开发成熟度）**不得互相冒充**。`pump_chemical` 在 Golden 具名批准与 Stage D 独立验收通过前，`support_status` 不得写为 `SUPPORTED`。
+三个维度（`scope_status` / `support_status` / 标准开发成熟度）**不得互相冒充**。
+
+**Phase 5 状态说明（不得误读）**：`pump_chemical` 的 Golden 早已具名批准（11/11），
+Stage D 证据闭环已在 Phase 5 完成并交独立验收。**独立验收通过前，`support_status`
+只能写 `SUPPORT_PROMOTION_CANDIDATE`，不得写"正式支持已经生效"。**
+正式发布用户表面 = PySide6 Qt Desktop（`--qt`）；非正式表面的 support 差异
+登记为 `REGISTERED_DEVIATION`（见 `QA_BACKLOG.md` 的 `QA-P5-001`～`005`）。
 
 - 权威范围文件：[V1_SCOPE.md](V1_SCOPE.md)
 - 参考标准真实状态：[REFERENCE_STANDARD_ROADMAP.md](REFERENCE_STANDARD_ROADMAP.md)（当前总体 `PARTIAL`）
@@ -38,9 +44,14 @@ Phase 3 = PHASE_3_PASS          (PR #11 独立验收并合并 @ 87d9ef1b)
           accepted head = 728680dabf7b18e47ce9a5a23b296e405bc644a8
           merge SHA     = 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
           acceptance record = docs/phase3_acceptance_record.md
-Phase 4 = IN_PROGRESS           (GB19762 真实样板后的最小生命周期通用化)
-          branch = phase4/minimal-lifecycle-generalization
-          base   = 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
+Phase 4 = PHASE_4_PASS          (PR #12 独立验收并合并 @ d6112ea9)
+          accepted head = a4034ef3751590b52a821d6a3bdbebcbca6a8ec9
+          merge SHA     = d6112ea9c7c1c16f95d798c2229cdc54aaf6240a
+          acceptance record = docs/phase4_acceptance_record.md
+Phase 5 = IN_PROGRESS           (pump_chemical Stage D 正式支持与发布门禁收口)
+          branch = phase5/pump-chemical-stage-d-support
+          base   = d6112ea9c7c1c16f95d798c2229cdc54aaf6240a
+          stage D candidate = READY_FOR_INDEPENDENT_ACCEPTANCE
 Automatic continuation = DISABLED
 ```
 
@@ -54,7 +65,8 @@ Phase 2 已由独立验收通过并合并（PR #10）。**Phase 3 已由独立�
 - 两条规则**不得强行合并成一个巨型 evaluator**；`pump_water` / `pump_chemical` 只作为**内部 rule profile / ruleset identity**，不得再设计为两个独立用户产品；
 - **Phase 5** 不再承担 `pump_chemical` 的「首次接入」，改为承担其**正式发布支持收口（Stage D）**；Phase 5 其余职责暂不重新设计；
 - **不创建 V2.4**，**不改变 Phase 0～10 编号**，**不提前 Phase 4/6/7/8/9**；
-- 三个状态维度**数值不变**：`pump_water` = `IN_V1` / `SUPPORTED` / `SUPPORTED`；`pump_chemical` = `IN_V1` / `NOT_IN_RELEASE_SCOPE` / `READY_FOR_IMPLEMENTATION`；`transformer` = `POST_V1`。
+- 三个状态维度数值以第 2 节表格为唯一权威（Phase 5 起 `pump_chemical` 为
+  `SUPPORT_PROMOTION_CANDIDATE` / `IMPLEMENTED`，候选 `SUPPORTED`）。
 
 完整修正记录见路线原文第 8.2 节。
 
@@ -65,7 +77,7 @@ Phase 2 已由独立验收通过并合并（PR #10）。**Phase 3 已由独立�
 | Phase 2 | 最小正式工程底座 | **已完成**（`PHASE_2_PASS`）。Python 3.12、PySide6 薄 AppShell、设计 Token、Repository Protocol、三库职责、Migration 基础、Logging、有限工程清理。 |
 | Phase 3 | **GB 19762—2025 离心泵统一正式纵向闭环**（`pump_water` + `pump_chemical`） | 产品层/UI/Application Use Case/Workspace/Record/History/Result Contract **合并**；两条规则不合并成巨型 evaluator。**Phase 3 PASS 不等于完整 GB 19762 的产品发布 PASS。** 不得重新设计泵算法；Approved Golden 是业务 Oracle。 |
 | Phase 4 | 基于 `pump_water` 真实样板做必要通用化 | 只通用化已被样板证明的重复结构。 |
-| Phase 5 | `pump_chemical` 的**正式发布支持收口（Stage D）**（不再承担首次接入，首次接入已前移到 Phase 3） | **`transformer` 不进入 Phase 5。** 收口完成前 `pump_chemical` 保持 `NOT_IN_RELEASE_SCOPE`。 |
+| Phase 5 | `pump_chemical` 的**正式发布支持收口（Stage D）**（不再承担首次接入，首次接入已前移到 Phase 3） | **`transformer` 不进入 Phase 5。** Phase 5 完成 Stage D 证据闭环并交独立验收；**独立验收通过前** `pump_chemical` 的治理状态保持 `SUPPORT_PROMOTION_CANDIDATE`（统一 Qt 正式路径取值 `SUPPORTED`）。 |
 | Phase 6 | 围绕完整 GB 19762 建立完整产品 Shell | 按真实用户任务组织。 |
 | Phase 7 | 完整 GB 19762 的 Record、历史、恢复、结果解释、标准依据、异常状态与质量收口 | — |
 | Phase 8 | 完整 GB 19762 Excel 闭环 | 必须同时覆盖 `pump_water` + `pump_chemical`；GUI/Excel 共用同一业务内核；数值入口须先完成设计与证据验证。 |

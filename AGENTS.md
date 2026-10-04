@@ -7,7 +7,7 @@
 - 产品：EquipEffi 设备能效分析工具（Module ID `qz.equipment_efficiency`）。
 - Canonical repository：`https://github.com/adgo07/EquipEffi.git`。
 - 当前 Reference Standard：`GB 19762—2025 离心泵能效限定值及能效等级`。
-- 当前主要产品阶段：`EquipEffi V2.3` 下 `Phase 1 = PHASE_1_PASS`、`Phase 2 = PHASE_2_PASS`、`Phase 3 = PHASE_3_PASS`（PR #11 合并 @ `87d9ef1b`，验收落档 `docs/phase3_acceptance_record.md`）、**`Phase 4 = IN_PROGRESS`**（最小生命周期通用化）。不得写成 `PHASE_4_PASS` 或 `PHASE_4_READY`。
+- 当前主要产品阶段：`EquipEffi V2.3` 下 `Phase 1 = PHASE_1_PASS`、`Phase 2 = PHASE_2_PASS`、`Phase 3 = PHASE_3_PASS`（PR #11 合并 @ `87d9ef1b`，验收落档 `docs/phase3_acceptance_record.md`）、`Phase 4 = PHASE_4_PASS`（PR #12 合并 @ `d6112ea9`，验收落档 `docs/phase4_acceptance_record.md`）、**`Phase 5 = IN_PROGRESS`**（pump_chemical Stage D 正式支持与发布门禁收口）。不得写成 `PHASE_5_PASS` 或 `Stage D PASS`。
 - 本仓独立开发、发布、离线运行，不是中央仓的第四个业务产品。
 
 ### 1.1 仓库身份与本地执行环境
@@ -75,12 +75,14 @@ git fetch origin                   # 同步远端
 ### 2.1 Phase 与顺序纪律
 
 - 路线只有 `EquipEffi V2.3`；Phase 0 已完成，作为不可变基线。Phase 0～10 **编号不得改变**。
-- 当前状态：`Phase 1 = PHASE_1_PASS`；`Phase 2 = PHASE_2_PASS`；`Phase 3 = PHASE_3_PASS`（PR #11 @ `87d9ef1b`）；**`Phase 4 = IN_PROGRESS`**（GB19762 真实样板后的最小生命周期通用化，分支 `phase4/minimal-lifecycle-generalization`）；automatic continuation = `DISABLED`。
+- 当前状态：`Phase 1 = PHASE_1_PASS`；`Phase 2 = PHASE_2_PASS`；`Phase 3 = PHASE_3_PASS`（PR #11 @ `87d9ef1b`）；`Phase 4 = PHASE_4_PASS`（PR #12 @ `d6112ea9`）；**`Phase 5 = IN_PROGRESS`**（pump_chemical Stage D 正式支持与发布门禁收口，分支 `phase5/pump-chemical-stage-d-support`）；automatic continuation = `DISABLED`。
 - `PHASE_1_PASS` / `PHASE_2_PASS` 是既有独立验收后的记录，**不是任何 adoption / 治理任务自行批准的结果**；`PHASE_2_PASS` 依 PR #10 独立验收与合并（`7e16418a`）。任何 Phase 的 PASS 均不得由执行者自行宣布。
 - **Phase 1 / Phase 2 均已结束**：`P1-G01 → G06`、`P2-G01 → G04` 与 Solution/Product Review 是**历史完成程序**，不再作为当前例行门禁（见 2.0）。
 - **Phase 3 已结束并获独立验收通过（`PHASE_3_PASS`，PR #11 @ `87d9ef1b`）**；验收落档见 `docs/phase3_acceptance_record.md`。其设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`。
-- **Phase 4 已获用户明确执行授权**：范围是 **GB19762 真实样板后的最小生命周期通用化**——把 Phase 3 已真实证明属于公共工程结构、但仍寄生在 `centrifugal_pump_analysis_service.py` 中的生命周期能力抽离出来，同时保证 GB 19762 的业务行为、数据库形态和历史记录语义**零漂移**。分支 `phase4/minimal-lifecycle-generalization`，base `87d9ef1bf32fb3f765d4f8ef3f97aa222913152a`。**禁止**理论式大通用化：不得建 `GenericAnalysisService` / `UniversalEngine` / 通用 evaluator 基类 / 插件式生命周期框架 / 通用动态表单引擎。
-- Phase 4 执行者**不得**自行宣布 Phase 4 PASS、不得合并 PR、不得进入 Phase 5、不得发布、**不得把 `pump_chemical` 的 `support_status` 提升为 `SUPPORTED`**（须待中央 Standard Development Guide Stage D 独立验收）。
+- **Phase 4 已结束并获独立验收通过（`PHASE_4_PASS`，PR #12 @ `d6112ea9`）**；验收落档见 `docs/phase4_acceptance_record.md`；执行细节见 `PHASE4_EXECUTION_REPORT.md`。
+- **Phase 5 已获用户明确执行授权**：范围是 **pump_chemical Stage D 正式支持与发布门禁收口**——在已有 Phase 3/4 实现基础上完成 Stage D 正式支持证据闭环，形成 **support promotion candidate** 并交独立验收。分支 `phase5/pump-chemical-stage-d-support`，base `d6112ea9c7c1c16f95d798c2229cdc54aaf6240a`。**不是重新开发 pump_chemical**。
+- **Windows V1 当前正式发布用户表面 = PySide6 Qt Desktop（`--qt`）**。`--json` / `ApplicationApi` / `--web` / JSONL / legacy Tk `--gui` / Android bridge / V4·Excel adapter 是**现存的 compatibility / development / future-adapter surfaces**，不是历史废代码；其与正式表面的 support 差异必须登记 `REGISTERED_DEVIATION` 并给出 disposition（Phase 6 / 8 / 9）。
+- Phase 5 执行者**不得**自行宣布 `PHASE_5_PASS`、`Stage D PASS` 或 `pump_chemical officially SUPPORTED`；治理状态只允许 `SUPPORT_PROMOTION_CANDIDATE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`。不得合并 PR、不得进入 Phase 6、不得发布。
 - v15 / T04.xx / 历史 HANDOFF / 编号清单无自动调度权，不得据其“下一边界任务”自动继续。
 - 当前 Windows V1 产品目标与各 Profile 状态以 `V1_SCOPE.md` / `ROADMAP.md` 为唯一权威（完整支持 GB 19762—2025，覆盖 `pump_water` + `pump_chemical`；`transformer` 为 `POST_V1`，资产保留）。
 - 旧资产先分类（KEEP / VERIFY / MIGRATE / REWORK / DEPRECATE / DELETE_CANDIDATE / OBSOLETE），不因零引用直接删除。
@@ -110,6 +112,14 @@ git fetch origin                   # 同步远端
 ### 2.6 本仓 UI 事实
 
 - 现有桌面主窗口实际为遗留 **Tkinter / ttk**（`EquipmentEfficiencyWindow`），事实见 `UI_CURRENT_STATE_AUDIT.md`；不得因中央指南把 PySide6 列为默认技术栈就在无授权任务中重写，PySide6 迁移与正式 UI 重构须由后续独立任务显式授权。
+- **正式发布用户表面（Phase 5 Owner 决定）**：Windows V1 当前正式发布用户表面 = **PySide6 Qt Desktop（`--qt`）**。
+
+### 2.7 评价日期产品规则（Owner，Phase 5）
+
+- **评价日期不是业务门禁**。正式 Qt 产品路径：新建评价自动记录本机当前日期，用户无需关注评价日期。
+- 所选标准与评价日期不匹配时，**仅显示几个字的非阻断提醒**（例如"该标准尚未实施"、"该标准已废止"、"该标准已被替代"）；不得设计复杂确认流程。
+- 尚未实施 / 已废止 / 已被替代的标准**仍允许按所选版本正常评价**；**不得**因此改变 `evaluation_status`、`grade`、Finalize 权限，或自动切换标准。
+- 遗留 `EvaluationService` / JSON / Web / V4 等非正式表面如仍保留旧 `as_of` 门禁，登记为 `REGISTERED_DEVIATION`，**不借 Phase 5 扩大重构**。
 
 ## 3. 青舟中央治理入口
 

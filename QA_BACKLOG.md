@@ -283,12 +283,30 @@ authoritative path impact = 尚待验证
 | issue_id | 表面 | 状态 | 说明 |
 |---|---|---|---|
 | `QA-P3-001` | `V1_RUNTIME` | OPEN | **遗留兼容默认日期**：`date(2026,8,23)` 仍作为隐式默认出现在 6 处源码位置（`evaluation_service.py:13`、`evaluation_facade.py:27/68`、`v4_workbook_service.py:34/67`、`application_api.py:539`）。统一 `AnalysisService` 已要求显式 `as_of`；遗留入口按 `AGENTS.md §2.0` 登记保留，全局取消须另立任务并附兼容影响评估 |
-| `QA-P3-002` | `V1_RUNTIME` | OPEN | **标准生命周期元数据缺失**：Canonical Pack 目前只提供 `effective_date`，没有 `superseded_by` / 废止日期等生命周期元数据，因此软件只能对"评价日期早于实施日期"给出非阻断提示，**无法**自动识别"已废止 / 已被替代"。Phase 3 R3 Owner 决定明确不为凑齐提示而私造公共规则；补齐须走标准映射流程 |
+| `QA-P3-002` | `V1_RUNTIME` | OPEN | **标准生命周期元数据缺失**：Canonical Pack 目前只提供 `effective_date`，没有 `superseded_by` / 废止日期等生命周期元数据，因此软件只能对"评价日期早于实施日期"给出非阻断提示（Phase 5 起为四字短语"该标准尚未实施"），**无法**自动识别"已废止 / 已被替代"。Owner 决定明确不为凑齐提示而私造公共规则；补齐须走标准映射流程 |
+| `QA-P3-003` | `REGISTERED_DEVIATION` | OPEN | **遗留非正式表面的旧 `as_of` 门禁**：Owner 规则（Phase 5）规定评价日期不是业务门禁，正式 Qt 路径已符合；遗留 `EvaluationService` / `--json` / `ApplicationApi` / `--web` / JSONL / V4 入口仍保留旧的生效日期短路行为。**不借 Phase 5 扩大重构**。<br>`disposition`：Phase 6（产品入口 / shipped surface 收口） |
 
 ### Phase 4 新增登记
 
 | issue_id | 表面 | 状态 | 说明 |
 |---|---|---|---|
-| `QA-P4-001` | `V1_RUNTIME` | `REGISTERED_DEVIATION` | **ADR-002 的完整 lineage / audit event 长期目标继续有效，但 Phase 3 / Phase 4 均未完整实现。** ADR-002 要求 Finalize 时把输入快照、结果快照、数据引用、规则引用、lineage 与 audit event 在**同一事务**中写入；当前只实现了输入/结果/引用快照与不可变追加，**没有** lineage 表与 audit event。Phase 4 明确**不实现** lineage / audit / reproduce，且不因此修改 `records.sqlite`（不新增表、不新增迁移、`schema_version` 保持 2）。<br>`target_phase`：**Phase 7**<br>`blocked_by`：Phase 7 的 lineage / audit / reproduce 任务设计<br>本条目为**已登记未关闭**的偏差：不得假装已解决，也不得据此阻塞 Phase 4 的 Exit Gate |
+| `QA-P4-001` | `V1_RUNTIME` | `REGISTERED_DEVIATION` | **ADR-002 的完整 lineage / audit event 长期目标继续有效，但 Phase 3 / Phase 4 均未完整实现。** ADR-002 要求 Finalize 时把输入快照、结果快照、数据引用、规则引用、lineage 与 audit event 在**同一事务**中写入；当前只实现了输入/结果/引用快照与不可变追加，**没有** lineage 表与 audit event。Phase 4 / Phase 5 明确**不实现** lineage / audit / reproduce，且不因此修改 `records.sqlite`（不新增表、不新增迁移、`schema_version` 保持 2）。<br>`target_phase`：**Phase 7**<br>`blocked_by`：Phase 7 的 lineage / audit / reproduce 任务设计<br>本条目为**已登记未关闭**的偏差：不得假装已解决，也不得据此阻塞 Phase 4 / Phase 5 的 Exit Gate |
 
-未完成项保持 OPEN/VERIFY；本表不因 Phase 3 / Phase 4 交付而关闭任何缺乏测试证据的条目。
+### Phase 5 新增登记
+
+发布表面边界（Owner 决定）：**Windows V1 当前正式发布用户表面 = PySide6 Qt Desktop（`--qt`）**。
+以下表面是**现存的 compatibility / development / future-adapter surfaces**，
+不是历史废代码；它们与正式表面的 `support_status` 语义差异在此**逐项登记**，
+不得用"历史兼容代码"含糊带过。
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-P5-001` | `REGISTERED_DEVIATION` | OPEN | **`--json` / `ApplicationApi` / JSONL / CLI 仍对 `pump_chemical` 返回 `NOT_IN_RELEASE_SCOPE`**：统一正式产品路径（Qt `--qt` 所用入口）已提升为 `SUPPORTED` 候选，但这些入口走遗留 `EvaluationService` / `ApplicationApi`，发布门禁未同步。<br>`disposition`：**Phase 6**（产品入口 / Shell / shipped surface 收口） |
+| `QA-P5-002` | `REGISTERED_DEVIATION` | OPEN | **`--web` 与 legacy Tk `--gui` 仍对 `pump_chemical` 返回 `NOT_IN_RELEASE_SCOPE`**：与 `QA-P5-001` 同源（遗留门禁未同步）。<br>`disposition`：**Phase 6** |
+| `QA-P5-003` | `REGISTERED_DEVIATION` | OPEN | **V4 / Excel adapter 仍对 `pump_chemical` 返回 `NOT_IN_RELEASE_SCOPE`**：Excel 收口排在 Phase 8。<br>`disposition`：**Phase 8**（且 Phase 8 **必须**调用同一 Application / Calculator，**不得**建立第二套业务算法） |
+| `QA-P5-004` | `REGISTERED_DEVIATION` | OPEN | **Android bridge 未纳入本阶段正式支持表面**。正式发布前必须消除所有未声明的发布表面语义分歧。<br>`disposition`：**Phase 9** |
+| `QA-P5-005` | `REGISTERED_DEVIATION` | OPEN | **安装包 / 代码签名 / 正式发布产物**未产生：本 Phase 不声明可发布。<br>`disposition`：**Phase 9** |
+
+**不得**把这些已登记 deviation 误报为 Phase 5 PASS 范围内已修复。
+
+未完成项保持 OPEN/VERIFY；本表不因 Phase 3 / Phase 4 / Phase 5 交付而关闭任何缺乏测试证据的条目。

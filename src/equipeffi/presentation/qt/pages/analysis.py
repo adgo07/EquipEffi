@@ -37,6 +37,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
     PumpAnalysisResult,
 )
 from ..tokens import TOKENS
+from ..labels import support_status_text
 from ..widgets.collapsible import CollapsibleSection
 
 #: 规定点参数字段（用户可见标签 + 内部字段名）。
@@ -155,7 +156,7 @@ class AnalysisPage(QWidget):
         self.equipment_no = QLineEdit()
         self.equipment_no.setPlaceholderText("可选")
         self.as_of = QLineEdit(date.today().isoformat())
-        self.as_of.setToolTip("评价日期决定使用哪个版本的标准；计算与保存都使用该日期。")
+        self.as_of.setToolTip("评价日期用于记录与追溯；不影响所选标准的计算。")
         form.addRow("企业/项目名称", self.project_name)
         form.addRow("设备编号", self.equipment_no)
         form.addRow("评价日期", self.as_of)
@@ -560,6 +561,8 @@ class AnalysisPage(QWidget):
         rows = [
             ("评价状态", result.evaluation_status or "—"),
             ("类别状态", result.category_status or "—"),
+            # 发布支持状态是只读辅助信息，不是主业务结论。
+            ("支持状态", support_status_text(result.support_status)),
             ("命中规则", result.matched_rule_id or "—"),
             ("规则集", standard.get("rule_profile") or "—"),
             ("标准包", standard.get("pack_id") or "—"),
