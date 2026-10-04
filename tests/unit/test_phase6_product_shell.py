@@ -752,12 +752,16 @@ class EntrySurfaceParityTests(ProductShellTestCase):
         import json as _json
         import subprocess
 
+        # 必须显式指定编码：CI 的默认代码页不是 UTF-8，中文结论会触发
+        # UnicodeDecodeError（'charmap' codec）。PYTHONIOENCODING 保证子进程
+        # 以 UTF-8 输出，encoding= 保证父进程以 UTF-8 解码。
         completed = subprocess.run(
             [sys.executable, "main.py", "--device-type", "centrifugal_pump",
              "--json", _json.dumps(self.CHEMICAL_VALUES, ensure_ascii=False),
              "--as-of", WATER_AS_OF(), "--record-id", "R1-CLI"],
-            cwd=ROOT, capture_output=True, text=True, timeout=180,
-            env={**os.environ, "PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"})
+            cwd=ROOT, capture_output=True, text=True, encoding="utf-8", timeout=180,
+            env={**os.environ, "PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1",
+                 "PYTHONIOENCODING": "utf-8"})
         self.assertEqual(completed.returncode, 0, completed.stderr[-500:])
         payload = _json.loads(completed.stdout)
         self.assertEqual(payload["support_status"], "SUPPORTED")
