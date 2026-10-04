@@ -3,7 +3,7 @@
 状态：**CURRENT INVENTORY / GOVERNANCE ROADMAP**
 盘点日期：2026-10-02（本次同步）
 首次盘点日期：2026-10-01
-盘点基线：`master@d6112ea9c7c1c16f95d798c2229cdc54aaf6240a`（Phase 2 = `PHASE_2_PASS` @ `7e16418a`；Phase 3 = `PHASE_3_PASS`，PR #11 合并；Phase 4 = `PHASE_4_PASS`，PR #12 合并）；**Phase 5 = `IN_PROGRESS`**（pump_chemical Stage D 正式支持与发布门禁收口）
+盘点基线：`master@f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`（Phase 2 = `PHASE_2_PASS` @ `7e16418a`；Phase 3 = `PHASE_3_PASS`，PR #11 合并；Phase 4 = `PHASE_4_PASS`，PR #12 合并；Phase 5 = `PHASE_5_PASS`，PR #13 合并）；**Phase 6 = `IN_PROGRESS`**（完整 GB 19762 Product Shell）
 参考标准：`GB 19762—2025 离心泵能效限定值及能效等级`
 参考标准覆盖范围：**`pump_water`（清水离心泵）与 `pump_chemical`（石化离心泵）** —— 见 `V1_SCOPE.md` 第 0 节
 
@@ -40,7 +40,12 @@ Phase 3: PHASE_3_PASS            (PR #11 独立验收并合并 @ 87d9ef1b)
 Phase 4: PHASE_4_PASS            (PR #12 独立验收并合并 @ d6112ea9)
          accepted head = a4034ef3751590b52a821d6a3bdbebcbca6a8ec9
          acceptance record = docs/phase4_acceptance_record.md
-Phase 5: IN_PROGRESS             (pump_chemical Stage D 正式支持与发布门禁收口)
+Phase 5: PHASE_5_PASS            (PR #13 独立验收并合并 @ f3e32f84)
+         accepted head = b064acf8f889c2c86335a8233eaf3eb8eb53f47b
+         acceptance record = docs/phase5_acceptance_record.md
+Phase 6: IN_PROGRESS             (完整 GB 19762 Product Shell)
+         branch = phase6/gb19762-product-shell
+         base   = f3e32f84123937ed6caa2b84b7cc0cd04c3100e0
          branch = phase5/pump-chemical-stage-d-support
          base   = d6112ea9c7c1c16f95d798c2229cdc54aaf6240a
          branch = phase4/minimal-lifecycle-generalization
@@ -61,8 +66,8 @@ Phase 1 已冻结/验证业务规范、Canonical/Product/Profile/Import Contract
 
 ```text
 pump_water    : scope_status=IN_V1 | support_status=SUPPORTED             | standard_maturity=SUPPORTED
-pump_chemical : scope_status=IN_V1 | support_status=SUPPORT_PROMOTION_CANDIDATE | standard_maturity=IMPLEMENTED
-                (统一 Qt 正式路径取值 SUPPORTED；候选 SUPPORTED，待独立验收)
+pump_chemical : scope_status=IN_V1 | support_status=SUPPORTED             | standard_maturity=SUPPORTED
+                (Phase 5 Stage D 独立验收通过，PR #13 @ f3e32f84)
 transformer   : scope_status=POST_V1 | support_status=NOT_IN_RELEASE_SCOPE
 ```
 
@@ -125,7 +130,7 @@ GB 19762—2025 的 `pump_water` **业务规则、Pump Calculator、Numeric Conf
 
 `PARTIAL`
 
-这不是中央 Contract 阻塞。当前阶段门禁是：**Phase 3 已 `PHASE_3_PASS`（PR #11 @ `87d9ef1b`）；Phase 4 已 `PHASE_4_PASS`（PR #12 @ `d6112ea9`）；Phase 5 = `IN_PROGRESS`（pump_chemical Stage D 支持提升候选），完成并通过 Required CI 后须经独立验收，执行者不得自宣 PASS**；`pump_chemical` 的 `support_status` 提升须待 Phase 5 的 Stage D 独立验收。
+这不是中央 Contract 阻塞。当前阶段门禁是：**Phase 3 已 `PHASE_3_PASS`（PR #11 @ `87d9ef1b`）；Phase 4 已 `PHASE_4_PASS`（PR #12 @ `d6112ea9`）；Phase 5 已 `PHASE_5_PASS`（PR #13 @ `f3e32f84`）；Phase 6 = `IN_PROGRESS`（完整 GB 19762 Product Shell），完成并通过 Required CI 后须经独立验收，执行者不得自宣 PASS**；`pump_chemical` 的 `support_status` 提升须待 Phase 5 的 Stage D 独立验收。
 
 ## 6. 后续交付顺序
 
@@ -140,7 +145,7 @@ Phase 2 已完成（`PHASE_2_PASS`）。Phase 3 增量修正把 `pump_chemical` 
 7. **Phase 9**：完整 GB 19762 Windows V1 正式验收与发布；
 8. **Phase 10**：Reference Standard Gate PASS 后，再选择第二标准验证扩展架构。
 
-**`pump_chemical` 的 `support_status` 只有在 Stage D 独立验收通过后才可切换为 `SUPPORTED`**；Phase 5 已完成 Stage D 证据闭环并交独立验收，**在此之前治理状态保持 `SUPPORT_PROMOTION_CANDIDATE`**（统一 Qt 正式路径运行时取值 `SUPPORTED`，属候选事实）。其业务真值 blocker 已于 2026-10-02 关闭（Owner **11/11** PASS）。
+**`pump_chemical` 的 `support_status` 已随 Phase 5 Stage D 独立验收通过切换为 `SUPPORTED`**（PR #13 @ `f3e32f84`），治理状态为 `scope_status = IN_V1` / `support_status = SUPPORTED` / `standard_maturity = SUPPORTED`。其业务真值 blocker 已于 2026-10-02 关闭（Owner **11/11** PASS）。
 
 ## Phase 2 执行增量（2026-10-02；状态已更新为 PASS）
 

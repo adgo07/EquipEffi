@@ -79,10 +79,12 @@ class UnifiedAnalysisPageTests(unittest.TestCase):
         self.page.evaluate()
 
         ordinary = "\n".join([self.page.conclusion.text(), self.page.summary.text(),
-                              self.page.basis.text()])
+                              self.page.values_label.text(), self.page.basis.text()])
         self.assertNotIn("GB19762-T3-01", ordinary)
         self.assertNotIn("pump_water", ordinary)
-        self.assertIn("等级阈值", ordinary)
+        # Phase 6：第二层用用户可理解名称展示限值，不再使用内部阈值键。
+        self.assertIn("对应等级效率限值", ordinary)
+        self.assertIn("1级能效效率限值（%）", ordinary)
         # 审计能力保留
         self.assertIn("GB19762-T3-01", self.page.technical.text())
         self.assertIn("命中规则", self.page.technical.text())

@@ -7,7 +7,7 @@
 - 产品：EquipEffi 设备能效分析工具（Module ID `qz.equipment_efficiency`）。
 - Canonical repository：`https://github.com/adgo07/EquipEffi.git`。
 - 当前 Reference Standard：`GB 19762—2025 离心泵能效限定值及能效等级`。
-- 当前主要产品阶段：`EquipEffi V2.3` 下 `Phase 1 = PHASE_1_PASS`、`Phase 2 = PHASE_2_PASS`、`Phase 3 = PHASE_3_PASS`（PR #11 合并 @ `87d9ef1b`，验收落档 `docs/phase3_acceptance_record.md`）、`Phase 4 = PHASE_4_PASS`（PR #12 合并 @ `d6112ea9`，验收落档 `docs/phase4_acceptance_record.md`）、**`Phase 5 = IN_PROGRESS`**（pump_chemical Stage D 正式支持与发布门禁收口）。不得写成 `PHASE_5_PASS` 或 `Stage D PASS`。
+- 当前主要产品阶段：`EquipEffi V2.3` 下 `Phase 1 = PHASE_1_PASS`、`Phase 2 = PHASE_2_PASS`、`Phase 3 = PHASE_3_PASS`（PR #11 合并 @ `87d9ef1b`，验收落档 `docs/phase3_acceptance_record.md`）、`Phase 4 = PHASE_4_PASS`（PR #12 合并 @ `d6112ea9`，验收落档 `docs/phase4_acceptance_record.md`）、**`Phase 5 = PHASE_5_PASS`**（PR #13 合并 @ `f3e32f84`，验收落档 `docs/phase5_acceptance_record.md`）、**`Phase 6 = IN_PROGRESS`**（完整 GB 19762 Product Shell）。**不得**自行宣布 `PHASE_6_PASS`。
 - 本仓独立开发、发布、离线运行，不是中央仓的第四个业务产品。
 
 ### 1.1 仓库身份与本地执行环境
@@ -75,14 +75,17 @@ git fetch origin                   # 同步远端
 ### 2.1 Phase 与顺序纪律
 
 - 路线只有 `EquipEffi V2.3`；Phase 0 已完成，作为不可变基线。Phase 0～10 **编号不得改变**。
-- 当前状态：`Phase 1 = PHASE_1_PASS`；`Phase 2 = PHASE_2_PASS`；`Phase 3 = PHASE_3_PASS`（PR #11 @ `87d9ef1b`）；`Phase 4 = PHASE_4_PASS`（PR #12 @ `d6112ea9`）；**`Phase 5 = IN_PROGRESS`**（pump_chemical Stage D 正式支持与发布门禁收口，分支 `phase5/pump-chemical-stage-d-support`）；automatic continuation = `DISABLED`。
+- 当前状态：`Phase 1 = PHASE_1_PASS`；`Phase 2 = PHASE_2_PASS`；`Phase 3 = PHASE_3_PASS`（PR #11 @ `87d9ef1b`）；`Phase 4 = PHASE_4_PASS`（PR #12 @ `d6112ea9`）；**`Phase 5 = PHASE_5_PASS`**（PR #13 合并 @ `f3e32f84`，验收落档 `docs/phase5_acceptance_record.md`）、**`Phase 6 = IN_PROGRESS`**（完整 GB 19762 Product Shell，分支 `phase6/gb19762-product-shell`，base `f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`）；automatic continuation = `DISABLED`。
 - `PHASE_1_PASS` / `PHASE_2_PASS` 是既有独立验收后的记录，**不是任何 adoption / 治理任务自行批准的结果**；`PHASE_2_PASS` 依 PR #10 独立验收与合并（`7e16418a`）。任何 Phase 的 PASS 均不得由执行者自行宣布。
 - **Phase 1 / Phase 2 均已结束**：`P1-G01 → G06`、`P2-G01 → G04` 与 Solution/Product Review 是**历史完成程序**，不再作为当前例行门禁（见 2.0）。
 - **Phase 3 已结束并获独立验收通过（`PHASE_3_PASS`，PR #11 @ `87d9ef1b`）**；验收落档见 `docs/phase3_acceptance_record.md`。其设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`。
 - **Phase 4 已结束并获独立验收通过（`PHASE_4_PASS`，PR #12 @ `d6112ea9`）**；验收落档见 `docs/phase4_acceptance_record.md`；执行细节见 `PHASE4_EXECUTION_REPORT.md`。
-- **Phase 5 已获用户明确执行授权**：范围是 **pump_chemical Stage D 正式支持与发布门禁收口**——在已有 Phase 3/4 实现基础上完成 Stage D 正式支持证据闭环，形成 **support promotion candidate** 并交独立验收。分支 `phase5/pump-chemical-stage-d-support`，base `d6112ea9c7c1c16f95d798c2229cdc54aaf6240a`。**不是重新开发 pump_chemical**。
+- **Phase 5 已结束并获独立验收通过（`PHASE_5_PASS`，PR #13 @ `f3e32f84`）**；验收落档见 `docs/phase5_acceptance_record.md`；执行细节见 `PHASE5_EXECUTION_REPORT.md`。`pump_chemical` 自此为 `scope_status = IN_V1` / `support_status = SUPPORTED` / `standard_maturity = SUPPORTED`。
 - **Windows V1 当前正式发布用户表面 = PySide6 Qt Desktop（`--qt`）**。`--json` / `ApplicationApi` / `--web` / JSONL / legacy Tk `--gui` / Android bridge / V4·Excel adapter 是**现存的 compatibility / development / future-adapter surfaces**，不是历史废代码；其与正式表面的 support 差异必须登记 `REGISTERED_DEVIATION` 并给出 disposition（Phase 6 / 8 / 9）。
-- Phase 5 执行者**不得**自行宣布 `PHASE_5_PASS`、`Stage D PASS` 或 `pump_chemical officially SUPPORTED`；治理状态只允许 `SUPPORT_PROMOTION_CANDIDATE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`。不得合并 PR、不得进入 Phase 6、不得发布。
+- **Phase 6 已获用户明确执行授权**：范围是 **完整 GB 19762 Product Shell**——把 Phase 2～5 已成立的完整 GB 19762（`pump_water` + `pump_chemical`）业务能力组织成正式、完整、可长期使用的 Windows PySide6 产品 Shell。分支 `phase6/gb19762-product-shell`，base `f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`。**不是重新设计业务算法**。
+- Phase 6 执行者**不得**自行宣布 `PHASE_6_PASS`、不得合并 PR、不得进入 Phase 7。最终状态只允许 `Phase 6 implementation = EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`。
+- **Phase 6 Owner 决定（Tk 退出）**：legacy Tk GUI **不再使用**。无参数启动、`--gui`、`--qt` 均进入同一正式 PySide6 Qt Desktop Shell；`--qt` 保留为显式兼容别名；Tk 不是任何用户产品入口；**不得**在 Tk 不可用时自动 fallback 到 Web。Tk 代码若经真实引用/构建/测试证明已无运行依赖可删除；若仍有真实兼容依赖则只断开正式运行路径并登记（见 `QA_BACKLOG.md` 的 `QA-P6-001`），不得盲删。
+- **候选层 Golden 的实现哈希冻结（Phase 6 实测发现）**：`specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl` 的 `source_sidecar.source_references` 以 `artifact_sha256` 冻结了 10 个实现文件，且 18 条已批准 `pump_water` Golden 用 `provenance.source_candidate_sha256` 锚定候选记录哈希。因此**修改这批实现文件（含 `application/services/evaluation_service.py`）会使批准 Golden 的 provenance 校验失败**，在未获 Owner 授权的 Golden 重基线任务前**不得改动**。详见 `QA_BACKLOG.md` 的 `QA-P6-002`。
 - v15 / T04.xx / 历史 HANDOFF / 编号清单无自动调度权，不得据其“下一边界任务”自动继续。
 - 当前 Windows V1 产品目标与各 Profile 状态以 `V1_SCOPE.md` / `ROADMAP.md` 为唯一权威（完整支持 GB 19762—2025，覆盖 `pump_water` + `pump_chemical`；`transformer` 为 `POST_V1`，资产保留）。
 - 旧资产先分类（KEEP / VERIFY / MIGRATE / REWORK / DEPRECATE / DELETE_CANDIDATE / OBSOLETE），不因零引用直接删除。
@@ -111,8 +114,8 @@ git fetch origin                   # 同步远端
 
 ### 2.6 本仓 UI 事实
 
-- 现有桌面主窗口实际为遗留 **Tkinter / ttk**（`EquipmentEfficiencyWindow`），事实见 `UI_CURRENT_STATE_AUDIT.md`；不得因中央指南把 PySide6 列为默认技术栈就在无授权任务中重写，PySide6 迁移与正式 UI 重构须由后续独立任务显式授权。
-- **正式发布用户表面（Phase 5 Owner 决定）**：Windows V1 当前正式发布用户表面 = **PySide6 Qt Desktop（`--qt`）**。
+- **Phase 6 起正式桌面 Shell 为 PySide6 Qt Desktop**，五个一级页面（首页 / 标准库 / 新建分析 / 分析记录 / 设置）均为真实页面，不存在 placeholder，也不存在"Phase N 尚未实现"等开发态文案。事实见 `UI_CURRENT_STATE_AUDIT.md`（Phase 6 已按 Qt 实现重新盘点）。历史 Tk 事实在该文件中标注为 **historical**，不再作为当前 UI 事实。
+- **正式发布用户表面（Phase 5 Owner 决定，Phase 6 起为唯一入口）**：Windows V1 当前正式发布用户表面 = **PySide6 Qt Desktop**。无参数启动、`--gui` 与 `--qt` 都进入它；`--json` / `--web` / JSONL / `ApplicationApi` / Android bridge / V4·Excel 仍是 compatibility / development surface，**不得**宣称为正式 Windows UI。
 
 ### 2.7 评价日期产品规则（Owner，Phase 5）
 

@@ -8,7 +8,7 @@
 |---|---|---|
 | **正式产品目标** | **完整支持 `GB 19762—2025《离心泵能效限定值及能效等级》`** | Windows V1 首个正式版的完整范围定义 |
 | **当前正式支持** | `pump_water`（清水离心泵） | `scope_status = IN_V1`、`support_status = SUPPORTED`；当前唯一已正式发布的评价能力 |
-| **V1 必须完成、支持提升候选** | `pump_chemical`（石化离心泵） | `scope_status = IN_V1`；11 条 Golden 已获 Owner 具名批准，Stage D 证据闭环已在 Phase 5 完成并交独立验收。治理状态 `SUPPORT_PROMOTION_CANDIDATE`（统一 Qt 正式路径 `--qt` 运行时取值 `SUPPORTED`）；**独立验收通过前不得写成"正式支持已经生效"** |
+| **当前正式支持** | `pump_chemical`（石化离心泵） | `scope_status = IN_V1`、`support_status = SUPPORTED`；11 条 Golden 已获 Owner 具名批准，Stage D 证据闭环于 Phase 5 完成并**通过独立验收**（`PHASE_5_PASS`，PR #13 @ `f3e32f84`） |
 | **Legacy / deferred / experimental** | `transformer` 及其他 15 类公共类型相关资产、Web 窗口、Android / JSONL 桥接、Excel 适配器、PMSM 等 | **不代表当前正式支持**。`transformer` 为 `POST_V1`（本轮暂缓，资产保留、不删除不重构）；其余按 `V1_SCOPE.md` 的 `UNDER_REVIEW` / `POST_V1` 状态处理 |
 
 三个维度不得互相冒充：`scope_status`（产品范围）、`support_status`（当前发布能力）、标准开发成熟度（中央 Standard Development Guide Stage A→D）。详见 [V1_SCOPE.md](V1_SCOPE.md) 第 1 节。

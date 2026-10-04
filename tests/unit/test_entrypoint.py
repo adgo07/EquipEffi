@@ -240,48 +240,39 @@ class EntrypointTests(unittest.TestCase):
         )
         self.assertEqual(completed.stdout.splitlines(), ["15", "节能评价值"])
 
-    def test_gui_entrypoint_uses_packaged_launcher(self):
-        with patch("equipeffi.presentation.desktop.launcher.launch_packaged_gui") as launch_gui:
+    def test_gui_and_qt_both_launch_the_same_qt_shell(self):
+        """Phase 6：--gui 与 --qt 进入同一个正式 Qt Shell。"""
+
+        with patch("equipeffi.composition.launch_qt", return_value=0) as launch_qt:
             self.assertEqual(main(("--gui",)), 0)
-        launch_gui.assert_called_once_with()
+            self.assertEqual(main(("--qt",)), 0)
+        self.assertEqual(launch_qt.call_count, 2)
 
-    def test_packaged_gui_falls_back_to_web_when_tk_runtime_is_missing(self):
-        # tkinter may be importable while Tcl/Tk itself is not installed.  The
-        # launcher should keep the same public API available through Web.
+    def test_no_arguments_launches_the_qt_shell(self):
+        """无参数启动进入正式 Qt Shell（不再是"就绪"提示）。"""
+
+        with patch("equipeffi.composition.launch_qt", return_value=0) as launch_qt:
+            self.assertEqual(main(()), 0)
+        launch_qt.assert_called_once_with()
+
+    def test_legacy_tk_launcher_is_disconnected(self):
+        """Phase 6 Owner 决定：legacy Tk 不再是任何用户产品入口。"""
+
         from equipeffi.presentation.desktop import launcher
 
-        TclError = type("TclError", (Exception,), {})
-        with patch.object(launcher, "launch", side_effect=TclError("init.tcl missing")):
-            with patch("equipeffi.presentation.web.server.run_web") as run_web:
-                launcher.launch_packaged_gui()
-        run_web.assert_called_once()
-        args, kwargs = run_web.call_args
-        self.assertEqual(args[1:3], ("127.0.0.1", 8765))
-        self.assertTrue(kwargs["open_browser"])
-        self.assertIsNotNone(kwargs["template_transfer"].download)
+        self.assertFalse(hasattr(launcher, "launch_packaged_gui"))
+        self.assertFalse(hasattr(launcher, "_run_web_fallback"))
+        self.assertFalse(hasattr(launcher, "launch"))
+        source = Path(launcher.__file__).read_text(encoding="utf-8")
+        self.assertNotIn("import tkinter", source)
 
-    def test_packaged_gui_keeps_excel_callbacks_as_ports_by_default(self):
-        # Excel导入/回写暂不进入手工输入MVP；启动器只保留端口，
-        # 环境变量不能绕过当前阶段边界启用试验实现。
-        from equipeffi.presentation.desktop import launcher
+    def test_gui_launch_keeps_the_shared_application_factory(self):
+        """断开 Tk 不影响共享 Application 装配路径。"""
 
-        with patch.object(launcher, "launch") as launch_window:
-            launcher.launch_packaged_gui()
-        _args, kwargs = launch_window.call_args
-        callbacks = kwargs["callbacks"]
-        self.assertIsNotNone(callbacks.download_template)
-        self.assertIsNone(callbacks.upload_workbook)
-        self.assertIsNone(callbacks.export_workbook)
+        from equipeffi import composition
 
-    def test_packaged_gui_does_not_enable_excel_adapter_from_environment(self):
-        from equipeffi.presentation.desktop import launcher
-
-        with patch.dict("os.environ", {"EQUIPEFFI_ENABLE_EXCEL_ADAPTER": "1"}, clear=False):
-            with patch.object(launcher, "launch") as launch_window:
-                launcher.launch_packaged_gui()
-        callbacks = launch_window.call_args.kwargs["callbacks"]
-        self.assertIsNone(callbacks.upload_workbook)
-        self.assertIsNone(callbacks.export_workbook)
+        self.assertTrue(callable(composition.launch_qt))
+        self.assertTrue(callable(composition.create_pump_analysis_service))
 
     def test_web_entrypoint_injects_static_template_download_port(self):
         with patch("equipeffi.presentation.web.server.run_web") as run_web:

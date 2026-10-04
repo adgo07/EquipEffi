@@ -1,236 +1,222 @@
 # 当前 UI 状态盘点
 
-任务：`Qingzhou Desktop UI Guidelines v0.1` 配套 UI Audit
-
-Execution base：`master@d5d765910b1d80b31300c4c9a70dcbcc2f3d8b29`
+> **Phase 6 重新盘点。** 本文档此前记录的是 Phase 2 时期的 **legacy Tkinter / ttk**
+> 窗口事实。自 Phase 6 起，Windows V1 的正式桌面 Shell 是 **PySide6 Qt Desktop**，
+> 因此本文档已**按当前 `master` 的真实 Qt 实现重新盘点**。
+>
+> 历史 Tk 事实保留在 §11（标注 **historical**），**不得**再作为当前 UI 事实引用。
 
 Reference Standard：`GB 19762—2025 离心泵能效限定值及能效等级`
 
-状态：**AUDIT ONLY / 只盘点，不修改 UI**
-
-> 本文件记录当前默认分支真实 UI 结构，不启动 Phase 2，不修改 Pump evaluator、Canonical、Golden、Excel、数据库、正式 UI 代码或 Frozen Contract。
+状态：**Phase 6 盘点（按 Qt 实现）**
 
 ## 1. 审计依据与边界
 
-重点读取：
-
-- `src/equipeffi/presentation/desktop/main_window.py`
-- `src/equipeffi/presentation/desktop/launcher.py`
-- 当前 Application facade / metadata projection 的 UI 调用关系。
-
-本次只做源码层 UI Audit。没有把 Tkinter 页面改成 PySide6，也没有把 Web fallback 删除或重构。
+- 审计对象：`src/equipeffi/presentation/qt/`（正式桌面 Shell）。
+- 启动入口：`main.py` → `equipeffi.entrypoint.main`；无参数 / `--gui` / `--qt`
+  都进入 `equipeffi.composition.launch_qt`（唯一正式入口）。
+- 事实来源：当前代码 + `tests/unit/test_phase6_product_shell.py`（Phase 6 专项测试）
+  + `tests/unit/test_phase2_qt.py` / `test_phase3_qt_unified.py` / `test_phase5_chemical_stage_d.py`。
+- 本文件**只描述现状**，不构成重构授权；也不改变业务结论、Phase 门禁或锁文件。
 
 ## 2. A — 技术栈
 
-当前正式桌面主窗口实际为：**Tkinter / ttk**，不是 PySide6。
-
-主窗口：`EquipmentEfficiencyWindow`。
-
-桌面启动器明确说明：
-
-- 正常路径启动 Tk 窗口；
-- Tk/Tcl 不可用时可回退到 Web 窗口；
-- 判定内核通过 Application API / `EvaluationFacade` 复用，并不依赖 Tk。
-
-这说明当前 Presentation 技术与中央未来默认 PySide6 方向存在差异，但 Domain/Application 仍具备较好的 Presentation 解耦基础。
-
-本任务只记录该差异，不构成迁移授权。
+| 项 | 事实 |
+|---|---|
+| 正式桌面技术栈 | **PySide6（Qt）** |
+| 入口模块 | `src/equipeffi/presentation/qt/app.py`（`run`）、`shell.py`（`MainWindow`） |
+| 页面模块 | `pages/home.py` / `standards.py` / `analysis.py` / `records.py` / `settings.py` |
+| 公共组件 | `widgets/collapsible.py`（默认收起的折叠区）、`tokens.py`（尺寸令牌）、`labels.py`（中文文案表）、`navigation.py`（一级导航 + 极小导航契约） |
+| 窗口状态 | 经 `SettingsService` 持久化 `window.geometry` / `window.state`（base64） |
+| legacy Tk | `presentation/desktop/main_window.py` **保留但不接线**，不是任何用户入口（见 §11） |
 
 ## 3. B — 当前导航
 
-当前没有 ECQuota/GHGTOOL 那种完整左侧 AppShell 一级导航。
+一级导航固定五项，顺序即产品任务顺序：
 
-桌面 UI 是一个单窗口工作台：
+```text
+首页 → 标准库 → 新建分析 → 分析记录 → 设置
+```
 
-- 顶部：软件标题、模板下载、V4 工作簿上传/结果导出按钮；
-- 左侧：设备类型及公共条件；
-- 中间：参数填写；
-- 右侧：判定结果。
+- **五项都是真实页面**；`placeholder_page` 已删除，运行时不存在占位页。
+- 不含 `Excel 导入`（属 Phase 8）、不含 `参数库`（GB 19762 无独立用户参数库需求；
+  标准参数 / 限值 / 依据归「标准库 → 标准详情」）。
+- 跨页导航契约极小，只有五个方法，只承担「切页 / 选择目标对象 / 载入已有对象」：
 
-因此当前不存在“首页 / 标准库 / 新建分析 / 记录 / 参数库 / 设置”的正式产品级导航闭环。
+```text
+open_home()
+open_standards(standard_code=None)
+open_analysis(workspace_id=None)
+open_records(record_id=None)
+open_settings()
+```
 
-对 Reference Standard 单次判定来说，这种单窗口结构很直接；对完整产品交付来说，标准发现、历史记录、设置等入口仍不足。
+- **未引入**：事件总线、通用 Router Framework、Page Base Class 体系、
+  全局 DI 容器、导航状态机。
 
 ## 4. C — 首页
 
-当前没有独立首页。
-
-程序启动后直接进入设备分析窗口。用户可以立即开始分析，这是单任务 MVP 的优点；但无法在首页层完成：
-
-- 最近工作查看；
-- 标准发现；
-- 最近记录；
-- 从业务对象继续工作。
-
-后续是否增加首页应在 Reference Standard UI Design 中结合完整产品闭环决定，本 Audit 不预设最终结构。
+| 项 | 事实 |
+|---|---|
+| 承载任务 | 开始新的离心泵分析 / 继续最近草稿 / 打开最近正式记录 / 查看当前正式标准 |
+| 数据来源 | **复用**现有 `list_workspaces()` 与 `list_records()`；未新增 records schema，也未新增第二套 persistence |
+| 空状态 | 显示「暂无草稿」「暂无正式记录」，相关按钮置灰 |
+| 不做 | 不堆 KPI / Dashboard / 无业务价值图表 |
+| 导航 | 「开始新的离心泵分析」→ 新建分析；「查看当前正式标准」→ 标准库；双击草稿 / 记录可直达对应对象 |
 
 ## 5. D — 标准库
 
-当前桌面主窗口没有独立标准库页面。
+真实产品页面，展示当前正式标准并允许基于它开始分析。
 
-用户主要先选择“设备类型”，标准选择和 Profile 路由由 Application/metadata/标准仓内部完成。普通用户无法通过当前主窗口完成完整的：
+| 展示项 | 事实 |
+|---|---|
+| 标准号 / 标准名称 | `GB 19762-2025` / `离心泵能效限定值及能效等级` |
+| 状态 / 实施日期 / 数据版本 | 来自标准包 |
+| 支持类别 | 来自 Application 类别目录 |
+| 软件支持状态 | 来自发布门禁，用中文显示（「正式支持」/「当前版本未支持」） |
+| 官方 / 权威来源 | 标准包 `source_file` |
+| 替代关系 | 当前标准数据未提供 → **如实说明**，不编造 |
+| 生命周期提示 | 「该标准尚未实施」（仅提示，不阻止计算） |
+| 动作 | 「基于该标准开始分析」 |
 
-- 标准搜索；
-- 标准状态查看；
-- 适用范围查看；
-- 替代关系查看；
-- 官方来源查看；
-- 从标准详情直接开始分析。
+**数据来源链**：标准事实全部来自 **Application read model**
+（`CentrifugalPumpAnalysisService.standard_overview()`），它组合的是既有权威数据
+（Canonical 标准包 + 产品类别目录 + 发布门禁）。
 
-这与当前 Reference Standard Roadmap 中“产品壳仍需继续完善”的状态一致。
+**禁止（已在测试中固化）**：
+
+- Presentation 自己维护第二份标准表；
+- 解析 Markdown / PDF 决定运行时业务真值；
+- 为展示方便硬编码第二套标准数据。
 
 ## 6. E — Reference Standard：GB 19762—2025 离心泵
 
 ### 6.1 页面数量
 
-完成一次离心泵分析的主要工作界面为 **1 个窗口 / 1 个主要工作页面**。
+`新建分析` **单页**（`AnalysisPage`），内部用 `QScrollArea` 承载纵向内容；
+`pump_water` 与 `pump_chemical` **共用同一页面、同一类别选择器、同一 Application
+Use Case**（不做成两个产品）。
 
-左、中、右三栏同时承担类型选择、输入和结果展示，不需要 Wizard 或多页跳转。
+### 6.2 结果信息层级（Phase 6 规范化）
 
-### 6.2 Tab 数量
+普通结果区按五层组织：
 
-当前桌面主窗口没有业务 Tab。
+```text
+第一层：最终结论 / 等级 / 不适用 / 无法判定（含判定说明）
+第二层：关键实际值与对应限值（用用户可理解名称，如「1级能效效率限值（%）」）
+第三层：普通工程语言解释「为什么是这个结果」
+第四层：所选标准及已有标准依据（标准号、名称、数据版本、标准依据、关键计算参数）
+第五层：默认折叠的高级技术详情
+```
 
-因此不存在无真实价值的 Tab 过度拆分问题。
+- 第二 / 三 / 四层只用 Result Contract 已提供的信息；**不由 UI 发明业务解释**。
+  若所需信息契约未提供，登记 Phase 7，不得在 UI 内推导。
+- 第五层（`CollapsibleSection`，默认**真正收起**）保留 `rule_profile` /
+  `matched_rule_id` / `ruleset_version` / canonical 数据版本 / Numeric Profile /
+  calculator 版本 / 结果契约 / 输入指纹 / 草稿修订号 —— 审计能力不删。
 
 ### 6.3 必填输入
 
-字段由 V4 Contract / metadata / Product Profile 动态投影，UI 使用 `display_name` 展示中文业务标签、用 `field_id` 在内部绑定变量。
-
-对离心泵 Reference Standard，核心应包括同一标准规定点下的流量、扬程、转速、泵效率，以及类别、单双吸、级数等必要判定条件；基础设备信息中部分字段为可选。
-
-当前这种 metadata-driven 表单有利于以后减少重复 UI 逻辑。
+类别、规定点流量 `Q_BEP`、规定点扬程 `H_BEP`、规定点转速 `n`、规定点泵效率 `η`、
+吸入方式；级数在多级类别下启用。企业 / 项目名称、设备编号为可选。
 
 ### 6.4 可自动生成或默认的信息
 
-当前 `as_of` 使用应用层默认日期初始化；部分字段、枚举和约束来自 metadata / V4 Contract。
-
-后续设计应继续区分：
-
-- 用户必须确认的真实设备数据；
-- 可以根据设备类型/Profile 自动锁定的值；
-- 只为审计保留的内部字段；
-- 默认日期及其来源说明。
-
-本 Audit 不改变当前默认值或业务解释。
+- **评价日期自动记录本机当前日期**（用户可改；Owner 规则：评价日期不是业务门禁）。
+- 记录编号在 Finalize 时生成。
 
 ### 6.5 内部字段泄露
 
-输入表单本身主要展示 `display_name`，`field_id` 只用于内部变量映射，这一点是正向的。
-
-但是判定完成后，右侧普通“判定结果”区域在可读摘要下面直接写入：
-
-```python
-json.dumps(self.facade.to_record(result), ensure_ascii=False, indent=2)
-```
-
-因此完整序列化记录/内部字段会直接出现在普通用户主结果区。
-
-结论：**存在明确 INTERNAL_LEAK**。
+**普通用户界面不得出现** `pump_water` / `pump_chemical` / `rule_profile` /
+`matched_rule_id` / `internal_id` / `field_id` / canonical 版本 / Numeric Profile /
+原始 JSON / Python 变量；这些只允许出现在**明确折叠的技术详情区**。
+Phase 6 机械门禁在 `test_phase6_product_shell.py` 固化该约束。
 
 ### 6.6 技术信息位置
 
-当前结果区同时包含：
-
-- 醒目的最终能效等级；
-- 采用标准；
-- 参考能效等级；
-- 判定说明；
-- 缺失信息；
-- 数据质量；
-- 完整序列化结果 JSON。
-
-前半部分适合普通用户，最后的完整 JSON 明显应属于高级技术详情/诊断层。
+折叠区（第五层），默认收起；`is_expanded()` 可被测试断言。
 
 ### 6.7 结果醒目程度
 
-右侧结果栏始终可见，最终等级使用较大的粗体标签显示，用户判定后能够直接看到结果。
-
-结论：**YES**。
+结论位于结果区首位（第一层），使用标题级字号加粗。
 
 ### 6.8 结果解释
 
-“采用标准 / 判定说明 / 缺失信息 / 数据质量”属于可读业务摘要，这是正向设计。
-
-但摘要下方直接显示原始 JSON，普通层与技术层没有真正分开；“参考能效等级”等信息是否应作为普通主结果，也需要后续产品设计确认。
-
-结论：**PARTIAL**。
+直接采用契约给出的 `explanation`，不另写一套判定理由。
 
 ### 6.9 标准依据
 
-当前结果摘要可以给出采用标准，业务结果模型中也保留标准引用；但当前桌面窗口没有标准库或专门标准详情页来系统查看适用范围、标准状态、条款/表号和官方来源。
+第四层显式给出所选标准、标准数据版本与标准依据文本。
 
-因此依据能力在数据层存在，但产品 UI 呈现仍不完整。
+### 6.10 生命周期提示（非阻断）
 
-### 6.10 是否适合单页
+所选标准与评价日期不匹配时只显示**几个字**（如「该标准尚未实施」），
+单独一行、样式弱化；**不改变** `evaluation_status`、`grade`、Finalize 权限，
+也不自动切换标准版本，无复杂确认流程。
 
-```text
-适合单页：YES
-```
+## 7. F — 分析记录
 
-离心泵单次分析本身适合“设备基本信息 + 标准必要参数 + 结果 + 依据”在一个主要页面完成。后续即使引入完整 AppShell，也不需要把一次泵分析强拆成多步 Wizard。
+| 项 | 事实 |
+|---|---|
+| 列表 | 清水泵与石化泵记录在**同一列表** |
+| 搜索 | 按记录编号 / 设备类别 / 标准 / 结论 |
+| 筛选 | 按泵型、按结论（映射 `evaluation_status`）、按评价日期前缀 |
+| 筛选作用域 | 只筛选**快照里已有字段**；不新增 schema、不重算、不修改历史记录 |
+| 详情 | 业务结果、关键输入、标准、评价日期、评价结论 / 等级、原等级阈值、原关键计算参数、原标准依据、保存时间 |
+| 技术详情 | 折叠区：评价状态、命中规则、类别状态、**支持状态（取自不可变快照）**、规则集、标准包、数据版本、数值配置、结果契约、输入指纹、草稿修订号 |
+| 历史冻结 | Reopen **只读原快照**，不调用 evaluator、不按今天日期重算、**不追溯改写支持状态** |
+| 不做（Phase 7） | 完整 lineage、audit event、reproduce、历史重算、复杂 Attempt history、基于历史记录重新开始 |
 
-## 7. 问题登记
+## 8. G — 设置 / 关于 / 运行信息
 
-| ID | 类型 | 优先级 | 当前事实 | 后续 UI Design 方向 |
-|---|---|---|---|---|
-| `EQP-UI-001` | `INTERNAL_LEAK` | P1 | 普通结果区直接显示完整 `to_record()` JSON | JSON/内部字段移至高级技术详情，普通层保留结论和可读依据 |
-| `EQP-UI-002` | `INCONSISTENT` | P1 | 当前正式桌面主窗口仍为 Tkinter/ttk，而三软件当前 Windows Desktop 默认方向为 PySide6 | 只作为后续 UI Design/迁移输入，本轮不改技术栈 |
-| `EQP-UI-003` | `WORKFLOW` | P1 | 当前缺少首页、标准库、记录等完整产品壳，启动即进入单次设备分析 | Reference Standard UI 优化阶段补齐完整产品任务流，不改变 evaluator |
-| `EQP-UI-004` | `USER_NOISE` | P2 | 顶部“V4公共接口”及当前尚未接入的上传/导出入口带有明显实现阶段色彩 | 面向普通用户改成业务语言；未开放能力应清楚标注状态 |
-| `EQP-UI-005` | `OVER_DENSE` | P2 | 结果栏同时堆叠业务摘要与完整技术记录，信息层级混合 | 使用渐进展示分开最终结论、业务解释和技术审计信息 |
+| 项 | 事实 |
+|---|---|
+| 真实可配置项 | 日志级别（`log.level`，真实持久化） |
+| 只读信息 | 上次使用的目录、应用设置项清单 |
+| 关于 | 应用版本、当前正式标准、适用产品 |
+| 运行信息 | 数据存储位置、应用设置项 |
+| **不得**作为用户设置 | Numeric precision、rule profile、calculator、internal ID、canonical version、算法开关 |
+| 不做 | 不提前做 installer / update system |
 
-当前没有发现仅凭源码即可认定为 P0 的 UI 问题。
+## 9. 问题登记
 
-## 8. 三软件一致性观察
+| 编号 | 内容 | 状态 |
+|---|---|---|
+| `QA-P6-001` | legacy Tk 实现保留但不接线；`main_window.py` 仍被表单模型测试引用，非零引用可盲删 | `REGISTERED_DEVIATION` → Phase 8 |
+| `QA-P6-002` | 候选层 Golden 冻结 10 个实现文件哈希，使共享 Application/CLI 语义收口在 Phase 6 权限内不可完成 | `BLOCKER` → Phase 7 |
+| `QA-P6-003` | 草稿 identity「名称即 ID / 改名等价于新建」 | `REGISTERED_DEVIATION` → Phase 7 |
+| `QA-P6-004` | 非正式 adapter 保留但未升级为正式 Windows UI | `REGISTERED_DEVIATION` → Phase 8 / 9 |
+| `QA-P5-001` / `QA-P5-002(b)` / `QA-P3-003` | 共享 Application/CLI 语义与旧 `as_of` 门禁，Phase 6 复核后**仍不能关闭** | `OPEN`，附 blocker → Phase 7 |
 
-EquipEffi 当前与另外两个软件最大的差异不是颜色或间距，而是产品壳成熟度和 Presentation 技术栈：ECQuota/GHGTOOL 已有 PySide6 导航式桌面壳，EquipEffi 仍是 Tk 单窗口 MVP。
+详见 `QA_BACKLOG.md`。
 
-后续应优先统一：
+## 10. 三软件一致性观察
 
-- 产品级导航语义；
-- 标准库和记录入口；
-- 最终结果层级；
-- 高级技术详情入口；
-- 中文业务语言。
+历史结论继续有效：本工具与另外两个青舟业务产品**不做像素级统一**，
+各自在中央 `UI_DESIGN_GUIDELINES_V0.1.md` 的推荐模式内按自身真实用户任务组织页面。
+Phase 6 **未**为三软件表面统一重构任何已正确的页面。
 
-不应在本次 Audit 中为了“家族一致”重写 Tk 窗口。
+## 11. 历史 Tk 事实（**historical**，不再是当前 UI 事实）
 
-## 9. 最终摘要
+以下为 Phase 2 时期记录的 legacy Tkinter / ttk 窗口事实，**仅供追溯**：
 
-```text
-当前 UI 技术栈：
-其他：Tkinter / ttk（Tk 不可用时存在 Web fallback）
+- 主窗口类 `EquipmentEfficiencyWindow`（`presentation/desktop/main_window.py`），
+  使用 `tkinter` / `ttk`；含「设备类型」下拉、`as_of` 输入、淘汰判定口径下拉、
+  参数填写区（`Canvas` + `Scrollbar`）、判定结果区与结果文本框。
+- 其 `as_of` 输入曾参与"判定基准日期"语义。
 
-Reference Standard：
-GB 19762—2025 离心泵能效限定值及能效等级
+**Phase 6 变化**：`--gui` 不再启动 Tk；该窗口不再是任何用户产品入口；
+Tk 不可用时**不再**回退到 Web。实现与 `DesktopCallbacks` 辅助函数（表单模型、
+`result_summary`、`capability_status_text` 等）仍被 `tests/unit/test_desktop_form_model.py`
+引用，故按 Owner 规则保留并登记 `QA-P6-001`。
 
-完成一次业务所需主要页面数：
-1 个主要桌面窗口
+## 12. 最终摘要
 
-当前普通 UI 是否暴露内部字段：
-YES
-
-当前是否存在明显过度拆页：
-NO
-
-当前结果是否足够突出：
-YES
-
-当前业务解释是否面向普通用户：
-PARTIAL
-
-是否适合优先单页：
-YES
-
-P0 数量：
-0
-P1 数量：
-3
-P2 数量：
-2
-P3 数量：
-0
-```
-
-本盘点完成后停止；不构成 Phase 2 启动或 PySide6 重构授权。
+- 正式 Windows 桌面 Shell = **PySide6 Qt Desktop**；无参数 / `--gui` / `--qt` 同一入口。
+- 五个一级页面全部为真实页面，无 placeholder、无开发态文案。
+- 首页复用现有 Workspace / Record 能力，未新增 persistence。
+- 标准库无第二真值源，标准事实全部来自 Application read model。
+- 分析页单页、双 rule profile 共用；结果五层分级，技术详情默认折叠。
+- 记录页具备搜索与筛选；历史快照不漂移、Reopen 不重算。
+- 设置页只暴露真实可配置项；关于 / 运行信息齐备。
+- 未引入事件总线 / Router Framework / Page 基类体系 / DI 容器。

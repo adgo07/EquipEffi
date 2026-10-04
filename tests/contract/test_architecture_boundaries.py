@@ -100,13 +100,24 @@ class ArchitectureBoundaryTests(unittest.TestCase):
                 self.assertNotIn("infrastructure.standards.json_repository", source)
                 self.assertNotIn("JsonStandardRepository(", source)
 
-    def test_desktop_launcher_uses_shared_application_factory(self):
+    def test_legacy_tk_launcher_is_disconnected_from_the_product_entrypoint(self):
+        """Phase 6：legacy Tk 不再是任何用户产品入口，也不得回退到 Web。"""
+
         launcher = self.ROOT / "src" / "equipeffi" / "presentation" / "desktop" / "launcher.py"
         source = launcher.read_text(encoding="utf-8")
-        self.assertIn("from ...composition import create_application_api", source)
-        self.assertIn("create_application_api(", source)
-        self.assertNotIn("V4WorkbookReaderImpl", source)
-        self.assertNotIn("EvaluationService(", source)
+        for forbidden in ("launch_packaged_gui", "run_web", "V4WorkbookReaderImpl",
+                          "EvaluationService("):
+            with self.subTest(forbidden=forbidden):
+                self.assertNotIn(forbidden, source)
+
+    def test_desktop_product_shell_uses_the_shared_application_factory(self):
+        """正式桌面 Shell 必须经共享装配层构造服务，不得自带第二套装配。"""
+
+        composition = self.ROOT / "src" / "equipeffi" / "composition.py"
+        source = composition.read_text(encoding="utf-8")
+        self.assertIn("def launch_qt(", source)
+        self.assertIn("create_settings_runtime(", source)
+        self.assertIn("create_pump_analysis_service(", source)
 
     def test_application_and_presentation_use_profile_query_not_mapping_constant(self):
         for directory in (

@@ -418,6 +418,60 @@ class CentrifugalPumpAnalysisService:
         # （已登记 QA-P3-002）。
         return ()
 
+    # -- 标准概览 read model（Phase 6 G02）----------------------------------
+    #
+    # 只**组合已有权威数据**，不新增第二套标准事实源：
+    # 标准事实来自注入的标准仓库（Canonical pack），用户可见类别来自本模块自己的
+    # `PUMP_CATEGORIES` 目录，发布门禁来自本模块的 `_release_support`。
+    # Presentation 不得自行维护第二份标准表。
+
+    def standard_overview(self) -> dict[str, Any]:
+        """当前正式标准的展示元数据（供标准库页面使用）。"""
+
+        scopes: list[dict[str, Any]] = []
+        standard_name = ""
+        standard_code = GB19762_STANDARD_CODE
+        effective_date = ""
+        status = ""
+        data_version = ""
+        source_file = ""
+
+        for rule_profile in RULE_PROFILES:
+            pack = self._pack(rule_profile)
+            standard_name = standard_name or str(pack.get("standard_name", ""))
+            standard_code = str(pack.get("standard_code", standard_code))
+            effective_date = effective_date or str(pack.get("effective_date", ""))
+            status = status or str(pack.get("status", ""))
+            data_version = data_version or str(pack.get("data_version", ""))
+            source_file = source_file or str(pack.get("source_file", ""))
+            scopes.append({
+                "rule_profile": rule_profile,
+                "pack_id": str(pack.get("pack_id", "")),
+                "categories": [category.visible_name
+                               for category in PUMP_CATEGORIES
+                               if resolve_rule_profile(category.visible_name) == rule_profile],
+                "support_status": self._release_support(rule_profile),
+            })
+
+        return {
+            "standard_code": standard_code,
+            "standard_name": standard_name,
+            "status": status,
+            "effective_date": effective_date,
+            "data_version": data_version,
+            "source_file": source_file,
+            "scopes": scopes,
+            "supported_categories": [category.visible_name for category in PUMP_CATEGORIES
+                                     if not category.special],
+            "special_categories": [category.visible_name for category in PUMP_CATEGORIES
+                                   if category.special],
+            # 当前 Canonical Pack 未提供废止/替代元数据；如实说明而不是留空或编造。
+            "supersession_note": "当前标准数据未提供废止或被替代关系信息。",
+            # 生命周期提示（非阻断）；评价日期不是业务门禁。
+            "lifecycle_warning": "该标准尚未实施",
+            "as_of_policy": "评价日期用于记录与追溯；不影响所选标准的计算。",
+        }
+
     def _base_result(self, request: PumpAnalysisRequest, pack: dict[str, Any],
                      rule_profile: str | None) -> dict[str, Any]:
         return {

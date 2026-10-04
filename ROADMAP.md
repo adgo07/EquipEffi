@@ -20,14 +20,14 @@
 | Profile | `scope_status` | `support_status`（当前） | 标准开发成熟度 | 目标 |
 |---|---|---|---|---|
 | `pump_water` | `IN_V1` | `SUPPORTED` | `SUPPORTED` | 已达成 |
-| `pump_chemical` | `IN_V1` | `SUPPORT_PROMOTION_CANDIDATE`（统一 Qt 正式路径取值 `SUPPORTED`） | `IMPLEMENTED`（`SUPPORTED` 为候选） | `SUPPORTED` |
+| `pump_chemical` | `IN_V1` | `SUPPORTED` | `SUPPORTED` | 已达成（Phase 5 Stage D 独立验收通过，PR #13 @ `f3e32f84`） |
 | `transformer` | `POST_V1` | `NOT_IN_RELEASE_SCOPE` | 未进入本轮标准开发流程 | 本轮暂缓，资产保留 |
 
 三个维度（`scope_status` / `support_status` / 标准开发成熟度）**不得互相冒充**。
 
-**Phase 5 状态说明（不得误读）**：`pump_chemical` 的 Golden 早已具名批准（11/11），
+**Phase 5 状态说明（Phase 6 更新）**：`pump_chemical` 的 Golden 早已具名批准（11/11），
 Stage D 证据闭环已在 Phase 5 完成并交独立验收。**独立验收通过前，`support_status`
-只能写 `SUPPORT_PROMOTION_CANDIDATE`，不得写"正式支持已经生效"。**
+已随 Phase 5 Stage D 独立验收通过而**正式生效**（PR #13 @ `f3e32f84`）。**
 正式发布用户表面 = PySide6 Qt Desktop（`--qt`）；非正式表面的 support 差异
 登记为 `REGISTERED_DEVIATION`（见 `QA_BACKLOG.md` 的 `QA-P5-001`～`005`）。
 
@@ -48,7 +48,12 @@ Phase 4 = PHASE_4_PASS          (PR #12 独立验收并合并 @ d6112ea9)
           accepted head = a4034ef3751590b52a821d6a3bdbebcbca6a8ec9
           merge SHA     = d6112ea9c7c1c16f95d798c2229cdc54aaf6240a
           acceptance record = docs/phase4_acceptance_record.md
-Phase 5 = IN_PROGRESS           (pump_chemical Stage D 正式支持与发布门禁收口)
+Phase 5 = PHASE_5_PASS           (PR #13 独立验收并合并 @ f3e32f84)
+         accepted head = b064acf8f889c2c86335a8233eaf3eb8eb53f47b
+         acceptance record = docs/phase5_acceptance_record.md
+Phase 6 = IN_PROGRESS             (完整 GB 19762 Product Shell)
+         branch = phase6/gb19762-product-shell
+         base   = f3e32f84123937ed6caa2b84b7cc0cd04c3100e0
           branch = phase5/pump-chemical-stage-d-support
           base   = d6112ea9c7c1c16f95d798c2229cdc54aaf6240a
           stage D candidate = READY_FOR_INDEPENDENT_ACCEPTANCE
@@ -66,7 +71,7 @@ Phase 2 已由独立验收通过并合并（PR #10）。**Phase 3 已由独立�
 - **Phase 5** 不再承担 `pump_chemical` 的「首次接入」，改为承担其**正式发布支持收口（Stage D）**；Phase 5 其余职责暂不重新设计；
 - **不创建 V2.4**，**不改变 Phase 0～10 编号**，**不提前 Phase 4/6/7/8/9**；
 - 三个状态维度数值以第 2 节表格为唯一权威（Phase 5 起 `pump_chemical` 为
-  `SUPPORT_PROMOTION_CANDIDATE` / `IMPLEMENTED`，候选 `SUPPORTED`）。
+  `SUPPORTED` / `SUPPORTED`）。
 
 完整修正记录见路线原文第 8.2 节。
 
@@ -81,7 +86,7 @@ Phase 2 已由独立验收通过并合并（PR #10）。**Phase 3 已由独立�
 | Phase 6 | 围绕完整 GB 19762 建立完整产品 Shell | 按真实用户任务组织。 |
 | Phase 7 | 完整 GB 19762 的 Record、历史、恢复、结果解释、标准依据、异常状态与质量收口 | — |
 | Phase 8 | 完整 GB 19762 Excel 闭环 | 必须同时覆盖 `pump_water` + `pump_chemical`；GUI/Excel 共用同一业务内核；数值入口须先完成设计与证据验证。 |
-| Phase 9 | 完整 GB 19762 Windows V1 正式验收与发布 | `pump_chemical` 通过 Stage D 后切换 `support_status = SUPPORTED`。 |
+| Phase 9 | 完整 GB 19762 Windows V1 正式验收与发布 | `pump_chemical` 已在 Phase 5 通过 Stage D 并切换为 `support_status = SUPPORTED`。 |
 | Phase 10 | 后续标准、公共包、综合版、多平台 | 参考标准闭环通过后再逐个扩展。 |
 
 Phase 0～10 **编号与数量不得改变**；详细语义见路线原文第 8 节。
