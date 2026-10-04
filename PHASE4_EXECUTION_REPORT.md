@@ -408,16 +408,24 @@ known-regression comparator                              gate=PASS
 
 ### 10.1 Base → final Head 实际 diff 摘要
 
+上一次被验收 head（`51b7b79`）对 base 的确定性快照：
+
 ```text
-18 files changed, 2013 insertions(+), 151 deletions(-)
+git diff --shortstat 87d9ef1b 51b7b79
+→ 18 files changed, 2020 insertions(+), 151 deletions(-)
 ```
 
-（此前版本误写为 `16 files / +1134 / −144`：既漏计了后续提交，也未包含
-两次 `PHASE_4_BLOCKED` 修复。上表为对 base 的实际统计。）
+其中**排除本报告自身**（即代码 / 测试 / 工具 / CI / 治理文件）：
 
-> 统计口径说明：本报告本身也在该 diff 内，因此任何"精确到行的总数"都会随
-> 报告文本微调而变。**权威数字以 GitHub PR #12 的 diff 为准**；上表由
-> `git diff --shortstat 87d9ef1b <final head>` 得出。逐文件增量见 10.2。
+```text
+17 files changed, 1552 insertions(+), 151 deletions(-)
+```
+
+本报告所在的最终提交在其之上仅增加本文档自身的改动。
+
+> 统计口径说明：本报告本身也在该 diff 内，因此"精确到行的总数"必然随报告文本
+> 微调而变，属自指。**权威数字以 GitHub PR #12 的 diff 为准**；
+> 上面给出的是上一次被验收 head 的确定性快照。逐文件增量见 10.2。
 
 ### 10.2 changed files
 
