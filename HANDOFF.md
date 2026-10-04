@@ -1,14 +1,14 @@
 # EquipEffi 当前交接
 
-路线 EquipEffi V2.3；Phase 1 = PHASE_1_PASS；Phase 2 = PHASE_2_PASS；**Phase 3 = PHASE_3_PASS**（PR #11 合并 @ `87d9ef1bf32fb3f765d4f8ef3f97aa222913152a`）；**Phase 4 = PHASE_4_PASS**（PR #12 合并 @ `d6112ea9c7c1c16f95d798c2229cdc54aaf6240a`）；**Phase 5 = PHASE_5_PASS**（PR #13 合并 @ `f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`，验收落档 `docs/phase5_acceptance_record.md`）；**Phase 6 = IN_PROGRESS**；automatic_continuation = DISABLED。
+路线 EquipEffi V2.3；Phase 1 = PHASE_1_PASS；Phase 2 = PHASE_2_PASS；**Phase 3 = PHASE_3_PASS**（PR #11 合并 @ `87d9ef1bf32fb3f765d4f8ef3f97aa222913152a`）；**Phase 4 = PHASE_4_PASS**（PR #12 合并 @ `d6112ea9c7c1c16f95d798c2229cdc54aaf6240a`）；**Phase 5 = PHASE_5_PASS**（PR #13 合并 @ `f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`，验收落档 `docs/phase5_acceptance_record.md`）；**Phase 6 = PHASE_6_PASS**（PR #14 合并 @ `6ead21fb6757d5d92ba81851f23e3c41d86598af`）；**Phase 7 = IN_PROGRESS**；automatic_continuation = DISABLED。
 
 ## 当前任务
 
-用户已明确授权执行 **Phase 6：完整 GB 19762 Product Shell**——把 Phase 2～5 已成立的完整 GB 19762（`pump_water` + `pump_chemical`）业务能力组织成正式、完整、可长期使用的 Windows PySide6 产品 Shell。**不是重新设计业务算法。**
+用户已明确授权执行 **Phase 7：GB19762 分析流程与历史记录最终收口**——选泵型 → 填参数 → 点「分析」→ 显示结果 → **合法结果自动形成不可变历史记录** → 以后从「分析记录」查看当时的输入、结果与依据。
 
-**状态**：`Phase 6 implementation = EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`。**不得**自行宣布 `PHASE_6_PASS`；不得合并 PR；不得进入 Phase 7。
+**状态**：`Phase 7 implementation = EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`。**不得**自行宣布 `PHASE_7_PASS`；不得合并 PR；不得进入 Phase 8。
 
-- 分支 `phase6/gb19762-product-shell`；base `f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`
+- 分支 `phase7/gb19762-analysis-history-closure`；base `6ead21fb6757d5d92ba81851f23e3c41d86598af`
 - Stage D 证据矩阵：`docs/phase5_stage_d_evidence_matrix.md`
 - FORMAL_APPLICATION_E2E 证据：`specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json`
 - **正式发布用户表面（Owner 决定）= PySide6 Qt Desktop（`--qt`）**；`--json` / `ApplicationApi` / `--web` / JSONL / legacy Tk `--gui` / Android bridge / V4·Excel 是现存的 compatibility / development / future-adapter surfaces，其 support 差异登记为 `REGISTERED_DEVIATION`（`QA-P5-001`～`005`）

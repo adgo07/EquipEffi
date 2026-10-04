@@ -21,13 +21,16 @@ from ..tokens import TOKENS
 
 
 class HomePage(QWidget):
-    """开始新分析 / 继续最近草稿 / 打开最近正式记录 / 查看当前正式标准。"""
+    """开始新分析 / 打开最近历史记录 / 查看当前正式标准。
+
+Phase 7：普通用户界面没有「分析草稿」概念，因此本页不提供草稿入口；
+每次「分析」都会自动形成一条历史记录，本页直接列出最近记录。
+"""
 
     def __init__(self, service, navigator=None, parent: QWidget | None = None):
         super().__init__(parent)
         self.service = service
         self.navigator = navigator
-        self._draft_ids: list[str] = []
         self._record_ids: list[str] = []
 
         layout = QVBoxLayout(self)
@@ -56,17 +59,7 @@ class HomePage(QWidget):
         primary.addStretch()
         layout.addLayout(primary)
 
-        drafts_group = QGroupBox("继续最近的草稿")
-        drafts_layout = QVBoxLayout(drafts_group)
-        self.drafts = QListWidget()
-        self.drafts.itemDoubleClicked.connect(self._open_draft_item)
-        drafts_layout.addWidget(self.drafts)
-        self.resume_button = QPushButton("继续选中的草稿")
-        self.resume_button.clicked.connect(self._resume_selected_draft)
-        drafts_layout.addWidget(self.resume_button)
-        layout.addWidget(drafts_group)
-
-        records_group = QGroupBox("最近的正式记录")
+        records_group = QGroupBox("最近的历史记录")
         records_layout = QVBoxLayout(records_group)
         self.records = QListWidget()
         self.records.itemDoubleClicked.connect(self._open_record_item)
@@ -82,22 +75,13 @@ class HomePage(QWidget):
     # -- 数据 ---------------------------------------------------------------
 
     def refresh(self) -> None:
-        """刷新标准信息、最近草稿与最近记录。"""
+        """刷新标准信息与最近历史记录。"""
 
         overview = self.service.standard_overview()
         self.standard_label.setText(
             f"当前正式标准：{overview['standard_code']}《{overview['standard_name']}》\n"
             f"实施日期：{overview['effective_date'] or '—'}"
         )
-
-        self._draft_ids = []
-        self.drafts.clear()
-        for workspace in self.service.list_workspaces(limit=5):
-            label = f"{workspace.workspace_id}　{workspace.product_category}"
-            if workspace.updated_at_utc:
-                label += f"　更新于 {workspace.updated_at_utc}"
-            self.drafts.addItem(QListWidgetItem(label))
-            self._draft_ids.append(workspace.workspace_id)
 
         self._record_ids = []
         self.records.clear()
@@ -107,11 +91,6 @@ class HomePage(QWidget):
                 f"{record.record_id}　{record.product_category}　{grade}"
                 f"　{record.as_of}"))
             self._record_ids.append(record.record_id)
-
-        has_drafts = bool(self._draft_ids)
-        self.resume_button.setEnabled(has_drafts)
-        if not has_drafts:
-            self.drafts.addItem(QListWidgetItem("暂无草稿"))
 
         has_records = bool(self._record_ids)
         self.open_record_button.setEnabled(has_records)
@@ -127,16 +106,6 @@ class HomePage(QWidget):
     def _open_standard(self) -> None:
         if self.navigator is not None:
             self.navigator.open_standards()
-
-    def _open_draft_item(self, item: QListWidgetItem) -> None:
-        self._open_draft(self.drafts.row(item))
-
-    def _resume_selected_draft(self) -> None:
-        self._open_draft(self.drafts.currentRow())
-
-    def _open_draft(self, row: int) -> None:
-        if 0 <= row < len(self._draft_ids) and self.navigator is not None:
-            self.navigator.open_analysis(workspace_id=self._draft_ids[row])
 
     def _open_record_item(self, item: QListWidgetItem) -> None:
         self._open_record(self.records.row(item))

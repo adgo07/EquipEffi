@@ -1,12 +1,14 @@
 roadmap: EquipEffi V2.3
-phase: Phase 6
-goal: 完整 GB 19762 Product Shell
+phase: Phase 7
+goal: GB19762 分析流程与历史记录最终收口
 status: EXECUTION_COMPLETE
-previous_acceptance: PHASE_5_PASS
+previous_acceptance: PHASE_6_PASS
 next_status: READY_FOR_INDEPENDENT_ACCEPTANCE
 qt_is_the_only_formal_windows_shell: true
+analysis_auto_records: true
+ordinary_user_draft_concept: REMOVED
 pump_chemical_support_status: SUPPORTED
-phase_6_pass_self_declared: false
+phase_7_pass_self_declared: false
 
 # ---------------------------------------------------------------------------
 # 本文件只承担“当前状态”。历史执行细节、run ID、历史测试数字与旧 SHA 一律
@@ -14,36 +16,35 @@ phase_6_pass_self_declared: false
 # ---------------------------------------------------------------------------
 
 current_task:
-  task_id: PHASE6-GB19762-PRODUCT-SHELL
-  branch: phase6/gb19762-product-shell
-  task_kind: authorised Phase 6 execution
-  phase_6_execution: true
-  base_sha: f3e32f84123937ed6caa2b84b7cc0cd04c3100e0
-  execution_report: PHASE6_EXECUTION_REPORT.md
+  task_id: PHASE7-ANALYSIS-HISTORY-CLOSURE
+  branch: phase7/gb19762-analysis-history-closure
+  task_kind: authorised Phase 7 execution
+  phase_7_execution: true
+  base_sha: 6ead21fb6757d5d92ba81851f23e3c41d86598af
+  execution_report: PHASE7_EXECUTION_REPORT.md
   ui_current_state_audit: UI_CURRENT_STATE_AUDIT.md（Phase 6 已按 Qt 实现重新盘点）
   formal_product_surface: PySide6 Qt Desktop（无参数 / --gui / --qt 同一入口）
   official_entrypoint_decision: TK_RETIRED_QT_IS_THE_ONLY_SHELL
   primary_navigation: 首页 / 标准库 / 新建分析 / 分析记录 / 设置（全部真实页面，无 placeholder）
   evidence_claim: 一个 GB19762 产品级 E2E 样板，其中有 water + chemical 两个真实内部 rule profile（不得表述为两个独立设备/标准 E2E 样板）
-  phase_6_pass_self_declared: false
+  phase_7_pass_self_declared: false
   phase_7_started: false
   merge_authorized: false
   goals:
-    P6-G00: COMPLETE
-    P6-G01: COMPLETE
-    P6-G02: COMPLETE
-    P6-G03: COMPLETE
-    P6-G04: COMPLETE
-    P6-G05: COMPLETE
-    P6-G06: COMPLETE（R1 已关闭 QA-P5-001 / QA-P5-002 / QA-P3-003；见 QA_BACKLOG.md 的 closed_by）
-    P6-G07: COMPLETE
-  deviations_registered:
-    QA-P6-001: legacy Tk 保留但不接线；disposition Phase 8
-    QA-P6-002: CLOSED（R1：补登记历史实现哈希，实现可演进；见 QA_BACKLOG.md）
-    QA-P6-003: 草稿 identity 名称即 ID；disposition Phase 7
-    QA-P6-004: 非正式 adapter 未升级为正式 UI；disposition Phase 8 / 9
-    QA-P5-001 / QA-P5-002 / QA-P3-003: CLOSED（R1：入口语义收口，机械测试证明）
-  next_action: 等待独立验收；do not merge; do not start Phase 7
+    P7-G00: COMPLETE
+    P7-G01: COMPLETE
+    P7-G02: COMPLETE
+    P7-G03: COMPLETE
+    P7-G04: COMPLETE
+    P7-G05: COMPLETE
+  product_rules_owner: 9 条（见 AGENTS.md §2.8）
+  records_schema_changed: false
+  new_deviations:
+    QA-P7-001: 版本字段实际存 profile 标识（不伪造，Presentation 改为标注「规则集标识」）；disposition 后续版本化任务
+    QA-P7-002: 旧 Record 未冻结完整标准依据；降级显示，不追溯改写
+  closed_deviations:
+    QA-P6-003: 草稿概念退出产品表面而消解
+  next_action: 等待独立验收；do not merge; do not start Phase 8
 
 previous_task:
   task_id: PHASE4-MINIMAL-LIFECYCLE-GENERALIZATION
@@ -130,7 +131,7 @@ phase_2:
   design: docs/31_Phase 2 最小正式工程底座.md
   execution_report: PHASE2_EXECUTION_REPORT.md
 
-allowed_next: Phase 6 G00..G07 execution and evidence only; no merge; no Phase 7
+allowed_next: Phase 7 G00..G06 execution and evidence only; no merge; no Phase 8
 automatic_continuation: DISABLED
 phase_0b: NOT_EXECUTED
 phase_1_hotfix: NOT_EXECUTED

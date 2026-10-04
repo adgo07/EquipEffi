@@ -328,7 +328,6 @@ class QtChemicalStageDTests(unittest.TestCase):
 
     def _fill(self, category: str, values: dict) -> None:
         self.page.category.setCurrentIndex(self.page.category.findData(category))
-        self.page.as_of.setText(AS_OF.isoformat())
         for key, value in values.items():
             if value is None:
                 continue
@@ -348,23 +347,29 @@ class QtChemicalStageDTests(unittest.TestCase):
                 result = self.page.evaluate()
                 self.assertEqual(result.rule_profile, "pump_chemical")
                 self.assertEqual(result.support_status, "SUPPORTED")
-                self.assertIn("支持状态：正式支持", self.page.technical.text())
+                # Phase 7：分析页不再显示技术详情；支持状态是 Result / Record 事实，
+                # 由「分析记录」页的审计信息展示。
+                self.assertEqual(self.page.last_record_status, "RECORDED")
 
     def test_chemical_support_status_is_read_only_auxiliary_information(self):
         """support_status 不得成为主业务结论。"""
 
         self._fill(CHEMICAL_SINGLE, SINGLE_NORMAL)
-        self.page.evaluate()
+        result = self.page.evaluate()
         ordinary = "\n".join([self.page.conclusion.text(), self.page.summary.text(),
                               self.page.basis.text()])
+        # 支持状态不是主业务结论：不得混入普通结果区。
         self.assertNotIn("支持状态", ordinary)
-        self.assertIn("支持状态：正式支持", self.page.technical.text())
+        # 但它是结果契约的事实，并且已随 Record 冻结。
+        self.assertEqual(result.support_status, "SUPPORTED")
 
     def test_chemical_conclusion_variants_through_the_page(self):
         variants = (
             ("normal", dict(SINGLE_NORMAL), "SUCCESS"),
             ("out of scope", dict(SINGLE_NORMAL, HBEP="10"), "OUT_OF_STANDARD_SCOPE"),
-            ("invalid", dict(SINGLE_NORMAL, stages="2"), "INVALID_INPUT"),
+            # Phase 7：单级类别的级数被类别锁定，"单级 + 级数2"不再可达；
+            # 非法数值（非数字）仍是可达的 INVALID_INPUT 业务终态。
+            ("invalid", dict(SINGLE_NORMAL, efficiency="abc"), "INVALID_INPUT"),
         )
         for label, values, expected in variants:
             with self.subTest(case=label):

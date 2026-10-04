@@ -1,16 +1,32 @@
-"""统一 GB 19762—2025 离心泵分析页（Phase 3 P3-G02）。
+"""统一 GB 19762—2025 离心泵分析页。
 
-一个页面同时承载清水类与石油化工类全部正式类别；用户**不**选择
-`pump_water` / `pump_chemical`，也不看到任何内部 rule profile、field_id 或 rule_id。
+产品流程（Owner，Phase 7）只有一条：
 
-本模块只做投影与调用：所有公式、查表、等级比较、边界判断都在 Application /
-Domain 层。Qt 不得复制任何业务算法。
+```text
+选择泵型 → 填写参数 → 点击「分析」 → 显示清晰结果
+         → 合法业务终态**自动**形成不可变历史记录
+         → 之后从「分析记录」打开查看当时的输入、结果与依据
+```
+
+因此本页**没有**分析草稿、**没有**评价日期输入、**没有**「保存为正式记录」，
+**没有**技术详情折叠区。
+
+约束：
+
+- 一个页面同时承载清水类与石油化工类全部正式类别；用户**不**选择
+  `pump_water` / `pump_chemical`，也看不到任何内部 rule profile、field_id 或 rule_id。
+- 本模块只做投影与调用：所有公式、查表、等级比较、边界判断都在 Application /
+  Domain 层。Qt 不得复制任何业务算法。
+- 类别唯一决定的字段（级数 / 吸入方式）取自 Application 的
+  `category_field_constraints`，本模块**不新造**业务规则。
+- 显示格式化（2 位小数）**只作用于本页文本**，不回写 Result、Record 快照、
+  阈值比较或 Golden 真值。
 """
 from __future__ import annotations
 
+import logging
 from datetime import date
-from typing import Callable
-from uuid import uuid4
+from typing import Any, Callable
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
@@ -32,14 +48,15 @@ from ....application.services.centrifugal_pump_analysis_service import (
     PUMP_CATEGORIES,
     PUMP_CATEGORY_GROUPS,
     THRESHOLD_DISPLAY_NAMES,
-    AnalysisError,
     CentrifugalPumpAnalysisService,
     PumpAnalysisRequest,
     PumpAnalysisResult,
+    category_field_constraints,
 )
 from ..tokens import TOKENS
-from ..labels import issue_code_texts, support_status_text
-from ..widgets.collapsible import CollapsibleSection
+from ..labels import issue_code_texts
+
+_LOGGER = logging.getLogger("equipeffi.qt.analysis")
 
 #: 规定点参数字段（用户可见标签 + 内部字段名）。
 POINT_FIELDS: tuple[tuple[str, str, str], ...] = (
@@ -52,29 +69,55 @@ POINT_FIELDS: tuple[tuple[str, str, str], ...] = (
 #: 吸入方式选项（沿用已批准业务枚举，不在 UI 新造值）。
 SUCTION_OPTIONS: tuple[str, ...] = ("单吸", "双吸")
 
-#: 自动锁定的级数（类别文本前缀只有一个标准级数的类别）。
-_SINGLE_STAGE_CATEGORIES = frozenset(
-    {"单级单吸清水离心泵", "单级双吸清水离心泵", "管道清水离心泵", "单级石油化工离心泵"}
-)
+#: 普通结果区需要按 2 位小数显示的派生量显示名（Presentation 层格式化）。
+_TWO_DECIMAL_METRICS: frozenset[str] = frozenset({
+    "泵效率_%", "实际泵效率", "规定点效率", "基准效率", "效率修正",
+    "比转速", "输出功率_kW", "单级扬程_m",
+})
+
+#: 系统执行失败的统一用户文案（真实原因只进日志）。
+SYSTEM_FAILURE_TEXT = "分析未能完成，请检查输入或联系技术人员。"
+
+
+def format_display_number(value: Any) -> str:
+    """把连续型派生数值格式化为 2 位小数（**仅用于显示**）。
+
+    只影响本页文本：不改变 `Decimal` 原始值、Numeric Profile、等级比较值、
+    Record 精确快照或 Golden business truth。非数值原样返回。
+    """
+
+    if value is None:
+        return "—"
+    try:
+        from decimal import Decimal, InvalidOperation
+
+        number = Decimal(str(value).strip())
+    except (InvalidOperation, ValueError, TypeError):
+        return str(value)
+    if not number.is_finite():
+        return str(value)
+    return f"{number:.2f}"
 
 
 class AnalysisPage(QWidget):
     """统一离心泵分析页。"""
 
     def __init__(self, service: CentrifugalPumpAnalysisService,
-                 *, workspace_id: str | None = None,
-                 record_id_factory: Callable[[], str] | None = None,
-                 navigator=None):
+                 *, record_id_factory: Callable[[], str] | None = None,
+                 navigator=None, as_of: date | None = None):
         super().__init__()
         self.service = service
         self.navigator = navigator
-        self._workspace_id = workspace_id
         self._record_id_factory = record_id_factory
+        #: 评价日期默认取**本机当天**（Owner 规则，Phase 7：页面不显示、不要求填写）。
+        #: 该覆盖只供测试固定日期，**不产生任何用户可见控件**。
+        self._as_of_override = as_of
         self._last_request: PumpAnalysisRequest | None = None
         self._last_result: PumpAnalysisResult | None = None
-        self._saved_record_id: str | None = None
-        #: 最近一次保存成功的正式记录编号（供 shell / 测试读取）。
+        #: 最近一次**自动**形成的正式记录编号。
         self.last_saved_record_id: str | None = None
+        #: 最近一次记录保存状态：RECORDED / NOT_RECORDED / SAVE_FAILED。
+        self.last_record_status: str | None = None
         self._build()
 
     # -- 构建 ---------------------------------------------------------------
@@ -100,7 +143,6 @@ class AnalysisPage(QWidget):
         body = QWidget()
         layout = QVBoxLayout(body)
         layout.setSpacing(TOKENS.section_gap)
-        layout.addWidget(self._draft_group())
         layout.addWidget(self._basic_group())
         layout.addWidget(self._category_group())
         layout.addWidget(self._points_group())
@@ -111,59 +153,21 @@ class AnalysisPage(QWidget):
         outer.addWidget(scroll, 1)
         # 先建好输入控件再应用一次类别联动，避免信号早于控件创建。
         self._on_category_changed()
-        self.refresh_drafts()
-
-    def _draft_group(self) -> QGroupBox:
-        """草稿（Workspace）用户入口：新建 / 保存 / 载入 / 删除。
-
-        草稿必须在**分析之前**就能独立保存，并在程序重启后重新列出与恢复；
-        它不是"保存正式记录"的副产物。
-        """
-
-        group = QGroupBox("分析草稿")
-        layout = QGridLayout(group)
-        layout.addWidget(QLabel("草稿名称"), 0, 0)
-        self.draft_name = QLineEdit()
-        self.draft_name.setPlaceholderText("例如：3号循环水泵-2026Q4")
-        layout.addWidget(self.draft_name, 0, 1, 1, 3)
-
-        self.save_draft_button = QPushButton("保存草稿")
-        self.save_draft_button.clicked.connect(self.save_draft)
-        self.new_draft_button = QPushButton("新建草稿")
-        self.new_draft_button.clicked.connect(self.new_draft)
-        layout.addWidget(self.save_draft_button, 0, 4)
-        layout.addWidget(self.new_draft_button, 0, 5)
-
-        layout.addWidget(QLabel("已有草稿"), 1, 0)
-        self.draft_list = QComboBox()
-        layout.addWidget(self.draft_list, 1, 1, 1, 2)
-        self.load_draft_button = QPushButton("载入")
-        self.load_draft_button.clicked.connect(self.load_selected_draft)
-        self.refresh_drafts_button = QPushButton("刷新")
-        self.refresh_drafts_button.clicked.connect(self.refresh_drafts)
-        self.delete_draft_button = QPushButton("删除草稿")
-        self.delete_draft_button.clicked.connect(self.delete_selected_draft)
-        layout.addWidget(self.load_draft_button, 1, 3)
-        layout.addWidget(self.refresh_drafts_button, 1, 4)
-        layout.addWidget(self.delete_draft_button, 1, 5)
-
-        self.draft_status = QLabel("尚未保存草稿。")
-        self.draft_status.setWordWrap(True)
-        layout.addWidget(self.draft_status, 2, 0, 1, 6)
-        return group
 
     def _basic_group(self) -> QGroupBox:
+        """基本信息：企业/项目名称与设备编号。
+
+        **不含评价日期**：新分析自动采用本机当天日期（Owner 规则，Phase 7）。
+        """
+
         group = QGroupBox("基本信息")
         form = QFormLayout(group)
         self.project_name = QLineEdit()
         self.project_name.setPlaceholderText("可选")
         self.equipment_no = QLineEdit()
         self.equipment_no.setPlaceholderText("可选")
-        self.as_of = QLineEdit(date.today().isoformat())
-        self.as_of.setToolTip("评价日期用于记录与追溯；不影响所选标准的计算。")
         form.addRow("企业/项目名称", self.project_name)
         form.addRow("设备编号", self.equipment_no)
-        form.addRow("评价日期", self.as_of)
         return group
 
     def _category_group(self) -> QGroupBox:
@@ -211,6 +215,11 @@ class AnalysisPage(QWidget):
         grid.addWidget(QLabel("级数"), len(POINT_FIELDS) + 1, 0)
         self.stages = QLineEdit()
         grid.addWidget(self.stages, len(POINT_FIELDS) + 1, 1)
+        # 类别锁定说明：让用户知道该值由泵型唯一决定，不是软件随意填的。
+        self.locked_hint = QLabel("")
+        self.locked_hint.setWordWrap(True)
+        self.locked_hint.setStyleSheet("color: #65727e;")
+        grid.addWidget(self.locked_hint, len(POINT_FIELDS) + 2, 0, 1, 2)
         return group
 
     def _actions(self) -> QWidget:
@@ -219,11 +228,7 @@ class AnalysisPage(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         self.evaluate_button = QPushButton("分析")
         self.evaluate_button.clicked.connect(self.evaluate)
-        self.finalize_button = QPushButton("保存为正式记录")
-        self.finalize_button.clicked.connect(self.finalize)
-        self.finalize_button.setEnabled(False)
         layout.addWidget(self.evaluate_button)
-        layout.addWidget(self.finalize_button)
         layout.addStretch()
         return holder
 
@@ -241,7 +246,7 @@ class AnalysisPage(QWidget):
         self.summary.setTextFormat(Qt.TextFormat.PlainText)
         layout.addWidget(self.summary)
 
-        # 非阻断提示（标准生命周期）。默认隐藏；不参与判定，也不阻止保存。
+        # 非阻断提示（标准生命周期）。默认隐藏；不参与判定。
         self.warning_label = QLabel("")
         self.warning_label.setWordWrap(True)
         self.warning_label.setTextFormat(Qt.TextFormat.PlainText)
@@ -267,16 +272,11 @@ class AnalysisPage(QWidget):
         self.basis.setTextFormat(Qt.TextFormat.PlainText)
         layout.addWidget(self.basis)
 
-        # 技术详情渐进展示：内部 rule / data id / Numeric Profile 归此处，
-        # 默认真正收起（不是 QToolBox 的名义折叠），审计能力保留。
-        self.technical_box = CollapsibleSection(
-            "技术详情（规则编号、数据版本、数值配置）", expanded=False)
-        self.technical = QLabel("")
-        self.technical.setWordWrap(True)
-        self.technical.setTextFormat(Qt.TextFormat.PlainText)
-        self.technical.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.technical_box.set_content(self.technical)
-        layout.addWidget(self.technical_box)
+        # 历史记录状态：明确区分"已形成历史记录"与"记录保存失败"。
+        self.record_label = QLabel("")
+        self.record_label.setWordWrap(True)
+        self.record_label.setTextFormat(Qt.TextFormat.PlainText)
+        layout.addWidget(self.record_label)
         return group
 
     # -- 交互 ---------------------------------------------------------------
@@ -285,244 +285,108 @@ class AnalysisPage(QWidget):
         return self.category.currentData()
 
     def _on_category_changed(self, *_: object) -> None:
+        """应用类别唯一决定的字段约束（级数 / 吸入方式）。
+
+        约束来自 Application 的 `category_field_constraints`，本页不新造规则：
+        被锁定的字段自动赋值并禁止用户修改；未锁定的字段保持用户选择
+        （例如"管道清水离心泵"的吸入方式、多级泵的级数）。
+        """
+
         category = self.current_category()
         entry = next((c for c in PUMP_CATEGORIES if c.visible_name == category), None)
-        if entry is None:
-            self.category_help.setText(
-                "请选择产品类别。若无法判断，可选“不确定类别”查看判断说明。")
-        else:
-            self.category_help.setText(entry.help_text)
-        if category in _SINGLE_STAGE_CATEGORIES:
-            # 类别本身已唯一决定级数；这是既有业务契约，不是 UI 新造规则。
-            self.stages.setText("1")
+        self.category_help.setText(
+            entry.help_text if entry is not None
+            else "请选择产品类别。若无法判断，可选“不确定类别”查看判断说明。")
+
+        constraints = category_field_constraints(category)
+        locked_labels: list[str] = []
+
+        stages_value = constraints.get("stages")
+        if stages_value is not None:
+            self.stages.setText(stages_value)
             self.stages.setEnabled(False)
+            locked_labels.append(f"级数 = {stages_value}")
         else:
             self.stages.setEnabled(True)
             if category is None:
                 self.stages.clear()
+
+        suction_value = constraints.get("suction")
+        if suction_value is not None:
+            index = self.suction.findData(suction_value)
+            if index >= 0:
+                self.suction.setCurrentIndex(index)
+            self.suction.setEnabled(False)
+            locked_labels.append(f"吸入方式 = {suction_value}")
+        else:
+            self.suction.setEnabled(True)
+            if category is None:
+                self.suction.setCurrentIndex(0)
+
+        self.locked_hint.setText(
+            "该泵型已唯一确定：" + "、".join(locked_labels) + "（由标准适用范围决定，不可修改）"
+            if locked_labels else "")
 
     def _collect_request(self) -> PumpAnalysisRequest | None:
         category = self.current_category()
         if not category:
             self._show_error("请先选择产品类别。")
             return None
-        try:
-            as_of = date.fromisoformat(self.as_of.text().strip())
-        except ValueError:
-            self._show_error("评价日期格式应为 YYYY-MM-DD。")
-            return None
         values = {key: (edit.text().strip() or None)
                   for key, edit in self.point_inputs.items()}
+
+        # 锁定字段**强制**取权威值：不依赖控件状态，用户改不动、也绕不过。
+        constraints = category_field_constraints(category)
+        suction = constraints.get("suction", self.suction.currentData())
+        stages = constraints.get("stages", self.stages.text().strip() or None)
+
         return PumpAnalysisRequest(
             product_category=category,
-            as_of=as_of,
-            suction=self.suction.currentData(),
-            stages=self.stages.text().strip() or None,
+            # 评价日期自动取本机当天，用户不填、不选（Owner 规则，Phase 7）。
+            as_of=self._as_of_override or date.today(),
+            suction=suction,
+            stages=stages,
             project_name=self.project_name.text().strip() or None,
             equipment_no=self.equipment_no.text().strip() or None,
             **values,
         )
 
-    def evaluate(self) -> PumpAnalysisResult | None:
-        """重新分析。
+    def _next_record_id(self) -> str | None:
+        return self._record_id_factory() if self._record_id_factory is not None else None
 
-        开始前必须先作废上一次结果：清空 `_last_request` / `_last_result` 并禁用
-        Finalize。否则一次失败的新分析会**保留**旧的 SUCCESS 结果，用户随后点
-        "保存为正式记录"就会把旧结果当成新输入固化。
+    def evaluate(self) -> PumpAnalysisResult | None:
+        """执行「分析」：评价 + 自动固化合法业务终态。
+
+        开始前先作废上一次结果，避免把旧结果当成新输入。
+
+        **系统异常与业务结论严格分离**：评价阶段的异常原样抛出并由本页按系统失败
+        处理（真实原因进日志），**不**被转换成"无法判定"或"资料不足"。
         """
 
         self._last_request = None
         self._last_result = None
-        self.finalize_button.setEnabled(False)
+        self.last_saved_record_id = None
+        self.last_record_status = None
 
         request = self._collect_request()
         if request is None:
             return None
         try:
-            result = self.service.evaluate(request)
-        except Exception as error:  # noqa: BLE001 - 任何异常都不得留下旧结果
-            self._show_error(f"分析失败：{error}")
+            outcome = self.service.analyze_and_record(
+                request, record_id=self._next_record_id())
+        except Exception:  # noqa: BLE001 - 系统失败不得伪装成业务结论
+            _LOGGER.exception("分析执行失败（系统异常）")
+            self._show_error(SYSTEM_FAILURE_TEXT)
+            self.last_record_status = "SAVE_FAILED"
             return None
+
         self._last_request = request
-        self._last_result = result
-        self._render(result)
-        self.finalize_button.setEnabled(result.finalizable)
-        return result
-
-    def finalize(self) -> str:
-        """把当前分析固化为正式记录；返回状态说明文本（同时显示在结果区）。
-
-        必须携带产生该结果的 request（指纹核对）与草稿修订号；任何不一致都会被
-        Application 层拒绝，本页不自行放宽。
-        """
-
-        if self._last_result is None or self._last_request is None:
-            self._show_error("请先执行分析，再保存正式记录。")
-            return "NO_RESULT"
-        if not self._last_result.finalizable:
-            self._show_error(self._last_result.not_finalizable_reason or "当前结果不允许保存。")
-            return "NOT_FINALIZABLE"
-
-        # 保存前必须确认表单自分析后没有被修改，否则会把旧结果当成新输入保存。
-        current = self._collect_request()
-        if current is None:
-            return "REJECTED"
-        if current.request_fingerprint() != self._last_result.request_fingerprint:
-            self._show_error(
-                "输入已在分析之后被修改，当前结果已过期；请重新分析后再保存正式记录。")
-            return "STALE_RESULT"
-
-        workspace_id = self._workspace_id
-        if workspace_id is not None:
-            try:
-                # 草稿必须先落盘，Finalize 才能核对修订号。
-                workspace = self.service.save_workspace_from_request(
-                    workspace_id, self._last_request)
-                request = self.service.request_from_workspace(workspace)
-                result = self.service.evaluate(request)
-                self._last_request, self._last_result = request, result
-                if not result.finalizable:
-                    self._show_error(result.not_finalizable_reason or "当前结果不允许保存。")
-                    return "NOT_FINALIZABLE"
-
-                record_id = self._next_record_id()
-                record = self.service.finalize(record_id=record_id, workspace_id=workspace_id,
-                                               request=request, result=result)
-            except AnalysisError as error:
-                self._show_error(str(error))
-                return "REJECTED"
-        else:
-            try:
-                record_id = self._next_record_id()
-                record = self.service.finalize(
-                    record_id=record_id, workspace_id=None,
-                    request=self._last_request, result=self._last_result)
-            except AnalysisError as error:
-                self._show_error(str(error))
-                return "REJECTED"
-
-        self._saved_record_id = record.record_id
-        self.last_saved_record_id = record.record_id
-        self.finalize_button.setEnabled(False)
-        self.summary.setText(
-            f"{self.summary.text()}\n正式记录已保存：{record.record_id}"
-            f"（{record.finalized_at_utc}）")
-        return "SAVED"
-
-    def load_workspace(self, workspace_id: str) -> bool:
-        """把草稿载入表单（Reopen/继续编辑入口）。"""
-
-        workspace = self.service.load_workspace(workspace_id)
-        if workspace is None:
-            return False
-        self._workspace_id = workspace_id
-        self.draft_name.setText(workspace_id)
-        index = self.category.findData(workspace.product_category)
-        if index >= 0:
-            self.category.setCurrentIndex(index)
-        self.as_of.setText(workspace.as_of)
-        payload = workspace.payload
-        for key, edit in self.point_inputs.items():
-            edit.setText("" if payload.get(key) in (None, "") else str(payload[key]))
-        suction = payload.get("suction")
-        suction_index = self.suction.findData(suction) if suction else 0
-        self.suction.setCurrentIndex(max(suction_index, 0))
-        if self.stages.isEnabled():
-            stages = payload.get("stages")
-            self.stages.setText("" if stages in (None, "") else str(stages))
-        self.project_name.setText(str(payload.get("project_name") or ""))
-        self.equipment_no.setText(str(payload.get("equipment_no") or ""))
-        self._last_request = self._last_result = None
-        self.finalize_button.setEnabled(False)
-        return True
-
-    def _next_record_id(self) -> str:
-        if self._record_id_factory is not None:
-            return self._record_id_factory()
-        return f"{self._workspace_id or 'ANALYSIS'}-{uuid4().hex[:12]}"
-
-    # -- 草稿（Workspace）用户流程 -------------------------------------------
-
-    def new_draft(self) -> None:
-        """清空表单并开始一个新草稿（不落盘，直到用户点"保存草稿"）。"""
-
-        self._workspace_id = None
-        self.draft_name.setText("")
-        self.project_name.setText("")
-        self.equipment_no.setText("")
-        self.as_of.setText(date.today().isoformat())
-        self.category.setCurrentIndex(0)
-        for edit in self.point_inputs.values():
-            edit.clear()
-        self.suction.setCurrentIndex(0)
-        self.stages.setEnabled(True)
-        self.stages.clear()
-        self._last_request = self._last_result = None
-        self._show_error("已新建草稿：填写内容后点“保存草稿”即可保存。")
-
-    def save_draft(self) -> str:
-        """独立保存草稿（不需要先分析，也不需要 Finalize）。"""
-
-        name = self.draft_name.text().strip()
-        if not name:
-            self.draft_status.setText("请先填写草稿名称。")
-            return "NO_NAME"
-        request = self._collect_request()
-        if request is None:
-            self.draft_status.setText("草稿内容不完整或日期格式不正确，未保存。")
-            return "INCOMPLETE"
-        workspace = self.service.save_workspace_from_request(name, request)
-        self._workspace_id = workspace.workspace_id
-        self.draft_status.setText(
-            f"草稿已保存：{workspace.workspace_id}（修订 {workspace.revision}，"
-            f"{workspace.updated_at_utc}）")
-        self.refresh_drafts()
-        return "SAVED"
-
-    def refresh_drafts(self) -> None:
-        """重新列出全部草稿（跨重启可见）。"""
-
-        current = self._workspace_id
-        self.draft_list.clear()
-        for workspace in self.service.list_workspaces():
-            self.draft_list.addItem(
-                f"{workspace.workspace_id}｜{workspace.product_category or '未选类别'}"
-                f"｜{workspace.updated_at_utc[:19]}",
-                workspace.workspace_id)
-        if current is not None:
-            index = self.draft_list.findData(current)
-            if index >= 0:
-                self.draft_list.setCurrentIndex(index)
-        if self.draft_list.count() == 0:
-            self.draft_status.setText("尚未保存草稿。")
-        else:
-            self.draft_status.setText(f"共 {self.draft_list.count()} 个草稿。")
-
-    def load_selected_draft(self) -> bool:
-        workspace_id = self.draft_list.currentData()
-        if not workspace_id:
-            self.draft_status.setText("请先选择一个草稿。")
-            return False
-        if not self.load_workspace(workspace_id):
-            self.draft_status.setText(f"草稿不存在或已删除：{workspace_id}")
-            return False
-        self.draft_status.setText(f"已载入草稿：{workspace_id}")
-        return True
-
-    def delete_selected_draft(self) -> str:
-        workspace_id = self.draft_list.currentData()
-        if not workspace_id:
-            self.draft_status.setText("请先选择一个草稿。")
-            return "NO_SELECTION"
-        if workspace_id == self._workspace_id:
-            self._workspace_id = None
-        self.service.delete_workspace(workspace_id)
-        self.refresh_drafts()
-        self.draft_status.setText(f"已删除草稿：{workspace_id}（正式记录不受影响）")
-        return "DELETED"
-
-    def delete_workspace(self, workspace_id: str) -> None:
-        self.service.delete_workspace(workspace_id)
+        self._last_result = outcome.result
+        self.last_record_status = outcome.record_status
+        self.last_saved_record_id = (outcome.record.record_id if outcome.record else None)
+        self._render(outcome.result)
+        self._render_record_status(outcome)
+        return outcome.result
 
     # -- 展示 ---------------------------------------------------------------
 
@@ -532,15 +396,34 @@ class AnalysisPage(QWidget):
         self.basis.setText("")
         self.values_label.setText("")
         self.reason_label.setText("")
-        self.technical.setText("")
+        self.record_label.setText("")
         self.warning_label.setText("")
         self.warning_label.setVisible(False)
-        self.finalize_button.setEnabled(False)
+
+    def _render_record_status(self, outcome) -> None:
+        """区分「已形成历史记录」与「历史记录保存失败」。"""
+
+        if outcome.recorded:
+            self.record_label.setText(
+                f"已自动保存为历史记录：{outcome.record.record_id}"
+                f"（可在「分析记录」中打开查看）")
+            self.record_label.setStyleSheet("color: #1f6f3f;")
+        elif outcome.save_failed:
+            self.record_label.setText(
+                "计算结果已产生，但历史记录保存失败，本次结果未被记录。"
+                "请检查数据存储是否可写，或联系技术人员。")
+            self.record_label.setStyleSheet("color: #a03020;")
+        else:
+            reason = outcome.record_error or "当前结果不构成正式评价结论"
+            self.record_label.setText(f"本次未形成历史记录：{reason}")
+            self.record_label.setStyleSheet("color: #8a6d00;")
 
     def _render(self, result: PumpAnalysisResult) -> None:
-        """按产品信息层级渲染：结论 → 实际值与限值 → 解释 → 标准依据 → 技术详情。
+        """按产品信息层级渲染：结论 → 实际值与限值 → 解释 → 标准依据。
 
         普通层只用 Result Contract 已提供的信息；**不由 UI 发明业务解释**。
+        内部证据（provenance / rule / pack hash / trace）仍完整保存在 Result 与
+        Record 中，只是本页不展示。
         """
 
         # 第一层：最终结论 / 等级 / 不适用 / 无法判定。
@@ -552,26 +435,23 @@ class AnalysisPage(QWidget):
         if result.missing_fields:
             first.append("缺失信息：" + "、".join(result.missing_fields))
         # 普通结果区只显示用户可读的中文说明；内部 `issue_codes` 是审计标识，
-        # 只允许出现在折叠的技术详情区（见 _render_technical）。
+        # 保存在 Result / Record 中，本页不展示。
         hints = issue_code_texts(result.issue_codes)
         if hints:
             first.append("提示：" + "、".join(hints))
-        # 结论区保留契约给出的判定说明：类别未确认等场景的"请先确认"指引必须
-        # 出现在用户第一眼看到的位置，不能被折叠或降级。
         first.append(f"判定说明：{result.explanation}")
         self.summary.setText("\n".join(first))
 
-        # 标准生命周期提示：非阻断。单独展示，不与判定结果混排，
-        # 也不进入 issue_codes / missing_fields。
+        # 标准生命周期提示：非阻断。单独展示，不与判定结果混排。
         self.warning_label.setText(
             "\n".join(f"⚠ {text}" for text in result.warnings))
         self.warning_label.setVisible(bool(result.warnings))
 
-        # 第二层：关键实际值与对应限值。
+        # 第二层：关键实际值与对应限值（派生量显示 2 位小数；限值保持原文精度）。
         second: list[str] = []
         actual_efficiency = (result.extra_metrics or {}).get("泵效率_%")
         if actual_efficiency is not None:
-            second.append(f"实际泵效率：{actual_efficiency}%")
+            second.append(f"实际泵效率：{format_display_number(actual_efficiency)}%")
         if result.thresholds:
             second.append("对应等级效率限值：" + "；".join(
                 f"{THRESHOLD_DISPLAY_NAMES.get(name, name)} {value}"
@@ -581,44 +461,18 @@ class AnalysisPage(QWidget):
         self.values_label.setText("\n".join(second))
 
         # 第三层：普通工程语言解释"为什么得到这个结果"。
-        # 直接采用契约给出的 explanation，不由 UI 另写一套判定理由。
         self.reason_label.setText(f"为什么是这个结果：{result.explanation}")
 
-        # 第四层：所选标准与已有标准依据。
+        # 第四层：所选标准与已有标准依据（派生量显示 2 位小数）。
         standard = result.references.get("standard") or {}
         basis_lines = [
             f"所选标准：{standard.get('standard_code') or result.standard_code}"
             f"《{standard.get('standard_name') or '离心泵能效限定值及能效等级'}》",
-            f"标准数据版本：{standard.get('data_version') or '—'}",
             "标准依据：GB 19762—2025《离心泵能效限定值及能效等级》",
         ]
         derived = result.calculation_trace.get("derived") or {}
         if derived:
             basis_lines.append("关键计算参数：" + "；".join(
-                f"{name} {value}" for name, value in derived.items()))
-        if not result.finalizable and result.not_finalizable_reason:
-            basis_lines.append("不可保存原因：" + result.not_finalizable_reason)
+                f"{name} {format_display_number(value) if name in _TWO_DECIMAL_METRICS else value}"
+                for name, value in derived.items()))
         self.basis.setText("\n".join(basis_lines))
-
-        # 第五层：默认折叠的高级技术详情。
-        self._render_technical(result)
-
-    def _render_technical(self, result: PumpAnalysisResult) -> None:
-        standard = result.references.get("standard") or {}
-        rows = [
-            ("评价状态", result.evaluation_status or "—"),
-            ("类别状态", result.category_status or "—"),
-            # 发布支持状态是只读辅助信息，不是主业务结论。
-            ("支持状态", support_status_text(result.support_status)),
-            ("命中规则", result.matched_rule_id or "—"),
-            ("规则集", standard.get("rule_profile") or "—"),
-            ("标准包", standard.get("pack_id") or "—"),
-            ("数据版本", standard.get("data_version") or "—"),
-            ("数值配置", result.references.get("numeric_profile_id") or "—"),
-            ("结果契约", result.references.get("result_contract_version") or "—"),
-            # 原始判定提示码是审计标识：普通区只显示中文说明，
-            # 原始码归此处，审计能力不删。
-            ("判定提示码", "、".join(result.issue_codes) or "—"),
-            ("缺失字段", "、".join(result.missing_fields) or "—"),
-        ]
-        self.technical.setText("\n".join(f"{name}：{value}" for name, value in rows))

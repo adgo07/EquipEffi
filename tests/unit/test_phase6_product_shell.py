@@ -313,22 +313,29 @@ class HomePageTests(ProductShellTestCase):
         self.assertIn(overview["standard_code"], home.standard_label.text())
         self.assertIn(overview["standard_name"], home.standard_label.text())
 
-    def test_home_lists_recent_drafts_and_records_from_existing_capabilities(self):
+    def test_home_lists_recent_records_from_existing_capabilities(self):
         home = self.window().home_page
         # 空状态不得显示开发态文案，也不得崩溃。
-        self.assertIn("暂无草稿", home.drafts.item(0).text())
         self.assertIn("暂无正式记录", home.records.item(0).text())
-        self.assertFalse(home.resume_button.isEnabled())
         self.assertFalse(home.open_record_button.isEnabled())
 
-    def test_home_reuses_list_workspaces_and_list_records(self):
+    def test_home_has_no_draft_surface(self):
+        """Phase 7：普通界面没有「分析草稿」概念，首页也不提供草稿入口。"""
+
+        home = self.window().home_page
+        for name in ("drafts", "resume_button", "_draft_ids"):
+            with self.subTest(attribute=name):
+                self.assertFalse(hasattr(home, name))
+        text = _visible_text(home)
+        for word in ("草稿", "继续选中的草稿"):
+            with self.subTest(word=word):
+                self.assertNotIn(word, text)
+
+    def test_home_reuses_list_records_without_new_persistence(self):
         """首页不得为列表新增 persistence：必须复用现有 Use Case。"""
 
-        request = _request(WATER)
-        self.service.create_workspace("P6-DRAFT", request)
         home = self.window().home_page
-        self.assertEqual(len(home._draft_ids), len(self.service.list_workspaces(limit=5)))
-        self.assertIn("P6-DRAFT", home._draft_ids[0])
+        self.assertEqual(len(home._record_ids), len(self.service.list_records(limit=5)))
 
     def test_home_navigates_to_analysis_and_standards(self):
         window = self.window()
@@ -337,15 +344,16 @@ class HomePageTests(ProductShellTestCase):
         window.home_page._open_standard()
         self.assertEqual(window.pages.currentIndex(), PAGES.index("标准库"))
 
-    def test_home_continues_a_recent_draft(self):
-        request = _request(WATER)
-        self.service.create_workspace("P6-RESUME", request)
+    def test_home_opens_a_recent_record(self):
         window = self.window()
         home = window.home_page
+        request = _request(WATER)
+        result = self.service.evaluate(request)
+        self.service.finalize(record_id="P6-HOME-R1", workspace_id=None,
+                              request=request, result=result)
         home.refresh()
-        home._open_draft(0)
-        self.assertEqual(window.pages.currentIndex(), PAGES.index("新建分析"))
-        self.assertEqual(window.analysis_page.draft_name.text(), "P6-RESUME")
+        home._open_record(0)
+        self.assertEqual(window.pages.currentIndex(), PAGES.index("分析记录"))
 
     def test_home_does_not_render_kpi_dashboard_widgets(self):
         text = _visible_text(self.window().home_page)
@@ -398,8 +406,14 @@ def WATER_AS_OF() -> str:
 
 
 class AnalysisLayeringTests(ProductShellTestCase):
-    def page(self):
-        page = AnalysisPage(self.service)
+    def page(self, *, as_of=None):
+        """分析页。
+
+        Phase 7：页面没有评价日期输入，日期自动取本机当天；需要固定日期时
+        用 `as_of` 覆盖（测试专用 hook，不产生用户可见控件）。
+        """
+
+        page = AnalysisPage(self.service, as_of=as_of)
         self.addCleanup(lambda: page.deleteLater())
         return page
 
@@ -410,7 +424,6 @@ class AnalysisLayeringTests(ProductShellTestCase):
         page.suction.setCurrentIndex(page.suction.findData(values["suction"]))
         if page.stages.isEnabled():
             page.stages.setText(values["stages"])
-        page.as_of.setText(WATER_AS_OF())
 
     def test_water_result_has_five_layers(self):
         page = self.page()
@@ -423,7 +436,6 @@ class AnalysisLayeringTests(ProductShellTestCase):
         self.assertIn("对应等级效率限值", page.values_label.text())
         self.assertTrue(page.reason_label.text().strip())
         self.assertIn("所选标准", page.basis.text())
-        self.assertFalse(page.technical_box.is_expanded())
 
     def test_chemical_result_has_the_same_layers(self):
         page = self.page()
@@ -432,7 +444,6 @@ class AnalysisLayeringTests(ProductShellTestCase):
         self.assertIsNotNone(result)
         self.assertIn("实际泵效率", page.values_label.text())
         self.assertIn("所选标准", page.basis.text())
-        self.assertFalse(page.technical_box.is_expanded())
 
     def test_ordinary_layers_do_not_leak_internal_identifiers(self):
         page = self.page()
@@ -446,17 +457,17 @@ class AnalysisLayeringTests(ProductShellTestCase):
             with self.subTest(token=token):
                 self.assertNotIn(token, ordinary)
 
-    def test_technical_details_keep_audit_capability(self):
+    def test_analysis_page_has_no_technical_detail_but_result_keeps_evidence(self):
+        """Phase 7：分析页不展示技术详情，但内部证据仍完整保存在 Result 中。"""
+
         page = self.page()
         self.fill(page, CHEMICAL)
-        page.evaluate()
-        technical = page.technical.text()
-        self.assertIn("命中规则", technical)
-        self.assertIn("支持状态", technical)
-        page.show()
-        self.app.processEvents()
-        page.technical_box.set_expanded(True)
-        self.assertTrue(page.technical_box.is_expanded())
+        result = page.evaluate()
+        self.assertFalse(hasattr(page, "technical_box"))
+        self.assertTrue(result.matched_rule_id)
+        self.assertTrue(result.references["standard"]["pack_hash"])
+        self.assertEqual(result.references["numeric_profile_id"],
+                         "EQUIPEFFI_PUMP_DECIMAL50_V2")
 
     def test_values_and_limits_use_user_facing_threshold_names(self):
         page = self.page()
@@ -466,15 +477,28 @@ class AnalysisLayeringTests(ProductShellTestCase):
         self.assertNotIn("1级效率_%", page.values_label.text())
 
     def test_evaluation_date_remains_a_non_blocking_notice(self):
-        page = self.page()
+        """早于实施日只给非阻断提示，不改变结论、等级或自动记录。"""
+
+        from datetime import date as _date
+
+        page = self.page(as_of=_date(2026, 2, 28))
         self.fill(page, WATER)
-        page.as_of.setText("2020-01-01")  # 早于实施日期
         result = page.evaluate()
         self.assertIsNotNone(result)
         self.assertEqual(result.evaluation_status, "SUCCESS")
         self.assertIsNotNone(result.grade)
         self.assertIn("该标准尚未实施", page.warning_label.text())
         self.assertTrue(page.warning_label.isVisibleTo(page))
+        # 非阻断：仍然自动形成历史记录
+        self.assertEqual(page.last_record_status, "RECORDED")
+
+    def test_matching_evaluation_date_shows_no_warning(self):
+        from datetime import date as _date
+
+        page = self.page(as_of=_date(2026, 3, 1))
+        self.fill(page, WATER)
+        page.evaluate()
+        self.assertEqual(page.warning_label.text(), "")
 
 
 # --------------------------------------------------------------------------
@@ -567,7 +591,6 @@ class RecordsPageTests(ProductShellTestCase):
         page._render_technical(self._snapshot_stub(),
                                 {"matched_rule_id": "X",
                                  "support_status": "NOT_IN_RELEASE_SCOPE"})
-        self.assertIn("当前版本未支持", page.technical.text())
 
     def test_no_lineage_or_audit_or_reproduce_was_implemented(self):
         source = (SRC / "equipeffi" / "presentation" / "qt" / "pages"
@@ -861,11 +884,11 @@ class StandardLifecycleNoticeTests(ProductShellTestCase):
             page.point_inputs[key].setText(WATER[key])
         page.suction.setCurrentIndex(page.suction.findData(WATER["suction"]))
         page.stages.setText(WATER["stages"])
-        page.as_of.setText(self.BEFORE)
         result = page.evaluate()
         self.assertEqual(result.evaluation_status, "SUCCESS")
         self.assertIsNotNone(result.grade)
-        self.assertTrue(page.finalize_button.isEnabled())
+        # Phase 7：非阻断 —— 早于实施日仍自动形成历史记录
+        self.assertEqual(page.last_record_status, "RECORDED")
 
 
 class SettingsCompositionWiringTests(ProductShellTestCase):
@@ -922,7 +945,6 @@ class R1SecondRoundBlockerTests(ProductShellTestCase):
         page = AnalysisPage(self.service)
         self.addCleanup(lambda: page.deleteLater())
         page.category.setCurrentIndex(page.category.findData("不确定类别"))
-        page.as_of.setText(WATER_AS_OF())
         result = page.evaluate()
         self.assertIn("CATEGORY_UNCERTAIN", result.issue_codes)
 
@@ -941,10 +963,7 @@ class R1SecondRoundBlockerTests(ProductShellTestCase):
         page = AnalysisPage(self.service)
         self.addCleanup(lambda: page.deleteLater())
         page.category.setCurrentIndex(page.category.findData("不确定类别"))
-        page.as_of.setText(WATER_AS_OF())
         page.evaluate()
-        self.assertIn("CATEGORY_UNCERTAIN", page.technical.text())
-        self.assertFalse(page.technical_box.is_expanded())
 
     def test_all_mapped_issue_codes_are_chinese(self):
         """所有已知内部码都必须有中文映射，且映射值不得是内部英文码。"""
