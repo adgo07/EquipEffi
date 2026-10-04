@@ -46,6 +46,20 @@ current_task:
     QA-P6-003: 草稿概念退出产品表面而消解
   next_action: 等待独立验收；do not merge; do not start Phase 8
 
+phase_6_closure:
+  verdict: PHASE_6_PASS
+  accepted_head: 05b40f91086bbdbe196793075e440de4473cbf96
+  pr: "#14"
+  merge_sha: 6ead21fb6757d5d92ba81851f23e3c41d86598af
+  acceptance_record: docs/phase6_acceptance_record.md
+  execution_report: PHASE6_EXECUTION_REPORT.md
+  closed_qa:
+    QA-P5-001: CLOSED
+    QA-P5-002: CLOSED
+    QA-P3-003: CLOSED
+    QA-P6-002: CLOSED
+    QA-P6-003: CLOSED（Phase 7 重新判断）
+
 previous_task:
   task_id: PHASE4-MINIMAL-LIFECYCLE-GENERALIZATION
   branch: phase4/minimal-lifecycle-generalization

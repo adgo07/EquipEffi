@@ -81,37 +81,6 @@ jobs:
             tests.unit.test_device_evaluator_matrix -q
 
       # module is identifiable from the step outcome alone (no log access).
-      # TEMP DIAGNOSTIC (P7): emit unittest failures as workflow error annotations.
-      - name: DIAGNOSTIC phase 7
-        if: always()
-        continue-on-error: true
-        shell: pwsh
-        run: |
-          $mods = @(
-            'tests.unit.test_composition',
-            'tests.unit.test_phase2_settings',
-            'tests.unit.test_phase2_logging',
-            'tests.unit.test_phase2_qt',
-            'tests.unit.test_phase3_qt_unified',
-            'tests.unit.test_phase3_r1_blockers',
-            'tests.unit.test_phase3_r2_final_closure',
-            'tests.unit.test_phase3_r3_as_of_lifecycle',
-            'tests.unit.test_phase4_lifecycle_generalization',
-            'tests.unit.test_phase4_fingerprint_decoupling',
-            'tests.unit.test_phase5_chemical_stage_d',
-            'tests.unit.test_phase6_product_shell',
-            'tests.unit.test_phase7_analysis_history',
-            'tests.unit.test_windows_regression_comparator'
-          )
-          python -m unittest @mods -v *> diag7.txt
-          Write-Output "EXITCODE=$LASTEXITCODE"
-          Get-Content diag7.txt | ForEach-Object {
-            Write-Output $_
-            if ($_ -match 'FAIL:|ERROR:|AssertionError|Error:|Traceback|^Ran |^FAILED') {
-              Write-Output ('::error title=p7::' + ($_ -replace '%','%25' -replace "`r",'' -replace "`n",' '))
-            }
-          }
-
       - name: Phase 2/3/4/5/6/7 settings, lifecycle, Stage D, Product Shell, analysis flow, Qt offscreen (gating)
         shell: pwsh
         run: |

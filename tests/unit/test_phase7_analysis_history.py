@@ -78,16 +78,44 @@ def _app() -> QApplication:
     return QApplication.instance() or QApplication([])
 
 
+def _dispose_temp_dir(temp, close_logging, logger) -> None:
+    """先关闭日志句柄再清理临时目录；句柄释放有延迟时重试。
+
+    Windows（含 CI runner 的短名/长名路径与实时索引）会在句柄刚释放时短暂
+    占用 `equipeffi.log`，导致 `TemporaryDirectory.cleanup` 抛
+    `PermissionError`。这里显式处理，避免把环境抖动误报成测试失败。
+    """
+
+    import gc
+    import time
+
+    close_logging(logger)
+    gc.collect()
+    for attempt in range(5):
+        try:
+            temp.cleanup()
+            return
+        except (PermissionError, OSError):
+            if attempt == 4:
+                raise
+            time.sleep(0.3)
+
+
 class Phase7TestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.app = _app()
 
     def setUp(self):
+        from equipeffi.composition import create_settings_runtime
+        from equipeffi.infrastructure.runtime_logging import close_logging
+
         self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.paths = AppDataPaths(Path(self.tmp.name))
+        # 记录运行时日志句柄，清理临时目录前必须关闭（Windows 文件锁）。
+        self._runtime_logger = create_settings_runtime(paths=self.paths)[1]
         self.service = create_pump_analysis_service(paths=self.paths)
-        self.addCleanup(self.tmp.cleanup)
+        self.addCleanup(_dispose_temp_dir, self.tmp, close_logging, self._runtime_logger)
 
     def page(self, **kwargs) -> AnalysisPage:
         page = AnalysisPage(self.service, **kwargs)
