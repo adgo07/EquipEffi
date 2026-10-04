@@ -84,7 +84,6 @@ jobs:
       - name: Phase 2/3/4/5/6 settings, lifecycle, Stage D, Product Shell, Qt offscreen (gating)
         shell: pwsh
         run: |
-          $ErrorActionPreference = 'Continue'
           $mods = @(
             'tests.unit.test_composition',
             'tests.unit.test_phase2_settings',
@@ -100,8 +99,13 @@ jobs:
             'tests.unit.test_phase6_product_shell',
             'tests.unit.test_windows_regression_comparator'
           )
-          python -m unittest @mods -v
-          exit $LASTEXITCODE
+          $log = 'gating.txt'
+          python -m unittest @mods -v *> $log
+          $code = $LASTEXITCODE
+          Write-Output "EXITCODE=$code"
+          Select-String -Path $log -Pattern 'FAIL:|ERROR:|^Ran |^OK|^FAILED|Traceback' | ForEach-Object { Write-Output $_.Line }
+          Get-Content $log -Tail 60 | ForEach-Object { Write-Output $_ }
+          exit $code
       - name: Full suite known-regression comparator (gating)
         run: python tools/check_windows_regressions.py --output artifacts/phase2-regression
 
