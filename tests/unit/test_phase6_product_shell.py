@@ -94,6 +94,29 @@ def _service(paths=None):
     return create_pump_analysis_service(paths=paths, with_persistence=True)
 
 
+def _dispose_temp_dir(temp, close_logging, logger) -> None:
+    """先关闭日志句柄再清理临时目录；句柄释放有延迟时重试。
+
+    Windows CI（长短名路径、杀毒/索引扫描）会在句柄刚释放时短暂占用文件，
+    导致 `TemporaryDirectory.cleanup` 抛 `PermissionError`。这里显式重试，
+    避免把环境抖动误报成测试失败。
+    """
+
+    import gc
+    import time
+
+    close_logging(logger)
+    gc.collect()
+    for attempt in range(5):
+        try:
+            temp.cleanup()
+            return
+        except (PermissionError, OSError):
+            if attempt == 4:
+                raise
+            time.sleep(0.3)
+
+
 def _launch_window(settings, analysis, paths, **kwargs):
     """按 composition.launch_qt 的真实装配构造 MainWindow（不跑事件循环）。
 
@@ -130,12 +153,11 @@ class ProductShellTestCase(unittest.TestCase):
         from equipeffi.infrastructure.runtime_logging import close_logging
 
         self.temp = TemporaryDirectory(prefix="phase6-shell-中文-")
-        self.addCleanup(self.temp.cleanup)
         self.paths = AppDataPaths(Path(self.temp.name))
         self.settings, self.logger = create_settings_runtime(paths=self.paths)
-        # 必须在临时目录清理**之前**关闭日志句柄，否则 Windows 上
-        # `equipeffi.log` 仍被占用，cleanup 会抛 PermissionError。
-        self.addCleanup(close_logging, self.logger)
+        # Windows 上日志句柄会占用临时目录内的 equipeffi.log；清理顺序与重试
+        # 都必须显式处理，否则 long-path / 短名（8.3）环境会抛出 PermissionError。
+        self.addCleanup(_dispose_temp_dir, self.temp, close_logging, self.logger)
         self.service = _service(self.paths)
 
     def window(self, **kwargs):

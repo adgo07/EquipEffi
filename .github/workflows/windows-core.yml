@@ -86,10 +86,14 @@ jobs:
         if: always()
         continue-on-error: true
         run: |
-          python -m unittest tests.unit.test_phase6_product_shell -v 2>&1 | Tee-Object -FilePath diag6.txt
-          python -m unittest tests.unit.test_phase2_qt tests.unit.test_phase3_qt_unified tests.unit.test_phase5_chemical_stage_d -v 2>&1 | Tee-Object -FilePath diag-other.txt -Append
+          New-Item -ItemType Directory -Force -Path diag | Out-Null
+          python -m unittest tests.unit.test_phase6_product_shell -v > diag/1-phase6.txt 2>&1
+          python -m unittest tests.unit.test_phase2_qt tests.unit.test_phase3_qt_unified tests.unit.test_phase5_chemical_stage_d -v > diag/2-qt.txt 2>&1
+          python -m unittest tests.unit.test_composition tests.unit.test_phase2_settings tests.unit.test_phase2_logging -v > diag/3-settings.txt 2>&1
+          python -m unittest tests.unit.test_phase3_r1_blockers tests.unit.test_phase3_r2_final_closure tests.unit.test_phase3_r3_as_of_lifecycle tests.unit.test_phase4_lifecycle_generalization tests.unit.test_phase4_fingerprint_decoupling tests.unit.test_windows_regression_comparator -v > diag/4-rest.txt 2>&1
+          Get-ChildItem diag | ForEach-Object { "--- $($_.Name) ---"; Get-Content $_.FullName | Select-Object -Last 40 }
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value '```text'
-          Get-Content diag6.txt,diag-other.txt | Select-Object -Last 120 | Add-Content -Path $env:GITHUB_STEP_SUMMARY
+          Get-ChildItem diag | ForEach-Object { Get-Content $_.FullName | Select-String -Pattern 'FAIL:|ERROR:|^Ran |^OK|^FAILED' | Add-Content -Path $env:GITHUB_STEP_SUMMARY }
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value '```'
 
       - name: Phase 2/3/4/5/6 settings, lifecycle, Stage D, Product Shell, Qt offscreen (gating)
@@ -111,6 +115,14 @@ jobs:
 
       - name: Full suite known-regression comparator (gating)
         run: python tools/check_windows_regressions.py --output artifacts/phase2-regression
+
+      - name: Upload diagnostic output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase6-r1-diagnostic
+          path: diag/
+          if-no-files-found: warn
 
       - name: Upload exact regression evidence
         if: always()
