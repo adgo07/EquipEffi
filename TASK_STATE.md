@@ -1,9 +1,11 @@
 roadmap: EquipEffi V2.3
-phase: Phase 4
-goal: GB19762 真实样板后的最小生命周期通用化
+phase: Phase 5
+goal: pump_chemical Stage D 正式支持与发布门禁收口
 status: EXECUTION_COMPLETE
-previous_acceptance: PHASE_4_BLOCKED
+previous_acceptance: PHASE_4_PASS
 next_status: READY_FOR_INDEPENDENT_ACCEPTANCE
+stage_d_candidate: READY_FOR_INDEPENDENT_ACCEPTANCE
+support_promotion_candidate: READY
 
 # ---------------------------------------------------------------------------
 # 本文件只承担“当前状态”。历史执行细节、run ID、历史测试数字与旧 SHA 一律
@@ -11,6 +13,38 @@ next_status: READY_FOR_INDEPENDENT_ACCEPTANCE
 # ---------------------------------------------------------------------------
 
 current_task:
+  task_id: PHASE5-PUMP-CHEMICAL-STAGE-D-SUPPORT
+  branch: phase5/pump-chemical-stage-d-support
+  task_kind: authorised Phase 5 execution
+  phase_5_execution: true
+  base_sha: d6112ea9c7c1c16f95d798c2229cdc54aaf6240a
+  execution_report: PHASE5_EXECUTION_REPORT.md
+  stage_d_evidence_matrix: docs/phase5_stage_d_evidence_matrix.md
+  formal_application_e2e_evidence: specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json
+  formal_product_surface: PySide6 Qt Desktop (--qt)
+  official_user_surface_decision: WINDOWS_V1_FORMAL_SURFACE_IS_QT
+  evidence_claim: 一个 GB19762 产品级 E2E 样板，其中有 water + chemical 两个真实内部 rule profile（不得表述为两个独立设备/标准 E2E 样板）
+  phase_5_pass_self_declared: false
+  stage_d_pass_self_declared: false
+  pump_chemical_support_self_promoted: false
+  phase_6_started: false
+  merge_authorized: false
+  goals:
+    P5-G00: COMPLETE
+    P5-G01: COMPLETE
+    P5-G02: COMPLETE
+    P5-G03: COMPLETE
+    P5-G04: COMPLETE
+  maturity_transitions:
+    ready_for_implementation_to_implemented:
+      status: EVIDENCE_RECORDED
+      evidence: 11 条 Approved Golden + ChemicalPumpEvaluator + 统一 Application + generated boundaries + Numeric/Conformance
+    implemented_to_supported:
+      status: CANDIDATE_PENDING_INDEPENDENT_ACCEPTANCE
+      evidence: Stage D 正式产品路径验证 + FORMAL_APPLICATION_E2E + 最终独立验收结论（尚未产生）
+  next_action: 等待独立验收；do not merge; do not start Phase 6
+
+previous_task:
   task_id: PHASE4-MINIMAL-LIFECYCLE-GENERALIZATION
   branch: phase4/minimal-lifecycle-generalization
   task_kind: authorised Phase 4 execution
@@ -18,6 +52,11 @@ current_task:
   base_sha: 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
   execution_report: PHASE4_EXECUTION_REPORT.md
   evidence_claim: 一个 GB19762 产品级 E2E 样板，其中有 water + chemical 两个真实内部 rule profile（不得表述为两个独立设备/标准 E2E 样板）
+  verdict: PHASE_4_PASS
+  accepted_head: a4034ef3751590b52a821d6a3bdbebcbca6a8ec9
+  pr: "#12"
+  merge_sha: d6112ea9c7c1c16f95d798c2229cdc54aaf6240a
+  acceptance_record: docs/phase4_acceptance_record.md
   phase_4_pass_self_declared: false
   phase_5_started: false
   merge_authorized: false
@@ -90,7 +129,7 @@ phase_2:
   design: docs/31_Phase 2 最小正式工程底座.md
   execution_report: PHASE2_EXECUTION_REPORT.md
 
-allowed_next: Phase 3 P3-G01..G04 execution and evidence only; no merge; no Phase 4
+allowed_next: Phase 5 P5-G00..G04 execution and evidence only; no merge; no Phase 6
 automatic_continuation: DISABLED
 phase_0b: NOT_EXECUTED
 phase_1_hotfix: NOT_EXECUTED
@@ -120,16 +159,24 @@ product_scope:
     owner_reconfirmation_evidence: specs/equipment_efficiency/golden/owner_approvals/pump_water_owner_reconfirmation_2026-10-02.json
   pump_chemical:
     scope_status: IN_V1
-    support_status: NOT_IN_RELEASE_SCOPE
-    standard_maturity: READY_FOR_IMPLEMENTATION
+    # Phase 5 Stage D 候选：统一正式产品路径（Qt --qt）已返回 SUPPORTED。
+    # **独立验收通过前不得写成"正式支持已经生效"。**
+    support_status: SUPPORT_PROMOTION_CANDIDATE
+    support_status_effective_value: SUPPORTED
+    support_status_pending: independent acceptance (Stage D)
+    standard_maturity: IMPLEMENTED
+    standard_maturity_candidate: SUPPORTED
     target_support_status: SUPPORTED
     owner_business_truth_approval: 11 / 11 PASS
     owner_business_truth_approval_date: 2026-10-02
     owner_business_truth_evidence: specs/equipment_efficiency/golden/owner_approvals/pump_chemical_owner_approval_2026-10-02.json
-    golden: specs/equipment_efficiency/golden/pump_chemical/ (11 条 golden-case-0.5，APPROVED)
+    golden: specs/equipment_efficiency/golden/pump_chemical/ (11 条 golden-case-0.5，APPROVED；evaluation_layer 未改写)
+    stage_d_evidence_matrix: docs/phase5_stage_d_evidence_matrix.md
+    formal_application_e2e_evidence: specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json
+    release_gate: CentrifugalPumpAnalysisService._release_support('pump_chemical') = SUPPORTED（候选）
     upgrade_blocked_by:
-      - Standard Development Guide Stage D independent acceptance
-    note: Owner business truth 已批准（11/11 RESOLVED）；剩余正式 blocker 仅为 Stage D 独立验收。执行阶段不得自行把 support_status 写成 SUPPORTED。
+      - Standard Development Guide Stage D independent acceptance（唯一剩余 blocker）
+    note: Owner business truth 已批准（11/11）；Stage D 证据闭环已完成并交独立验收。治理状态只写 SUPPORT_PROMOTION_CANDIDATE / READY_FOR_INDEPENDENT_ACCEPTANCE；执行阶段不得自行宣布 Stage D PASS 或 pump_chemical officially SUPPORTED。历史 Record 的 NOT_IN_RELEASE_SCOPE 快照不追溯改写。
   transformer:
     scope_status: POST_V1
     support_status: NOT_IN_RELEASE_SCOPE
@@ -158,9 +205,10 @@ phase_1_authority:
   pump_water_golden_0_4: APPROVED
   pump_water_owner_reconfirmation: 18 / 18 PASS (2026-10-02)
   pump_chemical_business_truth: 11 / 11 PASS (2026-10-02)
-  pump_chemical_golden_0_5: APPROVED (11 条 formal records)
-  pump_chemical_standard_maturity: READY_FOR_IMPLEMENTATION
-  pump_chemical_support_status: NOT_IN_RELEASE_SCOPE
+  pump_chemical_golden_0_5: APPROVED (11 条 formal records；evaluation_layer 未改写)
+  pump_chemical_standard_maturity: IMPLEMENTED (Phase 5；SUPPORTED 为候选，待独立验收)
+  pump_chemical_support_status: SUPPORT_PROMOTION_CANDIDATE (统一 Qt 正式路径取值 SUPPORTED)
+  pump_chemical_stage_d: READY_FOR_INDEPENDENT_ACCEPTANCE
 
 qzc_a01:
   status: COMPLETE
@@ -177,10 +225,16 @@ known_blockers:
     acceptance_record_found_in_repo: false
     note: 合并事实不等同于独立验收证据；不得报告为验收 PASS
   pump_chemical_support_status:
-    status: NOT_IN_RELEASE_SCOPE
+    status: SUPPORT_PROMOTION_CANDIDATE
+    formal_surface_value: SUPPORTED (PySide6 Qt Desktop --qt)
     remaining_blocker: Standard Development Guide Stage D independent acceptance
     business_truth_approval: RESOLVED (11/11, 2026-10-02)
-    note: 业务真值 blocker 已关闭；仅剩 Stage D。见 product_scope.pump_chemical.upgrade_blocked_by
+    stage_d_evidence: COMPLETE (docs/phase5_stage_d_evidence_matrix.md; specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json)
+    note: 业务真值与 Stage D 证据均已就绪；仅剩独立验收结论。见 product_scope.pump_chemical.upgrade_blocked_by
+  non_formal_surface_support_deviations:
+    status: REGISTERED_DEVIATION
+    qa_ids: [QA-P5-001, QA-P5-002, QA-P5-003, QA-P5-004, QA-P5-005]
+    note: --json / ApplicationApi / JSONL / CLI / --web / legacy Tk --gui 仍返回 NOT_IN_RELEASE_SCOPE（Phase 6 收口）；V4·Excel 为 Phase 8；Android bridge 与安装/签名/发布产物为 Phase 9。不得误报为 Phase 5 已修复。
   excel_decimal_ingress:
     qa_id: QA-EXCEL-001
     surface: NOT_SHIPPED
@@ -191,7 +245,8 @@ known_blockers:
     standard_issue: EQP-STD-GB19762-001
     status: RESOLVED (软件产品决定 2026-10-02；R3 补充决定：as_of 不是标准执行门禁)
     r3_supplement: 评价日期仅用于记录与追溯；标准生命周期只做非阻断提示；已删除提前日期不执行计算的门禁与对应的 Finalize 白名单例外
-    remaining: 既有 CLI/API/JSONL 入口的兼容默认值登记保留，全局取消须另立任务做兼容影响评估
+    phase5_update: 正式 Qt 路径的提醒缩短为四字短语（如"该标准尚未实施"）；tooltip 改为"评价日期用于记录与追溯；不影响所选标准的计算"
+    remaining: 既有 CLI/API/JSONL 入口的兼容默认值与旧 as_of 门禁登记保留（QA-P3-003），全局取消须另立任务做兼容影响评估
     locations:
       - src/equipeffi/application/services/evaluation_service.py:13
       - src/equipeffi/application/services/evaluation_facade.py:27

@@ -1,0 +1,325 @@
+{
+  "evidence_id": "PHASE5-CHEMICAL-STAGE-D-E2E",
+  "phase": "Phase 5",
+  "purpose": "证明 11 条 pump_chemical Approved Golden 的历史业务真值可以通过当前正式 Application 链（统一入口 → 实际 evaluator → 结果契约）一致复现。",
+  "product_surface": "PySide6 Qt Desktop (--qt) 所使用的统一 Application 入口",
+  "entry_point": "CentrifugalPumpAnalysisService.evaluate",
+  "as_of_basis": "2026-08-23",
+  "as_of_note": "固定测试条件，不是产品默认值；评价日期不是业务门禁。",
+  "golden_directory": "specs/equipment_efficiency/golden/pump_chemical",
+  "golden_case_count": 11,
+  "business_fields_compared": [
+    "evaluation_status",
+    "grade",
+    "ui_conclusion",
+    "issue_codes",
+    "category_status"
+  ],
+  "support_status_expectation": "SUPPORTED",
+  "support_promotion_status": "SUPPORT_PROMOTION_CANDIDATE",
+  "historical_golden_untouched": "本证据不修改任何 Golden 业务真值、历史 provenance 或 evaluation_layer；Golden 继续表示历史批准来源。",
+  "cases": [
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-BELOW-MINIMUM",
+      "source_golden_file": "specs/equipment_efficiency/golden/pump_chemical/GC-PUMP-V5-CHEMICAL-BELOW-MINIMUM.json",
+      "source_golden_text_sha256": "4A382F38FEEFA3A7C0DA49A13F99B9287255C07FE71F6EF01EA5E0B02F4539E7",
+      "golden_evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "golden_support_status": null,
+      "historical_business_truth": {
+        "evaluation_status": "SUCCESS",
+        "grade": "BELOW_MINIMUM",
+        "ui_conclusion": "未达标",
+        "issue_codes": [],
+        "category_status": "APPLICABLE"
+      },
+      "formal_application_e2e": {
+        "evaluation_status": "SUCCESS",
+        "grade": "BELOW_MINIMUM",
+        "ui_conclusion": "未达标",
+        "issue_codes": [],
+        "category_status": "APPLICABLE",
+        "rule_profile": "pump_chemical",
+        "matched_rule_id": "GB19762-R000020",
+        "support_status": "SUPPORTED",
+        "finalizable": true
+      },
+      "business_truth_consistent": true
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-DOUBLE-SUCTION",
+      "source_golden_file": "specs/equipment_efficiency/golden/pump_chemical/GC-PUMP-V5-CHEMICAL-DOUBLE-SUCTION.json",
+      "source_golden_text_sha256": "0F28EF0740353776E74CE49D5E464C3E46260935683788E7838EB5443ECF17F5",
+      "golden_evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "golden_support_status": null,
+      "historical_business_truth": {
+        "evaluation_status": "SUCCESS",
+        "grade": "1",
+        "ui_conclusion": "1级",
+        "issue_codes": [],
+        "category_status": "APPLICABLE"
+      },
+      "formal_application_e2e": {
+        "evaluation_status": "SUCCESS",
+        "grade": "1",
+        "ui_conclusion": "1级",
+        "issue_codes": [],
+        "category_status": "APPLICABLE",
+        "rule_profile": "pump_chemical",
+        "matched_rule_id": "GB19762-R000013",
+        "support_status": "SUPPORTED",
+        "finalizable": true
+      },
+      "business_truth_consistent": true
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-FLOW-OOS",
+      "source_golden_file": "specs/equipment_efficiency/golden/pump_chemical/GC-PUMP-V5-CHEMICAL-FLOW-OOS.json",
+      "source_golden_text_sha256": "BEB29899B5ED5566B427907449D7B80FCCAA49062901FBA4623E314D4885B926",
+      "golden_evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "golden_support_status": null,
+      "historical_business_truth": {
+        "evaluation_status": "OUT_OF_STANDARD_SCOPE",
+        "grade": null,
+        "ui_conclusion": "不适用",
+        "issue_codes": [
+          "OUT_OF_STANDARD_SCOPE"
+        ],
+        "category_status": "APPLICABLE"
+      },
+      "formal_application_e2e": {
+        "evaluation_status": "OUT_OF_STANDARD_SCOPE",
+        "grade": null,
+        "ui_conclusion": "不适用",
+        "issue_codes": [
+          "OUT_OF_STANDARD_SCOPE"
+        ],
+        "category_status": "APPLICABLE",
+        "rule_profile": "pump_chemical",
+        "matched_rule_id": null,
+        "support_status": "SUPPORTED",
+        "finalizable": true
+      },
+      "business_truth_consistent": true
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-GRADE3",
+      "source_golden_file": "specs/equipment_efficiency/golden/pump_chemical/GC-PUMP-V5-CHEMICAL-GRADE3.json",
+      "source_golden_text_sha256": "9F425A9F34351DD13F9A4CCBCAF52E558181E1FBB292B5B838AE0FEE5C26C6F5",
+      "golden_evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "golden_support_status": null,
+      "historical_business_truth": {
+        "evaluation_status": "SUCCESS",
+        "grade": "3",
+        "ui_conclusion": "3级",
+        "issue_codes": [],
+        "category_status": "APPLICABLE"
+      },
+      "formal_application_e2e": {
+        "evaluation_status": "SUCCESS",
+        "grade": "3",
+        "ui_conclusion": "3级",
+        "issue_codes": [],
+        "category_status": "APPLICABLE",
+        "rule_profile": "pump_chemical",
+        "matched_rule_id": "GB19762-R000012",
+        "support_status": "SUPPORTED",
+        "finalizable": true
+      },
+      "business_truth_consistent": true
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-MULTISTAGE-L2",
+      "source_golden_file": "specs/equipment_efficiency/golden/pump_chemical/GC-PUMP-V5-CHEMICAL-MULTISTAGE-L2.json",
+      "source_golden_text_sha256": "51D7E1D64823B99EEA40606A7032CDA6242B499755A85122998F23A4138489AC",
+      "golden_evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "golden_support_status": null,
+      "historical_business_truth": {
+        "evaluation_status": "SUCCESS",
+        "grade": "2",
+        "ui_conclusion": "2级",
+        "issue_codes": [],
+        "category_status": "APPLICABLE"
+      },
+      "formal_application_e2e": {
+        "evaluation_status": "SUCCESS",
+        "grade": "2",
+        "ui_conclusion": "2级",
+        "issue_codes": [],
+        "category_status": "APPLICABLE",
+        "rule_profile": "pump_chemical",
+        "matched_rule_id": "GB19762-R000020",
+        "support_status": "SUPPORTED",
+        "finalizable": true
+      },
+      "business_truth_consistent": true
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-Q-ABOVE-3000-CAP",
+      "source_golden_file": "specs/equipment_efficiency/golden/pump_chemical/GC-PUMP-V5-CHEMICAL-Q-ABOVE-3000-CAP.json",
+      "source_golden_text_sha256": "FFE322C22AA6F43C1CAE30208502020D307FA4E258D0C5978936D4EA7C4DBB8C",
+      "golden_evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "golden_support_status": null,
+      "historical_business_truth": {
+        "evaluation_status": "SUCCESS",
+        "grade": "1",
+        "ui_conclusion": "1级",
+        "issue_codes": [],
+        "category_status": "APPLICABLE"
+      },
+      "formal_application_e2e": {
+        "evaluation_status": "SUCCESS",
+        "grade": "1",
+        "ui_conclusion": "1级",
+        "issue_codes": [],
+        "category_status": "APPLICABLE",
+        "rule_profile": "pump_chemical",
+        "matched_rule_id": "GB19762-R000016",
+        "support_status": "SUPPORTED",
+        "finalizable": true
+      },
+      "business_truth_consistent": true
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-SINGLE-L1",
+      "source_golden_file": "specs/equipment_efficiency/golden/pump_chemical/GC-PUMP-V5-CHEMICAL-SINGLE-L1.json",
+      "source_golden_text_sha256": "DC0045CD0662D00D0CE43865EDBC0EF8E0184952979746AF2F3D6B99C2C4F47A",
+      "golden_evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "golden_support_status": null,
+      "historical_business_truth": {
+        "evaluation_status": "SUCCESS",
+        "grade": "1",
+        "ui_conclusion": "1级",
+        "issue_codes": [],
+        "category_status": "APPLICABLE"
+      },
+      "formal_application_e2e": {
+        "evaluation_status": "SUCCESS",
+        "grade": "1",
+        "ui_conclusion": "1级",
+        "issue_codes": [],
+        "category_status": "APPLICABLE",
+        "rule_profile": "pump_chemical",
+        "matched_rule_id": "GB19762-R000012",
+        "support_status": "SUPPORTED",
+        "finalizable": true
+      },
+      "business_truth_consistent": true
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-SINGLE-NS-ABOVE-300",
+      "source_golden_file": "specs/equipment_efficiency/golden/pump_chemical/GC-PUMP-V5-CHEMICAL-SINGLE-NS-ABOVE-300.json",
+      "source_golden_text_sha256": "F9D4DEF8437E2D8E346304FAAC14BC254F5089668C1A666AEE303AD130B99FA9",
+      "golden_evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "golden_support_status": null,
+      "historical_business_truth": {
+        "evaluation_status": "OUT_OF_STANDARD_SCOPE",
+        "grade": null,
+        "ui_conclusion": "不适用",
+        "issue_codes": [
+          "OUT_OF_STANDARD_SCOPE"
+        ],
+        "category_status": "APPLICABLE"
+      },
+      "formal_application_e2e": {
+        "evaluation_status": "OUT_OF_STANDARD_SCOPE",
+        "grade": null,
+        "ui_conclusion": "不适用",
+        "issue_codes": [
+          "OUT_OF_STANDARD_SCOPE"
+        ],
+        "category_status": "APPLICABLE",
+        "rule_profile": "pump_chemical",
+        "matched_rule_id": null,
+        "support_status": "SUPPORTED",
+        "finalizable": true
+      },
+      "business_truth_consistent": true
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-SINGLE-NS-BELOW-20",
+      "source_golden_file": "specs/equipment_efficiency/golden/pump_chemical/GC-PUMP-V5-CHEMICAL-SINGLE-NS-BELOW-20.json",
+      "source_golden_text_sha256": "651C9C5AEE57A6122B796B35F742DC0EFD1A2A839E80788B558809B946EA78C5",
+      "golden_evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "golden_support_status": null,
+      "historical_business_truth": {
+        "evaluation_status": "OUT_OF_STANDARD_SCOPE",
+        "grade": null,
+        "ui_conclusion": "不适用",
+        "issue_codes": [
+          "OUT_OF_STANDARD_SCOPE"
+        ],
+        "category_status": "APPLICABLE"
+      },
+      "formal_application_e2e": {
+        "evaluation_status": "OUT_OF_STANDARD_SCOPE",
+        "grade": null,
+        "ui_conclusion": "不适用",
+        "issue_codes": [
+          "OUT_OF_STANDARD_SCOPE"
+        ],
+        "category_status": "APPLICABLE",
+        "rule_profile": "pump_chemical",
+        "matched_rule_id": null,
+        "support_status": "SUPPORTED",
+        "finalizable": true
+      },
+      "business_truth_consistent": true
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-SINGLE-NS210-300-L2",
+      "source_golden_file": "specs/equipment_efficiency/golden/pump_chemical/GC-PUMP-V5-CHEMICAL-SINGLE-NS210-300-L2.json",
+      "source_golden_text_sha256": "95888EFA94D57B066941AD87A031F230B3D291EE511A4884AC2B3CE8116F4909",
+      "golden_evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "golden_support_status": null,
+      "historical_business_truth": {
+        "evaluation_status": "SUCCESS",
+        "grade": "2",
+        "ui_conclusion": "2级",
+        "issue_codes": [],
+        "category_status": "APPLICABLE"
+      },
+      "formal_application_e2e": {
+        "evaluation_status": "SUCCESS",
+        "grade": "2",
+        "ui_conclusion": "2级",
+        "issue_codes": [],
+        "category_status": "APPLICABLE",
+        "rule_profile": "pump_chemical",
+        "matched_rule_id": "GB19762-R000014",
+        "support_status": "SUPPORTED",
+        "finalizable": true
+      },
+      "business_truth_consistent": true
+    },
+    {
+      "case_id": "GC-PUMP-V5-CHEMICAL-STAGE-CONFLICT",
+      "source_golden_file": "specs/equipment_efficiency/golden/pump_chemical/GC-PUMP-V5-CHEMICAL-STAGE-CONFLICT.json",
+      "source_golden_text_sha256": "FBA09F93502364BD5FE8EE0AC91550C1483F0BBD6D018902BC5965E1EA912F9F",
+      "golden_evaluation_layer": "PROFILE_EVALUATOR_TECHNICAL",
+      "golden_support_status": null,
+      "historical_business_truth": {
+        "evaluation_status": "INVALID_INPUT",
+        "grade": null,
+        "ui_conclusion": "无法判定",
+        "issue_codes": [
+          "STAGE_CATEGORY_CONFLICT"
+        ],
+        "category_status": "APPLICABLE"
+      },
+      "formal_application_e2e": {
+        "evaluation_status": "INVALID_INPUT",
+        "grade": null,
+        "ui_conclusion": "无法判定",
+        "issue_codes": [
+          "STAGE_CATEGORY_CONFLICT"
+        ],
+        "category_status": "APPLICABLE",
+        "rule_profile": "pump_chemical",
+        "matched_rule_id": null,
+        "support_status": "SUPPORTED",
+        "finalizable": false
+      },
+      "business_truth_consistent": true
+    }
+  ]
+}

@@ -1,6 +1,20 @@
 # `pump_chemical` / GB 19762-2025 石油化工泵映射 V0.2 候选
 
-状态：DRAFT_FOR_INDEPENDENT_REVIEW。按冻结的 V1_SCOPE，pump_chemical 保持 UNDER_REVIEW；此 Profile 仅用于技术诊断，公共 Application 返回 support_status=NOT_IN_RELEASE_SCOPE。未发布、未获 Phase 1 验收或 Golden 批准。数值与状态以 PUMP_NUMERIC_AND_DECISION_CONTRACT_V2 为当前契约。
+状态：**Phase 5 更新**。11 条 Golden 已于 2026-10-02 获 Owner 具名批准（11/11），
+Stage D 证据闭环已完成并交独立验收
+（`docs/phase5_stage_d_evidence_matrix.md`、
+`specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json`）。
+
+- **统一正式产品路径**（`CentrifugalPumpAnalysisService`，PySide6 Qt Desktop `--qt`）
+  的 `support_status` 为 `SUPPORTED`（**支持提升候选**）；
+- 治理状态为 `SUPPORT_PROMOTION_CANDIDATE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`，
+  **独立验收通过前不得写成"正式支持已经生效"**；
+- **非正式表面**（`--json` / `ApplicationApi` / JSONL / CLI / `--web` /
+  legacy Tk `--gui` / V4·Excel）仍返回 `NOT_IN_RELEASE_SCOPE`，登记为
+  `REGISTERED_DEVIATION`（`QA_BACKLOG.md` 的 `QA-P5-001`～`005`）。
+
+数值与状态以 `PUMP_NUMERIC_AND_DECISION_CONTRACT_V2` 为当前契约。
+本 Phase **未**修改任何公式 / 边界 / 等级 / Canonical 数据。
 
 ## 1. 身份和证据
 

@@ -161,12 +161,15 @@ class AsOfIsNotAnExecutionGateTests(_DbCase):
 class LifecycleWarningTests(_DbCase):
     """标准生命周期只做非阻断提示，且与业务判定严格分离。"""
 
-    def test_before_effective_date_emits_a_warning(self):
+    def test_before_effective_date_emits_a_short_non_blocking_warning(self):
+        """Phase 5 Owner 规则：提前日期只给**几个字**的非阻断提醒。"""
+
         result = self.service.evaluate(
             _request(WATER, BEFORE_EFFECTIVE, WATER_VALUES))
         self.assertTrue(result.warnings)
-        self.assertIn("早于所选标准实施日期", result.warnings[0])
-        self.assertIn(BEFORE_EFFECTIVE.isoformat(), result.warnings[0])
+        self.assertEqual(result.warnings, ("该标准尚未实施",))
+        # 不要求用户做任何确认；不改变业务结论
+        self.assertEqual(result.evaluation_status, "SUCCESS")
 
     def test_no_warning_on_or_after_effective_date(self):
         for as_of in (ON_EFFECTIVE, AFTER_EFFECTIVE):
@@ -278,7 +281,7 @@ class LifecycleWarningUiTests(_DbCase):
         result = page.evaluate()
         self.assertEqual(result.evaluation_status, "SUCCESS")
         self.assertEqual(result.grade, "1")
-        self.assertIn("早于所选标准实施日期", page.warning_label.text())
+        self.assertIn("该标准尚未实施", page.warning_label.text())
         # 非阻断：仍可保存
         self.assertTrue(page.finalize_button.isEnabled())
         self.assertEqual(page.finalize(), "SAVED")
@@ -296,8 +299,8 @@ class LifecycleWarningUiTests(_DbCase):
         page.evaluate()
         ordinary = "\n".join([page.conclusion.text(), page.summary.text(),
                               page.basis.text()])
-        self.assertNotIn("早于所选标准实施日期", ordinary)
-        self.assertIn("早于所选标准实施日期", page.warning_label.text())
+        self.assertNotIn("该标准尚未实施", ordinary)
+        self.assertIn("该标准尚未实施", page.warning_label.text())
 
 
 if __name__ == "__main__":

@@ -7,8 +7,11 @@
 
 注意：`golden-case-0.5` 中石化案例的 `evaluation_layer` 为
 `PROFILE_EVALUATOR_TECHNICAL`，`expected_result.support_status` 为 null；
-统一 AnalysisService 会额外给出发布门禁 `NOT_IN_RELEASE_SCOPE`。因此本测试
-只对业务真值字段断言，不对 `support_status` 做跨层级比较。
+统一 AnalysisService 额外给出**发布门禁**维度（Phase 5 起石化泵为
+`SUPPORTED` 候选）。Golden 的 `evaluation_layer` 与历史 provenance
+**未被改写**——它表示历史批准来源，当前正式产品链的证据另见
+`specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json`。
+因此本测试只对业务真值字段断言，不对 `support_status` 做跨层级比较。
 """
 from __future__ import annotations
 
@@ -118,13 +121,19 @@ class ApprovedGoldenReplayTests(unittest.TestCase):
                 self.assertEqual(result.matched_rule_id,
                                  case["expected_calculation_trace"]["matched_rule_id"])
 
-    def test_chemical_release_gate_is_not_promoted_by_this_phase(self):
-        """统一入口可评价石化泵，但 Phase 3 不得提升其发布支持。"""
+    def test_chemical_release_gate_is_promoted_to_support_candidate(self):
+        """Phase 5：统一入口对石化泵的发布门禁提升为 `SUPPORTED` 候选。
+
+        Phase 3 时该断言为 `NOT_IN_RELEASE_SCOPE`（当时不得提升）；Phase 5 完成
+        pump_chemical Stage D 后，统一正式产品路径的 `support_status` 变为
+        `SUPPORTED`。这是**发布门禁维度**的变化，不改变任何业务真值——
+        本文件的业务结论断言（等级 / 阈值 / 规则 / trace）全部保持原样。
+        """
 
         for case in self.chemical:
             with self.subTest(case=case["case_id"]):
                 result = self.service.evaluate(_request(case))
-                self.assertEqual(result.support_status, "NOT_IN_RELEASE_SCOPE")
+                self.assertEqual(result.support_status, "SUPPORTED")
                 self.assertEqual(result.rule_profile, "pump_chemical")
 
     def test_chemical_golden_derived_values_match_owner_approved_trace(self):

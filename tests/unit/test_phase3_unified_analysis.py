@@ -129,8 +129,9 @@ class UnifiedAnalysisContractTests(unittest.TestCase):
         self.assertEqual(result.ui_conclusion, "2级")
         self.assertEqual(result.grade, "2")
         self.assertEqual(result.matched_rule_id, "GB19762-R000014")
-        # Phase 3 硬约束：不得自行提升为 SUPPORTED
-        self.assertEqual(result.support_status, "NOT_IN_RELEASE_SCOPE")
+        # Phase 5：统一正式产品路径的发布门禁已提升为 `SUPPORTED` 候选
+        # （Phase 3 时为 `NOT_IN_RELEASE_SCOPE`，当时不得提升）。
+        self.assertEqual(result.support_status, "SUPPORTED")
 
     def test_chemical_out_of_standard_scope_is_a_valid_conclusion(self):
         result = self.service.evaluate(PumpAnalysisRequest(

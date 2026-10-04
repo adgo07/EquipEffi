@@ -21,6 +21,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
     CentrifugalPumpAnalysisService,
 )
 from ..tokens import TOKENS
+from ..labels import support_status_text
 from ..widgets.collapsible import CollapsibleSection
 
 
@@ -147,6 +148,11 @@ class RecordsPage(QWidget):
             ("评价状态", snapshot.evaluation_status or "—"),
             ("命中规则", result.get("matched_rule_id") or "—"),
             ("类别状态", result.get("category_status") or "—"),
+            # 支持状态取自**不可变快照本身**，因此它天然就是"当时"的事实：
+            # Phase 3/4 期间形成的 chemical Record 快照里是
+            # `NOT_IN_RELEASE_SCOPE`，这里就显示"当前版本未支持"，
+            # 不会被追溯改成"正式支持"。不重算、不改写 snapshot。
+            ("支持状态", support_status_text(result.get("support_status"))),
             ("规则集", standard.get("rule_profile") or "—"),
             ("标准包", standard.get("pack_id") or "—"),
             ("数据版本", snapshot.canonical_version or "—"),

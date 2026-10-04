@@ -122,6 +122,11 @@ jobs:
             tests.unit.test_phase3_r2_final_closure.FinalizeStateMatrixTests `
             tests.unit.test_phase3_r3_as_of_lifecycle -v
 
+      # Phase 5：pump_chemical Stage D 支持提升候选 —— 11 条历史真值经当前正式
+      # Application 链一致复现，且 Golden 的 evaluation_layer 未被改写。
+      - name: pump_chemical Stage D candidate evidence (gating)
+        run: python -m unittest tests.unit.test_phase5_chemical_stage_d.StageDEvidenceTests -v
+
       # Pump evaluator 与 Application API 门面（pump_water 与 pump_chemical 共用矩阵）。
       # test_phase3_r1_blockers 为 R1 对抗性门禁：Finalize 状态白名单 fail-closed、
       # Qt stale result、Canonical pack_hash、技术详情折叠。

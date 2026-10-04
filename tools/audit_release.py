@@ -409,9 +409,16 @@ def _audit_evaluator_examples(src: Path, errors: list[str], checks: dict[str, An
         service = EvaluationService(JsonStandardRepository(src / "equipeffi", manifest=manifest_path))
 
         def evaluate_example(device_type: str, record_id: str, values: dict[str, Any]):
-            # Release audit checks profile evaluator evidence. The public
-            # pump_chemical route intentionally remains NOT_IN_RELEASE_SCOPE
-            # until the pending V1 gates have been reviewed.
+            # Release audit checks **profile evaluator** evidence, so it calls the
+            # evaluator directly and never goes through the product release gate.
+            #
+            # Phase 5 note: the unified formal product path
+            # (CentrifugalPumpAnalysisService, used by Qt `--qt`) now reports
+            # `pump_chemical = SUPPORTED` as a **support promotion candidate**
+            # (pending independent acceptance). The legacy EvaluationService /
+            # ApplicationApi surfaces still return NOT_IN_RELEASE_SCOPE and are
+            # registered as REGISTERED_DEVIATION in QA_BACKLOG (QA-P5-001/002).
+            # This smoke test is unaffected by either: it bypasses the release gate.
             evaluator_type = {
                 "pump_water": WaterPumpEvaluator,
                 "pump_chemical": ChemicalPumpEvaluator,

@@ -113,17 +113,27 @@ automatic_scope_expansion: DISABLED
 | Profile | `scope_status` | `support_status`（当前） | 标准开发成熟度 | 目标 |
 |---|---|---|---|---|
 | `pump_water` | `IN_V1` | `SUPPORTED` | `SUPPORTED` | 已达成 |
-| `pump_chemical` | `IN_V1` | `NOT_IN_RELEASE_SCOPE` | `READY_FOR_IMPLEMENTATION` | `support_status = SUPPORTED` |
+| `pump_chemical` | `IN_V1` | `SUPPORT_PROMOTION_CANDIDATE`（统一 Qt 正式路径取值 `SUPPORTED`） | `IMPLEMENTED`（`SUPPORTED` 为候选） | `support_status = SUPPORTED` |
 | `transformer` | `POST_V1` | `NOT_IN_RELEASE_SCOPE` | 未进入本轮标准开发流程 | 本轮不排期；资产保留 |
 
-**`pump_chemical` 的当前状态说明（重要）：**
+**`pump_chemical` 的当前状态说明（重要，Phase 5 更新）：**
 
-- `scope_status = IN_V1` 表示 `pump_chemical` **已确定属于 Windows V1 正式范围**，本轮必须完成其标准开发与产品实现；
-- `support_status = NOT_IN_RELEASE_SCOPE` 是**当前**发布能力事实，**在以下两项完成前不得改写为 `SUPPORTED`**：
-  1. `pump_chemical` Golden Case 获得具名业务批准（当前 8 条候选仍为 technical-only，未获 V1 Golden 批准）；
-  2. 中央 `STANDARD_DEVELOPMENT_GUIDE_V0.1.md` §3/§18 要求的 Stage D 正式验收通过，并有独立验收证据。
-- 中央指南 §19 明确 **不得无证据跳级**、`SUPPORTED` 定义为“完整要求通过独立验收”。因此“进入了产品范围”**不等于**“已经正式支持”。
-- 达到验收后，切换 `support_status` 为 `SUPPORTED` 并同步本文件、`REFERENCE_STANDARD_ROADMAP.md` 与 Results/Record 契约。
+- `scope_status = IN_V1` 表示 `pump_chemical` **已确定属于 Windows V1 正式范围**；
+- 第 1 项（Golden 具名业务批准）**已完成**：Owner 于 2026-10-02 逐条批准，**11/11 PASS**，
+  形式化为 11 条 `golden-case-0.5`；
+- 第 2 项（Stage D 正式验收）的证据闭环已在 **Phase 5** 完成并交独立验收：
+  `docs/phase5_stage_d_evidence_matrix.md` +
+  `specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json`；
+- **在独立验收结论产生之前**，治理状态只能写 `SUPPORT_PROMOTION_CANDIDATE`；
+  **不得**写成"正式支持已经生效"。统一正式产品路径（Qt `--qt`）的运行时取值为
+  `SUPPORTED`，这是**候选事实**而非已生效的支持声明；
+- 中央指南 §19 明确 **不得无证据跳级**，`SUPPORTED` 定义为"完整要求通过独立验收"。
+  因此"证据已就绪"**不等于**"已经正式支持"；
+- 正式发布用户表面 = **PySide6 Qt Desktop（`--qt`）**；非正式表面的 support 差异
+  登记为 `REGISTERED_DEVIATION`（`QA_BACKLOG.md` 的 `QA-P5-001`～`005`），
+  不得含糊带过，也不得误报为 Phase 5 已修复；
+- 独立验收通过后，再把 `support_status` 切为 `SUPPORTED` 并同步本文件、
+  `REFERENCE_STANDARD_ROADMAP.md` 与 Results/Record 契约。
 
 ### 4.2 中央标准开发成熟度对照
 
@@ -259,7 +269,7 @@ Windows `py` 启动器不是本次门禁入口；验收统一使用项目 `.venv
 2026-10-02 产品决策将 Windows V1 正式产品目标统一为“完整支持 GB 19762—2025 离心泵标准”。因此 Profile 级 `IN_V1` 为 **`pump_water` 与 `pump_chemical`** 两者：
 
 - `pump_water` 已完成 Phase 1 纵向样板证据，标准开发成熟度为 `SUPPORTED`，`support_status = SUPPORTED`；
-- `pump_chemical` 已确定属于 Windows V1 范围，但标准开发成熟度仅为 `READY_FOR_IMPLEMENTATION`，8 条候选 Golden 未获 V1 批准、Stage D 未验收，因此**当前** `support_status = NOT_IN_RELEASE_SCOPE`。
+- `pump_chemical` 已确定属于 Windows V1 范围；其 11 条 Golden 已于 2026-10-02 获 Owner 具名批准，Stage D 证据闭环在 Phase 5 完成并交独立验收，因此**当前**治理状态为 `SUPPORT_PROMOTION_CANDIDATE`（统一 Qt 正式路径取值 `SUPPORTED`），成熟度为 `IMPLEMENTED`、候选 `SUPPORTED`。**独立验收通过前不得写成"正式支持已经生效"。**
 
 `transformer` 在本轮由 `IN_V1` 调整为 `POST_V1`（暂缓，资产保留）。
 
@@ -276,7 +286,7 @@ Windows `py` 启动器不是本次门禁入口；验收统一使用项目 `.venv
 motor 和 centrifugal_pump 这类一对多公共类型不能直接显示为笼统的 SUPPORTED。必须按 Profile 分别展示 `scope_status`、`support_status` 与标准开发成熟度：
 
 - `pump_water`：范围 `IN_V1`，`support_status` 由发布门禁决定（当前 `SUPPORTED`）；
-- `pump_chemical`：范围 `IN_V1`，但当前 `support_status = NOT_IN_RELEASE_SCOPE`，UI 必须显示“已纳入 Windows V1 范围、当前版本尚未开放”的明确状态；**不得**显示为已支持，也不得因共享 GB 19762—2025 标准号而让用户看到“已支持，只是算不出来”；
+- `pump_chemical`：范围 `IN_V1`；正式 Qt 路径在 Phase 5 起运行时取值为 `SUPPORTED`（支持提升候选，待独立验收）。历史 Record 中记录的 `NOT_IN_RELEASE_SCOPE`（“当前版本未支持”）必须原样显示，不得追溯改写；也不得因共享 GB 19762—2025 标准号而让用户看到“已支持，只是算不出来”；
 - `transformer`：范围 `POST_V1`，显示“当前版本未支持”。
 
 `REQUIRES_REVIEW` 不是支持、类别或评价状态。
