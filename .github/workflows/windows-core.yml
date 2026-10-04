@@ -97,6 +97,14 @@ jobs:
             Get-Content $_.FullName | Add-Content -Path $env:GITHUB_STEP_SUMMARY
           }
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value '```'
+          # 把结果提交回分支，便于在无 actions:read 权限时直接读取。
+          git config user.name  "dsh-diagnostic"
+          git config user.email "dsh-diagnostic@invalid"
+          New-Item -ItemType Directory -Force -Path .diagnostic | Out-Null
+          Copy-Item diag\* .diagnostic\ -Force
+          git add -f .diagnostic
+          git commit -m "diagnostic output [skip ci]" || Write-Output "nothing to commit"
+          git push origin HEAD:refs/heads/diag-output || Write-Output "push failed"
 
       - name: Phase 2/3/4/5/6 settings, lifecycle, Stage D, Product Shell, Qt offscreen (gating)
         run: |
