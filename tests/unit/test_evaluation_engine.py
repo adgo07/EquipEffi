@@ -386,8 +386,12 @@ class EvaluationEngineTests(unittest.TestCase):
         self.assertEqual(record["reference_conclusion"], "1级")
         self.assertTrue(record["lookups"])
 
-    def test_pre_effective_industry_gate_does_not_expose_future_standard(self):
-        """实施日前的产业目录门禁不得调用未来标准评价器。"""
+    def test_pre_effective_date_no_longer_blocks_pump_standard_evaluation(self):
+        """Owner 规则（Phase 6）：评价日期不是业务门禁。
+
+        此前该用例断言"实施日前跳过标准查表"。Owner 已决定评价日期只用于记录与
+        追溯，因此离心泵必须照常进入能效参考判定；断言改为证明**不再跳过**。
+        """
         result = self.service.evaluate(
             DeviceDraft(
                 record_id="PRE-EFFECTIVE-INDUSTRY",
@@ -404,21 +408,19 @@ class EvaluationEngineTests(unittest.TestCase):
             as_of="2026-02-28",
             elimination_scope=EliminationScope.INDUSTRY_ONLY,
         )
-        self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
-        self.assertIsNone(result.reference_conclusion)
-        self.assertFalse(result.actual_metrics)
-        self.assertFalse(result.calculated_metrics)
-        self.assertFalse(result.limits)
-        self.assertFalse(result.lookups)
-        self.assertFalse(result.comparisons)
+        step_types = {item.get("step_type") for item in result.trace}
+        # 关键差异：不再出现"标准生效日期：已跳过"门禁步骤，而是照常执行
+        # "能效参考判定"。
+        self.assertNotIn("标准生效日期", step_types)
+        self.assertIn("能效参考判定", step_types)
         self.assertEqual(result.standard_reference["effective_date"], "2026-03-01")
-        self.assertIn("早于标准实施日期", result.notes[0])
-        self.assertNotIn("标准查询结果", {item.get("step_type") for item in result.trace})
-        effective_step = next(item for item in result.trace if item.get("step_type") == "标准生效日期")
-        self.assertTrue(effective_step["standard_evaluation_skipped"])
+        # 该草稿缺少清水泵级数，因此结论仍是"无法判定"，但原因是缺参数，
+        # 不是日期门禁。
+        self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
+        self.assertTrue(any("stages" in note for note in result.notes))
 
-    def test_pre_effective_confirmed_elimination_skips_future_reference(self):
-        """确认淘汰不依赖能效标准，但实施日前不得生成未来参考等级。"""
+    def test_pre_effective_confirmed_elimination_still_reports_elimination(self):
+        """确认淘汰不依赖能效标准；实施日前同样不再跳过标准评价。"""
         result = self.service.evaluate(
             DeviceDraft(
                 record_id="PRE-EFFECTIVE-ELIMINATED",
@@ -436,14 +438,10 @@ class EvaluationEngineTests(unittest.TestCase):
             elimination_scope=EliminationScope.INDUSTRY_ONLY,
         )
         self.assertEqual(result.conclusion, Conclusion.ELIMINATED)
-        self.assertIsNone(result.reference_conclusion)
         self.assertEqual(result.elimination_match["entry_id"], "IND2024-PUMP-BA")
-        self.assertFalse(result.lookups)
-        self.assertFalse(result.actual_metrics)
-        self.assertIn("标准尚未实施", result.explanation)
-        effective_step = next(item for item in result.trace if item.get("step_type") == "标准生效日期")
-        self.assertEqual(effective_step["output"], "已跳过")
-        self.assertNotIn("标准查询结果", {item.get("step_type") for item in result.trace})
+        step_types = {item.get("step_type") for item in result.trace}
+        self.assertNotIn("标准生效日期", step_types)
+        self.assertNotIn("标准尚未实施", result.explanation)
 
     def test_combined_scope_keeps_explicit_motor_batch_hit_under_partial_industry_catalog(self):
         """组合口径下，四批目录的明确命中不应被产业目录非全文门禁拦截。"""

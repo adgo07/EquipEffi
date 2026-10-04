@@ -425,8 +425,17 @@ class CentrifugalPumpAnalysisService:
     # `PUMP_CATEGORIES` 目录，发布门禁来自本模块的 `_release_support`。
     # Presentation 不得自行维护第二份标准表。
 
-    def standard_overview(self) -> dict[str, Any]:
-        """当前正式标准的展示元数据（供标准库页面使用）。"""
+    def standard_overview(self, *, as_of: date | None = None,
+                          show_lifecycle_warning: bool = False) -> dict[str, Any]:
+        """当前正式标准的展示元数据（供标准库页面使用）。
+
+        ``as_of`` 默认取本机当天，使 ``lifecycle_state`` 反映**当前**真实状态。
+        ``show_lifecycle_warning``：标准库展示的是当前标准事实，只有调用方
+        明确要针对某个日期发问时才给出提示文案，避免把"相对某日尚未实施"
+        无条件显示成当前标准状态。
+        """
+
+        as_of = as_of if as_of is not None else date.today()
 
         scopes: list[dict[str, Any]] = []
         standard_name = ""
@@ -467,10 +476,44 @@ class CentrifugalPumpAnalysisService:
                                    if category.special],
             # 当前 Canonical Pack 未提供废止/替代元数据；如实说明而不是留空或编造。
             "supersession_note": "当前标准数据未提供废止或被替代关系信息。",
-            # 生命周期提示（非阻断）；评价日期不是业务门禁。
-            "lifecycle_warning": "该标准尚未实施",
+            # 生命周期提示（非阻断）：由**真实日期**推导，不硬编码结论。
+            # 评价日期不是业务门禁，因此该提示永不阻断计算。
+            "lifecycle_warning": self._standard_lifecycle_warning(
+                pack, as_of if show_lifecycle_warning else None),
+            "lifecycle_state": self._standard_lifecycle_state(pack, as_of),
             "as_of_policy": "评价日期用于记录与追溯；不影响所选标准的计算。",
         }
+
+    def _standard_lifecycle_state(self, pack: dict[str, Any],
+                                  as_of: date | None) -> str:
+        """返回标准相对给定日期的真实生命周期状态。
+
+        取值刻意保持最小且**不推测**：
+
+        ```text
+        NOT_YET_EFFECTIVE  评价日期早于 Canonical 实施日期
+        EFFECTIVE          评价日期已达到 / 晚于实施日期
+        UNKNOWN            没有实施日期元数据
+        ```
+
+        当前 Canonical Pack 未提供废止 / 替代（`superseded_by` 等）元数据，
+        因此**不得**推测"已废止 / 已被替代"（补齐须走标准映射流程，已登记
+        `QA-P3-002`）。
+        """
+
+        effective = self._effective_date(pack)
+        if effective is None or as_of is None:
+            return "UNKNOWN"
+        return "EFFECTIVE" if as_of >= effective else "NOT_YET_EFFECTIVE"
+
+    def _standard_lifecycle_warning(self, pack: dict[str, Any],
+                                    as_of: date | None) -> str:
+        """生命周期**非阻断**提示；无提示时返回空串。"""
+
+        state = self._standard_lifecycle_state(pack, as_of)
+        if state == "NOT_YET_EFFECTIVE":
+            return "该标准尚未实施"
+        return ""
 
     def _base_result(self, request: PumpAnalysisRequest, pack: dict[str, Any],
                      rule_profile: str | None) -> dict[str, Any]:

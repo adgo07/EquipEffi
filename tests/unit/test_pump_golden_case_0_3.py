@@ -155,16 +155,19 @@ class PumpGoldenCaseV03Tests(unittest.TestCase):
         self.assertIn("CATEGORY_NOT_APPLICABLE", other.issue_codes)
         self.assertFalse(other.calculated_metrics)
 
+        # Phase 6 G06：石化泵不再被共享 Application/CLI 语义短路。
+        # 它与清水泵调用同一正式业务能力并正常计算；类别未解析 / 其他类别
+        # 仍是类别级结论，保持 NOT_IN_RELEASE_SCOPE。
         chemical = evaluate({
             "product_type": "单级石油化工离心泵", "suction": "单吸", "stages": "1",
             "QBEP": "100", "HBEP": "50", "speed": "2900", "efficiency": "90",
         })
-        self.assertEqual(chemical.support_status, "NOT_IN_RELEASE_SCOPE")
+        self.assertEqual(chemical.support_status, "SUPPORTED")
         self.assertEqual(chemical.category_status, "APPLICABLE")
-        self.assertIsNone(chemical.evaluation_status)
-        self.assertIsNone(chemical.grade)
-        self.assertEqual(chemical.conclusion, Conclusion.NOT_IN_RELEASE_SCOPE)
-        self.assertFalse(chemical.calculated_metrics)
+        self.assertEqual(chemical.evaluation_status, "SUCCESS")
+        self.assertIsNotNone(chemical.grade)
+        self.assertNotEqual(chemical.conclusion, Conclusion.NOT_IN_RELEASE_SCOPE)
+        self.assertTrue(chemical.calculated_metrics)
 
     def test_public_application_marks_present_invalid_values_without_missing_codes(self):
         base = {

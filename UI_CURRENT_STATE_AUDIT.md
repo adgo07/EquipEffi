@@ -74,9 +74,10 @@ open_settings()
 | 状态 / 实施日期 / 数据版本 | 来自标准包 |
 | 支持类别 | 来自 Application 类别目录 |
 | 软件支持状态 | 来自发布门禁，用中文显示（「正式支持」/「当前版本未支持」） |
+| 生命周期状态 | 由**真实日期**（本机当天 / 给定评价日期）与 Canonical `effective_date` 推导，不硬编码 |
 | 官方 / 权威来源 | 标准包 `source_file` |
 | 替代关系 | 当前标准数据未提供 → **如实说明**，不编造 |
-| 生命周期提示 | 「该标准尚未实施」（仅提示，不阻止计算） |
+| 生命周期提示 | 仅当评价日期**早于**实施日期时显示「该标准尚未实施」；达到实施日期后不显示（仅提示，不阻止计算） |
 | 动作 | 「基于该标准开始分析」 |
 
 **数据来源链**：标准事实全部来自 **Application read model**
@@ -174,8 +175,8 @@ Phase 6 机械门禁在 `test_phase6_product_shell.py` 固化该约束。
 | 真实可配置项 | 日志级别（`log.level`，真实持久化） |
 | 只读信息 | 上次使用的目录、应用设置项清单 |
 | 关于 | 应用版本、当前正式标准、适用产品 |
-| 运行信息 | 数据存储位置、应用设置项 |
-| **不得**作为用户设置 | Numeric precision、rule profile、calculator、internal ID、canonical version、算法开关 |
+| 运行信息 | 数据存储位置（由正式 composition 解析并传入；用户不见内部机器键名） |
+| **不得**作为用户设置或展示 | Numeric precision、rule profile、calculator、internal ID、canonical version、算法开关，以及 `last.directory` / `window.geometry` / `window.state` / `log.level` 等内部机器键名 |
 | 不做 | 不提前做 installer / update system |
 
 ## 9. 问题登记
@@ -183,10 +184,10 @@ Phase 6 机械门禁在 `test_phase6_product_shell.py` 固化该约束。
 | 编号 | 内容 | 状态 |
 |---|---|---|
 | `QA-P6-001` | legacy Tk 实现保留但不接线；`main_window.py` 仍被表单模型测试引用，非零引用可盲删 | `REGISTERED_DEVIATION` → Phase 8 |
-| `QA-P6-002` | 候选层 Golden 冻结 10 个实现文件哈希，使共享 Application/CLI 语义收口在 Phase 6 权限内不可完成 | `BLOCKER` → Phase 7 |
+| `QA-P6-002` | 候选层 Golden 的历史实现证据登记缺口（曾被误判为实现文件被永久冻结） | `CLOSED`（Phase 6 R1：补登记历史哈希，实现可演进） |
 | `QA-P6-003` | 草稿 identity「名称即 ID / 改名等价于新建」 | `REGISTERED_DEVIATION` → Phase 7 |
 | `QA-P6-004` | 非正式 adapter 保留但未升级为正式 Windows UI | `REGISTERED_DEVIATION` → Phase 8 / 9 |
-| `QA-P5-001` / `QA-P5-002(b)` / `QA-P3-003` | 共享 Application/CLI 语义与旧 `as_of` 门禁，Phase 6 复核后**仍不能关闭** | `OPEN`，附 blocker → Phase 7 |
+| `QA-P5-001` / `QA-P5-002` / `QA-P3-003` | 共享 Application/CLI 语义与旧 `as_of` 门禁 | `CLOSED`（Phase 6 R1） |
 
 详见 `QA_BACKLOG.md`。
 

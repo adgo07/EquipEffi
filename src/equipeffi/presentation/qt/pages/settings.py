@@ -1,4 +1,4 @@
-"""设置：只显示真实可配置项。
+"""设置：只显示真实可配置项；**不显示内部机器键名**。
 
 当前真实用户偏好只有日志级别与上次使用的目录（`SettingsService.KEYS`）。
 **不制造**无实际价值的设置；普通用户**不得**设置 Numeric precision、rule profile、
@@ -113,14 +113,17 @@ class SettingsPage(QWidget):
             "适用产品：GB 19762—2025 离心泵（清水泵与石油化工泵使用同一分析流程）",
         ]))
 
-        location = str(self.data_location) if self.data_location else "—"
+        # 普通用户不得看到内部机器键名（last.directory / window.geometry /
+        # window.state / log.level 等）。只展示业务中文名称与真实路径。
+        location = str(self.data_location) if self.data_location else "（未能确定，请检查安装）"
         self.runtime.setText("\n".join([
             f"数据存储位置：{location}",
-            f"应用设置项：{', '.join(sorted(type(self.settings).KEYS))}",
+            "记录与草稿存放于该目录下的 records.sqlite；运行日志存放于 logs 子目录。",
         ]))
 
-        last = self.settings.get("last.directory", "") or "（尚未使用）"
-        self.last_directory.setText(f"上次使用的目录：{last}")
+        last = self.settings.get("last.directory", "")
+        self.last_directory.setText(
+            f"上次使用的目录：{last}" if last else "上次使用的目录：（尚未使用）")
 
     # -- 动作 ---------------------------------------------------------------
 

@@ -382,3 +382,151 @@ READY_FOR_INDEPENDENT_ACCEPTANCE
 
 报告完成后**不得**再向该分支追加提交。如 Head 改变，必须重新声明新的 final Head、
 重新执行必要测试，并等待该 Head 对应的 CI。
+
+---
+
+# Phase 6 R1 — Independent Acceptance Blocker Fixes
+
+针对独立验收对 head `df7ba11b9a107e54eb737851263b9239ba8a593f` 提出的 3 个 blocker。
+Base 仍为 `f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`；继续在 PR #14 上修复。
+
+## R1-B1 — 真正关闭 3 条入口语义 QA
+
+### 根因（先查清，不把 pin 当作再次延期的理由）
+
+需求明确要求先查清 candidate provenance 的历史证据语义、Approved Golden 的
+`source_candidate_sha256` 语义，以及 validator 为什么把历史候选证据与当前实现锁死。
+
+审计结论：
+
+1. **候选层哈希是历史证据**：`pump_e2e_v0_3_candidates.jsonl` 的
+   `source_sidecar.source_references` 记录了 0.3 候选冻结时（提交
+   `72e8e49` / `90af7f8`）的 10 个实现文件快照。
+2. **批准层锚定候选记录，而非实现文件**：18 条已批准 `pump_water` Golden 用
+   `provenance.source_candidate_sha256` 锚定**候选记录的规范化哈希**。
+   因此只要候选记录内容不变，批准层 provenance 恒成立。
+3. **validator 本就内置了正确机制**：`tools/validate_phase1_contracts.py` 的
+   `_historical_hash_reason` 会查
+   `specs/equipment_efficiency/evidence_registry.json` 的
+   `historical_repository_hashes`，命中即把工作区差异**记为历史 provenance 而不是错误**
+   （第 334–341 行）。注册表内**既有一条** `golden-case-0.3` 记录，其 reason 已写明
+   *later implementation changes must not invalidate already-recorded candidate provenance*。
+4. **真正的缺口**：该登记只覆盖了 `json_repository.py`，**未覆盖
+   `evaluation_service.py`**。所以问题不是"实现被永久冻结"，而是"历史证据登记不完整"。
+
+因此采用需求指定的方向：**历史证据保持不可变，当前实现可以演进，
+验证逻辑正确区分 historical provenance 与 current implementation**。
+
+### 修复
+
+1. **补登记历史证据**（`specs/equipment_efficiency/evidence_registry.json`）：
+   为 `src/equipeffi/application/services/evaluation_service.py` 增加一条
+   `golden-case-0.3` / `historical_repository_hashes` 记录，哈希为
+   `EEF8731E5A162C81441D83BAC4C493D0F9EA5A0014CEC1E44BF5E82535DEB8ED`。
+   该值已在冻结提交 `72e8e49` 处**实测复核一致**（仓库文本哈希规则：
+   UTF-8 → CRLF→LF → SHA-256 大写）。
+2. **实现演进**（`evaluation_service.py`）：
+   - 删除石化泵硬编码短路块（`PROFILE_NOT_IN_RELEASE_SCOPE`）；
+   - 新增共享发布门禁单一事实源
+     `application/services/pump_release_gate.py`
+     （`PUMP_RELEASE_SUPPORT` / `pump_release_support` / `PUMP_RULE_PROFILES`），
+     由 `CentrifugalPumpAnalysisService` 与 `EvaluationService` **共同**使用；
+   - 离心泵（`pump_water` / `pump_chemical`）**豁免**旧 `as_of` 门禁
+     （`internal_device_type in PUMP_RULE_PROFILES` 时不再短路标准评价）；
+     该门禁仍保留给其他 Profile，本 Phase 不为它们改语义。
+
+**未做**：未改写候选文件；未改写任何 Approved Golden 的业务真值或历史 provenance；
+未静默改变历史审批含义。唯一新增的是一条历史实现哈希登记。
+
+### 关闭证据（实测）
+
+| 入口 | `as_of=2026-08-23` | `as_of=2026-02-28`（早于实施日） |
+|---|---|---|
+| 正式纵向切片（Qt 所用） | `SUPPORTED` / `2级` | `SUPPORTED` / `2级` |
+| `--json` CLI（`centrifugal_pump`） | `SUPPORTED` / `2级` | `SUPPORTED` / `2级` |
+| `ApplicationApi` | `SUPPORTED` / `2级` | `SUPPORTED` / `2级` |
+| `--web` / JSONL | 同链路（`ApplicationApi` → `EvaluationFacade` → `EvaluationService`） | 同左 |
+
+三项 QA 均改为 `CLOSED`（见 `QA_BACKLOG.md` 各自 `closed_by`）：
+`QA-P5-001`、`QA-P5-002(a)(b)`、`QA-P3-003`；连带 `QA-P6-002` 一并关闭。
+
+## R1-B2 — 标准库生命周期提示
+
+**问题**：标准库无条件显示"该标准尚未实施"（`standard_overview` 硬编码该字符串）。
+实际 GB 19762—2025 的实施日期为 `2026-03-01`，当前已实施，该显示是错的。
+
+**修复**：
+
+- 删除硬编码。新增基于**真实日期**的推导：
+  `_standard_lifecycle_state(pack, as_of)` 返回
+  `NOT_YET_EFFECTIVE` / `EFFECTIVE` / `UNKNOWN`；
+  `_standard_lifecycle_warning(pack, as_of)` 只在 `NOT_YET_EFFECTIVE` 时返回
+  「该标准尚未实施」，否则返回空串。
+- `standard_overview(*, as_of=None, show_lifecycle_warning=False)`：
+  `as_of` 默认取**本机当天**，使 `lifecycle_state` 反映当前真实状态；
+  标准库展示的是当前标准事实，因此**默认不显示**提示文案。
+- 标准库页面改为显示「生命周期状态：已实施 / 尚未实施 / 未提供实施日期」，
+  仅在确有提示时追加提示行；**不再**硬编码结论。
+- 现行 Canonical Pack 未提供废止 / 替代元数据，因此**不推测**
+  「已废止 / 已被替代」（补齐须走标准映射流程，仍登记 `QA-P3-002`）。
+- 提示仍**非阻断**：不改变 `evaluation_status` / `grade` / Finalize 权限。
+
+**机械测试**（`StandardLifecycleNoticeTests`）：`2026-02-28` → `NOT_YET_EFFECTIVE`
+且提示为「该标准尚未实施」；`2026-03-01`（实施日当天）与 `2026-03-02` → `EFFECTIVE`
+且提示为空；当前日期不显示"尚未实施"；标准库源码不含硬编码字符串；
+不推测废止 / 替代；早于实施日仍为 `SUCCESS` 且 Finalize 可用。
+
+## R1-B3 — Settings 正式页面
+
+**问题**：设置页把 `SettingsService.KEYS` 直接拼进 UI，普通用户看到
+`last.directory` / `window.geometry` / `window.state` / `log.level` 等内部机器键名；
+且正式 composition **从未**传入数据目录（此前只有测试手工注入 `data_location`，
+掩盖了未接线）。
+
+**修复**：
+
+- 删除 UI 中的内部键名展示。运行信息改为：
+  「数据存储位置：<真实路径>」+ 一句业务说明（记录/草稿在 `records.sqlite`、
+  日志在 `logs` 子目录）。
+- 「上次使用的目录」不再暴露键名；未使用时显示「（尚未使用）」。
+- **正式接线**：`composition.launch_qt` 解析 `AppDataPaths`（`paths` 或
+  `AppDataPaths.default()`），经 `app.run(..., data_location=...)` →
+  `MainWindow(data_location=...)` → `SettingsPage`，一路传到页面。
+  数据目录无法确定时显示「（未能确定，请检查安装）」而不是静默留空。
+- 窗口 geometry / state 不作为普通用户设置展示。
+- **测试改为走正式 composition 路径**：`window()` 不再手工注入 `data_location`，
+  改为调用镜像 `launch_qt` 装配的 `_launch_window`；
+  新增 `SettingsCompositionWiringTests` 断言 `launch_qt` 确实传入真实路径，
+  并断言页面显示该路径、不出现内部键名、源码不再拼接 `KEYS`。
+
+## R1 回归保护
+
+除上述 blocker 修复外**未扩大 Phase 6 scope**。已重新执行：
+
+```text
+Phase 6 专项（含 R1 新增）        62 项，全通过
+入口 / Application 相关            test_entrypoint / test_application_api /
+                                   test_evaluation_engine / test_pump_golden_case_0_3
+Golden / Pump Conformance          test_phase3_golden_and_boundaries /
+                                   test_golden_case_schema_0_2 /
+                                   test_golden_case_0_4_approval /
+                                   test_phase3_r2_final_closure
+Windows Core / Qt offscreen        test_phase2_qt / test_phase3_qt_unified / test_zipapp
+全量 unittest                      1256 run / 1249 pass / 3 fail / 1 error / 3 skip
+known-regression comparator        gate=PASS（new_failures/new_errors/worsened/missing 全 0）
+compileall -q src tools            exit 0
+git diff --check                   clean
+```
+
+继续保护且**零漂移**：18 water + 11 chemical Approved Golden 业务真值、Canonical、
+Numeric、pump formula/boundary/grade、Finalize、Workspace、Record immutability、
+Reopen no-recalc、`platform-lock`、`records_migrations.py`。
+
+## R1 状态
+
+```text
+Phase 6 R1 implementation = EXECUTION_COMPLETE
+READY_FOR_REACCEPTANCE
+```
+
+**不合并 PR。不自宣 `PHASE_6_PASS`。不进入 Phase 7。**

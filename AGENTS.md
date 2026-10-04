@@ -85,7 +85,21 @@ git fetch origin                   # 同步远端
 - **Phase 6 已获用户明确执行授权**：范围是 **完整 GB 19762 Product Shell**——把 Phase 2～5 已成立的完整 GB 19762（`pump_water` + `pump_chemical`）业务能力组织成正式、完整、可长期使用的 Windows PySide6 产品 Shell。分支 `phase6/gb19762-product-shell`，base `f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`。**不是重新设计业务算法**。
 - Phase 6 执行者**不得**自行宣布 `PHASE_6_PASS`、不得合并 PR、不得进入 Phase 7。最终状态只允许 `Phase 6 implementation = EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`。
 - **Phase 6 Owner 决定（Tk 退出）**：legacy Tk GUI **不再使用**。无参数启动、`--gui`、`--qt` 均进入同一正式 PySide6 Qt Desktop Shell；`--qt` 保留为显式兼容别名；Tk 不是任何用户产品入口；**不得**在 Tk 不可用时自动 fallback 到 Web。Tk 代码若经真实引用/构建/测试证明已无运行依赖可删除；若仍有真实兼容依赖则只断开正式运行路径并登记（见 `QA_BACKLOG.md` 的 `QA-P6-001`），不得盲删。
-- **候选层 Golden 的实现哈希冻结（Phase 6 实测发现）**：`specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl` 的 `source_sidecar.source_references` 以 `artifact_sha256` 冻结了 10 个实现文件，且 18 条已批准 `pump_water` Golden 用 `provenance.source_candidate_sha256` 锚定候选记录哈希。因此**修改这批实现文件（含 `application/services/evaluation_service.py`）会使批准 Golden 的 provenance 校验失败**，在未获 Owner 授权的 Golden 重基线任务前**不得改动**。详见 `QA_BACKLOG.md` 的 `QA-P6-002`。
+- **候选层 Golden 的历史实现证据（Phase 6 建立，R1 澄清）**：
+  `specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl` 的
+  `source_sidecar.source_references` 以 `artifact_sha256` 记录了 0.3 候选冻结时
+  （提交 `72e8e49` / `90af7f8`）的 10 个实现文件快照，且 18 条已批准 `pump_water` Golden 用
+  `provenance.source_candidate_sha256` 锚定候选记录哈希。
+- **正确理解（不得再误读为「实现文件被永久冻结」）**：这些哈希是**历史证据**。
+  validator 通过 `tools/validate_phase1_contracts.py` 的 `_historical_hash_reason` 与
+  `specs/equipment_efficiency/evidence_registry.json` 的 `historical_repository_hashes`
+  **明确区分 historical provenance 与 current implementation**：
+  当前实现**可以演进**，历史证据**不可变**，两者不得混为一谈。
+- **规则**：① **不得**改写候选文件的历史哈希 pin；
+  ② **不得**改写任何 Approved Golden 的业务真值或历史 provenance；
+  ③ 若确需修改被记录过快照的实现文件（例如收口入口语义），应把**原记录哈希补登记**到
+  `historical_repository_hashes`（附可复核的冻结提交与理由），而**不是**改候选文件或重基线 Golden；
+  ④ 若某实现文件确需修改而登记机制无法表达，**立即 STOP 并报 Owner**。
 - v15 / T04.xx / 历史 HANDOFF / 编号清单无自动调度权，不得据其“下一边界任务”自动继续。
 - 当前 Windows V1 产品目标与各 Profile 状态以 `V1_SCOPE.md` / `ROADMAP.md` 为唯一权威（完整支持 GB 19762—2025，覆盖 `pump_water` + `pump_chemical`；`transformer` 为 `POST_V1`，资产保留）。
 - 旧资产先分类（KEEP / VERIFY / MIGRATE / REWORK / DEPRECATE / DELETE_CANDIDATE / OBSOLETE），不因零引用直接删除。

@@ -21,6 +21,13 @@ from PySide6.QtWidgets import (
 from ..labels import support_status_text
 from ..tokens import TOKENS
 
+#: 标准生命周期内部状态 → 面向用户的中文说明（只翻译，不新增事实）。
+LIFECYCLE_STATE_LABELS = {
+    "EFFECTIVE": "已实施",
+    "NOT_YET_EFFECTIVE": "尚未实施",
+    "UNKNOWN": "未提供实施日期",
+}
+
 #: 发布门禁内部取值 → 面向用户的说明。仅用于把权威取值翻译成中文，不新增事实。
 _SUPPORT_STATUS_HINT = {
     "SUPPORTED": "本版本已正式支持",
@@ -118,11 +125,15 @@ class StandardsPage(QWidget):
             lines.append(f"{categories}：{status}" + (f"（{hint}）" if hint else ""))
         self.scopes.setText("\n".join(lines))
 
-        self.source.setText("\n".join([
+        lines = [
             f"标准数据来源：{overview['source_file'] or '—'}",
             f"替代关系：{overview['supersession_note']}",
-            f"生命周期提示：{overview['lifecycle_warning']}（仅提示，不阻止计算）",
-        ]))
+            f"生命周期状态：{LIFECYCLE_STATE_LABELS.get(overview['lifecycle_state'], '—')}",
+        ]
+        # 生命周期提示由**真实日期**推导；无提示时不显示占位文字。
+        if overview["lifecycle_warning"]:
+            lines.append(f"提示：{overview['lifecycle_warning']}（仅提示，不阻止计算）")
+        self.source.setText("\n".join(lines))
 
     # -- 动作 ---------------------------------------------------------------
 

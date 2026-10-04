@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import os
 import re
+import sys
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -93,6 +94,19 @@ def _service(paths=None):
     return create_pump_analysis_service(paths=paths, with_persistence=True)
 
 
+def _launch_window(settings, analysis, paths, **kwargs):
+    """按 composition.launch_qt 的真实装配构造 MainWindow（不跑事件循环）。
+
+    与 `launch_qt` 的差异只有在这一点：不调用 `app.run` 的 `exec()`。
+    数据目录必须由 **composition** 解析并传入，测试不得自行注入。
+    """
+
+    from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
+
+    resolved = paths if paths is not None else AppDataPaths.default()
+    return MainWindow(settings, analysis, data_location=resolved.root, **kwargs)
+
+
 def _visible_text(widget) -> str:
     """递归收集控件上的全部可见文本。"""
 
@@ -125,8 +139,13 @@ class ProductShellTestCase(unittest.TestCase):
         self.service = _service(self.paths)
 
     def window(self, **kwargs):
-        window = MainWindow(self.settings, self.service,
-                            data_location=self.paths.root, **kwargs)
+        """按**正式 composition 启动路径**构造窗口。
+
+        刻意不手工注入 ``data_location``：那会掩盖 composition 未接线的问题。
+        这里走 ``launch_qt`` 真正使用的同一组构造，只把 Qt 事件循环换成直接建窗。
+        """
+
+        window = _launch_window(self.settings, self.service, self.paths, **kwargs)
         self.addCleanup(window.close)
         return window
 
@@ -584,39 +603,58 @@ class SettingsPageTests(ProductShellTestCase):
 # G06 QA 项真实处置
 # --------------------------------------------------------------------------
 
-class QaDispositionTests(ProductShellTestCase):
-    def test_qa_p5_001_and_002_remain_open_with_a_named_blocker(self):
-        """共享 Application/CLI 语义未能在 Phase 6 收口，必须留下明确 blocker。"""
+class QaClosureTests(ProductShellTestCase):
+    """R1：QA-P5-001 / QA-P5-002(b) / QA-P3-003 已在本 Phase 内**真正关闭**。"""
 
-        request = _request(CHEMICAL)
-        # 正式纵向切片（统一 Use Case）已支持。
-        self.assertEqual(self.service.evaluate(request).support_status, "SUPPORTED")
-        # 遗留共享表面仍被冻结文件短路（见 QA_BACKLOG 的 provenance 冻结 blocker）。
+    def test_qa_p5_001_and_002b_are_closed(self):
+        """共享 Application/CLI 语义不再把石化泵短路为 NOT_IN_RELEASE_SCOPE。"""
+
         from equipeffi.application.services.evaluation_service import EvaluationService
         from equipeffi.domain.common.models import DeviceDraft
 
         legacy = EvaluationService(JsonStandardRepository(SRC))
         result = legacy.evaluate(DeviceDraft(
-            record_id="QA-P5", device_type="pump_chemical",
-            raw_values={"category": CHEMICAL["category"], "suction": "单吸",
+            record_id="QA-CLOSED", device_type="pump_chemical",
+            raw_values={"category": "单级石油化工离心泵", "suction": "单吸",
                         "stages": "1", "flow_m3h": 100, "head_m": 14,
                         "rated_speed_rpm": 2900, "pump_efficiency": 73}))
-        self.assertEqual(result.support_status, "NOT_IN_RELEASE_SCOPE")
+        self.assertEqual(result.support_status, "SUPPORTED")
+        self.assertNotIn("PROFILE_NOT_IN_RELEASE_SCOPE", result.issue_codes)
 
-    def test_qa_p3_003_legacy_as_of_gate_is_still_present(self):
-        """遗留 as_of 门禁属冻结文件；Phase 6 未改，须继续登记。"""
+    def test_qa_p3_003_legacy_as_of_gate_no_longer_blocks_pumps(self):
+        """旧 as_of 门禁仍在代码里，但对离心泵已不再生效（Owner 规则）。"""
+
+        from equipeffi.application.services.evaluation_service import EvaluationService
+        from equipeffi.domain.common.models import DeviceDraft
 
         source = (SRC / "equipeffi" / "application" / "services"
                   / "evaluation_service.py").read_text(encoding="utf-8")
         self.assertIn("effective_as_of < effective_date", source)
+        self.assertIn("PUMP_RULE_PROFILES", source)
+
+        legacy = EvaluationService(JsonStandardRepository(SRC))
+        early = legacy.evaluate(DeviceDraft(
+            record_id="QA-DATE", device_type="pump_water",
+            raw_values={"category": "单级单吸清水离心泵", "suction": "单吸",
+                        "stages": "1", "flow_m3h": 100, "head_m": 50,
+                        "rated_speed_rpm": 2900, "pump_efficiency": 90}),
+            as_of="2026-02-28")
+        self.assertEqual(early.evaluation_status, "SUCCESS")
+        self.assertNotIn("标准生效日期",
+                         {item.get("step_type") for item in early.trace})
 
     def test_frozen_implementation_files_are_unchanged_from_base(self):
-        """候选层 Golden 冻结了这些实现文件；Phase 6 不得改动它们。"""
+        """Golden 冻结的实现文件中，本轮**只允许**改动 evaluation_service.py。
+
+        其余 8 个文件必须与 base 完全一致；``evaluation_service.py`` 的改动是
+        R1 关闭入口语义 QA 所必需，其历史证据已登记到
+        ``specs/equipment_efficiency/evidence_registry.json`` 的
+        ``historical_repository_hashes``（历史证据不可变、实现可演进）。
+        """
 
         import subprocess
 
-        protected = (
-            "src/equipeffi/application/services/evaluation_service.py",
+        frozen = (
             "src/equipeffi/application/services/input_normalization.py",
             "src/equipeffi/domain/evaluation/evaluators/pump.py",
             "src/equipeffi/domain/evaluation/device_evaluators.py",
@@ -626,12 +664,225 @@ class QaDispositionTests(ProductShellTestCase):
             "src/equipeffi/infrastructure/standards/json_repository.py",
             "src/equipeffi/resources/standards/pump.json",
         )
-        changed = subprocess.run(
-            ["git", "diff", "--name-only",
-             "f3e32f84123937ed6caa2b84b7cc0cd04c3100e0", "HEAD", "--", *protected],
-            cwd=ROOT, capture_output=True, text=True, check=False).stdout.split()
-        pending = subprocess.run(
-            ["git", "diff", "--name-only", "--", *protected],
-            cwd=ROOT, capture_output=True, text=True, check=False).stdout.split()
-        self.assertEqual(changed, [], f"受保护实现文件被改动：{changed}")
-        self.assertEqual(pending, [], f"受保护实现文件有未提交改动：{pending}")
+        for args in (["--name-only", "f3e32f84123937ed6caa2b84b7cc0cd04c3100e0", "HEAD"],
+                     ["--name-only"]):
+            completed = subprocess.run(["git", "diff", *args, "--", *frozen],
+                                       cwd=ROOT, capture_output=True, text=True,
+                                       check=False)
+            changed = completed.stdout.split()
+            self.assertEqual(changed, [], f"受保护实现文件被改动：{changed}")
+
+    def test_evaluation_service_history_is_registered_not_rewritten(self):
+        """历史证据不可变：候选与批准 Golden 均未被改写，只补登记。"""
+
+        import json
+
+        registry = json.loads((ROOT / "specs" / "equipment_efficiency"
+                               / "evidence_registry.json").read_text(encoding="utf-8"))
+        entries = [item for item in registry["historical_repository_hashes"]
+                   if item["artifact_path"].endswith("evaluation_service.py")]
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]["case_schema_version"], "golden-case-0.3")
+        self.assertEqual(
+            entries[0]["artifact_sha256"],
+            "EEF8731E5A162C81441D83BAC4C493D0F9EA5A0014CEC1E44BF5E82535DEB8ED")
+
+
+class EntrySurfaceParityTests(ProductShellTestCase):
+    """B1：同一 pump_chemical 输入在正式入口与非正式入口必须语义一致。"""
+
+    CHEMICAL_VALUES = {
+        "category": "单级石油化工离心泵", "suction": "单吸", "stages": "1",
+        "flow_m3h": 100, "head_m": 14, "rated_speed_rpm": 2900,
+        "pump_efficiency": 73,
+    }
+
+    def test_shared_application_semantics_match_the_formal_slice(self):
+        from equipeffi.application.services.evaluation_service import EvaluationService
+        from equipeffi.domain.common.models import DeviceDraft
+
+        request = _request(CHEMICAL, record_id="R1-PARITY")
+        formal = self.service.evaluate(request)
+        self.assertEqual(formal.support_status, "SUPPORTED")
+
+        legacy = EvaluationService(JsonStandardRepository(SRC))
+        shared = legacy.evaluate(DeviceDraft(
+            record_id="R1-PARITY", device_type="pump_chemical",
+            raw_values=self.CHEMICAL_VALUES))
+        # 共享 Application/CLI 语义必须与正式纵向切片一致。
+        self.assertEqual(shared.support_status, formal.support_status)
+        self.assertEqual(shared.reference_conclusion or shared.conclusion,
+                         formal.ui_conclusion)
+        self.assertEqual(shared.grade, formal.grade)
+
+    def test_application_api_returns_supported_for_chemical(self):
+        from equipeffi.composition import create_application_api
+
+        api, _contract, _resource = create_application_api(
+            project_root=ROOT, load_template=False)
+        record = api.evaluate({
+            "record_id": "R1-API", "device_type": "centrifugal_pump",
+            "values": self.CHEMICAL_VALUES, "as_of": WATER_AS_OF()})
+        self.assertEqual(record["support_status"], "SUPPORTED")
+        self.assertNotIn("PROFILE_NOT_IN_RELEASE_SCOPE", record.get("issue_codes", []))
+
+    def test_cli_json_entrypoint_returns_supported_for_chemical(self):
+        import json as _json
+        import subprocess
+
+        completed = subprocess.run(
+            [sys.executable, "main.py", "--device-type", "centrifugal_pump",
+             "--json", _json.dumps(self.CHEMICAL_VALUES, ensure_ascii=False),
+             "--as-of", WATER_AS_OF(), "--record-id", "R1-CLI"],
+            cwd=ROOT, capture_output=True, text=True, timeout=180,
+            env={**os.environ, "PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"})
+        self.assertEqual(completed.returncode, 0, completed.stderr[-500:])
+        payload = _json.loads(completed.stdout)
+        self.assertEqual(payload["support_status"], "SUPPORTED")
+
+    def test_evaluation_date_never_blocks_any_entry(self):
+        """评价日期不再是任何入口的业务门禁（Owner 规则）。"""
+
+        from equipeffi.application.services.evaluation_service import EvaluationService
+        from equipeffi.domain.common.models import DeviceDraft
+
+        legacy = EvaluationService(JsonStandardRepository(SRC))
+        for as_of in ("2026-02-28", "2026-03-01", "2026-03-02"):
+            with self.subTest(as_of=as_of):
+                shared = legacy.evaluate(DeviceDraft(
+                    record_id="R1-DATE", device_type="pump_chemical",
+                    raw_values=self.CHEMICAL_VALUES), as_of=as_of)
+                self.assertEqual(shared.support_status, "SUPPORTED")
+                self.assertTrue(shared.calculated_metrics)
+                self.assertNotIn("标准生效日期",
+                                 {item.get("step_type") for item in shared.trace})
+
+    def test_chemical_longer_blocked_by_profile_range_short_circuit(self):
+        source = (SRC / "equipeffi" / "application" / "services"
+                  / "evaluation_service.py").read_text(encoding="utf-8")
+        self.assertNotIn("PROFILE_NOT_IN_RELEASE_SCOPE", source)
+
+    def test_pump_release_gate_is_the_single_source_of_truth(self):
+        from equipeffi.application.services import pump_release_gate
+
+        self.assertEqual(pump_release_gate.PUMP_RELEASE_SUPPORT["pump_chemical"],
+                         "SUPPORTED")
+        self.assertEqual(pump_release_gate.PUMP_RELEASE_SUPPORT["pump_water"],
+                         "SUPPORTED")
+        service = (SRC / "equipeffi" / "application" / "services"
+                   / "centrifugal_pump_analysis_service.py").read_text(encoding="utf-8")
+        self.assertNotIn('"pump_chemical": "NOT_IN_RELEASE_SCOPE"', service)
+
+
+class StandardLifecycleNoticeTests(ProductShellTestCase):
+    """B2：生命周期提示必须基于真实日期，不得硬编码结论。"""
+
+    BEFORE = "2026-02-28"
+    ON = "2026-03-01"
+    AFTER = "2026-03-02"
+
+    def test_state_covers_before_on_and_after_effective_date(self):
+        from datetime import date
+
+        cases = ((self.BEFORE, "NOT_YET_EFFECTIVE"), (self.ON, "EFFECTIVE"),
+                 (self.AFTER, "EFFECTIVE"))
+        for raw, expected in cases:
+            with self.subTest(as_of=raw):
+                overview = self.service.standard_overview(
+                    as_of=date.fromisoformat(raw), show_lifecycle_warning=True)
+                self.assertEqual(overview["lifecycle_state"], expected)
+
+    def test_warning_only_before_effective_date(self):
+        from datetime import date
+
+        before = self.service.standard_overview(
+            as_of=date.fromisoformat(self.BEFORE), show_lifecycle_warning=True)
+        self.assertEqual(before["lifecycle_warning"], "该标准尚未实施")
+        for raw in (self.ON, self.AFTER):
+            with self.subTest(as_of=raw):
+                overview = self.service.standard_overview(
+                    as_of=date.fromisoformat(raw), show_lifecycle_warning=True)
+                self.assertEqual(overview["lifecycle_warning"], "")
+
+    def test_current_date_does_not_claim_not_yet_effective(self):
+        """当前日期已达到实施日期时，不得显示"该标准尚未实施"。"""
+
+        overview = self.service.standard_overview()
+        self.assertEqual(overview["lifecycle_state"], "EFFECTIVE")
+        self.assertNotIn("尚未实施", self.window().standards_page.source.text())
+
+    def test_standards_page_derives_lifecycle_instead_of_hardcoding(self):
+        source = (SRC / "equipeffi" / "presentation" / "qt" / "pages"
+                  / "standards.py").read_text(encoding="utf-8")
+        self.assertNotIn('"该标准尚未实施"', source)
+        self.assertNotIn("'该标准尚未实施'", source)
+
+    def test_no_supersession_is_invented(self):
+        overview = self.service.standard_overview()
+        self.assertEqual(overview["supersession_note"],
+                         "当前标准数据未提供废止或被替代关系信息。")
+        page_text = self.window().standards_page.source.text()
+        self.assertNotIn("已废止", page_text)
+        self.assertNotIn("已被替代", page_text)
+
+    def test_lifecycle_notice_never_blocks_evaluation(self):
+        from datetime import date
+
+        page = AnalysisPage(self.service)
+        self.addCleanup(lambda: page.deleteLater())
+        page.category.setCurrentIndex(page.category.findData(WATER["category"]))
+        for key in ("QBEP", "HBEP", "speed", "efficiency"):
+            page.point_inputs[key].setText(WATER[key])
+        page.suction.setCurrentIndex(page.suction.findData(WATER["suction"]))
+        page.stages.setText(WATER["stages"])
+        page.as_of.setText(self.BEFORE)
+        result = page.evaluate()
+        self.assertEqual(result.evaluation_status, "SUCCESS")
+        self.assertIsNotNone(result.grade)
+        self.assertTrue(page.finalize_button.isEnabled())
+
+
+class SettingsCompositionWiringTests(ProductShellTestCase):
+    """B3：数据目录必须由正式 composition 解析，不能靠测试注入。"""
+
+    def test_launch_qt_passes_a_real_data_root(self):
+        from unittest.mock import patch
+
+        from equipeffi import composition
+
+        captured: dict = {}
+
+        def fake_run(settings, logger, analysis, **kwargs):
+            captured.update(kwargs)
+            return 0
+
+        with patch("equipeffi.presentation.qt.app.run", side_effect=fake_run):
+            composition.launch_qt(paths=self.paths)
+        self.assertIn("data_location", captured)
+        self.assertIsNotNone(captured["data_location"])
+        self.assertEqual(Path(captured["data_location"]).resolve(),
+                         self.paths.root.resolve())
+
+    def test_settings_page_shows_the_real_path_from_composition(self):
+        page = self.window().settings_page
+        self.assertIn(str(self.paths.root), page.runtime.text())
+        self.assertNotIn("未能确定", page.runtime.text())
+
+    def test_settings_page_hides_internal_machine_keys(self):
+        page = self.window().settings_page
+        blob = _visible_text(page) + page.about.text() + page.runtime.text()
+        for key in ("last.directory", "window.geometry", "window.state",
+                    "log.level", "KEYS"):
+            with self.subTest(key=key):
+                self.assertNotIn(key, blob)
+
+    def test_settings_page_does_not_join_internal_keys(self):
+        source = (SRC / "equipeffi" / "presentation" / "qt" / "pages"
+                  / "settings.py").read_text(encoding="utf-8")
+        self.assertNotIn("type(self.settings).KEYS", source)
+        self.assertNotIn("settings.KEYS", source)
+
+    def test_window_geometry_is_not_offered_as_a_user_setting(self):
+        page = self.window().settings_page
+        self.assertNotIn("窗口位置", _visible_text(page))
+        self.assertNotIn("窗口大小", _visible_text(page))
