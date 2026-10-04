@@ -33,8 +33,15 @@ current_task:
       finding: PHASE_4_BLOCKED —— 生命周期指纹依赖泵 service 的导入副作用
       status: FIXED
       root_cause: 首版用进程内全局注册（register_business_keys）提供业务键集合；注册为空时旧 Workspace 无参指纹漂移，且不同业务输入碰撞
-      fix: 移除全局注册；业务键集合作为 _business_keys 元数据随快照写入既有 payload_json 列；无元数据的历史快照按快照自身内容确定性回退
+      fix: 移除全局注册；业务键集合作为 _business_keys 元数据随快照写入既有 payload_json 列；无元数据时不再猜测而是显式报错
       evidence: tests/unit/test_phase4_fingerprint_decoupling.py; tools/verify_phase4_fingerprint_compat.py
+    P4-B02:
+      finding: PHASE_4_BLOCKED —— 旧 Workspace 兼容性回归（缺字段草稿被拒 Finalize）
+      status: FIXED
+      root_cause: P4-B01 的回退规则只投影"载荷中实际存在的键"，无法补出缺失业务字段的 "None"（Phase 3 指纹把缺失字段计为 "None"），导致缺 efficiency 的旧草稿指纹漂移、Finalize 被拒，破坏既有 INSUFFICIENT_DATA 草稿的合法固化
+      fix: 生命周期层不再猜测——缺元数据时 business_key_names() 返回 None 且 request_fingerprint() 显式抛 LifecycleError，删除 RESERVED_PAYLOAD_KEYS 与投影回退；finalize() 改为显式传 PUMP_FINGERPRINT_KEYS，由产品层提供业务键知识，恢复 Base 行为
+      evidence: tests/unit/test_phase4_fingerprint_decoupling.py 的缺字段回归用例；tools/verify_phase4_fingerprint_compat.py 覆盖完整输入 + 缺字段共 4 种场景
+      semantic_boundary: Phase 4 之前且无元数据的快照，无参 request_fingerprint() 会显式报错（拒绝给出无法确定的值）；不影响任何 Use Case，服务路径始终显式传键
   next_action: 等待独立验收；do not merge; do not start Phase 5
 
 previous_task:

@@ -32,7 +32,6 @@ from .errors import (
 )
 from .models import (
     BUSINESS_KEYS_METADATA_KEY,
-    RESERVED_PAYLOAD_KEYS,
     RecordSnapshot,
     WorkspaceSnapshot,
     business_key_names,
@@ -47,7 +46,6 @@ __all__ = (
     "BUSINESS_KEYS_METADATA_KEY",
     "LifecycleError",
     "LifecyclePersistenceError",
-    "RESERVED_PAYLOAD_KEYS",
     "RecordConflictError",
     "RecordRepository",
     "RecordSnapshot",

@@ -896,7 +896,11 @@ class CentrifugalPumpAnalysisService:
                 raise AnalysisError(
                     "草稿已在分析之后被修改，当前结果已过期；请重新分析后再保存正式记录"
                 )
-            if workspace.request_fingerprint() != expected:
+            # 显式传入本产品的业务键集合：Phase 4 之前的旧草稿没有
+            # `_business_keys` 元数据，其"缺失字段 = None"的语义只能由产品层提供
+            # （从载荷内容反推会静默改变历史指纹，已实测会拒绝 Base 本可合法
+            # 固化的 INSUFFICIENT_DATA 草稿）。
+            if workspace.request_fingerprint(PUMP_FINGERPRINT_KEYS) != expected:
                 raise AnalysisError("草稿输入与待固化结果不一致，拒绝固化正式记录")
 
         now = _utc_now()

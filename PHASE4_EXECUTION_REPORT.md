@@ -170,18 +170,59 @@ distinct fingerprints = 3 ✓
 
 **真实 base 数据库兼容验证**（`tools/verify_phase4_fingerprint_compat.py`）：
 用 **base 提交 `87d9ef1b` 的代码**写出真实 `records.sqlite`（其 workspace 行
-**不含**元数据），再用当前代码走完整链路，结果 **全部一致、无漂移**：
+**不含**元数据），再用当前代码走完整链路。**四种场景全部一致、无漂移**，
+其中包括独立验收指出的**缺少业务字段**场景：
 
 ```text
-W-base-water  base=e23ffa0d…  无参指纹一致  重建输入一致  Finalize Record 一致  Reopen SUCCESS/1级
-W-base-chem   base=36f260c0…  无参指纹一致  重建输入一致  Finalize Record 一致  Reopen SUCCESS/2级
-更新一次草稿后带上 _business_keys，指纹仍与 base 一致
+W-base-water       base=SUCCESS           当前=SUCCESS            指纹一致  Finalize OK  Reopen OK
+W-base-chem        base=SUCCESS           当前=SUCCESS            指纹一致  Finalize OK  Reopen OK
+W-base-water-noeff base=INSUFFICIENT_DATA 当前=INSUFFICIENT_DATA  指纹一致  Finalize OK  Reopen OK
+W-base-chem-noeff  base=INSUFFICIENT_DATA 当前=INSUFFICIENT_DATA  指纹一致  Finalize OK  Reopen OK
+→ OK: base 数据库在当前代码下指纹与 Use Case 全部一致（exit 0）
 ```
 
-**新增回归测试**：`tests/unit/test_phase4_fingerprint_decoupling.py`（8 tests）
+### 4.2 独立验收第二次阻塞的修复（`PHASE_4_BLOCKED`，head `51b7b79`）
+
+**缺陷**：4.1 的回退规则"投影载荷中实际存在的键"**无法补出缺失字段的 `"None"`**。
+Phase 3 的指纹把缺失业务字段计为 `"None"`，而该投影只统计实际存在的键，
+于是**缺少业务字段**的旧草稿指纹漂移，Finalize 被拒：
+
+```text
+（修复前复现，base 写库 → 当前代码 Finalize）
+W-water-full   base=OK:SUCCESS            head=OK                   一致
+W-water-noeff  base=OK:INSUFFICIENT_DATA  head=REJECT:AnalysisError  !! 回归
+W-chem-noeff   base=OK:INSUFFICIENT_DATA  head=REJECT:AnalysisError  !! 回归
+```
+
+这破坏了既有 `INSUFFICIENT_DATA` 草稿的合法固化行为。
+
+**为什么不能靠"更聪明的回退"解决**：载荷只记录写入当时**非空**的字段。
+"缺失字段应计入 `None`，还是根本不属于该设备"从数据上无法区分——
+猜哪一种都会在另一类输入上出错。这是信息缺失，不是算法问题。
+
+**修复**（如实声明语义边界）：
+
+1. 生命周期层**不再猜测**：`business_key_names()` 在缺少元数据时返回 `None`，
+   `request_fingerprint()` 随之**显式抛出 `LifecycleError`**，而不是给出一个
+   可能错误的值。删除 `RESERVED_PAYLOAD_KEYS` 及投影回退。
+2. **业务键知识归还给拥有它的层**：`finalize()` 改为
+   `workspace.request_fingerprint(PUMP_FINGERPRINT_KEYS)`，
+   由产品模块显式提供字段集合。旧草稿的 Finalize 因此恢复到 Base 的行为。
+3. 新写入的草稿仍带 `_business_keys` 元数据；无参调用在**有**元数据时仍可用，
+   且跨进程确定（4.1 的解耦修复保持不变）。
+
+**修复后**：三种场景全部与 base 一致，回归数 **0**。真实 base 数据库的
+`evaluate → finalize → reopen` 在完整输入与缺字段输入下均通过。
+
+> 语义边界（不得误报）：对 **Phase 4 之前**且**不含元数据**的快照，
+> 无参 `request_fingerprint()` 会显式报错。这不影响任何 Use Case——
+> 服务路径始终显式传键；它只是拒绝给出一个无法确定的值。
+
+**新增回归测试**：`tests/unit/test_phase4_fingerprint_decoupling.py`（10 tests）
 把上述复现固定下来：只加载 Repository 的无参指纹不漂移、不同业务输入不碰撞、
-业务键随快照持久化、旧快照由快照自身确定性推出、回退跨进程一致、
-生命周期层不存在全局可变注册点。
+业务键随快照持久化、旧快照无参调用**显式报错而不猜测**、回退跨进程一致、
+生命周期层不存在全局可变注册点、**缺少业务字段的旧草稿仍能 Finalize**、
+生命周期层不得按载荷内容推断业务键。
 
 > 说明：业务键集合因此同时存在于“持久化元数据”与产品模块常量中，
 > 但两者由同一处常量写入（`_pump_payload()` 使用 `PUMP_FINGERPRINT_KEYS`），
@@ -261,29 +302,31 @@ lifecycle 包不得依赖 infrastructure / presentation / domain / sqlite3 / PyS
 
 ### 8.1 新增测试
 
-`tests/unit/test_phase4_lifecycle_generalization.py`（22 tests / 5 类）：
+`tests/unit/test_phase4_lifecycle_generalization.py`（20 tests / 5 类）：
 
 ```text
 InfrastructureDecouplingGateTests               3  架构门禁（AST 级）
-WorkspaceSnapshotIsDeviceNeutralTests           3  生命周期模型设备无关 + 字段集合唯一
+WorkspaceSnapshotIsDeviceNeutralTests           4  生命周期模型设备无关 + 字段集合唯一
 FingerprintSingleSourceTests                    4  单一算法 / 单一业务键 / Phase 3 逐字节一致
 Phase3WorkspaceFixtureCompatibilityTests        3  旧 fixture load→rebuild→evaluate→finalize
 PersistenceRootCauseTests                       3  根因保留 + RecordConflictError
 ```
 
-`tests/unit/test_phase4_fingerprint_decoupling.py`（8 tests）——
-`PHASE_4_BLOCKED` 阻塞的回归：
+`tests/unit/test_phase4_fingerprint_decoupling.py`（10 tests）——
+两次 `PHASE_4_BLOCKED` 阻塞的回归：
 
 ```text
 FingerprintImportDecouplingTests
   只加载 Repository 的无参指纹不漂移（子进程断言泵 service 未导入）
   不同业务输入（efficiency 90 / 70）不得碰撞
   业务键集合随快照持久化，而非进程内注册
-  无元数据旧快照由快照自身确定性推出，且等于写入当次指纹
-  真实旧库路径仍能 evaluate → finalize → Reopen
-  回退分支跨进程一致
-  生命周期级登记键必须设备无关
+  无元数据旧快照无参调用必须显式报错，而不是猜一个投影
+  真实旧库路径（完整输入）仍能 evaluate → finalize → Reopen
+  **缺少业务字段的旧草稿仍能 Finalize（INSUFFICIENT_DATA）**  ← 第二次阻塞回归
+  Finalize 必须用产品业务键集合比较，而非依赖快照元数据
+  带元数据的新草稿跨进程确定
   生命周期层不存在全局可变注册点
+  生命周期层不得按载荷内容推断业务键
 ```
 
 ### 8.1.1 新增验证工具
@@ -317,8 +360,8 @@ test_phase3_qt_unified               33
 test_phase3_golden_and_boundaries    14   （29/29 Approved Golden 回放）
 test_architecture_boundaries         11
 test_composition                      3
-test_phase4_lifecycle_generalization 22
-test_phase4_fingerprint_decoupling    8
+test_phase4_lifecycle_generalization 20
+test_phase4_fingerprint_decoupling   10
 ```
 
 其他门禁：
@@ -366,15 +409,15 @@ known-regression comparator                              gate=PASS
 ### 10.1 Base → final Head 实际 diff 摘要
 
 ```text
-18 files changed, 1924 insertions(+), 150 deletions(-)
+18 files changed, 2013 insertions(+), 151 deletions(-)
 ```
 
 （此前版本误写为 `16 files / +1134 / −144`：既漏计了后续提交，也未包含
-`PHASE_4_BLOCKED` 修复。上表为对 base 的实际统计。）
+两次 `PHASE_4_BLOCKED` 修复。上表为对 base 的实际统计。）
 
 > 统计口径说明：本报告本身也在该 diff 内，因此任何"精确到行的总数"都会随
 > 报告文本微调而变。**权威数字以 GitHub PR #12 的 diff 为准**；上表由
-> `git diff --numstat 87d9ef1b <final head>` 得出。逐文件增量见 10.2。
+> `git diff --shortstat 87d9ef1b <final head>` 得出。逐文件增量见 10.2。
 
 ### 10.2 changed files
 

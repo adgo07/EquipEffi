@@ -31,7 +31,7 @@ from datetime import date
 
 from equipeffi.application.lifecycle import (
     BUSINESS_KEYS_METADATA_KEY,
-    RESERVED_PAYLOAD_KEYS,
+    LifecycleError,
     WorkspaceSnapshot,
     business_key_names,
     business_keys_metadata,
@@ -135,26 +135,32 @@ class FingerprintImportDecouplingTests(unittest.TestCase):
         self.assertEqual(workspace.request_fingerprint(),
                          workspace.request_fingerprint(PUMP_FINGERPRINT_KEYS))
 
-    def test_legacy_snapshot_without_metadata_is_derived_from_the_snapshot(self):
-        """旧快照（无元数据）：无参指纹由快照自身确定性推出，且等于写入当次值。"""
+    def test_legacy_snapshot_requires_explicit_keys_instead_of_guessing(self):
+        """旧快照（无元数据）无参调用必须显式报错，而不是猜一个投影。
+
+        为什么不能猜：载荷只记录写入当时**非空**的字段；缺失字段应计入
+        `"None"` 还是根本不属于该设备，从数据上无法区分。猜错会静默改变历史
+        指纹（实测会拒绝 Base 本可合法固化的 `INSUFFICIENT_DATA` 草稿）。
+        """
 
         request = self._request(WATER)
-        payload = request.raw_values() | {
-            "project_name": request.project_name,
-            "equipment_no": request.equipment_no,
-        }
+        payload = request.raw_values()
         self.assertNotIn(BUSINESS_KEYS_METADATA_KEY, payload)
         legacy = WorkspaceSnapshot(
             workspace_id="W-legacy", standard_code="GB 19762-2025",
             device_type="centrifugal_pump", product_category=WATER,
             rule_profile="pump_water", as_of=AS_OF.isoformat(), payload=payload,
             schema_version=2, created_at_utc="c", updated_at_utc="u")
-        self.assertEqual(legacy.request_fingerprint(), request.request_fingerprint())
+        with self.assertRaises(LifecycleError):
+            legacy.request_fingerprint()
+        # 显式传入业务键即恢复正确语义
+        self.assertEqual(legacy.request_fingerprint(PUMP_FINGERPRINT_KEYS),
+                         request.request_fingerprint())
 
-    def test_legacy_workspace_can_still_finalize_and_reopen(self):
-        """真实旧库路径：无元数据草稿必须仍能 evaluate → finalize → Reopen。"""
+    def _insert_legacy_workspace(self, workspace_id: str,
+                                 request: PumpAnalysisRequest) -> None:
+        """插入一条 Phase 4 之前的草稿行（载荷无 `_business_keys`）。"""
 
-        request = self._request(WATER)
         payload = request.raw_values() | {
             "project_name": request.project_name,
             "equipment_no": request.equipment_no,
@@ -168,35 +174,81 @@ class FingerprintImportDecouplingTests(unittest.TestCase):
                     created_at_utc, updated_at_utc, revision
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
-                ("W-legacy", "GB 19762-2025", "centrifugal_pump", WATER, "pump_water",
-                 AS_OF.isoformat(),
+                (workspace_id, "GB 19762-2025", "centrifugal_pump",
+                 request.product_category, "pump_water", AS_OF.isoformat(),
                  json.dumps(payload, ensure_ascii=False, sort_keys=True,
                             separators=(",", ":")),
                  2, "2026-08-23T00:00:00Z", "2026-08-23T00:00:00Z", 1),
             )
 
-        workspace = self.service.load_workspace("W-legacy")
+    def test_legacy_workspace_with_full_input_still_finalizes(self):
+        """真实旧库路径：完整输入的旧草稿仍能 evaluate → finalize → Reopen。"""
+
+        request = self._request(WATER)
+        self._insert_legacy_workspace("W-legacy-full", request)
+
+        workspace = self.service.load_workspace("W-legacy-full")
         rebuilt = self.service.request_from_workspace(workspace)
         self.assertEqual(rebuilt.request_fingerprint(), request.request_fingerprint())
-        result = self.service.evaluate_workspace("W-legacy")
+        result = self.service.evaluate_workspace("W-legacy-full")
         self.assertEqual(result.evaluation_status, "SUCCESS")
-        record = self.service.finalize(record_id="R-legacy", workspace_id="W-legacy",
+        record = self.service.finalize(record_id="R-legacy-full",
+                                       workspace_id="W-legacy-full",
                                        request=rebuilt, result=result)
         self.assertEqual(record.input_snapshot["request_fingerprint"],
                          request.request_fingerprint())
-        reopened = self.service.open_record("R-legacy")
+        reopened = self.service.open_record("R-legacy-full")
         self.assertEqual(reopened.result_snapshot["evaluation_status"], "SUCCESS")
 
-    def test_legacy_fallback_is_deterministic_across_processes(self):
-        """回退分支不得依赖导入顺序：子进程只加载 lifecycle 也得到同一指纹。"""
+    def test_legacy_workspace_missing_business_field_still_finalizes(self):
+        """**验收回归**：缺少业务字段的旧草稿必须仍能 Finalize。
 
-        payload = self._request(WATER).raw_values()
-        expected_ws = WorkspaceSnapshot(
+        Base 代码对该草稿的 Finalize 是成功的（结论 `INSUFFICIENT_DATA`）。
+        曾出现的回归：只投影"实际存在"的字段 → 漏掉缺失字段的 `"None"` →
+        指纹漂移 → 拒绝固化，破坏既有合法行为。
+        """
+
+        for category, label in ((WATER, "water"), (CHEMICAL, "chemical")):
+            values = {key: value for key, value in VALUES.items()
+                      if key != "efficiency"}
+            request = PumpAnalysisRequest(category, AS_OF, **values)
+            workspace_id = f"W-legacy-noeff-{label}"
+            self._insert_legacy_workspace(workspace_id, request)
+            with self.subTest(category=label):
+                workspace = self.service.load_workspace(workspace_id)
+                self.assertNotIn("efficiency", workspace.payload)
+                rebuilt = self.service.request_from_workspace(workspace)
+                self.assertIsNone(rebuilt.efficiency)
+                result = self.service.evaluate_workspace(workspace_id)
+                self.assertEqual(result.evaluation_status, "INSUFFICIENT_DATA")
+                record = self.service.finalize(
+                    record_id=f"R-legacy-noeff-{label}", workspace_id=workspace_id,
+                    request=rebuilt, result=result)
+                self.assertEqual(record.evaluation_status, "INSUFFICIENT_DATA")
+                self.assertEqual(record.input_snapshot["request_fingerprint"],
+                                 request.request_fingerprint())
+                reopened = self.service.open_record(record.record_id)
+                self.assertEqual(reopened.result_snapshot["evaluation_status"],
+                                 "INSUFFICIENT_DATA")
+
+    def test_finalize_comparison_uses_the_product_business_keys(self):
+        """Finalize 必须用产品业务键集合比较，而非依赖快照元数据。"""
+
+        service_source = (ROOT / "src/equipeffi/application/services/"
+                          "centrifugal_pump_analysis_service.py").read_text("utf-8")
+        self.assertIn("workspace.request_fingerprint(PUMP_FINGERPRINT_KEYS)", service_source)
+
+    def test_metadata_path_is_deterministic_across_processes(self):
+        """带元数据的新草稿：子进程只加载 lifecycle 也得到同一指纹。"""
+
+        request = self._request(WATER)
+        payload = request.raw_values() | business_keys_metadata(PUMP_FINGERPRINT_KEYS)
+        expected = WorkspaceSnapshot(
             workspace_id="W", standard_code="GB 19762-2025",
             device_type="centrifugal_pump", product_category=WATER,
             rule_profile="pump_water", as_of=AS_OF.isoformat(), payload=payload,
-            schema_version=2, created_at_utc="c", updated_at_utc="u")
-        expected = expected_ws.request_fingerprint()
+            schema_version=2, created_at_utc="c", updated_at_utc="u"
+        ).request_fingerprint()
 
         child = (
             "import json, sys\n"
@@ -215,13 +267,6 @@ class FingerprintImportDecouplingTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr[-600:])
         self.assertEqual(completed.stdout.strip(), expected)
 
-    def test_reserved_keys_are_device_neutral(self):
-        """生命周期级登记键必须是设备无关的通用字段名。"""
-
-        self.assertEqual(RESERVED_PAYLOAD_KEYS,
-                         frozenset({BUSINESS_KEYS_METADATA_KEY, "project_name",
-                                    "equipment_no", "product_type"}))
-
     def test_lifecycle_module_has_no_ambient_registration(self):
         """生命周期层不得再提供全局可变注册点。"""
 
@@ -231,6 +276,13 @@ class FingerprintImportDecouplingTests(unittest.TestCase):
                 self.assertNotIn("register_business_keys", source)
                 self.assertNotIn("_registered_business_keys", source)
                 self.assertNotIn("global ", source)
+
+    def test_lifecycle_module_does_not_guess_business_keys_from_payload(self):
+        """生命周期层不得按载荷内容推断业务键（猜测会静默改变历史指纹）。"""
+
+        source = (ROOT / "src/equipeffi/application/lifecycle/models.py").read_text("utf-8")
+        self.assertNotIn("RESERVED_PAYLOAD_KEYS", source)
+        self.assertNotIn("RESERVED", source)
 
 
 if __name__ == "__main__":

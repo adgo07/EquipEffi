@@ -20,6 +20,8 @@ from hashlib import sha256
 import json
 from typing import Any
 
+from .errors import LifecycleError
+
 #: 指纹载荷中"缺失值"的规范化文本。Phase 3 起即为 `"None"`，不得改变，
 #: 否则既有 Workspace 的指纹会漂移。
 _MISSING = "None"
@@ -35,13 +37,6 @@ _MISSING = "None"
 #: 不新增列、不新增迁移、不依赖导入顺序、不依赖全局可变状态。
 BUSINESS_KEYS_METADATA_KEY = "_business_keys"
 
-#: `payload` 中**不参与**业务指纹的生命周期级登记键（设备无关，故可在此声明）。
-#:
-#: 仅用于 Phase 4 之前、未携带 `BUSINESS_KEYS_METADATA_KEY` 的历史快照回退。
-RESERVED_PAYLOAD_KEYS: frozenset[str] = frozenset(
-    {BUSINESS_KEYS_METADATA_KEY, "project_name", "equipment_no", "product_type"}
-)
-
 
 def business_keys_metadata(keys: "tuple[str, ...]") -> dict[str, list[str]]:
     """构造随快照持久化的业务键元数据载荷片段。
@@ -52,22 +47,22 @@ def business_keys_metadata(keys: "tuple[str, ...]") -> dict[str, list[str]]:
     return {BUSINESS_KEYS_METADATA_KEY: list(keys)}
 
 
-def business_key_names(payload: dict[str, Any]) -> tuple[str, ...]:
-    """从已持久化的载荷中读出业务键名。
+def business_key_names(payload: dict[str, Any]) -> tuple[str, ...] | None:
+    """从已持久化的载荷中读出业务键名；缺失时返回 `None`。
 
-    1. 优先使用快照自己持久化的 `BUSINESS_KEYS_METADATA_KEY`（Phase 4 起写入）；
-    2. 否则回退到"载荷中除生命周期级登记键以外的全部键"。
+    **不猜测**：Phase 4 之前的历史快照没有这份元数据，而"哪些业务字段应当参与
+    指纹"无法从载荷内容反推——载荷只记录了写入当时**非空**的字段，
+    缺失字段应当计入 `"None"` 还是根本不属于该设备，从数据上无法区分。
 
-    回退分支只服务 Phase 4 之前的历史快照，且**完全由快照自身内容决定**：
-    不读取任何进程内全局状态，因此同一份快照在任意进程、任意导入顺序下
-    都得到同一指纹。历史快照里"当时为空的字段"本就未写入载荷，故该回退
-    与写入当次 `PumpAnalysisRequest.request_fingerprint()` 的取值一致。
+    因此历史快照必须由拥有业务知识的调用方显式传入业务键；
+    猜一个投影会静默改变历史指纹（已实测：会拒绝 Base 本可合法固化的
+    `INSUFFICIENT_DATA` 草稿）。
     """
 
     recorded = payload.get(BUSINESS_KEYS_METADATA_KEY)
     if isinstance(recorded, (list, tuple)):
         return tuple(str(name) for name in recorded)
-    return tuple(sorted(name for name in payload if name not in RESERVED_PAYLOAD_KEYS))
+    return None
 
 
 def normalize_fingerprint_value(value: Any) -> str:
@@ -132,11 +127,18 @@ class WorkspaceSnapshot:
 
         `business_keys` 省略时，使用**该快照自己持久化**的业务键元数据
         （`BUSINESS_KEYS_METADATA_KEY`），因此跨进程恢复不需要产品模块被导入，
-        也不存在全局可变状态；未携带该元数据的历史快照按
-        `business_key_names()` 的回退规则处理。
+        也不存在全局可变状态。
+
+        Phase 4 之前的历史快照没有该元数据，此时**必须显式传入业务键**：
+        缺失字段的语义无法从载荷反推，猜测会静默改变历史指纹。
         """
 
         keys = business_key_names(self.payload) if business_keys is None else business_keys
+        if keys is None:
+            raise LifecycleError(
+                "该 Workspace 快照未记录业务键元数据（Phase 4 之前写入），"
+                "无法自行重建指纹；请显式传入业务键。"
+            )
         return stable_fingerprint(self.business_key_values(keys))
 
 

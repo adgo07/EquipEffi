@@ -50,6 +50,14 @@ _CASE = (
     ("W-base-chem", "单级石油化工离心泵",
      {"QBEP": "100", "HBEP": "14", "speed": "2900",
       "efficiency": "73", "suction": "单吸", "stages": "1"}),
+    # 独立验收指出的关键场景：**缺少业务字段**的旧草稿
+    # （Base 下该草稿的 Finalize 是成功的，结论 INSUFFICIENT_DATA）
+    ("W-base-water-noeff", "单级单吸清水离心泵",
+     {"QBEP": "100", "HBEP": "50", "speed": "2900",
+      "suction": "单吸", "stages": "1"}),
+    ("W-base-chem-noeff", "单级石油化工离心泵",
+     {"QBEP": "100", "HBEP": "14", "speed": "2900",
+      "suction": "单吸", "stages": "1"}),
 )
 
 _BASE_WRITER = r'''
@@ -73,8 +81,22 @@ out = {{}}
 for wid, category, values in json.loads(r"""{cases}"""):
     request = PumpAnalysisRequest(category, date(2026, 8, 23), **values)
     svc.create_workspace(wid, request)
-    out[wid] = request.request_fingerprint()
-print(json.dumps(out))
+    ws = svc.load_workspace(wid)
+    entry = {{"fingerprint": request.request_fingerprint(),
+              "payload_keys": sorted(ws.payload)}}
+    # 记录 **Base 自己** 能否 Finalize 这条草稿：新代码必须给出同样结论
+    try:
+        rebuilt = svc.request_from_workspace(svc.load_workspace(wid))
+        result = svc.evaluate(rebuilt)
+        rec = svc.finalize(record_id="BASE-" + wid, workspace_id=wid,
+                           request=rebuilt, result=result)
+        entry["base_finalize"] = "OK"
+        entry["base_status"] = rec.evaluation_status
+    except Exception as exc:
+        entry["base_finalize"] = "REJECT:" + type(exc).__name__
+        entry["base_status"] = None
+    out[wid] = entry
+print(json.dumps(out, ensure_ascii=False))
 '''
 
 
@@ -125,8 +147,12 @@ def main() -> int:
 
         failures = 0
         for workspace_id, _, _ in _CASE:
-            recorded = expected[workspace_id]
-            print(f"--- {workspace_id}  base fingerprint = {recorded}")
+            info = expected[workspace_id]
+            recorded = info["fingerprint"]
+            print(f"--- {workspace_id}")
+            print(f"    base fingerprint   = {recorded}")
+            print(f"    base Finalize      = {info['base_finalize']}"
+                  f" ({info['base_status']})")
             workspace = service.load_workspace(workspace_id)
             if workspace is None:
                 failures += 1
@@ -134,39 +160,62 @@ def main() -> int:
                 continue
             print(f"    payload keys       = {sorted(workspace.payload)}")
 
-            noarg = workspace.request_fingerprint()
-            print(f"    no-arg fingerprint = {noarg}")
-            if noarg != recorded:
-                failures += 1
-                print("    !! 无参指纹漂移")
-
             request = service.request_from_workspace(workspace)
             if request.request_fingerprint() != recorded:
                 failures += 1
                 print("    !! 重建输入指纹漂移")
 
+            # 旧草稿没有业务键元数据 → 无参必须显式报错，而不是猜一个投影
+            try:
+                workspace.request_fingerprint()
+            except Exception as exc:  # noqa: BLE001
+                print(f"    no-arg fingerprint = <{type(exc).__name__}> (显式拒绝猜测)")
+            else:
+                failures += 1
+                print("    !! 旧草稿无参指纹未显式报错")
+
             result = service.evaluate_workspace(workspace_id)
             print(f"    evaluation_status  = {result.evaluation_status} "
                   f"grade={result.grade}")
-            record = service.finalize(record_id=f"R-{workspace_id}",
-                                      workspace_id=workspace_id,
-                                      request=request, result=result)
+            if result.evaluation_status != info["base_status"]:
+                failures += 1
+                print(f"    !! evaluation_status 与 base 不一致 "
+                      f"(base={info['base_status']})")
+
+            # 关键：Base 能 Finalize 的，新代码必须也能
+            try:
+                record = service.finalize(record_id=f"HEAD-{workspace_id}",
+                                          workspace_id=workspace_id,
+                                          request=request, result=result)
+            except Exception as exc:  # noqa: BLE001
+                if info["base_finalize"] == "OK":
+                    failures += 1
+                    print(f"    !! Base 可 Finalize 但当前代码拒绝: {exc}")
+                else:
+                    print(f"    Finalize           = 拒绝（base 亦拒绝，一致）")
+                continue
+            if info["base_finalize"] != "OK":
+                failures += 1
+                print("    !! base 拒绝但当前代码成功（反向不一致）")
+                continue
             if record.input_snapshot["request_fingerprint"] != recorded:
                 failures += 1
                 print("    !! Record 指纹漂移")
+            if record.evaluation_status != info["base_status"]:
+                failures += 1
+                print("    !! Record 结论与 base 不一致")
 
             reopened = service.open_record(record.record_id)
             if reopened.result_snapshot["evaluation_status"] != result.evaluation_status:
                 failures += 1
                 print("    !! Reopen 结论不一致")
-            print(f"    reopen             = "
-                  f"{reopened.result_snapshot['evaluation_status']} "
-                  f"as_of={reopened.as_of}")
+            print(f"    Finalize           = OK ({record.evaluation_status}) "
+                  f"reopen={reopened.result_snapshot['evaluation_status']}")
 
             updated = service.update_workspace(workspace_id, request)
             if updated.request_fingerprint() != recorded:
                 failures += 1
-                print("    !! 更新后无参指纹漂移")
+                print("    !! 更新后指纹漂移")
             print(f"    after update keys  = {sorted(updated.payload)}")
 
         if failures:

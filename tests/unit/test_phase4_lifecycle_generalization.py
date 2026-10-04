@@ -280,11 +280,12 @@ class FingerprintHasNoProductImportCouplingTests(unittest.TestCase):
         self.assertEqual(workspace.request_fingerprint(), workspace.request_fingerprint(
             PUMP_FINGERPRINT_KEYS))
 
-    def test_legacy_snapshot_without_metadata_is_derived_from_the_snapshot(self):
-        """Phase 4 之前、未携带元数据的旧快照：无参指纹必须由**快照自身**确定性推出。
+    def test_legacy_snapshot_requires_explicit_keys_instead_of_guessing(self):
+        """Phase 4 之前的旧快照无参调用必须显式报错，而不是猜一个投影。
 
-        旧快照的载荷只记录"写入时非空"的字段，因此对当时非空的输入，
-        回退结果与写入当次 `PumpAnalysisRequest.request_fingerprint()` 一致。
+        缺失字段应计入 `"None"` 还是不属于该设备，从载荷无法区分；
+        猜测会静默改变历史指纹（实测会拒绝 Base 本可合法固化的
+        `INSUFFICIENT_DATA` 草稿）。因此必须由拥有业务知识的调用方显式传键。
         """
 
         request = self._request(WATER)
@@ -298,76 +299,10 @@ class FingerprintHasNoProductImportCouplingTests(unittest.TestCase):
             device_type="centrifugal_pump", product_category=WATER,
             rule_profile="pump_water", as_of=AS_OF.isoformat(), payload=payload,
             schema_version=2, created_at_utc="c", updated_at_utc="u")
-        self.assertEqual(legacy.request_fingerprint(), request.request_fingerprint())
-        # 显式传入业务键是等价的另一种调用方式
+        with self.assertRaises(LifecycleError):
+            legacy.request_fingerprint()
         self.assertEqual(legacy.request_fingerprint(PUMP_FINGERPRINT_KEYS),
-                         legacy.request_fingerprint())
-
-    def test_legacy_workspace_can_still_finalize_and_reopen(self):
-        """真实旧库路径：无元数据草稿必须仍能 evaluate → finalize → Reopen。"""
-
-        request = self._request(WATER)
-        payload = request.raw_values() | {
-            "project_name": request.project_name,
-            "equipment_no": request.equipment_no,
-        }
-        with sqlite3.connect(self.db) as connection:
-            connection.execute(
-                """
-                INSERT INTO workspace (
-                    workspace_id, standard_code, device_type, product_category,
-                    rule_profile, as_of, payload_json, schema_version,
-                    created_at_utc, updated_at_utc, revision
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                ("W-legacy", "GB 19762-2025", "centrifugal_pump", WATER, "pump_water",
-                 AS_OF.isoformat(),
-                 json.dumps(payload, ensure_ascii=False, sort_keys=True,
-                            separators=(",", ":")),
-                 2, "2026-08-23T00:00:00Z", "2026-08-23T00:00:00Z", 1),
-            )
-
-        workspace = self.service.load_workspace("W-legacy")
-        rebuilt = self.service.request_from_workspace(workspace)
-        self.assertEqual(rebuilt.request_fingerprint(), request.request_fingerprint())
-        result = self.service.evaluate_workspace("W-legacy")
-        self.assertEqual(result.evaluation_status, "SUCCESS")
-        record = self.service.finalize(record_id="R-legacy", workspace_id="W-legacy",
-                                       request=rebuilt, result=result)
-        self.assertEqual(record.input_snapshot["request_fingerprint"],
                          request.request_fingerprint())
-        reopened = self.service.open_record("R-legacy")
-        self.assertEqual(reopened.result_snapshot["evaluation_status"], "SUCCESS")
-
-    def test_legacy_fallback_is_deterministic_across_processes(self):
-        """回退分支不得依赖导入顺序：子进程只加载 lifecycle 也得到同一指纹。"""
-
-        request = self._request(WATER)
-        payload = request.raw_values() | {"project_name": None, "equipment_no": None}
-        expected = WorkspaceSnapshot(
-            workspace_id="W", standard_code="GB 19762-2025",
-            device_type="centrifugal_pump", product_category=WATER,
-            rule_profile="pump_water", as_of=AS_OF.isoformat(), payload=payload,
-            schema_version=2, created_at_utc="c", updated_at_utc="u").request_fingerprint()
-
-        child = (
-            "import json, sys\n"
-            f"sys.path.insert(0, r'{ROOT / 'src'}')\n"
-            "from equipeffi.application.lifecycle import WorkspaceSnapshot\n"
-            f"payload = json.loads(r'''{json.dumps(payload, ensure_ascii=False)}''')\n"
-            "ws = WorkspaceSnapshot(workspace_id='W', standard_code='GB 19762-2025',\n"
-            "    device_type='centrifugal_pump', product_category="
-            f"{WATER!r},\n"
-            "    rule_profile='pump_water', as_of='2026-08-23', payload=payload,\n"
-            "    schema_version=2, created_at_utc='c', updated_at_utc='u')\n"
-            "assert 'equipeffi.application.services.centrifugal_pump_analysis_service'"
-            " not in sys.modules\n"
-            "print(ws.request_fingerprint())\n"
-        )
-        completed = subprocess.run([sys.executable, "-c", child], capture_output=True,
-                                   text=True, encoding="utf-8")
-        self.assertEqual(completed.returncode, 0, completed.stderr[-600:])
-        self.assertEqual(completed.stdout.strip(), expected)
 
     def test_lifecycle_module_has_no_ambient_registration(self):
         """生命周期层不得再提供全局可变注册点。"""
