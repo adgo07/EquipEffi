@@ -40,24 +40,12 @@ SYSTEM_FAILURE_TEXT = "批量评价未能完成，请检查工作簿或联系技
 class BatchPage(QWidget):
     """Excel 导入 / 批量评价页。"""
 
-    def __init__(self, batch: PumpBatchEvaluationService, navigator=None,
-                 *, template_resource=None):
+    def __init__(self, batch: PumpBatchEvaluationService, navigator=None):
         super().__init__()
         self.batch = batch
         self.navigator = navigator
         self.last_result = None
-        self._template_resource = template_resource
         self._build()
-
-    # -- 模板资源（只用于"输出空白模板"一次操作）--------------------------
-
-    @property
-    def template_resource(self):
-        if self._template_resource is None:
-            from ....infrastructure.excel.template_resource import V6TemplateResource
-
-            self._template_resource = V6TemplateResource()
-        return self._template_resource
 
     # -- 构建 --------------------------------------------------------------
 
@@ -159,7 +147,7 @@ class BatchPage(QWidget):
         if not chosen:
             return None
         try:
-            target = self.template_resource.download_to(Path(chosen))
+            target = self.batch.export_blank_template(Path(chosen))
         except Exception as error:  # noqa: BLE001 - UI 只提示，真实原因进日志
             import logging
 

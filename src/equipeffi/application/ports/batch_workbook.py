@@ -83,3 +83,13 @@ class BatchResultWriter(Protocol):
 
     def write(self, source: Path, outcomes: dict[int, BatchRowOutcome],
               destination: Path, *, overwrite: bool = False) -> Path: ...
+
+
+class BatchTemplateResource(Protocol):
+    """正式空白模板资源端口（供"输出空白模板"一次操作使用）。
+
+    实现方负责把**入仓的正式模板**复制到用户选择的位置；
+    Presentation 因此不必（也不得）import Infrastructure。
+    """
+
+    def download_to(self, destination: Path) -> Path: ...

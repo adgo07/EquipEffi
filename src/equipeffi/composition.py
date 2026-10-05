@@ -176,7 +176,10 @@ def create_batch_evaluation_service(*, paths=None):
     from . import __version__
     from .infrastructure.excel.pump_result_writer import PumpResultWorkbookWriter
     from .infrastructure.excel.pump_workbook_reader import V6PumpWorkbookReader
-    from .infrastructure.excel.template_resource import V6_TEMPLATE_IDENTITY
+    from .infrastructure.excel.template_resource import (
+        V6_TEMPLATE_IDENTITY,
+        V6TemplateResource,
+    )
     from .infrastructure.persistence.app_data_paths import AppDataPaths
     from .infrastructure.persistence.sqlite_batch_record_repository import (
         SqliteBatchRecordRepository,
@@ -191,6 +194,7 @@ def create_batch_evaluation_service(*, paths=None):
         writer=PumpResultWorkbookWriter(),
         batch_repository=SqliteBatchRecordRepository(paths.records_db),
         template_identity=V6_TEMPLATE_IDENTITY,
+        template_resource=V6TemplateResource(),
         app_version=__version__)
 
 

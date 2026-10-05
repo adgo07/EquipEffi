@@ -210,6 +210,7 @@ class PumpBatchEvaluationService:
     def __init__(self, analysis: CentrifugalPumpAnalysisService, *,
                  reader, writer, batch_repository=None,
                  template_identity: dict[str, str] | None = None,
+                 template_resource=None,
                  record_id_factory: Callable[[], str] | None = None,
                  app_version: str = ""):
         # 载体端口**必须**由装配层注入：Application 不认识 Excel / openpyxl。
@@ -218,10 +219,20 @@ class PumpBatchEvaluationService:
         self.writer = writer
         self.batch_repository = batch_repository
         self.template_identity = dict(template_identity or {})
+        self.template_resource = template_resource
         self._first_result = None
         self.app_version = app_version
         self._record_id_factory = record_id_factory or (
             lambda: f"BATCH-{uuid4().hex[:12]}")
+
+    # -- 空白模板一次输出 --------------------------------------------------
+
+    def export_blank_template(self, destination: Path) -> Path:
+        """一次操作输出正式空白模板（**不**询问任何行数 / 不逐 Sheet 配置容量）。"""
+
+        if self.template_resource is None:
+            raise RuntimeError("未装配正式模板资源，无法输出空白模板")
+        return Path(self.template_resource.download_to(Path(destination)))
 
     # -- 主流程 ------------------------------------------------------------
 

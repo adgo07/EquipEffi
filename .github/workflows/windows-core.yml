@@ -85,6 +85,7 @@ jobs:
         shell: pwsh
         run: |
           $mods = @(
+            'tests.contract.test_architecture_boundaries',
             'tests.unit.test_composition',
             'tests.unit.test_phase2_settings',
             'tests.unit.test_phase2_logging',
