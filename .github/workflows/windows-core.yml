@@ -113,9 +113,12 @@ jobs:
           $out = & python tools/check_windows_regressions.py --output artifacts/diag 2>&1 | Out-String
           Write-Output "EXITCODE=$LASTEXITCODE"
           Write-Output $out
-          $out -split "`n" | ForEach-Object {
-            if ($_ -match 'gate|new_failur|new_error|worsened|missing|FAIL|ERROR|fail|error') {
-              Write-Output ('::error title=p8cmp::' + ($_ -replace '%','%25' -replace "`r",''))
+          $lines = $out -split "`n"
+          for ($i = 0; $i -lt $lines.Count; $i++) {
+            if ($lines[$i] -match 'charmap|UnicodeDecode|Traceback') {
+              for ($j = [Math]::Max(0, $i - 12); $j -le [Math]::Min($lines.Count - 1, $i + 8); $j++) {
+                Write-Output ('::error title=p8trace::' + ($lines[$j] -replace '%','%25' -replace "`r",''))
+              }
             }
           }
           if (Test-Path artifacts/diag/comparison.json) {
