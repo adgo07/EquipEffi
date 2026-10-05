@@ -22,7 +22,8 @@ import openpyxl
 from openpyxl.utils import get_column_letter
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_BASELINE = REPO_ROOT / "outputs" / "设备能效分析空白模板_重构版V6_变压器.xlsx"
+DEFAULT_BASELINE = (REPO_ROOT / "specs" / "equipment_efficiency" / "templates"
+                    / "设备能效分析空白模板_重构版V6_变压器.xlsx")
 DEFAULT_TEMPLATE = (REPO_ROOT / "src" / "equipeffi" / "resources" / "templates"
                     / "设备能效分析空白模板_重构版V6_20261005.xlsx")
 

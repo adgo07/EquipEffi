@@ -46,7 +46,8 @@ from equipeffi.infrastructure.excel.template_resource import (
 ROOT = Path(__file__).resolve().parents[2]
 TEMPLATE = (ROOT / "src" / "equipeffi" / "resources" / "templates"
             / V6_TEMPLATE_IDENTITY["filename"])
-OWNER_BASELINE = ROOT / "outputs" / V6_TEMPLATE_IDENTITY["source_filename"]
+OWNER_BASELINE = (ROOT / "specs" / "equipment_efficiency" / "templates"
+                  / V6_TEMPLATE_IDENTITY["source_filename"])
 
 FORMAL_CATEGORIES = tuple(c.visible_name for c in PUMP_CATEGORIES if c.special is None)
 EXPECTED_CATEGORIES = tuple(c.visible_name for c in PUMP_CATEGORIES)
@@ -68,13 +69,18 @@ class TemplateAssetTests(unittest.TestCase):
         self.assertEqual(resource.validate().sha256.upper(),
                          V6_TEMPLATE_IDENTITY["asset_sha256"])
 
-    def test_owner_baseline_is_untouched(self):
-        """构建输入（Owner 指定的 V6 基线）不得被写回或改写。"""
+    def test_owner_baseline_is_tracked_and_untouched(self):
+        """构建输入（Owner 指定的 V6 基线）必须**入仓**且未被写回或改写。
+
+        Phase 8 决定把该基线作为**受跟踪的构建输入**提交（`specs/` 下），
+        而不是依赖本地 `outputs/`：否则 CI 无法复现生成与来源校验，
+        测试也会因文件缺失而跳过（曾导致 comparator 的 unexpected_skips）。
+        """
 
         import hashlib
 
-        if not OWNER_BASELINE.is_file():
-            self.skipTest("本地未保留 Owner 指定基线（构建输入为离线资产）")
+        self.assertTrue(OWNER_BASELINE.is_file(),
+                        f"Owner 指定基线必须入仓：{OWNER_BASELINE}")
         actual = hashlib.sha256(OWNER_BASELINE.read_bytes()).hexdigest().upper()
         self.assertEqual(actual, V6_TEMPLATE_IDENTITY["source_sha256"])
 

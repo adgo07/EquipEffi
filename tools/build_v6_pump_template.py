@@ -41,8 +41,10 @@ from openpyxl.worksheet.datavalidation import DataValidation
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
-#: Owner 指定的 V6 模板基线（构建输入；**读取，绝不写回**）。
-DEFAULT_SOURCE = REPO_ROOT / "outputs" / "设备能效分析空白模板_重构版V6_变压器.xlsx"
+#: Owner 指定的 V6 模板基线（**受跟踪的构建输入**；只读取，绝不写回）。
+#: 入仓而非依赖本地 outputs/，否则 CI 上无法复现生成与来源校验。
+DEFAULT_SOURCE = (REPO_ROOT / "specs" / "equipment_efficiency" / "templates"
+                  / "设备能效分析空白模板_重构版V6_变压器.xlsx")
 #: 正式模板资产（产品运行时只使用入仓版本，不依赖本地开发路径）。
 DEFAULT_OUTPUT = (REPO_ROOT / "src" / "equipeffi" / "resources" / "templates"
                   / "设备能效分析空白模板_重构版V6_20261005.xlsx")
