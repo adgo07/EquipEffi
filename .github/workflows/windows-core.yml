@@ -110,8 +110,9 @@ jobs:
         continue-on-error: true
         shell: pwsh
         run: |
-          Write-Output '::error title=p8probe::probe-alive'
-          Write-Output '::error title=p8probe2::second-line'
+          Write-Output '::error::P8PROBE_A'
+          Write-Output '::error file=README.md,line=1::P8PROBE_B'
+          Write-Error 'P8PROBE_C'
 
       # TEMP DIAGNOSTIC (P8): emit ONLY the comparator verdict + violation counts.
       # GitHub 注解有配额上限，因此这里刻意只输出极少量关键行。
@@ -121,7 +122,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Continue'
-          & python tools/check_windows_regressions.py --output artifacts/diag *> $null
+          & python tools/check_windows_regressions.py --output artifacts/diag 2>&1 | Out-Null
           Write-Output "COMPARATOR_EXIT=$LASTEXITCODE"
           if (Test-Path artifacts/diag/comparison.json) {
             $c = Get-Content artifacts/diag/comparison.json -Raw | ConvertFrom-Json
@@ -129,10 +130,10 @@ jobs:
               $v = $c.$k
               $text = if ($v -is [array]) { ($v -join ' | ') } else { "$v" }
               if ($text.Length -gt 200) { $text = $text.Substring(0, 200) }
-              Write-Output ('::error title=p8-' + $k + '::' + ($text -replace '%','%25' -replace "`r",'' -replace "`n",' '))
+              Write-Output ('::error::P8_' + $k + '=' + $text)
             }
           } else {
-            Write-Output '::error title=p8-nofile::comparison.json missing'
+            Write-Output '::error::P8_NOFILE'
           }
       - name: Full suite known-regression comparator (gating)
         run: python tools/check_windows_regressions.py --output artifacts/phase2-regression
