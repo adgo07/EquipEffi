@@ -35,6 +35,7 @@ with build_lock(Path(sys.argv[1]), operation='测试构建'):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
+                encoding="utf-8",
             )
             try:
                 self.assertEqual(first.stdout.readline().strip(), "locked")
@@ -44,6 +45,7 @@ with build_lock(Path(sys.argv[1]), operation='测试构建'):
                     env=env,
                     capture_output=True,
                     text=True,
+                    encoding="utf-8",
                     timeout=3,
                 )
                 self.assertNotEqual(second.returncode, 0)
