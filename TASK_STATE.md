@@ -42,8 +42,10 @@ current_task:
     phase_8A: COMPLETE（模板正式化 + 一致性矩阵 + Reader）
     phase_8B: COMPLETE（批量评价 + Writer + batch_record + Qt 闭环）
   records_schema_changed: YES (additive only)
-  records_schema_detail: 新增迁移 003 create_batch_record（独立表，不改 record/workspace 语义）；schema_version 2 -> 3
+  records_schema_detail: 新增 additive 迁移 003 create_batch_record（独立表）+ 004 extend_batch_record（补列）；schema_version 2 -> 4；record/workspace 语义与列契约不变
   formal_template: equipeffi.device-efficiency.V6 (V6-20261005)
+  batch_quantity_weighted: true
+  golden_excel_replay: 29/29 零漂移
   next_action: 8A 内部 Gate 通过后继续 8B；等待最终独立验收；do not merge; do not start Phase 9
 
 phase_6_closure:

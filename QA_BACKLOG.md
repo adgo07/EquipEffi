@@ -336,5 +336,5 @@ Phase 8 正式承接以下与 Excel 批量评价直接相关的条目（**不借
 | issue_id | 表面 | 状态 | 说明 |
 |---|---|---|---|
 | `QA-EXCEL-001` | `EXCEL_READER` | **CLOSED（Phase 8A）** | `ooxml_reader._parse_number` 曾把非整数数值 **Decimal → float** 再送进正式评价链，等于把 Numeric Contract 降级。**已修复**：整数返回 `int`、其余保留 `Decimal`，**绝不经过 float**；覆盖整数 / 普通小数 / 35 位长小数 / 科学计数法 / 大整数 / 文本 / 空值。并新增正式 Reader `pump_workbook_reader`，只读正式输入列、行启用为语义式、表头做防御性校验。<br>`disposition`：Phase 8 关闭（测试见 `tests/unit/test_phase8a_template_reader.py`） |
-| `QA-P5-003` | `V4_EXCEL_ADAPTER` | **CLOSED（Phase 8）** | 「Excel 侧存在独立业务算法」问题**已解决**：正式 V6 模板的「离心泵」Sheet 已退出全部可独立产出 GB19762 结果的 Excel 公式（`K`/`L`/`N:X`/`AA`），改由软件批量评价写入；Excel 只做批量输入/输出载体，每行都调用正式 Application 契约。V4 模板降为 `LEGACY`（不再作为正式用户模板，实现保留）。<br>`disposition`：Phase 8 关闭（门禁见 `tools/check_v6_pump_template.py`） |
+| `QA-P5-003` | `V4_EXCEL_ADAPTER` | **CLOSED（Phase 8 / 8B 正式 E2E 确认）** | 「Excel 侧存在独立业务算法」问题**已解决**：正式 V6 模板的「离心泵」Sheet 已退出全部可独立产出 GB19762 结果的 Excel 公式（`K`/`L`/`N:X`/`AA`），改由软件批量评价写入；Excel 只做批量输入/输出载体，每行都调用正式 Application 契约。V4 模板降为 `LEGACY`（不再作为正式用户模板，实现保留）。<br>`disposition`：Phase 8 关闭（门禁见 `tools/check_v6_pump_template.py`） |
 | `QA-P6-001` | `LEGACY_TK` | **OPEN（Phase 8 明确不清理）** | legacy Tk 桌面窗口实现保留但不接线。Phase 8 **不**删除该实现，也**不**触碰其表单模型依赖链；`disposition` 保持 Phase 8 之后按需处理。 |

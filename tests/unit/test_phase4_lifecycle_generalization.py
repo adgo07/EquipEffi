@@ -360,10 +360,19 @@ class Phase3WorkspaceFixtureCompatibilityTests(unittest.TestCase):
             ).fetchone()[0]
         # Phase 4 的语义不变量是「既有 workspace / record 列契约不变、
         # Phase 3 已创建的数据库仍可打开」。Phase 8 经 Owner 授权新增了
-        # **additive** 迁移 003（独立的 `batch_record` 表，不触碰 record /
-        # workspace），因此最高版本前移到 3；这不违反 Phase 4 的不变量。
-        self.assertEqual(int(version), 3,
-                         "records schema_version 应为 3（Phase 8 additive 迁移 003）")
+        # **additive** 迁移（003 `batch_record` 表、004 扩充其列），
+        # 因此最高版本等于迁移链长度；这不违反 Phase 4 的不变量。
+        # 依据迁移清单推导，避免每次新增 additive 迁移都产生假回归。
+        from equipeffi.infrastructure.persistence.records_migrations import (
+            RECORDS_MIGRATIONS,
+        )
+
+        self.assertEqual(int(version), len(RECORDS_MIGRATIONS),
+                         "records schema_version 应等于迁移链长度")
+        self.assertEqual([(m.schema_version, m.migration_id)
+                          for m in RECORDS_MIGRATIONS][:2],
+                         [(1, "001_create_workspace_and_record"),
+                          (2, "002_add_workspace_revision")])
         with sqlite3.connect(self.db) as connection:
             record_columns = [row[1] for row in
                               connection.execute("PRAGMA table_info(record)").fetchall()]

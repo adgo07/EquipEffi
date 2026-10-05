@@ -1,13 +1,17 @@
-"""批量评价（Excel 批量输入/输出）页 — Phase 8。
+"""Excel 导入（批量输入/输出）页 — Phase 8。
 
-产品语义
---------
-Excel 是**批量输入/输出载体**，不是业务计算引擎：本页把选中工作簿的
-「离心泵」Sheet 逐行交给正式 Application 评价，然后把结果写入一个**新的**
-结果工作簿，并形成**一条**批次总结记录。
+产品流程（Owner Phase 8B / G08）
+--------------------------------
+```text
+输出空白模板 → 选择 Excel → 导入检查 → 批量评价 → 结果保存 → 批次总结
+```
 
-界面上刻意保持简单：选输入 → 选输出 → 开始。**不**询问每种设备需要多少行，
-**不**逐 Sheet 扩容（容量由模板的 Excel Table 与语义式 Reader 承担）。
+刻意保持简单：**不**询问"泵多少行？变压器多少行？电机多少行？"，
+**不**逐 Sheet 扩容——模板本身承担统一容量机制（Excel Table + 语义式 Reader）。
+
+Excel 是**批量输入/输出载体**，不是业务计算引擎：本页把「离心泵」Sheet 逐行交给
+正式 Application 评价，把结果写入一个**新的**结果工作簿，
+并形成**一条**批次总结记录。
 """
 from __future__ import annotations
 
@@ -30,21 +34,30 @@ from ....application.services.pump_batch_evaluation_service import (
 )
 from ..tokens import TOKENS
 
-#: 结果工作簿默认文件名后缀（绝不覆盖输入文件）。
-RESULT_SUFFIX = "_批量评价结果.xlsx"
-
 SYSTEM_FAILURE_TEXT = "批量评价未能完成，请检查工作簿或联系技术人员。"
 
 
 class BatchPage(QWidget):
-    """Excel 批量评价页。"""
+    """Excel 导入 / 批量评价页。"""
 
-    def __init__(self, batch: PumpBatchEvaluationService, navigator=None):
+    def __init__(self, batch: PumpBatchEvaluationService, navigator=None,
+                 *, template_resource=None):
         super().__init__()
         self.batch = batch
         self.navigator = navigator
         self.last_result = None
+        self._template_resource = template_resource
         self._build()
+
+    # -- 模板资源（只用于"输出空白模板"一次操作）--------------------------
+
+    @property
+    def template_resource(self):
+        if self._template_resource is None:
+            from ....infrastructure.excel.template_resource import V6TemplateResource
+
+            self._template_resource = V6TemplateResource()
+        return self._template_resource
 
     # -- 构建 --------------------------------------------------------------
 
@@ -54,7 +67,7 @@ class BatchPage(QWidget):
         layout.setSpacing(TOKENS.spacing)
 
         # 一级页面标题与导航名一致（与其余页面相同的约定）。
-        title = QLabel("批量评价")
+        title = QLabel("Excel导入")
         title.setObjectName("pageTitle")
         layout.addWidget(title)
 
@@ -62,13 +75,25 @@ class BatchPage(QWidget):
         layout.addWidget(subtitle)
 
         hint = QLabel(
-            "选择填写好的空白模板，软件会用正式 GB 19762 计算链逐台评价，"
-            "并输出一份新的结果工作簿。\n"
-            "结果工作簿不会覆盖你的原始文件；想填多少台就填多少台，软件会自动适应。")
+            "Excel 用于批量填写与批量输出，正式计算由软件完成。\n"
+            "先输出一份空白模板填写，再回到这里导入并批量评价。"
+            "想填多少台就填多少台，软件会自动适应，无需事先设置。")
         hint.setWordWrap(True)
         layout.addWidget(hint)
 
-        picker = QGroupBox("文件")
+        # 1) 输出空白模板（一次操作，绝不逐 Sheet 询问容量）
+        template_box = QGroupBox("第 1 步：输出空白模板")
+        template_layout = QHBoxLayout(template_box)
+        self.template_label = QLabel("输出软件内置的正式空白模板（全设备统一）。")
+        self.template_label.setWordWrap(True)
+        template_layout.addWidget(self.template_label, 1)
+        self.template_button = QPushButton("输出空白模板")
+        self.template_button.clicked.connect(self.export_blank_template)
+        template_layout.addWidget(self.template_button)
+        layout.addWidget(template_box)
+
+        # 2) 选择 Excel + 导入检查
+        picker = QGroupBox("第 2 步：选择要批量评价的 Excel")
         picker_layout = QVBoxLayout(picker)
 
         source_row = QHBoxLayout()
@@ -81,27 +106,36 @@ class BatchPage(QWidget):
         source_row.addWidget(self.source_button)
         picker_layout.addLayout(source_row)
 
+        check_row = QHBoxLayout()
+        self.check_button = QPushButton("导入检查")
+        self.check_button.clicked.connect(self.check_import)
+        check_row.addWidget(self.check_button)
+        self.check_label = QLabel("尚未检查。")
+        self.check_label.setWordWrap(True)
+        check_row.addWidget(self.check_label, 1)
+        picker_layout.addLayout(check_row)
+
         target_row = QHBoxLayout()
-        target_row.addWidget(QLabel("输出工作簿"))
+        target_row.addWidget(QLabel("结果保存为"))
         self.target_edit = QLineEdit()
-        self.target_edit.setPlaceholderText("留空则在输入文件旁生成新的结果工作簿")
+        self.target_edit.setPlaceholderText("留空则自动生成带时间戳的新文件，不会覆盖输入")
         target_row.addWidget(self.target_edit, 1)
         self.target_button = QPushButton("另存为…")
         self.target_button.clicked.connect(self._pick_target)
         target_row.addWidget(self.target_button)
         picker_layout.addLayout(target_row)
-
-        picker_layout.addWidget(self._template_hint())
         layout.addWidget(picker)
 
+        # 3) 批量评价
         actions = QHBoxLayout()
-        self.run_button = QPushButton("开始批量评价")
+        self.run_button = QPushButton("批量评价")
         self.run_button.clicked.connect(self.run)
         actions.addWidget(self.run_button)
         actions.addStretch(1)
         layout.addLayout(actions)
 
-        result_box = QGroupBox("批量评价结果")
+        # 4) 批次总结
+        result_box = QGroupBox("批次总结")
         result_layout = QVBoxLayout(result_box)
         self.summary_label = QLabel("尚未开始。")
         self.summary_label.setWordWrap(True)
@@ -114,14 +148,28 @@ class BatchPage(QWidget):
         result_layout.addWidget(self.issue_label)
         layout.addWidget(result_box, 1)
 
-    def _template_hint(self) -> QLabel:
-        label = QLabel(
-            "提示：请使用软件提供的空白模板填写。类别、单吸/双吸、级数、数量等"
-            "字段都已按正式口径校验，填写多少行都可以。")
-        label.setWordWrap(True)
-        return label
+    # -- 输出空白模板 ------------------------------------------------------
 
-    # -- 选择文件 ----------------------------------------------------------
+    def export_blank_template(self) -> str | None:
+        """一次操作复制 package 内正式 V6 模板；**不**询问任何行数。"""
+
+        default = Path.home() / "设备能效分析空白模板.xlsx"
+        chosen, _ = QFileDialog.getSaveFileName(
+            self, "输出空白模板", str(default), "Excel 工作簿 (*.xlsx)")
+        if not chosen:
+            return None
+        try:
+            target = self.template_resource.download_to(Path(chosen))
+        except Exception as error:  # noqa: BLE001 - UI 只提示，真实原因进日志
+            import logging
+
+            logging.getLogger("equipeffi.qt.batch").exception("输出空白模板失败")
+            self.template_label.setText(f"输出失败：{type(error).__name__}")
+            return None
+        self.template_label.setText(f"已输出空白模板：{target}")
+        return str(target)
+
+    # -- 选择与检查 --------------------------------------------------------
 
     def _pick_source(self) -> None:
         chosen, _ = QFileDialog.getOpenFileName(
@@ -131,22 +179,44 @@ class BatchPage(QWidget):
 
     def _pick_target(self) -> None:
         chosen, _ = QFileDialog.getSaveFileName(
-            self, "选择结果工作簿保存位置", self.default_target_name(),
+            self, "选择结果工作簿保存位置", str(self.default_target_name()),
             "Excel 工作簿 (*.xlsx)")
         if chosen:
             self.target_edit.setText(chosen)
 
     def set_source(self, path: str | Path) -> None:
         self.source_edit.setText(str(path))
-        if not self.target_edit.text().strip():
-            self.target_edit.setText(str(self.default_target_name()))
+        self.target_edit.clear()
+        self.check_label.setText("尚未检查。")
 
     def default_target_name(self) -> Path:
         source = self.source_edit.text().strip()
         if not source:
-            return Path(RESULT_SUFFIX)
-        path = Path(source)
-        return path.with_name(path.stem + RESULT_SUFFIX)
+            return Path("结果.xlsx")
+        return Path(self.batch.writer.default_destination(Path(source)))
+
+    def check_import(self):
+        """导入检查：只读取并报告，不写任何文件、不产生批次记录。"""
+
+        source = self.source_edit.text().strip()
+        if not source:
+            self.check_label.setText("请先选择要批量评价的工作簿。")
+            return None
+        try:
+            workbook = self.batch.reader.read(Path(source))
+        except Exception as error:  # noqa: BLE001 - UI 只提示，真实原因进日志
+            import logging
+
+            logging.getLogger("equipeffi.qt.batch").exception("导入检查失败")
+            self.check_label.setText(
+                f"无法读取该工作簿（{type(error).__name__}）。"
+                "请确认使用的是软件输出的空白模板。")
+            return None
+        self.last_check = workbook
+        self.check_label.setText(
+            f"检查通过：发现 {len(workbook.rows)} 行需要评价的数据"
+            f"（另有 {workbook.skipped_blank_rows} 行完全空白，已跳过）。")
+        return workbook
 
     # -- 执行 --------------------------------------------------------------
 
@@ -157,11 +227,10 @@ class BatchPage(QWidget):
         if not source:
             self._show_error("请先选择要批量评价的输入工作簿。")
             return None
-        target = self.target_edit.text().strip() or str(self.default_target_name())
+        target = self.target_edit.text().strip() or None
         self.last_result = None
         try:
-            result = self.batch.evaluate_workbook(
-                Path(source), destination=Path(target))
+            result = self.batch.evaluate_workbook(Path(source), destination=target)
         except Exception as error:  # noqa: BLE001 - UI 只提示，真实原因进日志
             import logging
 
@@ -174,19 +243,32 @@ class BatchPage(QWidget):
 
     def _render(self, result) -> None:
         summary = result.summary
-        self.summary_label.setText(
-            f"已处理 {summary.total_rows} 行；"
-            f"已评价 {summary.evaluated_rows} 行，"
-            f"未评价 {summary.unevaluated_rows} 行，"
-            f"失败 {summary.invalid_rows} 行。\n"
-            f"本次未生成单台分析记录，仅形成批次总结记录：{result.batch_record_id}。\n"
-            f"结果工作簿：{result.result_workbook or '（未输出）'}")
-        counts = summary.conclusion_counts
+        lines = [
+            f"数据行数 {summary.data_row_count} 行；"
+            f"设备数量总计 {summary.total_quantity} 台；"
+            f"完成正式评价 {summary.evaluated_quantity} 台。",
+            f"输入错误 {summary.input_error_rows} 行；"
+            f"执行失败 {summary.execution_error_rows} 行；"
+            f"未形成正式结论 {summary.unevaluated_rows} 行。",
+            f"结果工作簿：{result.result_workbook or '（未输出）'}",
+        ]
+        if result.batch_record_saved:
+            lines.append(f"已保存批次总结记录：{result.batch_record_id}")
+        else:
+            # 结果文件已生成但历史记录保存失败：必须明确告知，不得静默吞错。
+            lines.append(
+                "结果文件已生成，但软件历史记录保存失败："
+                f"{result.batch_record_error}")
+        self.summary_label.setText("\n".join(lines))
+
+        quantities = summary.conclusion_quantities
         self.conclusion_label.setText(
-            "结论分布：" + ("；".join(f"{name} {count} 台" for name, count in counts.items())
-                          if counts else "无"))
+            "按数量统计：" + ("；".join(f"{name} {count} 台"
+                                     for name, count in quantities.items())
+                          if quantities else "无"))
         if summary.issues:
-            lines = [f"第 {issue.row_number} 行：{issue.reason}" for issue in summary.issues[:10]]
+            lines = [f"第 {issue.row_number} 行（{issue.kind}）：{issue.reason}"
+                     for issue in summary.issues[:10]]
             more = "" if len(summary.issues) <= 10 else (
                 f"\n…共 {len(summary.issues)} 行需要关注。")
             self.issue_label.setText("需要关注的行：\n" + "\n".join(lines) + more)

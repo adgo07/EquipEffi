@@ -256,7 +256,7 @@ class AppShellTests(ProductShellTestCase):
         self.assertIsInstance(window._page_widgets["首页"], HomePage)
         self.assertIsInstance(window._page_widgets["标准库"], StandardsPage)
         self.assertIsInstance(window._page_widgets["新建分析"], AnalysisPage)
-        self.assertIsInstance(window._page_widgets["批量评价"], BatchPage)
+        self.assertIsInstance(window._page_widgets["Excel导入"], BatchPage)
         self.assertIsInstance(window._page_widgets["分析记录"], RecordsPage)
         self.assertIsInstance(window._page_widgets["设置"], SettingsPage)
 
@@ -284,8 +284,8 @@ class AppShellTests(ProductShellTestCase):
         """
 
         self.assertNotIn("参数库", " ".join(PAGES))
-        self.assertIn("批量评价", PAGES)
-        self.assertEqual(PAGES, ("首页", "标准库", "新建分析", "批量评价",
+        self.assertIn("Excel导入", PAGES)
+        self.assertEqual(PAGES, ("首页", "标准库", "新建分析", "Excel导入",
                                  "分析记录", "设置"))
 
     def test_navigation_contract_only_switches_pages_and_selects_objects(self):

@@ -41,13 +41,22 @@ def _from_row(row) -> BatchRecordSnapshot:
         result_workbook=row[5], result_workbook_sha256=row[6],
         total_rows=row[7], evaluated_count=row[8], unevaluated_count=row[9],
         invalid_count=row[10], summary=_loads(row[11]),
-        schema_version=row[12], created_at_utc=row[13])
+        schema_version=row[12], created_at_utc=row[13],
+        sheet_name=row[14], evaluation_date=row[15], source_file_name=row[16],
+        output_file_name=row[17], template_id=row[18], template_version=row[19],
+        template_sha256=row[20], data_row_count=row[21], total_quantity=row[22],
+        evaluated_quantity=row[23], app_version=row[24],
+        canonical_version=row[25], numeric_profile_id=row[26])
 
 
 _COLUMNS = ("batch_record_id, standard_code, device_type, source_workbook, "
             "source_workbook_sha256, result_workbook, result_workbook_sha256, "
             "total_rows, evaluated_count, unevaluated_count, invalid_count, "
-            "summary_json, schema_version, created_at_utc")
+            "summary_json, schema_version, created_at_utc, "
+            "sheet_name, evaluation_date, source_file_name, output_file_name, "
+            "template_id, template_version, template_sha256, data_row_count, "
+            "total_quantity, evaluated_quantity, app_version, "
+            "canonical_version, numeric_profile_id")
 
 
 class SqliteBatchRecordRepository:
@@ -61,7 +70,7 @@ class SqliteBatchRecordRepository:
             with closing(sqlite3.connect(self.database)) as connection, connection:
                 connection.execute(
                     f"INSERT INTO batch_record ({_COLUMNS}) "
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    "VALUES (" + ", ".join("?" * 27) + ")",
                     (
                         snapshot.batch_record_id, snapshot.standard_code,
                         snapshot.device_type, snapshot.source_workbook,
@@ -70,6 +79,13 @@ class SqliteBatchRecordRepository:
                         snapshot.evaluated_count, snapshot.unevaluated_count,
                         snapshot.invalid_count, _dumps(snapshot.summary),
                         snapshot.schema_version, snapshot.created_at_utc,
+                        snapshot.sheet_name, snapshot.evaluation_date,
+                        snapshot.source_file_name, snapshot.output_file_name,
+                        snapshot.template_id, snapshot.template_version,
+                        snapshot.template_sha256, snapshot.data_row_count,
+                        snapshot.total_quantity, snapshot.evaluated_quantity,
+                        snapshot.app_version, snapshot.canonical_version,
+                        snapshot.numeric_profile_id,
                     ),
                 )
         except sqlite3.IntegrityError as error:

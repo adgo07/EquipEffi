@@ -101,9 +101,13 @@ class BatchTestCase(unittest.TestCase):
         workbook.close()
         return self.source
 
+    _run_seq = 0
+
     def run_batch(self, rows: list[dict], **kwargs):
         self.fill(rows)
-        target = kwargs.pop("destination", self.root / "结果.xlsx")
+        type(self)._run_seq += 1
+        target = kwargs.pop("destination",
+                            self.root / f"结果_{type(self)._run_seq}.xlsx")
         return self.batch.evaluate_workbook(self.source, destination=target, **kwargs)
 
     @staticmethod
@@ -123,7 +127,9 @@ class BatchRecordPersistenceTests(BatchTestCase):
             (1, "001_create_workspace_and_record"),
             (2, "002_add_workspace_revision")])
         self.assertEqual(versions[2][0], 3)
+        self.assertEqual(versions[3][0], 4)
         self.assertIn("batch_record", versions[2][1])
+        self.assertIn("batch_record", versions[3][1])
         for migration in RECORDS_MIGRATIONS:
             migration.assert_additive()
 
@@ -137,10 +143,18 @@ class BatchRecordPersistenceTests(BatchTestCase):
     def test_batch_record_round_trip(self):
         snapshot = BatchRecordSnapshot(
             batch_record_id="B-1", standard_code="GB 19762-2025", device_type="离心泵",
+            sheet_name="离心泵", evaluation_date="2026-10-05",
             source_workbook="a.xlsx", source_workbook_sha256="AA",
+            source_file_name="a.xlsx",
             result_workbook="b.xlsx", result_workbook_sha256="BB",
+            output_file_name="b.xlsx",
+            template_id="equipeffi.device-efficiency.V6",
+            template_version="V6-20261005", template_sha256="CC",
             total_rows=3, evaluated_count=3, unevaluated_count=1, invalid_count=0,
-            summary={"conclusion_counts": {"1级": 2}}, schema_version=3,
+            data_row_count=3, total_quantity=7, evaluated_quantity=5,
+            summary={"conclusion_quantities": {"1级": 2}}, schema_version=4,
+            app_version="test", canonical_version="v1",
+            numeric_profile_id="EQUIPEFFI_PUMP_DECIMAL50_V2",
             created_at_utc="2026-10-05T00:00:00+00:00")
         self.repository.append_batch_record(snapshot)
         loaded = self.repository.load_batch_record("B-1")
@@ -152,9 +166,14 @@ class BatchRecordPersistenceTests(BatchTestCase):
 
         snapshot = BatchRecordSnapshot(
             batch_record_id="B-dup", standard_code="c", device_type="d",
-            source_workbook="a", source_workbook_sha256="A", result_workbook=None,
-            result_workbook_sha256=None, total_rows=0, evaluated_count=0,
-            unevaluated_count=0, invalid_count=0, summary={}, schema_version=3,
+            sheet_name="s", evaluation_date="2026-10-05",
+            source_workbook="a", source_workbook_sha256="A",
+            source_file_name="a", result_workbook=None, result_workbook_sha256=None,
+            output_file_name="", template_id="", template_version="",
+            template_sha256="", total_rows=0, evaluated_count=0,
+            unevaluated_count=0, invalid_count=0, data_row_count=0,
+            total_quantity=0, evaluated_quantity=0, summary={}, app_version="",
+            canonical_version="", numeric_profile_id="", schema_version=4,
             created_at_utc="2026-10-05T00:00:00+00:00")
         self.repository.append_batch_record(snapshot)
         with self.assertRaises(RecordConflictError):
@@ -190,10 +209,10 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
             self.water_row(),
             self.water_row(B="泵2", C="M-002", M=90),
         ])
-        self.assertEqual(result.summary.total_rows, 2)
-        self.assertEqual(result.summary.evaluated_rows, 2)
-        self.assertEqual(result.summary.invalid_rows, 0)
-        self.assertTrue(result.summary.conclusion_counts)
+        self.assertEqual(result.summary.data_row_count, 2)
+        self.assertEqual(result.summary.concluded_rows, 2)
+        self.assertEqual(result.summary.input_error_rows, 0)
+        self.assertTrue(result.summary.conclusion_quantities)
 
     def test_mixed_categories_in_one_sheet(self):
         """清水 + 石油化工离心泵共用同一 Sheet（Owner 规则 2）。"""
@@ -203,19 +222,19 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
             self.water_row(B="化工泵", C="C-001", F=CHEMICAL_SINGLE,
                            G=300, H=40, K="双吸", M=90),
         ])
-        self.assertEqual(result.summary.total_rows, 2)
-        self.assertEqual(result.summary.evaluated_rows, 2)
-        self.assertEqual(len(result.summary.conclusion_counts), 1)
+        self.assertEqual(result.summary.data_row_count, 2)
+        self.assertEqual(result.summary.concluded_rows, 2)
+        self.assertEqual(len(result.summary.conclusion_quantities), 1)
 
     def test_uncertain_category_is_unevaluated_not_skipped(self):
         result = self.run_batch([self.water_row(F="不确定类别")])
-        self.assertEqual(result.summary.total_rows, 1, "不确定类别行不得被静默跳过")
+        self.assertEqual(result.summary.data_row_count, 1, "不确定类别行不得被静默跳过")
         self.assertEqual(result.summary.unevaluated_rows, 1)
-        self.assertEqual(result.summary.conclusion_counts.get("无法评价"), 1)
+        self.assertEqual(result.summary.conclusion_quantities.get("无法评价"), 1)
 
     def test_other_category_is_out_of_scope(self):
         result = self.run_batch([self.water_row(F="其他类别")])
-        self.assertEqual(result.summary.conclusion_counts.get("不适用"), 1)
+        self.assertEqual(result.summary.conclusion_quantities.get("不适用"), 1)
         self.assertEqual(result.summary.unevaluated_rows, 0)
 
     def test_row_with_only_location_is_read_and_reported(self):
@@ -227,23 +246,28 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
         """
 
         result = self.run_batch([dict(E="5号车间")])
-        self.assertEqual(result.summary.total_rows, 1, "不得静默跳过该行")
+        self.assertEqual(result.summary.data_row_count, 1, "不得静默跳过该行")
         self.assertEqual(result.summary.issues[0].row_number, FIRST_DATA_ROW)
         self.assertIn("缺少数量", result.summary.issues[0].reason)
-        self.assertEqual(result.summary.invalid_rows, 1)
-        self.assertEqual(result.outcomes[0].conclusion, "无法评价")
-        target = openpyxl.load_workbook(
-            (self.root / "结果.xlsx"))[PUMP_SHEET]
+        self.assertEqual(result.summary.input_error_rows, 1)
+        # 数量非法属**输入问题**，不属于正式评价结论（Owner 8B 口径）。
+        self.assertEqual(result.outcomes[0].conclusion, "输入错误")
+        self.assertTrue(result.outcomes[0].is_input_error)
+        target = openpyxl.load_workbook(result.result_workbook)[PUMP_SHEET]
         self.assertEqual(target[f"AA{FIRST_DATA_ROW}"].value, "缺少数量")
+        self.assertEqual(target[f"X{FIRST_DATA_ROW}"].value, "输入错误（输入错误）")
 
     def test_system_failure_is_not_disguised_as_a_business_conclusion(self):
         with patch.object(self.analysis, "evaluate",
                           side_effect=RuntimeError("模拟内部错误")):
             result = self.run_batch([self.water_row()])
-        self.assertEqual(result.summary.invalid_rows, 1)
+        self.assertEqual(result.summary.execution_error_rows, 1)
+        self.assertEqual(result.summary.input_error_rows, 0)
         outcome = result.outcomes[0]
-        self.assertEqual(outcome.conclusion, "评价失败")
-        self.assertNotIn(outcome.conclusion, ("无法评价", "无法判定", "不适用"))
+        self.assertEqual(outcome.conclusion, "执行失败")
+        self.assertTrue(outcome.is_execution_error)
+        self.assertNotIn(outcome.conclusion,
+                         ("1级", "2级", "3级", "未达标", "不适用", "无法评价"))
         self.assertTrue(any("系统执行失败" in message for message in outcome.messages))
 
     def test_system_failure_on_one_row_does_not_abort_the_batch(self):
@@ -259,9 +283,9 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
         with patch.object(self.analysis, "evaluate", side_effect=flaky):
             result = self.run_batch([self.water_row(),
                                      self.water_row(B="泵2", C="M-002")])
-        self.assertEqual(result.summary.total_rows, 2)
-        self.assertEqual(result.summary.invalid_rows, 1)
-        self.assertEqual(result.summary.evaluated_rows, 2)
+        self.assertEqual(result.summary.data_row_count, 2)
+        self.assertEqual(result.summary.execution_error_rows, 1)
+        self.assertEqual(result.summary.input_error_rows, 0)
 
     def test_quantity_contract_is_enforced_by_software_not_only_excel(self):
         """Excel Validation 只是辅助；软件必须自己拒绝非法数量。"""
@@ -272,10 +296,13 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
                 outcome = result.outcomes[0]
                 self.assertNotEqual(outcome.evaluation_status, "SUCCESS",
                                     f"数量 {bad} 不得被判为有效")
+                self.assertTrue(outcome.is_input_error, f"数量 {bad} 应判为输入错误")
         # 空白数量同样不得被默认成 1
         result = self.run_batch([dict(B="泵", C="M-1", E="1号车间", F=WATER_SUCTION,
                                       G=100, H=50, I=2900, J=45, K="单吸", L=1, M=80)])
         self.assertNotEqual(result.outcomes[0].evaluation_status, "SUCCESS")
+        self.assertTrue(result.outcomes[0].is_input_error,
+                        "空白数量不得被默认成 1")
 
 
 class ResultWorkbookTests(BatchTestCase):
@@ -388,9 +415,11 @@ class ConclusionConsistencyTests(BatchTestCase):
             ("其他类别", "不适用"),
             ("不确定类别", "无法评价"),
         )
-        for category, expected in cases:
+        for index, (category, expected) in enumerate(cases):
             with self.subTest(category=category):
-                result = self.run_batch([self.water_row(F=category)])
+                result = self.run_batch(
+                    [self.water_row(F=category)],
+                    destination=self.root / f"agree_{index}.xlsx")
                 self.assertEqual(result.outcomes[0].conclusion, expected)
 
                 page = AnalysisPage(self.analysis, as_of=date.today())
@@ -454,17 +483,16 @@ class BatchPageTests(BatchTestCase):
         self.fill([self.water_row()])
         page = self.page()
         page.set_source(self.source)
-        self.assertTrue(page.target_edit.text())
         result = page.run()
         self.assertIsNotNone(result)
-        self.assertIn("已处理 1 行", page.summary_label.text())
-        self.assertIn("仅形成批次总结记录", page.summary_label.text())
+        self.assertIn("数据行数 1 行", page.summary_label.text())
+        self.assertIn("已保存批次总结记录", page.summary_label.text())
         self.assertTrue(Path(result.result_workbook).is_file())
 
     def test_default_target_never_overwrites_the_source(self):
         page = self.page()
         page.set_source(self.source)
-        self.assertNotEqual(Path(page.target_edit.text()).resolve(),
+        self.assertNotEqual(Path(page.default_target_name()).resolve(),
                             self.source.resolve())
 
     def test_page_requires_a_source_before_running(self):

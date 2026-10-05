@@ -1,7 +1,7 @@
 """一级导航与最小跨页导航契约。
 
 一级导航只包含真实存在的产品页面；**不得**出现 placeholder。
-Phase 8 起「批量评价」是真实页面（Excel 批量输入/输出）。
+Phase 8 起「Excel导入」是真实一级页面（Excel 批量输入/输出）。
 参数库当前无独立用户需求（标准参数/限值/依据归标准详情）。
 
 导航契约刻意保持极小，只承担三件事：
@@ -20,7 +20,7 @@ from __future__ import annotations
 from typing import Protocol
 
 #: 一级导航（顺序即产品任务顺序）。每一项都必须是真实页面。
-PAGES: tuple[str, ...] = ("首页", "标准库", "新建分析", "批量评价", "分析记录", "设置")
+PAGES: tuple[str, ...] = ("首页", "标准库", "新建分析", "Excel导入", "分析记录", "设置")
 
 
 class ShellNavigator(Protocol):

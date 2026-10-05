@@ -100,6 +100,7 @@ jobs:
             'tests.unit.test_phase7_analysis_history',
             'tests.unit.test_phase8a_template_reader',
             'tests.unit.test_phase8b_batch_evaluation',
+            'tests.unit.test_phase8b_batch_consistency',
             'tests.unit.test_windows_regression_comparator'
           )
           python -m unittest @mods -v

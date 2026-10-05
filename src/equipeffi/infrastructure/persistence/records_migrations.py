@@ -138,6 +138,29 @@ RECORDS_MIGRATIONS: tuple[RecordsMigration, ...] = (
         "CREATE INDEX IF NOT EXISTS idx_batch_record_created_at "
         "ON batch_record (created_at_utc DESC)",
     )),
+    # 004（Phase 8B）：补齐 Owner 规格要求的批次记录字段。
+    #
+    # 003 已随 Phase 8 的首个提交进入仓库与用户数据库，**不得改写**它
+    # （否则既有 records.sqlite 会因 checksum 变化而被拒绝打开）。
+    # 因此新增 004 以 `ALTER TABLE ... ADD COLUMN` 追加列——additive / compatible，
+    # 旧库升级后新列为 NULL / 默认值，既有数据不受影响。
+    #
+    # 仍**不**建逐行明细表：逐设备详细结果保存在结果 Workbook。
+    RecordsMigration(4, "004_extend_batch_record", (
+        "ALTER TABLE batch_record ADD COLUMN sheet_name TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN evaluation_date TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN source_file_name TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN output_file_name TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN template_id TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN template_version TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN template_sha256 TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN data_row_count INTEGER NOT NULL DEFAULT 0",
+        "ALTER TABLE batch_record ADD COLUMN total_quantity INTEGER NOT NULL DEFAULT 0",
+        "ALTER TABLE batch_record ADD COLUMN evaluated_quantity INTEGER NOT NULL DEFAULT 0",
+        "ALTER TABLE batch_record ADD COLUMN app_version TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN canonical_version TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN numeric_profile_id TEXT NOT NULL DEFAULT ''",
+    )),
 )
 
 

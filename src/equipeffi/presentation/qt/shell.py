@@ -67,7 +67,7 @@ class MainWindow(QMainWindow):
             "首页": self.home_page,
             "标准库": self.standards_page,
             "新建分析": self.analysis_page,
-            "批量评价": self.batch_page,
+            "Excel导入": self.batch_page,
             "分析记录": self.records_page,
             "设置": self.settings_page,
         }
@@ -98,7 +98,7 @@ class MainWindow(QMainWindow):
         self.pages.setCurrentIndex(index)
 
     def open_batch(self) -> None:
-        self._show_page("批量评价")
+        self._show_page("Excel导入")
 
     def open_home(self) -> None:
         self._show_page("首页")

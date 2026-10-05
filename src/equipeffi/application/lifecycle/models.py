@@ -185,14 +185,27 @@ class BatchRecordSnapshot:
     batch_record_id: str
     standard_code: str
     device_type: str
+    sheet_name: str
+    evaluation_date: str
     source_workbook: str
     source_workbook_sha256: str
+    source_file_name: str
     result_workbook: str | None
     result_workbook_sha256: str | None
+    output_file_name: str
+    template_id: str
+    template_version: str
+    template_sha256: str
     total_rows: int
     evaluated_count: int
     unevaluated_count: int
     invalid_count: int
+    data_row_count: int
+    total_quantity: int
+    evaluated_quantity: int
     summary: dict[str, Any]
+    app_version: str
+    canonical_version: str
+    numeric_profile_id: str
     schema_version: int
     created_at_utc: str
