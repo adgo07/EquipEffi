@@ -7,7 +7,7 @@
 - 产品：EquipEffi 设备能效分析工具（Module ID `qz.equipment_efficiency`）。
 - Canonical repository：`https://github.com/adgo07/EquipEffi.git`。
 - 当前 Reference Standard：`GB 19762—2025 离心泵能效限定值及能效等级`。
-- 当前主要产品阶段：`EquipEffi V2.3` 下 `Phase 1 = PHASE_1_PASS`、`Phase 2 = PHASE_2_PASS`、`Phase 3 = PHASE_3_PASS`（PR #11 合并 @ `87d9ef1b`，验收落档 `docs/phase3_acceptance_record.md`）、`Phase 4 = PHASE_4_PASS`（PR #12 合并 @ `d6112ea9`，验收落档 `docs/phase4_acceptance_record.md`）、**`Phase 5 = PHASE_5_PASS`**（PR #13 合并 @ `f3e32f84`，验收落档 `docs/phase5_acceptance_record.md`）、**`Phase 6 = PHASE_6_PASS`**（PR #14 合并 @ `6ead21f`，验收落档 `docs/phase6_acceptance_record.md`）、**`Phase 7 = IN_PROGRESS`**（GB19762 分析流程与历史记录最终收口）。**不得**自行宣布 `PHASE_7_PASS`。
+- 当前主要产品阶段：`EquipEffi V2.3` 下 `Phase 1 = PHASE_1_PASS`、`Phase 2 = PHASE_2_PASS`、`Phase 3 = PHASE_3_PASS`（PR #11 合并 @ `87d9ef1b`，验收落档 `docs/phase3_acceptance_record.md`）、`Phase 4 = PHASE_4_PASS`（PR #12 合并 @ `d6112ea9`，验收落档 `docs/phase4_acceptance_record.md`）、**`Phase 5 = PHASE_5_PASS`**（PR #13 合并 @ `f3e32f84`，验收落档 `docs/phase5_acceptance_record.md`）、**`Phase 6 = PHASE_6_PASS`**（PR #14 合并 @ `6ead21f`，验收落档 `docs/phase6_acceptance_record.md`）、**`Phase 7 = PHASE_7_PASS`**（PR #15 合并 @ `79ea075`，验收落档 `docs/phase7_acceptance_record.md`）、**`Phase 8 = IN_PROGRESS`**（GB 19762 Excel 批量评价闭环）。**不得**自行宣布 `PHASE_8_PASS`。
 - 本仓独立开发、发布、离线运行，不是中央仓的第四个业务产品。
 
 ### 1.1 仓库身份与本地执行环境
@@ -75,7 +75,7 @@ git fetch origin                   # 同步远端
 ### 2.1 Phase 与顺序纪律
 
 - 路线只有 `EquipEffi V2.3`；Phase 0 已完成，作为不可变基线。Phase 0～10 **编号不得改变**。
-- 当前状态：`Phase 1 = PHASE_1_PASS`；`Phase 2 = PHASE_2_PASS`；`Phase 3 = PHASE_3_PASS`（PR #11 @ `87d9ef1b`）；`Phase 4 = PHASE_4_PASS`（PR #12 @ `d6112ea9`）；**`Phase 5 = PHASE_5_PASS`**（PR #13 合并 @ `f3e32f84`，验收落档 `docs/phase5_acceptance_record.md`）、**`Phase 6 = PHASE_6_PASS`**（PR #14 合并 @ `6ead21f`，验收落档 `docs/phase6_acceptance_record.md`）、**`Phase 7 = IN_PROGRESS`**（GB19762 分析流程与历史记录最终收口，分支 `phase7/gb19762-analysis-history-closure`，base `6ead21fb6757d5d92ba81851f23e3c41d86598af`）；automatic continuation = `DISABLED`。
+- 当前状态：`Phase 1 = PHASE_1_PASS`；`Phase 2 = PHASE_2_PASS`；`Phase 3 = PHASE_3_PASS`（PR #11 @ `87d9ef1b`）；`Phase 4 = PHASE_4_PASS`（PR #12 @ `d6112ea9`）；**`Phase 5 = PHASE_5_PASS`**（PR #13 合并 @ `f3e32f84`，验收落档 `docs/phase5_acceptance_record.md`）、**`Phase 6 = PHASE_6_PASS`**（PR #14 合并 @ `6ead21f`，验收落档 `docs/phase6_acceptance_record.md`）、**`Phase 7 = PHASE_7_PASS`**（PR #15 合并 @ `79ea075`，验收落档 `docs/phase7_acceptance_record.md`）、**`Phase 8 = IN_PROGRESS`**（GB 19762 Excel 批量评价闭环，分支 `phase8/gb19762-excel-batch`，base `79ea075967ace07aa9880369220d8bff9b53d9e8`）；automatic continuation = `DISABLED`。
 - `PHASE_1_PASS` / `PHASE_2_PASS` 是既有独立验收后的记录，**不是任何 adoption / 治理任务自行批准的结果**；`PHASE_2_PASS` 依 PR #10 独立验收与合并（`7e16418a`）。任何 Phase 的 PASS 均不得由执行者自行宣布。
 - **Phase 1 / Phase 2 均已结束**：`P1-G01 → G06`、`P2-G01 → G04` 与 Solution/Product Review 是**历史完成程序**，不再作为当前例行门禁（见 2.0）。
 - **Phase 3 已结束并获独立验收通过（`PHASE_3_PASS`，PR #11 @ `87d9ef1b`）**；验收落档见 `docs/phase3_acceptance_record.md`。其设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`。
@@ -84,12 +84,17 @@ git fetch origin                   # 同步远端
 - **Windows V1 当前正式发布用户表面 = PySide6 Qt Desktop（`--qt`）**。`--json` / `ApplicationApi` / `--web` / JSONL / legacy Tk `--gui` / Android bridge / V4·Excel adapter 是**现存的 compatibility / development / future-adapter surfaces**，不是历史废代码；其与正式表面的 support 差异必须登记 `REGISTERED_DEVIATION` 并给出 disposition（Phase 6 / 8 / 9）。
 - **Phase 6 已结束并获独立验收通过（`PHASE_6_PASS`，PR #14 @ `6ead21f`）**；验收落档见
   `docs/phase6_acceptance_record.md`；执行细节见 `PHASE6_EXECUTION_REPORT.md`（含两轮 blocker 修复）。
-- **Phase 7 已获用户明确执行授权**：范围是 **GB19762 分析流程与历史记录最终收口**——
-  选择泵型 → 填写参数 → 点击「分析」→ 显示清晰结果 → 合法结果**自动**形成不可变历史记录 →
-  以后从「分析记录」打开并查看当时的输入、结果和依据。分支 `phase7/gb19762-analysis-history-closure`，
-  base `6ead21fb6757d5d92ba81851f23e3c41d86598af`。
-- Phase 7 执行者**不得**自行宣布 `PHASE_7_PASS`、不得合并 PR、不得进入 Phase 8。
-  最终状态只允许 `Phase 7 implementation = EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`。
+- **Phase 7 已结束并获独立验收通过（`PHASE_7_PASS`，PR #15 @ `79ea075`）**；验收落档见
+  `docs/phase7_acceptance_record.md`；执行细节见 `PHASE7_EXECUTION_REPORT.md`（含复验修复）。
+- **Phase 8 已获用户明确执行授权**：范围是 **GB 19762 Excel 批量评价闭环**——以 Owner 指定的
+  `outputs/设备能效分析空白模板_重构版V6_变压器.xlsx` 为模板基线正式资产化，退出 Excel 内的
+  第二套业务算法，建立 Excel ↔ Application 机械一致性矩阵，重写 Reader（十进制语义、行启用语义），
+  并实现批量评价 + 结果 Workbook 写出 + `batch_record` 总结记录 + Qt 产品闭环。
+  分支 `phase8/gb19762-excel-batch`，base `79ea075967ace07aa9880369220d8bff9b53d9e8`。
+  允许分 8A（模板/一致性/Reader）与 8B（批量/Writer/batch_record/Qt）两段，**同一分支同一 PR**，
+  8A 通过其内部 Gate 后再继续 8B；**最终只有一个 final Head**。
+- Phase 8 执行者**不得**自行宣布 `PHASE_8_PASS`、不得合并 PR、不得进入 Phase 9。
+  最终状态只允许 `Phase 8 implementation = EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`。
 - v15 / T04.xx / 历史 HANDOFF / 编号清单无自动调度权，不得据其“下一边界任务”自动继续。
 - 当前 Windows V1 产品目标与各 Profile 状态以 `V1_SCOPE.md` / `ROADMAP.md` 为唯一权威（完整支持 GB 19762—2025，覆盖 `pump_water` + `pump_chemical`；`transformer` 为 `POST_V1`，资产保留）。
 - 旧资产先分类（KEEP / VERIFY / MIGRATE / REWORK / DEPRECATE / DELETE_CANDIDATE / OBSOLETE），不因零引用直接删除。
@@ -158,6 +163,42 @@ git fetch origin                   # 同步远端
 明确的 Phase 7 V1 需求，才允许提出新的 additive migration；若确需 migration，
 必须 **STOP 并报 Owner**，不得自行 `lineage table` / `audit_event table` /
 `workspace display_name` / `Attempt table` / 通用历史框架。`001` / `002` migration 绝对不得修改。
+### 2.9 Excel 批量评价产品规则（Owner，Phase 8）
+
+以下为 Phase 8 正式产品决定，**不再重新讨论**：
+
+1. 正式 Excel 以 Owner 指定的 `设备能效分析空白模板_重构版V6_变压器.xlsx` 为**模板基线**；
+   不得新建 Pump-only 正式 Workbook。该 Workbook 是 EquipEffi 全设备统一模板，
+   本阶段只正式接通其中「离心泵」Sheet。
+2. 清水离心泵 + 石油化工离心泵**必须继续共用同一个「离心泵」Sheet**。
+3. **Excel 是批量输入/输出载体，不是正式业务计算引擎。** GB19762 正式计算必须来自
+   软件正式 Application / Calculator / Canonical / Numeric 链。
+4. Excel 中**不得**保留能够独立产生正式 GB19762 计算结果或等级结论的**第二套业务算法**；
+   现有 N:X 等业务计算公式与依赖它们的业务「自动备注」公式应退出正式空白模板。
+   已有结果列/列头/样式可保留，由软件批量评价后写入。非业务便利公式（如单纯数量合计）
+   若不形成评价真值可保留，但必须明确不是正式计算来源。
+5. Excel 类别选项必须与软件正式类别**完全一致**（8 个正式泵型 + 「其他类别」+「不确定类别」）；
+   Excel 原「其他（请备注说明）」正式改为「其他类别」，**不得混用**。
+6. 「其他类别」继续遵循当前正式软件业务语义，不因 Excel 文案调整重新定义其业务含义。
+7. 「不确定类别」是**正式类别选择**，不是非法输入。选择后用户可见正式评价结论 =「无法评价」，
+   进入批量评价结果与批次汇总；优先沿用现有正式 business status，**不**仅为中文文案新造 Domain enum。
+   Qt 与 Excel 的用户可见结论必须一致。
+8. 「数量」必须为**必填正整数 > 0**；不得空白默认 1、不得 0 / 负数 / 小数。
+9. Excel 批量评价**不得**为每数据行创建普通单台 Record；一次 Workbook / 一次离心泵批量评价
+   → 一条 `batch_record` 总结记录，逐设备详细结果保存在结果 Workbook。单台 Qt 分析语义不变。
+10. 允许为此新增**最小 additive** `batch_record` 持久化结构；不得改变现有单台 Record 语义。
+11. 空白模板**只输出一次**；不得逐 Sheet 询问行数、不得逐 Sheet 点十几次扩容。
+    模板必须采用用户无感的统一容量策略（Excel Table 自动扩展或经实测可靠的等价机制），
+    普通用户不得在软件中逐 Sheet 配置容量。至少对「离心泵」证明少量 / 100 / 1,000 / 10,000 行
+    均无需软件端逐次设置容量即可使用。
+12. 输出结果必须生成**新的** Workbook，不得覆盖原始输入文件；其他设备 Sheet 不得被删除、
+    重排或改变业务内容。
+
+**权威层级（Phase 8）**：标准 / Canonical / Approved Golden → 正式 Application business contract
+→ Qt / Excel adapters。**不得**把 Workbook 本身提升为 GB19762 业务真值源。Workbook 的「配置」Sheet
+可作为 Excel 字段 / 下拉 / Validation / Protection / 模板交互结构的**机器可读模板契约**，但不得让误改
+Excel 配置自动改变正式业务算法；必须建立 Workbook 配置 ↔ Application 已确认输入契约的**机械一致性检查**，
+发现不一致则 Gate 失败，**不得靠复制同一规则到更多 Python 常量来「解决」**。
 ## 3. 青舟中央治理入口
 
 - 中央仓 `https://github.com/adgo07/Qingzhou-contracts.git`；锁定见本仓 `platform-lock.json` / `PLATFORM_BASELINE.md`，当前 locked SHA = `ee5feb0cc34dbd99790500fadd0c4c932e202a20`（Architecture `V2.1 FROZEN`、Numeric Contract `v1 FROZEN`，其余 Contract 仍 `DRAFT`）。

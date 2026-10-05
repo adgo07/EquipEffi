@@ -358,7 +358,16 @@ class Phase3WorkspaceFixtureCompatibilityTests(unittest.TestCase):
             version = connection.execute(
                 "SELECT MAX(schema_version) FROM record_schema_migration_history"
             ).fetchone()[0]
-        self.assertEqual(int(version), 2, "records schema_version 必须保持 2")
+        # Phase 4 的语义不变量是「既有 workspace / record 列契约不变、
+        # Phase 3 已创建的数据库仍可打开」。Phase 8 经 Owner 授权新增了
+        # **additive** 迁移 003（独立的 `batch_record` 表，不触碰 record /
+        # workspace），因此最高版本前移到 3；这不违反 Phase 4 的不变量。
+        self.assertEqual(int(version), 3,
+                         "records schema_version 应为 3（Phase 8 additive 迁移 003）")
+        with sqlite3.connect(self.db) as connection:
+            record_columns = [row[1] for row in
+                              connection.execute("PRAGMA table_info(record)").fetchall()]
+        self.assertEqual(len(record_columns), 23, "record 表列契约不得改变")
 
     def _insert_phase3_workspace_row(self, workspace_id: str, revision: int = 1) -> None:
         """直接写入 Phase 3 形态的行，模拟"Phase 3 已创建数据库"。

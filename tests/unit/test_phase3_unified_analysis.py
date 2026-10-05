@@ -357,8 +357,16 @@ class RecordsMigrationTests(unittest.TestCase):
         self.assertIn("workspace", tables)
         self.assertIn("record", tables)
         self.assertIn(RECORDS_HISTORY_TABLE, tables)
-        self.assertEqual(history, [(1, "001_create_workspace_and_record"),
-                                   (2, "002_add_workspace_revision")])
+        self.assertIn("batch_record", tables)
+        # 不硬编码版本清单：断言"历史与迁移清单逐项一致且连续"，
+        # 这样后续 Phase 的 additive 迁移不会造成假回归，同时 001/002
+        # 的身份与顺序仍被强制校验。
+        expected = [(m.schema_version, m.migration_id) for m in RECORDS_MIGRATIONS]
+        self.assertEqual(history, expected)
+        self.assertEqual(expected[:2], [(1, "001_create_workspace_and_record"),
+                                        (2, "002_add_workspace_revision")])
+        self.assertEqual([row[0] for row in history],
+                         list(range(1, len(expected) + 1)))
 
     def test_migration_is_idempotent(self):
         db = self._db()

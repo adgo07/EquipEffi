@@ -46,9 +46,12 @@ Phase 5: PHASE_5_PASS            (PR #13 独立验收并合并 @ f3e32f84)
 Phase 6: PHASE_6_PASS            (PR #14 独立验收并合并 @ 6ead21f)
          accepted head = 05b40f91086bbdbe196793075e440de4473cbf96
          acceptance record = docs/phase6_acceptance_record.md
-Phase 7: IN_PROGRESS             (GB19762 分析流程与历史记录最终收口)
-         branch = phase7/gb19762-analysis-history-closure
-         base   = 6ead21fb6757d5d92ba81851f23e3c41d86598af
+Phase 7: PHASE_7_PASS            (PR #15 独立验收并合并 @ 79ea075)
+         accepted head = 7d6f46c05eb1a6ad7a72dd2dc4a3bf964f29cf62
+         acceptance record = docs/phase7_acceptance_record.md
+Phase 8: IN_PROGRESS             (GB 19762 Excel 批量评价闭环)
+         branch = phase8/gb19762-excel-batch
+         base   = 79ea075967ace07aa9880369220d8bff9b53d9e8
          branch = phase6/gb19762-product-shell
          base   = f3e32f84123937ed6caa2b84b7cc0cd04c3100e0
          branch = phase5/pump-chemical-stage-d-support

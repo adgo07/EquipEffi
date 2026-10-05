@@ -20,6 +20,7 @@ from PySide6.QtWidgets import QHBoxLayout, QListWidget, QMainWindow, QStackedWid
 from ...application.services.settings_service import SettingsService
 from .navigation import PAGES
 from .pages.analysis import AnalysisPage
+from .pages.batch import BatchPage
 from .pages.home import HomePage
 from .pages.records import RecordsPage
 from .pages.settings import SettingsPage
@@ -29,7 +30,7 @@ from .tokens import TOKENS
 
 class MainWindow(QMainWindow):
     def __init__(self, settings: SettingsService, analysis=None, *,
-                 workspace_id: str | None = None, app_version: str = "",
+                 batch=None, workspace_id: str | None = None, app_version: str = "",
                  data_location=None):
         super().__init__()
         self.settings = settings
@@ -56,6 +57,8 @@ class MainWindow(QMainWindow):
         self.standards_page = StandardsPage(analysis, self) if analysis is not None else None
         # Phase 7：普通流程没有草稿概念，分析页不接收 workspace_id。
         self.analysis_page = AnalysisPage(analysis, navigator=self) if analysis is not None else None
+        # Phase 8：批量评价页只在装配了批量服务时构建（Excel 仍是 adapter 表面）。
+        self.batch_page = BatchPage(batch, navigator=self) if batch is not None else None
         self.records_page = RecordsPage(analysis, navigator=self) if analysis is not None else None
         self.settings_page = SettingsPage(settings, analysis, app_version=self.app_version,
                                          data_location=data_location, navigator=self)
@@ -64,6 +67,7 @@ class MainWindow(QMainWindow):
             "首页": self.home_page,
             "标准库": self.standards_page,
             "新建分析": self.analysis_page,
+            "批量评价": self.batch_page,
             "分析记录": self.records_page,
             "设置": self.settings_page,
         }
@@ -92,6 +96,9 @@ class MainWindow(QMainWindow):
         index = PAGES.index(title)
         self.navigation.setCurrentRow(index)
         self.pages.setCurrentIndex(index)
+
+    def open_batch(self) -> None:
+        self._show_page("批量评价")
 
     def open_home(self) -> None:
         self._show_page("首页")

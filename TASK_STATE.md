@@ -1,14 +1,14 @@
 roadmap: EquipEffi V2.3
-phase: Phase 7
-goal: GB19762 分析流程与历史记录最终收口
+phase: Phase 8
+goal: GB 19762 Excel 批量评价闭环
 status: EXECUTION_COMPLETE
-previous_acceptance: PHASE_6_PASS
+previous_acceptance: PHASE_7_PASS
 next_status: READY_FOR_INDEPENDENT_ACCEPTANCE
 qt_is_the_only_formal_windows_shell: true
 analysis_auto_records: true
 ordinary_user_draft_concept: REMOVED
 pump_chemical_support_status: SUPPORTED
-phase_7_pass_self_declared: false
+phase_8_pass_self_declared: false
 
 # ---------------------------------------------------------------------------
 # 本文件只承担“当前状态”。历史执行细节、run ID、历史测试数字与旧 SHA 一律
@@ -16,35 +16,35 @@ phase_7_pass_self_declared: false
 # ---------------------------------------------------------------------------
 
 current_task:
-  task_id: PHASE7-ANALYSIS-HISTORY-CLOSURE
-  branch: phase7/gb19762-analysis-history-closure
-  task_kind: authorised Phase 7 execution
-  phase_7_execution: true
-  base_sha: 6ead21fb6757d5d92ba81851f23e3c41d86598af
-  execution_report: PHASE7_EXECUTION_REPORT.md
+  task_id: PHASE8-GB19762-EXCEL-BATCH
+  branch: phase8/gb19762-excel-batch
+  task_kind: authorised Phase 8 execution
+  phase_8_execution: true
+  base_sha: 79ea075967ace07aa9880369220d8bff9b53d9e8
+  execution_report: PHASE8_EXECUTION_REPORT.md
   ui_current_state_audit: UI_CURRENT_STATE_AUDIT.md（Phase 6 已按 Qt 实现重新盘点）
   formal_product_surface: PySide6 Qt Desktop（无参数 / --gui / --qt 同一入口）
   official_entrypoint_decision: TK_RETIRED_QT_IS_THE_ONLY_SHELL
   primary_navigation: 首页 / 标准库 / 新建分析 / 分析记录 / 设置（全部真实页面，无 placeholder）
   evidence_claim: 一个 GB19762 产品级 E2E 样板，其中有 water + chemical 两个真实内部 rule profile（不得表述为两个独立设备/标准 E2E 样板）
-  phase_7_pass_self_declared: false
+  phase_8_pass_self_declared: false
   phase_7_started: false
   merge_authorized: false
   goals:
-    P7-G00: COMPLETE
-    P7-G01: COMPLETE
-    P7-G02: COMPLETE
-    P7-G03: COMPLETE
-    P7-G04: COMPLETE
-    P7-G05: COMPLETE
-  product_rules_owner: 9 条（见 AGENTS.md §2.8）
-  records_schema_changed: false
-  new_deviations:
-    QA-P7-001: 版本字段实际存 profile 标识（不伪造，Presentation 改为标注「规则集标识」）；disposition 后续版本化任务
-    QA-P7-002: 旧 Record 未冻结完整标准依据；降级显示，不追溯改写
-  closed_deviations:
-    QA-P6-003: 草稿概念退出产品表面而消解
-  next_action: 等待独立验收；do not merge; do not start Phase 8
+    P8-G00: COMPLETE
+    P8-G01: COMPLETE
+    P8-G02: COMPLETE
+    P8-G03: COMPLETE
+    P8-G04: COMPLETE
+    P8-G05: COMPLETE
+    P8-G06: COMPLETE
+  segments:
+    phase_8A: COMPLETE（模板正式化 + 一致性矩阵 + Reader）
+    phase_8B: COMPLETE（批量评价 + Writer + batch_record + Qt 闭环）
+  records_schema_changed: YES (additive only)
+  records_schema_detail: 新增迁移 003 create_batch_record（独立表，不改 record/workspace 语义）；schema_version 2 -> 3
+  formal_template: equipeffi.device-efficiency.V6 (V6-20261005)
+  next_action: 8A 内部 Gate 通过后继续 8B；等待最终独立验收；do not merge; do not start Phase 9
 
 phase_6_closure:
   verdict: PHASE_6_PASS
@@ -145,7 +145,7 @@ phase_2:
   design: docs/31_Phase 2 最小正式工程底座.md
   execution_report: PHASE2_EXECUTION_REPORT.md
 
-allowed_next: Phase 7 G00..G06 execution and evidence only; no merge; no Phase 8
+allowed_next: Phase 8 G00..G06 execution and evidence only; no merge; no Phase 9
 automatic_continuation: DISABLED
 phase_0b: NOT_EXECUTED
 phase_1_hotfix: NOT_EXECUTED

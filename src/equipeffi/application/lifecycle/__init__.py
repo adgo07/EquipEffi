@@ -32,6 +32,7 @@ from .errors import (
 )
 from .models import (
     BUSINESS_KEYS_METADATA_KEY,
+    BatchRecordSnapshot,
     RecordSnapshot,
     WorkspaceSnapshot,
     business_key_names,
@@ -39,11 +40,13 @@ from .models import (
     normalize_fingerprint_value,
     stable_fingerprint,
 )
-from .ports import RecordRepository, WorkspaceRepository
+from .ports import BatchRecordRepository, RecordRepository, WorkspaceRepository
 
 __all__ = (
     "AnalysisError",
     "BUSINESS_KEYS_METADATA_KEY",
+    "BatchRecordRepository",
+    "BatchRecordSnapshot",
     "LifecycleError",
     "LifecyclePersistenceError",
     "RecordConflictError",

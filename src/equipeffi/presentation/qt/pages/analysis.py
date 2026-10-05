@@ -54,7 +54,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
     category_field_constraints,
 )
 from ..tokens import TOKENS
-from ..labels import format_metric, issue_code_texts
+from ..labels import format_metric, issue_code_texts, user_conclusion_text
 
 _LOGGER = logging.getLogger("equipeffi.qt.analysis")
 
@@ -407,7 +407,9 @@ class AnalysisPage(QWidget):
         """
 
         # 第一层：最终结论 / 等级 / 不适用 / 无法判定。
-        self.conclusion.setText(result.ui_conclusion)
+        # Phase 8 Owner 规则 7：Qt 与 Excel 的用户可见结论必须一致，
+        # 因此共用 Application 的同一套结论文案（「不确定类别」→「无法评价」）。
+        self.conclusion.setText(user_conclusion_text(result))
         first = [f"设备类别：{result.product_category}",
                  f"评价日期：{result.as_of.isoformat()}"]
         if result.grade:

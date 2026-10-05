@@ -1,0 +1,99 @@
+{
+  "schema": "equipeffi.template-manifest.v1",
+  "generated_by": "tools/build_v6_pump_template.py",
+  "note": "机器可读的模板资产清单。业务事实（类别枚举/字段约束）不写在这里：唯一来源是正式 Application 契约，由 tools/check_v6_pump_template.py 机械比对。",
+  "formal_windows_v1_template": "equipeffi.device-efficiency.V6",
+  "templates": [
+    {
+      "template_id": "equipeffi.device-efficiency.V6",
+      "template_version": "V6-20261005",
+      "template_kind": "unified-multi-device-blank-template",
+      "status": "FORMAL",
+      "filename": "设备能效分析空白模板_重构版V6_20261005.xlsx",
+      "asset_sha256": "EE9DBE17A06081739CFB8EF0D330CE30B4634CBA5CE29CCD1EAB058D09348810",
+      "asset_size_bytes": 398096,
+      "source_filename": "设备能效分析空白模板_重构版V6_变压器.xlsx",
+      "source_sha256": "FDB8C0B09925B5AE0EA0F0A941040B27890B5455E8E5920E02C409EDD4699CA1",
+      "source_size_bytes": 493067,
+      "source_provenance": "产品负责人（Owner）Phase 8 指定的统一模板基线，来源路径 outputs/设备能效分析空白模板_重构版V6_变压器.xlsx；构建时只读，绝不写回。",
+      "sheet_count": 18,
+      "sheet_order": [
+        "变压器",
+        "电动机",
+        "空压机",
+        "离心泵",
+        "离心通风机",
+        "轴流通风机",
+        "鼓风机",
+        "潜水电泵",
+        "工业锅炉",
+        "热处理设备",
+        "热泵和冷水机组",
+        "热泵热水机",
+        "风管送风式空调",
+        "单元式空调",
+        "多联式空调",
+        "注意事项",
+        "模板说明",
+        "配置"
+      ],
+      "authorized_modification": {
+        "sheet": "离心泵",
+        "phase": "Phase 8",
+        "changes": [
+          "退出可独立产出 GB19762 结果的 Excel 业务公式（K 吸入方式、L 级数、N:X 比转速/C1~C3/基准效率/效率修正值/规定点效率/1~3级效率/能效等级、AA 自动备注）；结果列/列头/样式/锁定全部保留，改由软件批量评价写入。",
+          "类别下拉 EV_PUMP_CATEGORY 与正式类别枚举逐项一致：『其他（请备注说明）』改为『其他类别』，新增『不确定类别』。",
+          "吸入方式/级数验证改为枚举约束（去掉由类别推导的 OFFSET），与 Application 契约一致：石油化工泵的单级/多级不代表吸入方式自动固定。",
+          "数量验证保持正整数 > 0。"
+        ],
+        "indirect": [
+          "配置 Sheet 的 AE 列（EV_PUMP_CATEGORY 枚举）与 FieldDictionary 中『离心泵』行的描述列同步。"
+        ]
+      },
+      "untouched_sheets": 17,
+      "untouched_verification": "tools/check_v6_untouched_sheets.py（cell values/formulas、number_format、protection、data validation、tables、sheet order、merged cells、defined names 逐项比对，0 差异）",
+      "conformance_check": "tools/check_v6_pump_template.py",
+      "capacity_strategy": {
+        "mechanism": "Excel Table（TblPump，27 列 × 100 数据行）+ 语义式 Reader",
+        "user_action_required": "无：用户直接在表内继续填写或粘贴，Excel 原生 Table 自动扩展；软件端不询问行数、不逐 Sheet 扩容。",
+        "business_row_limit": "none",
+        "measured": {
+          "rows_3": {
+            "file_size_bytes": 398216,
+            "read_seconds": 0.04,
+            "peak_memory_bytes": 1677721,
+            "truncated": false
+          },
+          "rows_100": {
+            "file_size_bytes": 398629,
+            "read_seconds": 0.051,
+            "peak_memory_bytes": 1992294,
+            "truncated": false
+          },
+          "rows_1000": {
+            "file_size_bytes": 454144,
+            "read_seconds": 0.325,
+            "peak_memory_bytes": 11429478,
+            "truncated": false
+          },
+          "rows_10000": {
+            "file_size_bytes": 1001062,
+            "read_seconds": 3.075,
+            "peak_memory_bytes": 104543436,
+            "truncated": false
+          }
+        },
+        "measured_by": "tools/measure_v6_capacity.py"
+      }
+    },
+    {
+      "template_id": "equipeffi.device-efficiency.V4",
+      "template_version": "V4-20260825",
+      "template_kind": "legacy-multi-device-blank-template",
+      "status": "LEGACY",
+      "filename": "设备能效分析空白模板_重构版V4_20260825.xlsx",
+      "asset_sha256": null,
+      "note": "Phase 8 起不再是正式用户模板；保留 legacy / test 兼容，本阶段不删除其实现。V4 的既有失败见 BASELINE.md，不在本阶段修复。"
+    }
+  ]
+}

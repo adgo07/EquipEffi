@@ -47,10 +47,16 @@ class QtShellTests(unittest.TestCase):
         self.addCleanup(close_logging, self.logger)
 
     def test_all_navigation_pages_are_real_pages(self):
-        """Phase 6：五个一级页面都必须是真实页面，不得有 placeholder。"""
+        """所有一级页面都必须是真实页面，不得有 placeholder（Phase 8 起含批量评价）。"""
 
         analysis = _analysis_service()
-        window = MainWindow(self.service, analysis, data_location=self.paths.root)
+        # Phase 8：「批量评价」是真实一级页面，必须一并注入批量服务，
+        # 否则该页会退化为空控件而让「所有页面都真实」的断言失真。
+        from equipeffi.composition import create_batch_evaluation_service
+
+        batch = create_batch_evaluation_service(paths=self.paths)
+        window = MainWindow(self.service, analysis, batch=batch,
+                            data_location=self.paths.root)
         self.addCleanup(window.close)
         self.assertEqual(window.pages.count(), len(PAGES))
         for index, name in enumerate(PAGES):

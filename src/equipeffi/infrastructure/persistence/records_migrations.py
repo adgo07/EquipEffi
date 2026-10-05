@@ -107,6 +107,37 @@ RECORDS_MIGRATIONS: tuple[RecordsMigration, ...] = (
     RecordsMigration(2, "002_add_workspace_revision", (
         "ALTER TABLE workspace ADD COLUMN revision INTEGER NOT NULL DEFAULT 1",
     )),
+    # 003（Phase 8）：Excel 批量评价的**最小 additive** 总结记录。
+    #
+    # Owner 规则 9/10：Excel 批量评价**不得**为每个数据行创建普通单台 Record；
+    # 一次 Workbook / 一次离心泵批量评价 → 一条 batch_record 总结记录，逐设备
+    # 详细结果保存在结果 Workbook。允许为此新增最小 additive 持久化结构，
+    # **不得**改变现有单台 `record` 语义——因此这里新建独立表，绝不动 `record`。
+    #
+    # 只存"这一次批次"的客观事实：载体文件与哈希、行数统计、结论分布（JSON）、
+    # 不合法行（JSON）。**不**复制逐设备结果、**不**建 lineage / audit 通用框架。
+    RecordsMigration(3, "003_create_batch_record", (
+        """
+        CREATE TABLE IF NOT EXISTS batch_record (
+            batch_record_id TEXT PRIMARY KEY,
+            standard_code TEXT NOT NULL,
+            device_type TEXT NOT NULL,
+            source_workbook TEXT NOT NULL,
+            source_workbook_sha256 TEXT NOT NULL,
+            result_workbook TEXT,
+            result_workbook_sha256 TEXT,
+            total_rows INTEGER NOT NULL,
+            evaluated_count INTEGER NOT NULL,
+            unevaluated_count INTEGER NOT NULL,
+            invalid_count INTEGER NOT NULL,
+            summary_json TEXT NOT NULL,
+            schema_version INTEGER NOT NULL,
+            created_at_utc TEXT NOT NULL
+        )
+        """,
+        "CREATE INDEX IF NOT EXISTS idx_batch_record_created_at "
+        "ON batch_record (created_at_utc DESC)",
+    )),
 )
 
 

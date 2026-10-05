@@ -328,3 +328,13 @@ authoritative path impact = 尚待验证
 |---|---|---|---|
 | `QA-P7-001` | `RECORD_VERSION_FIELDS` | `REGISTERED_DEVIATION` | **`RecordSnapshot.ruleset_version` 与 `calculator_version` 实际存的是 rule profile 标识**（如 `pump_water`），不是真正的版本号。Phase 7 审查确认属实。<br>当前 Result 契约中**没有**任何真实可用的规则集版本 / 计算器版本字符串，因此**不得编造**版本值。<br>Phase 7 的处理：① **不伪造**版本；② Presentation 不再把这些字段当作版本展示，审计信息区标注为「规则集标识」；③ 只对新 Record 修正明显错误语义需要 schema 变更，而 Phase 7 默认不改 `records.sqlite` schema，故**不自行变更**。<br>`disposition`：随将来真正引入 Calculator / RuleSet 版本化证据的任务一并处理 |
 | `QA-P7-002` | `LEGACY_RECORD_BASIS` | `REGISTERED_DEVIATION` | **Phase 3～6 形成的旧 Record 未冻结完整标准依据**（如缺 `data_version` / `pack_hash` / `table` / `clause`）。<br>Phase 7 **不**追溯 UPDATE、不补写当前数据、不重新计算、不伪造 provenance；记录详情对这些旧记录**降级显示**「该历史记录保存时未包含完整标准依据。」（机械测试覆盖）。<br>新 Record 已冻结快照自身真实存在且可信的依据。`disposition`：保持现状（历史事实不得追溯改写） |
+
+### Phase 8 承接登记
+
+Phase 8 正式承接以下与 Excel 批量评价直接相关的条目（**不借本 Phase 顺便清理全部 legacy backlog**）：
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-EXCEL-001` | `EXCEL_READER` | **CLOSED（Phase 8A）** | `ooxml_reader._parse_number` 曾把非整数数值 **Decimal → float** 再送进正式评价链，等于把 Numeric Contract 降级。**已修复**：整数返回 `int`、其余保留 `Decimal`，**绝不经过 float**；覆盖整数 / 普通小数 / 35 位长小数 / 科学计数法 / 大整数 / 文本 / 空值。并新增正式 Reader `pump_workbook_reader`，只读正式输入列、行启用为语义式、表头做防御性校验。<br>`disposition`：Phase 8 关闭（测试见 `tests/unit/test_phase8a_template_reader.py`） |
+| `QA-P5-003` | `V4_EXCEL_ADAPTER` | **CLOSED（Phase 8）** | 「Excel 侧存在独立业务算法」问题**已解决**：正式 V6 模板的「离心泵」Sheet 已退出全部可独立产出 GB19762 结果的 Excel 公式（`K`/`L`/`N:X`/`AA`），改由软件批量评价写入；Excel 只做批量输入/输出载体，每行都调用正式 Application 契约。V4 模板降为 `LEGACY`（不再作为正式用户模板，实现保留）。<br>`disposition`：Phase 8 关闭（门禁见 `tools/check_v6_pump_template.py`） |
+| `QA-P6-001` | `LEGACY_TK` | **OPEN（Phase 8 明确不清理）** | legacy Tk 桌面窗口实现保留但不接线。Phase 8 **不**删除该实现，也**不**触碰其表单模型依赖链；`disposition` 保持 Phase 8 之后按需处理。 |

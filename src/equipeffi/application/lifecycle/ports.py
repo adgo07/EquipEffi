@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import Protocol
 
-from .models import RecordSnapshot, WorkspaceSnapshot
+from .models import BatchRecordSnapshot, RecordSnapshot, WorkspaceSnapshot
 
 
 class WorkspaceRepository(Protocol):
@@ -28,3 +28,11 @@ class RecordRepository(Protocol):
     def append_record(self, snapshot: RecordSnapshot) -> None: ...
     def load_record(self, record_id: str) -> RecordSnapshot | None: ...
     def list_records(self, limit: int = 200) -> list[RecordSnapshot]: ...
+
+
+class BatchRecordRepository(Protocol):
+    """批次总结记录仓储：只追加，不提供 update / delete。"""
+
+    def append_batch_record(self, snapshot: BatchRecordSnapshot) -> None: ...
+    def load_batch_record(self, batch_record_id: str) -> BatchRecordSnapshot | None: ...
+    def list_batch_records(self, limit: int = 50) -> list[BatchRecordSnapshot]: ...

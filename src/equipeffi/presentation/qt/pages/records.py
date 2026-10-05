@@ -28,6 +28,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
 from ..tokens import TOKENS
 from ....application.services.centrifugal_pump_analysis_service import (
     THRESHOLD_DISPLAY_NAMES,
+    user_conclusion_from_snapshot,
 )
 from ..labels import support_status_text
 from ..labels import format_metric
@@ -223,7 +224,7 @@ class RecordsPage(QWidget):
             f"采用标准：{snapshot.standard_code}",
             f"设备类别：{snapshot.product_category}",
             f"评价日期：{snapshot.as_of}",
-            f"评价结论：{snapshot.ui_conclusion}",
+            f"评价结论：{user_conclusion_from_snapshot(result, snapshot.ui_conclusion)}",
         ]
         if snapshot.grade:
             lines.append(f"能效等级：{snapshot.grade}")
