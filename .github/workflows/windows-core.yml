@@ -121,6 +121,14 @@ jobs:
               }
             }
           }
+          Write-Output '=== discover-full with failure ids ==='
+          $disc = & python -m unittest discover -s tests -t . 2>&1 | Out-String
+          $dlines = $disc -split "`n"
+          for ($i = 0; $i -lt $dlines.Count; $i++) {
+            if ($dlines[$i] -match '^ERROR:|^FAIL:|^Ran |^OK|^FAILED|UnicodeDecodeError|charmap') {
+              Write-Output ('::error title=p8disc::' + ($dlines[$i] -replace '%','%25' -replace "`r",''))
+            }
+          }
           Write-Output '=== run only the modules that spawn subprocesses ==='
           $subs = @(
             'tests.unit.test_build_lock',
