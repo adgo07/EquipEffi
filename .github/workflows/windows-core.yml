@@ -104,6 +104,15 @@ jobs:
           )
           python -m unittest @mods -v
           exit $LASTEXITCODE
+      # TEMP PROBE (P8): minimal annotation mechanism check.
+      - name: PROBE annotations
+        if: always()
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          Write-Output '::error title=p8probe::probe-alive'
+          Write-Output '::error title=p8probe2::second-line'
+
       # TEMP DIAGNOSTIC (P8): emit ONLY the comparator verdict + violation counts.
       # GitHub 注解有配额上限，因此这里刻意只输出极少量关键行。
       - name: DIAGNOSTIC comparator
