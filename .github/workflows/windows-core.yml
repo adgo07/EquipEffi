@@ -125,6 +125,16 @@ jobs:
           } else {
             Write-Output '::error title=p8-nofile::comparison.json missing'
           }
+      - name: Full suite known-regression comparator (gating)
+        run: python tools/check_windows_regressions.py --output artifacts/phase2-regression
+
+      - name: Upload exact regression evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-regression-evidence
+          path: artifacts/phase2-regression/
+
       - name: Package and resource smoke
         run: |
           python -m equipeffi --status
