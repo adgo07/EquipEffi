@@ -354,3 +354,18 @@ Phase 8 正式承接以下与 Excel 批量评价直接相关的条目（**不借
 UI 简化（Owner 决定，非缺陷）：UI01 术语简化 / UI02 结果区删解释与依据 /
 UI03 记录页删「审计信息」展示 / UI04 日志级别中文化。四项均只改 Presentation，
 底层数据、字段 identity 与业务计算契约未变。
+
+### Phase 8 R1W 登记（复审清单外审计发现的 Writer 阻断）
+
+复审对 head `348a1994352e9e16d841a0589b0af2416a83b0df` 再次给出 `PHASE_8_BLOCKED`，
+并提出两个**同一根因**的新 Writer 阻断：Writer 用属性顺序假设匹配 OOXML 元素，
+而 OOXML 不保证属性顺序。
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-P8-005` | `RESULT_WRITER_ROW_MATCH` | **CLOSED（Phase 8 R1W）** | `<row ht="42" customHeight="1" s="184" r="4">`（`r` 不在首位）时，Writer 的行定位失败，结果**整行未写出**，却仍保存"成功"批次记录（静默漏写）。已改为**顺序无关的行扫描器**；且任何结果行定位不到即抛 `ResultWorkbookWriteError`，批次整体失败、**不保存** batch_record。回归：`test_phase8r1w_writer_structure` |
+| `QA-P8-006` | `RESULT_WRITER_CELL_MATCH` | **CLOSED（Phase 8 R1W）** | `<c s="234" r="U4" t="n">`（`s` 在 `r` 之前）时未识别既有单元格，又插入一个 `U4`，输出出现**重复坐标**（工作簿结构无效）。已改为按 `r` 属性（坐标）匹配并就地替换、保留原样式；写回后自校验每个目标坐标恰好出现一次。回归：`test_phase8r1w_writer_structure`（含"全表无重复坐标"机械校验） |
+
+**教训（已落到实现约定）**：OOXML 元素的属性顺序、命名空间前缀、自闭合形式
+都**不是**契约；任何位置/顺序假设都会在真实 Excel 产物上失败。
+解析必须顺序无关，且"没写成"必须是**硬失败**而不是静默成功。

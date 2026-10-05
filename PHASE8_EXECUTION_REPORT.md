@@ -684,3 +684,136 @@ PR #16 的 head SHA 也是独立复验的有效对象（它等于上述修复提
 
 形成本报告后**不再追加 commit**；如 Head 改变，将重新声明 final Head、
 重新执行受影响测试，并等待该 Head 的 CI。
+
+---
+
+# Phase 8 R1W — 复审清单外审计发现的 Writer 阻断
+
+## R1W.0 复审结论（历史保留，不抹掉）
+
+| 项 | 值 |
+|---|---|
+| 上一轮 R1 的验收结论 | **`PHASE_8_BLOCKED`**（第二次） |
+| 被 blocked 的 head | `348a1994352e9e16d841a0589b0af2416a83b0df` |
+| 复审已确认通过的部分 | 原四项 blocker（B1～B4）与 UI01～UI04 **均已验证通过** |
+| 新阻断 | 清单外审计发现 **2 个 Writer 阻断**（同一根因） |
+
+| # | blocker | 复审实测 | 根因 |
+|---|---|---|---|
+| 5 | 结果**静默漏写** | `<row ht="42" customHeight="1" s="184" r="4">` 时 Reader 正常读、Application 正常算，但结果整行未写出，**仍保存"成功"批次记录** | Writer 的行定位正则假设 `r` 是 `<row>` 的**第一个**属性 |
+| 6 | 产生**重复单元格** | 既有 `<c s="234" r="U4">`（`s` 在 `r` 之前）时未识别原单元格，又插入一个 `U4`，输出出现**重复坐标** | Writer 的单元格匹配正则假设 `r` 紧跟 `<c ` |
+
+**共同根因**：OOXML **不保证**属性顺序、命名空间前缀或自闭合形式，
+而首版 Writer 用「属性顺序假设」的正则做元素匹配。两个阻断都是该假设的直接后果。
+
+## R1W.1 处置
+
+- 元素解析改为**顺序无关扫描器**：
+
+```text
+_find_tag_end   正确定位标签结束（跳过属性值内的引号与 XML 实体）
+_parse_attrs    把属性解析成字典（去掉命名空间前缀）
+_scan_cells     扫描行内所有 <c>（自闭合与带内容都识别）
+_scan_rows      扫描 sheetData 内所有 <row>（r 在任意位置都识别）
+```
+
+- 按 **`r` 属性（坐标）**匹配既有单元格并**就地替换**，保留原有样式 `s`
+  → 不再产生重复坐标；缺失的结果 cell 按**列序**插入，不破坏既有列顺序。
+- **写回自校验**：补丁后重新扫描该行，要求每个目标坐标**恰好出现 1 次**；
+  不满足即抛 `ResultWorkbookWriteError`。
+- **绝不静默漏写**：任何结果行在 Sheet 中定位不到 → 抛
+  `ResultWorkbookWriteError`，批次整体失败、**不保存** `batch_record`，
+  而不是"部分写回 + 成功记录"。
+
+## R1W.2 复现与修复证据
+
+```text
+复现 1（被 blocked 的 head）
+  row4 标签 : <row ht="42" customHeight="1" s="184" r="4">
+  结果       : X4 = None      <- 整行未写出，仍保存"成功"批次记录
+修复后
+  X4 = '2级'  U4 = 79.786165  <- 正常写回
+
+复现 2（被 blocked 的 head）
+  U4 标签    : <c s="234" r="U4" t="n">
+  输出次数   : U4 出现 2 次    <- 重复坐标
+修复后
+  输出次数   : U4 出现 1 次，且保留原样式 s="234"
+  输出片段   : <c r="U4" s="234"><v>79.786165</v></c>
+
+硬失败验证
+  传入无法定位的行 99999 -> ResultWorkbookWriteError:
+  「结果写回失败：无法在「离心泵」Sheet 中定位以下数据行 [99999]（共 1 行）；
+    拒绝保存部分写回的结果工作簿」
+```
+
+## R1W.3 本轮回归
+
+```text
+tests.unit.test_phase8r1w_writer_structure   9   全通过（本轮新增；在被 blocked 的 head 上失败）
+tests.unit.test_phase8r1_blockers           34   全通过
+Phase 8 全部（8A + 8B + 一致性 + R1 + R1W）  111  全通过
+tests.contract.test_architecture_boundaries  12   全通过
+CI gating 模块列表（同 CI 形态）             415  OK / exit 0（约 458s）
+全量 unittest                   1428 run / 1421 pass / 3 fail / 1 error / 3 skip
+known-regression comparator      gate=PASS
+```
+
+10,000 行批量仍无读取截断、无静默丢行（写回包含自校验）。
+既有失败仍是既有失败（3 项 V4 + 1 项 release audit），
+**未更新 known baseline、未删测试、未降断言**。
+
+## R1W.4 QA 变动
+
+| 动作 | 条目 | 说明 |
+|---|---|---|
+| **新增并关闭** | `QA-P8-005` | 结果 Writer 行定位依赖属性顺序 → 静默漏写。已改顺序无关扫描 + 定位失败即硬失败 |
+| **新增并关闭** | `QA-P8-006` | 结果 Writer 单元格匹配依赖属性顺序 → 重复坐标。已改按坐标匹配 + 写回自校验 |
+
+**教训（已落到实现约定）**：OOXML 的属性顺序、命名空间前缀、自闭合形式
+都**不是**契约；解析必须顺序无关，且"没写成"必须是**硬失败**而不是静默成功。
+
+## R1W.5 交付对象
+
+| 项 | 值 |
+|---|---|
+| Repo | `https://github.com/adgo07/EquipEffi.git` |
+| Base SHA | `79ea075967ace07aa9880369220d8bff9b53d9e8` |
+| Branch | `phase8/gb19762-excel-batch` |
+| PR | **#16** — https://github.com/adgo07/EquipEffi/pull/16（`open`, `merged=false`） |
+| 第一次 BLOCKED head | `8cb6eec1845cc26bed43e3dfea2dec1c5880729c`（四项 blocker） |
+| 第二次 BLOCKED head | `348a1994352e9e16d841a0589b0af2416a83b0df`（两个 Writer 阻断） |
+| **R1W 修复提交** | `eef41f54436f01aa7db4f9b2e9f4bfa4c7bb5f60`（3 files, +540 / −43） |
+
+### `348a199` → R1W 修复提交 变更文件
+
+```text
+.github/workflows/windows-core.yml
+src/equipeffi/infrastructure/excel/pump_result_writer.py
+tests/unit/test_phase8r1w_writer_structure.py
+```
+
+## R1W.6 是否修改了受保护资产
+
+| 资产 | 本轮是否修改 |
+|---|---|
+| Approved Golden（29 条） | **否** |
+| Canonical / Numeric Profile | **否** |
+| pump 公式 / boundary / grade | **否** |
+| migration `001` / `002` / `batch_record` schema | **否**（本轮未新增迁移） |
+| 正式 V6 模板资产 | **否**（SHA-256 未变） |
+| 其他设备 Sheet 业务结构 | **否** |
+| 结果 Writer 实现 | 是（R1W 修复） |
+
+## R1W.7 状态
+
+```text
+Phase 8 R1 implementation = EXECUTION_COMPLETE
+READY_FOR_REACCEPTANCE
+```
+
+**不自宣 `PHASE_8_PASS`。不合并 PR。不进入 Phase 9。**
+
+R1W 修复提交 `eef41f54436f01aa7db4f9b2e9f4bfa4c7bb5f60` 与本报告所在 head
+均为有效复验对象；其后的提交只包含本报告与治理文档同步，**不含代码改动**。
+形成本报告后**不再追加 commit**。

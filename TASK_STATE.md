@@ -42,6 +42,10 @@ current_task:
     status: EXECUTION_COMPLETE / READY_FOR_REACCEPTANCE
     blocked_head: 8cb6eec1845cc26bed43e3dfea2dec1c5880729c
     blockers_closed: [QA-P8-001, QA-P8-002, QA-P8-003, QA-P8-004]
+  phase_8_r1w:
+    status: EXECUTION_COMPLETE / READY_FOR_REACCEPTANCE
+    review_blocked_head: 348a1994352e9e16d841a0589b0af2416a83b0df
+    blockers_closed: [QA-P8-005, QA-P8-006]
     ui_simplification: [UI01, UI02, UI03, UI04]
   segments:
     phase_8A: COMPLETE（模板正式化 + 一致性矩阵 + Reader）
