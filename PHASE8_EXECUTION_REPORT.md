@@ -4,6 +4,9 @@ Phase 8 — GB 19762 Excel 批量评价闭环。
 
 按任务建议分 **8A（模板正式化 / 一致性矩阵 / Reader）** 与 **8B（批量评价 / Writer / `batch_record` / Qt 闭环）** 两段执行，**同一分支、同一个 PR、一个 final Head**；8A 通过其内部 Gate 后才进入 8B。
 
+> **8B 规格补记**：8A 自测通过后，产品负责人给出了更细的 8B 规格（G05～G09）。
+> 首轮 8B 实现与该规格的 6 处差距已全部补齐，见 §6 与 §7 的「8B 规格符合性」。
+
 ## 0. 平台预检查
 
 | 项 | 值 |
@@ -113,6 +116,16 @@ data validation、tables、sheet order、merged cells、sheet 保护与 **define
 | 1,000 行 | 443.5 KB | 0.325 s | 10.9 MB | 1,000 | 否 |
 | 10,000 行 | 977.6 KB | 3.075 s | 99.7 MB | 10,000 | 否 |
 
+**8B 端到端大批量实测**（真实 Excel 输入 → Batch 评价 → 结果 Workbook 写回）：
+
+| 行数 | 输入文件 | 输出文件 | 耗时 | 峰值内存 |
+|---:|---:|---:|---:|---:|
+| 100 | 400,320 B | 400,851 B | 5.283 s | 13.2 MB |
+| 1,000 | 442,403 B | 453,774 B | 13.797 s | 21.8 MB |
+| 10,000 | 846,024 B | 961,941 B | 78.266 s | 120.3 MB |
+
+均无读取截断、无 hang、无静默丢行（逐行断言 `data_row_count` 与结果数一致）。
+
 无需软件端逐次设置容量；**无 hang、无数据丢失、无读取截断**。
 （实测工具：[tools/measure_v6_capacity.py](tools/measure_v6_capacity.py)）
 
@@ -177,6 +190,68 @@ data validation、tables、sheet order、merged cells、sheet 保护与 **define
 - 18 个 Sheet 全部保留，不删除、不重排
 - 只写结果列；用户输入列原样保留
 - 结果列写**完整精度**数值，2 位显示由模板既有数字格式负责（证据不丢、显示合规）
+
+## 6.5 8B 规格符合性（G05～G09 逐条）
+
+| 8B 要求 | 实现 |
+|---|---|
+| Excel row → `PumpAnalysisRequest` → **同一个** `evaluate()` | 是；`_request_from_row` 只映射正式输入列 |
+| **不得**逐行调用 `analyze_and_record()` | **从不调用**；批量路径不产生任何单台 Record |
+| 禁止直调 Domain evaluator / 复制公式 / 等级判断 / 边界规则 | 只经 Application；`record` 表始终为空（门禁断言） |
+| 行级独立：一行失败不回滚其他行 | 单行异常被捕获并计入执行失败，其余行继续 |
+| 系统级失败必须明确报告 | 单行 → `执行失败`；整批 → 向上抛出或 UI 明确提示 |
+| 保留原顺序 / 原行号映射 | 每行结果带原 Excel 行号，按行号排序写回 |
+| 区分 1级/2级/3级/未达标/不适用/无法评价 | 六种全部可得（测试逐一断言） |
+| 其他类别沿用现有语义 | `OUT_OF_STANDARD_SCOPE` → `不适用` |
+| 不确定类别 → `无法评价` | `UNRESOLVED` + `requires_category_confirmation` → `无法评价` |
+| `INVALID_INPUT` 不属于正式结论 | → `输入错误`，`evaluation_status` 为 `None` |
+| `EXECUTION_ERROR` 不属于正式结论 | → `执行失败`，`evaluation_status` 为 `None` |
+
+### batch_record（G06）
+
+`003 create_batch_record` + `004 extend_batch_record`（**均为 additive**）。
+可承载规格要求的全部字段（`batch_id` / `created_at` / `evaluation_date` /
+`source_file_name`+`sha256` / `output_file_name`+`sha256` /
+`template_id`+`version`+`sha256` / `sheet_name` / `standard_code` /
+`data_row_count` / `total_quantity` / `evaluated_quantity` / `summary_json` /
+`app_version` / `canonical_version` / `numeric_profile_id`）。
+
+- **数量按「数量」列加权**：`数量=20` + `结论=2级` → `2级 +20 台`（测试断言）
+- 三个口径分开：**数据行数** / **设备数量总计** / **完成正式评价数量**（台）
+- 输入错误按**行**统计；其合法数量仅进 `input_error_quantity` 作辅助，**不**计入正式评价数量
+- **不建逐行明细表**；逐设备详细结果保存在结果 Workbook
+- **持久化时点**：评价完成 → 结果 Workbook 成功生成 → output SHA-256 取得 → 才写记录。
+  结果文件写失败 → 向上抛出，**不**写"成功完成"的批次记录；
+  结果已生成但记录写入失败 → `batch_record_error` 带回可读原因，UI 明确显示
+  「结果文件已生成，但软件历史记录保存失败」，**不静默吞错**
+
+### Writer（G07）
+
+- 默认名 `原文件名_评价结果_YYYYMMDD_HHMMSS.xlsx`；**目标已存在则显式报错**，不静默覆盖
+- 只向「离心泵」Sheet 既有结果区域写入；不删/不重排其他 Sheet
+- **复用 V6 现有 12 个结果列**，不新增结果字段体系：
+  `X` = 处理/评价状态 + 最终结论 + 能效等级（输入错误 / 执行失败一眼可辨）；
+  `U/V/W` = 关键限值；`N`/`O–Q`/`R`/`S`/`T` = 比转速 / C1~C3 / 基准效率 / 效率修正 / 规定点效率；
+  `AA` = 自动备注/说明
+- 逐行明细足以看到：原输入、数量、每行结论、每行等级、关键结果、问题说明
+- 写完整精度数值；2 位小数显示由模板既有数字格式负责（等级比较仍用完整精度）
+
+### Qt 入口（G08）
+
+一级导航入口为「**Excel导入**」；页面流程
+**输出空白模板 → 选择 Excel → 导入检查 → 批量评价 → 结果保存 → 批次总结**。
+「输出空白模板」为**一次操作**，直接复制 package 内正式 V6 模板，
+**不**询问"泵多少行 / 变压器多少行 / 电机多少行"。
+
+### 一致性（G09 / 门禁 20）
+
+`tests/unit/test_phase8b_batch_consistency.py`：**29 条 Approved Golden**
+（18 water + 11 chemical）经**真实 Excel 载体**（写入 V6 模板 → Reader → Batch → evaluate）
+回放，逐条比对 `evaluation_status` / `conclusion` / `grade` / issue 语义 → **零漂移**；
+并对每条做**最强口径**比对（Excel Batch 与单次 Application 的
+`derived` / `thresholds` / `messages` 全量相等）。
+另覆盖：其他类别、不确定类别、数量>1 加权、非法数量、单级/多级、单吸/双吸、
+范围边界、大量空行、中间空行、100 / 1,000 / 10,000 行。
 
 ## 7. G06 — Qt 产品闭环
 
@@ -303,7 +378,7 @@ Full suite baseline (NON-GATING)                                           succe
 | 动作 | 条目 | 说明 |
 |---|---|---|
 | **关闭** | `QA-EXCEL-001` | Reader 保持可证明的十进制语义，绝不经过 float |
-| **关闭** | `QA-P5-003` | Excel 侧第二套业务算法退出；Excel 只做批量输入/输出载体 |
+| **关闭** | `QA-P5-003` | Excel 侧第二套业务算法退出；Excel 只做批量输入/输出载体。**8B 补强**：29 条 Approved Golden 经真实 Excel 载体回放零漂移（门禁 20），可据正式 Excel E2E 结果处置 |
 | 保留 | `QA-P6-001` | legacy Tk 保留但不接线；Phase 8 **明确不清理** |
 | 保留 | `QA-P7-001` / `QA-P7-002` | 版本字段语义 / 旧 Record 依据降级（不因本阶段验收而关闭） |
 | 保留 | `QA-P5-004`～`005`、`QA-P6-004` | Android bridge / installer·signing / 非正式 adapter → Phase 9 |
@@ -340,6 +415,25 @@ Full suite baseline (NON-GATING)                                           succe
 | Numeric Profile / 标准边界 / 公式 / 等级判断未改 | PASS |
 | Phase 9 范围没有被提前实现 | PASS |
 | Required CI 无新增未知 regression | PASS（§10.2） |
+| 批次处理行级独立，一行失败不回滚其他行 | PASS |
+| 系统级失败被明确报告（不伪装成业务结论） | PASS |
+| 保留原顺序 / 原行号映射 | PASS |
+| 六种正式结论（1/2/3级、未达标、不适用、无法评价）可区分 | PASS |
+| `INVALID_INPUT` / `EXECUTION_ERROR` 不属于正式评价结论 | PASS |
+| **数量按「数量」列加权**统计 | PASS |
+| 数据行数 / 设备数量总计 / 完成正式评价数量三口径分开 | PASS |
+| 输入错误按行统计，其数量不伪装成正式评价数量 | PASS |
+| 不建逐行明细数据库表 | PASS |
+| `batch_record` 承载模板身份 / 文件哈希 / 数量口径 / 版本引用 | PASS |
+| 持久化时点：结果 Workbook 成功 + SHA-256 取得后才写 | PASS |
+| 结果文件写失败不写「成功完成」记录；记录写失败明确告知用户 | PASS |
+| Writer 默认名带时间戳，目标已存在不静默覆盖 | PASS |
+| Writer 复用 V6 现有结果列，不新增结果字段体系 | PASS |
+| 结果 Workbook 是正式逐行明细载体（原输入/数量/结论/等级/关键结果/说明） | PASS |
+| 一级导航入口为「Excel导入」，不泄露内部 ID / JSON / Python 名称 | PASS |
+| 输出空白模板为一次操作，不询问任何行数 | PASS |
+| **29 条 Approved Golden 经 Excel Batch 路径零漂移**（门禁 20） | PASS |
+| 架构契约测试纳入 gating（防止依赖方向违规再次逃逸） | PASS |
 
 ## 13. 状态
 
