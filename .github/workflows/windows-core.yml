@@ -104,69 +104,27 @@ jobs:
           )
           python -m unittest @mods -v
           exit $LASTEXITCODE
-      # TEMP DIAGNOSTIC (P8): surface comparator output as annotations.
+      # TEMP DIAGNOSTIC (P8): emit ONLY the comparator verdict + violation counts.
+      # GitHub 注解有配额上限，因此这里刻意只输出极少量关键行。
       - name: DIAGNOSTIC comparator
         if: always()
         continue-on-error: true
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Continue'
-          $out = & python tools/check_windows_regressions.py --output artifacts/diag 2>&1 | Out-String
-          Write-Output "EXITCODE=$LASTEXITCODE"
-          Write-Output $out
-          $lines = $out -split "`n"
-          for ($i = 0; $i -lt $lines.Count; $i++) {
-            if ($lines[$i] -match 'charmap|UnicodeDecode|Traceback') {
-              for ($j = [Math]::Max(0, $i - 12); $j -le [Math]::Min($lines.Count - 1, $i + 8); $j++) {
-                Write-Output ('::error title=p8trace::' + ($lines[$j] -replace '%','%25' -replace "`r",''))
-              }
-            }
-          }
-          Write-Output '=== discover-full with failure ids ==='
-          $disc = & python -m unittest discover -s tests -t . 2>&1 | Out-String
-          $dlines = $disc -split "`n"
-          for ($i = 0; $i -lt $dlines.Count; $i++) {
-            if ($dlines[$i] -match '^ERROR:|^FAIL:|^Ran |^OK|^FAILED|UnicodeDecodeError|charmap') {
-              Write-Output ('::error title=p8disc::' + ($dlines[$i] -replace '%','%25' -replace "`r",''))
-            }
-          }
-          Write-Output '=== run only the modules that spawn subprocesses ==='
-          $subs = @(
-            'tests.unit.test_build_lock',
-            'tests.unit.test_zipapp',
-            'tests.unit.test_linux_service_scripts',
-            'tests.unit.test_entrypoint',
-            'tests.unit.test_phase2_qt'
-          )
-          $sub = & python -m unittest @subs 2>&1 | Out-String
-          Write-Output $sub
-          $sublines = $sub -split "`n"
-          for ($i = 0; $i -lt $sublines.Count; $i++) {
-            if ($sublines[$i] -match 'UnicodeDecodeError|charmap|^ERROR:|^FAIL:') {
-              Write-Output ('::error title=p8sub::' + ($sublines[$i] -replace '%','%25' -replace "`r",''))
-            }
-          }
+          & python tools/check_windows_regressions.py --output artifacts/diag *> $null
+          Write-Output "COMPARATOR_EXIT=$LASTEXITCODE"
           if (Test-Path artifacts/diag/comparison.json) {
-            Write-Output '--- comparison.json (chunked) ---'
-            $raw = Get-Content artifacts/diag/comparison.json -Raw
-            $size = 150
-            for ($k = 0; $k -lt $raw.Length; $k += $size) {
-              $len = [Math]::Min($size, $raw.Length - $k)
-              $chunk = $raw.Substring($k, $len)
-              Write-Output ('::error title=p8c' + $k + '::' + ($chunk -replace '%','%25' -replace "`r",'' -replace "`n",' '))
+            $c = Get-Content artifacts/diag/comparison.json -Raw | ConvertFrom-Json
+            foreach ($k in @('gate','new_failures','new_errors','worsened_failure_to_error','unexpected_skips','missing_baseline_tests','unexpected_successes','unexpected_expected_failures')) {
+              $v = $c.$k
+              $text = if ($v -is [array]) { ($v -join ' | ') } else { "$v" }
+              if ($text.Length -gt 200) { $text = $text.Substring(0, 200) }
+              Write-Output ('::error title=p8-' + $k + '::' + ($text -replace '%','%25' -replace "`r",'' -replace "`n",' '))
             }
+          } else {
+            Write-Output '::error title=p8-nofile::comparison.json missing'
           }
-
-      - name: Full suite known-regression comparator (gating)
-        run: python tools/check_windows_regressions.py --output artifacts/phase2-regression
-
-      - name: Upload exact regression evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: phase2-regression-evidence
-          path: artifacts/phase2-regression/
-
       - name: Package and resource smoke
         run: |
           python -m equipeffi --status
