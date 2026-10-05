@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import re
 import shutil
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -240,63 +241,226 @@ def _column_number(letter: str) -> int:
     return value
 
 
-def _insertion_point(row_xml: str, column: str) -> int:
-    """在行长内找到按列序应插入的位置（保持 OOXML 的列升序约定）。"""
+#: 需要补丁的 sheet XML 中出现的**结果列**（提前算出，便于扫描时快速跳过无关格）。
+_RESULT_COLUMN_SET = frozenset(column for column, _name in RESULT_FIELDS)
 
-    target = _column_number(column)
-    for match in re.finditer(r'<c r="([A-Z]+)\d+"', row_xml):
-        if _column_number(match.group(1)) > target:
-            return match.start()
-    end = row_xml.rfind("</row>")
-    return end if end != -1 else len(row_xml)
+_ATTR_RE = re.compile(r'([A-Za-z_][\w.:-]*)\s*=\s*"([^"]*)"')
 
 
-_COLUMN_CELL_PATTERNS: dict[str, re.Pattern[str]] = {}
+class ResultWorkbookWriteError(RuntimeError):
+    """结果 Workbook 未能按契约写回。
 
-
-def _cell_pattern(reference: str) -> re.Pattern[str]:
-    """按坐标缓存的 cell 正则。
-
-    `re` 的内建缓存上限是 512 条；批量场景会用到上万个不同坐标，
-    逐次 `re.compile` 会反复重新编译（10,000 行时是主要耗时来源）。
+    这是**硬失败**：宁可让批次整体失败并明确报错，也绝不静默漏写结果、
+    或写出结构无效（重复坐标）的工作簿。Owner Phase 8 R1 复审 blocker 1/2。
     """
 
-    pattern = _COLUMN_CELL_PATTERNS.get(reference)
-    if pattern is None:
-        pattern = re.compile(
-            r'<c r="' + reference
-            + r'"(?P<attrs>[^>]*?)(?:/>|>(?P<body>.*?)</c>)', re.DOTALL)
-        _COLUMN_CELL_PATTERNS[reference] = pattern
-    return pattern
+
+def _local_name(name: str) -> str:
+    """去掉命名空间前缀（`r` / `x:r` → `r`）。"""
+
+    return name.rsplit(":", 1)[-1]
 
 
-def _row_default_style(row_xml: str) -> str | None:
+def _parse_attrs(text: str) -> dict[str, str]:
+    """解析元素属性为字典。
+
+    **属性顺序无关**，这正是复审 blocker 1/2 的根因：OOXML **不保证**属性顺序，
+    因此任何形如 `<c r="U4" ...>` 的位置/顺序假设都是错的。
+    """
+
+    return {_local_name(key): value for key, value in _ATTR_RE.findall(text)}
+
+
+def _skip_quoted(text: str, index: int) -> int:
+    """从引号处跳到匹配的结束引号之后。"""
+
+    quote = text[index]
+    index += 1
+    while index < len(text):
+        char = text[index]
+        if char == "&":
+            semi = text.find(";", index)
+            index = len(text) if semi == -1 else semi + 1
+            continue
+        if char == quote:
+            return index + 1
+        index += 1
+    return index
+
+
+def _find_tag_end(text: str, start: int) -> int:
+    """找到标签的 `>`（正确跳过属性值里的引号与实体）。"""
+
+    index = start
+    while index < len(text):
+        char = text[index]
+        if char == '"':
+            index = _skip_quoted(text, index)
+            continue
+        if char == ">":
+            return index
+        index += 1
+    return -1
+
+
+@dataclass(frozen=True)
+class _CellSpan:
+    """一个 `<c>` 元素在行片段中的位置与属性。"""
+
+    start: int
+    end: int
+    attrs: dict[str, str]
+
+    @property
+    def reference(self) -> str:
+        return self.attrs.get("r", "")
+
+    @property
+    def style(self) -> str | None:
+        return self.attrs.get("s")
+
+
+def _scan_cells(row_xml: str) -> list[_CellSpan]:
+    """扫描行片段中的所有 `<c>` 元素（顺序无关、可识别自闭合与带内容）。"""
+
+    cells: list[_CellSpan] = []
+    index = 0
+    while True:
+        start = row_xml.find("<c", index)
+        if start == -1:
+            break
+        after = row_xml[start + 2:start + 3]
+        if after and (after.isalnum() or after in "_:.-"):
+            # `<c` 其实是 `<col`/`<cols` 之类的前缀误匹配，跳过。
+            index = start + 2
+            continue
+        tag_end = _find_tag_end(row_xml, start)
+        if tag_end == -1:
+            break
+        if row_xml[tag_end - 1] == "/":
+            end = tag_end + 1
+        else:
+            close = row_xml.find("</c>", tag_end)
+            end = len(row_xml) if close == -1 else close + 4
+        cells.append(_CellSpan(start, end, _parse_attrs(row_xml[start:tag_end])))
+        index = end
+    return cells
+
+
+def _scan_rows(xml: str) -> list[tuple[int, int, int]]:
+    """扫描 sheetData 中的所有 `<row>`：返回 ``(start, end, row_number)``。
+
+    与 `_scan_cells` 同一策略：**不假设属性顺序**（`r` 可以在任意位置）。
+    """
+
+    rows: list[tuple[int, int, int]] = []
+    index = 0
+    while True:
+        start = xml.find("<row", index)
+        if start == -1:
+            break
+        after = xml[start + 4:start + 5]
+        if after and (after.isalnum() or after in "_:.-"):
+            index = start + 4
+            continue
+        tag_end = _find_tag_end(xml, start)
+        if tag_end == -1:
+            break
+        attrs = _parse_attrs(xml[start:tag_end])
+        row_number = attrs.get("r")
+        if row_xml_is_self_closing(xml, tag_end):
+            end = tag_end + 1
+        else:
+            close = xml.find("</row>", tag_end)
+            end = len(xml) if close == -1 else close + 6
+        if row_number is not None:
+            try:
+                rows.append((start, end, int(row_number)))
+            except ValueError:
+                pass
+        index = end
+    return rows
+
+
+def row_xml_is_self_closing(xml: str, tag_end: int) -> bool:
+    return xml[tag_end - 1] == "/"
+
+
+def _row_default_style(cells: list[_CellSpan]) -> str | None:
     """取该行第一个带样式的 cell 的样式号，供新增结果 cell 继承外观。"""
 
-    for match in re.finditer(r'<c r="[A-Z]+\d+"([^>]*?)(?:/>|>)', row_xml):
-        style = re.search(r's="(\d+)"', match.group(1) or "")
-        if style:
-            return style.group(1)
+    for cell in cells:
+        if cell.style:
+            return cell.style
     return None
 
 
 def _patch_row(row_xml: str, row_number: int,
                payloads: dict[str, tuple[str, str] | None]) -> str:
-    fallback_style = _row_default_style(row_xml)
+    """把结果列的 payload 写进这一行（顺序无关、不产生重复坐标）。"""
+
+    cells = _scan_cells(row_xml)
+    fallback_style = _row_default_style(cells)
+    by_reference = {cell.reference: cell for cell in cells if cell.reference}
+
+    # 输入本身有重复坐标时无法保证结果正确 -> 硬失败（不猜、不掩盖）。
+    if len(by_reference) != len([c for c in cells if c.reference]):
+        raise ResultWorkbookWriteError(
+            f"输入工作表第 {row_number} 行存在重复单元格坐标，拒绝写回")
+
+    edits: list[tuple[int, int, str]] = []
     for column in sorted(payloads, key=_column_number):
-        payload = payloads[column]
         reference = f"{column}{row_number}"
-        match = _cell_pattern(reference).search(row_xml)
-        if match:
-            style_match = re.search(r's="(\d+)"', match.group("attrs") or "")
-            style = style_match.group(1) if style_match else fallback_style
-            row_xml = (row_xml[:match.start()]
-                       + _cell_xml(reference, style, payload)
-                       + row_xml[match.end():])
-            continue
-        insertion = _insertion_point(row_xml, column)
+        existing = by_reference.get(reference)
+        if existing is not None:
+            style = existing.style or fallback_style
+            edits.append((existing.start, existing.end,
+                          _cell_xml(reference, style, payloads[column])))
+    # 从后往前替换，保证前面的偏移仍然有效。
+    for start, end, replacement in sorted(edits, key=lambda item: item[0], reverse=True):
+        row_xml = row_xml[:start] + replacement + row_xml[end:]
+
+    # 补齐该行**不存在**的结果 cell（按列序插入到正确位置）。
+    missing = [column for column in sorted(payloads, key=_column_number)
+               if f"{column}{row_number}" not in by_reference]
+    if missing:
+        row_xml = _insert_missing_cells(row_xml, row_number, missing,
+                                        payloads, fallback_style)
+
+    # 自校验：目标坐标必须恰好各出现一次。
+    final_cells = _scan_cells(row_xml)
+    counts: dict[str, int] = {}
+    for cell in final_cells:
+        if cell.reference:
+            counts[cell.reference] = counts.get(cell.reference, 0) + 1
+    for column in payloads:
+        reference = f"{column}{row_number}"
+        if counts.get(reference, 0) != 1:
+            raise ResultWorkbookWriteError(
+                f"结果写回自校验失败：{reference} 出现 {counts.get(reference, 0)} 次"
+                "（必须恰好 1 次）")
+    return row_xml
+
+
+def _insert_missing_cells(row_xml: str, row_number: int, missing: list[str],
+                          payloads: dict[str, tuple[str, str] | None],
+                          fallback_style: str | None) -> str:
+    """把不存在的结果 cell 按**列序**插入，避免打乱既有列顺序。"""
+
+    for column in sorted(missing, key=_column_number):
+        reference = f"{column}{row_number}"
+        target = _column_number(column)
+        cells = _scan_cells(row_xml)
+        insertion = row_xml.rfind("</row>")
+        if insertion == -1:
+            insertion = len(row_xml)
+        for cell in cells:
+            letter = re.match(r"([A-Z]+)", cell.reference)
+            if letter and _column_number(letter.group(1)) > target:
+                insertion = cell.start
+                break
         row_xml = (row_xml[:insertion]
-                   + _cell_xml(reference, fallback_style, payload)
+                   + _cell_xml(reference, fallback_style, payloads[column])
                    + row_xml[insertion:])
     return row_xml
 
@@ -336,14 +500,27 @@ def _patch_sheet_xml(xml: str, outcomes: dict[int, BatchRowOutcome]) -> str:
     刻意避免"每行一次全串搜索"：那在 10,000 行时是 O(n²)（实测由 78s 恶化到 408s）。
     这里先把所有 `<row>` 位置一次找出，再从后往前替换，
     使每个目标行的补丁都只作用在其**自身**的片段上。
+
+    **行定位不依赖属性顺序**（复审 blocker 1），并且**每个结果行都必须真正
+    被补丁**：任何一行没找到就抛 `ResultWorkbookWriteError`，
+    绝不静默漏写后仍然保存"成功"的批次记录。
     """
 
+    rows = {row_number: (start, end)
+            for start, end, row_number in _scan_rows(xml)}
     targets: list[tuple[int, int, int]] = []
-    row_pattern = re.compile(r'<row r="(\d+)"[^>]*>.*?</row>', re.DOTALL)
-    for match in row_pattern.finditer(xml):
-        row_number = int(match.group(1))
-        if row_number in outcomes:
-            targets.append((match.start(), match.end(), row_number))
+    unresolved: list[int] = []
+    for row_number in sorted(outcomes):
+        span = rows.get(row_number)
+        if span is None:
+            unresolved.append(row_number)
+        else:
+            targets.append((span[0], span[1], row_number))
+    if unresolved:
+        raise ResultWorkbookWriteError(
+            "结果写回失败：无法在「离心泵」Sheet 中定位以下数据行 "
+            f"{unresolved[:10]}（共 {len(unresolved)} 行）；"
+            "拒绝保存部分写回的结果工作簿")
     if not targets:
         return xml
 
