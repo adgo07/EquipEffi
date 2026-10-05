@@ -638,7 +638,7 @@ Full suite baseline (NON-GATING)                                           succe
 | Branch | `phase8/gb19762-excel-batch` |
 | PR | **#16** — https://github.com/adgo07/EquipEffi/pull/16（`open`, `merged=false`） |
 | 上一轮 BLOCKED head | `8cb6eec1845cc26bed43e3dfea2dec1c5880729c` |
-| **R1 final Head** | 见 §R1.7 |
+| **R1 final Head** | `eb8b9fb06918aac8f86f88be92896085aa508586`（R1 修复提交；其后的提交仅为报告与治理文档） |
 | Base → R1 final Head | 56 files, +6116 / −248 |
 | `8cb6eec` → R1 final Head（本轮 R1 diff） | 11 files, +1236 / −146 |
 
@@ -667,5 +667,20 @@ READY_FOR_REACCEPTANCE
 
 **不自宣 `PHASE_8_PASS`。不合并 PR。不进入 Phase 9。**
 
-R1 final Head **= 下一轮独立复验唯一对象**。形成本报告后**不再追加 commit**；
-如 Head 改变，将重新声明 final Head、重新执行受影响测试，并等待该 Head 的 CI。
+R1 final Head **= 下一轮独立复验唯一对象**。
+
+R1 final Head 为**本轮 R1 修复提交**：
+
+```text
+R1 final Head = eb8b9fb06918aac8f86f88be92896085aa508586
+```
+
+该提交包含全部四项 blocker 修复、UI01～UI04 与 R1 blocker 回归测试。
+其**之后**的提交只包含 `PHASE8_EXECUTION_REPORT.md` 与治理文档同步
+（`QA_BACKLOG.md` / `TASK_STATE.md` / `UI_CURRENT_STATE_AUDIT.md`），
+**不包含任何代码改动**——因此对这四项目的独立复验对象是 `eb8b9fb06918`。
+
+PR #16 的 head SHA 也是独立复验的有效对象（它等于上述修复提交 + 文档提交）。
+
+形成本报告后**不再追加 commit**；如 Head 改变，将重新声明 final Head、
+重新执行受影响测试，并等待该 Head 的 CI。
