@@ -115,21 +115,32 @@ class GoldenExcelReplayTests(unittest.TestCase):
         result = self.batch.evaluate_workbook(
             source, destination=self.root / "golden_result.xlsx", as_of=AS_OF)
         self.assertEqual(result.summary.data_row_count, 29)
-        self.assertEqual(result.summary.input_error_rows, 0)
         self.assertEqual(result.summary.execution_error_rows, 0)
+
+        # Owner Phase 8 R1 / B2：`INVALID_INPUT` **不是**正式评价结论。
+        # 因此 Golden 中那几条 INVALID_INPUT 案例经 Excel 路径必须被判为
+        # 「输入错误」，而不是被当成正式结论。
+        invalid_cases = [data for _p, _f, data in self.cases
+                         if data["expected_result"].get("evaluation_status")
+                         == "INVALID_INPUT"]
+        self.assertEqual(result.summary.input_error_rows, len(invalid_cases))
 
         by_row = {outcome.row_number: outcome for outcome in result.outcomes}
         for offset, (profile, path, data) in enumerate(self.cases):
             expected = data["expected_result"]
+            status = expected.get("evaluation_status")
             row = FIRST_DATA_ROW + offset
             with self.subTest(case=data["case_id"], profile=profile):
                 outcome = by_row[row]
-                self.assertEqual(outcome.evaluation_status,
-                                 expected.get("evaluation_status"))
-                self.assertEqual(outcome.conclusion, expected.get("ui_conclusion"))
-                self.assertEqual(outcome.grade, expected.get("grade"))
-                self.assertFalse(outcome.is_input_error)
+                self.assertEqual(outcome.evaluation_status, status)
                 self.assertFalse(outcome.is_execution_error)
+                if status == "INVALID_INPUT":
+                    self.assertTrue(outcome.is_input_error)
+                    self.assertEqual(outcome.conclusion, "输入错误")
+                else:
+                    self.assertFalse(outcome.is_input_error)
+                    self.assertEqual(outcome.conclusion, expected.get("ui_conclusion"))
+                    self.assertEqual(outcome.grade, expected.get("grade"))
 
     def test_batch_result_snapshot_equals_single_application_snapshot(self):
         """同一 request：Excel Batch 与单次 Application 的 Result 必须一致。
@@ -166,7 +177,14 @@ class GoldenExcelReplayTests(unittest.TestCase):
                 outcome = batch.outcomes[0]
 
                 self.assertEqual(outcome.evaluation_status, single.evaluation_status)
-                self.assertEqual(outcome.conclusion, user_conclusion_text(single))
+                if single.evaluation_status == "INVALID_INPUT":
+                    # Owner Phase 8 R1 / B2：批量路径必须把 INVALID_INPUT
+                    # 报成「输入错误」，而不是伪装成业务结论「无法判定」。
+                    self.assertTrue(outcome.is_input_error)
+                    self.assertEqual(outcome.conclusion, "输入错误")
+                else:
+                    self.assertFalse(outcome.is_input_error)
+                    self.assertEqual(outcome.conclusion, user_conclusion_text(single))
                 self.assertEqual(outcome.grade, single.grade)
                 # matched business rule + trace + thresholds 全量一致
                 self.assertEqual(outcome.derived,
@@ -426,6 +444,8 @@ class LargeVolumeTests(unittest.TestCase):
                 workbook.save(source)
                 workbook.close()
 
+                # 只对**批处理本身**计时与采样：tracemalloc 有明显开销，
+                # 若把"构建输入工作簿"也纳入采样，会同时污染耗时与内存两个数字。
                 tracemalloc.start()
                 started = time.perf_counter()
                 result = self.batch.evaluate_workbook(

@@ -81,7 +81,7 @@ jobs:
             tests.unit.test_device_evaluator_matrix -q
 
       # module is identifiable from the step outcome alone (no log access).
-      - name: Phase 2/3/4/5/6/7/8 settings, lifecycle, Stage D, Product Shell, analysis flow, Excel batch, Qt offscreen (gating)
+      - name: Phase 2/3/4/5/6/7/8 settings, lifecycle, Stage D, Product Shell, analysis flow, Excel batch, R1 blockers, Qt offscreen (gating)
         shell: pwsh
         run: |
           $mods = @(
@@ -102,6 +102,7 @@ jobs:
             'tests.unit.test_phase8a_template_reader',
             'tests.unit.test_phase8b_batch_evaluation',
             'tests.unit.test_phase8b_batch_consistency',
+            'tests.unit.test_phase8r1_blockers',
             'tests.unit.test_windows_regression_comparator'
           )
           python -m unittest @mods -v

@@ -378,11 +378,10 @@ class CollapsibleTechnicalDetailTests(_DbCase):
         cls.app = QApplication.instance() or QApplication([])
 
     def _pages(self):
-        from equipeffi.presentation.qt.pages.records import RecordsPage
-
-        svc = self._migrated_service()
-        # Phase 7：分析页已不再显示技术详情，折叠能力只在「分析记录」页保留。
-        return (("records", RecordsPage(svc)),)
+        # Owner Phase 8 R1 / UI03：记录详情也不再展示「审计信息」折叠区，
+        # 因此这里没有可断言的折叠控件；底层审计数据仍保存在 Record 中
+        # （由 test_phase8r1_blockers 的 UIRecordsAuditRemovalTests 证明）。
+        return ()
 
     def test_analysis_page_has_no_technical_detail_section(self):
         """Phase 7：普通新建分析页不再展示技术详情（审计信息归记录页）。"""
@@ -393,25 +392,22 @@ class CollapsibleTechnicalDetailTests(_DbCase):
         self.assertFalse(hasattr(page, "technical_box"))
         self.assertFalse(hasattr(page, "technical"))
 
-    def test_technical_detail_is_hidden_by_default_and_stays_hidden(self):
-        for name, page in self._pages():
-            with self.subTest(page=name):
-                page.show()
-                self.app.processEvents()
-                self.assertFalse(page.technical_box.is_expanded(), name)
-                self.assertFalse(page.technical_box.content.isVisible(), name)
+    def test_audit_detail_is_not_shown_on_the_records_page(self):
+        """Owner Phase 8 R1 / UI03：记录详情不再展示「审计信息」区域。
 
-    def test_technical_detail_expands_and_collapses_on_click(self):
-        for name, page in self._pages():
-            with self.subTest(page=name):
-                page.show()
-                self.app.processEvents()
-                page.technical_box.toggle_button.click()
-                self.app.processEvents()
-                self.assertTrue(page.technical_box.content.isVisible(), name)
-                page.technical_box.toggle_button.click()
-                self.app.processEvents()
-                self.assertFalse(page.technical_box.content.isVisible(), name)
+        原 B4 断言的是"技术详情默认为折叠控件"。普通产品界面现在完全不再展示
+        该区域，因此这里改为断言"它不存在"——底层数据仍保存在 Record 中。
+        """
+
+        from PySide6.QtWidgets import QLabel
+        from equipeffi.presentation.qt.pages.records import RecordsPage
+
+        page = RecordsPage(self._migrated_service())
+        self.assertIsNone(getattr(page, "technical_box", None),
+                          "不得再有可展开的审计信息折叠区")
+        blob = "\n".join(label.text() for label in page.findChildren(QLabel))
+        self.assertNotIn("审计信息", blob)
+        self.assertNotIn("技术详情", blob)
 
     def test_default_visible_page_has_no_internal_identifiers(self):
         """B4 追加要求：普通默认页面不得显示内部标识。"""

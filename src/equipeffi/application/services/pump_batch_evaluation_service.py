@@ -29,7 +29,7 @@
 from __future__ import annotations
 
 import hashlib
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import date, datetime, timezone
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
@@ -53,6 +53,9 @@ SHEET_NAME = "离心泵"
 CONCLUDED_STATUSES: tuple[str, ...] = ("SUCCESS",)
 UNEVALUATED_CONCLUSION = "无法评价"
 INVALID_CONCLUSION = "输入错误"
+
+#: 正式 Application 表示"输入不合法"的业务状态；**不是**正式评价结论。
+INVALID_INPUT_STATUS = "INVALID_INPUT"
 EXECUTION_ERROR_CONCLUSION = "执行失败"
 
 
@@ -87,6 +90,31 @@ def parse_quantity(value: Any) -> tuple[Decimal | None, str | None]:
     if number <= 0:
         return None, f"数量应为大于 0 的正整数（当前为「{text}」）"
     return number, None
+
+
+@dataclass
+class _BatchProvenance:
+    """**单次** batch evaluation 的 provenance 累积器。
+
+    刻意是每次调用新建的局部对象，而不是 service 实例属性（Owner Phase 8 R1 / B4）：
+    这样任何相邻批次都不可能复用上一批的 Canonical / Numeric / rule 引用。
+    只记录**当前批次真正执行过正式评价**的 Result。
+    """
+
+    evaluated: int = 0
+    canonical_version: str = ""
+    numeric_profile_id: str = ""
+    canonical_package_hash: str = ""
+
+    def observe(self, result) -> None:
+        self.evaluated += 1
+        references = _version_references(result)
+        if not self.canonical_version:
+            self.canonical_version = references.get("canonical_version", "")
+        if not self.numeric_profile_id:
+            self.numeric_profile_id = references.get("numeric_profile_id", "")
+        if not self.canonical_package_hash:
+            self.canonical_package_hash = references.get("canonical_package_hash", "")
 
 
 @dataclass
@@ -158,8 +186,6 @@ class BatchEvaluationResult:
     evaluation_date: str = ""
     #: 结果 Workbook 已生成但批次记录写入失败时，这里带可读原因（不得静默吞错）。
     batch_record_error: str = ""
-    #: 本批次首个成功评价的原始结果（仅用于取 Canonical / Numeric 引用）。
-    first_result: Any = None
 
     @property
     def records_created(self) -> int:
@@ -220,7 +246,6 @@ class PumpBatchEvaluationService:
         self.batch_repository = batch_repository
         self.template_identity = dict(template_identity or {})
         self.template_resource = template_resource
-        self._first_result = None
         self.app_version = app_version
         self._record_id_factory = record_id_factory or (
             lambda: f"BATCH-{uuid4().hex[:12]}")
@@ -250,12 +275,17 @@ class PumpBatchEvaluationService:
         source = Path(source)
         as_of = as_of or date.today()
         workbook = self.reader.read(source)
+        # ---- 批次作用域状态全部为**方法内局部变量**（Owner Phase 8 R1 / B4）----
+        # 绝不允许任何 batch-scoped state 存活在 service 实例上：
+        # 否则相邻批次会复用上一批的 first_result（Canonical / Numeric 引用），
+        # 把"上一批用过的规则"伪造成"本批也用过"。
         summary = BatchEvaluationSummary(data_row_count=len(workbook.rows))
         outcomes: dict[int, BatchRowOutcome] = {}
+        provenance = _BatchProvenance()
 
         for row in workbook.rows:
             outcomes[row.row_number] = self._evaluate_row(
-                row, as_of=as_of, summary=summary)
+                row, as_of=as_of, summary=summary, provenance=provenance)
 
         # 默认输出名由载体端口给出（Application 不认识 Excel，因此不自己拼日期）。
         if destination is None:
@@ -273,17 +303,17 @@ class PumpBatchEvaluationService:
             outcomes=[outcomes[key] for key in sorted(outcomes)],
             summary=summary,
             evaluation_date=as_of.isoformat(),
-            first_result=self._first_result,
         )
         if persist and self.batch_repository is not None:
             try:
-                self._persist(result)
+                self._persist(result, provenance)
             except Exception as error:  # noqa: BLE001 - 明确报告，不中断结果交付
                 result.batch_record_error = f"{type(error).__name__}: {error}"
         return result
 
     def _evaluate_row(self, row: BatchSourceRow, *, as_of: date,
-                      summary: BatchEvaluationSummary) -> BatchRowOutcome:
+                      summary: BatchEvaluationSummary,
+                      provenance: "_BatchProvenance") -> BatchRowOutcome:
         quantity, quantity_error = parse_quantity(row.values.get("quantity"))
 
         if quantity_error:
@@ -319,18 +349,32 @@ class PumpBatchEvaluationService:
                 messages=(f"系统执行失败：{type(error).__name__}: {error}",),
                 derived={}, quantity=int(quantity), is_execution_error=True)
 
-        if self._first_result is None:
-            self._first_result = evaluated
+        provenance.observe(evaluated)
         outcome = _outcome_from_result(row.row_number, evaluated, int(quantity))
         snapshot = evaluated.as_snapshot()
-        conclusion = user_conclusion_text(evaluated)
+        status = snapshot.get("evaluation_status")
 
+        # `INVALID_INPUT` **不是**正式评价结论（Owner Phase 8 R1 / B2）：
+        # 数量本身合法时该行数量仍计入"提交设备总数量"，但**不得**计入
+        # evaluated_quantity，也**不得**进入任何正式结论数量。
+        if status == INVALID_INPUT_STATUS:
+            summary.input_error_rows += 1
+            summary.input_error_quantity += int(quantity)
+            reason = (str(snapshot.get("explanation") or "").strip()
+                      or "输入不合法，未形成正式评价结论")
+            summary.issues.append(BatchRowIssue(
+                row.row_number, "INPUT_ERROR", reason, int(quantity)))
+            return replace(
+                outcome, conclusion=INVALID_CONCLUSION, is_input_error=True,
+                messages=tuple(dict.fromkeys((*outcome.messages, reason))))
+
+        conclusion = user_conclusion_text(evaluated)
         summary.conclusion_rows[conclusion] = (
             summary.conclusion_rows.get(conclusion, 0) + 1)
         summary.conclusion_quantities[conclusion] = (
             summary.conclusion_quantities.get(conclusion, 0) + int(quantity))
 
-        if snapshot.get("evaluation_status"):
+        if status:
             summary.concluded_rows += 1
             summary.evaluated_quantity += int(quantity)
         else:
@@ -344,12 +388,20 @@ class PumpBatchEvaluationService:
 
     # -- 持久化 ------------------------------------------------------------
 
-    def _persist(self, result: BatchEvaluationResult) -> None:
+    def _persist(self, result: BatchEvaluationResult,
+                 provenance: "_BatchProvenance") -> None:
         from ...application.lifecycle import BatchRecordSnapshot
 
         summary = result.summary
         identity = self.template_identity
-        references = _version_references(self._first_result)
+        # 只允许使用**当前批次**真正执行过正式评价所得的引用；
+        # 若本批在进入正式评价前就全部失败，这几个字段保持空，
+        # 按现有结构采取最诚实的表示（不伪造 Result、不沿用上一批）。
+        references = {
+            "canonical_version": provenance.canonical_version,
+            "numeric_profile_id": provenance.numeric_profile_id,
+            "canonical_package_hash": provenance.canonical_package_hash,
+        }
         self.batch_repository.append_batch_record(BatchRecordSnapshot(
             batch_record_id=result.batch_record_id,
             standard_code=PUMP_STANDARD_CODE,

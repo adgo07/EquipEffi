@@ -445,12 +445,16 @@ class AnalysisLayeringTests(ProductShellTestCase):
         self.fill(page, WATER)
         result = page.evaluate()
         self.assertIsNotNone(result)
-        # 1 结论 / 2 实际值与限值 / 3 解释 / 4 标准依据 / 5 技术详情（折叠）
+        # Owner Phase 8 R1 / UI02：普通结果区只保留
+        # 最终结论+等级 / 关键计算参数 / 对应等级效率限值。
+        # 已删除：判定说明、为什么、所选标准、标准依据。
         self.assertEqual(page.conclusion.text(), result.ui_conclusion)
         self.assertIn("实际泵效率", page.values_label.text())
         self.assertIn("对应等级效率限值", page.values_label.text())
-        self.assertTrue(page.reason_label.text().strip())
-        self.assertIn("所选标准", page.basis.text())
+        self.assertIn("关键计算参数", page.basis.text())
+        self.assertEqual(page.reason_label.text().strip(), "")
+        self.assertNotIn("所选标准", page.basis.text())
+        self.assertNotIn("标准依据", page.basis.text())
 
     def test_chemical_result_has_the_same_layers(self):
         page = self.page()
@@ -458,7 +462,9 @@ class AnalysisLayeringTests(ProductShellTestCase):
         result = page.evaluate()
         self.assertIsNotNone(result)
         self.assertIn("实际泵效率", page.values_label.text())
-        self.assertIn("所选标准", page.basis.text())
+        # UI02：不再展示"所选标准 / 标准依据"，只保留关键计算参数。
+        self.assertIn("关键计算参数", page.basis.text())
+        self.assertNotIn("所选标准", page.basis.text())
 
     def test_ordinary_layers_do_not_leak_internal_identifiers(self):
         page = self.page()
@@ -646,8 +652,12 @@ class SettingsPageTests(ProductShellTestCase):
 
     def test_log_level_is_a_real_persisted_preference(self):
         page = self.window().settings_page
-        page.log_level.setCurrentText("WARNING")
+        # Owner Phase 8 R1 / UI04：界面显示中文，内部仍保存正式枚举值。
+        index = page.log_level.findData("WARNING")
+        self.assertGreaterEqual(index, 0, "内部值必须作为 item data 保留")
+        page.log_level.setCurrentIndex(index)
         self.assertEqual(self.settings.get("log.level"), "WARNING")
+        self.assertEqual(page.log_level.currentText(), "警告")
 
     def test_no_installer_or_update_system(self):
         # 只检查真实代码，不检查解释性 docstring/注释。
