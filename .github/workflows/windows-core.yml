@@ -147,10 +147,13 @@ jobs:
             }
           }
           if (Test-Path artifacts/diag/comparison.json) {
-            Write-Output '--- comparison.json ---'
-            Get-Content artifacts/diag/comparison.json -Raw | Write-Output
-            (Get-Content artifacts/diag/comparison.json -Raw) -split "`n" | ForEach-Object {
-              Write-Output ('::error title=p8json::' + ($_ -replace '%','%25' -replace "`r",''))
+            Write-Output '--- comparison.json (chunked) ---'
+            $raw = Get-Content artifacts/diag/comparison.json -Raw
+            $size = 150
+            for ($k = 0; $k -lt $raw.Length; $k += $size) {
+              $len = [Math]::Min($size, $raw.Length - $k)
+              $chunk = $raw.Substring($k, $len)
+              Write-Output ('::error title=p8c' + $k + '::' + ($chunk -replace '%','%25' -replace "`r",'' -replace "`n",' '))
             }
           }
 
