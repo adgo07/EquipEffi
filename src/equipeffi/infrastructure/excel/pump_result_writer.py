@@ -12,15 +12,12 @@
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
 import openpyxl
 
-from ...application.services.centrifugal_pump_analysis_service import (
-    user_conclusion_text,
-)
+from ...application.ports.batch_workbook import BatchRowOutcome
 from .pump_workbook_reader import PUMP_SHEET
 
 #: 结果列（Excel 列字母 → 结果快照取值器）。
@@ -59,49 +56,6 @@ _DERIVED_BY_COLUMN: dict[str, str] = {
 _NUMERIC_COLUMNS: frozenset[str] = frozenset("NOPQRSTUVW")
 
 
-@dataclass
-class RowOutcome:
-    """单行评价结果（写回与批次汇总的唯一来源）。"""
-
-    row_number: int
-    evaluated: bool
-    conclusion: str
-    evaluation_status: str | None
-    grade: str | None
-    messages: tuple[str, ...] = ()
-    derived: dict[str, Any] = field(default_factory=dict)
-
-    def as_dict(self) -> dict:
-        return {"row": self.row_number, "evaluated": self.evaluated,
-                "conclusion": self.conclusion,
-                "evaluation_status": self.evaluation_status,
-                "grade": self.grade, "messages": list(self.messages)}
-
-
-def outcome_from_result(row_number: int, result) -> RowOutcome:
-    """把正式 Application 结果投影成可写回的行结果。"""
-
-    snapshot = result.as_snapshot()
-    derived = dict((result.calculation_trace or {}).get("derived") or {})
-    messages: list[str] = []
-    missing = snapshot.get("missing_fields") or []
-    if missing:
-        messages.append("缺少" + "、".join(str(item) for item in missing))
-    explanation = str(snapshot.get("explanation") or "").strip()
-    if explanation:
-        messages.append(explanation)
-    for warning in snapshot.get("warnings") or ():
-        messages.append(str(warning))
-    return RowOutcome(
-        row_number=row_number,
-        evaluated=bool(snapshot.get("evaluation_status")),
-        conclusion=user_conclusion_text(result),
-        evaluation_status=snapshot.get("evaluation_status"),
-        grade=snapshot.get("grade"),
-        messages=tuple(messages),
-        derived=derived)
-
-
 def _derived_value(derived: dict[str, Any], column: str) -> Any:
     name = _DERIVED_BY_COLUMN.get(column)
     if not name:
@@ -115,7 +69,7 @@ def _derived_value(derived: dict[str, Any], column: str) -> Any:
     return None
 
 
-def _auto_note(outcome: RowOutcome) -> str:
+def _auto_note(outcome: BatchRowOutcome) -> str:
     if not outcome.messages:
         return ""
     return "；".join(dict.fromkeys(outcome.messages))
@@ -124,7 +78,7 @@ def _auto_note(outcome: RowOutcome) -> str:
 class PumpResultWorkbookWriter:
     """把评价结果写入**新的**结果 Workbook。"""
 
-    def write(self, source: Path, outcomes: dict[int, RowOutcome],
+    def write(self, source: Path, outcomes: dict[int, BatchRowOutcome],
               destination: Path) -> Path:
         source = Path(source)
         destination = Path(destination)

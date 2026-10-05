@@ -28,6 +28,7 @@ from pathlib import Path
 from typing import Any, Callable
 from uuid import uuid4
 
+from ..ports.batch_workbook import BatchRowOutcome, BatchSourceRow
 from .centrifugal_pump_analysis_service import (
     CentrifugalPumpAnalysisService,
     PUMP_CATEGORIES,
@@ -165,20 +166,9 @@ class PumpBatchEvaluationService:
     """把「离心泵」Sheet 的每一行交给正式 Application 评价。"""
 
     def __init__(self, analysis: CentrifugalPumpAnalysisService, *,
-                 reader=None, writer=None, batch_repository=None,
+                 reader, writer, batch_repository=None,
                  record_id_factory: Callable[[], str] | None = None):
-        if reader is None:
-            from ...infrastructure.excel.pump_workbook_reader import (
-                V6PumpWorkbookReader,
-            )
-
-            reader = V6PumpWorkbookReader()
-        if writer is None:
-            from ...infrastructure.excel.pump_result_writer import (
-                PumpResultWorkbookWriter,
-            )
-
-            writer = PumpResultWorkbookWriter()
+        # 载体端口**必须**由装配层注入：Application 不认识 Excel / openpyxl。
         self.analysis = analysis
         self.reader = reader
         self.writer = writer
@@ -225,8 +215,6 @@ class PumpBatchEvaluationService:
 
     def _evaluate_row(self, row, *, as_of: date,
                       summary: BatchEvaluationSummary):
-        from ...infrastructure.excel.pump_result_writer import outcome_from_result
-
         # 软件侧输入校验先于计算：Excel 验证可被粘贴绕过，不能替代软件最终验证。
         quantity_error = _quantity_error(row.values)
         if quantity_error:
@@ -246,7 +234,7 @@ class PumpBatchEvaluationService:
                 row.row_number, f"系统执行失败：{type(error).__name__}: {error}"))
             return _failed_outcome(row.row_number, error)
 
-        outcome = outcome_from_result(row.row_number, evaluated)
+        outcome = _outcome_from_result(row.row_number, evaluated)
         snapshot = evaluated.as_snapshot()
         conclusion = user_conclusion_text(evaluated)
         summary.conclusion_counts[conclusion] = (
@@ -288,25 +276,45 @@ class PumpBatchEvaluationService:
         ))
 
 
-def _invalid_outcome(row_number: int, reason: str):
+def _invalid_outcome(row_number: int, reason: str) -> BatchRowOutcome:
     """软件侧输入校验失败行：用户可见结论为「无法评价」，并给出可读原因。"""
 
-    from ...infrastructure.excel.pump_result_writer import RowOutcome
-
-    return RowOutcome(
+    return BatchRowOutcome(
         row_number=row_number, evaluated=False, conclusion="无法评价",
         evaluation_status=None, grade=None, messages=(reason,), derived={})
 
 
-def _failed_outcome(row_number: int, error: Exception):
+def _failed_outcome(row_number: int, error: Exception) -> BatchRowOutcome:
     """系统失败行：与业务结论**明确区分**，绝不写成「无法评价」或「无法判定」。"""
 
-    from ...infrastructure.excel.pump_result_writer import RowOutcome
-
-    return RowOutcome(
+    return BatchRowOutcome(
         row_number=row_number, evaluated=False, conclusion="评价失败",
         evaluation_status=None, grade=None,
         messages=(f"系统执行失败：{type(error).__name__}: {error}",), derived={})
+
+
+def _outcome_from_result(row_number: int, result) -> BatchRowOutcome:
+    """把正式 Application 结果投影成可写回的行结果（纯 Application，不依赖 Excel）。"""
+
+    snapshot = result.as_snapshot()
+    derived = dict((result.calculation_trace or {}).get("derived") or {})
+    messages: list[str] = []
+    missing = snapshot.get("missing_fields") or []
+    if missing:
+        messages.append("缺少" + "、".join(str(item) for item in missing))
+    explanation = str(snapshot.get("explanation") or "").strip()
+    if explanation:
+        messages.append(explanation)
+    for warning in snapshot.get("warnings") or ():
+        messages.append(str(warning))
+    return BatchRowOutcome(
+        row_number=row_number,
+        evaluated=bool(snapshot.get("evaluation_status")),
+        conclusion=user_conclusion_text(result),
+        evaluation_status=snapshot.get("evaluation_status"),
+        grade=snapshot.get("grade"),
+        messages=tuple(messages),
+        derived=derived)
 
 
 def formal_category_names() -> tuple[str, ...]:

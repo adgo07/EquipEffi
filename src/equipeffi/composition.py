@@ -173,6 +173,8 @@ def create_batch_evaluation_service(*, paths=None):
     from .application.services.pump_batch_evaluation_service import (
         PumpBatchEvaluationService,
     )
+    from .infrastructure.excel.pump_result_writer import PumpResultWorkbookWriter
+    from .infrastructure.excel.pump_workbook_reader import V6PumpWorkbookReader
     from .infrastructure.persistence.app_data_paths import AppDataPaths
     from .infrastructure.persistence.sqlite_batch_record_repository import (
         SqliteBatchRecordRepository,
@@ -180,8 +182,12 @@ def create_batch_evaluation_service(*, paths=None):
 
     paths = paths if paths is not None else AppDataPaths.default()
     analysis = create_pump_analysis_service(paths=paths)
+    # 载体端口在装配层注入：Application 只认识 Protocol，不认识 Excel。
     return PumpBatchEvaluationService(
-        analysis, batch_repository=SqliteBatchRecordRepository(paths.records_db))
+        analysis,
+        reader=V6PumpWorkbookReader(),
+        writer=PumpResultWorkbookWriter(),
+        batch_repository=SqliteBatchRecordRepository(paths.records_db))
 
 
 def launch_qt(*, paths=None) -> int:

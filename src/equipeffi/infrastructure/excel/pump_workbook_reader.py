@@ -13,10 +13,13 @@
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from ...application.ports.batch_workbook import (
+    BatchSourceRow,
+    BatchSourceWorkbook,
+)
 from ...application.services.centrifugal_pump_analysis_service import (
     PUMP_CATEGORIES,
 )
@@ -65,27 +68,14 @@ def _column_index(letter: str) -> int:
     return value - 1
 
 
-@dataclass(frozen=True)
-class PumpWorkbookRow:
-    """一行离心泵输入。
-
-    ``values`` 只含正式输入字段；``row_number`` 是 Excel 中的 1 基行号，
-    用于把软件结论准确写回同一行。
-    """
-
-    row_number: int
-    values: dict[str, Any]
-
-    def is_blank(self) -> bool:
-        return not any(self.values.get(name) not in (None, "")
-                       for name in ENABLEMENT_FIELDS)
+#: 载体 DTO 由 Application 端口定义（Application 不认识 Excel）。
+PumpWorkbookRow = BatchSourceRow
+PumpWorkbook = BatchSourceWorkbook
 
 
-@dataclass(frozen=True)
-class PumpWorkbook:
-    path: str
-    rows: tuple[PumpWorkbookRow, ...]
-    skipped_blank_rows: int = 0
+def _is_blank(row: BatchSourceRow) -> bool:
+    return not any(row.values.get(name) not in (None, "")
+                   for name in ENABLEMENT_FIELDS)
 
 
 class V6PumpWorkbookReader:
@@ -115,13 +105,13 @@ class V6PumpWorkbookReader:
         for offset, raw in enumerate(grid[header_row + 1:], start=header_row + 2):
             values = {field_id: _cell(raw, letter)
                       for letter, field_id in INPUT_COLUMNS}
-            row = PumpWorkbookRow(row_number=offset, values=values)
-            if row.is_blank():
+            row = BatchSourceRow(row_number=offset, values=values)
+            if _is_blank(row):
                 blank += 1
                 continue
             rows.append(row)
-        return PumpWorkbook(path=str(source), rows=tuple(rows),
-                            skipped_blank_rows=blank)
+        return BatchSourceWorkbook(path=str(source), rows=tuple(rows),
+                                   skipped_blank_rows=blank)
 
     # -- 结构校验 ----------------------------------------------------------
 

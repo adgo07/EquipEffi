@@ -54,12 +54,17 @@ class ArchitectureBoundaryTests(unittest.TestCase):
 
         Phase 3 起允许 Qt 导入统一离心泵分析契约
         (`centrifugal_pump_analysis_service`) 与设置服务 (`settings_service`)；
+        Phase 8 起追加允许**批量评价契约** (`pump_batch_evaluation_service`)——
+        「批量评价」是正式一级页面，它必须调用该 Application 契约，且该契约
+        自身只依赖 Protocol 端口（不 import Infrastructure），因此不破坏
+        "Qt 不得触碰 Infrastructure / Domain" 的边界。
         仍禁止导入 Domain、Infrastructure、presentation.api 与装配层。
         """
 
         allowed_application_prefixes = (
             "equipeffi.application.services.settings_service",
             "equipeffi.application.services.centrifugal_pump_analysis_service",
+            "equipeffi.application.services.pump_batch_evaluation_service",
         )
         directory = self.ROOT / "src/equipeffi/presentation/qt"
         for path in directory.rglob("*.py"):

@@ -78,8 +78,12 @@ class BatchTestCase(unittest.TestCase):
         migrate_records_database(self.paths.records_db, app_version="test")
         self.analysis = create_pump_analysis_service(paths=self.paths)
         self.repository = SqliteBatchRecordRepository(self.paths.records_db)
+        # 载体端口按真实装配注入（Application 只认识 Protocol，不认识 Excel）。
         self.batch = PumpBatchEvaluationService(
-            self.analysis, batch_repository=self.repository)
+            self.analysis,
+            reader=V6PumpWorkbookReader(),
+            writer=PumpResultWorkbookWriter(),
+            batch_repository=self.repository)
         self.source = self.root / "输入.xlsx"
         V6TemplateResource().download_to(self.source)
         self.addCleanup(self.tmp.cleanup)
