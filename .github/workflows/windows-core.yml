@@ -121,6 +121,22 @@ jobs:
               }
             }
           }
+          Write-Output '=== run only the modules that spawn subprocesses ==='
+          $subs = @(
+            'tests.unit.test_build_lock',
+            'tests.unit.test_zipapp',
+            'tests.unit.test_linux_service_scripts',
+            'tests.unit.test_entrypoint',
+            'tests.unit.test_phase2_qt'
+          )
+          $sub = & python -m unittest @subs 2>&1 | Out-String
+          Write-Output $sub
+          $sublines = $sub -split "`n"
+          for ($i = 0; $i -lt $sublines.Count; $i++) {
+            if ($sublines[$i] -match 'UnicodeDecodeError|charmap|^ERROR:|^FAIL:') {
+              Write-Output ('::error title=p8sub::' + ($sublines[$i] -replace '%','%25' -replace "`r",''))
+            }
+          }
           if (Test-Path artifacts/diag/comparison.json) {
             Write-Output '--- comparison.json ---'
             Get-Content artifacts/diag/comparison.json -Raw | Write-Output
