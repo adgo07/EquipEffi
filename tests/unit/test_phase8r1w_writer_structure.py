@@ -303,16 +303,85 @@ class WriterStructureTests(unittest.TestCase):
                 self.assertEqual(len(re.findall(r'r="U4"', xml)), 1)
 
     def test_worksheet_prefix_is_tolerated(self):
-        """`<x:c x:r="U4" ...>` 形式（带命名空间前缀）也必须被识别。"""
+        """`<x:c r="U4" .../>` 形式（带命名空间前缀）也必须被识别。
 
-        moved = self.mutate_sheet(
-            self.source, self.root / "prefixed.xlsx",
-            lambda xml: xml.replace('<c r="U4"', '<c r="U4"', 1))
+        本节原有实现是 ``xml.replace('<c r="U4"', '<c r="U4"', 1)``——一个
+        **空操作**，因此从来没有真正产生过 `<x:c>` 输入，测试通过是假象
+        （Phase 8 R2 复审 blocker）。现在改为**真正**的结构化前缀改写，并在
+        调用 Writer **之前**机械断言夹具里确实存在 `<x:c` 与前缀化的 U4。
+        """
+
+        from equipeffi.infrastructure.excel.pump_result_writer import _scan_cells  # noqa: F401
+
+        moved = self.make("prefixed.xlsx", [self.water()])
+        self._prefix_worksheet_in_zip(moved, "x")
+
+        xml = self.sheet_xml(moved)
+        self.assertIn("<x:c ", xml, "夹具无效：没有 <x:c 元素")
+        self.assertRegex(xml, r'<x:c [^>]*r="U4"',
+                         "夹具无效：U4 不是 <x:c 前缀化单元格")
+        self.assertRegex(xml, r'<x:row r="4"')
+        self.assertNotRegex(xml, r"<c[ />]", "夹具无效：仍存在无前缀 <c>")
+
         result = self.batch.evaluate_workbook(
             moved, destination=self.root / "prefixed_out.xlsx", as_of=AS_OF,
             persist=False)
         xml = self.sheet_xml(result.result_workbook)
         self.assertEqual(len(re.findall(r'r="U4"', xml)), 1)
+        for column in RESULT_COLUMNS:
+            reference = f"{column}{FIRST_DATA_ROW}"
+            with self.subTest(reference=reference):
+                self.assertEqual(
+                    len(re.findall(r'r="' + reference + r'"', xml)), 1,
+                    "前缀化工作表下结果坐标必须恰好一次")
+        sheet = openpyxl.load_workbook(result.result_workbook)[PUMP_SHEET]
+        self.assertIsNotNone(sheet[f"U{FIRST_DATA_ROW}"].value)
+
+    def _prefix_worksheet_in_zip(self, path: Path, prefix: str) -> None:
+        """把工作表 XML **结构化**改写为 `prefix` 前缀的合法 SpreadsheetML。"""
+
+        from xml.etree import ElementTree
+
+        main_ns = ("http://schemas.openxmlformats.org/"
+                   "spreadsheetml/2006/main")
+        with zipfile.ZipFile(path) as archive:
+            entries = [(info, archive.read(info.filename))
+                       for info in archive.infolist()]
+            sheet_target = self._sheet_path_of(archive)
+        rewritten = []
+        for info, data in entries:
+            if info.filename == sheet_target:
+                root = ElementTree.fromstring(data)
+                for node in root.iter():
+                    for key in [key for key in node.attrib
+                                if key.endswith("}space")]:
+                        del node.attrib[key]
+                ElementTree.register_namespace(prefix, main_ns)
+                body = ElementTree.tostring(root, encoding="unicode")
+                data = ('<?xml version="1.0" encoding="UTF-8" '
+                        'standalone="yes"?>' + body).encode("utf-8")
+            rewritten.append((info, data))
+        with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as archive:
+            for info, data in rewritten:
+                archive.writestr(info, data)
+
+    @staticmethod
+    def _sheet_path_of(archive: zipfile.ZipFile) -> str:
+        workbook = archive.read("xl/workbook.xml").decode("utf-8")
+        rels = archive.read("xl/_rels/workbook.xml.rels").decode("utf-8")
+        targets = {}
+        for element in re.findall(r"<Relationship\b[^>]*>", rels):
+            rid = re.search(r'Id="([^"]*)"', element)
+            target = re.search(r'Target="([^"]*)"', element)
+            if rid and target:
+                targets[rid.group(1)] = target.group(1)
+        for element in re.findall(r"<sheet\b[^>]*>", workbook):
+            if f'name="{PUMP_SHEET}"' not in element:
+                continue
+            rid = re.search(r'[A-Za-z0-9]+:id="([^"]*)"', element).group(1)
+            target = targets[rid].lstrip("/")
+            return target if target.startswith("xl/") else f"xl/{target}"
+        raise AssertionError("找不到离心泵 sheet")
 
 
 if __name__ == "__main__":

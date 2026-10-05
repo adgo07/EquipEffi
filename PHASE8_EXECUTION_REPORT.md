@@ -817,3 +817,318 @@ READY_FOR_REACCEPTANCE
 R1W 修复提交 `eef41f54436f01aa7db4f9b2e9f4bfa4c7bb5f60` 与本报告所在 head
 均为有效复验对象；其后的提交只包含本报告与治理文档同步，**不含代码改动**。
 形成本报告后**不再追加 commit**。
+
+---
+
+# Phase 8 R2 — 命名空间前缀敏感的 OOXML 扫描器（第三次复审 blocker）
+
+> 本节**只追加**，不改写上文任何历史结论。R1 / R1W 两轮的结论、blocker 与
+> 状态原样保留在上面。
+
+## R2.0 前两次尝试为什么没有真正关闭这个 blocker（历史保留，不抹掉）
+
+| 轮次 | 被 BLOCKED 的 head | 该轮宣称修好的东西 | 为什么**没有**关闭本 blocker |
+|---|---|---|---|
+| **第一次**（R1） | `8cb6eec1845cc26bed43e3dfea2dec1c5880729c` | B1～B4 四项：U/V/W 取自正式 `thresholds`、`INVALID_INPUT` 不污染统计、结果文件=原文件副本、provenance 不跨批次串用 | 该轮修的是**业务取值与持久化语义**，完全没有触及元素识别方式；扫描器仍按**字符串前缀**匹配 |
+| **第二次**（R1W） | `348a1994352e9e16d841a0589b0af2416a83b0df` | "两个新 Writer 阻断"（结果静默漏写 / 产生重复坐标），并明确其根因是**属性顺序假设** | 只把"属性顺序"这一**载体变体**做对了：改成顺序无关扫描器（`_find_tag_end` + `_parse_attrs`）。但元素**身份判定方式**没变——仍是 `find("<c")`、`find("<row")`、`rfind("</row>")` 这类**字面字符串**匹配，因此**命名空间前缀**这一同类载体变体原封不动地留了下来 |
+
+第二次尝试的关键失误在**测试**：它写了"前缀测试"，但夹具是
+
+```python
+lambda xml: xml.replace('<c r="U4"', '<c r="U4"', 1)   # 空操作（no-op）
+```
+
+`xml.replace(a, a)` 是**恒等变换**，从来没有真正产生过 `<x:c>` 输入，
+断言 `r="U4"` 只出现一次在**无前缀**输入上当然成立。**一个空操作的夹具
+让一个假测试通过了**——这正是本轮把"夹具必须机械自证"写成硬纪律的原因。
+
+**共同教训（已落到本轮的实现与测试约定）**：
+OOXML 的**属性顺序**、**命名空间前缀**、**自闭合形式**都不是契约；
+"解析器看不见某个元素"必须是**硬失败**，而不是静默补一个出来。
+
+## R2.1 根因
+
+> **namespace prefix-sensitive raw OOXML scanner（命名空间前缀敏感的原生
+> OOXML 扫描器）**
+
+`f2518a9` 的 `src/equipeffi/infrastructure/excel/pump_result_writer.py`
+用字面字符串识别元素（静态证据，行号即 `f2518a9` 的行号）：
+
+```text
+329: start = row_xml.find("<c", index)                  # 只认无前缀 <c
+333: if after and (after.isalnum() or after in "_:.-"): # 把 <x:c 当成 <cols 误匹配**主动跳过**
+343: close = row_xml.find("</c>", tag_end)              # 只认无前缀 </c>
+359: start = xml.find("<row", index)                    # 只认无前缀 <row
+363: if after and (after.isalnum() or after in "_:.-"): # 同样跳过 <x:row
+454: insertion = row_xml.rfind("</row>")               # 只认无前缀 </row>
+```
+
+合法 OOXML **允许任意命名空间前缀**。于是：
+
+```text
+<x:c r="U4">      -> 第 333 行判定为"前缀误匹配" -> 完全不可见
+<ss:c r="U4"/>    -> 同上
+<x:row r="4">     -> 第 359 行找不到 <row -> 整行不可见
+</x:row>          -> 第 454 行 rfind("</row>") 找不到
+```
+
+后果：Writer 以为 `U4` 不存在，追加一个**无前缀**的 `<c r="U4">`，
+输出工作簿出现**重复坐标**；若整张工作表都是前缀形式，则连数据行都定位不到。
+
+**机械复现（在 `f2518a9` 的扫描器行为上，用真实前缀化工作表）**：
+
+```text
+输入 row4 : <x:row r="4" ht="42" customHeight="1" s="184"><x:c r="A4" ...
+OLD _scan_cells found cells : 0            <- 整行 27 个单元格一个都认不出
+OLD recognises U4           : False
+OLD _scan_rows finds <x:row r="4"> : False  <- 整行定位失败
+```
+
+## R2.2 修复
+
+### 1) QName / local-name 感知的元素身份（取代 `find("<c")`）
+
+```text
+_iter_tags         逐标记产出 (起点, 终点, 限定名)，跳过注释 / CDATA / 处理指令
+_element_name      从 <x:c r="U4"/> / </x:c> 取**限定名**（x:c）
+_local_name        限定名 -> 局部名（x:c -> c）
+_element_extent    按**嵌套深度**配对开/闭标记，返回元素真实结束位置
+_close_tag         该元素对应的**精确**结束标记（x:c -> </x:c>）
+_scan_cells        仅 local-name == "c" 才是单元格；结束标记必须匹配**实际限定名**
+_scan_rows         仅 local-name == "row" 才是行；同上
+```
+
+因此以下四者被认定为**同一个** SpreadsheetML 单元格：
+
+```text
+<c r="U4">   <x:c r="U4">   <ss:c r="U4">   <p1:c r="U4">
+```
+
+`<cols>` / `<col>` / `<customFilter>` / `<cell>` / `<cfRule>` 等
+local-name 不是 `c`/`row` 的元素**永不**误判（由 `test_H3` 机械守卫）。
+
+`_element_extent` 是必需的：单元格可以**含子元素**
+（`<c><f>…</f><v>…</v></c>`、`<c t="inlineStr"><is><t>…</t></is></c>`），
+简单找第一个 `</c>` 会停在子元素的结束处、把外层单元格区间**截断**。
+
+### 2) 行扫描同样修复（同一根因，允许且已做）
+
+`row_xml.rfind("</row>")` 改为按该行元素**实际限定名**定位
+（`</x:row>` 对 `<x:row>`）；自闭合行 `<x:row r="4"/>` 会先显式展开成
+开/闭标记对再插入。
+
+### 3) 目标坐标写语义（§四）
+
+```text
+已有 0 个 -> 按既有逻辑插入 1 个（按列序，继承该行前缀与样式）
+已有 1 个 -> **就地更新**该单元格（带任何合法前缀都能识别；保留原样式与原有前缀）
+已有 >1 个 -> 输入本身已歧义 -> **fail closed**（不猜哪个才是真的）
+```
+
+### 4) 重复坐标 fail-closed 后置条件（§三）
+
+补丁完成、**写结果文件之前**，对**整张工作表**重新扫描
+（不只 U/V/W），统计 `坐标 -> 出现次数`：
+
+```text
+任何非空坐标出现多于一次
+    -> ResultWorkbookWriteError
+    -> 不产出任何结果工作簿
+    -> 不保存"成功"的 batch_record
+```
+
+同时新增**良构性**后置条件 `_assert_well_formed`（补丁是原生字符串操作，
+因此用 XML 解析器独立复核）。并且 `write()` 改为
+**"先全部算完、再落盘"**：后置条件在目标文件创建之前完成，失败时磁盘上
+**不会**留下半成品结果文件。
+
+### 5) 结果文件仍必须"打得开"：主命名空间归一
+
+修好识别之后立刻暴露了第二层问题：本仓测试所用 `openpyxl` 以及其它现有
+OOXML 读取器**只按字面无前缀标签**匹配 `c` / `v` / `row`，对
+`<x:c><x:v>…</x:v></x:c>` 会**静默丢掉单元格值**（实测：`U4` 读成 `None`，
+而 `B4` 等无前缀格正常）。输入是前缀写法时，若结果原样保留前缀，
+用户用 Excel / 其它工具打开就会"结果消失"。
+
+因此 Writer 在产出前把**主命名空间**的元素统一写回**默认命名空间**形式：
+
+```text
+<x:c   -> <c        </x:row> -> </row>
+xmlns:x="…/main"    -> xmlns="…/main"      （无默认声明时改写）
+                    -> 删除（已有默认声明时，避免第二个 xmlns 属性）
+```
+
+只改这两件事：元素**限定名上的前缀**与**该前缀自己的声明**。属性、属性顺序、
+文本、其它命名空间（`r:` / `mc:` / `x14ac:` 等）以及 `<sheetData>` 一类结构
+逐字节保留；最终整张工作表由 `_assert_well_formed` 机械复核为良构。
+**扫描识别**本身始终是前缀无关的（先行完成），归一只是**输出**的可读性收口。
+
+## R2.3 测试：真实前缀化 OOXML 夹具（§五）
+
+上一轮的"前缀测试"因空操作而无效，**本轮禁止**任何未经验证的替换。
+每个前缀化夹具都走同一条流水线，并**在调用 Writer 之前**自证：
+
+```text
+1. 复制/创建真实 xlsx（V6 模板 + 用户输入）
+2. 打开 ZIP 内真实的 worksheet XML
+3. **结构化**改写为合法命名空间前缀 SpreadsheetML（XML 解析器改写 +
+   注册 xmlns:<prefix> 声明，而不是碰运气的字符串替换）
+4. 写回 ZIP
+5. assert_prefixed()：机械断言 <x:c 存在、U4 **真的是**前缀化单元格、
+   没有残留无前缀 <c>、<x:row 存在
+6. 只有通过第 5 步才调用 Writer
+```
+
+`assert_prefixed(..., fully_prefixed=False)` 专供**故意**混用前缀/无前缀表示的
+夹具（§六 F / G）——那种夹具本来就应当同时含两种写法。
+
+### 回归用例 A～H 与端到端
+
+| 用例 | 内容 | 断言 |
+|---|---|---|
+| A | 无前缀 `<c r="U4">…</c>` | U4 == 1 |
+| B | 前缀 `x`：`<x:c r="U4">…</x:c>` | U4 == 1 **且值 == 当前正式 `thresholds`** |
+| C | 非 `x` 前缀：`<ss:c r="U4">…</ss:c>`（另有 `p1`） | U4 == 1 |
+| D | 自闭合 `<x:c r="U4"/>` | U4 == 1（夹具显式断言 U4 确为自闭合） |
+| E | 前缀化行 `<x:row r="4"><x:c r="U4">…</x:c></x:row>` | 整行结果列各恰好 1 次 |
+| F | 同一 worksheet 混用 `<c …>` 与 `<x:c …>`（不同坐标）；补充：不同行用 `x:` 与 `ss:` | 各坐标恰好 1 次 |
+| G | 输入**已有**重复坐标（`<c r="U4">` 与 `<x:c r="U4">` 并存） | **fail closed**：抛错、无结果文件、无 `batch_record` |
+| H | 整表不变式：扫描**每个**带 `r` 的单元格 | 全部坐标唯一（另有正则独立复算交叉验证） |
+
+补充用例：`G2`（直接调 Writer 也 fail closed 且不留文件）、
+`G3`（重复坐标在**非首行** U5 时同样 fail closed）、
+`H2`（后置条件门禁**独立**生效：人为注入一个扫描器漏掉的重复坐标，
+`_assert_unique_references` 必须拒绝）、
+`H3`（`<cols>`/`<col>`/`<customFilter>`/`<cell>`/`<cfRule>` 永不被当成单元格）、
+`test_prefixed_and_plain_inputs_agree_exactly`（前缀化与普通输入的结论、
+`evaluation_status`、`grade`、`thresholds`、`summary.as_dict()` 与结果列**逐项相同**）。
+
+### §七 真实工作簿级端到端（`test_prefixed_end_to_end_reader_batch_writer_reopen`）
+
+```text
+合法输入工作簿 -> 结构化改写为 <x:row>/<x:c>（并自证）-> Reader -> 批量评价
+   -> Writer -> 解压结果工作簿 -> 检查 worksheet XML
+```
+
+机械证明链：
+
+```text
+1. U4 在结果工作簿中恰好出现 1 次
+2. U4 的值 == 正式 Result.thresholds 的 1 级限值（与单台 Application 结果同源对照）
+3. 结果工作簿可正常重新打开（openpyxl 读回 U4/X4/D4，且二次读取一致）
+4. 批次统计正确（data_row_count=1 / total_quantity=3 / evaluated_quantity=3 /
+   conclusion_quantities 合计 3 / input_error_rows=0 / execution_error_rows=0）
+5. batch_record 仅在 Writer 成功后保存（=1 条，result_workbook 指向结果文件，
+   total_quantity=3，result_workbook_sha256 非空）
+6. 整表坐标唯一
+```
+
+## R2.4 本轮实际本地验证
+
+```text
+tests/unit/test_phase8r2_prefixed_writer.py        17 passed / 51 subtests   （本轮新增）
+tests/unit/test_phase8r1w_writer_structure.py       9 passed / 39 subtests   （前缀测试已换成真夹具）
+tests/unit/test_phase8r1_blockers.py               34 passed / 148 subtests
+tests/contract（architecture boundaries 等）       113 passed / 4841 subtests
+python -m compileall -q src tools tests            exit 0
+本仓 CI gating 模块清单（Phase 2–8 全量）          116 passed / 382 subtests
+全量 pytest tests                                  1551 passed / 3 skipped / 7002 subtests
+                                                   4 failed（既有失败，见下）
+
+最终字节上的一次合并复验（本轮交付的 3 个测试 + 全部受影响模块 + contract）：
+pytest tests/unit/test_phase8r2_prefixed_writer.py
+       tests/unit/test_phase8r1w_writer_structure.py
+       tests/unit/test_phase8r1_blockers.py
+       tests/unit/test_phase8b_batch_evaluation.py
+       tests/unit/test_phase8b_batch_consistency.py
+       tests/unit/test_phase8a_template_reader.py
+       tests/contract
+    -> 250 passed / 5251 subtests passed / exit 0   （约 1032s）
+```
+
+**既有失败与基线逐项一致**（同一组 4 项在未应用本轮改动的 `f2518a9`
+工作区上**同样失败**，已实测）：
+
+```text
+tests/unit/test_release_audit.py::...test_source_and_bundled_wheel_pass_release_audit
+tests/unit/test_v4_reader.py::...test_copied_v4_row_is_read_and_evaluated
+tests/unit/test_v4_writer.py::...test_end_to_end_v4_1500_rows_read_evaluate_write_and_reopen
+tests/unit/test_v4_writer.py::...test_writer_creates_new_workbook_with_locked_results
+```
+
+**未更新 known baseline、未删除任何测试、未添加 skip/xfail/deselect、
+未放宽任何断言。**
+
+## R2.5 本轮明确点名的三个测试
+
+| # | 测试 | 覆盖 |
+|---|---|---|
+| 1 | `tests/unit/test_phase8r2_prefixed_writer.py::PrefixAgnosticCellTests::test_B_prefix_x_cell_is_recognised_and_updated_in_place` | **前缀化 `U4` 回归**：真实 `<x:c r="U4">` 输入下 U4 恰好 1 次，且值 == 当前正式 `thresholds` |
+| 2 | `tests/unit/test_phase8r2_prefixed_writer.py::DuplicateCoordinateFailClosedTests::test_G_duplicate_input_fails_closed_without_result_workbook` | **重复输入 fail-closed**：输入已含 `U4` 两处时硬失败，无结果文件、无 `batch_record` |
+| 3 | `tests/unit/test_phase8r2_prefixed_writer.py::WholeSheetUniquenessInvariantTests::test_H_every_coordinate_in_the_written_sheet_is_unique` | **整表坐标唯一性不变式**：写回后扫描整张工作表（>1000 个坐标）断言全部唯一，并用独立正则交叉复算 |
+
+## R2.6 交付对象
+
+| 项 | 值 |
+|---|---|
+| Repo | `https://github.com/adgo07/EquipEffi.git` |
+| Base SHA | `79ea075967ace07aa9880369220d8bff9b53d9e8` |
+| Branch | `phase8/gb19762-excel-batch` |
+| PR | **#16** — https://github.com/adgo07/EquipEffi/pull/16（`open`, `merged=false`） |
+| 第一次 BLOCKED head | `8cb6eec1845cc26bed43e3dfea2dec1c5880729c`（B1～B4） |
+| 第二次 BLOCKED head | `348a1994352e9e16d841a0589b0af2416a83b0df`（两个 Writer 阻断） |
+| R1W 修复提交 | `eef41f54436f01aa7db4f9b2e9f4bfa4c7bb5f60` |
+| **第三次 BLOCKED head（本轮起点）** | `f2518a93179f51fd5339d8bfcf8cbbe02fa67e28` |
+| **R2 修复（本地工作区，未提交）** | 本报告所述改动，见下 |
+
+### `f2518a9… → R2` 实际 diff
+
+```text
+ .github/workflows/windows-core.yml                        |   1 +
+ src/equipeffi/infrastructure/excel/pump_result_writer.py  | 669 ++++++++++----
+ tests/unit/test_phase8r1w_writer_structure.py             |  77 ++-
+ 3 files changed, 640 insertions(+), 107 deletions(-)
+
+ 新增（untracked）
+ tests/unit/test_phase8r2_prefixed_writer.py               | 599 行（17 个测试）
+```
+
+- `.github/workflows/windows-core.yml`：CI gating 模块清单加入
+  `tests.unit.test_phase8r2_prefixed_writer`（否则新回归在 CI 中不执行）。
+- `src/equipeffi/infrastructure/excel/pump_result_writer.py`：本轮修复本体。
+- `tests/unit/test_phase8r1w_writer_structure.py`：
+  `test_worksheet_prefix_is_tolerated` 的**空操作夹具**替换为真实结构化
+  前缀夹具（并新增 `_prefix_worksheet_in_zip` / `_sheet_path_of` 辅助）。
+  **未删除该测试，未放宽断言**——只是让夹具真的产生 `<x:c>` 输入。
+- `tests/unit/test_phase8r2_prefixed_writer.py`：本轮新增回归（A～H + 端到端）。
+
+## R2.7 是否修改了受保护资产
+
+| 资产 | 本轮是否修改 |
+|---|---|
+| pump 公式 / boundary / grade | **否** |
+| Approved Golden（29 条） | **否** |
+| Canonical / Numeric Profile | **否** |
+| 正式 `thresholds` 业务值 | **否**（U/V/W 仍只取自正式 `Result.thresholds`） |
+| 批次统计语义 | **否** |
+| Qt UI | **否** |
+| V6 模板业务设计与模板资产 | **否**（模板 SHA-256 未变；夹具不改模板文件本体，只改测试临时副本） |
+| migration / `batch_record` schema | **否**（未新增迁移） |
+| 其他 Sheet 逻辑 | **否** |
+| Phase 9 相关内容 | **否** |
+| Excel Writer / Reader 基础设施 | 是（仅本缺陷所需范围） |
+| 既有 Excel 相关测试文件 | 是（仅 `test_phase8r1w_writer_structure.py` 的前缀测试夹具，及新增 R2 文件） |
+
+本任务不涉及中央公共 Contract（无 Frozen Contract 语义变化）；
+与 `platform-lock.json` 锁定的 Architecture 2.1 / Numeric Contract v1 无冲突。
+
+## R2.8 状态
+
+```text
+Phase 8 R2 implementation = EXECUTION_COMPLETE
+READY_FOR_REACCEPTANCE
+```
+
+**不自宣 `PHASE_8_PASS`。不合并 PR。不进入 Phase 9。**
+本轮**未提交、未推送**：工作区改动留待 Owner 复核、冻结并自行提交/推送/更新 PR#16。
+形成本报告后**不再追加 commit**。

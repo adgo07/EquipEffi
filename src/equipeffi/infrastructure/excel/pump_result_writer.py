@@ -221,17 +221,9 @@ def _escape(text: str) -> str:
 
 def _cell_xml(reference: str, style: str | None,
               payload: tuple[str, str] | None) -> str:
-    style_attr = f' s="{style}"' if style else ""
-    if payload is None:
-        return f'<c r="{reference}"{style_attr}/>'
-    kind, text = payload
-    if kind == "n":
-        return f'<c r="{reference}"{style_attr}><v>{text}</v></c>'
-    if text == "":
-        return f'<c r="{reference}"{style_attr}/>'
-    # 内联字符串：不改动 sharedStrings，因此不影响任何其他单元格。
-    return (f'<c r="{reference}"{style_attr} t="inlineStr">'
-            f'<is><t xml:space="preserve">{_escape(text)}</t></is></c>')
+    """无前缀（默认命名空间）单元格元素。"""
+
+    return _cell_element_xml(reference, style, payload, "")
 
 
 def _column_number(letter: str) -> int:
@@ -303,13 +295,278 @@ def _find_tag_end(text: str, start: int) -> int:
     return -1
 
 
+_XMLNS_RE = re.compile(r"xmlns:([A-Za-z_][\w.-]*)\s*=\s*\"([^\"]*)\"")
+_XMLNS_DEFAULT_RE = re.compile(r"xmlns\s*=")
+
+#: SpreadsheetML 主命名空间（OOXML 工作表的正式命名空间）。
+_MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+#: 根元素上的**默认**命名空间声明（`xmlns="…"`，无前缀）。
+_DEFAULT_XMLNS_RE = re.compile(r"\sxmlns\s*=\s*\"[^\"]*\"")
+
+
+def _xml_namespaces(text: str) -> dict[str, str]:
+    """工作表**根元素**上声明的 ``前缀 -> 命名空间 URI`` 映射。"""
+
+    start = text.find("<")
+    while 0 <= start < len(text) and text[start:start + 2] in ("<?", "<!"):
+        end = _find_tag_end(text, start)
+        if end == -1:
+            return {}
+        start = text.find("<", end + 1)
+    if start == -1:
+        return {}
+    end = _find_tag_end(text, start)
+    if end == -1:
+        return {}
+    return {name: uri for name, uri in _XMLNS_RE.findall(text[start:end])}
+
+
+def _root_tag_bounds(xml: str) -> tuple[int, int]:
+    """工作表根元素开标记的 ``(起点, '>' 下标)``；找不到返回 ``(-1, -1)``。"""
+
+    position = xml.find("<")
+    while 0 <= position < len(xml) and xml[position:position + 2] in ("<?", "<!"):
+        end = _find_tag_end(xml, position)
+        if end == -1:
+            return -1, -1
+        position = xml.find("<", end + 1)
+    if position == -1:
+        return -1, -1
+    end = _find_tag_end(xml, position)
+    return (position, end) if end != -1 else (-1, -1)
+
+
+def _has_default_namespace(xml: str) -> bool:
+    """根元素是否已声明默认命名空间（`xmlns="…"`，无前缀）。"""
+
+    start, end = _root_tag_bounds(xml)
+    if start == -1:
+        return False
+    return _DEFAULT_XMLNS_RE.search(xml[start:end]) is not None
+
+
+def _main_namespace_prefixes(text: str) -> list[str]:
+    """工作表根元素上**所有**绑定到 SpreadsheetML 主命名空间的前缀。
+
+    同一张工作表可能混用多个前缀（`<x:c>` 与 `<ss:c>` 并存），因此这里返回
+    全部命中项，而不是"第一个"。
+    """
+
+    start = text.find("<")
+    while 0 <= start < len(text) and text[start:start + 2] in ("<?", "<!"):
+        end = _find_tag_end(text, start)
+        if end == -1:
+            return []
+        start = text.find("<", end + 1)
+    if start == -1:
+        return []
+    end = _find_tag_end(text, start)
+    if end == -1:
+        return []
+    root_tag = text[start:end]
+    return [prefix for prefix, uri in _XMLNS_RE.findall(root_tag)
+            if uri == _MAIN_NS]
+
+
+def _strip_main_namespace_prefix(xml: str, prefix: str) -> str:
+    """把绑定到主命名空间的前缀 ``prefix`` 写回**默认命名空间**形式。
+
+    为什么必须做这一步：大量现有 OOXML 读取器（含本仓测试所用的 `openpyxl`）
+    只按**字面**无前缀标签匹配 `c` / `v` / `row`，对 `<x:c><x:v>…</x:v></x:c>`
+    会静默丢掉单元格**值**。输入工作簿使用前缀写法时，若结果工作簿原样保留
+    前缀，用户用 Excel/其它工具打开就会"结果消失"，因此结果 Writer 在产出前
+    把**主命名空间**的元素统一写成默认命名空间形式。
+
+    只改两件事：
+
+    ```text
+    1. 元素**限定名上的前缀**   <x:c  ->  <c   /  </x:row>  ->  </row>
+    2. 该前缀自己的声明          xmlns:x="…/main"  ->  xmlns="…/main"
+    ```
+
+    第 2 步是**必须**的：只声明了 `xmlns:x` 的工作表本来就没有默认命名空间，
+    若只删声明不补默认绑定，元素就会落进"无命名空间"，文件对 OOXML 读取器
+    整体失效（属性、属性顺序、文本、其它命名空间 `r:` / `mc:` / `x14ac:` 等
+    全部逐字节保留）。若工作表**已经**有默认命名空间声明，则该前缀声明是
+    多余的，直接删除——绝不能产生第二个 `xmlns` 属性（那是非法 XML）；
+    若同名前缀**已经**绑定到别的命名空间（例如 `ss` 已被关系命名空间占用），
+    则**保留**原声明不动，只改元素名。最终整张工作表由 `_assert_well_formed`
+    机械复核为良构。
+    """
+
+    if not prefix:
+        return xml
+    declaration_re = re.compile(
+        r"(?P<head>\s+xmlns):" + re.escape(prefix)
+        + r"(?P<tail>\s*=\s*\")(?P<uri>[^\"<>]*)(?P<quote>\")")
+
+    edits: list[tuple[int, int, str]] = []
+    # 元素名位置由**结构扫描**给出（含根元素，且不会碰属性里的 `x:foo`）。
+    for position, _tag_end, qualified in _iter_tags(xml):
+        if not qualified.startswith(f"{prefix}:"):
+            continue
+        name_start = position + 1
+        if xml[name_start:name_start + 1] == "/":
+            name_start += 1
+        name_end = name_start + len(prefix)
+        # 前缀后必须紧跟 `:` 才是"前缀 + 局部名"（`x` vs `xylophone` 的区分），
+        # 删除范围包含这个 `:`——留下裸冒号会立刻变成非法 XML。
+        if xml[name_end:name_end + 1] != ":":
+            continue
+        edits.append((name_start, name_end + 1, ""))
+    declaration = declaration_re.search(xml)
+    if declaration is not None:
+        if declaration.group("uri") != _MAIN_NS:
+            # 同名前缀属于**别的**命名空间（例如关系命名空间）：元素名归一后
+            # 该声明可能仍被别处引用，因此保留声明，只把元素写成默认形式。
+            pass
+        elif _has_default_namespace(xml):
+            # 已有默认命名空间：该前缀声明是多余的，直接删除（否则重复属性）。
+            edits.append((declaration.start(), declaration.end(), ""))
+        else:
+            edits.append((declaration.start(), declaration.end(),
+                          f'{declaration.group("head")}'
+                          f'{declaration.group("tail")}'
+                          f'{declaration.group("uri")}'
+                          f'{declaration.group("quote")}'))
+
+    if not edits:
+        return xml
+    pieces: list[str] = []
+    cursor = 0
+    for start, end, replacement in sorted(edits):
+        pieces.append(xml[cursor:start])
+        pieces.append(replacement)
+        cursor = end
+    pieces.append(xml[cursor:])
+    return "".join(pieces)
+
+
+
+def _default_prefix_from_root(text: str) -> str:
+    """工作表根元素的**默认元素前缀**（`<x:worksheet ...>` → `"x"`；无前缀 → `""`）。
+
+    新插入的元素必须与该工作表既有的前缀风格一致：只声明了 `xmlns:prefix`
+    的工作表里，无前缀元素**不属于** SpreadsheetML 命名空间，会是非法 OOXML。
+    """
+
+    start = text.find("<")
+    while 0 <= start < len(text) and text[start:start + 2] in ("<?", "<!"):
+        end = _find_tag_end(text, start)
+        if end == -1:
+            return ""
+        start = text.find("<", end + 1)
+    if start == -1:
+        return ""
+    end = _find_tag_end(text, start)
+    if end == -1:
+        return ""
+    element = _element_name(text[start:end])
+    return element.split(":", 1)[0] if ":" in element else ""
+
+
+def _iter_tags(xml: str, start: int = 0, end: int | None = None):
+    """逐个产出标记的 ``(标记起点, 标记终点, 元素名)``（**跳过**注释与处理指令）。
+
+    这是取代 ``find("<c")`` / ``find("<row")`` 的基础：元素身份由**限定名**
+    决定，绝不靠字符串前缀匹配。
+    """
+
+    if end is None:
+        end = len(xml)
+    index = start
+    while index < end:
+        position = xml.find("<", index)
+        if position == -1 or position >= end:
+            break
+        if xml[position:position + 4] == "<!--":
+            comment_end = xml.find("-->", position + 4)
+            index = end if comment_end == -1 else comment_end + 3
+            continue
+        if xml[position:position + 9] == "<![CDATA[":
+            cdata_end = xml.find("]]>", position + 9)
+            index = end if cdata_end == -1 else cdata_end + 3
+            continue
+        if xml[position + 1:position + 2] in ("?", "!"):
+            tag_end = _find_tag_end(xml, position)
+            if tag_end == -1:
+                break
+            index = tag_end + 1
+            continue
+        tag_end = _find_tag_end(xml, position)
+        if tag_end == -1:
+            break
+        yield position, tag_end, _element_name(xml[position:tag_end])
+        index = tag_end + 1
+
+
+def _element_name(raw_tag: str) -> str:
+    """从 `<x:c r="U4"/>` / `</c>` 取**限定名**（`x:c` / `c`）。"""
+
+    text = raw_tag[1:]
+    if text[:1] == "/":
+        text = text[1:]
+    return text.split(None, 1)[0].rstrip("/") if text.split(None, 1) else ""
+
+
+def _close_tag(qualified: str) -> str:
+    """该元素对应的**精确**结束标记：`x:c` → `</x:c>`（不是硬编码的 `</c>`）。"""
+
+    return f"</{qualified}>"
+
+
+def _element_extent(xml: str, position: int, tag_end: int, limit: int) -> int:
+    """返回以 ``position`` 为起点、``tag_end`` 为开标记 `>` 的元素**结束位置**。
+
+    单元格元素可以**含子元素**（`<c><f>..</f><v>..</v></c>`、
+    `<c t="inlineStr"><is><t>..</t></is></c>`），因此不能简单地找第一个 `</c>`：
+    那会停在子元素之后、把外层单元格的区间截断。这里用**嵌套深度**配对开/闭标记，
+    并且只在深度归零时接受结束标记。
+    """
+
+    if xml[tag_end - 1] == "/":
+        return tag_end + 1
+    depth = 1
+    index = tag_end + 1
+    while index < limit:
+        marker = xml.find("<", index)
+        if marker == -1 or marker >= limit:
+            break
+        marker_end = _find_tag_end(xml, marker)
+        if marker_end == -1:
+            break
+        if xml[marker:marker + 4] == "<!--":
+            comment_end = xml.find("-->", marker + 4)
+            index = limit if comment_end == -1 else comment_end + 3
+            continue
+        if xml[marker:marker + 9] == "<![CDATA[":
+            cdata_end = xml.find("]]>", marker + 9)
+            index = limit if cdata_end == -1 else cdata_end + 3
+            continue
+        if xml[marker + 1:marker + 2] == "!":
+            index = marker_end + 1
+            continue
+        closing = xml[marker + 1:marker + 2] == "/"
+        if closing:
+            depth -= 1
+            if depth == 0:
+                return marker_end + 1
+        elif xml[marker_end - 1] != "/":
+            depth += 1
+        index = marker_end + 1
+    return -1
+
+
 @dataclass(frozen=True)
 class _CellSpan:
-    """一个 `<c>` 元素在行片段中的位置与属性。"""
+    """一个单元格元素在工作表/行片段中的位置、限定名与属性。"""
 
     start: int
     end: int
+    qualified: str
     attrs: dict[str, str]
+    #: 该元素自带的 `xmlns` / `xmlns:*` 声明原文（就地改写时必须原样保留）。
+    namespaces: str = ""
 
     @property
     def reference(self) -> str:
@@ -319,71 +576,151 @@ class _CellSpan:
     def style(self) -> str | None:
         return self.attrs.get("s")
 
+    @property
+    def prefix(self) -> str:
+        return _prefix_of(self.qualified)
 
-def _scan_cells(row_xml: str) -> list[_CellSpan]:
-    """扫描行片段中的所有 `<c>` 元素（顺序无关、可识别自闭合与带内容）。"""
+
+def _prefix_of(qualified: str) -> str:
+    """限定名 → 命名空间前缀（`x:c` → `x`；`c` → `""`）。"""
+
+    return qualified.split(":", 1)[0] if ":" in qualified else ""
+
+
+def _scan_cells(xml: str, start: int = 0, end: int | None = None) -> list[_CellSpan]:
+    """扫描范围内的所有**单元格**元素——按 local-name，而非字符串前缀。
+
+    命名空间前缀是**载体细节**，以下四者必须是**同一个** SpreadsheetML 单元格：
+
+    ```text
+    <c r="U4">      <x:c r="U4">      <ss:c r="U4">      <p1:c r="U4">
+    ```
+
+    因此这里：解析开标记的限定名 → 取 local-name → **仅当 local-name == "c"**
+    才当成单元格；结束标记必须匹配开标记的**实际限定名**（`</x:c>`）。
+    属性顺序无关；自闭合与带内容一视同仁；`<cols>` / `<col>` / `<customFilter>`
+    之类 local-name 不是 `c` 的元素一律不会误判。
+    """
 
     cells: list[_CellSpan] = []
-    index = 0
-    while True:
-        start = row_xml.find("<c", index)
-        if start == -1:
-            break
-        after = row_xml[start + 2:start + 3]
-        if after and (after.isalnum() or after in "_:.-"):
-            # `<c` 其实是 `<col`/`<cols` 之类的前缀误匹配，跳过。
-            index = start + 2
+    limit = len(xml) if end is None else end
+    for position, tag_end, qualified in _iter_tags(xml, start, end):
+        if xml[position + 1:position + 2] == "/":
+            continue    # 结束标记不是元素起点
+        if _local_name(qualified) != "c":
             continue
-        tag_end = _find_tag_end(row_xml, start)
-        if tag_end == -1:
-            break
-        if row_xml[tag_end - 1] == "/":
-            end = tag_end + 1
-        else:
-            close = row_xml.find("</c>", tag_end)
-            end = len(row_xml) if close == -1 else close + 4
-        cells.append(_CellSpan(start, end, _parse_attrs(row_xml[start:tag_end])))
-        index = end
+        stop = _element_extent(xml, position, tag_end, limit)
+        if stop == -1:
+            raise ResultWorkbookWriteError(
+                f"工作表 XML 结构无效：<{qualified}> 缺少匹配的结束标记 "
+                f"</{qualified}>")
+        cells.append(_CellSpan(position, stop, qualified,
+                               _parse_attrs(xml[position:tag_end]),
+                               _namespace_declarations(xml, position, tag_end)))
     return cells
 
 
 def _scan_rows(xml: str) -> list[tuple[int, int, int]]:
-    """扫描 sheetData 中的所有 `<row>`：返回 ``(start, end, row_number)``。
+    """扫描 sheetData 中的所有**行**元素：返回 ``(start, end, row_number)``。
 
-    与 `_scan_cells` 同一策略：**不假设属性顺序**（`r` 可以在任意位置）。
+    与 `_scan_cells` 同一策略：local-name == "row"，结束标记按该元素实际的
+    限定名匹配（`</x:row>` 对 `<x:row>`），**不假设前缀，也不假设属性顺序**。
     """
 
     rows: list[tuple[int, int, int]] = []
-    index = 0
-    while True:
-        start = xml.find("<row", index)
-        if start == -1:
-            break
-        after = xml[start + 4:start + 5]
-        if after and (after.isalnum() or after in "_:.-"):
-            index = start + 4
+    limit = len(xml)
+    for position, tag_end, qualified in _iter_tags(xml):
+        if xml[position + 1:position + 2] == "/":
+            continue    # 结束标记不是元素起点
+        if _local_name(qualified) != "row":
             continue
-        tag_end = _find_tag_end(xml, start)
-        if tag_end == -1:
-            break
-        attrs = _parse_attrs(xml[start:tag_end])
+        attrs = _parse_attrs(xml[position:tag_end])
         row_number = attrs.get("r")
-        if row_xml_is_self_closing(xml, tag_end):
-            end = tag_end + 1
-        else:
-            close = xml.find("</row>", tag_end)
-            end = len(xml) if close == -1 else close + 6
-        if row_number is not None:
-            try:
-                rows.append((start, end, int(row_number)))
-            except ValueError:
-                pass
-        index = end
+        if row_number is None:
+            continue
+        stop = _element_extent(xml, position, tag_end, limit)
+        if stop == -1:
+            raise ResultWorkbookWriteError(
+                f"工作表 XML 结构无效：<{qualified}> 缺少匹配的结束标记 "
+                f"</{qualified}>")
+        try:
+            rows.append((position, stop, int(row_number)))
+        except ValueError:
+            continue
     return rows
 
 
 def row_xml_is_self_closing(xml: str, tag_end: int) -> bool:
     return xml[tag_end - 1] == "/"
+
+
+def _reference_counts(cells) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for cell in cells:
+        if cell.reference:
+            counts[cell.reference] = counts.get(cell.reference, 0) + 1
+    return counts
+
+
+def _assert_unique_references(xml: str) -> None:
+    """**结构后置条件**：整张工作表的单元格坐标必须唯一。
+
+    在把结果写进结果 Workbook **之前**执行；一旦发现任何非空坐标出现多于一次，
+    就硬失败（`ResultWorkbookWriteError`）：不产出"成功"的结果文件、不保存
+    "成功"的 `batch_record`。这样即使将来扫描/插入逻辑再次退化，重复坐标的
+    工作簿也**不可能**以成功形式交付给用户。
+    """
+
+    counts = _reference_counts(_scan_cells(xml))
+    duplicates = sorted(ref for ref, count in counts.items() if count > 1)
+    if duplicates:
+        preview = "、".join(duplicates[:10])
+        more = "" if len(duplicates) <= 10 else f" 等 {len(duplicates)} 个"
+        raise ResultWorkbookWriteError(
+            f"结果写回结构校验失败：「{PUMP_SHEET}」Sheet 出现重复单元格坐标 "
+            f"{preview}{more}；拒绝产出结构无效的结果工作簿")
+
+
+def _assert_well_formed(xml: str) -> None:
+    """后置条件：打补丁后的整张工作表必须仍是**良构 XML**。
+
+    补丁是原生字符串操作，因此这里用 XML 解析器独立复核一次：一旦结构被破坏
+    （标签不配对、前缀未声明等），宁可硬失败，也不写出打不开的工作簿。
+    """
+
+    from xml.etree import ElementTree
+
+    try:
+        ElementTree.fromstring(xml)
+    except ElementTree.ParseError as error:
+        raise ResultWorkbookWriteError(
+            f"结果写回结构校验失败：「{PUMP_SHEET}」Sheet 补丁后不是良构 XML"
+            f"（{error}）；拒绝产出无法打开的结果工作簿") from error
+
+
+def _insert_default_namespace(xml: str) -> str:
+    """确保根元素声明 ``xmlns="…/main"``（前缀归一后元素必须仍属于主命名空间）。"""
+
+    start, end = _root_tag_bounds(xml)
+    if start == -1:
+        return xml
+    root_tag = xml[start:end]
+    # 已经有默认命名空间声明（无论绑到哪个 URI）：绝不追加第二个 `xmlns`
+    # 属性——那是非法 XML。
+    if _DEFAULT_XMLNS_RE.search(root_tag) is not None:
+        return xml
+    if _XMLNS_RE.search(root_tag) is None:
+        # 根元素没有任何前缀声明：无法安全补默认命名空间（用错了会改变语义）。
+        return xml
+    return xml[:start + 1] + f'xmlns="{_MAIN_NS}" ' + xml[start + 1:]
+
+
+def _normalise_main_namespace(xml: str) -> str:
+    """把工作表的主命名空间元素统一写成默认命名空间形式（可被普通读取器读）。"""
+
+    for prefix in _main_namespace_prefixes(xml):
+        xml = _strip_main_namespace_prefix(xml, prefix)
+    return _insert_default_namespace(xml)
 
 
 def _row_default_style(cells: list[_CellSpan]) -> str | None:
@@ -397,27 +734,51 @@ def _row_default_style(cells: list[_CellSpan]) -> str | None:
 
 def _patch_row(row_xml: str, row_number: int,
                payloads: dict[str, tuple[str, str] | None]) -> str:
-    """把结果列的 payload 写进这一行（顺序无关、不产生重复坐标）。"""
+    """把结果列的 payload 写进这一行（**前缀无关**、顺序无关、不产生重复坐标）。
+
+    目标坐标语义（Owner Phase 8 R2 §四）：
+
+    ```text
+    已有 0 个 -> 按既有逻辑插入 1 个
+    已有 1 个 -> **就地更新**该单元格（带任何合法前缀都能识别）
+    已有 >1 个 -> 输入本身已经歧义 -> fail closed（不猜哪个才是真的）
+    ```
+    """
 
     cells = _scan_cells(row_xml)
     fallback_style = _row_default_style(cells)
-    by_reference = {cell.reference: cell for cell in cells if cell.reference}
+    counts = _reference_counts(cells)
 
-    # 输入本身有重复坐标时无法保证结果正确 -> 硬失败（不猜、不掩盖）。
-    if len(by_reference) != len([c for c in cells if c.reference]):
+    # 本行出现重复坐标：输入已歧义 -> 硬失败（不猜、不掩盖）。
+    duplicated = sorted(ref for ref, count in counts.items() if count > 1)
+    if duplicated:
         raise ResultWorkbookWriteError(
-            f"输入工作表第 {row_number} 行存在重复单元格坐标，拒绝写回")
+            f"输入工作表第 {row_number} 行存在重复单元格坐标"
+            f"（{'、'.join(duplicated[:10])}），无法确定应更新哪一个；拒绝写回")
+
+    by_reference = {cell.reference: cell for cell in cells if cell.reference}
+    opening_end = _find_tag_end(row_xml, 0)
+    if opening_end == -1:
+        raise ResultWorkbookWriteError(
+            f"结果写回失败：第 {row_number} 行的 XML 结构无效（标记未闭合）")
+    row_element = _element_name(row_xml[:opening_end])
+    prefix = _row_prefix(_parse_attrs(row_xml[:opening_end]), row_element)
 
     edits: list[tuple[int, int, str]] = []
     for column in sorted(payloads, key=_column_number):
         reference = f"{column}{row_number}"
         existing = by_reference.get(reference)
         if existing is not None:
+            # 就地更新：保留原有样式与**原有命名空间前缀**，绝不新增第二个坐标。
             style = existing.style or fallback_style
             edits.append((existing.start, existing.end,
-                          _cell_xml(reference, style, payloads[column])))
+                          _cell_element_xml(
+                              reference, style, payloads[column],
+                              _prefix_of(existing.qualified),
+                              existing.namespaces)))
     # 从后往前替换，保证前面的偏移仍然有效。
-    for start, end, replacement in sorted(edits, key=lambda item: item[0], reverse=True):
+    for start, end, replacement in sorted(edits, key=lambda item: item[0],
+                                          reverse=True):
         row_xml = row_xml[:start] + replacement + row_xml[end:]
 
     # 补齐该行**不存在**的结果 cell（按列序插入到正确位置）。
@@ -425,44 +786,127 @@ def _patch_row(row_xml: str, row_number: int,
                if f"{column}{row_number}" not in by_reference]
     if missing:
         row_xml = _insert_missing_cells(row_xml, row_number, missing,
-                                        payloads, fallback_style)
+                                        payloads, fallback_style, prefix)
 
     # 自校验：目标坐标必须恰好各出现一次。
-    final_cells = _scan_cells(row_xml)
-    counts: dict[str, int] = {}
-    for cell in final_cells:
-        if cell.reference:
-            counts[cell.reference] = counts.get(cell.reference, 0) + 1
+    final_counts = _reference_counts(_scan_cells(row_xml))
     for column in payloads:
         reference = f"{column}{row_number}"
-        if counts.get(reference, 0) != 1:
+        if final_counts.get(reference, 0) != 1:
             raise ResultWorkbookWriteError(
-                f"结果写回自校验失败：{reference} 出现 {counts.get(reference, 0)} 次"
-                "（必须恰好 1 次）")
+                f"结果写回自校验失败：{reference} 出现 "
+                f"{final_counts.get(reference, 0)} 次（必须恰好 1 次）")
     return row_xml
+
+
+def _namespace_declarations(xml: str, start: int, tag_end: int) -> str:
+    """取该元素开标记里的 `xmlns` / `xmlns:*` 声明（逐字节保留）。
+
+    就地改写单元格时**必须**连同它自带的命名空间声明一起保留：原声明是载体
+    事实，重新合成可能丢掉它。
+    """
+
+    declarations: list[str] = []
+    for match in re.finditer(r'\s+xmlns(?::[A-Za-z_][\w.\-]*)?\s*=\s*"[^"]*"',
+                             xml[start:tag_end]):
+        declarations.append(match.group(0))
+    return "".join(declarations)
+
+
+def _style_attribute(style: str | None) -> str:
+    return f' s="{style}"' if style else ""
+
+
+def _cell_element_xml(reference: str, style: str | None,
+                      payload: tuple[str, str] | None, prefix: str,
+                      declarations: str = "") -> str:
+    """按给定**命名空间前缀**（可为空）生成单元格元素。"""
+
+    name = f"{prefix}:c" if prefix else "c"
+    style_attr = _style_attribute(style)
+    if payload is None:
+        return f'<{name} r="{reference}"{style_attr}{declarations}/>'
+    kind, text = payload
+    if kind == "n":
+        return (f'<{name} r="{reference}"{style_attr}{declarations}>'
+                f"<v>{text}</v></{name}>")
+    if text == "":
+        return f'<{name} r="{reference}"{style_attr}{declarations}/>'
+    # 内联字符串：不改动 sharedStrings，因此不影响任何其他单元格。
+    return (f'<{name} r="{reference}"{style_attr}{declarations} '
+            f't="inlineStr"><is><t xml:space="preserve">'
+            f"{_escape(text)}</t></is></{name}>")
+
+
+def _row_prefix(row_attrs: dict[str, str], row_element: str) -> str:
+    """该行**新插入**单元格应使用的命名空间前缀。
+
+    优先沿用该行元素自身的前缀（`<x:row r="4">` → `x`）；否则看该行是否声明了
+    前缀化的 `xmlns:*`；都没有就用无前缀形式（默认命名空间工作表）。
+    """
+
+    row_prefix = _prefix_of(row_element)
+    if row_prefix:
+        return row_prefix
+    for key in row_attrs:
+        if key.startswith("xmlns:"):
+            return key.split(":", 1)[1]
+    return ""
 
 
 def _insert_missing_cells(row_xml: str, row_number: int, missing: list[str],
                           payloads: dict[str, tuple[str, str] | None],
-                          fallback_style: str | None) -> str:
-    """把不存在的结果 cell 按**列序**插入，避免打乱既有列顺序。"""
+                          fallback_style: str | None,
+                          prefix: str) -> str:
+    """把不存在的结果 cell 按**列序**插入，避免打乱既有列顺序。
+
+    行结束位置按该行元素**实际的限定名**定位（`</x:row>` 对 `<x:row>`），
+    绝不 rfind 硬编码的 `</row>`。
+    """
+
+    open_end = _find_tag_end(row_xml, 0)
+    if open_end == -1:
+        raise ResultWorkbookWriteError(
+            f"结果写回失败：第 {row_number} 行的 XML 结构无效（标记未闭合）")
+    qualified = _element_name(row_xml[:open_end])
+    declarations = _namespace_declarations(row_xml, 0, open_end - 1)
+    if row_xml[open_end - 1] == "/":
+        # 自闭合空行 `<x:row r="4"/>` -> 显式展开成开/闭标记对再插入。
+        body_start = body_end = open_end + 1
+        opening = (row_xml[:open_end - 1].rstrip()
+                   + f"{declarations}>")
+        closing = f"</{qualified}>"
+        row_xml = opening + closing + row_xml[body_start:]
+        body_start = len(opening)
+        body_end = body_start
+        open_end = len(opening) - 1
+    else:
+        close = row_xml.find(_close_tag(qualified), open_end)
+        if close == -1:
+            raise ResultWorkbookWriteError(
+                f"结果写回失败：第 {row_number} 行缺少匹配的结束标记 "
+                f"{_close_tag(qualified)}")
+        body_start = open_end + 1
+        body_end = close
 
     for column in sorted(missing, key=_column_number):
         reference = f"{column}{row_number}"
         target = _column_number(column)
-        cells = _scan_cells(row_xml)
-        insertion = row_xml.rfind("</row>")
-        if insertion == -1:
-            insertion = len(row_xml)
-        for cell in cells:
+        body = row_xml[body_start:body_end]
+        insertion = body_end
+        for cell in _scan_cells(body):
             letter = re.match(r"([A-Z]+)", cell.reference)
             if letter and _column_number(letter.group(1)) > target:
-                insertion = cell.start
+                insertion = body_start + cell.start
                 break
         row_xml = (row_xml[:insertion]
-                   + _cell_xml(reference, fallback_style, payloads[column])
+                   + _cell_element_xml(reference, fallback_style,
+                                       payloads[column], prefix, declarations)
                    + row_xml[insertion:])
+        # 插入后重新定位行内容区间（结束标记整体后移）。
+        body_end = row_xml.find(_close_tag(qualified), open_end)
     return row_xml
+
 
 
 def _sheet_xml_paths(archive: ZipFile, sheet_name: str) -> str | None:
@@ -495,15 +939,18 @@ def _sheet_xml_paths(archive: ZipFile, sheet_name: str) -> str | None:
 
 
 def _patch_sheet_xml(xml: str, outcomes: dict[int, BatchRowOutcome]) -> str:
-    """**单遍**扫描并补丁全部目标行。
+    """**单遍**扫描并补丁全部目标行，最后强制整表坐标唯一。
 
     刻意避免"每行一次全串搜索"：那在 10,000 行时是 O(n²)（实测由 78s 恶化到 408s）。
     这里先把所有 `<row>` 位置一次找出，再从后往前替换，
     使每个目标行的补丁都只作用在其**自身**的片段上。
 
-    **行定位不依赖属性顺序**（复审 blocker 1），并且**每个结果行都必须真正
-    被补丁**：任何一行没找到就抛 `ResultWorkbookWriteError`，
-    绝不静默漏写后仍然保存"成功"的批次记录。
+    **行定位不依赖属性顺序，也不依赖命名空间前缀**（local-name == "row"），
+    并且**每个结果行都必须真正被补丁**：任何一行没找到就抛
+    `ResultWorkbookWriteError`，绝不静默漏写后仍然保存"成功"的批次记录。
+
+    返回之前执行**整张工作表**的坐标唯一性后置条件（Owner Phase 8 R2 §三）：
+    任何非空坐标出现多于一次 -> 硬失败，绝不产出结构无效的结果工作簿。
     """
 
     rows = {row_number: (start, end)
@@ -521,19 +968,27 @@ def _patch_sheet_xml(xml: str, outcomes: dict[int, BatchRowOutcome]) -> str:
             "结果写回失败：无法在「离心泵」Sheet 中定位以下数据行 "
             f"{unresolved[:10]}（共 {len(unresolved)} 行）；"
             "拒绝保存部分写回的结果工作簿")
-    if not targets:
-        return xml
 
-    pieces: list[str] = []
-    cursor = len(xml)
-    for start, end, row_number in reversed(targets):
-        pieces.append(xml[end:cursor])
-        pieces.append(_patch_row(xml[start:end], row_number,
-                                 cell_payloads(outcomes[row_number])))
-        cursor = start
-    pieces.append(xml[:cursor])
-    pieces.reverse()
-    return "".join(pieces)
+    if targets:
+        pieces: list[str] = []
+        cursor = len(xml)
+        for start, end, row_number in reversed(targets):
+            pieces.append(xml[end:cursor])
+            pieces.append(_patch_row(xml[start:end], row_number,
+                                     cell_payloads(outcomes[row_number])))
+            cursor = start
+        pieces.append(xml[:cursor])
+        pieces.reverse()
+        xml = "".join(pieces)
+        # 前缀化工作表：把主命名空间元素写回默认命名空间形式，确保结果工作簿
+        # 能被 Excel / 现有 OOXML 读取器正常读取（它们不认前缀化元素），
+        # 混用多个主命名空间前缀时逐个归一。
+        xml = _normalise_main_namespace(xml)
+
+    # 结构后置条件：写结果 Workbook 之前，整表坐标必须唯一，且整张工作表良构。
+    _assert_unique_references(xml)
+    _assert_well_formed(xml)
+    return xml
 
 
 class PumpResultWorkbookWriter:
@@ -564,11 +1019,19 @@ class PumpResultWorkbookWriter:
         if not sheet_path:
             raise ValueError(f"结果工作簿写入失败：找不到「{PUMP_SHEET}」Sheet")
 
+        # **先全部算完、再落盘**：结构后置条件（坐标唯一 / 良构）必须在目标文件
+        # 创建之前完成。否则一旦写回中途硬失败，磁盘上会留下一个半成品结果文件，
+        # 用户可能把它当成"结果工作簿"。既然后置条件在这里抛
+        # `ResultWorkbookWriteError`，目标路径就必须保持**不存在**。
+        patched: list[bytes | None] = []
+        for info, data in entries:
+            if info.filename == sheet_path:
+                data = _patch_sheet_xml(data.decode("utf-8"),
+                                        outcomes).encode("utf-8")
+            patched.append(data)
+
         with ZipFile(destination, "w", ZIP_DEFLATED) as target:
-            for info, data in entries:
-                if info.filename == sheet_path:
-                    xml = data.decode("utf-8")
-                    data = _patch_sheet_xml(xml, outcomes).encode("utf-8")
+            for (info, _original), data in zip(entries, patched):
                 target.writestr(info, data)
         return destination
 

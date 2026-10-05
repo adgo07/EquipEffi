@@ -104,6 +104,7 @@ jobs:
             'tests.unit.test_phase8b_batch_consistency',
             'tests.unit.test_phase8r1_blockers',
             'tests.unit.test_phase8r1w_writer_structure',
+            'tests.unit.test_phase8r2_prefixed_writer',
             'tests.unit.test_windows_regression_comparator'
           )
           python -m unittest @mods -v
