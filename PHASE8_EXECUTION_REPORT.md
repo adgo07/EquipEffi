@@ -450,3 +450,222 @@ READY_FOR_INDEPENDENT_ACCEPTANCE
 
 报告完成后**不得**再向该分支追加提交。如 Head 改变，必须重新声明新的 final Head、
 重新执行必要测试，并等待该 Head 对应的 CI。
+
+---
+
+# Phase 8 R1 — Independent Acceptance blocker fixes + UI product cleanup
+
+## R1.0 上一轮的验收结论（历史保留，不抹掉）
+
+| 项 | 值 |
+|---|---|
+| 上一轮验收结论 | **`PHASE_8_BLOCKED`** |
+| 被 BLOCKED 的 head | `8cb6eec1845cc26bed43e3dfea2dec1c5880729c` |
+| 独立验收提出的 blocker | 4 项（见下表） |
+
+四项 blocker **全部成立**，其中 B1/B2/B3/B4 都是真实缺陷（B3 与 B4 尤其严重：
+一个改写了用户原始数据，一个把上一批的 provenance 伪造成本批的）。
+
+| # | blocker | 独立验收实测 | 根因 |
+|---|---|---|---|
+| B1 | 结果 Workbook 未写出真实等级限值 | water / chemical 成功结果已有正式 `thresholds`，但 U/V/W 为空 | Writer 只消费 `calculation_trace.derived`，**从未消费 `PumpAnalysisResult.thresholds`** |
+| B2 | `INVALID_INPUT` 污染批次统计 | 负流量 + 数量=7 → 计入已评价 7、input error=0、attention 空、输出「无法判定」 | `_evaluate_row` 把 `INVALID_INPUT` 当成有 `evaluation_status` 的正式评价 |
+| B3 | Writer 改写原始输入精度 | 输入 `100.12345678901234567890123456789012345` → 结果文件 `100.1234567890124` | Writer 用 openpyxl **整体重写**工作簿，而 openpyxl 把数值读成 `float` |
+| B4 | batch provenance 跨批次串用 | 批次 A 合法、批次 B 全非法，B 仍复用了 A 的 Canonical / Numeric 引用 | `self._first_result` 是 **service 实例状态**，跨调用残留 |
+
+## R1.1 逐项处置与证据
+
+### B1 — 结果 Workbook 写出真实等级限值
+
+- 查清契约：`PumpAnalysisResult.thresholds` 的键为
+  `1级能效效率限值（%）` / `2级能效效率限值（%）` / `3级能效效率限值（%）`，
+  与 `calculation_trace.derived` 是**两个不同的来源**。
+- 修复：新增 `THRESHOLD_COLUMNS` 映射，`U/V/W` **只取自正式 thresholds**；
+  **不重算、不从 Excel 旧公式恢复**。
+- 无正式阈值的状态（`OUT_OF_STANDARD_SCOPE` / `INSUFFICIENT_DATA` / 不确定类别）
+  **不写** `U/V/W`，绝不伪造。
+- Excel 显示保留 2 位小数（**仅 Presentation**；等级比较仍用完整精度，
+  未改 Result 原始 Decimal / Record / Golden / Numeric Profile）。
+- 证据：`tests/unit/test_phase8r1_blockers.py::B1ThresholdWritebackTests`
+  （water / chemical 各覆盖成功等级案例；与正式 `evaluate()` 的 thresholds 逐项相等；
+  重新打开结果 Workbook 后仍一致；无阈值状态不伪造）。
+
+实测（修复后，重新打开结果文件读出）：
+
+```text
+water    r4  U=79.786165 V=77.786165 W=72.786165
+chemical r5  U=81.247202 V=79.247202 W=72.247202
+其他类别 r6  U=None      V=None      W=None        （不伪造）
+```
+
+### B2 — `INVALID_INPUT` 不属正式评价结论
+
+- 修复：`INVALID_INPUT` 归为**输入错误**。数量本身合法时：
+  计入 `total_quantity` 与 `input_error_quantity`；
+  **不**计入 `evaluated_quantity`、**不**进入任何正式结论数量；
+  `input_error_row_count +1`；必须出现在"需要关注"列表。
+- 数量本身非法（空白 / 0 / 负数 / 小数）：同样按输入错误计，
+  且**不虚构设备数量**（不进入 `total_quantity`）。
+- 「不确定类别」**不是** `INVALID_INPUT`：仍是正式用户结论「无法评价」，
+  数量进入 `conclusion_quantities` 与未评价计数。
+- 「其他类别」沿用现有正式业务语义，未重新定义。
+- 结果 Workbook 明确写「输入错误」+ 具体说明，**不**写「无法评价 / 无法判定」；
+  `EXECUTION_ERROR` 继续单独显示「执行失败」。
+- 证据：`B2InvalidInputTests`（负流量+数量 7、级数冲突+数量 7、非法数量、
+  不确定类别 quantity>1、混合批次、执行失败单独区分）。
+
+修复后实测：
+
+```text
+负流量 + 数量7 -> 结论=输入错误  input_error=True
+                  total_qty=7  evaluated_qty=0  input_error_rows=1  issues=1
+                  conclusion_quantities={}
+混合批次(6 行) -> total_qty=30  evaluated_qty=27  input_error_rows=2
+                  {2级:20, 1级:5, 无法评价:3, 不适用:2}
+```
+
+### B3 — 结果 Workbook = 原文件副本 + 只写结果区域
+
+- 根因确认：openpyxl 读入数值即变 `float`，写回即降精度。
+- 修复：Writer 改为**先逐字节复制原文件**（其他 17 个 Sheet、图片、验证、
+  保护、样式、sharedStrings、以及**全部用户输入 cell 的原始 XML** 一律原样保留），
+  **再只对「离心泵」Sheet 的 12 个授权结果列做 XML 级定点补丁**；
+  数值用 `<v>`，文本用 `inlineStr`（因此不改动 sharedStrings，不影响其他单元格）。
+- 用户输入列（企业/项目、设备名称、型号、数量、安装位置、类别、流量、扬程、
+  转速、功率、吸入方式、级数、效率、附件/备注）**不会被重新序列化**。
+- 原输入 Workbook 永不覆盖；目标已存在时显式报错。
+- 证据：`B3InputPrecisionTests`（35 位精度保留；只有该 worksheet 部件变化；
+  输入 cell 的 value / number_format / protection / 其他 Sheet 值不变；
+  原文件哈希不变；目标已存在不静默覆盖）。
+
+修复后实测：
+
+```text
+输入 G4  <c r="G4" s="226"><v>100.12345678901234567890123456789012345</v></c>
+输出 G4  <c r="G4" s="226"><v>100.12345678901234567890123456789012345</v></c>   <- 原样
+变化的 zip 部件：['xl/worksheets/sheet4.xml']                                    <- 仅此一个
+```
+
+### B4 — batch provenance 绝不跨批次串用
+
+- 修复：**彻底移除实例级批次状态**。`summary` / `outcomes` / `provenance`
+  全部改为 `evaluate_workbook` 内的局部对象；新增 `_BatchProvenance` 累积器，
+  只记录**当前批次真正执行过正式评价**的 Result。
+- 本批若在进入正式评价前全部失败 → references 保持为**空**
+  （按现有 `batch_record` 结构采取最诚实的表示，**不伪造 Result**）。
+  当前批次的客观信息（app version、模板身份/版本/哈希、standard_code、
+  输入/输出哈希）仍照实写入。
+- 证据：`B4ProvenanceIsolationTests`（同一 service 连续三批 A 合法 /
+  B 全非法 / C 合法但组成不同；"全非法批次 references 必须为空"；
+  以及"service 实例上不得存在批次作用域状态"的机械守卫）。
+
+修复后实测（**同一 service 实例**连续三批）：
+
+```text
+批次1 (合法)   canonical='2026.09.26-t3-08-c2-142.33-v1' numeric='EQUIPEFFI_PUMP_DECIMAL50_V2'
+批次2 (全非法) canonical=''                              numeric=''          <- 未串批
+批次3 (合法)   canonical='2026.09.26-t3-08-c2-142.33-v1' numeric='EQUIPEFFI_PUMP_DECIMAL50_V2'
+```
+
+## R1.2 UI 四组 Owner 修改的实际落点
+
+| 项 | 落点 | 实际改动 | 是否影响业务 |
+|---|---|---|---|
+| **UI01** | `presentation/qt/pages/analysis.py` | QGroupBox 标题「规定点参数（BEP）」→「**设备参数**」；`POINT_FIELDS` 标签改为 `流量 Q` / `扬程 H` / `转速 n` / `泵效率 η`；占位文案改为「请输入设备参数数值」 | **否**：内部字段名 `QBEP`/`HBEP`/`speed`/`efficiency` 与计算契约未改；Canonical / Golden / Application Contract 字段 identity 未改 |
+| **UI02** | 同上 | 删除结果区的「判定说明」「为什么是这个结果」「所选标准」「标准依据」；保留 最终结论/等级、**关键计算参数**、**对应等级效率限值**（限值显示 2 位小数） | **否**：`explanation` / `references` / `provenance` 仍完整保存在 Result 与 Record；等级比较仍用完整精度 |
+| **UI03** | `presentation/qt/pages/records.py` | 详情页**不再创建**「审计信息」折叠面板（保留一个不可见的内部占位控件以兼容既有内部引用） | **否**：Record 数据结构与历史数据未改；provenance / snapshot / hash / numeric profile / matched rule / canonical references 全部继续保存（有专门测试证明） |
+| **UI04** | `presentation/qt/pages/settings.py` | 日志级别下拉显示中文（调试 / 信息 / 警告 / 错误 / 严重错误，按**严重程度递增**排序），内部保存值仍为正式枚举（`itemData`） | **否**：未迁移 settings schema；映射可稳定往返（有重启恢复测试）；未知级别回退显示原值而不是隐藏 |
+
+## R1.3 本轮回归
+
+```text
+tests.unit.test_phase8r1_blockers           34   全通过（本轮新增 blocker/UI 回归）
+tests.unit.test_phase8a_template_reader     33   全通过
+tests.unit.test_phase8b_batch_evaluation    34   全通过
+tests.unit.test_phase8b_batch_consistency   10   全通过（含 29 Approved Golden 回放）
+tests.contract.test_architecture_boundaries 12   全通过
+CI gating 模块列表（同 CI 形态）            406  OK / exit 0（约 349s）
+全量 unittest                     1419 run / 1410 pass / 3 fail / 1 error / 3 skip
+known-regression comparator       gate=PASS
+```
+
+既有失败仍是既有失败（3 项 V4 reader/writer + 1 项 release audit 错误），
+**未更新 known baseline、未删除测试、未降低断言、未 skip 新 blocker**。
+
+**本轮发现的性能问题（自行引入并修掉）**：XML 补丁最初是"每行一次全串正则搜索"，
+在 10,000 行时退化为 O(n²)（78s → 408s）。已改为**单遍扫描 + 已编译正则缓存**，
+10,000 行写回 **2.79s**（线性）。
+
+## R1.4 本轮实际 GitHub CI（final Head）
+
+```text
+Windows Core
+  [ 6] Compileall                                                          success
+  [ 7] Architecture boundaries and metadata contract                       success
+  [ 8] Application and core tests                                          success
+  [ 9] Phase 2/3/4/5/6/7/8 settings, lifecycle, Stage D, Product Shell,
+       analysis flow, Excel batch, R1 blockers, Qt offscreen (gating)       success
+  [10] Full suite known-regression comparator (gating)                     success
+  [12] Package and resource smoke                                          success
+Pump Conformance
+  [12] pump_chemical Stage D support + Phase 6 product shell (gating)      success
+Whitespace check (gating)                                                  success
+Full suite baseline (NON-GATING)                                           success
+```
+
+## R1.5 是否修改了受保护资产
+
+| 资产 | 本轮是否修改 |
+|---|---|
+| Approved Golden（29 条） | **否** |
+| Canonical（`resources/standards/pump.json`） | **否** |
+| Numeric Profile | **否** |
+| pump 公式 / boundary / grade | **否** |
+| migration `001` / `002` | **否**（未触碰） |
+| `batch_record` schema | **否**（本轮未新增迁移） |
+| 正式 V6 模板资产 | **否**（SHA-256 未变） |
+| 其他设备 Sheet 业务结构 | **否** |
+| Presentation 文案（UI01～UI04） | 是（仅显示层） |
+| Excel Reader / Writer 实现 | 是（B1/B3 修复） |
+| 批量评价统计与 provenance | 是（B2/B4 修复） |
+
+## R1.6 交付对象
+
+| 项 | 值 |
+|---|---|
+| Repo | `https://github.com/adgo07/EquipEffi.git` |
+| Base SHA | `79ea075967ace07aa9880369220d8bff9b53d9e8` |
+| Branch | `phase8/gb19762-excel-batch` |
+| PR | **#16** — https://github.com/adgo07/EquipEffi/pull/16（`open`, `merged=false`） |
+| 上一轮 BLOCKED head | `8cb6eec1845cc26bed43e3dfea2dec1c5880729c` |
+| **R1 final Head** | 见 §R1.7 |
+| Base → R1 final Head | 56 files, +6116 / −248 |
+| `8cb6eec` → R1 final Head（本轮 R1 diff） | 11 files, +1236 / −146 |
+
+### `8cb6eec` → R1 final Head 变更文件
+
+```text
+.github/workflows/windows-core.yml
+src/equipeffi/application/services/pump_batch_evaluation_service.py
+src/equipeffi/infrastructure/excel/pump_result_writer.py
+src/equipeffi/presentation/qt/pages/analysis.py
+src/equipeffi/presentation/qt/pages/records.py
+src/equipeffi/presentation/qt/pages/settings.py
+tests/unit/test_phase3_qt_unified.py
+tests/unit/test_phase3_r1_blockers.py
+tests/unit/test_phase6_product_shell.py
+tests/unit/test_phase8b_batch_consistency.py
+tests/unit/test_phase8r1_blockers.py
+```
+
+## R1.7 状态
+
+```text
+Phase 8 R1 implementation = EXECUTION_COMPLETE
+READY_FOR_REACCEPTANCE
+```
+
+**不自宣 `PHASE_8_PASS`。不合并 PR。不进入 Phase 9。**
+
+R1 final Head **= 下一轮独立复验唯一对象**。形成本报告后**不再追加 commit**；
+如 Head 改变，将重新声明 final Head、重新执行受影响测试，并等待该 Head 的 CI。

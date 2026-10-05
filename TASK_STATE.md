@@ -38,6 +38,11 @@ current_task:
     P8-G04: COMPLETE
     P8-G05: COMPLETE
     P8-G06: COMPLETE
+  phase_8_r1:
+    status: EXECUTION_COMPLETE / READY_FOR_REACCEPTANCE
+    blocked_head: 8cb6eec1845cc26bed43e3dfea2dec1c5880729c
+    blockers_closed: [QA-P8-001, QA-P8-002, QA-P8-003, QA-P8-004]
+    ui_simplification: [UI01, UI02, UI03, UI04]
   segments:
     phase_8A: COMPLETE（模板正式化 + 一致性矩阵 + Reader）
     phase_8B: COMPLETE（批量评价 + Writer + batch_record + Qt 闭环）
@@ -46,7 +51,7 @@ current_task:
   formal_template: equipeffi.device-efficiency.V6 (V6-20261005)
   batch_quantity_weighted: true
   golden_excel_replay: 29/29 零漂移
-  next_action: 8A 内部 Gate 通过后继续 8B；等待最终独立验收；do not merge; do not start Phase 9
+  next_action: 等待 Phase 8 R1 独立复验；do not merge; do not start Phase 9
 
 phase_6_closure:
   verdict: PHASE_6_PASS

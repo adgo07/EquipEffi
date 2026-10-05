@@ -338,3 +338,19 @@ Phase 8 正式承接以下与 Excel 批量评价直接相关的条目（**不借
 | `QA-EXCEL-001` | `EXCEL_READER` | **CLOSED（Phase 8A）** | `ooxml_reader._parse_number` 曾把非整数数值 **Decimal → float** 再送进正式评价链，等于把 Numeric Contract 降级。**已修复**：整数返回 `int`、其余保留 `Decimal`，**绝不经过 float**；覆盖整数 / 普通小数 / 35 位长小数 / 科学计数法 / 大整数 / 文本 / 空值。并新增正式 Reader `pump_workbook_reader`，只读正式输入列、行启用为语义式、表头做防御性校验。<br>`disposition`：Phase 8 关闭（测试见 `tests/unit/test_phase8a_template_reader.py`） |
 | `QA-P5-003` | `V4_EXCEL_ADAPTER` | **CLOSED（Phase 8 / 8B 正式 E2E 确认）** | 「Excel 侧存在独立业务算法」问题**已解决**：正式 V6 模板的「离心泵」Sheet 已退出全部可独立产出 GB19762 结果的 Excel 公式（`K`/`L`/`N:X`/`AA`），改由软件批量评价写入；Excel 只做批量输入/输出载体，每行都调用正式 Application 契约。V4 模板降为 `LEGACY`（不再作为正式用户模板，实现保留）。<br>`disposition`：Phase 8 关闭（门禁见 `tools/check_v6_pump_template.py`） |
 | `QA-P6-001` | `LEGACY_TK` | **OPEN（Phase 8 明确不清理）** | legacy Tk 桌面窗口实现保留但不接线。Phase 8 **不**删除该实现，也**不**触碰其表单模型依赖链；`disposition` 保持 Phase 8 之后按需处理。 |
+
+### Phase 8 R1 登记（独立验收 blocker）
+
+被独立验收 `BLOCKED` 的 head 为 `8cb6eec1845cc26bed43e3dfea2dec1c5880729c`。
+四项 blocker 均为真实缺陷，R1 已逐项修复并附机械回归：
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-P8-001` | `EXCEL_RESULT_THRESHOLDS` | **CLOSED（Phase 8 R1）** | 结果 Workbook 的 U/V/W 恒为空：Writer 只消费 `calculation_trace.derived`，而**等级限值在正式 `PumpAnalysisResult.thresholds`**。已新增 `THRESHOLD_COLUMNS` 映射，U/V/W 直接取自正式 thresholds；无正式阈值的状态不写、不伪造。回归：`test_phase8r1_blockers.B1ThresholdWritebackTests` |
+| `QA-P8-002` | `BATCH_STATISTICS` | **CLOSED（Phase 8 R1）** | `INVALID_INPUT` 被当成正式评价：负流量 + 数量=7 时计入 evaluated_quantity=7、input_error_rows=0、attention 为空，并输出「无法判定」。已改为归入**输入错误**：数量合法时计入 total_quantity 与 input_error_quantity，但不计入 evaluated_quantity、不进入任何正式结论数量，且必须出现在需要关注列表。回归：`B2InvalidInputTests` |
+| `QA-P8-003` | `RESULT_WORKBOOK_FIDELITY` | **CLOSED（Phase 8 R1）** | Writer 用 openpyxl 整体重写工作簿，把用户输入精度从 35 位改写成 `100.1234567890124`。已改为**逐字节复制原文件 + 只对结果列做 XML 定点补丁**（数值 `<v>`、文本 inlineStr）。回归：`B3InputPrecisionTests`（含"只有该 worksheet 部件变化"的机械证明） |
+| `QA-P8-004` | `BATCH_PROVENANCE` | **CLOSED（Phase 8 R1）** | `self._first_result` 为实例级状态，导致全非法批次沿用上一批的 Canonical / Numeric 引用。已彻底移除实例级批次状态，改为 `evaluate_workbook` 内局部 `_BatchProvenance`，只记录当前批次真正执行过正式评价的 Result。回归：`B4ProvenanceIsolationTests`（含连续三批与"实例上不得存在批次状态"守卫） |
+
+UI 简化（Owner 决定，非缺陷）：UI01 术语简化 / UI02 结果区删解释与依据 /
+UI03 记录页删「审计信息」展示 / UI04 日志级别中文化。四项均只改 Presentation，
+底层数据、字段 identity 与业务计算契约未变。
