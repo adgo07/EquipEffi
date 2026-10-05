@@ -104,6 +104,28 @@ jobs:
           )
           python -m unittest @mods -v
           exit $LASTEXITCODE
+      # TEMP DIAGNOSTIC (P8): surface comparator output as annotations.
+      - name: DIAGNOSTIC comparator
+        if: always()
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          $out = & python tools/check_windows_regressions.py --output artifacts/diag 2>&1 | Out-String
+          Write-Output "EXITCODE=$LASTEXITCODE"
+          Write-Output $out
+          $out -split "`n" | ForEach-Object {
+            if ($_ -match 'gate|new_failur|new_error|worsened|missing|FAIL|ERROR|fail|error') {
+              Write-Output ('::error title=p8cmp::' + ($_ -replace '%','%25' -replace "`r",''))
+            }
+          }
+          if (Test-Path artifacts/diag/comparison.json) {
+            Write-Output '--- comparison.json ---'
+            Get-Content artifacts/diag/comparison.json -Raw | Write-Output
+            (Get-Content artifacts/diag/comparison.json -Raw) -split "`n" | ForEach-Object {
+              Write-Output ('::error title=p8json::' + ($_ -replace '%','%25' -replace "`r",''))
+            }
+          }
+
       - name: Full suite known-regression comparator (gating)
         run: python tools/check_windows_regressions.py --output artifacts/phase2-regression
 
