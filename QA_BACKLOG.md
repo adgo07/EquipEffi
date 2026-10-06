@@ -369,3 +369,21 @@ UI03 记录页删「审计信息」展示 / UI04 日志级别中文化。四项�
 **教训（已落到实现约定）**：OOXML 元素的属性顺序、命名空间前缀、自闭合形式
 都**不是**契约；任何位置/顺序假设都会在真实 Excel 产物上失败。
 解析必须顺序无关，且"没写成"必须是**硬失败**而不是静默成功。
+
+### Phase 8 R3 登记（OOXML 命名空间保持）
+
+复审对 head `fec8fd0ddbcc64e861e05a6ad204463a6d7fcc0c` 再次给出 `PHASE_8_BLOCKED`，
+本轮 blocker 是 namespace 语义被破坏。
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-P8-007` | `OOXML_DEFAULT_NAMESPACE_DECISION` | **CLOSED（Phase 8 R3）** | `_has_default_namespace()` 只判断"是否存在 `xmlns="…"`"，不判断 URI，于是把「存在任意默认 namespace」当成「已是 SpreadsheetML」。在 `xmlns="别的URI"` + `xmlns:x="MAIN_NS"` 的合法工作表上，Writer 删掉了 `x:` 前缀与 `xmlns:x`，让**全部** SpreadsheetML 元素落进别的命名空间。已改为 `_default_namespace_uri()` 取得真实 URI，并按 A（无默认）/ B（==MAIN）/ C（!=MAIN）三分法决策：**仅 A/B 允许去前缀，C 必须保留**。回归：`test_phase8r3_namespace_preservation` |
+| `QA-P8-008` | `WRITER_CELL_CHILD_NAMESPACE` | **CLOSED（Phase 8 R3）** | `_cell_element_xml` 只给 `c` 加前缀，内容元素 `<v>/<is>/<t>` 未加；在默认命名空间非 MAIN 的工作表里，新插入单元格的**值**会落进别的命名空间。已改为前缀应用到该单元格全部子元素。回归：同上（语义门禁会直接拒绝此类输出） |
+
+**新增最终语义门禁**：`_assert_main_namespace_semantics` 用真正的 namespace-aware
+解析器（`ElementTree` 展开 QName）校验 `worksheet`/`sheetData`/`row`/`c`/`v`
+等核心元素仍属 MAIN_NS。仅"XML 良构"不再算通过；门禁失败 = Writer 硬失败 =
+不产出结果文件、不保存成功 `batch_record`。
+
+**教训**：namespace 正确性不能靠字符串判断（"有没有 xmlns=" 不等于"绑定对不对"），
+必须用能解析 QName 的解析器做最终门禁。

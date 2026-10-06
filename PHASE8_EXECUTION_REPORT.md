@@ -1132,3 +1132,189 @@ READY_FOR_REACCEPTANCE
 **不自宣 `PHASE_8_PASS`。不合并 PR。不进入 Phase 9。**
 本轮**未提交、未推送**：工作区改动留待 Owner 复核、冻结并自行提交/推送/更新 PR#16。
 形成本报告后**不再追加 commit**。
+
+---
+
+# Phase 8 R3 — OOXML 命名空间保持（最终 blocker）
+
+## R3.0 复审结论（历史保留）
+
+| 项 | 值 |
+|---|---|
+| 上一轮验收结论 | **`PHASE_8_BLOCKED`**（第三次） |
+| 被 blocked 的 head | `fec8fd0ddbcc64e861e05a6ad204463a6d7fcc0c` |
+| 本轮 blocker | 合法 worksheet 同时使用 `xmlns="非 SpreadsheetML URI"` 与 `xmlns:x="…/main"`，并以 `<x:row>/<x:c>/<x:v>` 承载 SpreadsheetML 元素时，Writer 错误删除 `x:` 前缀，使这些元素落入**错误的默认命名空间** |
+
+之前三轮 BLOCKED 历史（`8cb6eec` 四项 blocker、`348a199` 两个 Writer 阻断）
+均保留在 §R1 / §R1W，未被覆盖。
+
+## R3.1 根因
+
+`_has_default_namespace()` 只判断「是否存在 `xmlns="…"`」，**没有判断该 URI 是什么**，
+于是把「存在任意默认 namespace」当成「已经是 SpreadsheetML 默认 namespace」。
+
+本地复现（修复前）：
+
+```text
+输入  <x:worksheet xmlns="urn:equipeffi:not-spreadsheetml" xmlns:x="MAIN_NS">
+      <x:sheetData><x:row r="4"><x:c r="U4"><x:v>1</x:v></x:c></x:row></x:sheetData>
+归一后 <worksheet xmlns="urn:equipeffi:not-spreadsheetml">     <- xmlns:x 被删、x: 被去
+      <sheetData><row r="4"><c r="U4"><v>1</v></c></row></sheetData>
+namespace-aware 解析：root.tag = {urn:equipeffi:not-spreadsheetml}worksheet
+                     全部核心元素落入错误命名空间
+```
+
+## R3.2 修复（§二/§三：区分 A/B/C）
+
+- 新增 `_default_namespace_uri(xml) -> None | MAIN_NS | 其它 URI`；
+  namespace 决策一律以它为依据。`_has_default_namespace` 降级为
+  仅用于"不能再追加第二个 `xmlns`"的语法判断，并注明**不得**再用它决定是否删前缀。
+- `_strip_main_namespace_prefix`：仅在**情况 A（无默认 namespace）**或
+  **情况 B（默认 == MAIN_NS）**时把 MAIN_NS 前缀规范化为无前缀；
+  **情况 C（默认 != MAIN_NS）原样返回**，保留 `xmlns:x` 与全部 `x:` 元素前缀。
+- `_insert_default_namespace`：只在情况 A 追加；B 不动；**C 绝不追加**
+  （否则产生第二个 `xmlns` 属性或改绑 MAIN_NS，两者都破坏语义）。
+- 同类缺陷一并修掉：`_cell_element_xml` 原先只给 `c` 加前缀，
+  子元素 `<v>/<is>/<t>` 未加 —— 在情况 C 下新插入单元格的**值**同样会落错命名空间。
+- `_local_name` 现同时支持 `x:row` 与 Clark 记法 `{uri}row`。
+
+## R3.3 最终语义门禁（§六）
+
+新增 `_assert_main_namespace_semantics`：用**真正 namespace-aware 的解析器**
+（`ElementTree` 展开 QName 为 `{namespace}local`）校验
+`worksheet` / `sheetData` / `row` / `c` / `v` 等核心元素仍属于 MAIN_NS。
+
+仅"XML 良构"不再算通过——语法合法而命名空间完全错误的 worksheet 会被明确拒绝。
+门禁在 `_patch_sheet_xml` 内于**坐标唯一性**与**良构**检查之后执行，因此：
+
+```text
+namespace 校验失败 = Writer 硬失败
+                   = 不产出结果文件（目标路径保持不存在）
+                   = 不保存"成功" batch_record（§七）
+```
+
+## R3.4 指定的三项证据
+
+### 证据 1 — `default OTHER_URI + x:MAIN_NS` 真实 fixture 测试
+
+用**保语义前置变换**构造真实合法 fixture（把该 sheet 原有元素显式限定为 `x:`
+并重写根声明），前置条件已断言为合法：
+
+```text
+输入 root  <x:worksheet xmlns="urn:equipeffi:not-spreadsheetml"
+                        xmlns:x="http://schemas.openxmlformats.org/spreadsheetml/2006/main" ...>
+_default_namespace_uri = urn:equipeffi:not-spreadsheetml
+正式 Reader 读取 fixture = 1 行
+```
+
+测试：`test_case_c_other_default_namespace_preserves_main_ns`（核心），
+另覆盖 `test_case_a_no_default_namespace_is_normalised`（A）、
+`test_case_b_default_main_namespace_drops_redundant_prefix`（B）、
+`test_case_c_updates_existing_cell_in_place`（C + 已存在 U4）、
+`test_case_c_duplicate_coordinate_still_fails_closed`（C + 重复坐标 fail closed）。
+
+### 证据 2 — 输出后 MAIN_NS 语义检查
+
+```text
+输出 root  <x:worksheet xmlns="urn:equipeffi:not-spreadsheetml"
+                        xmlns:x="http://schemas.openxmlformats.org/spreadsheetml/2006/main" ...>
+root.tag                      = {http://…/main}worksheet
+root 属于 MAIN_NS             = True
+默认命名空间仍为 OTHER        = True
+xmlns:x="MAIN_NS" 保留        = True
+核心元素落错命名空间           = []          （不得落入 OTHER_URI）
+U4 出现次数                   = 1           （无重复坐标）
+整表坐标唯一                  = True
+```
+
+同时有机械守卫：默认命名空间不是 MAIN_NS 时，输出中**不得**出现裸
+`<row>` / `<c>` / `<v>` / `<sheetData>`；且门禁本身有一条测试证明它**确实会拒绝**
+语法合法但命名空间错误的 worksheet。
+
+### 证据 3 — 正式 Reader reopen 测试
+
+```text
+正式 Reader reopen 结果工作簿 = 1 行
+B4（设备名称）                = 水泵
+结果 X4 = '2级'   U4 = 79.786165   V4 = 77.786165
+```
+
+## R3.5 回归
+
+```text
+tests.unit.test_phase8r3_namespace_preservation   7   全通过（本轮新增）
+R2 前缀 + R1W + R1 blocker + 8B + 8A             127  全通过（R2 规则未被破坏）
+tests.contract.test_architecture_boundaries       12   全通过
+CI gating 模块列表（同 CI 形态）                  439  OK / exit 0
+全量 unittest                    1452 run / 1445 pass / 3 fail / 1 error / 3 skip
+known-regression comparator       gate=PASS
+```
+
+R2 已通过的规则全部继续保持：QName/local-name 扫描前缀无关、
+`<c>`/`<x:c>`/`<ss:c>` 均可识别、existing cell 原位更新、不产生重复坐标、
+duplicate coordinate fail closed、整表坐标唯一性检查、写失败不保存成功
+`batch_record`、写失败不留下假成功结果文件。
+
+既有失败仍是既有失败（3 项 V4 + 1 项 release audit），
+**未更新 known baseline、未删测试、未降断言、未新增 skip**。
+
+## R3.6 本轮实际 GitHub CI（final Head）
+
+```text
+Windows Core             -> success（job 23.7 min；baseline 18.8 min；whitespace 0.2 min）
+  [ 6] Compileall                                                    success
+  [ 7] Architecture boundaries and metadata contract                 success
+  [ 8] Application and core tests                                    success
+  [ 9] Phase 2/3/4/5/6/7/8 … Excel batch, R1 blockers,
+       writer structure, namespace preservation, Qt offscreen        success
+  [10] Full suite known-regression comparator (gating)               success
+  [12] Package and resource smoke                                    success
+Pump Conformance         -> success（1.6 min）
+```
+
+## R3.7 交付对象
+
+| 项 | 值 |
+|---|---|
+| Repo | `https://github.com/adgo07/EquipEffi.git` |
+| Base SHA | `79ea075967ace07aa9880369220d8bff9b53d9e8` |
+| Branch | `phase8/gb19762-excel-batch` |
+| PR | **#16** — https://github.com/adgo07/EquipEffi/pull/16（`open`, `merged=false`） |
+| 三次 BLOCKED head | `8cb6eec…`（四项 blocker）、`348a199…`（两个 Writer 阻断）、`fec8fd0…`（namespace 语义） |
+| **R3 修复提交** | `9f3686770a8dc33dfcdffe73396c2b89b5161ad1`（3 files, +509 / −38） |
+
+### `fec8fd0` → R3 修复提交 变更文件
+
+```text
+.github/workflows/windows-core.yml
+src/equipeffi/infrastructure/excel/pump_result_writer.py
+tests/unit/test_phase8r3_namespace_preservation.py
+```
+
+## R3.8 是否修改了受保护资产
+
+| 资产 | 本轮是否修改 |
+|---|---|
+| pump 公式 / thresholds / boundary / grade | **否** |
+| Golden / Canonical / Numeric | **否** |
+| batch 统计业务语义 | **否** |
+| Qt UI | **否** |
+| V6 模板业务设计 | **否** |
+| migrations / `batch_record` schema | **否** |
+| 其他 Sheet | **否** |
+| Excel Reader / Writer 的**命名空间处理**与结构门禁 | 是（本轮修复范围） |
+
+未重写整个 Excel infrastructure、未切换 xlsx 库、未引入通用 XML Framework。
+
+## R3.9 状态
+
+```text
+Phase 8 R3 implementation = EXECUTION_COMPLETE
+READY_FOR_REACCEPTANCE
+```
+
+**不自宣 `PHASE_8_PASS`。不自行合并。不进入 Phase 9。**
+
+R3 修复提交 `9f3686770a8dc33dfcdffe73396c2b89b5161ad1` 与本报告所在 head
+均为有效复验对象；其后的提交只包含本报告与治理文档同步，**不含代码改动**。
+形成本报告后**不再追加 commit**。
