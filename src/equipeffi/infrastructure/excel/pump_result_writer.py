@@ -308,6 +308,8 @@ def _find_tag_end(text: str, start: int) -> int:
 
 
 _XMLNS_RE = re.compile(r"xmlns:([A-Za-z_][\w.-]*)\s*=\s*\"([^\"]*)\"")
+_XMLNS_DECL_RE = re.compile(
+    r'\s+xmlns(?::([A-Za-z_][\w.-]*))?\s*=\s*"([^"]*)"')
 _XMLNS_DEFAULT_RE = re.compile(r"xmlns\s*=")
 
 #: SpreadsheetML 主命名空间（OOXML 工作表的正式命名空间）。
@@ -430,9 +432,11 @@ def _strip_main_namespace_prefix(xml: str, prefix: str) -> str:
         + r"(?P<tail>\s*=\s*\")(?P<uri>[^\"<>]*)(?P<quote>\")")
 
     edits: list[tuple[int, int, str]] = []
-    # 元素名位置由**结构扫描**给出（含根元素，且不会碰属性里的 `x:foo`）。
-    for position, _tag_end, qualified in _iter_tags(xml):
-        if not qualified.startswith(f"{prefix}:"):
+    # 元素名位置由带 namespace 作用域的结构扫描给出。
+    # 同一个字面前缀可在子树内合法重绑定；只有当前位置实际解析为 MAIN_NS
+    # 的元素才允许去前缀。嵌套 xmlns:x="urn:extension" 下的 x:payload 必须保持。
+    for position, _tag_end, qualified, namespace_uri in _iter_tags_with_namespace(xml):
+        if _prefix_of(qualified) != prefix or namespace_uri != _MAIN_NS:
             continue
         name_start = position + 1
         if xml[name_start:name_start + 1] == "/":
@@ -537,6 +541,41 @@ def _iter_tags(xml: str, start: int = 0, end: int | None = None):
             break
         yield position, tag_end, _element_name(xml[position:tag_end])
         index = tag_end + 1
+
+
+def _iter_tags_with_namespace(xml: str):
+    """逐标记返回其当前位置实际生效的元素命名空间 URI。
+
+    与只看根元素 xmlns:x 不同，这里维护 XML namespace 的词法作用域：
+    子元素可以合法地用 xmlns:x="urn:..." 重新绑定同一个前缀，离开该元素后
+    又恢复父作用域。Writer 的前缀归一化只能改写当前位置实际解析为
+    SpreadsheetML 主命名空间的元素，绝不能按前缀字面值全局替换。
+    """
+
+    scope: dict[str, str] = {}
+    parents: list[dict[str, str]] = []
+    for position, tag_end, qualified in _iter_tags(xml):
+        closing = xml[position + 1:position + 2] == "/"
+        prefix = qualified.split(":", 1)[0] if ":" in qualified else ""
+
+        if closing:
+            yield position, tag_end, qualified, scope.get(prefix)
+            if parents:
+                scope = parents.pop()
+            continue
+
+        parent_scope = scope
+        element_scope = dict(scope)
+        raw_tag = xml[position:tag_end + 1]
+        for declared_prefix, uri in _XMLNS_DECL_RE.findall(raw_tag):
+            element_scope[declared_prefix or ""] = uri
+        scope = element_scope
+        yield position, tag_end, qualified, scope.get(prefix)
+
+        if xml[tag_end - 1] == "/":
+            scope = parent_scope
+        else:
+            parents.append(parent_scope)
 
 
 def _element_name(raw_tag: str) -> str:
@@ -735,6 +774,46 @@ def _assert_well_formed(xml: str) -> None:
         raise ResultWorkbookWriteError(
             f"结果写回结构校验失败：「{PUMP_SHEET}」Sheet 补丁后不是良构 XML"
             f"（{error}）；拒绝产出无法打开的结果工作簿") from error
+
+
+def _expanded_element_qnames(xml: str) -> list[str]:
+    """返回文档序中的 expanded element QName（{uri}local）。"""
+
+    from xml.etree import ElementTree
+
+    try:
+        root = ElementTree.fromstring(xml)
+    except ElementTree.ParseError as error:
+        raise ResultWorkbookWriteError(
+            f"结果写回命名空间校验失败：「{PUMP_SHEET}」Sheet 不是良构 XML"
+            f"（{error}）；拒绝执行命名空间归一化") from error
+    return [element.tag for element in root.iter()]
+
+
+def _assert_namespace_normalisation_preserves_qnames(before: str, after: str) -> None:
+    """前缀归一化只能改变词法前缀，不得改变任何元素的 expanded QName。
+
+    扩展 payload 不一定属于 SpreadsheetML，旧门禁无法发现
+    {urn:extension}payload -> {SpreadsheetML}payload。这里直接比较归一化
+    前后的 namespace-aware QName 序列；任何命名空间漂移都 fail closed。
+    """
+
+    before_names = _expanded_element_qnames(before)
+    after_names = _expanded_element_qnames(after)
+    if before_names == after_names:
+        return
+
+    mismatch = next(
+        (index for index, pair in enumerate(zip(before_names, after_names))
+         if pair[0] != pair[1]),
+        min(len(before_names), len(after_names)),
+    )
+    before_name = before_names[mismatch] if mismatch < len(before_names) else "<missing>"
+    after_name = after_names[mismatch] if mismatch < len(after_names) else "<missing>"
+    raise ResultWorkbookWriteError(
+        "结果写回命名空间校验失败：前缀归一化改变了元素的实际命名空间"
+        f"（位置 {mismatch}: {before_name!r} -> {after_name!r}）；"
+        "拒绝产出会静默改写扩展数据的结果工作簿")
 
 
 def _insert_default_namespace(xml: str) -> str:
@@ -1080,7 +1159,11 @@ def _patch_sheet_xml(xml: str, outcomes: dict[int, BatchRowOutcome]) -> str:
         # 前缀化工作表：把主命名空间元素写回默认命名空间形式，确保结果工作簿
         # 能被 Excel / 现有 OOXML 读取器正常读取（它们不认前缀化元素），
         # 混用多个主命名空间前缀时逐个归一。
-        xml = _normalise_main_namespace(xml)
+        before_normalisation = xml
+        normalised = _normalise_main_namespace(xml)
+        _assert_namespace_normalisation_preserves_qnames(
+            before_normalisation, normalised)
+        xml = normalised
 
     # 结构后置条件：写结果 Workbook 之前，整表坐标必须唯一，且整张工作表良构。
     _assert_unique_references(xml)
