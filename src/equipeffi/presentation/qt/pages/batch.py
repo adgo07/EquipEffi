@@ -70,6 +70,9 @@ class _BatchWorker(QObject):
 class BatchPage(QWidget):
     """Excel 导入 / 批量评价页。"""
 
+    #: 后台线程**真正退出**后发出；主窗口用它完成延迟关闭。
+    background_idle = Signal()
+
     def __init__(self, batch: PumpBatchEvaluationService, navigator=None):
         super().__init__()
         self.batch = batch
@@ -313,6 +316,25 @@ class BatchPage(QWidget):
     def _on_thread_finished(self) -> None:
         self._thread = None
         self._worker = None
+        self.background_idle.emit()
+
+    def has_active_run(self) -> bool:
+        """后台 QThread 是否仍在运行。
+
+        关闭窗口时必须看**线程真实状态**，不能只看 busy：worker 已发 finished
+        但 QThread 尚未退出的窄窗口内，销毁页面仍可能触发
+        "QThread: Destroyed while thread is still running"。
+        """
+
+        thread = self._thread
+        return bool(thread is not None and thread.isRunning())
+
+    def notify_close_deferred(self) -> None:
+        """告知用户：为保证结果/数据库完整性，任务结束后自动关闭。"""
+
+        if self.has_active_run():
+            self.check_label.setText(
+                "批量评价仍在运行。为避免损坏结果，任务结束后软件将自动退出。")
 
     def wait_for_run(self, timeout_ms: int = 120000) -> bool:
         """等待后台批量评价结束（测试用；不改变产品行为）。
