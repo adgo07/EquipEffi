@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import os
 import tempfile
+import threading
 import time
 import unittest
 from datetime import date
@@ -166,6 +167,78 @@ class QtBatchBackgroundTests(unittest.TestCase):
         self.app.processEvents()
         self.assertIsNone(self.page._thread, "线程引用必须释放")
 
+    def test_main_window_close_is_deferred_until_worker_thread_finishes(self):
+        """正式 MainWindow 关闭链不得销毁仍在运行的 QThread。"""
+
+        from equipeffi.application.services.settings_service import SettingsService
+        from equipeffi.presentation.qt.shell import MainWindow
+
+        class MemorySettingsRepository:
+            def __init__(self):
+                self.values = {}
+
+            def get(self, key):
+                return self.values.get(key)
+
+            def set(self, key, value):
+                self.values[key] = value
+
+        settings = SettingsService(MemorySettingsRepository())
+        window = MainWindow(settings, analysis=None, batch=self.batch)
+        window.show()
+        page = window.batch_page
+        page.set_source(self.source)
+        page.target_edit.setText(str(self.root / "close_during_run.xlsx"))
+
+        started = threading.Event()
+        release = threading.Event()
+        original = self.batch.evaluate_workbook
+
+        def slow_evaluate(*args, **kwargs):
+            started.set()
+            if not release.wait(10):
+                raise RuntimeError("test worker release timeout")
+            return original(*args, **kwargs)
+
+        self.batch.evaluate_workbook = slow_evaluate
+        try:
+            page.start_run()
+            self.assertTrue(started.wait(2), "后台任务必须真实进入 worker")
+            self.assertTrue(page.has_active_run())
+
+            # 模拟用户点击主窗口 X。旧实现会接受 close，随后父子对象销毁，
+            # 最终触发 QThread: Destroyed while thread is still running。
+            window.close()
+            self.app.processEvents()
+            self.assertTrue(window._close_pending,
+                            "运行中关闭必须进入 deferred-close 状态")
+            self.assertTrue(page.has_active_run(),
+                            "关闭请求不得销毁仍运行的线程")
+            self.assertTrue(window.isVisible(),
+                            "任务未结束前 closeEvent 必须被 ignore")
+            self.assertIn("任务结束后软件将自动退出", page.check_label.text())
+
+            release.set()
+            deadline = time.monotonic() + 120
+            while time.monotonic() < deadline and (
+                    page.has_active_run() or window.isVisible()):
+                self.app.processEvents()
+                time.sleep(0.01)
+
+            self.assertFalse(page.has_active_run(),
+                             "任务结束后后台线程必须真正退出")
+            self.assertIsNone(page._thread)
+            self.assertFalse(window.isVisible(),
+                             "线程退出后应自动完成用户原先的关闭请求")
+        finally:
+            release.set()
+            self.batch.evaluate_workbook = original
+            if page.has_active_run():
+                page.wait_for_run(120000)
+            window.close()
+            self.app.processEvents()
+
+    def test_missing_source_is_still_a_clear_error(self):
     def test_missing_source_is_still_a_clear_error(self):
         self.page.source_edit.setText("")
         self.assertIsNone(self.page.start_run())
