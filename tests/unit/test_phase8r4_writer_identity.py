@@ -288,6 +288,48 @@ class R4TestCase(unittest.TestCase):
         self.assertEqual(list(root.iter("{" + MAIN_NS + "}payload")), [],
                          "payload 不得被改写进 SpreadsheetML 命名空间")
 
+    def test_case_a_unprefixed_extension_remains_no_namespace(self):
+        """无默认 namespace 时，裸 <payload> 不得因 Writer 补 xmlns 而进入 MAIN_NS。"""
+
+        def prefix_main_and_add_bare_extension(xml: str) -> str:
+            xml = re.sub(r"<(/?)([A-Za-z_][\\w.-]*)(?=[\\s/>])", r"<\\1x:\\2", xml)
+
+            def fix_root(match):
+                tag = re.sub(r'\\sxmlns="[^"]*"', "", match.group(0))
+                return tag[:-1].rstrip() + f' xmlns:x="{MAIN_NS}">'
+
+            xml = re.sub(r"<x:worksheet\\b[^>]*>", fix_root, xml, count=1)
+            extension = (
+                '<x:extLst><x:ext uri="{NO-DEFAULT-EXT}">'
+                '<payload kind="independent">sentinel</payload>'
+                '</x:ext></x:extLst>')
+            return xml.replace("</x:worksheet>", extension + "</x:worksheet>", 1)
+
+        source = self.mutate("bare_extension.xlsx", prefix_main_and_add_bare_extension)
+        with zipfile.ZipFile(source) as archive:
+            before_xml = archive.read(sheet_target(archive)).decode("utf-8")
+        before_root = ElementTree.fromstring(before_xml)
+        self.assertEqual(len(list(before_root.iter("payload"))), 1)
+        self.assertEqual(list(before_root.iter("{" + MAIN_NS + "}payload")), [])
+
+        result = self.result_of(source, "bare_extension_out.xlsx")
+        with zipfile.ZipFile(result.result_workbook) as archive:
+            out = archive.read(sheet_target(archive)).decode("utf-8")
+        root = ElementTree.fromstring(out)
+
+        payloads = list(root.iter("payload"))
+        self.assertEqual(len(payloads), 1,
+                         "原本无命名空间的 payload 必须继续无命名空间")
+        self.assertEqual(payloads[0].text, "sentinel")
+        self.assertEqual(payloads[0].attrib.get("kind"), "independent")
+        self.assertEqual(list(root.iter("{" + MAIN_NS + "}payload")), [],
+                         "payload 不得被补加的默认命名空间污染")
+        self.assertIn('xmlns=""', out,
+                      "A 情况必须为无命名空间扩展子树建立显式边界")
+        self.assertEqual(len(self.batch.batch_repository.list_batch_records()), 1)
+
+    # ==================================================================
+    # 唯一性门禁与输入保真
     # ==================================================================
     # 唯一性门禁与输入保真
     # ==================================================================
