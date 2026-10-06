@@ -255,7 +255,9 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
         self.assertTrue(result.outcomes[0].is_input_error)
         target = openpyxl.load_workbook(result.result_workbook)[PUMP_SHEET]
         self.assertEqual(target[f"AA{FIRST_DATA_ROW}"].value, "缺少数量")
-        self.assertEqual(target[f"X{FIRST_DATA_ROW}"].value, "输入错误（输入错误）")
+        # 结论列只写结论；原因写在说明列（AA），不再拼成「结论（原因）」。
+        self.assertEqual(target[f"X{FIRST_DATA_ROW}"].value, "输入错误")
+        self.assertIn("缺少数量", str(target[f"AA{FIRST_DATA_ROW}"].value))
 
     def test_system_failure_is_not_disguised_as_a_business_conclusion(self):
         with patch.object(self.analysis, "evaluate",

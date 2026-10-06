@@ -50,6 +50,11 @@ current_task:
     status: EXECUTION_COMPLETE / READY_FOR_REACCEPTANCE
     review_blocked_head: fec8fd0ddbcc64e861e05a6ad204463a6d7fcc0c
     blockers_closed: [QA-P8-007, QA-P8-008]
+  phase_8_r4:
+    status: EXECUTION_COMPLETE / READY_FOR_REACCEPTANCE
+    diagnosis_head: 5fea7fa0b79789d49277c504b0913266518416da
+    blockers_closed: [QA-P8-009, QA-P8-010, QA-P8-011, QA-P8-012, QA-P8-013, QA-P8-014]
+    new_modules: [xml_model.py, worksheet_patch.py, result_invariants.py]
     ui_simplification: [UI01, UI02, UI03, UI04]
   segments:
     phase_8A: COMPLETE（模板正式化 + 一致性矩阵 + Reader）

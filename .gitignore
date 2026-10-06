@@ -24,3 +24,6 @@ htmlcov/
 /standards/
 /standards2/
 /template/
+
+# 诊断快照（本地证据，非交付代码）
+.diagnosis-head/

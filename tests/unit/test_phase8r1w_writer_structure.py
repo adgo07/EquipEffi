@@ -311,7 +311,6 @@ class WriterStructureTests(unittest.TestCase):
         调用 Writer **之前**机械断言夹具里确实存在 `<x:c` 与前缀化的 U4。
         """
 
-        from equipeffi.infrastructure.excel.pump_result_writer import _scan_cells  # noqa: F401
 
         moved = self.make("prefixed.xlsx", [self.water()])
         self._prefix_worksheet_in_zip(moved, "x")

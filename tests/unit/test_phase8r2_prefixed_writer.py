@@ -57,7 +57,7 @@ from equipeffi.application.ports.batch_workbook import BatchRowOutcome
 from equipeffi.infrastructure.excel.pump_result_writer import (
     PumpResultWorkbookWriter,
     ResultWorkbookWriteError,
-    _scan_cells,
+    cell_references,
 )
 from equipeffi.infrastructure.excel.pump_workbook_reader import PUMP_SHEET
 from equipeffi.infrastructure.excel.template_resource import (
@@ -227,10 +227,9 @@ class PrefixedWriterTestCase(unittest.TestCase):
         return len(re.findall(r'r="U4"', read_sheet_xml(path)))
 
     def all_references(self, path: Path) -> list[str]:
-        """用 Writer 自己的扫描器列出结果工作簿中的全部坐标。"""
+        """列出结果工作簿中的全部坐标（**独立 expat 解析**，非 Writer 扫描器）。"""
 
-        return [cell.reference for cell in _scan_cells(read_sheet_xml(path))
-                if cell.reference]
+        return list(cell_references(read_sheet_xml(path)))
 
     def raw_cell_references(self, path: Path) -> list[str]:
         """正则独立复算坐标（任意前缀），用于交叉验证扫描器。"""
@@ -384,6 +383,10 @@ class PrefixedRowAndMixedTests(PrefixedWriterTestCase):
         def make_mixed(xml: str) -> str:
             xml = prefix_worksheet_xml(xml, "x")
             # 让 N4 回到无前缀形式：同一工作表内混用两种表示。
+            # 裸 `<c>` 只有在**默认命名空间 == MAIN_NS** 时才仍是 SpreadsheetML，
+            # 因此这里必须显式声明默认命名空间（否则裸 c 会落进"无命名空间"，
+            # 那是非法输入而不是"混用两种表示"）。
+            xml = re.sub(r'<x:worksheet\b', f'<x:worksheet xmlns="{MAIN_NS}"', xml, count=1)
             xml = re.sub(r'<x:c ([^>]*r="N4"[^>]*)/>', r'<c \1/>', xml, count=1)
             return xml
 
@@ -486,7 +489,8 @@ class DuplicateCoordinateFailClosedTests(PrefixedWriterTestCase):
             self.batch.evaluate_workbook(
                 source, destination=destination, as_of=AS_OF, persist=True)
 
-        self.assertIn("重复单元格坐标", str(caught.exception))
+        self.assertIn("重复坐标", str(caught.exception))
+        self.assertIn("拒绝", str(caught.exception))
         self.assertFalse(destination.exists(),
                          "写回失败时不得留下任何结果工作簿")
         self.assert_batch_record_count(0)
@@ -548,8 +552,7 @@ class WholeSheetUniquenessInvariantTests(PrefixedWriterTestCase):
             persist=False)
 
         xml = read_sheet_xml(result.result_workbook)
-        cells = _scan_cells(xml)
-        references = [cell.reference for cell in cells if cell.reference]
+        references = [ref for ref in cell_references(xml) if ref]
         self.assertGreater(len(references), 1000,
                            "必须扫描整张工作表，而不是只看少数结果列")
         duplicates = sorted({ref for ref in references
@@ -567,24 +570,31 @@ class WholeSheetUniquenessInvariantTests(PrefixedWriterTestCase):
         """H 后置条件必须独立生效：即使某处插入逻辑回归，重复坐标也不能交付。
 
         机械模拟"插入逻辑再次退化"：把 Writer 的补丁结果人为注入一个重复坐标，
-        直接验证 ``_assert_unique_references`` 这个**结构门禁**会拒绝它。
+        直接验证 ``assert_unique_references`` 这个**结构门禁**会拒绝它。
         """
 
         from equipeffi.infrastructure.excel.pump_result_writer import (
-            _assert_unique_references,
+            assert_unique_references,
         )
 
         clean = read_sheet_xml(self.make_prefixed(
             "h2_clean.xlsx", [self.water()], prefix="x"))
-        _assert_unique_references(clean)      # 干净输入必须通过
+        assert_unique_references(clean)      # 干净输入必须通过
 
         anchor = re.search(r'<x:c [^>]*r="U4"[^>]*/>', clean)
         assert anchor, "夹具无效：找不到前缀化 U4"
+        # 注入的重复 cell 必须与既有 U4 属同一命名空间（MAIN_NS）：该工作表里
+        # 裸 `<c>` 只有在默认命名空间为 MAIN_NS 时才是 SpreadsheetML 单元格。
         polluted = (clean[:anchor.start()] + '<c r="U4" s="234"/>'
                     + clean[anchor.start():])
-        with self.assertRaises(ResultWorkbookWriteError) as caught:
-            _assert_unique_references(polluted)
-        self.assertIn("重复单元格坐标", str(caught.exception))
+        polluted = polluted.replace("<x:worksheet ", '<x:worksheet xmlns="' + MAIN_NS + '" ', 1)
+        from equipeffi.infrastructure.excel.result_invariants import (
+            InvariantViolation,
+        )
+
+        with self.assertRaises(InvariantViolation) as caught:
+            assert_unique_references(polluted)
+        self.assertIn("重复坐标", str(caught.exception))
 
     def test_H3_non_cell_elements_are_never_mistaken_for_cells(self):
         """机械守卫：`<cols>` / `<col>` / `<customFilter>` 等绝不能被当成单元格。
@@ -608,7 +618,7 @@ class WholeSheetUniquenessInvariantTests(PrefixedWriterTestCase):
         for xml, expected in samples.items():
             with self.subTest(xml=xml):
                 self.assertEqual(
-                    [cell.reference for cell in _scan_cells(xml)], expected,
+                    list(cell_references(xml)), expected,
                     f"元素身份判断错误：{xml}")
 
 

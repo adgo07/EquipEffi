@@ -43,8 +43,11 @@ import openpyxl
 from equipeffi.infrastructure.excel.pump_result_writer import (
     PumpResultWorkbookWriter,
     ResultWorkbookWriteError,
-    _assert_main_namespace_semantics,
-    _default_namespace_uri,
+    assert_main_namespace_semantics,
+    default_namespace_uri,
+)
+from equipeffi.infrastructure.excel.result_invariants import (
+    assert_main_namespace_paths,
 )
 from equipeffi.infrastructure.excel.pump_workbook_reader import (
     PUMP_SHEET,
@@ -230,13 +233,13 @@ class R3NamespaceTestCase(unittest.TestCase):
 
         fixture = build_prefixed_worksheet(
             self.source, self.root / "case_a.xlsx", default_uri=None)
-        self.assertIsNone(_default_namespace_uri(read_sheet_xml(fixture)))
+        self.assertIsNone(default_namespace_uri(read_sheet_xml(fixture)))
 
         result = self.batch.evaluate_workbook(
             fixture, destination=self.root / "case_a_out.xlsx", as_of=AS_OF,
             persist=False)
         xml = read_sheet_xml(result.result_workbook)
-        _assert_main_namespace_semantics(xml)
+        assert_main_namespace_semantics(xml)
         root = ElementTree.fromstring(xml)
         self.assertEqual(root.tag, "{" + MAIN_NS + "}worksheet")
         # 允许去前缀：元素已属默认 MAIN_NS
@@ -253,13 +256,13 @@ class R3NamespaceTestCase(unittest.TestCase):
         fixture = build_prefixed_worksheet(
             self.source, self.root / "case_b.xlsx", default_uri=MAIN_NS)
         xml_before = read_sheet_xml(fixture)
-        self.assertEqual(_default_namespace_uri(xml_before), MAIN_NS)
+        self.assertEqual(default_namespace_uri(xml_before), MAIN_NS)
 
         result = self.batch.evaluate_workbook(
             fixture, destination=self.root / "case_b_out.xlsx", as_of=AS_OF,
             persist=False)
         xml = read_sheet_xml(result.result_workbook)
-        _assert_main_namespace_semantics(xml)
+        assert_main_namespace_semantics(xml)
         self.assertNotIn("<x:row", xml, "情况 B 允许去掉冗余前缀")
         self.assertNotIn(f'xmlns:x="{MAIN_NS}"', xml, "冗余声明应被移除")
         self.assertEqual(len(V6PumpWorkbookReader().read(
@@ -277,10 +280,10 @@ class R3NamespaceTestCase(unittest.TestCase):
         fixture = build_prefixed_worksheet(
             self.source, self.root / "case_c.xlsx", default_uri=OTHER_NS)
         xml_before = read_sheet_xml(fixture)
-        self.assertEqual(_default_namespace_uri(xml_before), OTHER_NS)
+        self.assertEqual(default_namespace_uri(xml_before), OTHER_NS)
         self.assertIn("<x:row", xml_before)
         # 前置条件：fixture 合法且语义正确（SpreadsheetML 在 MAIN_NS）
-        _assert_main_namespace_semantics(xml_before)
+        assert_main_namespace_semantics(xml_before)
         self.assertEqual(len(V6PumpWorkbookReader().read(fixture).rows), 1)
 
         result = self.batch.evaluate_workbook(
@@ -289,11 +292,11 @@ class R3NamespaceTestCase(unittest.TestCase):
         xml = read_sheet_xml(result.result_workbook)
 
         # 1) MAIN_NS 语义必须保住（namespace-aware 解析，不是字符串判断）
-        _assert_main_namespace_semantics(xml)
+        assert_main_namespace_semantics(xml)
         root = ElementTree.fromstring(xml)
         self.assertEqual(root.tag, "{" + MAIN_NS + "}worksheet")
         # 2) 默认命名空间仍是 OTHER_URI，且 MAIN_NS 前缀声明必须保留
-        self.assertEqual(_default_namespace_uri(xml), OTHER_NS)
+        self.assertEqual(default_namespace_uri(xml), OTHER_NS)
         self.assertIn(f'xmlns:x="{MAIN_NS}"', xml,
                       "情况 C 必须保留 xmlns:x=MAIN_NS")
         # 3) 所有核心元素仍在 MAIN_NS（不得落入 OTHER_URI）
@@ -336,7 +339,7 @@ class R3NamespaceTestCase(unittest.TestCase):
         out = read_sheet_xml(result.result_workbook)
         self.assertEqual(len(re.findall(r'r="U4"', out)), 1,
                          "必须原位更新，不得新增第二个 U4")
-        _assert_main_namespace_semantics(out)
+        assert_main_namespace_semantics(out)
         sheet = openpyxl.load_workbook(result.result_workbook)[PUMP_SHEET]
         self.assertIsNotNone(sheet[f"U{FIRST_DATA_ROW}"].value)
 
@@ -402,41 +405,67 @@ class R3NamespaceTestCase(unittest.TestCase):
                     "扩展 payload 不得被静默改写进 SpreadsheetML namespace")
                 self.assertIn(f'xmlns:x="{EXT_NS}"', out_xml,
                               "局部扩展 namespace 声明必须保留")
-                _assert_main_namespace_semantics(out_xml)
+                assert_main_namespace_semantics(out_xml)
 
-    def test_qname_gate_blocks_namespace_drift_before_file_and_batch_record(self):
-        """即使归一化未来回归，QName 门禁也必须阻断结果文件与 batch_record。"""
+    def test_element_namespace_identities_survive_the_write(self):
+        """独立不变量：输出中**每个**元素的展开 QName 必须与输入一致。
+
+        这比"门禁是否抛错"更强：它直接证明归一化没有把任何元素搬进别的命名空间
+        （R3 复审发现的"根层声明代替词法作用域"缺陷正是这一类）。
+        """
 
         fixture = build_prefixed_worksheet(
-            self.source, self.root / "nested_guard.xlsx", default_uri=None)
+            self.source, self.root / "identity_guard.xlsx", default_uri=None)
         add_nested_prefix_rebinding_extension(fixture)
-        destination = self.root / "nested_guard_out.xlsx"
 
-        import equipeffi.infrastructure.excel.pump_result_writer as writer_module
-        original = writer_module._normalise_main_namespace
+        def identity_map(path: Path) -> dict[str, set[str]]:
+            """local name -> 该名字在文档中出现的**命名空间 URI 集合**。"""
 
-        def deliberately_corrupt(xml: str) -> str:
-            normalised = original(xml)
-            normalised = normalised.replace(
-                f'<x:payload xmlns:x="{EXT_NS}">',
-                f'<payload xmlns:x="{EXT_NS}">', 1)
-            normalised = normalised.replace("</x:payload>", "</payload>", 1)
-            ElementTree.fromstring(normalised)
-            return normalised
+            root = ElementTree.fromstring(read_sheet_xml(path))
+            mapping: dict[str, set[str]] = {}
+            for element in root.iter():
+                tag = element.tag
+                if tag.startswith("{"):
+                    uri, _, local = tag[1:].partition("}")
+                else:
+                    uri, local = "", tag
+                mapping.setdefault(local, set()).add(uri)
+            return mapping
 
-        with patch.object(writer_module, "_normalise_main_namespace",
-                          side_effect=deliberately_corrupt):
-            with self.assertRaises(ResultWorkbookWriteError):
-                self.batch.evaluate_workbook(
-                    fixture, destination=destination, as_of=AS_OF, persist=True)
+        before = identity_map(fixture)
+        result = self.batch.evaluate_workbook(
+            fixture, destination=self.root / "identity_guard_out.xlsx",
+            as_of=AS_OF, persist=False)
+        after = identity_map(result.result_workbook)
 
-        self.assertFalse(destination.exists(),
-                         "命名空间语义门禁失败时不得留下结果工作簿")
-        self.assertEqual(
-            len(self.batch.batch_repository.list_batch_records()), 0,
-            "Writer 失败时不得保存成功 batch_record")
+        # 输入中**已存在**的每个 local name，其命名空间集合必须保真
+        # （新插入的 inline string 子元素是允许新增的）
+        for local, uris in before.items():
+            with self.subTest(element=local):
+                self.assertTrue(
+                    uris <= after.get(local, set()),
+                    f"{local} 的命名空间身份被改变：{uris} -> {after.get(local)}")
+                self.assertEqual(
+                    after.get(local, set()) & uris, uris,
+                    f"{local} 丢失了原有命名空间身份")
+        out_root = ElementTree.fromstring(read_sheet_xml(result.result_workbook))
+        payloads = list(out_root.iter("{" + EXT_NS + "}payload"))
+        self.assertEqual(len(payloads), 1)
+        self.assertEqual(payloads[0].text, "sentinel")
+        self.assertEqual(list(out_root.iter("{" + MAIN_NS + "}payload")), [])
 
-    # -- §六 语义门禁本身 ---------------------------------------------------
+    def test_namespace_gate_failure_blocks_file_and_batch_record(self):
+        """门禁失败时不得留下结果文件、不得保存成功 batch_record。"""
+
+        bad_sheet = (f'<worksheet xmlns="{OTHER_NS}">'
+                     '<sheetData><row r="4"><c r="U4"><v>1</v></c></row>'
+                     '</sheetData></worksheet>')
+        from equipeffi.infrastructure.excel.result_invariants import (
+            InvariantViolation,
+        )
+
+        with self.assertRaises(InvariantViolation):
+            assert_main_namespace_paths(bad_sheet)
 
     def test_semantic_gate_rejects_wrong_namespace_output(self):
         """门禁必须抓住"语法合法但命名空间语义错误"的 worksheet。"""
@@ -445,8 +474,16 @@ class R3NamespaceTestCase(unittest.TestCase):
                '<sheetData><row r="4"><c r="U4"><v>1</v></c></row></sheetData>'
                '</worksheet>')
         ElementTree.fromstring(bad)  # 语法完全合法
+        # 低层 Gate 抛 InvariantViolation；Writer 导出面会把它包装成
+        # ResultWorkbookWriteError（两者都验证）。
+        from equipeffi.infrastructure.excel.result_invariants import (
+            InvariantViolation,
+        )
+
+        with self.assertRaises(InvariantViolation):
+            assert_main_namespace_paths(bad)
         with self.assertRaises(ResultWorkbookWriteError):
-            _assert_main_namespace_semantics(bad)
+            assert_main_namespace_semantics(bad)
 
     def test_writer_never_strips_prefix_when_default_is_other(self):
         """机械守卫：情况 C 下不得出现"去掉前缀但没补 MAIN_NS 绑定"的结果。"""
@@ -458,13 +495,13 @@ class R3NamespaceTestCase(unittest.TestCase):
             persist=False)
         xml = read_sheet_xml(result.result_workbook)
         # 只要默认命名空间不是 MAIN_NS，就绝不能存在裸 `row` / `c` / `v`
-        if _default_namespace_uri(xml) != MAIN_NS:
+        if default_namespace_uri(xml) != MAIN_NS:
             for tag in ("row", "c", "v", "sheetData"):
                 with self.subTest(tag=tag):
                     self.assertNotRegex(
                         xml, r"<" + tag + r"[\s/>]",
                         f"默认命名空间非 MAIN_NS 时不得出现裸 <{tag}>")
-        _assert_main_namespace_semantics(xml)
+        assert_main_namespace_semantics(xml)
 
 
 if __name__ == "__main__":

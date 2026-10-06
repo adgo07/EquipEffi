@@ -15,8 +15,10 @@ Excel 是**批量输入/输出载体**，不是业务计算引擎：本页把「
 """
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
+from PySide6.QtCore import QObject, QThread, Signal
 from PySide6.QtWidgets import (
     QFileDialog,
     QGroupBox,
@@ -36,6 +38,34 @@ from ..tokens import TOKENS
 
 SYSTEM_FAILURE_TEXT = "批量评价未能完成，请检查工作簿或联系技术人员。"
 
+class _BatchWorker(QObject):
+    """在**后台线程**执行整批评价（诊断 D05）。
+
+    大批量（实测 10,000 行可达约 9 分钟）此前在 Qt 主线程同步执行，界面在此期间
+    完全无法处理事件。这里把整批评价移到工作线程，主线程只负责显示状态与结果；
+    **不改动**任何计算、统计或数据库语义。
+    """
+
+    finished = Signal(object)
+    failed = Signal(str)
+
+    def __init__(self, batch, source: Path, destination):
+        super().__init__()
+        self._batch = batch
+        self._source = source
+        self._destination = destination
+
+    def run(self) -> None:
+        try:
+            result = self._batch.evaluate_workbook(
+                self._source, destination=self._destination)
+        except Exception as error:  # noqa: BLE001 - 真实原因进日志，界面只提示
+            logging.getLogger("equipeffi.qt.batch").exception("批量评价失败")
+            self.failed.emit(type(error).__name__)
+            return
+        self.finished.emit(result)
+
+
 
 class BatchPage(QWidget):
     """Excel 导入 / 批量评价页。"""
@@ -45,6 +75,9 @@ class BatchPage(QWidget):
         self.batch = batch
         self.navigator = navigator
         self.last_result = None
+        #: 后台执行状态（None 表示空闲）
+        self._thread = None
+        self._worker = None
         self._build()
 
     # -- 构建 --------------------------------------------------------------
@@ -117,7 +150,7 @@ class BatchPage(QWidget):
         # 3) 批量评价
         actions = QHBoxLayout()
         self.run_button = QPushButton("批量评价")
-        self.run_button.clicked.connect(self.run)
+        self.run_button.clicked.connect(self.start_run)
         actions.addWidget(self.run_button)
         actions.addStretch(1)
         layout.addLayout(actions)
@@ -208,8 +241,15 @@ class BatchPage(QWidget):
 
     # -- 执行 --------------------------------------------------------------
 
+    #: 批量评价进行中（供测试与界面守卫使用）
+    busy = False
+
     def run(self):
-        """执行一次批量评价；返回结果对象（失败返回 None）。"""
+        """**同步**执行一次批量评价；返回结果对象（失败返回 None）。
+
+        保留同步内核供测试与非交互场景使用；普通用户点击按钮走
+        `start_run()`（后台线程），避免大批量时界面长时间无响应。
+        """
 
         source = self.source_edit.text().strip()
         if not source:
@@ -228,6 +268,72 @@ class BatchPage(QWidget):
         self.last_result = result
         self._render(result)
         return result
+
+    def start_run(self):
+        """用户点击「批量评价」：在**后台线程**执行，主线程保持可响应。"""
+
+        if self.busy:
+            return None
+        source = self.source_edit.text().strip()
+        if not source:
+            self._show_error("请先选择要批量评价的输入工作簿。")
+            return None
+        target = self.target_edit.text().strip() or None
+        self.last_result = None
+        self._set_busy(True, "正在批量评价，请稍候…（大批量可能需要几分钟）")
+
+        thread = QThread(self)
+        worker = _BatchWorker(self.batch, Path(source), target)
+        worker.moveToThread(thread)
+        thread.started.connect(worker.run)
+        worker.finished.connect(self._on_finished)
+        worker.failed.connect(self._on_failed)
+        worker.finished.connect(thread.quit)
+        worker.failed.connect(thread.quit)
+        thread.finished.connect(self._on_thread_finished)
+        self._thread, self._worker = thread, worker
+        thread.start()
+        return thread
+
+    def _set_busy(self, busy: bool, message: str = "") -> None:
+        self.busy = busy
+        self.run_button.setEnabled(not busy)
+        if message:
+            self.check_label.setText(message)
+
+    def _on_finished(self, result) -> None:
+        self.last_result = result
+        self._render(result)
+        self._set_busy(False)
+
+    def _on_failed(self, error_name: str) -> None:
+        self._show_error(f"{SYSTEM_FAILURE_TEXT}\n（{error_name}）")
+        self._set_busy(False)
+
+    def _on_thread_finished(self) -> None:
+        self._thread = None
+        self._worker = None
+
+    def wait_for_run(self, timeout_ms: int = 120000) -> bool:
+        """等待后台批量评价结束（测试用；不改变产品行为）。
+
+        必须**边转事件循环边等**：工作线程结束时会 emit 信号给主线程，若主线程
+        阻塞在 `thread.wait()` 就无法投递信号，`thread.quit` 也不会被处理，
+        从而永远等不到线程结束。
+        """
+
+        from PySide6.QtCore import QCoreApplication, QDeadlineTimer
+
+        deadline = QDeadlineTimer(timeout_ms)
+        while not deadline.hasExpired():
+            thread = self._thread
+            if thread is None:
+                break
+            QCoreApplication.processEvents()
+            # 局部引用：processEvents 期间线程可能已完成并把 _thread 置空
+            thread.wait(20)
+        QCoreApplication.processEvents()
+        return self._thread is None
 
     def _render(self, result) -> None:
         summary = result.summary
