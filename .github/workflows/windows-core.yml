@@ -33,7 +33,10 @@ jobs:
   windows-core:
     name: Windows Core (gating)
     runs-on: windows-latest
-    timeout-minutes: 25
+    # Phase 8 R1W：gating 作业现在包含 100/1000/10000 行批量回归与 R1W 结构守卫，
+    # 25 分钟不足以跑完（被取消时无 assertion failure，只是时间不够）。
+    # 这里只为现有门禁提供足够时间，**不删除测试、不减少门禁、不新增 skip**。
+    timeout-minutes: 45
     defaults:
       run:
         shell: pwsh
