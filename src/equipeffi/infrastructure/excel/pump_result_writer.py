@@ -248,8 +248,20 @@ class ResultWorkbookWriteError(RuntimeError):
 
 
 def _local_name(name: str) -> str:
-    """去掉命名空间前缀（`r` / `x:r` → `r`）。"""
+    """取元素的**局部名**。
 
+    同时支持两种 QName 写法：
+
+    ```text
+    x:row                     -> row      （原始 XML 里的前缀式限定名）
+    {http://…/main}row        -> row      （namespace-aware 解析器给出的 Clark 记法）
+    ```
+    """
+
+    if name.startswith("{"):
+        closing = name.find("}")
+        if closing != -1:
+            name = name[closing + 1:]
     return name.rsplit(":", 1)[-1]
 
 
@@ -300,25 +312,51 @@ _XMLNS_DEFAULT_RE = re.compile(r"xmlns\s*=")
 
 #: SpreadsheetML 主命名空间（OOXML 工作表的正式命名空间）。
 _MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
-#: 根元素上的**默认**命名空间声明（`xmlns="…"`，无前缀）。
-_DEFAULT_XMLNS_RE = re.compile(r"\sxmlns\s*=\s*\"[^\"]*\"")
+#: 根元素上的**任意**默认命名空间声明（`xmlns="…"`，无前缀）。
+_DEFAULT_XMLNS_ANY_RE = re.compile(r"\sxmlns\s*=\s*\"([^\"]*)\"")
+#: 根元素上的 **SpreadsheetML** 默认命名空间声明。
+_DEFAULT_XMLNS_RE = re.compile(
+    r"\sxmlns\s*=\s*\"" + re.escape(_MAIN_NS) + r"\"")
 
 
-def _xml_namespaces(text: str) -> dict[str, str]:
-    """工作表**根元素**上声明的 ``前缀 -> 命名空间 URI`` 映射。"""
+def _root_element_tag(xml: str) -> str:
+    """工作表根元素的开标记原文；找不到返回空串。"""
 
-    start = text.find("<")
-    while 0 <= start < len(text) and text[start:start + 2] in ("<?", "<!"):
-        end = _find_tag_end(text, start)
-        if end == -1:
-            return {}
-        start = text.find("<", end + 1)
-    if start == -1:
-        return {}
-    end = _find_tag_end(text, start)
-    if end == -1:
-        return {}
-    return {name: uri for name, uri in _XMLNS_RE.findall(text[start:end])}
+    start, end = _root_tag_bounds(xml)
+    return "" if start == -1 else xml[start:end + 1]
+
+
+def _default_namespace_uri(xml: str) -> str | None:
+    """根元素**默认命名空间**的 URI。
+
+    Owner Phase 8 R3 §一/§二：namespace 决策**必须**区分三种情况，不能只看
+    "有没有 `xmlns=`"：
+
+    ```text
+    A. 没有默认 namespace            -> None
+    B. 默认 namespace == MAIN_NS     -> _MAIN_NS
+    C. 默认 namespace != MAIN_NS     -> 那个别的 URI
+    ```
+
+    只判断"存在任意 `xmlns=`"是本轮 blocker 的根因：它把情况 C 误当成情况 B，
+    于是删掉了 MAIN_NS 前缀声明，让 SpreadsheetML 元素落进别的命名空间。
+    """
+
+    root_tag = _root_element_tag(xml)
+    if not root_tag:
+        return None
+    match = _DEFAULT_XMLNS_ANY_RE.search(root_tag)
+    return None if match is None else match.group(1).strip()
+
+
+def _has_default_namespace(xml: str) -> bool:
+    """根元素是否已声明**任意**默认命名空间。
+
+    仅用于"不能再追加第二个 `xmlns` 属性"这类语法判断；
+    **不得**再用它决定要不要删 MAIN_NS 前缀（见 `_default_namespace_uri`）。
+    """
+
+    return _default_namespace_uri(xml) is not None
 
 
 def _root_tag_bounds(xml: str) -> tuple[int, int]:
@@ -334,15 +372,6 @@ def _root_tag_bounds(xml: str) -> tuple[int, int]:
         return -1, -1
     end = _find_tag_end(xml, position)
     return (position, end) if end != -1 else (-1, -1)
-
-
-def _has_default_namespace(xml: str) -> bool:
-    """根元素是否已声明默认命名空间（`xmlns="…"`，无前缀）。"""
-
-    start, end = _root_tag_bounds(xml)
-    if start == -1:
-        return False
-    return _DEFAULT_XMLNS_RE.search(xml[start:end]) is not None
 
 
 def _main_namespace_prefixes(text: str) -> list[str]:
@@ -414,16 +443,26 @@ def _strip_main_namespace_prefix(xml: str, prefix: str) -> str:
         if xml[name_end:name_end + 1] != ":":
             continue
         edits.append((name_start, name_end + 1, ""))
+    # 关键判定（Owner Phase 8 R3 §二/§三）：只有**情况 A（无默认 namespace）**
+    # 与**情况 B（默认 namespace == MAIN_NS）**才允许把 MAIN_NS 前缀归一为无前缀。
+    # 情况 C（默认 namespace 是别的 URI）下，去掉前缀会让这些元素落进别的
+    # namespace —— 必须保留 `xmlns:x="…/main"` 与所有 `x:` 元素前缀。
+    default_uri = _default_namespace_uri(xml)
+    if default_uri is not None and default_uri != _MAIN_NS:
+        return xml
+
     declaration = declaration_re.search(xml)
     if declaration is not None:
         if declaration.group("uri") != _MAIN_NS:
             # 同名前缀属于**别的**命名空间（例如关系命名空间）：元素名归一后
             # 该声明可能仍被别处引用，因此保留声明，只把元素写成默认形式。
             pass
-        elif _has_default_namespace(xml):
-            # 已有默认命名空间：该前缀声明是多余的，直接删除（否则重复属性）。
+        elif _default_namespace_uri(xml) == _MAIN_NS:
+            # 情况 B：已有 MAIN_NS 默认命名空间，该前缀声明是多余的，直接删除
+            # （否则重复属性）。
             edits.append((declaration.start(), declaration.end(), ""))
         else:
+            # 情况 A：把前缀声明改写成默认命名空间声明。
             edits.append((declaration.start(), declaration.end(),
                           f'{declaration.group("head")}'
                           f'{declaration.group("tail")}'
@@ -699,16 +738,22 @@ def _assert_well_formed(xml: str) -> None:
 
 
 def _insert_default_namespace(xml: str) -> str:
-    """确保根元素声明 ``xmlns="…/main"``（前缀归一后元素必须仍属于主命名空间）。"""
+    """确保根元素声明 ``xmlns="…/main"``（前缀归一后元素必须仍属于主命名空间）。
 
+    只在**情况 A（没有默认 namespace）**下追加。
+
+    情况 C（默认 namespace 是**别的** URI）**绝不**追加：那会产生第二个 `xmlns`
+    属性（非法 XML），或把 MAIN_NS 绑到别的 URI 上——两者都会破坏语义。
+    Owner Phase 8 R3 §二/§三。
+    """
+
+    if _default_namespace_uri(xml) is not None:
+        # 情况 B（已是 MAIN_NS）无需动作；情况 C（别的 URI）绝不能追加。
+        return xml
     start, end = _root_tag_bounds(xml)
     if start == -1:
         return xml
     root_tag = xml[start:end]
-    # 已经有默认命名空间声明（无论绑到哪个 URI）：绝不追加第二个 `xmlns`
-    # 属性——那是非法 XML。
-    if _DEFAULT_XMLNS_RE.search(root_tag) is not None:
-        return xml
     if _XMLNS_RE.search(root_tag) is None:
         # 根元素没有任何前缀声明：无法安全补默认命名空间（用错了会改变语义）。
         return xml
@@ -820,22 +865,31 @@ def _style_attribute(style: str | None) -> str:
 def _cell_element_xml(reference: str, style: str | None,
                       payload: tuple[str, str] | None, prefix: str,
                       declarations: str = "") -> str:
-    """按给定**命名空间前缀**（可为空）生成单元格元素。"""
+    """按给定**命名空间前缀**（可为空）生成单元格元素。
+
+    Owner Phase 8 R3：前缀必须应用到**该单元格的全部子元素**（`v` / `is` / `t`），
+    而不只是 `c`。否则在"默认 namespace 不是 MAIN_NS"的工作表里，
+    `<x:c><v>…</v></x:c>` 的 `<v>` 会落进**别的**默认命名空间 ——
+    正是本轮 blocker 的同类语义错误。
+    """
 
     name = f"{prefix}:c" if prefix else "c"
+    value_name = f"{prefix}:v" if prefix else "v"
+    inline_name = f"{prefix}:is" if prefix else "is"
+    text_name = f"{prefix}:t" if prefix else "t"
     style_attr = _style_attribute(style)
     if payload is None:
         return f'<{name} r="{reference}"{style_attr}{declarations}/>'
     kind, text = payload
     if kind == "n":
         return (f'<{name} r="{reference}"{style_attr}{declarations}>'
-                f"<v>{text}</v></{name}>")
+                f"<{value_name}>{text}</{value_name}></{name}>")
     if text == "":
         return f'<{name} r="{reference}"{style_attr}{declarations}/>'
     # 内联字符串：不改动 sharedStrings，因此不影响任何其他单元格。
     return (f'<{name} r="{reference}"{style_attr}{declarations} '
-            f't="inlineStr"><is><t xml:space="preserve">'
-            f"{_escape(text)}</t></is></{name}>")
+            f't="inlineStr"><{inline_name}><{text_name} xml:space="preserve">'
+            f"{_escape(text)}</{text_name}></{inline_name}></{name}>")
 
 
 def _row_prefix(row_attrs: dict[str, str], row_element: str) -> str:
@@ -907,6 +961,49 @@ def _insert_missing_cells(row_xml: str, row_number: int, missing: list[str],
         body_end = row_xml.find(_close_tag(qualified), open_end)
     return row_xml
 
+
+
+#: 结果 worksheet 中**必须**属于 SpreadsheetML 主命名空间的核心元素（local name）。
+_REQUIRED_MAIN_NS_ELEMENTS: frozenset[str] = frozenset(
+    ("worksheet", "sheetData", "row", "c", "v", "is", "t"))
+
+
+def _assert_main_namespace_semantics(xml: str) -> None:
+    """用**真正 namespace-aware 的解析器**校验核心元素的命名空间。
+
+    仅检查"XML 良构"是不够的：语法可以完全合法，而 namespace 语义完全错误
+    （例如 `<x:row>` 被去掉前缀后落进别的默认命名空间）——那正是
+    Owner Phase 8 R3 的 blocker。因此这里用 `ElementTree` 展开 QName
+    （`{namespace}local`）做最终结构门禁（§六）。
+    """
+
+    from xml.etree import ElementTree
+
+    try:
+        root = ElementTree.fromstring(xml)
+    except ElementTree.ParseError as error:
+        raise ResultWorkbookWriteError(
+            f"结果写回命名空间校验失败：「{PUMP_SHEET}」Sheet 不是良构 XML"
+            f"（{error}）；拒绝产出无法打开的结果工作簿") from error
+
+    main_prefix = "{" + _MAIN_NS + "}"
+    local_root = _local_name(root.tag)
+    if local_root != "worksheet" or not root.tag.startswith(main_prefix):
+        raise ResultWorkbookWriteError(
+            "结果写回命名空间校验失败：根元素不属于 SpreadsheetML 主命名空间"
+            f"（实际 {root.tag!r}）；拒绝产出语义错误的结果工作簿")
+
+    offenders: list[str] = []
+    for element in root.iter():
+        local = _local_name(element.tag)
+        if local not in _REQUIRED_MAIN_NS_ELEMENTS:
+            continue
+        if not element.tag.startswith(main_prefix):
+            offenders.append(element.tag)
+    if offenders:
+        raise ResultWorkbookWriteError(
+            "结果写回命名空间校验失败：以下核心元素不属于 SpreadsheetML 主命名空间 "
+            f"{sorted(set(offenders))[:10]}；拒绝产出语义错误的结果工作簿")
 
 
 def _sheet_xml_paths(archive: ZipFile, sheet_name: str) -> str | None:
@@ -988,6 +1085,9 @@ def _patch_sheet_xml(xml: str, outcomes: dict[int, BatchRowOutcome]) -> str:
     # 结构后置条件：写结果 Workbook 之前，整表坐标必须唯一，且整张工作表良构。
     _assert_unique_references(xml)
     _assert_well_formed(xml)
+    # Owner Phase 8 R3 §六：良构 + 坐标唯一还不够，必须证明核心元素仍属于
+    # SpreadsheetML 主命名空间（namespace-aware 解析，而不是字符串判断）。
+    _assert_main_namespace_semantics(xml)
     return xml
 
 
