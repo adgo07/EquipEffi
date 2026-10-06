@@ -31,6 +31,7 @@ import shutil
 import tempfile
 import unittest
 import zipfile
+from unittest.mock import patch
 from datetime import date
 from pathlib import Path
 from xml.etree import ElementTree
@@ -53,6 +54,7 @@ from equipeffi.infrastructure.excel.template_resource import V6TemplateResource
 
 MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 OTHER_NS = "urn:equipeffi:not-spreadsheetml"
+EXT_NS = "urn:independent:extension"
 FIRST_DATA_ROW = 4
 AS_OF = date(2026, 8, 23)
 
@@ -141,6 +143,40 @@ def build_prefixed_worksheet(source: Path, destination: Path,
 def read_sheet_xml(path: Path) -> str:
     with zipfile.ZipFile(path) as archive:
         return archive.read(_sheet_target(archive, PUMP_SHEET)).decode("utf-8")
+
+
+def add_nested_prefix_rebinding_extension(path: Path) -> Path:
+    """加入合法的嵌套 xmlns:x 重绑定扩展 payload。"""
+
+    with zipfile.ZipFile(path) as archive:
+        entries = [(info, archive.read(info.filename))
+                   for info in archive.infolist()]
+        target = _sheet_target(archive, PUMP_SHEET)
+
+    extension = (
+        '<x:extLst><x:ext uri="{EQUIPEFFI-NESTED-REBIND}">'
+        f'<x:payload xmlns:x="{EXT_NS}">sentinel</x:payload>'
+        '</x:ext></x:extLst>'
+    )
+    rewritten: list[tuple[zipfile.ZipInfo, bytes]] = []
+    for info, data in entries:
+        if info.filename == target:
+            xml = data.decode("utf-8")
+            marker = "</x:worksheet>"
+            if marker not in xml:
+                raise AssertionError("fixture 必须是 x:worksheet 前缀形式")
+            xml = xml.replace(marker, extension + marker, 1)
+            root = ElementTree.fromstring(xml)
+            payloads = list(root.iter("{" + EXT_NS + "}payload"))
+            if len(payloads) != 1 or payloads[0].text != "sentinel":
+                raise AssertionError("嵌套 xmlns:x 重绑定 fixture 构造失败")
+            data = xml.encode("utf-8")
+        rewritten.append((info, data))
+
+    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as archive:
+        for info, data in rewritten:
+            archive.writestr(info, data)
+    return path
 
 
 # ---------------------------------------------------------------------------
@@ -334,6 +370,71 @@ class R3NamespaceTestCase(unittest.TestCase):
         self.assertEqual(
             len(self.batch.batch_repository.list_batch_records()), 0,
             "写回失败不得保存成功 batch_record")
+
+    # -- §五.6/§六 嵌套 xmlns 前缀重绑定 -----------------------------------
+
+    def test_nested_x_rebinding_is_preserved_in_cases_a_and_b(self):
+        """A/B 情况下，局部 xmlns:x 重绑定的扩展 QName 必须原样保真。"""
+
+        for label, default_uri in (("a", None), ("b", MAIN_NS)):
+            with self.subTest(case=label):
+                fixture = build_prefixed_worksheet(
+                    self.source, self.root / f"nested_{label}.xlsx",
+                    default_uri=default_uri)
+                add_nested_prefix_rebinding_extension(fixture)
+                before = ElementTree.fromstring(read_sheet_xml(fixture))
+                self.assertEqual(
+                    len(list(before.iter("{" + EXT_NS + "}payload"))), 1,
+                    "前置 fixture 必须真实包含独立扩展 namespace payload")
+
+                result = self.batch.evaluate_workbook(
+                    fixture,
+                    destination=self.root / f"nested_{label}_out.xlsx",
+                    as_of=AS_OF, persist=False)
+                out_xml = read_sheet_xml(result.result_workbook)
+                root = ElementTree.fromstring(out_xml)
+
+                extension_payloads = list(root.iter("{" + EXT_NS + "}payload"))
+                self.assertEqual(len(extension_payloads), 1)
+                self.assertEqual(extension_payloads[0].text, "sentinel")
+                self.assertEqual(
+                    list(root.iter("{" + MAIN_NS + "}payload")), [],
+                    "扩展 payload 不得被静默改写进 SpreadsheetML namespace")
+                self.assertIn(f'xmlns:x="{EXT_NS}"', out_xml,
+                              "局部扩展 namespace 声明必须保留")
+                _assert_main_namespace_semantics(out_xml)
+
+    def test_qname_gate_blocks_namespace_drift_before_file_and_batch_record(self):
+        """即使归一化未来回归，QName 门禁也必须阻断结果文件与 batch_record。"""
+
+        fixture = build_prefixed_worksheet(
+            self.source, self.root / "nested_guard.xlsx", default_uri=None)
+        add_nested_prefix_rebinding_extension(fixture)
+        destination = self.root / "nested_guard_out.xlsx"
+
+        import equipeffi.infrastructure.excel.pump_result_writer as writer_module
+        original = writer_module._normalise_main_namespace
+
+        def deliberately_corrupt(xml: str) -> str:
+            normalised = original(xml)
+            normalised = normalised.replace(
+                f'<x:payload xmlns:x="{EXT_NS}">',
+                f'<payload xmlns:x="{EXT_NS}">', 1)
+            normalised = normalised.replace("</x:payload>", "</payload>", 1)
+            ElementTree.fromstring(normalised)
+            return normalised
+
+        with patch.object(writer_module, "_normalise_main_namespace",
+                          side_effect=deliberately_corrupt):
+            with self.assertRaises(ResultWorkbookWriteError):
+                self.batch.evaluate_workbook(
+                    fixture, destination=destination, as_of=AS_OF, persist=True)
+
+        self.assertFalse(destination.exists(),
+                         "命名空间语义门禁失败时不得留下结果工作簿")
+        self.assertEqual(
+            len(self.batch.batch_repository.list_batch_records()), 0,
+            "Writer 失败时不得保存成功 batch_record")
 
     # -- §六 语义门禁本身 ---------------------------------------------------
 
