@@ -239,7 +239,6 @@ class QtBatchBackgroundTests(unittest.TestCase):
             self.app.processEvents()
 
     def test_missing_source_is_still_a_clear_error(self):
-    def test_missing_source_is_still_a_clear_error(self):
         self.page.source_edit.setText("")
         self.assertIsNone(self.page.start_run())
         self.assertFalse(self.page.busy)
