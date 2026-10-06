@@ -46,6 +46,7 @@ from .result_invariants import (
     InvariantViolation,
     assert_input_preserved,
     assert_main_namespace_paths,
+    assert_non_main_elements_preserved,
     assert_result_payloads,
     assert_unique_references,
 )
@@ -303,6 +304,40 @@ def _prefixes_still_used(elements, plan: NamespacePlan) -> set[str]:
     return used
 
 
+def protect_no_namespace_subtrees(xml: str, plan: NamespacePlan) -> str:
+    """情况 A 补根默认命名空间前，保护原本**无命名空间**的扩展子树。
+
+    若根原本没有默认 namespace，而 SpreadsheetML 通过 x:/ss: 等前缀承载，
+    合法扩展可以使用无前缀元素：<payload>。直接给根补 xmlns=MAIN_NS 会把它
+    静默改成 {MAIN_NS}payload。
+
+    这里仅在每个无命名空间子树的**最外层边界**补 xmlns=""。这样随后根增加
+    xmlns=MAIN_NS 时，SpreadsheetML 可安全去前缀，而扩展子树继续保持
+    "无命名空间"。已有显式 xmlns="" 的边界不重复添加。
+    """
+
+    if not plan.needs_default:
+        return xml
+    elements = parse_elements(xml)
+    edits: list[tuple[int, int, str]] = []
+    for element in elements:
+        if element.prefix or element.ns_uri not in (None, ""):
+            continue
+        if element.declared.get("") == "":
+            continue
+        parent = element.parent
+        # 父元素本身已是无命名空间时，由父级最外层边界一次保护整个子树。
+        if parent is not None and not parent.prefix and parent.ns_uri in (None, ""):
+            continue
+        insertion = element.tag_end - 1 if element.kind == EMPTY else element.tag_end
+        edits.append((insertion, insertion, ' xmlns=""'))
+
+    out = xml
+    for start, end, replacement in sorted(edits, key=lambda item: item[0], reverse=True):
+        out = out[:start] + replacement + out[end:]
+    return out
+
+
 def insert_default_namespace(xml: str, plan: NamespacePlan) -> str:
     """情况 A 下在根元素补 `xmlns="MAIN_NS"`；B / C 绝不追加。"""
 
@@ -323,7 +358,11 @@ def _normalise_main_namespace(xml: str) -> str:
 
 def normalise_namespace(xml: str) -> str:
     plan = plan_namespace(xml)
-    return insert_default_namespace(strip_main_namespace_prefixes(xml, plan), plan)
+    # 顺序不可交换：必须在去掉 SpreadsheetML 前缀之前识别原本无命名空间的
+    # 扩展子树并建立 xmlns="" 边界，否则去前缀后无法区分二者。
+    protected = protect_no_namespace_subtrees(xml, plan)
+    stripped = strip_main_namespace_prefixes(protected, plan)
+    return insert_default_namespace(stripped, plan)
 
 
 # ---------------------------------------------------------------------------
@@ -533,8 +572,10 @@ def patch_sheet_xml(xml: str, outcomes: dict[int, BatchRowOutcome]) -> str:
     current = patch.apply(all_edits)
     current = _normalise_main_namespace(current)
 
-    # 独立后置条件：由 result_invariants 用 expat / ElementTree 证明
+    # 独立后置条件：除正式 SpreadsheetML 结果区外，扩展元素的 QName/内容也必须
+    # 保持。该门禁能抓住"补默认命名空间导致 <payload> 被静默搬进 MAIN_NS"。
     try:
+        assert_non_main_elements_preserved(xml, current)
         assert_unique_references(current)
         assert_main_namespace_paths(current)
     except InvariantViolation as error:
