@@ -242,6 +242,20 @@ class R3NamespaceTestCase(unittest.TestCase):
         assert_main_namespace_semantics(xml)
         root = ElementTree.fromstring(xml)
         self.assertEqual(root.tag, "{" + MAIN_NS + "}worksheet")
+        # Writer 自己生成/替换的 U4 必须仍是 SpreadsheetML 单元格；不得在中间态
+        # 被误加 xmlns="" 后变成裸 c。
+        u4_main = [
+            element for element in root.iter("{" + MAIN_NS + "}c")
+            if element.attrib.get("r") == "U4"
+        ]
+        u4_bare = [
+            element for element in root.iter("c")
+            if element.attrib.get("r") == "U4"
+        ]
+        self.assertEqual(len(u4_main), 1,
+                         "A 情况下 U4 必须恰好一个且属于 SpreadsheetML")
+        self.assertEqual(u4_bare, [],
+                         "A 情况下 Writer 结果单元格不得落入无命名空间")
         # 允许去前缀：元素已属默认 MAIN_NS
         self.assertNotIn("<x:row", xml)
         # 正式 Reader 可重新读取
