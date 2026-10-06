@@ -1318,3 +1318,162 @@ READY_FOR_REACCEPTANCE
 R3 修复提交 `9f3686770a8dc33dfcdffe73396c2b89b5161ad1` 与本报告所在 head
 均为有效复验对象；其后的提交只包含本报告与治理文档同步，**不含代码改动**。
 形成本报告后**不再追加 commit**。
+
+---
+
+# Phase 8 R4 — Writer 身份模型重写与独立输出校验
+
+## R4.0 诊断结论（历史保留）
+
+| 项 | 值 |
+|---|---|
+| 诊断对象 head | `5fea7fa0b79789d49277c504b0913266518416da`（`PHASE_8_BLOCKED`） |
+| 诊断报告 | `docs/diagnostics/PR16_5fea7fa_diagnosis_20261006.md` |
+| 诊断核心判断 | 问题**不是**"最新一轮只是夹具错误"，而是 Writer 的**解析、补丁边界、独立校验与文件落盘**存在结构性缺陷；但**不支持**"业务算法失控"或"推倒全仓" |
+
+前四轮 BLOCKED 历史（`8cb6eec` 四项 blocker、`348a199` 两个 Writer 阻断、
+`fec8fd0` namespace 语义、`5fea7fa`）全部保留在 §R1 / §R1W / §R3，未被覆盖。
+
+**诊断指出的根本机制**：补丁与自检**共用同一个手写扫描器**，所以每修一个反例就
+扩大一次盲区。R4 因此不再按反例扩展正则，而是重建身份判定与校验。
+
+## R4.1 本轮修复的独立发现
+
+| issue_id | 级别 | 复现事实（修复前） | 根因 |
+|---|---|---|---|
+| `QA-P8-009` | P1 | 单引号 `r='U4'` -> 输出 **2 个真实 `{MAIN}c[@r='U4']`**（一个空、一个 79.786165），仍保存成功 `batch_record` | 属性正则只认双引号，坐标被漏掉；自检复用同一扫描器，同样漏掉 |
+| `QA-P8-010` | P1 | `e:r="ZZ999"` + `r="U4"` -> 重复坐标，且正式 Reader reopen 后 **U4 为空** | 属性按 local-name 取用，两者合并成一个键，后者覆盖前者 |
+| `QA-P8-011` | P2 | `extLst` 内独立命名空间的 `e:t` -> 门禁报"核心元素不属于 SpreadsheetML"，整批无法完成 | 门禁遍历整棵树、按 local-name 判定，未限定正式路径 |
+| `QA-P8-012` | P2 | 落盘中途失败 -> **最终文件名**留下仅 1 个 entry 的残缺 Workbook，重试得 `ResultWorkbookExistsError` | 直接 `ZipFile(destination, "w")`，无临时文件与失败清理 |
+| `QA-P8-013` | P2 | 主线程同步执行整批（10,000 行 CI 实测约 559s） | 按钮处理直接调用 `evaluate_workbook()`，无后台任务 |
+| `QA-P8-014` | P1 | 后代 `xmlns:x="urn:independent"` 重绑定 -> 扩展 payload 被静默改写进 SpreadsheetML 命名空间 | 前缀归一化按**根层声明**推全局，忽略词法作用域 |
+
+## R4.2 修复方式
+
+```text
+xml_model.py          顺序无关、作用域正确的 XML 词法/命名空间解析
+                      - 属性值单/双引号皆可；实体解码；注释/CDATA/PI/DOCTYPE 不是元素
+                      - 前缀按**词法作用域**（元素栈）解析，支持嵌套重绑定
+                      - 属性身份**包含 namespace**；未加前缀的属性没有 namespace
+                        => `r` 与 `e:r` 是两个不同属性（D02 的直接修复）
+
+worksheet_patch.py    只认正式路径 sheetData/row/c；按 `r` 坐标就地替换
+                      - 保留单元格原有样式与**非 Writer 拥有**的属性/命名空间声明
+
+pump_result_writer.py 一次解析 -> 收集全部编辑 -> 单遍应用
+                      - 命名空间归一 A/B/C 三分法 + **逐元素按作用域配对**
+                        （开标记与闭合标记同进退）
+                      - 结果单元格子元素前缀与生成阶段一致
+
+result_invariants.py  **独立**校验（expat 展开 QName + ElementTree 路径语义）
+                      - 良构 / 正式路径核心元素属 MAIN_NS / 坐标唯一
+                      - 用户输入值逐一不变 / 结果列值 == 声称的 payload
+                      - 落盘前在临时文件上**重新打开复验**
+
+batch.py（Qt）        批量评价移入工作线程 + 进行中状态 + 按钮守卫
+                      - 计算、统计、数据库语义**完全不变**
+```
+
+**成功的最低条件（缺一不可，全部由独立解析器证明）**
+
+```text
+每个结果行都真正被补丁 + XML 良构 + 坐标唯一
++ 正式路径核心元素属 MAIN_NS + 用户输入不变 + 结果值 == payload
++ 文件原子提交（临时文件 -> 复验 -> os.replace；失败清理半成品）
+```
+
+只有以上全部通过，才允许保存成功 `batch_record`。
+
+## R4.3 本轮自行引入并修掉的性能缺陷
+
+`WorksheetPatch.apply` 原先逐次拼接字符串（`out = out[:s] + r + out[e:]`），
+在上万个编辑时是 O(n²)：实测 1,000 行补丁阶段 18.7s 中有 **15.6s** 花在这里，
+5,000 行整批达 **460s**。已改为收集片段后一次 `join`，并改为一次解析、单遍应用。
+
+```text
+修复后（线性）：
+  500 行  3.4s
+  2,000 行  12.8s
+  5,000 行  31.8s
+  10,000 行  63.8s
+```
+
+## R4.4 回归
+
+```text
+tests.unit.test_phase8r4_writer_identity      15   全通过（本轮新增；被 blocked head 上失败）
+tests.unit.test_phase8r4_qt_background         5   全通过（本轮新增）
+完整 Phase 8（8A + 8B + 一致性 + R1/R1W/R2/R3/R4）  167  全通过
+tests.contract.test_architecture_boundaries    12   全通过
+CI gating 模块列表（同 CI 形态）                462  OK / exit 0
+全量 unittest                     1475 run / 1468 pass / 3 fail / 1 error / 3 skip
+known-regression comparator       gate=PASS
+compileall                        exit 0
+```
+
+既有失败仍是既有失败（3 项 V4 + 1 项 release audit），**未更新 known baseline、
+未删测试、未降断言、未新增 skip**。既有 Writer 测试改为断言**公开行为**
+（不再依赖私有扫描器）。
+
+## R4.5 本轮实际 GitHub CI（final Head）
+
+```text
+Windows Core        -> success（job 15.2 min；baseline 14.4 min；whitespace 0.2 min）
+Pump Conformance    -> success（1.7 min）
+```
+
+## R4.6 交付对象
+
+| 项 | 值 |
+|---|---|
+| Repo | `https://github.com/adgo07/EquipEffi.git` |
+| Base SHA | `79ea075967ace07aa9880369220d8bff9b53d9e8` |
+| Branch | `phase8/gb19762-excel-batch` |
+| PR | **#16** — https://github.com/adgo07/EquipEffi/pull/16（`open`, `merged=false`） |
+| 四次 BLOCKED head | `8cb6eec…` / `348a199…` / `fec8fd0…` / `5fea7fa…` |
+| **R4 提交** | 见 PR #16 当前 head |
+
+变更文件（相对 `5fea7fa`）：
+
+```text
+.github/workflows/windows-core.yml
+.gitignore
+QA_BACKLOG.md
+TASK_STATE.md
+docs/diagnostics/PR16_5fea7fa_diagnosis_20261006.md
+src/equipeffi/infrastructure/excel/pump_result_writer.py     （重写）
+src/equipeffi/infrastructure/excel/xml_model.py              （新增）
+src/equipeffi/infrastructure/excel/worksheet_patch.py        （新增）
+src/equipeffi/infrastructure/excel/result_invariants.py      （新增）
+src/equipeffi/presentation/qt/pages/batch.py
+tests/unit/test_phase8r4_writer_identity.py                  （新增）
+tests/unit/test_phase8r4_qt_background.py                    （新增）
+tests/unit/test_phase8b_batch_evaluation.py
+tests/unit/test_phase8r1w_writer_structure.py
+tests/unit/test_phase8r2_prefixed_writer.py
+tests/unit/test_phase8r3_namespace_preservation.py
+```
+
+## R4.7 是否修改了受保护资产
+
+| 资产 | 本轮是否修改 |
+|---|---|
+| pump 公式 / thresholds / boundary / grade | **否** |
+| Golden / Canonical / Numeric | **否** |
+| batch 统计业务语义 | **否**（仅 Qt 执行线程位置变化） |
+| migrations / `batch_record` schema | **否** |
+| V6 模板业务设计 | **否** |
+| 其他 Sheet | **否** |
+| Excel Writer 的**身份解析、补丁、落盘与校验** | 是（本轮修复范围） |
+
+未修改标准解释、Golden 业务真值、中央 Frozen Contract 或单台 Record 语义；
+未推倒核心算法、未扩大标准范围、未进入 Phase 9。
+
+## R4.8 状态
+
+```text
+Phase 8 R4 implementation = EXECUTION_COMPLETE
+READY_FOR_REACCEPTANCE
+```
+
+**不自宣 `PHASE_8_PASS`。不自行合并。不进入 Phase 9。**
