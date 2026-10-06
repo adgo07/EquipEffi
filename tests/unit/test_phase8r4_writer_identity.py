@@ -292,13 +292,13 @@ class R4TestCase(unittest.TestCase):
         """无默认 namespace 时，裸 <payload> 不得因 Writer 补 xmlns 而进入 MAIN_NS。"""
 
         def prefix_main_and_add_bare_extension(xml: str) -> str:
-            xml = re.sub(r"<(/?)([A-Za-z_][\\w.-]*)(?=[\\s/>])", r"<\\1x:\\2", xml)
+            xml = re.sub(r"<(/?)([A-Za-z_][\w.-]*)(?=[\s/>])", r"<\1x:\2", xml)
 
             def fix_root(match):
-                tag = re.sub(r'\\sxmlns="[^"]*"', "", match.group(0))
+                tag = re.sub(r'\sxmlns="[^"]*"', "", match.group(0))
                 return tag[:-1].rstrip() + f' xmlns:x="{MAIN_NS}">'
 
-            xml = re.sub(r"<x:worksheet\\b[^>]*>", fix_root, xml, count=1)
+            xml = re.sub(r"<x:worksheet\b[^>]*>", fix_root, xml, count=1)
             extension = (
                 '<x:extLst><x:ext uri="{NO-DEFAULT-EXT}">'
                 '<payload kind="independent">sentinel</payload>'
@@ -328,8 +328,6 @@ class R4TestCase(unittest.TestCase):
                       "A 情况必须为无命名空间扩展子树建立显式边界")
         self.assertEqual(len(self.batch.batch_repository.list_batch_records()), 1)
 
-    # ==================================================================
-    # 唯一性门禁与输入保真
     # ==================================================================
     # 唯一性门禁与输入保真
     # ==================================================================
