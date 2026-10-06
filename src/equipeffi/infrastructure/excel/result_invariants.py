@@ -206,6 +206,54 @@ def assert_main_namespace_paths(xml: str) -> None:
                                 f"内联文本不在主命名空间：{text.tag!r}")
 
 
+def _namespace_uri(expanded_name: str) -> str | None:
+    """Clark QName -> namespace URI；无命名空间返回 None。"""
+
+    if expanded_name.startswith("{"):
+        close = expanded_name.find("}")
+        if close > 0:
+            return expanded_name[1:close]
+    return None
+
+
+def _non_main_element_facts(xml: str) -> list[tuple[str, tuple, str, str]]:
+    """提取所有非 SpreadsheetML 元素的语义事实。
+
+    Writer 只获准修改 SpreadsheetML 结果列，因此扩展元素（包括**无命名空间**
+    元素）的 expanded QName、属性、文本与 tail 都必须保持。namespace 声明本身
+    不作为普通属性进入 ElementTree，所以为了保护 QName 而新增的 xmlns="" 边界
+    不会造成误报。
+    """
+
+    try:
+        root = ElementTree.fromstring(xml)
+    except ElementTree.ParseError as error:
+        raise InvariantViolation(f"worksheet 不是良构 XML：{error}") from error
+    facts: list[tuple[str, tuple, str, str]] = []
+    for element in root.iter():
+        if _namespace_uri(element.tag) == MAIN_NS:
+            continue
+        attributes = tuple(sorted((key, value) for key, value in element.attrib.items()))
+        facts.append((element.tag, attributes, element.text or "", element.tail or ""))
+    return facts
+
+
+def assert_non_main_elements_preserved(source_xml: str, result_xml: str) -> None:
+    """扩展/无命名空间元素的语义必须逐项保持。
+
+    该门禁专门覆盖一种旧盲区：在无默认命名空间的工作表根上补
+    xmlns=SpreadsheetML 会让原先无命名空间的 <payload> 静默变成
+    {SpreadsheetML}payload；正式 sheetData/row/c 门禁对此并不敏感。
+    """
+
+    before = _non_main_element_facts(source_xml)
+    after = _non_main_element_facts(result_xml)
+    if before != after:
+        raise InvariantViolation(
+            "结果 Workbook 改写了扩展/无命名空间元素的 QName 或内容；"
+            "拒绝把命名空间漂移当成成功")
+
+
 def input_cells(xml: str) -> dict[str, str]:
     """坐标 -> 文本（用于输入/输出保真比对）。"""
 
