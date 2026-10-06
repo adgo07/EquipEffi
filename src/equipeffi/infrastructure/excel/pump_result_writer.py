@@ -439,41 +439,42 @@ def _scan_cells_compat(xml: str):
 # 补丁
 # ---------------------------------------------------------------------------
 
-def _normalised_prefix(plan: NamespacePlan, prefix: str,
-                      ns_uri: str | None) -> str:
-    """某个元素在**命名空间归一之后**应使用的前缀。
+def _patch_prefix(plan: NamespacePlan, prefix: str,
+                  ns_uri: str | None) -> str:
+    """补丁**中间态**应使用的元素前缀。
 
-    归一化会把"绑定 MAIN_NS 且在情况 A/B 下"的前缀去掉，因此**生成阶段就必须**
-    用归一后的前缀，否则会先写出 `x:` 元素、归一化时又对不上闭合标记。
+    A / B 都允许最终去掉 MAIN_NS 前缀，但两者在补丁阶段不同：
+
+    - A（根无默认 namespace）：必须暂时保留原 MAIN_NS 前缀。否则 Writer 新生成的
+      裸 `<c>/<v>/<is>/<t>` 在补根默认 namespace 之前会被解析成"无命名空间"，
+      并被扩展保护逻辑误加 `xmlns=""`。
+    - B（根默认 namespace 已是 MAIN_NS）：可直接使用裸元素，因为它们在当前中间态
+      已经明确属于 MAIN_NS。
+    - C（根默认 namespace 是其它 URI）：继续保留 MAIN_NS 前缀。
+
+    最终 A/B 的冗余 MAIN_NS 前缀统一由 `normalise_namespace()` 去除。
     """
 
     if not prefix:
         return ""
     if ns_uri == MAIN_NS and prefix in plan.strippable:
-        return ""
+        return prefix if plan.needs_default else ""
     return prefix
 
 
 def _row_prefix(patch: WorksheetPatch, plan: NamespacePlan,
                 row_number: int) -> str:
-    """新插入单元格在归一后应使用的命名空间前缀。
+    """新插入单元格在**补丁中间态**应使用的命名空间前缀。
 
-    情况 C（默认命名空间不是 MAIN_NS）必须沿用行的前缀，否则新元素会落进别的
-    默认命名空间——由**解析后的作用域**决定，不做字面猜测。
+    不提前猜最终序列化形式；直接依据行元素的当前 namespace 身份决定。A 情况
+    必须保留 MAIN_NS 前缀到扩展子树保护完成之后，B 才能安全提前去前缀，C 继续
+    保留前缀。
     """
 
-    default_uri = patch.root.scope.get("") if patch.root is not None else None
     row = patch.rows.get(row_number)
-    if default_uri is None or default_uri != MAIN_NS:
-        # 情况 A：行前缀若绑定 MAIN_NS，归一化会去掉它 -> 新元素用无前缀形式
-        if row is not None:
-            return _normalised_prefix(plan, row.element.prefix,
-                                      row.element.ns_uri)
+    if row is None:
         return ""
-    # 情况 B：默认已是 MAIN_NS，新元素必须无前缀
-    if row is not None and row.element.ns_uri != MAIN_NS:
-        return _normalised_prefix(plan, row.element.prefix, row.element.ns_uri)
-    return ""
+    return _patch_prefix(plan, row.element.prefix, row.element.ns_uri)
 
 
 def _row_reference_counts(row) -> dict[str, int]:
@@ -508,9 +509,10 @@ def _row_edits(patch: WorksheetPatch, row_number: int,
         existing = by_reference.get(reference)
         if existing is not None:
             style = existing.style or fallback_style
-            # 就地替换：使用**归一化之后**的前缀，保持其命名空间语义
-            effective = _normalised_prefix(plan, existing.element.prefix,
-                                           existing.element.ns_uri)
+            # 就地替换：使用**补丁中间态**前缀。A 情况必须暂时保留 MAIN_NS
+            # 前缀，避免扩展保护逻辑把 Writer 自己生成的结果元素误判为裸扩展。
+            effective = _patch_prefix(plan, existing.element.prefix,
+                                      existing.element.ns_uri)
             edits.append((existing.start, existing.end,
                           cell_xml(reference, style, payloads[column],
                                    effective,
