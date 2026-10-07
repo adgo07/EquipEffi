@@ -1,0 +1,186 @@
+{
+  "task": "M3 standard pack repository instance cache",
+  "base_head": "81f1b076795b1c740aea4f522532955cc4663aed",
+  "before_head": "81f1b076795b1c740aea4f522532955cc4663aed",
+  "after_head": "a373dbfcfe87da763e1e5c464f67c08bdcba854a",
+  "python": "3.12.14 (main, Sep  1 2026, 14:17:39) [MSC v.1944 64 bit (AMD64)]",
+  "method": {
+    "as_of": "2026-08-23",
+    "persist_batch_record": false,
+    "timing_pass_tracemalloc": false,
+    "memory_pass_tracemalloc": true,
+    "representative_data": "tools/measure_v6_capacity.py::_fill"
+  },
+  "template_sha256": "D12ECE2622906091AFDD70F3B541681EECD11D0E0F22674A292006E40501586D",
+  "note_input_bytes": "工作簿由同一 V6 模板 + 同一 representative data 规则生成；100 / 1,000 行输入字节完全相同，10,000 行相差 1 字节，来自 xlsx 内嵌文档时间戳（docProps），不是数据差异——逐行结果摘要与结论分布完全一致。",
+  "comparison": [
+    {
+      "rows": 100,
+      "result_digest": "0ce4a6de0424dae122649bb64f1eb25ae4046b973c990238ebfc46f805eef714",
+      "result_digest_equal": true,
+      "conclusion_rows": {
+        "3级": 12,
+        "1级": 42,
+        "2级": 11,
+        "不适用": 10,
+        "无法评价": 10,
+        "未达标": 5
+      },
+      "evaluated_quantity": 220,
+      "data_row_count": 100,
+      "input_bytes_identical": true,
+      "total_seconds": {
+        "before": 0.652074,
+        "after": 0.621327,
+        "delta_percent": -4.72
+      },
+      "reader_seconds": {
+        "before": 0.016514,
+        "after": 0.015871,
+        "delta_percent": -3.89
+      },
+      "application_seconds": {
+        "before": 0.145039,
+        "after": 0.104917,
+        "delta_percent": -27.66
+      },
+      "get_pack_seconds": {
+        "before": 0.094786,
+        "after": 0.057481,
+        "delta_percent": -39.36
+      },
+      "writer_seconds": {
+        "before": 0.483253,
+        "after": 0.492413,
+        "delta_percent": 1.9
+      },
+      "peak_memory_bytes": {
+        "before": 24862350,
+        "after": 24905708,
+        "delta_percent": 0.17
+      },
+      "input_size_bytes": {
+        "before": 398632,
+        "after": 398632,
+        "delta_percent": 0.0
+      },
+      "output_size_bytes": {
+        "before": 404240,
+        "after": 404240,
+        "delta_percent": 0.0
+      }
+    },
+    {
+      "rows": 1000,
+      "result_digest": "32634ebc4465f2684abe83200261fffe2d1ed965d60a98f74464a6ffab941a41",
+      "result_digest_equal": true,
+      "conclusion_rows": {
+        "3级": 123,
+        "1级": 201,
+        "2级": 58,
+        "不适用": 348,
+        "无法评价": 100,
+        "未达标": 70
+      },
+      "evaluated_quantity": 2200,
+      "data_row_count": 1000,
+      "input_bytes_identical": true,
+      "total_seconds": {
+        "before": 4.657682,
+        "after": 4.223658,
+        "delta_percent": -9.32
+      },
+      "reader_seconds": {
+        "before": 0.080102,
+        "after": 0.082337,
+        "delta_percent": 2.79
+      },
+      "application_seconds": {
+        "before": 1.378151,
+        "after": 1.028104,
+        "delta_percent": -25.4
+      },
+      "get_pack_seconds": {
+        "before": 0.925861,
+        "after": 0.581278,
+        "delta_percent": -37.22
+      },
+      "writer_seconds": {
+        "before": 3.152762,
+        "after": 3.067331,
+        "delta_percent": -2.71
+      },
+      "peak_memory_bytes": {
+        "before": 110812991,
+        "after": 110832875,
+        "delta_percent": 0.02
+      },
+      "input_size_bytes": {
+        "before": 454110,
+        "after": 454110,
+        "delta_percent": 0.0
+      },
+      "output_size_bytes": {
+        "before": 532387,
+        "after": 532387,
+        "delta_percent": 0.0
+      }
+    },
+    {
+      "rows": 10000,
+      "result_digest": "8ece16241fb6cc29592fc754618ac0d8dcaf5b7efc10cd4b3b12b35bf051a588",
+      "result_digest_equal": true,
+      "conclusion_rows": {
+        "3级": 285,
+        "1级": 1906,
+        "2级": 117,
+        "不适用": 6277,
+        "无法评价": 1000,
+        "未达标": 125
+      },
+      "evaluated_quantity": 24130,
+      "data_row_count": 10000,
+      "input_bytes_identical": false,
+      "total_seconds": {
+        "before": 46.172673,
+        "after": 42.317806,
+        "delta_percent": -8.35
+      },
+      "reader_seconds": {
+        "before": 0.847586,
+        "after": 0.817897,
+        "delta_percent": -3.5
+      },
+      "application_seconds": {
+        "before": 14.086802,
+        "after": 10.163613,
+        "delta_percent": -27.85
+      },
+      "get_pack_seconds": {
+        "before": 9.440802,
+        "after": 5.758995,
+        "delta_percent": -39.0
+      },
+      "writer_seconds": {
+        "before": 30.779946,
+        "after": 30.839355,
+        "delta_percent": 0.19
+      },
+      "peak_memory_bytes": {
+        "before": 1015444949,
+        "after": 1015550677,
+        "delta_percent": 0.01
+      },
+      "input_size_bytes": {
+        "before": 1001111,
+        "after": 1001110,
+        "delta_percent": -0.0
+      },
+      "output_size_bytes": {
+        "before": 1721233,
+        "after": 1721232,
+        "delta_percent": -0.0
+      }
+    }
+  ]
+}
