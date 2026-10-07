@@ -21,6 +21,7 @@ from pathlib import Path
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
+from PySide6.QtCore import QCoreApplication, QEvent
 from PySide6.QtWidgets import QApplication
 
 import openpyxl
@@ -71,6 +72,31 @@ class M2TestCase(unittest.TestCase):
 
     # -- helpers -----------------------------------------------------------
 
+    def cleanup_widget(self, widget):
+        """最小 Qt 生命周期清理（本模块自建的 standalone 页面用）。
+
+        ```text
+        close() -> deleteLater() -> sendPostedEvents(DeferredDelete) -> processEvents()
+        ```
+
+        为什么不能只 `addCleanup(page.deleteLater)`：`deleteLater` 只是把删除
+        排进事件队列，测试进程如果不把 DeferredDelete 事件真正派发完，
+        C++ 侧对象的销毁会推迟到不确定的时刻（下一个测试甚至解释器收尾阶段），
+        从而出现"没有 FAIL/ERROR、没有 Ran...、进程直接终止"的 Qt 生命周期问题。
+
+        这里只做**测试清理**，不建立 Qt test framework，也不改正式实现。
+        """
+
+        if widget is None:
+            return
+        try:
+            widget.close()
+        except RuntimeError:  # 已经销毁：无需再处理
+            return
+        widget.deleteLater()
+        QCoreApplication.sendPostedEvents(None, QEvent.DeferredDelete)
+        QCoreApplication.processEvents()
+
     def seed_history(self, count: int = HISTORY_ROWS) -> list[str]:
         """写入 count 条历史记录（只写既有列，不新增 schema）。
 
@@ -113,7 +139,7 @@ class M2TestCase(unittest.TestCase):
         from equipeffi.presentation.qt.pages.records import RecordsPage
 
         page = RecordsPage(self.service)
-        self.addCleanup(page.deleteLater)
+        self.addCleanup(self.cleanup_widget, page)
         return page
 
     def make_input(self, rows: int = 2) -> Path:
@@ -138,11 +164,6 @@ class M2TestCase(unittest.TestCase):
 # ===========================================================================
 
 class HistorySearchTests(M2TestCase):
-    def test_empty_history_has_single_all_categories_option(self):
-        page = self.records_page()
-        self.assertEqual(page.category_filter.count(), 1)
-        self.assertEqual(page.category_filter.itemText(0), "全部泵型")
-
     def test_first_page_is_bounded_but_total_is_everything(self):
         self.seed_history(260)
         page = self.records_page()
@@ -279,7 +300,7 @@ class BatchFlowTests(M2TestCase):
 
         page = BatchPage(create_batch_evaluation_service(paths=self.paths),
                          settings=settings)
-        self.addCleanup(page.deleteLater)
+        self.addCleanup(self.cleanup_widget, page)
         return page
 
     def test_selecting_a_file_runs_the_check_automatically(self):
@@ -403,7 +424,7 @@ class BatchQuickActionTests(M2TestCase):
 
         page = BatchPage(create_batch_evaluation_service(paths=self.paths),
                          settings=settings)
-        self.addCleanup(page.deleteLater)
+        self.addCleanup(self.cleanup_widget, page)
         return page
 
     def test_quick_actions_are_disabled_before_a_run(self):
@@ -483,7 +504,7 @@ class CloseEventTests(M2TestCase):
                 raise RuntimeError("模拟布局保存失败")
 
         window = self.window(_FailingSettings())
-        self.addCleanup(window.deleteLater)
+        self.addCleanup(self.cleanup_widget, window)
         with self.assertLogs("equipeffi.qt", level="ERROR"):
             self.assertTrue(window.close(), "布局保存失败时仍必须能关闭窗口")
 
@@ -495,7 +516,7 @@ class CloseEventTests(M2TestCase):
             "equipeffi.infrastructure.runtime_logging",
             fromlist=["close_logging"]).close_logging(logger))
         window = self.window(settings)
-        self.addCleanup(window.deleteLater)
+        self.addCleanup(self.cleanup_widget, window)
         self.assertTrue(window.close())
         self.assertIsNotNone(settings.get("window.geometry"))
 
@@ -515,7 +536,7 @@ class CloseEventTests(M2TestCase):
         batch = create_batch_evaluation_service(paths=self.paths)
         window = MainWindow(settings, analysis=self.service, batch=batch,
                            app_version="test", data_location=self.root)
-        self.addCleanup(window.deleteLater)
+        self.addCleanup(self.cleanup_widget, window)
 
         page = window.batch_page
         page.set_source(self.make_input(3))
@@ -593,6 +614,12 @@ class UserFacingLanguageTests(M2TestCase):
         self.assertEqual(user_facing_status("SOMETHING_NEW"), "无法评价")
 
     def test_records_page_shows_chinese_conclusion_filters(self):
+        """结论筛选项全中文；空历史时泵型筛选只有一项「全部泵型」。
+
+        后两条断言原先在一个独立测试里（各自再建一个 Qt 页面）；这里复用本测试
+        已经创建的空数据库 `RecordsPage`，不再多建一个页面。
+        """
+
         page = M2TestCase.records_page(self)
         labels = [page.conclusion_filter.itemText(index)
                   for index in range(page.conclusion_filter.count())]
@@ -603,6 +630,11 @@ class UserFacingLanguageTests(M2TestCase):
                         ("SUCCESS", "INSUFFICIENT_DATA", "INVALID_INPUT",
                          "OUT_OF_STANDARD_SCOPE")),
                     f"筛选项不得暴露内部状态：{label}")
+
+        # 空历史：泵型筛选必须**只有**一项「全部泵型」（不得重复、不得为空）
+        self.assertEqual(page.category_filter.count(), 1,
+                         "空历史时泵型筛选不应出现重复项")
+        self.assertEqual(page.category_filter.itemText(0), "全部泵型")
 
 
 if __name__ == "__main__":
