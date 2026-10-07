@@ -162,8 +162,14 @@ def build_native(
     digest = __import__("hashlib").sha256(executable.read_bytes()).hexdigest()
     warn_path = executable.parents[2] / "build" / name / f"warn-{name}.txt"
     warning_text = warn_path.read_text(encoding="utf-8", errors="replace") if warn_path.is_file() else ""
-    # 静态PyInstaller警告不足以证明窗口可启动：Tcl/Tk运行库可能仍缺失。
-    # 诊断工具只读检查目标构建Python，不启动主窗口。
+    # 静态PyInstaller警告不足以证明窗口可启动。诊断工具只读检查目标构建
+    # Python，不启动主窗口。
+    #
+    # 注意（M1 文案修正）：`gui_capable` / `presentation_mode` 是**历史 Tk 时代的
+    # 构建诊断字段**，字段名与取值（native_tk / web_fallback）为兼容
+    # `tools/audit_release.py` 的既有校验而保留，**不代表当前 UI 入口**。
+    # Phase 6 起正式桌面 Shell 为 PySide6 Qt（无参数 / --gui / --qt 同一入口），
+    # 不存在「Tk 不可用则回退 Web 窗口」的行为。发行包裁剪属于 Phase 9。
     try:
         # 直接执行``python tools/build_native.py``时，sys.path首项是tools目录，
         # 将仓库根目录补入后才能导入同目录的诊断模块；作为模块导入时无影响。
@@ -197,8 +203,8 @@ def build_native(
         "executable": str(executable),
         "sha256": digest,
         "gui_capable": gui_capable,
-        # Even when PyInstaller cannot bundle Tk, the packaged ``--gui``
-        # entrypoint can still serve the framework-free Web window.
+        # 历史 Tk 时代构建诊断字段，取值为兼容 tools/audit_release.py 校验而保留；
+        # 不表示当前 UI 入口，也不表示 --gui 会回退到 Web 窗口（见上方说明）。
         "presentation_mode": "native_tk" if gui_capable else "web_fallback",
         "gui_environment_ready": bool(gui_environment.get("ready")),
         "gui_environment_error": str(gui_environment.get("error", "")),
@@ -212,7 +218,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output-dir", type=Path, default=ROOT / "dist" / "native")
     parser.add_argument("--tool", default="", help="PyInstaller可执行文件路径；默认从PATH查找")
-    parser.add_argument("--python", dest="python_path", default="", help="用指定Python执行`-m PyInstaller`，可用于带Tk的环境")
+    parser.add_argument("--python", dest="python_path", default="", help="用指定Python执行`-m PyInstaller`；默认用当前解释器")
     parser.add_argument("--gui-python", default="", help="GUI预检使用的Python；默认跟随--python或当前Python")
     parser.add_argument("--name", default="equipeffi")
     parser.add_argument("--timeout", type=int, default=600)
