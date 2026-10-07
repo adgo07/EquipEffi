@@ -526,3 +526,16 @@ UI03 记录页删「审计信息」展示 / UI04 日志级别中文化。四项�
 4. "没写成"必须是**硬失败**：定位不到行、坐标不唯一、命名空间错误、文件未原子提交，
    都不得保存成功批次记录，也不得留下残缺结果文件。
 5. 大批量性能要用**真实规模**测量；字符串拼接与"逐行重解析"是两个已经踩到的 O(n²) 陷阱。
+
+### M2 登记（产品使用简化）
+
+| issue_id | 级别 | 表面 | 状态 | 说明 |
+|---|---|---|---|---|
+| `QA-M2-001` | P1 | `RECORDS_SEARCH_WINDOW` | **CLOSED（M2）** | `RecordsPage` 先取最近 200 条再在界面筛选，第 201 条以后的历史记录虽然存在于数据库却**永远搜不到**。修复：筛选条件下沉到 SQL（`RecordQuery` + `search_records`），列表只取 8 列轻量投影 + SQL `COUNT`，支持 100 条/页的「加载更多」。复用既有索引 `idx_record_finalized_at`，**未新增表 / 列 / migration**。回归：`test_m2_product_usage_simplification` |
+| `QA-M2-002` | P2 | `BATCH_EXTRA_STEP` | **CLOSED（M2）** | 批量评价此前要求用户先点一次独立的「导入检查」才能继续。修复：选择 Excel 时**自动**完成同一检查并显示结果，去掉独立按钮；输出路径默认留空、运行时自动生成带时间戳的新文件（不覆盖输入），仅在用户主动展开时才填写。回归：同上 |
+| `QA-M2-003` | P2 | `BATCH_NO_FOLLOW_UP` | **CLOSED（M2）** | 批量成功后没有后续动作入口。新增「打开结果 / 打开所在文件夹」（`QDesktopServices`，跨平台），并复用既有设置键 `last.directory` 记住上次目录。**未**建立最近文件系统。回归：同上 |
+| `QA-M2-004` | P1 | `CLOSE_BLOCKED_BY_LAYOUT` | **CLOSED（M2）** | `closeEvent` 在窗口布局保存失败时**拒绝关闭**，用户被卡住。修复：布局保存失败只记 warning/error 日志并正常退出；**正式写入**（结果 Workbook / Record / batch_record）进行中的延迟关闭逻辑保持不变。回归：`test_m2_product_usage_simplification`、`test_phase2_qt` |
+| `QA-M2-005` | P2 | `INTERNAL_STATUS_VISIBLE` | **CLOSED（M2）** | 普通 Qt 界面可能显示 `INVALID_INPUT` / `EXECUTION_ERROR` / `INPUT_ERROR` 等内部机器值。修复：应用契约新增集中映射（输入数据有误 / 处理失败 / 资料不足 / 不适用 / 已判定等级），Qt 经 `labels.py` 转发；**底层 enum/string 一个都不改**。回归：同上 |
+
+**未做（刻意）**：不改业务算法、不改 Golden / Canonical / Numeric、不改 records schema、
+不新增 migration、不新增高级筛选器 / 查询 DSL / 复杂分页框架 / 批次任务中心 / 云同步 / 审计 UI。

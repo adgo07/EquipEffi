@@ -104,14 +104,21 @@ class QtShellTests(unittest.TestCase):
         self.addCleanup(window.close)
         self.assertEqual(window.width(), 1000)
 
-    def test_save_failure_is_logged_and_close_is_rejected(self):
+    def test_save_failure_is_logged_and_close_still_succeeds(self):
+        """M2：窗口布局保存失败只记日志，**不再**阻止退出。
+
+        这是普通偏好设置，不是正式数据；此前会因为它拒绝关闭窗口卡住用户。
+        正式写入（结果 Workbook / Record / batch_record）进行中的安全退出逻辑
+        由 `closeEvent` 的另一条分支保证，未放松。
+        """
+
         window = MainWindow(self.service)
         window.show()
         with patch.object(self.service, "set", side_effect=OSError("disk full")):
             with self.assertLogs("equipeffi.qt", level="ERROR") as logs:
-                self.assertFalse(window.close())
+                self.assertTrue(window.close(),
+                                "布局保存失败时仍必须能正常退出")
         self.assertIn("Traceback", logs.output[0])
-        window.close()
 
     def test_qt_warning_reaches_file(self):
         previous = install_qt_message_handler(self.logger)

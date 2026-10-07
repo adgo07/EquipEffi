@@ -561,11 +561,16 @@ class RecordsPageTests(ProductShellTestCase):
     def test_filter_by_conclusion_uses_snapshot_status(self):
         self._finalize(WATER, "P6-W-2")
         page = self.window().records_page
-        page.conclusion_filter.setCurrentIndex(
-            page.conclusion_filter.findText("已判定等级"))
+        # `findText` 找不到会静默返回 -1，因此这里显式断言选项真实存在
+        # （M2 把结论筛选项改成用户中文文案：不适用 / 资料不足 / 输入有误）。
+        graded = page.conclusion_filter.findText("已判定等级")
+        self.assertGreaterEqual(graded, 0, "必须存在「已判定等级」筛选项")
+        page.conclusion_filter.setCurrentIndex(graded)
         self.assertEqual(len(page.filtered_records()), 1)
-        page.conclusion_filter.setCurrentIndex(
-            page.conclusion_filter.findText("不适用（超出标准范围）"))
+
+        not_applicable = page.conclusion_filter.findText("不适用")
+        self.assertGreaterEqual(not_applicable, 0, "必须存在「不适用」筛选项")
+        page.conclusion_filter.setCurrentIndex(not_applicable)
         self.assertEqual(page.filtered_records(), [])
 
     def test_history_snapshot_is_displayed_without_drift(self):

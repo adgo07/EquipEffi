@@ -24,7 +24,10 @@ import sqlite3
 from ...application.lifecycle import (
     LifecyclePersistenceError,
     RecordConflictError,
+    RecordPage,
+    RecordQuery,
     RecordSnapshot,
+    RecordSummary,
     WorkspaceSnapshot,
 )
 
@@ -198,6 +201,83 @@ class SqliteRecordRepository:
             ).fetchall()
         return [_record_from_row(row) for row in rows]
 
+    #: 允许做 distinct 投影的列（**白名单**，避免把列名拼进 SQL）。
+    _DISTINCT_COLUMNS = frozenset(("product_category", "standard_code",
+                                   "evaluation_status"))
+
+    def distinct_values(self, column: str) -> list[str]:
+        """某一列的现有取值（用于筛选项），列名走白名单。"""
+
+        if column not in self._DISTINCT_COLUMNS:
+            raise ValueError(f"不允许对列 {column!r} 做 distinct 投影")
+        with _persistence("读取记录筛选项", self.database), \
+                closing(sqlite3.connect(self.database)) as connection:
+            rows = connection.execute(
+                f"SELECT DISTINCT {column} FROM record WHERE {column} IS NOT NULL"
+            ).fetchall()
+        return [row[0] for row in rows]
+
+    def search_records(self, query: RecordQuery) -> RecordPage:
+        """在 **SQL 里**筛选 + 分页（M2）。
+
+        为什么必须下沉：界面此前"先取最近 200 条再筛选"，第 201 条以后的记录
+        虽然存在数据库里却永远搜不到。这里直接对 `record` 表按条件查询，
+        因此命中范围是**全部历史记录**。
+
+        实现要点：
+
+        * 只读 `record` 表既有列，不新增表 / 列 / migration；
+        * 复用既有索引 `idx_record_finalized_at`（`ORDER BY finalized_at_utc DESC`）；
+        * 列表只取展示所需的 8 列投影，**不加载** `*_snapshot_json`；
+        * 分页用 `LIMIT/OFFSET`，配合稳定排序键 `(finalized_at_utc DESC, record_id ASC)`，
+          保证翻页不重复、不遗漏。
+        """
+
+        limit = max(int(query.limit), 1)
+        offset = max(int(query.offset), 0)
+        clauses: list[str] = []
+        params: list[object] = []
+
+        keyword = (query.keyword or "").strip().lower()
+        if keyword:
+            # 关键字匹配范围与旧界面行为一致：记录编号 / 设备类别 / 标准号 / 结论。
+            pattern = f"%{keyword}%"
+            clauses.append(
+                "(LOWER(record_id) LIKE ? OR LOWER(product_category) LIKE ?"
+                " OR LOWER(standard_code) LIKE ? OR LOWER(ui_conclusion) LIKE ?)"
+            )
+            params.extend([pattern] * 4)
+
+        category = (query.product_category or "").strip()
+        if category:
+            clauses.append("product_category = ?")
+            params.append(category)
+
+        statuses = tuple(status for status in (query.statuses or ()) if status)
+        if statuses:
+            placeholders = ", ".join("?" for _ in statuses)
+            clauses.append(f"evaluation_status IN ({placeholders})")
+            params.extend(statuses)
+
+        as_of_prefix = (query.as_of_prefix or "").strip()
+        if as_of_prefix:
+            clauses.append("as_of LIKE ?")
+            params.append(f"{as_of_prefix}%")
+
+        where = f" WHERE {' AND '.join(clauses)}" if clauses else ""
+        with _persistence("查询正式记录", self.database), \
+                closing(sqlite3.connect(self.database)) as connection:
+            total = int(connection.execute(
+                f"SELECT COUNT(*) FROM record{where}", params).fetchone()[0])
+            rows = connection.execute(
+                f"SELECT {_SUMMARY_COLUMNS} FROM record{where}"
+                " ORDER BY finalized_at_utc DESC, record_id ASC LIMIT ? OFFSET ?",
+                (*params, limit, offset),
+            ).fetchall()
+        return RecordPage(
+            records=tuple(_summary_from_row(row) for row in rows),
+            total=total, offset=offset, limit=limit)
+
 
 _RECORD_COLUMNS = (
     "record_id, workspace_id, standard_code, standard_version, device_type, "
@@ -207,6 +287,21 @@ _RECORD_COLUMNS = (
     "canonical_package_hash, result_contract_version, schema_version, "
     "created_at_utc, finalized_at_utc"
 )
+
+
+#: 列表展示所需的最小列投影：**不**读取 `*_snapshot_json`（历史记录可能很多）。
+_SUMMARY_COLUMNS = (
+    "record_id, standard_code, product_category, as_of, evaluation_status, "
+    "grade, ui_conclusion, finalized_at_utc"
+)
+
+
+def _summary_from_row(row) -> RecordSummary:
+    return RecordSummary(
+        record_id=row[0], standard_code=row[1], product_category=row[2],
+        as_of=row[3], evaluation_status=row[4], grade=row[5],
+        ui_conclusion=row[6], finalized_at_utc=row[7],
+    )
 
 
 def _record_from_row(row) -> RecordSnapshot:

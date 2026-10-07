@@ -22,10 +22,14 @@ from ...application.services.centrifugal_pump_analysis_service import (
     SUPPORT_STATUS_LABELS,
     USER_CONCLUSION_FALLBACK,
     USER_CONCLUSION_UNCERTAIN_CATEGORY,
+    USER_FACING_ISSUE_KIND_LABELS,
+    USER_FACING_STATUS_LABELS,
     format_metric,
     issue_code_texts,
     support_status_text,
     user_conclusion_text,
+    user_facing_issue_kind,
+    user_facing_status,
 )
 
 __all__ = [
@@ -33,10 +37,14 @@ __all__ = [
     "SUPPORT_STATUS_LABELS",
     "USER_CONCLUSION_FALLBACK",
     "USER_CONCLUSION_UNCERTAIN_CATEGORY",
+    "USER_FACING_ISSUE_KIND_LABELS",
+    "USER_FACING_STATUS_LABELS",
     "format_metric",
     "issue_code_texts",
     "support_status_text",
     "user_conclusion_text",
+    "user_facing_issue_kind",
+    "user_facing_status",
 ]
 
 

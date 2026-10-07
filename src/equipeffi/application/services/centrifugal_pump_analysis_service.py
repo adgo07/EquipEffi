@@ -31,8 +31,11 @@ from ...domain.evaluation.device_types import (
 )
 from ..lifecycle import (
     AnalysisError,
+    RecordPage,
+    RecordQuery,
     RecordRepository,
     RecordSnapshot,
+    RecordSummary,
     WorkspaceRepository,
     WorkspaceSnapshot,
     business_keys_metadata,
@@ -237,6 +240,53 @@ def user_conclusion_text(result: Any) -> str:
     if snapshot.get("requires_category_confirmation"):
         return USER_CONCLUSION_UNCERTAIN_CATEGORY
     return str(snapshot.get("ui_conclusion") or USER_CONCLUSION_FALLBACK)
+
+
+#: 历史记录查询条件 / 结果 / 分页：**经本契约再导出**。
+#:
+#: 架构门禁只允许 Qt 导入本模块与 settings/batch 两个契约，因此 Qt 不得直接
+#: `import equipeffi.application.lifecycle`。这里把 M2 需要的查询类型转发出来，
+#: 与"用户可见文案唯一来源"是同一模式。
+RecordPage = RecordPage
+RecordQuery = RecordQuery
+RecordSummary = RecordSummary
+
+#: 内部机器状态 -> 普通用户中文文案（M2 第五条）。
+#:
+#: 普通 Qt 界面**不得**直接显示 `INVALID_INPUT` / `EXECUTION_ERROR` 之类的内部值；
+#: 这里给出一处集中映射，底层 enum/string 一个都不改。
+USER_FACING_STATUS_LABELS: dict[str, str] = {
+    "SUCCESS": "已判定等级",
+    "OUT_OF_STANDARD_SCOPE": "不适用",
+    "INSUFFICIENT_DATA": "资料不足",
+    "INVALID_INPUT": "输入数据有误",
+    "EXECUTION_ERROR": "处理失败",
+}
+
+#: 需要关注的行类别 -> 中文（供批量汇总使用）。
+USER_FACING_ISSUE_KIND_LABELS: dict[str, str] = {
+    "INPUT_ERROR": "输入数据有误",
+    "EXECUTION_ERROR": "处理失败",
+    "UNEVALUATED": "无法评价",
+}
+
+
+def user_facing_status(value: object) -> str:
+    """把内部机器状态翻成普通中文；未知值不伪装成已知状态。"""
+
+    text = "" if value is None else str(value).strip()
+    if not text:
+        return "—"
+    return USER_FACING_STATUS_LABELS.get(text, "无法评价")
+
+
+def user_facing_issue_kind(value: object) -> str:
+    """把"需要关注的行"类别翻成普通中文。"""
+
+    text = "" if value is None else str(value).strip()
+    if not text:
+        return "需要关注"
+    return USER_FACING_ISSUE_KIND_LABELS.get(text, "需要关注")
 
 
 def support_status_text(value: str | None) -> str:
@@ -1281,6 +1331,27 @@ class CentrifugalPumpAnalysisService:
         if self._records is None:
             return []
         return self._records.list_records(limit)
+
+    def search_records(self, query: RecordQuery | None = None) -> RecordPage:
+        """按条件在**存储层**筛选并分页历史记录（M2）。
+
+        筛选在 SQL 里完成，因此命中范围是**全部历史记录**，不受"最近 N 条"限制；
+        返回轻量投影 + 总数，列表不再加载快照 JSON。
+        """
+
+        effective = query or RecordQuery()
+        if self._records is None:
+            return RecordPage(records=(), total=0, offset=effective.offset,
+                              limit=effective.limit)
+        return self._records.search_records(effective)
+
+    def record_categories(self) -> tuple[str, ...]:
+        """历史记录里**真实出现过**的设备类别（用于筛选项，不引入第二份目录）。"""
+
+        if self._records is None:
+            return ()
+        rows = self._records.distinct_values("product_category")
+        return tuple(sorted(value for value in rows if value))
 
     def open_record(self, record_id: str) -> RecordSnapshot:
         """Reopen：只读原快照，**不调用 evaluator**、不按今天日期重算。"""

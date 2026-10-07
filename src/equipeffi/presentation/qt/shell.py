@@ -61,7 +61,9 @@ class MainWindow(QMainWindow):
         # Phase 7：普通流程没有草稿概念，分析页不接收 workspace_id。
         self.analysis_page = AnalysisPage(analysis, navigator=self) if analysis is not None else None
         # Phase 8：批量评价页只在装配了批量服务时构建（Excel 仍是 adapter 表面）。
-        self.batch_page = BatchPage(batch, navigator=self) if batch is not None else None
+        self.batch_page = (
+            BatchPage(batch, navigator=self, settings=settings)
+            if batch is not None else None)
         if self.batch_page is not None:
             self.batch_page.background_idle.connect(self._finish_deferred_close)
         self.records_page = RecordsPage(analysis, navigator=self) if analysis is not None else None
@@ -157,6 +159,23 @@ class MainWindow(QMainWindow):
         QTimer.singleShot(0, self.close)
 
     def closeEvent(self, event):
+        """关闭窗口。
+
+        两类情形必须分开（M2）：
+
+        ```text
+        后台批量评价仍在运行（正在写结果 Workbook / 提交 batch_record）
+            -> event.ignore()：正式写入不能安全中断，等线程真正结束后自动关闭。
+
+        普通窗口布局保存失败
+            -> 记 warning/error 日志后**正常退出**：这是偏好设置，不是正式数据，
+               不得因为它拒绝关闭窗口（此前会卡住用户）。
+        ```
+
+        正式的 Record / batch_record 写入失败**不会**走到这里：它们的失败在批量
+        流程内部就已显式报错，绝不伪装成成功。
+        """
+
         batch_page = self.batch_page
         if batch_page is not None and batch_page.has_active_run():
             self._close_pending = True
@@ -166,15 +185,16 @@ class MainWindow(QMainWindow):
 
         self._close_pending = False
         try:
-            self.settings.set("window.geometry", base64.b64encode(bytes(self.saveGeometry())).decode("ascii"))
-            self.settings.set("window.state", base64.b64encode(bytes(self.saveState())).decode("ascii"))
-        except Exception:
-            # 保留完整根因并拒绝关闭，避免将保存失败伪装为成功。
-            logging.getLogger("equipeffi.qt").exception("窗口设置保存失败")
-            event.ignore()
-            return
+            self.settings.set(
+                "window.geometry",
+                base64.b64encode(bytes(self.saveGeometry())).decode("ascii"))
+            self.settings.set(
+                "window.state",
+                base64.b64encode(bytes(self.saveState())).decode("ascii"))
+        except Exception:  # noqa: BLE001 - 偏好设置失败不得阻止正常退出
+            logging.getLogger("equipeffi.qt").exception(
+                "窗口布局保存失败（不影响退出，本次不保存布局偏好）")
         super().closeEvent(event)
-
 
 def _app_version() -> str:
     try:
