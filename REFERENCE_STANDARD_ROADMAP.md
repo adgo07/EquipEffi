@@ -2,8 +2,11 @@
 
 状态：**CURRENT INVENTORY / GOVERNANCE ROADMAP**
 盘点日期：2026-10-02（本次同步）
+状态同步日期：2026-10-07（M1 单人维护收口：只同步 Phase / Profile 的**当前状态**，不重写 2026-10-02 的盘点正文）
 首次盘点日期：2026-10-01
-盘点基线：`master@f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`（Phase 2 = `PHASE_2_PASS` @ `7e16418a`；Phase 3 = `PHASE_3_PASS`，PR #11 合并；Phase 4 = `PHASE_4_PASS`，PR #12 合并；Phase 5 = `PHASE_5_PASS`，PR #13 合并）；**Phase 6 = `IN_PROGRESS`**（完整 GB 19762 Product Shell）
+盘点基线：`master@f3e32f84123937ed6caa2b84b7cc0cd04c3100e0`（Phase 2 = `PHASE_2_PASS` @ `7e16418a`；Phase 3 = `PHASE_3_PASS`，PR #11 合并；Phase 4 = `PHASE_4_PASS`，PR #12 合并；Phase 5 = `PHASE_5_PASS`，PR #13 合并）
+当前状态（权威以 `AGENTS.md` §1/§2.1、`TASK_STATE.md` 为准）：**Phase 1～7 全部 `PHASE_n_PASS`；Phase 8 = `EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`（PR #16 合并 @ `64b656ee4924fbf09f3fd87596ef1a1a779d1f09`，尚无 `docs/phase8_acceptance_record.md`）；`automatic_continuation = DISABLED`**
+> 第 4 节各能力行中的「等待独立验收」等措辞反映 2026-10-02 快照；Phase 3～7 均已获独立验收通过，当前状态以上述权威文件为准。
 参考标准：`GB 19762—2025 离心泵能效限定值及能效等级`
 参考标准覆盖范围：**`pump_water`（清水离心泵）与 `pump_chemical`（石化离心泵）** —— 见 `V1_SCOPE.md` 第 0 节
 
@@ -49,15 +52,19 @@ Phase 6: PHASE_6_PASS            (PR #14 独立验收并合并 @ 6ead21f)
 Phase 7: PHASE_7_PASS            (PR #15 独立验收并合并 @ 79ea075)
          accepted head = 7d6f46c05eb1a6ad7a72dd2dc4a3bf964f29cf62
          acceptance record = docs/phase7_acceptance_record.md
-Phase 8: IN_PROGRESS             (GB 19762 Excel 批量评价闭环)
+Phase 8: EXECUTION_COMPLETE       (GB 19762 Excel 批量评价闭环)
+         next   = READY_FOR_INDEPENDENT_ACCEPTANCE（不得自行宣布 PHASE_8_PASS）
          branch = phase8/gb19762-excel-batch
          base   = 79ea075967ace07aa9880369220d8bff9b53d9e8
-         branch = phase6/gb19762-product-shell
-         base   = f3e32f84123937ed6caa2b84b7cc0cd04c3100e0
-         branch = phase5/pump-chemical-stage-d-support
-         base   = d6112ea9c7c1c16f95d798c2229cdc54aaf6240a
-         branch = phase4/minimal-lifecycle-generalization
-         base   = 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
+         merge  = 64b656ee4924fbf09f3fd87596ef1a1a779d1f09  (PR #16)
+         acceptance record = docs/phase8_acceptance_record.md  (待生成)
+         # 以下为已完成 Phase 的历史 branch/base 记录，保留供追溯，不再是当前状态：
+         phase6 branch = phase6/gb19762-product-shell
+         phase6 base   = f3e32f84123937ed6caa2b84b7cc0cd04c3100e0
+         phase5 branch = phase5/pump-chemical-stage-d-support
+         phase5 base   = d6112ea9c7c1c16f95d798c2229cdc54aaf6240a
+         phase4 branch = phase4/minimal-lifecycle-generalization
+         phase4 base   = 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
 Automatic continuation: DISABLED
 ```
 
@@ -108,7 +115,7 @@ transformer   : scope_status=POST_V1 | support_status=NOT_IN_RELEASE_SCOPE
 | 结果解释 | `PARTIAL` | Golden/trace/规则证据可解释技术结果；面向用户的统一结果解释、标准依据与来源展示已由 Phase 3 实现，等待独立验收。 |
 | 正式记录 | `PARTIAL` | Phase 3 首次正式启用 `records.sqlite`（独立 forward-only、`NEVER_DESTRUCTIVE_RECORD_ASSET`）与 Workspace/Record/History/Reopen。中央 Record Contract 仍 DRAFT，本路线未擅自采用其未冻结字段。 |
 | Windows | `PARTIAL` | Windows V1 是明确产品目标；Phase 2 已提供最小 PySide6 薄壳，Phase 3 已把"新建分析"与"分析记录"变为真实统一页面（实现完成，等待独立复验）。 |
-| Excel | `NOT STARTED` | Phase 1 已有 Import Contract，证明未来 Excel 应 contract-driven；现行 V2.3 仍把正式 Excel 放在 Phase 8。当前未进入正式 Excel 开发。Excel 数值入口的公共无损方案仍 OPEN，且本仓读取器存在 float 物化点（见 `QA-EXCEL-001`），正式开发前须先设计并验证。 |
+| Excel | `EXECUTION_COMPLETE`（待独立验收） | Phase 1 已有 Import Contract，证明未来 Excel 应 contract-driven。正式 Excel 闭环已由 **Phase 8** 交付（V6 统一模板正式化、Reader 十进制/行启用语义、批量评价 + 结果 Workbook + `batch_record` + Qt 闭环，29 条 Approved Golden 经真实 Excel 载体回放零漂移），状态 `EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`（PR #16 @ `64b656ee`）。Excel 始终只调用同一 Application / Calculator，**不得**保留第二套业务算法；发行包裁剪属 Phase 9。 |
 | Conformance | `PARTIAL` | N01-B Independent Acceptance PASS；Pump Numeric/Decision Contract、precision/operation-order/reference procedure 和 Numeric v1 adoption 均有执行测试证据。`pump_chemical` 的 Conformance 已由 Phase 3 的 generated boundary tests（Q/ns 端点与 ±epsilon）与 11 条批准 Golden 增强，尚未完成统一端到端验收。 |
 | Golden Case | `PARTIAL` | `pump_water`：18 条 Golden 0.4 具名批准 + 2026-10-02 Owner Reconfirmation **18/18 PASS**。`pump_chemical`：C1–C11 于 2026-10-02 获 Owner **11/11 PASS**，形式化为 11 条 `golden-case-0.5`（8 条候选派生 + 3 条 owner-defined）。两端业务真值均已批准；剩余为产品闭环与 Stage D。 |
 | 下一标准准备状态 | `NOT STARTED` | Phase 1 明确没有批量迁移 17 个 Profile。按新产品交付治理，先完成离心泵（`pump_water` + `pump_chemical`）核心 Windows 产品闭环和 Excel 闭环，再选第二个标准验证架构扩展性；本任务不启动第二标准。 |
@@ -138,7 +145,7 @@ GB 19762—2025 的 `pump_water` **业务规则、Pump Calculator、Numeric Conf
 
 `PARTIAL`
 
-这不是中央 Contract 阻塞。当前阶段门禁是：**Phase 3 已 `PHASE_3_PASS`（PR #11 @ `87d9ef1b`）；Phase 4 已 `PHASE_4_PASS`（PR #12 @ `d6112ea9`）；Phase 5 已 `PHASE_5_PASS`（PR #13 @ `f3e32f84`）；Phase 6 = `IN_PROGRESS`（完整 GB 19762 Product Shell），完成并通过 Required CI 后须经独立验收，执行者不得自宣 PASS**；`pump_chemical` 的 `support_status` 提升须待 Phase 5 的 Stage D 独立验收。
+这不是中央 Contract 阻塞。当前阶段门禁是：**Phase 1～7 全部 `PHASE_n_PASS`（其中 Phase 3 @ PR #11、Phase 4 @ PR #12、Phase 5 @ PR #13、Phase 6 @ PR #14、Phase 7 @ PR #15 均经独立验收并合并）；Phase 8 = `EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`（PR #16 @ `64b656ee`），执行者不得自宣 PASS、不得进入 Phase 9**；`pump_chemical` 的 `support_status` 已于 Phase 5 Stage D 独立验收通过后切换为 `SUPPORTED`（PR #13 @ `f3e32f84`）。
 
 ## 6. 后续交付顺序
 

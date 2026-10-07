@@ -57,13 +57,16 @@ Phase 6 = PHASE_6_PASS            (PR #14 独立验收并合并 @ 6ead21f)
 Phase 7 = PHASE_7_PASS            (PR #15 独立验收并合并 @ 79ea075)
          accepted head = 7d6f46c05eb1a6ad7a72dd2dc4a3bf964f29cf62
          acceptance record = docs/phase7_acceptance_record.md
-Phase 8 = IN_PROGRESS             (GB 19762 Excel 批量评价闭环)
+Phase 8 = EXECUTION_COMPLETE       (GB 19762 Excel 批量评价闭环)
+         next   = READY_FOR_INDEPENDENT_ACCEPTANCE（不得自行宣布 PHASE_8_PASS）
          branch = phase8/gb19762-excel-batch
          base   = 79ea075967ace07aa9880369220d8bff9b53d9e8
+         merge  = 64b656ee4924fbf09f3fd87596ef1a1a779d1f09  (PR #16)
+         acceptance record = docs/phase8_acceptance_record.md  (待生成)
 Automatic continuation = DISABLED
 ```
 
-Phase 2 已由独立验收通过并合并（PR #10）。**Phase 3 已由独立验收通过（`PHASE_3_PASS`）并以 PR #11 合并于 `87d9ef1b`**；验收落档见 `docs/phase3_acceptance_record.md`（轻量格式，后续每个 Phase 沿用）。Phase 4 / Phase 5 / Phase 6 / Phase 7 均已获独立验收通过并合并。**Phase 7 已获用户明确执行授权**，范围是 **GB19762 分析流程与历史记录最终收口**：选泵型 → 填参数 → 点「分析」→ 显示结果 → **合法结果自动形成不可变历史记录** → 从「分析记录」查看当时的输入、结果与依据。执行者**不得**自行宣布 Phase 8 PASS、不得合并 PR、不得进入 Phase 9。Phase 3 设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`。
+Phase 2 已由独立验收通过并合并（PR #10）。**Phase 3 已由独立验收通过（`PHASE_3_PASS`）并以 PR #11 合并于 `87d9ef1b`**；验收落档见 `docs/phase3_acceptance_record.md`（轻量格式，后续每个 Phase 沿用）。Phase 4 / Phase 5 / Phase 6 / Phase 7 均已获独立验收通过并合并。**Phase 8（GB19762 Excel 批量评价闭环）已执行完毕并以 PR #16 合并于 `64b656ee`**，当前只允许 `EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`：执行者**不得**自行宣布 Phase 8 PASS、不得进入 Phase 9；执行细节见 `PHASE8_EXECUTION_REPORT.md`。Phase 3 设计见 `docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md`。
 
 ### 3.1 增量修正：Phase 3 前移 pump_chemical 正式产品接入（2026-10-02）
 
