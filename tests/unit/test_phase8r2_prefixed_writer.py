@@ -520,7 +520,7 @@ class DuplicateCoordinateFailClosedTests(PrefixedWriterTestCase):
             self.batch.evaluate_workbook(
                 source, destination=destination, as_of=AS_OF, persist=True)
 
-        self.assertIn("重复坐标", str(caught.exception))
+        self.assertRegex(str(caught.exception), r"重复(?:单元格)?坐标")
         self.assertIn("拒绝", str(caught.exception))
         self.assertFalse(destination.exists(),
                          "写回失败时不得留下任何结果工作簿")
