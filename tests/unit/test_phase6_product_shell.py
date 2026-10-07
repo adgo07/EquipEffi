@@ -713,15 +713,28 @@ class QaClosureTests(ProductShellTestCase):
         self.assertNotIn("标准生效日期",
                          {item.get("step_type") for item in early.trace})
 
-    def test_frozen_implementation_files_are_unchanged_from_base(self):
-        """Golden 冻结的实现文件中，本轮**只允许**改动 evaluation_service.py。
+    #: Golden 相关实现文件中，**具名授权**后方可改动的清单。
+    #: 未列入的文件必须与 base 完全一致。
+    #: 每个被授权的文件都必须仍在 ``evidence_registry.json`` 中保留登记的历史快照
+    #: （历史证据不可变、实现可演进）——这一点由本测试机械校验，不再只是口头约定。
+    AUTHORIZED_FROZEN_CHANGES = {
+        "src/equipeffi/application/services/evaluation_service.py":
+            "Phase 6 R1：关闭入口语义 QA（QA-P5-001 / QA-P3-003）",
+        "src/equipeffi/infrastructure/standards/json_repository.py":
+            "M3-G1（Owner 授权）：标准包 repository 实例级缓存；只缓存 "
+            "read/parse/validate/SHA-256 结果并**保留 deepcopy**，不改变任何业务真值",
+    }
 
-        其余 8 个文件必须与 base 完全一致；``evaluation_service.py`` 的改动是
-        R1 关闭入口语义 QA 所必需，其历史证据已登记到
+    def test_frozen_implementation_files_are_unchanged_from_base(self):
+        """Golden 相关实现文件只允许**具名授权**的改动，其余必须与 base 完全一致。
+
+        历史意图不变：Golden 相关实现与 Canonical 不得被静默改写。
+        实现可以演进，但必须具名授权，且该文件的历史快照仍登记在
         ``specs/equipment_efficiency/evidence_registry.json`` 的
         ``historical_repository_hashes``（历史证据不可变、实现可演进）。
         """
 
+        import json
         import subprocess
 
         frozen = (
@@ -739,8 +752,18 @@ class QaClosureTests(ProductShellTestCase):
             completed = subprocess.run(["git", "diff", *args, "--", *frozen],
                                        cwd=ROOT, capture_output=True, text=True,
                                        check=False)
-            changed = completed.stdout.split()
-            self.assertEqual(changed, [], f"受保护实现文件被改动：{changed}")
+            unexpected = sorted(set(completed.stdout.split())
+                                - set(self.AUTHORIZED_FROZEN_CHANGES))
+            self.assertEqual(unexpected, [], f"受保护实现文件被改动：{unexpected}")
+
+        registry = json.loads((ROOT / "specs" / "equipment_efficiency"
+                               / "evidence_registry.json").read_text(encoding="utf-8"))
+        registered = {str(item.get("artifact_path", "")).replace("\\", "/")
+                      for item in registry["historical_repository_hashes"]}
+        for path, reason in self.AUTHORIZED_FROZEN_CHANGES.items():
+            with self.subTest(authorized_path=path):
+                self.assertIn(path, registered,
+                              f"被授权改动的文件缺少登记的历史快照：{path}（{reason}）")
 
     def test_evaluation_service_history_is_registered_not_rewritten(self):
         """历史证据不可变：候选与批准 Golden 均未被改写，只补登记。"""
