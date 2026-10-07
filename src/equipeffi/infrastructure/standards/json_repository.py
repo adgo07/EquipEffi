@@ -62,6 +62,13 @@ class JsonStandardRepository:
         # the successful structural validation by source rather than walking
         # a large shared HVAC pack for every record.
         self._validated_sources: set[str] = set()
+        # M3-G1：同一个 repository 实例里，同一个标准包只做一次
+        # read → parse → validate → SHA-256，并缓存组装完成的快照。
+        # 缓存范围**严格限定在本实例**：不是进程级缓存、不是磁盘缓存、
+        # 不跨启动存活；软件重启后重新读取即可（标准包对实例生命周期不可变）。
+        # 每次返回前仍然 deepcopy，调用方拿到的对象互相隔离；并发首次访问最多
+        # 重复一次读取，dict 整体赋值是原子的，不会返回半成品或错误数据。
+        self._pack_cache: dict[str, dict[str, Any]] = {}
 
     def get_pack(self, device_type: str, pack_id: str | None = None) -> dict[str, Any]:
         if device_type not in self._entries:
@@ -94,6 +101,23 @@ class JsonStandardRepository:
                 "status": entry.get("status", StandardDataStatus.EXTRACTED.value),
                 "unavailable_reason": entry.get("unavailable_reason", "标准数据文件不存在"),
             }
+        # M3-G1：同一实例内同一标准包只读一次；命中缓存时只做 deepcopy。
+        cached = self._pack_cache.get(device_type)
+        if cached is None:
+            cached = self._load_pack(device_type, entry, source)
+            self._pack_cache[device_type] = cached
+        # 恒返回 deepcopy：这是本轮的硬约束，调用方修改返回值不得污染缓存，
+        # 也不得影响下一次 get_pack（改成返回共享 dict 属于后续独立决策）。
+        return deepcopy(cached)
+
+    def _load_pack(self, device_type: str, entry: dict[str, Any],
+                   source: Path) -> dict[str, Any]:
+        """首次访问：read → parse → validate → SHA-256，返回组装完成的快照。
+
+        只在完成校验后返回；校验失败时抛错且**不写入缓存**，
+        因此后续访问仍会重新读取并再次明确失败，不会把失败静默缓存成成功。
+        """
+
         # Pump formula coefficients and table boundaries are decimal source
         # literals.  Keep their JSON lexemes exact instead of first parsing
         # them as binary floats; other packages retain their historical loader.
@@ -115,7 +139,7 @@ class JsonStandardRepository:
             if issues:
                 raise StandardPackError(f"标准包{device_type}结构校验失败：{'；'.join(issues)}")
             self._validated_sources.add(validation_key)
-        return deepcopy(data)
+        return data
 
     def _source_sha256(self, source: Path) -> str:
         """Canonical 源文件的 SHA-256（UTF-8、CRLF→LF）。
