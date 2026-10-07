@@ -9,7 +9,10 @@ name: Windows Core
 #   - windows-core      : Windows Core (gating)
 #   - whitespace-check  : Whitespace check (gating)
 #
-# M1 去重原则：**同一次 PR CI 中，同一个测试只执行一次**。
+# M1 去重原则：**windows-core job 内，同一个测试只执行一次**。
+#   `pump-conformance` 是另一个 workflow，仍会独立执行其 pump 业务门禁模块，
+#   这些模块同时也落在本 job 的 full discover 覆盖内——这是**刻意保留**的独立业务信号，
+#   不属于本 job 内的重复执行（口径已如实写入 PR 说明）。
 #   1. `tests.contract.*` 不被 `unittest discover` 覆盖（tests/contract 无 __init__.py），
 #      因此保留唯一一次显式执行步骤——这不是重复，删除它会丢失门禁；
 #   2. 其余全部测试由**唯一一次** full discover 执行并落盘（--mode run）；

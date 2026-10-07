@@ -67,6 +67,46 @@ def _counts(actual: dict) -> dict:
     return {k: v for k, v in actual.items() if not k.endswith("_ids")}
 
 
+def build_actual(result: unittest.TestResult, *, duration_seconds: float) -> dict:
+    """把一次已完成 suite 的结果转成落盘记录（纯函数，便于回归测试）。
+
+    注意 ``unittest.TestResult`` 的字段结构并不一致：
+      * ``failures`` / ``errors`` / ``skipped`` / ``expectedFailures`` 是
+        ``(test, traceback)`` 元组列表；
+      * ``unexpectedSuccesses`` 是 ``test`` 对象列表。
+    两者混淆会在 ``@unittest.expectedFailure`` 出现时抛 ``AttributeError``，
+    而且是在落盘之前抛——既丢了证据又绕过了门禁。这里用 ``_expected_failure_ids``
+    统一处理，并由单元测试锁死。
+    """
+
+    return {
+        "executable": sys.executable,
+        "python_version": sys.version,
+        "duration_seconds": duration_seconds,
+        "run": result.testsRun,
+        "pass": result.testsRun - len(result.failures) - len(result.errors) - len(result.skipped)
+        - len(result.expectedFailures) - len(result.unexpectedSuccesses),
+        "fail": len(result.failures),
+        "error": len(result.errors),
+        "skip": len(result.skipped),
+        "expected_fail": len(result.expectedFailures),
+        "unexpected_success": len(result.unexpectedSuccesses),
+        "failure_ids": sorted({test.id() for test, _ in result.failures}),
+        "error_ids": sorted({test.id() for test, _ in result.errors}),
+        "skip_ids": sorted({test.id() for test, _ in result.skipped}),
+        "expected_failure_ids": _expected_failure_ids(result),
+        "unexpected_success_ids": sorted(test.id() for test in result.unexpectedSuccesses),
+        "executed_ids": sorted(getattr(result, "executed_ids", set())),
+        "raw_suite_success": result.wasSuccessful(),
+    }
+
+
+def _expected_failure_ids(result: unittest.TestResult) -> list[str]:
+    """``expectedFailures`` 是 ``(test, traceback)`` 元组列表，必须解包。"""
+
+    return sorted(test.id() for test, _ in result.expectedFailures)
+
+
 def record_suite(output: Path) -> dict:
     """执行一次完整 suite 并落盘真实结果，返回 actual 记录。"""
 
@@ -77,20 +117,8 @@ def record_suite(output: Path) -> dict:
     suite = unittest.defaultTestLoader.discover("tests", pattern="test_*.py", top_level_dir=".")
     with (output / "full_suite.log").open("w", encoding="utf-8") as stream:
         result = unittest.TextTestRunner(stream=stream, verbosity=2, resultclass=RecordingResult).run(suite)
-    actual = {
-        "executable": sys.executable, "python_version": sys.version, "duration_seconds": time.perf_counter() - start,
-        "run": result.testsRun,
-        "pass": result.testsRun - len(result.failures) - len(result.errors) - len(result.skipped) - len(result.expectedFailures) - len(result.unexpectedSuccesses),
-        "fail": len(result.failures), "error": len(result.errors), "skip": len(result.skipped),
-        "expected_fail": len(result.expectedFailures), "unexpected_success": len(result.unexpectedSuccesses),
-        "failure_ids": sorted({test.id() for test, _ in result.failures}),
-        "error_ids": sorted({test.id() for test, _ in result.errors}),
-        "skip_ids": sorted({test.id() for test, _ in result.skipped}),
-        "unexpected_success_ids": sorted(test.id() for test in result.unexpectedSuccesses),
-        "expected_failure_ids": sorted(test.id() for test in result.expectedFailures),
-        "executed_ids": sorted(result.executed_ids),
-        "raw_suite_success": result.wasSuccessful(),
-    }
+    actual = build_actual(result, duration_seconds=time.perf_counter() - start)
+
     (output / "actual.json").write_text(json.dumps(actual, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     summary = [
         "===== FULL SUITE (single execution; real counts) =====",
