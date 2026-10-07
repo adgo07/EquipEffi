@@ -15,9 +15,9 @@
 
 | issue_id | legacy_id/audit_id | profile_id | location | description | business_risk | engineering_risk | release_surface | classification | target_phase | status | evidence | decision |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| QA-P0-001 | BASELINE-TEST-001 | motor_lv | `tests/unit/test_v4_reader.py::test_copied_v4_row_is_read_and_evaluated` | 7.5 kW 电机 V4 行期望 `1级`，实际 `无法判定` | 可能错误结论 | H | NOT_SHIPPED | P0 | Phase 1/8 | OPEN | Python 3.13 全量重跑 | 先核对标准日期、输入映射和 fixture；不在 0A 修 |
-| QA-P0-002 | BASELINE-TEST-002 | motor_lv | `tests/unit/test_v4_writer.py` 两个结果写回测试 | V4 写回的等级/三个等级指标为空或为 `无法判定` | 可能错误结论 | H | NOT_SHIPPED | P0 | Phase 1/8 | OPEN | Python 3.13 全量重跑 | V4 为冻结端口；进入发布前必须关闭或有明确不发布决策 |
-| QA-P1-003 | BASELINE-TEST-003 | shared | `tests/unit/test_release_audit.py` | Release audit 结果缺少 `wheel_pmsm_status` 键 | 影响发布审计完整性，不直接改变评价结论 | M | DEV_ONLY | P1 | Phase 8 | OPEN | Python 3.13 全量重跑 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：先修复审计契约/fixture，再作为发布门禁 |
+| QA-P0-001 | BASELINE-TEST-001 | motor_lv | `tests/unit/test_v4_reader.py::test_copied_v4_row_is_read_and_evaluated` | 7.5 kW 电机 V4 行期望 `1级`，实际 `无法判定` | 可能错误结论 | H | NOT_SHIPPED | P0 | VERIFY_BEFORE_PHASE9 | OPEN | Python 3.13 全量重跑 | 先核对标准日期、输入映射和 fixture；不在 0A 修；<br>**Phase 8 disposition review（2026-10-07）**：→ VERIFY_BEFORE_PHASE9——V4 motor reader 可能错误结论；表面 NOT_SHIPPED 但 CLI `--v4-sheet` 可达，须先决定「修复 or 明确不发布」 |
+| QA-P0-002 | BASELINE-TEST-002 | motor_lv | `tests/unit/test_v4_writer.py` 两个结果写回测试 | V4 写回的等级/三个等级指标为空或为 `无法判定` | 可能错误结论 | H | NOT_SHIPPED | P0 | VERIFY_BEFORE_PHASE9 | OPEN | Python 3.13 全量重跑 | V4 为冻结端口；进入发布前必须关闭或有明确不发布决策；<br>**Phase 8 disposition review（2026-10-07）**：→ VERIFY_BEFORE_PHASE9——同上（V4 writer 结果写回）；属发布前须有结论项 |
+| QA-P1-003 | BASELINE-TEST-003 | shared | `tests/unit/test_release_audit.py` | Release audit 结果缺少 `wheel_pmsm_status` 键 | 影响发布审计完整性，不直接改变评价结论 | M | DEV_ONLY | P1 | Phase 9 | OPEN | Python 3.13 全量重跑 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：先修复审计契约/fixture，再作为发布门禁；<br>**Phase 8 disposition review（2026-10-07）**：→ Phase 9——发布审计完整性（`wheel_pmsm_status` 键缺失）属发布前门禁 |
 | QA-P1-004 | BASELINE-TEST-004 | shared | `.venv_build` | 3.11 构建环境缺 `openpyxl`、`python-docx`、`pytest`，导致 10 error | 结果不可完整复验 | M | DEV_ONLY | P1 | Phase 0 follow-up | EVIDENCE | BASELINE.md | 保留完整 Python 3.13 结果；不把缺依赖误报为源码 PASS |
 | QA-P1-005 | BASELINE-TEST-005 | shared | tests inventory | 历史审计声称 60 个真实 unittest；Phase 0 实测 54 个 test module、887 项 unittest | 治理数字漂移 | M | DEV_ONLY | P1 | Phase 1 | OPEN | 第三方 #55 + unittest | 以可重跑命令和本次数字为当前事实，历史数字仅作 Historical Evidence |
 | QA-P1-006 | BASELINE-SMOKE-001 | shared | `standard_manifest.json` / resource packs | 17 pack 报告 `active`，但 active 不等于来源/边界/Golden 已验收 | 可能把可加载误认为业务可信 | M | V1_RUNTIME | P1 | Phase 1 | OPEN | status smoke + ASSET_AUDIT | Phase 1 逐 pack 冻结 Canonical/source/readiness |
@@ -46,25 +46,25 @@
 | QA-AUD-008 | AUD-008 | shared | `device_specs.py:179-188` | 导入时就地修改 `DEVICE_SPECS` | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 4 | OPEN | CSV#8 | DEFER_TO_P4：真实样板后再通用化；不在薄壳阶段重构业务；原决定：记录为导入副作用，不在 0A 重写 |
 | QA-AUD-009 | AUD-009 | all | `device_specs.py`、`metadata.py`、`entrypoint.py` | 标准/字段/示例硬编码多份，可能产生数据漂移 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 3 | OPEN | CSV#9 | DEFER_TO_P3：非 settings 切片，保持既有风险与证据；原决定：Python 数据先盘点，不能直接删除 |
 | QA-AUD-010 | AUD-010 | shared | `evaluators/shared.py:_interval_hit` | 核心区间解析难验证，边界错误可能给错结论 | 可能影响业务结论；需标准/Golden 证据 | M | V1_RUNTIME | P0 | Phase 1 | VERIFY | CSV#10 + source；Phase 1 已执行 12 个开闭端点 probe，全部符合预期 | Phase 1 review=`NEEDS_MORE_EVIDENCE`；现有 probe 未发现错误，但尚缺跨标准/Golden 的完整覆盖；不进入 Hotfix |
-| QA-AUD-011 | AUD-011 | shared | `v4_validation.py` / `input_normalization.py` | 规范化重复实现，差异可能改变输入含义 | 可能影响业务结论；需标准/Golden 证据 | H | NOT_SHIPPED | P0 | Phase 8 | VERIFY | CSV#11；pump_water 的完整别名与 canonical 输入输出一致，V4 validation valid/invalid probe 有预期结果 | DEFER_TO_P8：非 settings 切片，保持既有风险与证据；原决定：Phase 1 review=`NEEDS_MORE_EVIDENCE`；样板证据不能代表全 Profile 的共享风险；不重构 |
+| QA-AUD-011 | AUD-011 | shared | `v4_validation.py` / `input_normalization.py` | 规范化重复实现，差异可能改变输入含义 | 可能影响业务结论；需标准/Golden 证据 | H | NOT_SHIPPED | P0 | POST_V1 | VERIFY | CSV#11；pump_water 的完整别名与 canonical 输入输出一致，V4 validation valid/invalid probe 有预期结果 | DEFER_TO_P8：非 settings 切片，保持既有风险与证据；原决定：Phase 1 review=`NEEDS_MORE_EVIDENCE`；样板证据不能代表全 Profile 的共享风险；不重构；<br>**Phase 8 disposition review（2026-10-07）**：→ POST_V1——重复实现只在非正式 V4 / legacy API 链（正式 Qt 分析页不经 `schema_constraints`） |
 | QA-AUD-012 | AUD-012 | shared | `evaluation_service.py:148-426` | 279 行上帝方法，门禁分支难审计 | 可能影响发布可靠性或长期维护；业务影响待证 | H | V1_RUNTIME | P1 | Phase 3 | OPEN | CSV#12 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：结构债务，不因严重度直接 Hotfix |
-| QA-AUD-013 | AUD-013 | shared | `v4_validation.py` | 882 行、多 sheet 特例链，新增规则易漏 | 可能影响发布可靠性或长期维护；业务影响待证 | H | NOT_SHIPPED | P1 | Phase 8 | OPEN | CSV#13 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：Import Contract 冻结后拆分 |
-| QA-AUD-014 | AUD-014 | shared | `input_normalization.py` | 226 行、16 类转换硬编码，输入错误风险 | 可能影响发布可靠性或长期维护；业务影响待证 | H | NOT_SHIPPED | P1 | Phase 8 | OPEN | CSV#14 | DEFER_TO_P8：非 settings 切片，保持既有风险与证据；原决定：先建立 Product/Profile Schema |
+| QA-AUD-013 | AUD-013 | shared | `v4_validation.py` | 882 行、多 sheet 特例链，新增规则易漏 | 可能影响发布可靠性或长期维护；业务影响待证 | H | NOT_SHIPPED | P1 | POST_V1 | OPEN | CSV#13 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：Import Contract 冻结后拆分；<br>**Phase 8 disposition review（2026-10-07）**：→ POST_V1——`v4_validation` 属 V4 / legacy adapter 链 |
+| QA-AUD-014 | AUD-014 | shared | `input_normalization.py` | 226 行、16 类转换硬编码，输入错误风险 | 可能影响发布可靠性或长期维护；业务影响待证 | H | NOT_SHIPPED | P1 | POST_V1 | OPEN | CSV#14 | DEFER_TO_P8：非 settings 切片，保持既有风险与证据；原决定：先建立 Product/Profile Schema；<br>**Phase 8 disposition review（2026-10-07）**：→ POST_V1——`input_normalization` 属 V4 / legacy adapter 链 |
 | QA-AUD-015 | AUD-015 | shared | `application_api.py` / `main_window.py` | fallback 表单构建重复，UI 可能与 API 不一致 | 当前未确认影响 V1 业务结论；维护风险待证 | H | PROTOTYPE | P2 | Phase 3 | OPEN | CSV#15 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：暂由 `metadata_projection` 共享，UI 非 V1 门禁 |
 | QA-AUD-016 | AUD-016 | shared | 多处 conclusion label | 同一结论列标题重复，展示可能漂移 | 当前未确认影响 V1 业务结论；维护风险待证 | M | PROTOTYPE | P2 | Phase 3 | OPEN | CSV#16 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：Presentation 清理阶段处理 |
 | QA-AUD-017 | AUD-017 | shared | `application_api.py` / `main_window.py` | 基础信息字段元组重复 | 当前未确认影响 V1 业务结论；维护风险待证 | M | PROTOTYPE | P2 | Phase 3 | OPEN | CSV#17 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：不影响当前核心评价 |
 | QA-AUD-018 | AUD-018 | shared | `main_window.py` / `web/server.py` | 结果摘要 Python/JS 重复，说明可能不一致 | 当前未确认影响 V1 业务结论；维护风险待证 | M | PROTOTYPE | P2 | Phase 3 | OPEN | CSV#18 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：API 摘要结构化后处理 |
-| QA-AUD-019 | AUD-019 | shared | `infrastructure/excel/v4_writer.py` | 完整 writer 生产链 0 引用，V4 结果可能无法交付 | 可能影响发布可靠性或长期维护；业务影响待证 | H | NOT_SHIPPED | P1 | Phase 8 | OPEN | CSV#19 + QA-P0-002 | V4 未纳入当前首发，不接线 |
-| QA-AUD-020 | AUD-020 | shared | `excel/legacy_*`、`report_exporter.py`、`template_builder.py` | 4 个 FeatureNotEnabled 空桩，制造能力错觉 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Phase 8 | OPEN | CSV#20 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：DELETE_CANDIDATE，先查契约/构建/测试 |
-| QA-AUD-021 | AUD-021 | shared | `strict_importer.py` | 3 行别名子类无 runtime 引用 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Phase 8 | OPEN | CSV#21 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：暂保兼容名，后续统一 |
+| QA-AUD-019 | AUD-019 | shared | `infrastructure/excel/v4_writer.py` | 完整 writer 生产链 0 引用，V4 结果可能无法交付 | 可能影响发布可靠性或长期维护；业务影响待证 | H | NOT_SHIPPED | P1 | POST_V1 | OPEN | CSV#19 + QA-P0-002 | V4 未纳入当前首发，不接线；<br>**Phase 8 disposition review（2026-10-07）**：→ POST_V1——`v4_writer` 0 入边引用；正式写回由 `pump_result_writer` 承担 |
+| QA-AUD-020 | AUD-020 | shared | `excel/legacy_*`、`report_exporter.py`、`template_builder.py` | 4 个 FeatureNotEnabled 空桩，制造能力错觉 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | SUPERSEDED | OPEN | CSV#20 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：DELETE_CANDIDATE，先查契约/构建/测试；<br>**Phase 8 disposition review（2026-10-07）**：→ SUPERSEDED——4 个 FeatureNotEnabled 空桩 0 引用；正式的 Excel 能力已由 Phase 8 V6 批量链提供 |
+| QA-AUD-021 | AUD-021 | shared | `strict_importer.py` | 3 行别名子类无 runtime 引用 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Future | OPEN | CSV#21 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：暂保兼容名，后续统一；<br>**Phase 8 disposition review（2026-10-07）**：→ Future——`strict_importer` 死别名，无任何入边引用 |
 | QA-AUD-022 | AUD-022 | shared | SQLite repositories | 两个空桩仓储，实际持久化不存在 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 2/3 | OPEN | CSV#22 + ADR-005 | PARTIAL_IN_P2：旧 SQLite 空桩已明确 DEPRECATED / NOT_SHIPPED / NOT_WIRED；新 settings 独立接线，业务仓储留 Phase 3 |
 | QA-AUD-023 | AUD-023 | shared | `cleaning_service.py` / `import_service.py` | 0 引用服务，可能是未完成能力或死代码 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Future | OPEN | CSV#23 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：DELETE_CANDIDATE，先查外部契约 |
 | QA-AUD-024 | AUD-024 | shared | `application/ports/*.py` | Protocol 0 引用，实际实现未显式接入 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 2/3 | OPEN | CSV#24 | PARTIAL_IN_P2：仅完成 settings 端口/存储；原业务仓储与其他端口仍开放；原决定：保留契约方向，阶段性补接线 |
 | QA-AUD-025 | AUD-025 | shared | `v4_template_audit.py` / `config/settings.py` | 0 引用包装和默认设置 | 当前未确认影响 V1 业务结论；维护风险待证 | L | DEV_ONLY | P2 | Future | OPEN | CSV#25 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：不影响 V1，删除前做动态引用检查 |
-| QA-AUD-026 | AUD-026 | shared | `v4_input_adapter.py` | `adapt_many`、`validate_draft` 未接线 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 8 | OPEN | CSV#26 | DEFER_TO_P8：非 settings 切片，保持既有风险与证据；原决定：Import Contract 确认后接入或删除 |
-| QA-AUD-027 | AUD-027 | shared | OOXML 解析三处 | sheet 名和 rels 解析重复，修复容易不一致 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Phase 8 | OPEN | CSV#27 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：不在冻结 V4 端口中重构 |
-| QA-AUD-028 | AUD-028 | shared | `ooxml_reader.py` / `v4_writer.py` | 列号互换换算重复 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | Phase 8 | OPEN | CSV#28 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：归入 OOXML 工具清理 |
-| QA-AUD-029 | AUD-029 | shared | `template_resource.py` / `v4_template_contract.py` | 模板名、sheet 清单和说明重复配置 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 8 | OPEN | CSV#29 | DEFER_TO_P8：非 settings 切片，保持既有风险与证据；原决定：Import Contract 单一来源 |
+| QA-AUD-026 | AUD-026 | shared | `v4_input_adapter.py` | `adapt_many`、`validate_draft` 未接线 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | POST_V1 | OPEN | CSV#26 | DEFER_TO_P8：非 settings 切片，保持既有风险与证据；原决定：Import Contract 确认后接入或删除；<br>**Phase 8 disposition review（2026-10-07）**：→ POST_V1——`v4_input_adapter` 未接线方法属 V4 adapter |
+| QA-AUD-027 | AUD-027 | shared | OOXML 解析三处 | sheet 名和 rels 解析重复，修复容易不一致 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | POST_V1 | OPEN | CSV#27 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：不在冻结 V4 端口中重构；<br>**Phase 8 disposition review（2026-10-07）**：→ POST_V1——正式链只用 `ooxml_reader`；重复落在 legacy `v4_reader` / `v4_template_audit` |
+| QA-AUD-028 | AUD-028 | shared | `ooxml_reader.py` / `v4_writer.py` | 列号互换换算重复 | 当前未确认影响 V1 业务结论；维护风险待证 | M | NOT_SHIPPED | P2 | POST_V1 | OPEN | CSV#28 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：归入 OOXML 工具清理；<br>**Phase 8 disposition review（2026-10-07）**：→ POST_V1——同 027（`ooxml_reader` 与 `v4_writer` 列号换算重复） |
+| QA-AUD-029 | AUD-029 | shared | `template_resource.py` / `v4_template_contract.py` | 模板名、sheet 清单和说明重复配置 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 9 | OPEN | CSV#29 | DEFER_TO_P8：非 settings 切片，保持既有风险与证据；原决定：Import Contract 单一来源；<br>**Phase 8 disposition review（2026-10-07）**：→ Phase 9——模板/设备 sheet 配置同时被正式 `template_resource` 与发布审计 `v4_template_contract` 持有，漂移直接影响发布审计 |
 | QA-AUD-030 | AUD-030 | shared | `v4_validation.py` | 手工规则表和 metadata 派生规则双真相源 | 可能影响业务结论；需标准/Golden 证据 | M | NOT_SHIPPED | P0 | Phase 1 | VERIFY | CSV#30；pump_water 元数据字段约束与 V4 valid/zero/fraction/percent probes 未发现当前输入差异 | Phase 1 review=`NEEDS_MORE_EVIDENCE`；样板路径未证明全 Profile 无差异；待 Import/Profile 矩阵；未授权 Hotfix |
 | QA-AUD-031 | AUD-031 | shared | 多处默认判定日期 | 日期硬编码可能选错标准生效状态 | 可能影响业务结论；需标准/Golden 证据 | M | V1_RUNTIME | P0 | Phase 3 | VERIFY | CSV#31；default/explicit `2026-08-23` 一致，`2026-02-28` 与 `2026-03-01` 明确跨过实施日期 | DEFER_TO_P3：非 settings 切片，保持既有风险与证据；原决定：Phase 1 review=`NEEDS_MORE_EVIDENCE`；Golden 已显式填写 `as_of`，但默认日期是否允许仍需产品/业务决策；不改实现 |
 | QA-AUD-032 | AUD-032 | shared | `__init__.py`、`pyproject.toml`、`build_msi.py` | 版本号 0.2.1 多处硬编码，追溯可能漂移 | 当前未确认影响 V1 业务结论；维护风险待证 | M | DEV_ONLY | P2 | Future | OPEN | CSV#32 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：版本模型由 ADR-003 进入 Phase 1 |
@@ -77,7 +77,7 @@
 | QA-AUD-039 | AUD-039 | shared | `evaluation_service.py` / `v4_validation.py` | 裸 KeyError/ValueError 可能中断整批 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 3 | OPEN | CSV#39 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：改为领域 issue 需 Golden 保护 |
 | QA-AUD-040 | AUD-040 | shared | `JsonStandardRepository.get_pack` | 每次解析完整 JSON，批量性能随数据量增长 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Future | OPEN | CSV#40 + QA-P1-007 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：先保留实测，再设计缓存 |
 | QA-AUD-041 | AUD-041 | shared | `json_repository.py` | manifest 缺键直接 KeyError；缺文件静默空记录；find 线性 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Phase 3 | OPEN | CSV#41 | DEFER_TO_P3：非 settings 切片，保持既有风险与证据；原决定：Schema/错误语义进入 Phase 1 |
-| QA-AUD-042 | AUD-042 | shared | `v4_writer.py` / `template_resource.py` | 整体读写 xlsx 内存高、临时目录生命周期隐含 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | Phase 8 | OPEN | CSV#42 | Excel 后置，不在 0A 优化 |
+| QA-AUD-042 | AUD-042 | shared | `v4_writer.py` / `template_resource.py` | 整体读写 xlsx 内存高、临时目录生命周期隐含 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | VERIFY_BEFORE_PHASE9 | OPEN | CSV#42 | Excel 后置，不在 0A 优化；<br>**Phase 8 disposition review（2026-10-07）**：→ VERIFY_BEFORE_PHASE9——正式批量链 10,000 行实测峰值 952 MB；发布前须给出资源结论 |
 | QA-AUD-043 | AUD-043 | shared | `web/server.py` / `entrypoint.py` | `--host 0.0.0.0` 无鉴权，可暴露服务 | 可能影响发布可靠性或长期维护；业务影响待证 | M | PROTOTYPE | P1 | Future | OPEN | CSV#43 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：Web 非当前 V1 入口，仍需安全处理 |
 | QA-AUD-044 | AUD-044 | shared | Web upload `X-Filename` | 文件名拼接宿主路径，存在路径穿越风险 | 可能影响发布可靠性或长期维护；业务影响待证 | M | PROTOTYPE | P1 | Future | OPEN | CSV#44 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：上传功能未作为 V1 发布，但不得带风险发布 |
 | QA-AUD-045 | AUD-045 | shared | `desktop/main_window.py` | 窗口混合表单、IO、结果展示，270 行上帝窗口 | 当前未确认影响 V1 业务结论；维护风险待证 | M | PROTOTYPE | P2 | Phase 3 | OPEN | CSV#45 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：AppShell 以后用真实样板验证 |
@@ -85,9 +85,9 @@
 | QA-AUD-047 | AUD-047 | shared | repository root | 缺 LICENSE/CHANGELOG；README 偏交接文档 | 当前未确认影响 V1 业务结论；维护风险待证 | M | DEV_ONLY | P2 | Future | OPEN | CSV#47 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：不影响 Phase 1 业务契约 |
 | QA-AUD-048 | AUD-048 | shared | `equip_test.spec` / `build_native.py` | spec 引用旧 standards，和构建脚本重复 | 当前未确认影响 V1 业务结论；维护风险待证 | L | DEV_ONLY | P2 | Future | OPEN | CSV#48 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：构建清理前保留 |
 | QA-AUD-049 | AUD-049 | shared | `tools/extract_*.py` | G 盘绝对路径，换环境可能误读本机资源 | 当前未确认影响 V1 业务结论；维护风险待证 | L | DEV_ONLY | P2 | Future | OPEN | CSV#49 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：标记 legacy 或参数化 |
-| QA-AUD-050 | AUD-050 | shared | `v4_template_audit.py` | 16 个国标号、GB 28381-2026 和状态字符串硬编码 | 当前未确认影响 V1 业务结论；维护风险待证 | L | DEV_ONLY | P2 | Phase 8 | OPEN | CSV#50 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：标准事实不得继续散落 |
-| QA-AUD-051 | AUD-051 | shared | OOXML reader / template audit | inline 字符串和 namespace 重复实现 | 当前未确认影响 V1 业务结论；维护风险待证 | L | NOT_SHIPPED | P2 | Phase 8 | OPEN | CSV#51 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：V4 后置处理 |
-| QA-AUD-052 | AUD-052 | shared | `v4_writer.py:450-451` | 恒假分支，维护噪音 | 当前未确认影响 V1 业务结论；维护风险待证 | L | NOT_SHIPPED | P2 | Phase 8 | OPEN | CSV#52 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：不得在 0A 顺手删除 |
+| QA-AUD-050 | AUD-050 | shared | `v4_template_audit.py` | 16 个国标号、GB 28381-2026 和状态字符串硬编码 | 当前未确认影响 V1 业务结论；维护风险待证 | L | DEV_ONLY | P2 | Phase 9 | OPEN | CSV#50 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：标准事实不得继续散落；<br>**Phase 8 disposition review（2026-10-07）**：→ Phase 9——发布审计 `audit_release` 直接调用 `audit_v4_template`；硬编码国标号/状态串漂移会污染发布门禁 |
+| QA-AUD-051 | AUD-051 | shared | OOXML reader / template audit | inline 字符串和 namespace 重复实现 | 当前未确认影响 V1 业务结论；维护风险待证 | L | NOT_SHIPPED | P2 | VERIFY_BEFORE_PHASE9 | OPEN | CSV#51 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：V4 后置处理；<br>**Phase 8 disposition review（2026-10-07）**：→ VERIFY_BEFORE_PHASE9——OOXML 解析重复横跨正式 `ooxml_reader` 与发布审计用 `v4_template_audit`，需先确认正式链单一来源 |
+| QA-AUD-052 | AUD-052 | shared | `v4_writer.py:450-451` | 恒假分支，维护噪音 | 当前未确认影响 V1 业务结论；维护风险待证 | L | NOT_SHIPPED | P2 | POST_V1 | OPEN | CSV#52 | DEFER_TO_P8：Excel/发布外围不属于 settings 工程切片；保留发布前门禁；原决定：不得在 0A 顺手删除；<br>**Phase 8 disposition review（2026-10-07）**：→ POST_V1——`v4_writer` 恒假分支，属 V4 adapter |
 | QA-AUD-053 | AUD-053 | shared | `application/ports/__init__.py` | 端口导出策略不一致，外部导入可能遗漏 | 当前未确认影响 V1 业务结论；维护风险待证 | L | DEV_ONLY | P2 | Phase 4 | OPEN | CSV#53 | DEFER_TO_P4：真实样板后再通用化；不在薄壳阶段重构业务；原决定：契约整理时修 |
 | QA-AUD-054 | AUD-054 | shared | `schema_constraints.py` 等 | 缺专门单测，死代码也缺验证 | 可能影响发布可靠性或长期维护；业务影响待证 | M | DEV_ONLY | P1 | Phase 4 | OPEN | CSV#54 | DEFER_TO_P4：非 settings 切片，保持既有风险与证据；原决定：Golden/契约测试规划时补齐 |
 | QA-EVID-055 | AUD-055 | shared | `tests/` | 第三方认为存在 60 个真实 unittest，用于保护重构 | 不表示缺陷；仅为测试基线事实 | UNKNOWN / NEEDS_EVIDENCE | DEV_ONLY | EVIDENCE | Phase 0 | MAPPED | CSV#55 | Phase 0 实测为 54 module、887 项，历史数字不作当前事实 |
@@ -171,7 +171,7 @@ R07 本机 isolated-worktree 定向泵组为 157 pass；metadata/architecture/ev
 
 | issue_id | legacy_id/audit_id | profile_id | location | description | business_risk | engineering_risk | release_surface | classification | target_phase | status | evidence | decision |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `QA-EXCEL-001` | `V2.3-CLEANUP-R1` | `pump_water`（`pump_chemical` 同路径） | `src/equipeffi/infrastructure/excel/ooxml_reader.py::_parse_number`（第 35–45 行），调用点 `ooxml_reader.py:144`；上层 `v4_reader.OOXMLV4Reader.read_rows`（`v4_reader.py:62`）、`v4_writer.py:421` | 该函数先 `Decimal(text)` 解析单元格词法文本，再 `return float(number)`，在可无损的位置物化为 binary float。xlsx 数值本身是 XML 词法文本，`Decimal` 已在手，转 float 是纯损失 | 可能影响业务结论：若该 float 进入权威链并参与 full-value 比较或表 3 边界，存在翻转分档的可能 | M | `NOT_SHIPPED` | P1（暂定；视影响面验证结果可上调） | Phase 8 前 | OPEN（历史登记；当前已 `CLOSED`，见 Phase 8 承接登记） | 源码定位；`git grep` 确认 `src` 内无 openpyxl，该链路为自研标准库读取器，入口完全可控 | 保留登记；**Phase 8 前必须关闭**。不因本条目在治理任务中修改 Python |
+| `QA-EXCEL-001` | `V2.3-CLEANUP-R1` | `pump_water`（`pump_chemical` 同路径） | `src/equipeffi/infrastructure/excel/ooxml_reader.py::_parse_number`（第 35–45 行），调用点 `ooxml_reader.py:144`；上层 `v4_reader.OOXMLV4Reader.read_rows`（`v4_reader.py:62`）、`v4_writer.py:421` | 该函数先 `Decimal(text)` 解析单元格词法文本，再 `return float(number)`，在可无损的位置物化为 binary float。xlsx 数值本身是 XML 词法文本，`Decimal` 已在手，转 float 是纯损失 | 可能影响业务结论：若该 float 进入权威链并参与 full-value 比较或表 3 边界，存在翻转分档的可能 | M | `NOT_SHIPPED` | P1（暂定；视影响面验证结果可上调） | CLOSED（Phase 8A 承接登记） | OPEN（历史登记；当前已 `CLOSED`，见 Phase 8 承接登记） | 源码定位；`git grep` 确认 `src` 内无 openpyxl，该链路为自研标准库读取器，入口完全可控 | 保留登记；**Phase 8 前必须关闭**。不因本条目在治理任务中修改 Python |
 
 ```text
 QA-EXCEL-001
@@ -192,9 +192,13 @@ authoritative path impact = 尚待验证
 
 来源：本次用户执行授权与 docs/31；下表覆盖起点所有 target_phase 含 Phase 2 的 OPEN/VERIFY 项。延期项保持 OPEN/VERIFY。
 
+> **历史表说明（2026-10-07）**：下表 `target_phase = Phase 8` 为 2026-10-02 的历史目标记录；Phase 8 已 `EXECUTION_COMPLETE`
+> 并合并 PR #16（`64b656ee`）。历史 `disposition`（`DEFER_TO_P8`）**保留不改写**，`target_phase` 单元格已标注当前去向，
+> 完整判定见下方「Phase 8 disposition review（2026-10-07）」。
+
 | issue_id | disposition | target_phase | decision |
 |---|---|---|---|
-| QA-P1-003 | DEFER_TO_P8 | Phase 8 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
+| QA-P1-003 | DEFER_TO_P8 | Phase 8（历史）→ Phase 9 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
 | QA-P1-007 | KEEP_OPEN_FUTURE | Future | 当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭 |
 | QA-AUD-001 | KEEP_OPEN_FUTURE | Future | 当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭 |
 | QA-AUD-002 | KEEP_OPEN_FUTURE | Future | 当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭 |
@@ -203,18 +207,18 @@ authoritative path impact = 尚待验证
 | QA-AUD-006 | DEFER_TO_P3 | Phase 3 | 依赖正式设备分析 use-case 与业务证据；本轮保持旧路径 |
 | QA-AUD-008 | DEFER_TO_P4 | Phase 4 | 真实样板后再通用化；不在薄壳阶段重构业务 |
 | QA-AUD-012 | DEFER_TO_P3 | Phase 3 | 依赖正式设备分析 use-case 与业务证据；本轮保持旧路径 |
-| QA-AUD-013 | DEFER_TO_P8 | Phase 8 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
+| QA-AUD-013 | DEFER_TO_P8 | Phase 8（历史）→ POST_V1 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
 | QA-AUD-015 | DEFER_TO_P3 | Phase 3 | 依赖正式设备分析 use-case 与业务证据；本轮保持旧路径 |
 | QA-AUD-016 | DEFER_TO_P3 | Phase 3 | 依赖正式设备分析 use-case 与业务证据；本轮保持旧路径 |
 | QA-AUD-017 | DEFER_TO_P3 | Phase 3 | 依赖正式设备分析 use-case 与业务证据；本轮保持旧路径 |
 | QA-AUD-018 | DEFER_TO_P3 | Phase 3 | 依赖正式设备分析 use-case 与业务证据；本轮保持旧路径 |
-| QA-AUD-020 | DEFER_TO_P8 | Phase 8 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
-| QA-AUD-021 | DEFER_TO_P8 | Phase 8 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
+| QA-AUD-020 | DEFER_TO_P8 | Phase 8（历史）→ SUPERSEDED | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
+| QA-AUD-021 | DEFER_TO_P8 | Phase 8（历史）→ Future | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
 | QA-AUD-023 | KEEP_OPEN_FUTURE | Future | 当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭 |
 | QA-AUD-024 | PARTIAL_IN_P2 | Phase 2/3 | 仅完成 settings 端口/存储；原业务仓储与其他端口仍开放 |
 | QA-AUD-025 | KEEP_OPEN_FUTURE | Future | 当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭 |
-| QA-AUD-027 | DEFER_TO_P8 | Phase 8 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
-| QA-AUD-028 | DEFER_TO_P8 | Phase 8 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
+| QA-AUD-027 | DEFER_TO_P8 | Phase 8（历史）→ POST_V1 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
+| QA-AUD-028 | DEFER_TO_P8 | Phase 8（历史）→ POST_V1 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
 | QA-AUD-032 | KEEP_OPEN_FUTURE | Future | 当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭 |
 | QA-AUD-033 | KEEP_OPEN_FUTURE | Future | 当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭 |
 | QA-AUD-034 | CLOSE_IN_P2 | Phase 2 | 按 docs/31 实施；对应测试已通过，CLOSED |
@@ -230,18 +234,18 @@ authoritative path impact = 尚待验证
 | QA-AUD-047 | KEEP_OPEN_FUTURE | Future | 当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭 |
 | QA-AUD-048 | KEEP_OPEN_FUTURE | Future | 当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭 |
 | QA-AUD-049 | KEEP_OPEN_FUTURE | Future | 当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭 |
-| QA-AUD-050 | DEFER_TO_P8 | Phase 8 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
-| QA-AUD-051 | DEFER_TO_P8 | Phase 8 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
-| QA-AUD-052 | DEFER_TO_P8 | Phase 8 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
+| QA-AUD-050 | DEFER_TO_P8 | Phase 8（历史）→ Phase 9 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
+| QA-AUD-051 | DEFER_TO_P8 | Phase 8（历史）→ VERIFY_BEFORE_PHASE9 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
+| QA-AUD-052 | DEFER_TO_P8 | Phase 8（历史）→ POST_V1 | Excel/发布外围不属于 settings 工程切片；保留发布前门禁 |
 | QA-AUD-053 | DEFER_TO_P4 | Phase 4 | 真实样板后再通用化；不在薄壳阶段重构业务 |
 | QA-AUD-005 | DEFER_TO_P3 | Phase 3 | 非 settings 切片，保留 OPEN/VERIFY |
 | QA-AUD-007 | DEFER_TO_P4 | Phase 4 | 非 settings 切片，保留 OPEN/VERIFY |
 | QA-AUD-009 | DEFER_TO_P3 | Phase 3 | 非 settings 切片，保留 OPEN/VERIFY |
-| QA-AUD-011 | DEFER_TO_P8 | Phase 8 | 非 settings 切片，保留 OPEN/VERIFY |
-| QA-AUD-014 | DEFER_TO_P8 | Phase 8 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-011 | DEFER_TO_P8 | Phase 8（历史）→ POST_V1 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-014 | DEFER_TO_P8 | Phase 8（历史）→ POST_V1 | 非 settings 切片，保留 OPEN/VERIFY |
 | QA-AUD-022 | PARTIAL_IN_P2 | Phase 2/3 | settings 已真实接线，旧空桩保留未接线，业务仓储仍 OPEN |
-| QA-AUD-026 | DEFER_TO_P8 | Phase 8 | 非 settings 切片，保留 OPEN/VERIFY |
-| QA-AUD-029 | DEFER_TO_P8 | Phase 8 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-026 | DEFER_TO_P8 | Phase 8（历史）→ POST_V1 | 非 settings 切片，保留 OPEN/VERIFY |
+| QA-AUD-029 | DEFER_TO_P8 | Phase 8（历史）→ Phase 9 | 非 settings 切片，保留 OPEN/VERIFY |
 | QA-AUD-031 | DEFER_TO_P3 | Phase 3 | 非 settings 切片，保留 OPEN/VERIFY |
 | QA-AUD-041 | DEFER_TO_P3 | Phase 3 | 非 settings 切片，保留 OPEN/VERIFY |
 | QA-AUD-054 | DEFER_TO_P4 | Phase 4 | 非 settings 切片，保留 OPEN/VERIFY |
@@ -251,6 +255,10 @@ authoritative path impact = 尚待验证
 来源：用户 Phase 3 执行授权与 `docs/32`；下表覆盖所有 `target_phase` 含 Phase 3 的项，以及 Phase 2 延后到 Phase 3 的项。
 
 处置口径：只有**真实完成并有测试证据**的项才 `CLOSE_IN_P3`；实际只做了一部分的记 `PARTIAL_IN_P3` 并保留 OPEN；不在本轮范围的记 `DEFER` / `NOT_APPLICABLE`。**不为 Phase 3 PASS 虚假清空台账。**
+
+> **历史表说明（2026-10-07）**：下表 `target_phase = Phase 8` 为 2026-10-02 的历史目标记录；Phase 8 已 `EXECUTION_COMPLETE`
+> 并合并 PR #16（`64b656ee`）。历史 `disposition`（`DEFER_TO_P8`）**保留不改写**，`target_phase` 单元格已标注当前去向，
+> 完整判定见下方「Phase 8 disposition review（2026-10-07）」。
 
 | issue_id | disposition | target_phase | decision |
 |---|---|---|---|
@@ -267,14 +275,14 @@ authoritative path impact = 尚待验证
 | QA-AUD-045 | PARTIAL_IN_P3 | Phase 3/6 | Qt 侧新增统一页面；遗留 Tk `main_window` 270 行上帝窗口按 Non-goals **未动** |
 | QA-AUD-031 | PARTIAL_IN_P3 | Phase 5 | `as_of` 产品口径已由 `EQP-STD-GB19762-001` 关闭为 `RESOLVED`（软件产品决定）；统一入口要求显式 `as_of` 且无隐式默认。**遗留 CLI/API 的 5 处兼容默认值仍按 `AGENTS.md §2.0` 登记保留**，全局取消须另立任务做兼容影响评估 |
 | QA-AUD-041 | DEFER | Phase 4/8 | `json_repository` 缺键/缺文件语义与线性 find 未在 Phase 3 处理 |
-| QA-AUD-011 | DEFER_TO_P8 | Phase 8 | 规范化重复实现属 Import/V4 路径；统一入口未新增第三套规范化，但未消除既有重复 |
-| QA-AUD-014 | DEFER_TO_P8 | Phase 8 | `input_normalization` 16 类硬编码未拆分 |
-| QA-AUD-026 | DEFER_TO_P8 | Phase 8 | `adapt_many`/`validate_draft` 未接线；属 V4 适配 |
-| QA-AUD-029 | DEFER_TO_P8 | Phase 8 | 模板名/sheet 清单重复配置；属 Import Contract 单一来源 |
-| QA-AUD-013 | DEFER_TO_P8 | Phase 8 | `v4_validation` 882 行特例链；Phase 3 未动 |
-| QA-EXCEL-001 | DEFER_TO_P8 | Phase 8 | Excel 数值入口 Decimal→float；按既定约束 Phase 8 前必须关闭，本 Phase 不改 Python |
-| QA-P0-001 / QA-P0-002 | DEFER | Phase 8 | V4 motor reader/writer 失败，`NOT_SHIPPED`；不在 Phase 3 范围 |
-| QA-P1-003 | DEFER_TO_P8 | Phase 8 | 发布审计 `wheel_pmsm_status`，`DEV_ONLY` |
+| QA-AUD-011 | DEFER_TO_P8 | Phase 8（历史）→ POST_V1 | 规范化重复实现属 Import/V4 路径；统一入口未新增第三套规范化，但未消除既有重复 |
+| QA-AUD-014 | DEFER_TO_P8 | Phase 8（历史）→ POST_V1 | `input_normalization` 16 类硬编码未拆分 |
+| QA-AUD-026 | DEFER_TO_P8 | Phase 8（历史）→ POST_V1 | `adapt_many`/`validate_draft` 未接线；属 V4 适配 |
+| QA-AUD-029 | DEFER_TO_P8 | Phase 8（历史）→ Phase 9 | 模板名/sheet 清单重复配置；属 Import Contract 单一来源 |
+| QA-AUD-013 | DEFER_TO_P8 | Phase 8（历史）→ POST_V1 | `v4_validation` 882 行特例链；Phase 3 未动 |
+| QA-EXCEL-001 | DEFER_TO_P8 | Phase 8（历史）→ CLOSED（Phase 8A 承接登记） | Excel 数值入口 Decimal→float；按既定约束 Phase 8 前必须关闭，本 Phase 不改 Python |
+| QA-P0-001 / QA-P0-002 | DEFER | Phase 8（历史）→ VERIFY_BEFORE_PHASE9 | V4 motor reader/writer 失败，`NOT_SHIPPED`；不在 Phase 3 范围 |
+| QA-P1-003 | DEFER_TO_P8 | Phase 8（历史）→ Phase 9 | 发布审计 `wheel_pmsm_status`，`DEV_ONLY` |
 | QA-P1-007 / QA-AUD-040 | DEFER | Future | 标准包缓存/解析性能；Phase 3 先登记实测，不做缓存重构 |
 | QA-AUD-034 / 035 / 036 / 037 | ALREADY_CLOSED_IN_P2 | Phase 2 | Phase 2 已 `CLOSE_IN_P2`，Phase 3 未回退 |
 
@@ -338,6 +346,50 @@ Phase 8 正式承接以下与 Excel 批量评价直接相关的条目（**不借
 | `QA-EXCEL-001` | `EXCEL_READER` | **CLOSED（Phase 8A）** | `ooxml_reader._parse_number` 曾把非整数数值 **Decimal → float** 再送进正式评价链，等于把 Numeric Contract 降级。**已修复**：整数返回 `int`、其余保留 `Decimal`，**绝不经过 float**；覆盖整数 / 普通小数 / 35 位长小数 / 科学计数法 / 大整数 / 文本 / 空值。并新增正式 Reader `pump_workbook_reader`，只读正式输入列、行启用为语义式、表头做防御性校验。<br>`disposition`：Phase 8 关闭（测试见 `tests/unit/test_phase8a_template_reader.py`） |
 | `QA-P5-003` | `V4_EXCEL_ADAPTER` | **CLOSED（Phase 8 / 8B 正式 E2E 确认）** | 「Excel 侧存在独立业务算法」问题**已解决**：正式 V6 模板的「离心泵」Sheet 已退出全部可独立产出 GB19762 结果的 Excel 公式（`K`/`L`/`N:X`/`AA`），改由软件批量评价写入；Excel 只做批量输入/输出载体，每行都调用正式 Application 契约。V4 模板降为 `LEGACY`（不再作为正式用户模板，实现保留）。<br>`disposition`：Phase 8 关闭（门禁见 `tools/check_v6_pump_template.py`） |
 | `QA-P6-001` | `LEGACY_TK` | **OPEN（Phase 8 明确不清理）** | legacy Tk 桌面窗口实现保留但不接线。Phase 8 **不**删除该实现，也**不**触碰其表单模型依赖链；`disposition` 保持 Phase 8 之后按需处理。 |
+
+### Phase 8 disposition review（2026-10-07）
+
+Phase 8 已 `EXECUTION_COMPLETE` 并合并 PR #16（`64b656ee`），不得再留下「目标阶段是 Phase 8、但仍开放」的幽灵待办。
+本节对原 `target_phase = Phase 8`（含 `Phase 1/8`）且状态仍为 `OPEN` / `VERIFY` 的 **17** 项，
+逐项复核**真实引用与正式发布路径**后重新分派。**只重分派去向，不关闭任何问题**；`status` 一律保持原值。
+
+分派口径（统一使用，非机械改期）：
+
+| 处置 | 含义 |
+|---|---|
+| `Phase 9` | 位于 V1 **发布前门禁 / 发布工具**上，其正确性直接影响发布判定 |
+| `VERIFY_BEFORE_PHASE9` | 目前无法判定是否进入正式发布链，须在 Phase 9 之前先给出结论（修复 / 明确不发布 / 量化） |
+| `POST_V1` | 落在 **V4 / legacy Excel 适配器路线**（V1 明确不发布该适配器；重开 V4 或进入第二标准时处理） |
+| `Future` | 与具体路线无关的通用清理 / 死代码（V1 不排期） |
+| `SUPERSEDED` | 其功能需求已被 Phase 8 正式链取代，且有明确证据（0 入边引用 + 机械测试） |
+
+| issue_id | 原 target_phase | 新 disposition | 判定依据（真实引用核实） |
+|---|---|---|---|
+| `QA-P1-003` | Phase 8 | **Phase 9** | 发布审计缺 `wheel_pmsm_status` 键，属发布前门禁完整性 |
+| `QA-P0-001` | Phase 1/8 | **VERIFY_BEFORE_PHASE9** | V4 motor reader 可能错误结论；表面 `NOT_SHIPPED` 但 CLI `--v4-sheet` 可达 → 发布前须有「修复 or 明确不发布」结论 |
+| `QA-P0-002` | Phase 1/8 | **VERIFY_BEFORE_PHASE9** | 同上（V4 结果写回） |
+| `QA-AUD-011` | Phase 8 | **POST_V1** | `v4_validation` / `input_normalization` 只被 non-formal V4 / legacy API 链引用；正式 Qt 分析页不经 `schema_constraints` |
+| `QA-AUD-013` | Phase 8 | **POST_V1** | `v4_validation.py` 属 V4 adapter 链 |
+| `QA-AUD-014` | Phase 8 | **POST_V1** | `input_normalization.py` 属 V4 / legacy 链 |
+| `QA-AUD-019` | Phase 8 | **POST_V1** | `v4_writer.py` 在 `src/` 内 **0 入边引用**；正式写回由 `pump_result_writer` 承担 |
+| `QA-AUD-020` | Phase 8 | **SUPERSEDED** | `legacy_importer` / `legacy_writer` / `report_exporter` / `template_builder` 4 个 stub 0 入边引用，`tests/unit/test_disabled_adapters.py` 机械断言其 `FeatureNotEnabled`；正式 Excel 能力已由 Phase 8 的 V6 批量链提供 |
+| `QA-AUD-021` | Phase 8 | **Future** | `strict_importer.py` 无任何入边引用（死别名） |
+| `QA-AUD-026` | Phase 8 | **POST_V1** | `v4_input_adapter.py` 的 `adapt_many` / `validate_draft` 属 V4 adapter |
+| `QA-AUD-027` | Phase 8 | **POST_V1** | 正式链只经 `ooxml_reader`；重复落在 legacy `v4_reader` / `v4_template_audit` |
+| `QA-AUD-028` | Phase 8 | **POST_V1** | 同 027（`ooxml_reader` 与 `v4_writer` 列号换算重复） |
+| `QA-AUD-029` | Phase 8 | **Phase 9** | 模板名 / 设备 sheet 配置同时被正式 `template_resource`（`V6TemplateResource`）与发布审计 `v4_template_contract` 持有，漂移直接影响发布审计 |
+| `QA-AUD-042` | Phase 8 | **VERIFY_BEFORE_PHASE9** | `template_resource` 在正式批量链上；Phase 8 实测 10,000 行峰值 952 MB → 发布前须量化结论 |
+| `QA-AUD-050` | Phase 8 | **Phase 9** | 发布审计 `tools/audit_release.py` 直接调用 `audit_v4_template`；其中硬编码国标号 / 状态串漂移会污染发布门禁 |
+| `QA-AUD-051` | Phase 8 | **VERIFY_BEFORE_PHASE9** | OOXML 解析重复横跨正式 `ooxml_reader` 与发布审计用 `v4_template_audit`，须先确认正式链是否单一来源 |
+| `QA-AUD-052` | Phase 8 | **POST_V1** | `v4_writer.py:450-451` 恒假分支，属 V4 adapter |
+
+小结：`Phase 9` **3** 项、`VERIFY_BEFORE_PHASE9` **4** 项、`POST_V1` **8** 项、`Future` **1** 项、`SUPERSEDED` **1** 项。
+
+- 历史 `DEFER_TO_P8` 处置原文**保留不改写**；历史处置表的 `target_phase` 单元格标注为 `Phase 8（历史）→ <新去向>`，
+  权威 audit 表（「Phase 0 当前发现」「第三方 55 项逐项登记」）已直接写入新 `target_phase`。
+- **本节不关闭任何条目**，也不改变任何业务结论；`QA-P0-001` / `QA-P0-002` 的 P0 属性与 `NOT_SHIPPED` 表面定义保持不变。
+- 判定依据限于**只读核实**（`git grep` 真实入边引用 + 正式链 import 关系），未修改业务代码、Golden、Canonical、Numeric 与 Excel Reader/Writer。
+- 复扫口径：`target_phase` 含 `Phase 8` 且 `status` 仍为 `OPEN` / `VERIFY` / `REGISTERED_DEVIATION` 的条目 = **0**。
 
 ### Phase 8 R1 登记（独立验收 blocker）
 
