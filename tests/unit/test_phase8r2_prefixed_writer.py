@@ -18,9 +18,12 @@ Writer 以为该单元格不存在，又追加一个**无前缀**的 `<c r="U4">
 输出工作簿出现**重复坐标**。更糟的是旧代码的
 ``after in "_:.-"`` 分支把 `<x:c` 当成 `<col`/`<cols` 之类的误匹配**主动跳过**。
 
-本轮修复：**元素身份由限定名/局部名决定，与前缀无关**；`local-name == "c"` 才是
-单元格，`local-name == "row"` 才是行，结束标记必须匹配开标记的**实际限定名**；
-并在写结果 Workbook **之前**对**整张工作表**强制坐标唯一性后置条件。
+本轮修复的最终语义：**元素身份由 expanded QName（namespace URI + local-name）
+决定，与前缀字面形式无关**；只有 `{MAIN_NS}c` 才是正式 SpreadsheetML 单元格，
+只有 `{MAIN_NS}row` 才是正式行。不同前缀只要绑定同一个 MAIN_NS 就是同一类元素；
+无默认 namespace 时的裸 `<c>` 则不是 SpreadsheetML。结束标记仍必须匹配开标记的
+实际限定名，并在写结果 Workbook **之前**对正式 SpreadsheetML 路径强制坐标唯一性
+后置条件。
 
 本模块的每个测试在被 BLOCKED 的 head 上都必须失败。
 
@@ -460,23 +463,51 @@ class PrefixedRowAndMixedTests(PrefixedWriterTestCase):
 # ---------------------------------------------------------------------------
 
 class DuplicateCoordinateFailClosedTests(PrefixedWriterTestCase):
-    def _duplicate_u4_input(self, name: str) -> Path:
-        """输入**已经**含重复坐标：`<c r="U4">` 与 `<x:c r="U4">` 并存。"""
+    @staticmethod
+    def _add_same_qname_duplicate(xml: str, reference: str) -> str:
+        """插入第二个**真正的 SpreadsheetML** 单元格。
 
-        def make_duplicate(xml: str) -> str:
-            xml = prefix_worksheet_xml(xml, "x")
-            # 在前缀化 U4 之前插入一个**无前缀**的 U4：同一坐标出现两次。
-            anchor = re.search(r'<x:c [^>]*r="U4"[^>]*/>', xml)
-            assert anchor, "夹具无效：找不到前缀化 U4"
-            return xml[:anchor.start()] + '<c r="U4" s="234"/>' + xml[anchor.start():]
+        夹具用不同字面前缀 `x:` / `ss:`，但二者都绑定 MAIN_NS，因此 expanded
+        QName 都是 `{MAIN_NS}c`。这同时验证"前缀无关"和"正式坐标重复必须拒绝"；
+        不再把无默认 namespace 下的裸 `<c>` 错当成 SpreadsheetML。
+        """
+
+        xml = prefix_worksheet_xml(xml, "x")
+        xml = xml.replace(
+            "xmlns:x=", f'xmlns:ss="{MAIN_NS}" xmlns:x=', 1)
+        anchor = re.search(
+            rf'<x:c [^>]*r="{re.escape(reference)}"[^>]*/>', xml)
+        assert anchor, f"夹具无效：找不到前缀化 {reference}"
+        duplicate = f'<ss:c r="{reference}" s="234"/>'
+        return xml[:anchor.start()] + duplicate + xml[anchor.start():]
+
+    def _assert_formal_duplicate(self, xml: str, reference: str) -> None:
+        """独立证明重复发生在正式 SpreadsheetML 路径，而非仅文本坐标重名。"""
+
+        references = list(cell_references(xml))
+        self.assertEqual(
+            references.count(reference), 2,
+            f"夹具无效：namespace-aware 解析必须识别两个正式 {reference}")
+        root = ElementTree.fromstring(xml)
+        matching = [
+            element for element in root.iter("{" + MAIN_NS + "}c")
+            if element.attrib.get("r") == reference
+        ]
+        self.assertEqual(
+            len(matching), 2,
+            f"夹具无效：两个 {reference} 必须具有相同 expanded QName {{MAIN_NS}}c")
+
+    def _duplicate_u4_input(self, name: str) -> Path:
+        """输入已经含两个同 expanded QName 的正式 U4（`x:c` + `ss:c`）。"""
 
         source = self.make_input(name, [self.water()])
-        rewrite_sheet_xml(source, make_duplicate)
+        rewrite_sheet_xml(
+            source, lambda xml: self._add_same_qname_duplicate(xml, "U4"))
         xml = read_sheet_xml(source)
         assert_prefixed(xml, "x", "U4", fully_prefixed=False)
-        self.assertRegex(xml, r'<c r="U4"')
-        self.assertEqual(len(re.findall(r'r="U4"', xml)), 2,
-                         "夹具无效：输入必须真的含两个 U4")
+        self.assertRegex(xml, r'<ss:c [^>]*r="U4"')
+        self.assertRegex(xml, r'<x:c [^>]*r="U4"')
+        self._assert_formal_duplicate(xml, "U4")
         return source
 
     def test_G_duplicate_input_fails_closed_without_result_workbook(self):
@@ -515,18 +546,15 @@ class DuplicateCoordinateFailClosedTests(PrefixedWriterTestCase):
     def test_G3_duplicate_target_on_a_later_row_also_fails_closed(self):
         """G 重复坐标出现在**非首行**时同样必须 fail closed（不是特例修补）。"""
 
-        def make_duplicate_row5(xml: str) -> str:
-            xml = prefix_worksheet_xml(xml, "x")
-            anchor = re.search(r'<x:c [^>]*r="U5"[^>]*/>', xml)
-            assert anchor, "夹具无效：找不到前缀化 U5"
-            return xml[:anchor.start()] + '<c r="U5" s="234"/>' + xml[anchor.start():]
-
         source = self.make_input("g3_dup.xlsx",
                                  [self.water(), self.water(C="M-002")])
-        rewrite_sheet_xml(source, make_duplicate_row5)
+        rewrite_sheet_xml(
+            source, lambda xml: self._add_same_qname_duplicate(xml, "U5"))
         xml = read_sheet_xml(source)
         assert_prefixed(xml, "x", "U4", fully_prefixed=False)
-        self.assertEqual(len(re.findall(r'r="U5"', xml)), 2)
+        self.assertRegex(xml, r'<ss:c [^>]*r="U5"')
+        self.assertRegex(xml, r'<x:c [^>]*r="U5"')
+        self._assert_formal_duplicate(xml, "U5")
 
         destination = self.root / "g3_dup_out.xlsx"
         with self.assertRaises(ResultWorkbookWriteError):
