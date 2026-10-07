@@ -1,6 +1,6 @@
 name: Windows Core
 
-# 长期 Windows Core CI（2026-10-02 建立）
+# 长期 Windows Core CI（2026-10-02 建立；2026-10-07 M1 单人维护简化：CI 纯去重）
 #
 # 本 workflow 是 EquipEffi 面向所有 PR 的长期 Windows 门禁，语义与历史任务名解耦：
 # 不再以 Phase 1 / N01-B Pilot / Numeric Adoption 作为未来 PR 的主要 CI 身份。
@@ -9,11 +9,19 @@ name: Windows Core
 #   - windows-core      : Windows Core (gating)
 #   - whitespace-check  : Whitespace check (gating)
 #
-# NON-GATING JOB（失败不会使 workflow FAIL）：
-#   - full-suite-baseline : "Full suite baseline (NON-GATING BASELINE / KNOWN BASELINE)"
-#     设 continue-on-error: true，仅用于保存并展示真实 run / failure / error / skipped。
-#     仓库当前存在已知失败，**workflow green 不得被解释为 "Full suite PASS"**。
-# windows-core 内的按 ID 回归比较器为 GATING；未知失败/错误/跳过会使其失败。
+# M1 去重原则：**同一次 PR CI 中，同一个测试只执行一次**。
+#   1. `tests.contract.*` 不被 `unittest discover` 覆盖（tests/contract 无 __init__.py），
+#      因此保留唯一一次显式执行步骤——这不是重复，删除它会丢失门禁；
+#   2. 其余全部测试由**唯一一次** full discover 执行并落盘（--mode run）；
+#   3. known-regression 比较步骤只读取该结果（--mode compare），不再重新 discover；
+#   4. 原 `full-suite-baseline` job 与上述 full discover 完全相同，已删除；
+#      其「真实计数证据」由 full_suite.log / summary.txt / actual.json 承担并照常上传。
+#
+# 真实结果口径（不得弱化）：
+#   - 仓库当前仍存在已知 baseline failures（见 tests/baselines/windows_full_suite_known.json）。
+#     **workflow green 只表示「没有新增回归」，绝不等于「全量测试全部通过」。**
+#   - known regression 仍按**精确测试 ID + 类型**比较；unknown failure / error /
+#     新增 skip / failure→error 恶化 / 基线测试缺失，一律使 gate FAIL。
 
 on:
   push:
@@ -33,8 +41,7 @@ jobs:
   windows-core:
     name: Windows Core (gating)
     runs-on: windows-latest
-    # Phase 8 R1W：gating 作业现在包含 100/1000/10000 行批量回归与 R1W 结构守卫，
-    # 25 分钟不足以跑完（被取消时无 assertion failure，只是时间不够）。
+    # Phase 8 R1W 起 gating 包含 100/1000/10000 行批量回归与结构守卫。
     # 这里只为现有门禁提供足够时间，**不删除测试、不减少门禁、不新增 skip**。
     timeout-minutes: 45
     defaults:
@@ -68,55 +75,22 @@ jobs:
       - name: Compileall
         run: python -m compileall -q src tools tests
 
-      - name: Architecture boundaries and metadata contract
+      # 架构边界 + 元数据契约。保留独立步骤：`unittest discover` 不进入
+      # tests/contract（该目录无 __init__.py），这是这些测试**唯一**的执行点。
+      - name: Architecture boundaries and metadata contract (gating)
         run: |
           python -m unittest `
             tests.contract.test_architecture_boundaries `
-            tests.contract.test_device_metadata -q
+            tests.contract.test_device_metadata -v
 
-      - name: Application and core tests
-        run: |
-          python -m unittest `
-            tests.unit.test_application_api `
-            tests.unit.test_evaluation_engine `
-            tests.unit.test_entrypoint `
-            tests.unit.test_public_device_types `
-            tests.unit.test_device_evaluator_matrix -q
+      # 本 job 内唯一一次 full discover：执行并落盘真实结果。
+      # 该步骤绿灯仅代表「套件执行完成」，真实 fail/error/skip 见 summary.txt。
+      - name: Full suite (single execution, record real results)
+        run: python tools/check_windows_regressions.py --mode run --output artifacts/phase2-regression
 
-      # module is identifiable from the step outcome alone (no log access).
-      - name: Phase 2/3/4/5/6/7/8 settings, lifecycle, Stage D, Product Shell, analysis flow, Excel batch, R1 blockers, writer structure, namespace preservation, writer identity, Qt background batch, Qt offscreen (gating)
-        shell: pwsh
-        run: |
-          $mods = @(
-            'tests.contract.test_architecture_boundaries',
-            'tests.unit.test_composition',
-            'tests.unit.test_phase2_settings',
-            'tests.unit.test_phase2_logging',
-            'tests.unit.test_phase2_qt',
-            'tests.unit.test_phase3_qt_unified',
-            'tests.unit.test_phase3_r1_blockers',
-            'tests.unit.test_phase3_r2_final_closure',
-            'tests.unit.test_phase3_r3_as_of_lifecycle',
-            'tests.unit.test_phase4_lifecycle_generalization',
-            'tests.unit.test_phase4_fingerprint_decoupling',
-            'tests.unit.test_phase5_chemical_stage_d',
-            'tests.unit.test_phase6_product_shell',
-            'tests.unit.test_phase7_analysis_history',
-            'tests.unit.test_phase8a_template_reader',
-            'tests.unit.test_phase8b_batch_evaluation',
-            'tests.unit.test_phase8b_batch_consistency',
-            'tests.unit.test_phase8r1_blockers',
-            'tests.unit.test_phase8r1w_writer_structure',
-            'tests.unit.test_phase8r3_namespace_preservation',
-            'tests.unit.test_phase8r4_writer_identity',
-            'tests.unit.test_phase8r4_qt_background',
-            'tests.unit.test_phase8r2_prefixed_writer',
-            'tests.unit.test_windows_regression_comparator'
-          )
-          python -m unittest @mods -v
-          exit $LASTEXITCODE
-      - name: Full suite known-regression comparator (gating)
-        run: python tools/check_windows_regressions.py --output artifacts/phase2-regression
+      # 只读取上一步已落盘的结果做按 ID 比较，不重新执行任何测试。
+      - name: Known-regression comparator by exact test id (gating)
+        run: python tools/check_windows_regressions.py --mode compare --output artifacts/phase2-regression
 
       - name: Upload exact regression evidence
         if: always()
@@ -129,83 +103,6 @@ jobs:
         run: |
           python -m equipeffi --status
           python -m equipeffi --list-device-types
-
-  full-suite-baseline:
-    name: Full suite baseline (NON-GATING BASELINE / KNOWN BASELINE)
-    runs-on: windows-latest
-    timeout-minutes: 45
-    continue-on-error: true
-    defaults:
-      run:
-        shell: pwsh
-    env:
-      PYTHONPATH: src
-      PYTHONDONTWRITEBYTECODE: "1"
-      PYTHONIOENCODING: utf-8
-      QT_QPA_PLATFORM: offscreen
-    steps:
-      # 完整历史：历史 provenance 门禁需要 `git show <source_baseline_sha>:<path>`。
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: pip
-
-      - name: Install project dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -e ".[tools,desktop]" jsonschema==4.26.0
-
-      # continue-on-error 只用于保留真实基线证据；本 job 的名称已显式标注 NON-GATING，
-      # 不得据此把 workflow green 解释为 "Full suite PASS"。
-      #
-      # 注意：Python unittest 的 "Ran ... / OK / FAILED" 摘要通常写到 **stderr**，
-      # 因此这里必须合并 stdout + stderr 后再提取，否则会保存了真实失败却显示不出数字。
-      - name: Run full unittest suite and record real counts
-        run: |
-          New-Item -ItemType Directory -Force artifacts/full-suite-baseline | Out-Null
-          $p = Start-Process -FilePath python `
-            -ArgumentList @('-m','unittest','discover','-s','tests','-t','.','-v') `
-            -NoNewWindow -Wait -PassThru `
-            -RedirectStandardOutput artifacts/full-suite-baseline/full_suite.log `
-            -RedirectStandardError artifacts/full-suite-baseline/full_suite.err
-          $code = $p.ExitCode
-
-          $stdout = if (Test-Path artifacts/full-suite-baseline/full_suite.log) { Get-Content artifacts/full-suite-baseline/full_suite.log -Raw } else { "" }
-          $stderr = if (Test-Path artifacts/full-suite-baseline/full_suite.err) { Get-Content artifacts/full-suite-baseline/full_suite.err -Raw } else { "" }
-          $merged = $stdout + "`n" + $stderr
-          $merged | Out-File -Encoding utf8 artifacts/full-suite-baseline/full_suite_merged.log
-
-          $summary = ($merged -split "`n" | Where-Object { $_ -match '^Ran |^OK|^FAILED' })
-          $failed = ($merged -split "`n" | Where-Object { $_ -match '^(ERROR|FAIL): ' })
-
-          Write-Output "===== FULL SUITE (NON-GATING / KNOWN BASELINE) ====="
-          Write-Output "exit_code=$code"
-          if ($summary) { $summary | ForEach-Object { Write-Output $_.Trim() } } else { Write-Output "WARNING: 未在合并输出中找到 Ran/OK/FAILED 摘要" }
-          if ($failed) {
-            Write-Output "----- known failures / errors -----"
-            $failed | ForEach-Object { Write-Output $_.Trim() }
-          }
-
-          @(
-            "job=full-suite-baseline",
-            "gating=false",
-            "exit_code=$code",
-            "head_sha=${{ github.sha }}",
-            "--- summary (stdout+stderr merged) ---"
-          ) + $summary + @("--- failures/errors ---") + $failed |
-            Out-File -Encoding utf8 artifacts/full-suite-baseline/outcome.txt
-          if ($code -ne 0) { Write-Output "KNOWN BASELINE FAILURES PRESERVED (non-gating)" }
-
-      - name: Upload baseline evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: full-suite-baseline-evidence
-          path: artifacts/full-suite-baseline/
 
   whitespace-check:
     name: Whitespace check (gating)
