@@ -171,7 +171,7 @@ R07 本机 isolated-worktree 定向泵组为 157 pass；metadata/architecture/ev
 
 | issue_id | legacy_id/audit_id | profile_id | location | description | business_risk | engineering_risk | release_surface | classification | target_phase | status | evidence | decision |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `QA-EXCEL-001` | `V2.3-CLEANUP-R1` | `pump_water`（`pump_chemical` 同路径） | `src/equipeffi/infrastructure/excel/ooxml_reader.py::_parse_number`（第 35–45 行），调用点 `ooxml_reader.py:144`；上层 `v4_reader.OOXMLV4Reader.read_rows`（`v4_reader.py:62`）、`v4_writer.py:421` | 该函数先 `Decimal(text)` 解析单元格词法文本，再 `return float(number)`，在可无损的位置物化为 binary float。xlsx 数值本身是 XML 词法文本，`Decimal` 已在手，转 float 是纯损失 | 可能影响业务结论：若该 float 进入权威链并参与 full-value 比较或表 3 边界，存在翻转分档的可能 | M | `NOT_SHIPPED` | P1（暂定；视影响面验证结果可上调） | Phase 8 前 | OPEN | 源码定位；`git grep` 确认 `src` 内无 openpyxl，该链路为自研标准库读取器，入口完全可控 | 保留登记；**Phase 8 前必须关闭**。不因本条目在治理任务中修改 Python |
+| `QA-EXCEL-001` | `V2.3-CLEANUP-R1` | `pump_water`（`pump_chemical` 同路径） | `src/equipeffi/infrastructure/excel/ooxml_reader.py::_parse_number`（第 35–45 行），调用点 `ooxml_reader.py:144`；上层 `v4_reader.OOXMLV4Reader.read_rows`（`v4_reader.py:62`）、`v4_writer.py:421` | 该函数先 `Decimal(text)` 解析单元格词法文本，再 `return float(number)`，在可无损的位置物化为 binary float。xlsx 数值本身是 XML 词法文本，`Decimal` 已在手，转 float 是纯损失 | 可能影响业务结论：若该 float 进入权威链并参与 full-value 比较或表 3 边界，存在翻转分档的可能 | M | `NOT_SHIPPED` | P1（暂定；视影响面验证结果可上调） | Phase 8 前 | OPEN（历史登记；当前已 `CLOSED`，见 Phase 8 承接登记） | 源码定位；`git grep` 确认 `src` 内无 openpyxl，该链路为自研标准库读取器，入口完全可控 | 保留登记；**Phase 8 前必须关闭**。不因本条目在治理任务中修改 Python |
 
 ```text
 QA-EXCEL-001
@@ -180,7 +180,7 @@ authoritative path impact = 尚待验证
   —— 需先确认该 float 是否经 V4 输入适配器进入权威数值链；
      若适配器已转为 Decimal 字符串，则属潜在缺陷；若直接消费，则属活跃缺陷
 最小修法候选    = 保留 Decimal 或返回词法文本，不转 float（不需改架构）
-关闭时点        = Phase 8 正式 Excel 实现前
+关闭时点        = Phase 8 正式 Excel 实现前（已于 Phase 8A 关闭，见下方「Phase 8 承接登记」）
 本轮约束        = 不改 Python 实现、不改测试期望、不改 V4 行为
 关联            = Numeric Contract v1 §2.1 ingress boundary；
                   docs/28_EquipEffi 后续开发总体路线 V2.3.md 第 7.1 节
@@ -303,7 +303,7 @@ authoritative path impact = 尚待验证
 |---|---|---|---|
 | `QA-P5-001` | `CLOSED`（Phase 6 R1） | **`--json` / `ApplicationApi` / JSONL / CLI 曾对 `pump_chemical` 返回 `NOT_IN_RELEASE_SCOPE`**。根因是遗留 `EvaluationService` 中一段硬编码短路（`PROFILE_NOT_IN_RELEASE_SCOPE`）未与统一纵向切片同步。R1 已删除该短路，并把发布门禁收敛为**单一事实源** `application/services/pump_release_gate.py`；`EvaluationService` 与 `CentrifugalPumpAnalysisService` 都**实际调用** `pump_release_gate.pump_release_support`（后者在 R1 首轮仅声明而未调用，复验已指出并修正）。机械证据：在内存中替换 `PUMP_RELEASE_SUPPORT['pump_chemical']` 后两条路径同步变化；见 `R1SecondRoundBlockerTests::test_shared_release_gate_is_actually_used_by_both_paths`。<br>实测：同一石化泵输入经 `--json` CLI、`ApplicationApi` 与正式纵向切片得到**相同**的 `support_status = SUPPORTED` / 结论 / 等级。<br>`closed_by`：`tests/unit/test_phase6_product_shell.py::EntrySurfaceParityTests` |
 | `QA-P5-002` | `CLOSED`（Phase 6 / R1） | (a) **legacy Tk `--gui` 已收口**：不再启动 Tk，与无参数启动、`--qt` 相同进入正式 Qt Shell；Tk 不再是任何用户产品入口；已删除 Tk→Web fallback。(b) **`--web` 语义已同步**：`--web` 经 `ApplicationApi` → `EvaluationFacade` → `EvaluationService`，与 (a) 的 `--json` / CLI 走同一条链路，因此 `pump_chemical` 同样返回 `SUPPORTED` 并正常评价；见 `QA-P5-001`。<br>`closed_by`：`tests/unit/test_phase6_product_shell.py::EntrySurfaceParityTests` 与 `...::EntrypointTests::test_legacy_tk_launcher_is_not_a_product_entrypoint` |
-| `QA-P5-003` | `REGISTERED_DEVIATION` | OPEN | **V4 / Excel adapter 仍对 `pump_chemical` 返回 `NOT_IN_RELEASE_SCOPE`**：Excel 收口排在 Phase 8。<br>`disposition`：**Phase 8**（且 Phase 8 **必须**调用同一 Application / Calculator，**不得**建立第二套业务算法） |
+| `QA-P5-003` | `REGISTERED_DEVIATION` | OPEN（历史登记；当前已 `CLOSED`，见 Phase 8 承接登记） | **V4 / Excel adapter 仍对 `pump_chemical` 返回 `NOT_IN_RELEASE_SCOPE`**：Excel 收口排在 Phase 8。<br>`disposition`：**Phase 8**（且 Phase 8 **必须**调用同一 Application / Calculator，**不得**建立第二套业务算法） |
 | `QA-P5-004` | `REGISTERED_DEVIATION` | OPEN | **Android bridge 未纳入本阶段正式支持表面**。正式发布前必须消除所有未声明的发布表面语义分歧。<br>`disposition`：**Phase 9** |
 | `QA-P5-005` | `REGISTERED_DEVIATION` | OPEN | **安装包 / 代码签名 / 正式发布产物**未产生：本 Phase 不声明可发布。<br>`disposition`：**Phase 9** |
 
@@ -315,7 +315,7 @@ authoritative path impact = 尚待验证
 
 | issue_id | 表面 | 状态 | 说明 |
 |---|---|---|---|
-| `QA-P6-001` | `LEGACY_TK` | `REGISTERED_DEVIATION` | **legacy Tk 桌面窗口实现保留但不接线**。Phase 6 已按 Owner 决定断开正式入口：`--gui` / 无参数 / `--qt` 均进入 Qt；`launcher.py` 不再导出 `launch_packaged_gui`，也不再回退 Web。<br>**未删除** `src/equipeffi/presentation/desktop/main_window.py`：该文件同时承载被 `tests/unit/test_desktop_form_model.py`（110 项）引用的**非 Tk 表单模型契约**（`form_fields_for_public_type` / `result_summary` / `capability_status_text` / `elimination_scope_options` / `download_builtin_template` / `conclusion_field_label`）与 1 项 Tk 实例测试，因此**不是零引用可盲删**的代码；按 Owner 规则"若仍有真实兼容依赖，只断开正式运行路径并登记，不得盲删"。<br>`disposition`：**Phase 8**（随 V4 / Excel 收口一并处置：迁移表单模型、删除 Tk 类） |
+| `QA-P6-001` | `LEGACY_TK` | `REGISTERED_DEVIATION`（仍开；Phase 8 明确不清理，见 Phase 8 承接登记） | **legacy Tk 桌面窗口实现保留但不接线**。Phase 6 已按 Owner 决定断开正式入口：`--gui` / 无参数 / `--qt` 均进入 Qt；`launcher.py` 不再导出 `launch_packaged_gui`，也不再回退 Web。<br>**未删除** `src/equipeffi/presentation/desktop/main_window.py`：该文件同时承载被 `tests/unit/test_desktop_form_model.py`（110 项）引用的**非 Tk 表单模型契约**（`form_fields_for_public_type` / `result_summary` / `capability_status_text` / `elimination_scope_options` / `download_builtin_template` / `conclusion_field_label`）与 1 项 Tk 实例测试，因此**不是零引用可盲删**的代码；按 Owner 规则"若仍有真实兼容依赖，只断开正式运行路径并登记，不得盲删"。<br>`disposition`：**Phase 8**（随 V4 / Excel 收口一并处置：迁移表单模型、删除 Tk 类） |
 | `QA-P6-002` | `CLOSED`（Phase 6 R1） | **候选层 Golden 以实现哈希 pin 冻结了 10 个实现文件，曾被误判为『Phase 6 无权限完成入口语义收口』。** R1 经真实代码审计确认：validator **本就**内置了「历史证据保持不可变、当前实现可以演进」的机制（`tools/validate_phase1_contracts.py` 的 `_historical_hash_reason` 配合 `specs/equipment_efficiency/evidence_registry.json` 的 `historical_repository_hashes`；注册表内既有一条 `golden-case-0.3` 记录，其 reason 已明确写着 later implementation changes must not invalidate already-recorded candidate provenance）。缺口只是**该登记未覆盖 `evaluation_service.py`**。<br>R1 的处理：**未**改写候选文件、**未**改写任何 Approved Golden，只把该实现文件的冻结哈希（`EEF8731E…`，已在冻结提交 `72e8e49` / `90af7f8` 处实测复核一致）补登记为历史证据。此后当前实现可正常演进，历史 provenance 校验仍对其锚定提交严格成立。<br>`closed_by`：`tests/unit/test_phase6_product_shell.py::QaClosureTests::test_evaluation_service_history_is_registered_not_rewritten` |
 | `QA-P6-003` | `CLOSED`（Phase 7 重新判断） | **草稿 identity「名称即 ID / 改名等价于新建」**。Phase 7 已取消普通用户「分析草稿」概念，Workspace 退出产品表面，因此**不再新增** `workspace.display_name` / `rename_workspace` 等草稿产品能力。本阶段只保证**内部** identity 稳定：Workspace 的 create/update/load/list/delete 契约与修订号语义保持不变，自动记录流程不依赖 Workspace（`finalize(workspace_id=None)`）。关闭依据：`tests/unit/test_phase7_analysis_history.py` 与 `test_phase3_qt_unified.WorkspaceIsNoLongerAProductConceptTests`。<br>`disposition`：Phase 7 关闭（产品概念消失，问题不再存在） |
 | `QA-P6-004` | `NON_FORMAL_SURFACES` | `REGISTERED_DEVIATION` | **非正式 adapter 仍存在，但 Phase 6 未将其升级为正式 Windows UI**：`--web` / `--json` / `--jsonl` / `ApplicationApi` / 遗留 Tk 代码保留为 compatibility / development surface。Phase 6 已在启动入口与文档中明确：**正式发布用户表面 = PySide6 Qt Desktop**。<br>`disposition`：**Phase 8 / Phase 9**（随适配器与发布收口） |
