@@ -21,7 +21,7 @@
 | QA-P1-004 | BASELINE-TEST-004 | shared | `.venv_build` | 3.11 构建环境缺 `openpyxl`、`python-docx`、`pytest`，导致 10 error | 结果不可完整复验 | M | DEV_ONLY | P1 | Phase 0 follow-up | EVIDENCE | BASELINE.md | 保留完整 Python 3.13 结果；不把缺依赖误报为源码 PASS |
 | QA-P1-005 | BASELINE-TEST-005 | shared | tests inventory | 历史审计声称 60 个真实 unittest；Phase 0 实测 54 个 test module、887 项 unittest | 治理数字漂移 | M | DEV_ONLY | P1 | Future | OPEN | 第三方 #55 + unittest | 以可重跑命令和本次数字为当前事实，历史数字仅作 Historical Evidence；<br>**已完成 Phase 遗留 disposition review（2026-10-07）**：→ Future——治理数字漂移（历史审计 60 vs 实测）；当前计数已由可重跑命令 + known-regression 比较常设化 |
 | QA-P1-006 | BASELINE-SMOKE-001 | shared | `standard_manifest.json` / resource packs | 17 pack 报告 `active`，但 active 不等于来源/边界/Golden 已验收 | 可能把可加载误认为业务可信 | M | V1_RUNTIME | P1 | Future | OPEN | status smoke + ASSET_AUDIT | Phase 1 逐 pack 冻结 Canonical/source/readiness；<br>**已完成 Phase 遗留 disposition review（2026-10-07）**：→ Future——17 pack 的 `active` ≠ 已验收；正式 Qt 仅提供离心泵链，其余标准包属后续标准扩展 |
-| QA-P1-007 | BASELINE-PERF-001 | shared | `JsonStandardRepository.get_pack` | 同一 pack 重复读取仍 read_text + json.loads + deepcopy | 性能退化，不直接改结论 | M | V1_RUNTIME | P1 | Future | OPEN | 3.225 ms 首读；1.947 ms 重读 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：Phase 0 只记录，不缓存重构 |
+| QA-P1-007 | BASELINE-PERF-001 | shared | `JsonStandardRepository.get_pack` | 同一 pack 重复读取仍 read_text + json.loads + deepcopy | 性能退化，不直接改结论 | M | V1_RUNTIME | P1 | M3（已执行） | CLOSED（M3-G1） | 3.225 ms 首读；1.947 ms 重读；**M3 同机同方法实测（10,000 行）**：get_pack 9.441 s → 5.759 s（−39.0%），Application 14.087 s → 10.164 s（−27.9%），端到端 46.173 s → 42.318 s（−8.3%），逐行结果摘要一致 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：Phase 0 只记录，不缓存重构；<br>**M3 收口（2026-10-08）**：→ CLOSED（M3-G1）——Owner 授权 M3 后实施 **repository 实例级**缓存：同实例首次访问仍执行完整 read/parse/validate/SHA-256，后续访问只 deepcopy 返回；未做进程级 / 磁盘 / 跨启动缓存，也**未**引入 file watcher 或通用 cache framework。本轮**保留 deepcopy**（硬约束），剩余每行 deepcopy 成本另立 `QA-P1-008`。证据：`docs/diagnostics/M3_PERFORMANCE_REPORT.md`、`tests/unit/test_m3_standard_pack_cache.py` |
 
 ## 历史路线入库
 
@@ -75,7 +75,7 @@
 | QA-AUD-037 | AUD-037 | shared | `config/logging.py` | 日志占位，关键路径无可用日志 | 可能影响发布可靠性或长期维护；业务影响待证 | M | DEV_ONLY | P1 | Phase 2 | CLOSED | CSV#37；Phase 2 AST / test_composition / test_phase2_logging / test_phase2_qt 实测通过 | CLOSE_IN_P2：按 docs/31 实施；对应测试已通过，CLOSED（工程项，不表示 Phase 2 PASS）；原决定：安全/发布阶段补齐 |
 | QA-AUD-038 | AUD-038 | shared | writer / JSON repository | 损坏文件异常根因可能丢失 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Future | OPEN | CSV#38 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：统一异常模型，保留根因；<br>**已完成 Phase 遗留 disposition review（2026-10-07）**：→ Future——损坏文件异常根因保留属诊断质量，不影响业务结论 |
 | QA-AUD-039 | AUD-039 | shared | `evaluation_service.py` / `v4_validation.py` | 裸 KeyError/ValueError 可能中断整批 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | POST_V1 | OPEN | CSV#39 | DEFER_TO_P3：依赖正式设备分析 use-case 与业务证据；本轮保持旧路径；原决定：改为领域 issue 需 Golden 保护；<br>**已完成 Phase 遗留 disposition review（2026-10-07）**：→ POST_V1——`evaluation_service.py` / `v4_validation.py` 属 legacy 链 |
-| QA-AUD-040 | AUD-040 | shared | `JsonStandardRepository.get_pack` | 每次解析完整 JSON，批量性能随数据量增长 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | Future | OPEN | CSV#40 + QA-P1-007 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：先保留实测，再设计缓存 |
+| QA-AUD-040 | AUD-040 | shared | `JsonStandardRepository.get_pack` | 每次解析完整 JSON，批量性能随数据量增长 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | M3（已执行） | CLOSED（M3-G1） | CSV#40 + QA-P1-007 + **M3 实测**（100 / 1,000 / 10,000 行） | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：先保留实测，再设计缓存；<br>**M3 收口（2026-10-08）**：→ CLOSED（M3-G1）——标准包已改为 repository 实例级缓存，重复磁盘读取 / JSON 解析 / SHA-256 / 结构校验在**同实例后续访问中不再发生**；业务真值字段（`data_version` / `pack_hash` / `source_file`）、Decimal 字面量、Canonical 与 evaluator output 均未改变（29 条 Approved Golden 回放一致）。缓存未跨进程、未落盘、未跨启动。证据同上；剩余 `deepcopy` 成本见 `QA-P1-008` |
 | QA-AUD-041 | AUD-041 | shared | `json_repository.py` | manifest 缺键直接 KeyError；缺文件静默空记录；find 线性 | 可能影响发布可靠性或长期维护；业务影响待证 | M | V1_RUNTIME | P1 | VERIFY_BEFORE_PHASE9 | OPEN | CSV#41 | DEFER_TO_P3：非 settings 切片，保持既有风险与证据；原决定：Schema/错误语义进入 Phase 1；<br>**已完成 Phase 遗留 disposition review（2026-10-07）**：→ VERIFY_BEFORE_PHASE9——`json_repository.py` 在正式链上；缺键 `KeyError` / 缺文件静默空记录可能掩盖数据问题，须在发布前给出结论（`audit_release` 已显式检查 manifest / 包文件存在性，属部分缓解） |
 | QA-AUD-042 | AUD-042 | shared | `v4_writer.py` / `template_resource.py` | 整体读写 xlsx 内存高、临时目录生命周期隐含 | 可能影响发布可靠性或长期维护；业务影响待证 | M | NOT_SHIPPED | P1 | VERIFY_BEFORE_PHASE9 | OPEN | CSV#42 | Excel 后置，不在 0A 优化；<br>**Phase 8 disposition review（2026-10-07）**：→ VERIFY_BEFORE_PHASE9——Phase 8 8B 早期端到端基线在 `PHASE8_EXECUTION_REPORT.md §4.3` 记录 10,000 行峰值 **120.3 MB** / 78.266 s；后续 Writer 演进后的最终 Phase 8 head `35f3bb7...` 在 Windows Core run #104（`37560134827`）中对同一 10,000 行测试两次均报告 **952.0 MB**（266.357 s / 287.861 s）。两者属于不同实现阶段，不能用早期 120.3 MB 覆盖后续实测；发布前须在最终发布候选上独立复测并给出资源结论（建议同时记录 `tracemalloc` peak 与 Windows 进程 Working Set/RSS） |
 | QA-AUD-043 | AUD-043 | shared | `web/server.py` / `entrypoint.py` | `--host 0.0.0.0` 无鉴权，可暴露服务 | 可能影响发布可靠性或长期维护；业务影响待证 | M | PROTOTYPE | P1 | Future | OPEN | CSV#43 | KEEP_OPEN_FUTURE：当前范围未授权该清理/安全/打包/性能事项，保留风险，不虚假关闭；原决定：Web 非当前 V1 入口，仍需安全处理 |
@@ -526,6 +526,28 @@ UI03 记录页删「审计信息」展示 / UI04 日志级别中文化。四项�
 4. "没写成"必须是**硬失败**：定位不到行、坐标不唯一、命名空间错误、文件未原子提交，
    都不得保存成功批次记录，也不得留下残缺结果文件。
 5. 大批量性能要用**真实规模**测量；字符串拼接与"逐行重解析"是两个已经踩到的 O(n²) 陷阱。
+
+## M3 性能项收口（2026-10-08）
+
+Owner 授权执行的 **M3 低风险批量性能优化**（分支 `maintenance/m3-standard-pack-cache`，
+Base `b3d50cf3f8b8243f1bfe702274076cdd3a465ab4`，即 M1 合并后的实际最新 master）
+收口了上方长期 `KEEP_OPEN_FUTURE` 的两条标准包重复读取项。
+
+固定条件：同一机器、同一 commit、同一正式 V6 模板、同一 representative data、同一测试方法；
+正式环境为 M1 建立的 `.venv` CPython **3.12.14**（**不**使用 3.13 旧采样作为正式比较）。
+完整数字、方法与合规声明见 `docs/diagnostics/M3_PERFORMANCE_REPORT.md`；
+机器可读结果见同目录 `m3_batch_before.json` / `m3_batch_after.json` / `m3_batch_before_after.json`。
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-P1-007` | `V1_RUNTIME` | **CLOSED（M3-G1）** | 同一实例内的重复磁盘读取 / JSON 解析 / SHA-256 / 结构校验已消除；`deepcopy` 按 M3 约束**保留**。<br>`closed_by`：`tests/unit/test_m3_standard_pack_cache.py`（去掉本次改动后 2 项失败，红/绿可判别） |
+| `QA-AUD-040` | `V1_RUNTIME` | **CLOSED（M3-G1）** | 同上。10,000 行实测 `get_pack` 9.441 s → 5.759 s（−39.0%），Application 14.087 s → 10.164 s（−27.9%），端到端 46.173 s → 42.318 s（−8.3%），逐行结果摘要完全一致 |
+| `QA-P1-008` | `V1_RUNTIME` | **OPEN** | **剩余成本：每次 `get_pack` 仍整包 deepcopy 一个 dict。** M3 明确要求本轮**不得**取消 deepcopy（直接返回共享 dict 会引入调用方互相污染的风险，本轮禁止）。10,000 行实测剩余 `get_pack` 5.759 s（≈端到端 13.6%），几乎全部是 deepcopy。<br>处理前提：先审计所有调用方确实不修改返回 dict，再决定不可变视图或受控共享；属**独立任务**，不得顺手做。<br>`target_phase`：待 Owner 根据 M3 真实结果决定是否进入 M4 |
+
+**未变边界**：M3 未修改 Writer、Reader 业务语义、GB19762 业务算法、Canonical、Golden、
+Numeric Profile、comparison precision、V6 模板、record / batch_record schema、Qt UI 与 Phase 9 packaging；
+未为性能降低精度、未取消 provenance、未减少业务检查。M3 完成后按 Owner 要求 **STOP**，
+不自动继续优化 deepcopy / Writer / Application / SQLite / Qt。
 
 ### M2 登记（产品使用简化）
 

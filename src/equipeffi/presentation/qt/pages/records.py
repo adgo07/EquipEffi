@@ -168,7 +168,7 @@ class RecordsPage(QWidget):
             import logging
 
             logging.getLogger("equipeffi.qt.records").exception("读取泵型筛选项失败")
-            categories = ["全部泵型"]
+            categories = []
         self.category_filter.blockSignals(True)
         self.category_filter.clear()
         self.category_filter.addItem("全部泵型")
@@ -176,9 +176,6 @@ class RecordsPage(QWidget):
         index = self.category_filter.findText(current)
         self.category_filter.setCurrentIndex(index if index >= 0 else 0)
         self.category_filter.blockSignals(False)
-        if not categories:
-            # 没有任何记录时也保留"全部泵型"一项，避免下拉为空。
-            self.category_filter.addItem("全部泵型")
 
     def build_query(self, offset: int = 0) -> RecordQuery:
         """把界面筛选条件转成**查询参数**（筛选在 SQL 里执行）。"""

@@ -1,0 +1,140 @@
+{
+  "label": "after",
+  "python": "3.12.14 (main, Sep  1 2026, 14:17:39) [MSC v.1944 64 bit (AMD64)]",
+  "executable": "G:\\Python Project\\EquipEffi\\.venv\\Scripts\\python.exe",
+  "head": "a373dbfcfe87da763e1e5c464f67c08bdcba854a",
+  "template": "G:\\Python Project\\EquipEffi\\tmp\\m3-clone\\src\\equipeffi\\resources\\templates\\设备能效分析空白模板_重构版V6_20261005.xlsx",
+  "template_sha256": "D12ECE2622906091AFDD70F3B541681EECD11D0E0F22674A292006E40501586D",
+  "method": {
+    "as_of": "2026-08-23",
+    "persist_batch_record": false,
+    "timing_pass_tracemalloc": false,
+    "memory_pass_tracemalloc": true,
+    "representative_data": "tools/measure_v6_capacity.py::_fill"
+  },
+  "scenarios": [
+    {
+      "rows": 100,
+      "input_size_bytes": 398632,
+      "output_size_bytes": 404240,
+      "total_seconds": 0.621327,
+      "total_seconds_with_tracemalloc": 3.639045,
+      "reader_seconds": 0.015871,
+      "application_seconds": 0.104917,
+      "application_calls": 100,
+      "get_pack_seconds": 0.057481,
+      "get_pack_calls": 80,
+      "writer_seconds": 0.492413,
+      "peak_memory_bytes": 24905708,
+      "result_digest": "0ce4a6de0424dae122649bb64f1eb25ae4046b973c990238ebfc46f805eef714",
+      "result_digest_matches_memory_pass": true,
+      "summary": {
+        "digest": "0ce4a6de0424dae122649bb64f1eb25ae4046b973c990238ebfc46f805eef714",
+        "row_count": 100,
+        "conclusion_rows": {
+          "3级": 12,
+          "1级": 42,
+          "2级": 11,
+          "不适用": 10,
+          "无法评价": 10,
+          "未达标": 5
+        },
+        "conclusion_quantities": {
+          "3级": 20,
+          "1级": 117,
+          "2级": 36,
+          "不适用": 40,
+          "无法评价": 50,
+          "未达标": 7
+        },
+        "data_row_count": 100,
+        "total_quantity": 300,
+        "evaluated_quantity": 220,
+        "input_error_rows": 10,
+        "execution_error_rows": 0
+      }
+    },
+    {
+      "rows": 1000,
+      "input_size_bytes": 454110,
+      "output_size_bytes": 532387,
+      "total_seconds": 4.223658,
+      "total_seconds_with_tracemalloc": 20.878955,
+      "reader_seconds": 0.082337,
+      "application_seconds": 1.028104,
+      "application_calls": 1000,
+      "get_pack_seconds": 0.581278,
+      "get_pack_calls": 800,
+      "writer_seconds": 3.067331,
+      "peak_memory_bytes": 110832875,
+      "result_digest": "32634ebc4465f2684abe83200261fffe2d1ed965d60a98f74464a6ffab941a41",
+      "result_digest_matches_memory_pass": true,
+      "summary": {
+        "digest": "32634ebc4465f2684abe83200261fffe2d1ed965d60a98f74464a6ffab941a41",
+        "row_count": 1000,
+        "conclusion_rows": {
+          "3级": 123,
+          "1级": 201,
+          "2级": 58,
+          "不适用": 348,
+          "无法评价": 100,
+          "未达标": 70
+        },
+        "conclusion_quantities": {
+          "3级": 252,
+          "1级": 578,
+          "2级": 149,
+          "不适用": 1110,
+          "无法评价": 500,
+          "未达标": 111
+        },
+        "data_row_count": 1000,
+        "total_quantity": 3000,
+        "evaluated_quantity": 2200,
+        "input_error_rows": 100,
+        "execution_error_rows": 0
+      }
+    },
+    {
+      "rows": 10000,
+      "input_size_bytes": 1001110,
+      "output_size_bytes": 1721232,
+      "total_seconds": 42.317806,
+      "total_seconds_with_tracemalloc": 221.734551,
+      "reader_seconds": 0.817897,
+      "application_seconds": 10.163613,
+      "application_calls": 10000,
+      "get_pack_seconds": 5.758995,
+      "get_pack_calls": 8000,
+      "writer_seconds": 30.839355,
+      "peak_memory_bytes": 1015550677,
+      "result_digest": "8ece16241fb6cc29592fc754618ac0d8dcaf5b7efc10cd4b3b12b35bf051a588",
+      "result_digest_matches_memory_pass": true,
+      "summary": {
+        "digest": "8ece16241fb6cc29592fc754618ac0d8dcaf5b7efc10cd4b3b12b35bf051a588",
+        "row_count": 10000,
+        "conclusion_rows": {
+          "3级": 285,
+          "1级": 1906,
+          "2级": 117,
+          "不适用": 6277,
+          "无法评价": 1000,
+          "未达标": 125
+        },
+        "conclusion_quantities": {
+          "3级": 545,
+          "1级": 3502,
+          "2级": 279,
+          "不适用": 19589,
+          "无法评价": 5000,
+          "未达标": 215
+        },
+        "data_row_count": 10000,
+        "total_quantity": 30000,
+        "evaluated_quantity": 24130,
+        "input_error_rows": 290,
+        "execution_error_rows": 0
+      }
+    }
+  ]
+}

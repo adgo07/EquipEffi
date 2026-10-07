@@ -138,6 +138,11 @@ class M2TestCase(unittest.TestCase):
 # ===========================================================================
 
 class HistorySearchTests(M2TestCase):
+    def test_empty_history_has_single_all_categories_option(self):
+        page = self.records_page()
+        self.assertEqual(page.category_filter.count(), 1)
+        self.assertEqual(page.category_filter.itemText(0), "全部泵型")
+
     def test_first_page_is_bounded_but_total_is_everything(self):
         self.seed_history(260)
         page = self.records_page()
