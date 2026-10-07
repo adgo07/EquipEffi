@@ -11,8 +11,16 @@ name: Pump Conformance
 #   - generated boundaries
 #   - rule integrity
 #   - pump_water Approved Golden 0.4 与 schema / 批准门禁
-#   - Pump evaluator 与 Application API
 #   - 后续加入 pump_chemical Golden 时在此扩展（占位见文末注释）
+#
+# M1 去重（2026-10-07）：与 Windows Core **完全重复、且没有额外 conformance 断言**
+#   的通用应用门禁（tests.unit.test_device_evaluator_matrix /
+#   tests.unit.test_application_api）已从本 workflow 移除——它们仍由 windows-core
+#   的唯一一次 full discover 执行并门禁，测试没有消失，只是不再跑两遍。
+#   本 workflow 保留其**独立业务价值**：Golden / Numeric Contract / PUMP-RP-0.1
+#   参考过程 / 边界与规则完整性 / 历史 provenance / as_of 生命周期 / Stage D /
+#   Phase 1 契约证据，以及只有这里才会执行的两个参考工具
+#   （tools/run_qzc_n01_b_pilot.py、tools/validate_phase1_contracts.py）。
 #
 # 全部 job 均为 GATING：任一失败使 workflow FAIL。
 
@@ -127,14 +135,15 @@ jobs:
       - name: pump_chemical Stage D support + Phase 6 product shell (gating)
         run: python -m unittest tests.unit.test_phase5_chemical_stage_d.StageDEvidenceTests -v
 
-      # Pump evaluator 与 Application API 门面（pump_water 与 pump_chemical 共用矩阵）。
+      # 统一分析业务契约（pump_water 与 pump_chemical 共用正式链路）。
+      # M1 去重：通用应用门禁 tests.unit.test_device_evaluator_matrix /
+      # tests.unit.test_application_api 已从本步骤移除——它们与 windows-core
+      # 完全重复，仍由 windows-core 的唯一一次 full discover 执行并门禁。
       # test_phase3_r1_blockers 为 R1 对抗性门禁：Finalize 状态白名单 fail-closed、
       # Qt stale result、Canonical pack_hash、技术详情折叠。
-      - name: Pump evaluator, Application API and unified analysis contract
+      - name: Unified analysis contract and R1 adversarial gates (gating)
         run: |
           python -m unittest `
-            tests.unit.test_device_evaluator_matrix `
-            tests.unit.test_application_api `
             tests.unit.test_phase3_unified_analysis `
             tests.unit.test_phase3_r3_closure `
             tests.unit.test_phase3_r1_blockers -v

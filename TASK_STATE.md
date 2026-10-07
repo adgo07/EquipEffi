@@ -11,168 +11,74 @@ pump_chemical_support_status: SUPPORTED
 phase_8_pass_self_declared: false
 
 # ---------------------------------------------------------------------------
-# 本文件只承担“当前状态”。历史执行细节、run ID、历史测试数字与旧 SHA 一律
-# 不在本文件复制，只保留链接（见文末 historical_evidence）。
+# 本文件只承担“当前状态”：当前 master / head、当前任务、当前状态、blocker、
+# next action。历史执行细节、run ID、历史测试数字与旧 SHA 一律不在本文件复制，
+# 只保留链接（见文末 historical_evidence）。
+#
+# 分工（M1 治理文档收口，2026-10-07）：
+#   AGENTS.md    = 长期硬规则、Owner 决策边界、权威入口
+#   TASK_STATE.md = 本文件：当前状态
+#   HANDOFF.md   = 很短的当前交接摘要 + 必要历史链接
+#   QA_BACKLOG.md = 各 QA 项的唯一状态权威
+#   V1_SCOPE.md / ROADMAP.md = 各 Profile scope / support / maturity 唯一权威
 # ---------------------------------------------------------------------------
+
+current_master:
+  default_branch: master
+  head_sha: 64b656ee4924fbf09f3fd87596ef1a1a779d1f09
+  head_summary: "PR #16（phase8/gb19762-excel-batch → master）已合并"
+  phase_8_acceptance_record: 未生成（docs/phase8_acceptance_record.md 尚不存在）
 
 current_task:
-  task_id: PHASE8-GB19762-EXCEL-BATCH
-  branch: phase8/gb19762-excel-batch
-  task_kind: authorised Phase 8 execution
-  phase_8_execution: true
-  base_sha: 79ea075967ace07aa9880369220d8bff9b53d9e8
-  execution_report: PHASE8_EXECUTION_REPORT.md
-  ui_current_state_audit: UI_CURRENT_STATE_AUDIT.md（Phase 6 已按 Qt 实现重新盘点）
-  formal_product_surface: PySide6 Qt Desktop（无参数 / --gui / --qt 同一入口）
-  official_entrypoint_decision: TK_RETIRED_QT_IS_THE_ONLY_SHELL
-  primary_navigation: 首页 / 标准库 / 新建分析 / 分析记录 / 设置（全部真实页面，无 placeholder）
-  evidence_claim: 一个 GB19762 产品级 E2E 样板，其中有 water + chemical 两个真实内部 rule profile（不得表述为两个独立设备/标准 E2E 样板）
-  phase_8_pass_self_declared: false
-  phase_7_started: false
-  merge_authorized: false
+  task_id: M1-SINGLE-OWNER-MAINTENANCE-SIMPLIFICATION
+  task_kind: maintenance（单人维护简化；不是产品 Phase，不改变任何 Phase 状态或业务语义）
+  branch: maintenance/m1-single-owner-feedback-loop
+  base_sha: 64b656ee4924fbf09f3fd87596ef1a1a779d1f09
   goals:
-    P8-G00: COMPLETE
-    P8-G01: COMPLETE
-    P8-G02: COMPLETE
-    P8-G03: COMPLETE
-    P8-G04: COMPLETE
-    P8-G05: COMPLETE
-    P8-G06: COMPLETE
-  phase_8_r1:
-    status: EXECUTION_COMPLETE / READY_FOR_REACCEPTANCE
-    blocked_head: 8cb6eec1845cc26bed43e3dfea2dec1c5880729c
-    blockers_closed: [QA-P8-001, QA-P8-002, QA-P8-003, QA-P8-004]
-  phase_8_r1w:
-    status: EXECUTION_COMPLETE / READY_FOR_REACCEPTANCE
-    review_blocked_head: 348a1994352e9e16d841a0589b0af2416a83b0df
-    blockers_closed: [QA-P8-005, QA-P8-006]
-  phase_8_r3:
-    status: EXECUTION_COMPLETE / READY_FOR_REACCEPTANCE
-    review_blocked_head: fec8fd0ddbcc64e861e05a6ad204463a6d7fcc0c
-    blockers_closed: [QA-P8-007, QA-P8-008]
-  phase_8_r4:
-    status: EXECUTION_COMPLETE / READY_FOR_REACCEPTANCE
-    diagnosis_head: 5fea7fa0b79789d49277c504b0913266518416da
-    blockers_closed: [QA-P8-009, QA-P8-010, QA-P8-011, QA-P8-012, QA-P8-013, QA-P8-014]
-    new_modules: [xml_model.py, worksheet_patch.py, result_invariants.py]
-    ui_simplification: [UI01, UI02, UI03, UI04]
-  segments:
-    phase_8A: COMPLETE（模板正式化 + 一致性矩阵 + Reader）
-    phase_8B: COMPLETE（批量评价 + Writer + batch_record + Qt 闭环）
-  records_schema_changed: YES (additive only)
-  records_schema_detail: 新增 additive 迁移 003 create_batch_record（独立表）+ 004 extend_batch_record（补列）；schema_version 2 -> 4；record/workspace 语义与列契约不变
-  formal_template: equipeffi.device-efficiency.V6 (V6-20261005)
-  batch_quantity_weighted: true
-  golden_excel_replay: 29/29 零漂移
-  next_action: 等待 Phase 8 R1 独立复验；do not merge; do not start Phase 9
-
-phase_6_closure:
-  verdict: PHASE_6_PASS
-  accepted_head: 05b40f91086bbdbe196793075e440de4473cbf96
-  pr: "#14"
-  merge_sha: 6ead21fb6757d5d92ba81851f23e3c41d86598af
-  acceptance_record: docs/phase6_acceptance_record.md
-  execution_report: PHASE6_EXECUTION_REPORT.md
-  closed_qa:
-    QA-P5-001: CLOSED
-    QA-P5-002: CLOSED
-    QA-P3-003: CLOSED
-    QA-P6-002: CLOSED
-    QA-P6-003: CLOSED（Phase 7 重新判断）
-
-previous_task:
-  task_id: PHASE4-MINIMAL-LIFECYCLE-GENERALIZATION
-  branch: phase4/minimal-lifecycle-generalization
-  task_kind: authorised Phase 4 execution
-  phase_4_execution: true
-  base_sha: 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
-  execution_report: PHASE4_EXECUTION_REPORT.md
-  evidence_claim: 一个 GB19762 产品级 E2E 样板，其中有 water + chemical 两个真实内部 rule profile（不得表述为两个独立设备/标准 E2E 样板）
-  verdict: PHASE_4_PASS
-  accepted_head: a4034ef3751590b52a821d6a3bdbebcbca6a8ec9
-  pr: "#12"
-  merge_sha: d6112ea9c7c1c16f95d798c2229cdc54aaf6240a
-  acceptance_record: docs/phase4_acceptance_record.md
-  phase_4_pass_self_declared: false
-  phase_5_started: false
-  merge_authorized: false
-  pump_chemical_support_status_self_promoted: false
-  goals:
-    P4-G00: COMPLETE
-    P4-G01: COMPLETE
-    P4-G02: COMPLETE
-    P4-G03: COMPLETE
-    P4-G04: COMPLETE
-  blocker_fixes:
-    P4-B01:
-      finding: PHASE_4_BLOCKED —— 生命周期指纹依赖泵 service 的导入副作用
-      status: FIXED
-      root_cause: 首版用进程内全局注册（register_business_keys）提供业务键集合；注册为空时旧 Workspace 无参指纹漂移，且不同业务输入碰撞
-      fix: 移除全局注册；业务键集合作为 _business_keys 元数据随快照写入既有 payload_json 列；无元数据时不再猜测而是显式报错
-      evidence: tests/unit/test_phase4_fingerprint_decoupling.py; tools/verify_phase4_fingerprint_compat.py
-    P4-B02:
-      finding: PHASE_4_BLOCKED —— 旧 Workspace 兼容性回归（缺字段草稿被拒 Finalize）
-      status: FIXED
-      root_cause: P4-B01 的回退规则只投影"载荷中实际存在的键"，无法补出缺失业务字段的 "None"（Phase 3 指纹把缺失字段计为 "None"），导致缺 efficiency 的旧草稿指纹漂移、Finalize 被拒，破坏既有 INSUFFICIENT_DATA 草稿的合法固化
-      fix: 生命周期层不再猜测——缺元数据时 business_key_names() 返回 None 且 request_fingerprint() 显式抛 LifecycleError，删除 RESERVED_PAYLOAD_KEYS 与投影回退；finalize() 改为显式传 PUMP_FINGERPRINT_KEYS，由产品层提供业务键知识，恢复 Base 行为
-      evidence: tests/unit/test_phase4_fingerprint_decoupling.py 的缺字段回归用例；tools/verify_phase4_fingerprint_compat.py 覆盖完整输入 + 缺字段共 4 种场景
-      semantic_boundary: Phase 4 之前且无元数据的快照，无参 request_fingerprint() 会显式报错（拒绝给出无法确定的值）；不影响任何 Use Case，服务路径始终显式传键
-  next_action: 等待独立验收；do not merge; do not start Phase 5
-
-previous_task:
-  task_id: PHASE3-GB19762-UNIFIED-VERTICAL-SLICE
-  branch: phase3/gb19762-unified-vertical-slice
-  task_kind: authorised Phase 3 execution
-  design: docs/32_Phase 3 GB19762离心泵统一正式纵向闭环.md
-  start_master_sha: 7e16418aa32ced5512e26bd70227f01a329fbdfc
-  execution_report: PHASE3_EXECUTION_REPORT.md
-  verdict: PHASE_3_PASS
-  accepted_head: 728680dabf7b18e47ce9a5a23b296e405bc644a8
-  pr: "#11"
-  merge_sha: 87d9ef1bf32fb3f765d4f8ef3f97aa222913152a
-  acceptance_record: docs/phase3_acceptance_record.md
-  phase_3_pass_self_declared: false
-  goals:
-    P3-G01: COMPLETE
-    P3-G02: COMPLETE
-    P3-G03: COMPLETE
-    P3-G04: COMPLETE
-  r1_fixes:
-    status: COMPLETE
-    blockers: 5
-    scope: Finalize 状态白名单 fail-closed / Qt stale result / Canonical pack_hash / 技术详情真折叠 / 治理状态一致性
-    evidence: tests/unit/test_phase3_r1_blockers.py
-  r2_fixes:
-    status: COMPLETE
-    root_causes: 3
-    scope: Golden 历史 provenance 与当前源码解耦 / Finalize 完整状态矩阵（provenance + Canonical hash 归属）/ 治理状态全文收口
-    evidence: tests/unit/test_phase3_r2_final_closure.py
-  r3_fixes:
-    status: COMPLETE
-    root_causes: 1
-    owner_decision: USER_PROVIDED_OWNER_DECISION_2026-10-02_R3
-    scope: 删除 as_of < effective_date → INSUFFICIENT_DATA 门禁；评价日期改为仅用于记录与追溯；标准生命周期只做非阻断提示
-    supersedes: 此前"评价日期早于标准实施日期则不执行计算"的产品规则
-    evidence: tests/unit/test_phase3_r3_as_of_lifecycle.py
-    scope_limit: 仅统一离心泵分析链（pump_water / pump_chemical）；遗留 EvaluationService 对 motor / transformer 的生效日期门禁未改动
-
-phase_2:
-  status: PHASE_2_PASS
-  independent_acceptance: COMPLETE_BY_PRODUCT_OWNER_AUTHORISATION
-  merge_pr: PR #10
-  merge_sha: 7e16418aa32ced5512e26bd70227f01a329fbdfc
-  note: 任务授权书明确“PR #10 已完成独立验收、已合并”；仓库内未另存独立验收报告，故以产品负责人授权 + 合并事实为记录来源
-  design: docs/31_Phase 2 最小正式工程底座.md
-  execution_report: PHASE2_EXECUTION_REPORT.md
-
-allowed_next: Phase 8 G00..G06 execution and evidence only; no merge; no Phase 9
-automatic_continuation: DISABLED
-phase_0b: NOT_EXECUTED
-phase_1_hotfix: NOT_EXECUTED
-blocked_by: []
+    - CI 纯去重：windows-core job 内同一测试只执行一次（跨 workflow 的 pump 业务门禁刻意保留）；
+      门禁不减少、按 ID 的 known-regression 比较保留
+    - 治理文档收口：三份文件职责分离，消除重复 YAML key、过时 allowed_next 与互相矛盾状态
+    - 统一 Python 3.12 开发入口：tools/setup_dev.ps1（不升级 3.13、不引入环境管理框架）
+    - 修正明显过时的打包诊断/说明（Python 3.11、Tk 正式入口、Web fallback 正式入口）
+  excluded:
+    - 业务真值 / 标准计算 / Golden / Canonical / Numeric
+    - Excel Reader / Writer 业务行为、records schema、Application business semantics
+    - Qt 产品功能、标准资源、V6 模板、Phase 9 打包实现与发行包裁剪
+  pr: "#17"
+  pr_status: OPEN（等待 Owner 决定是否合并；Agent 不自行合并）
+  next_action: 已推送并创建 PR #17；三个 gating job 全绿；等待 Owner 验收/合并决定
+  review_fixes: "见 PR #17 评论——P1 比较器 expectedFailures 元组解包回归（已修 + 回归测试）、P2 workflow 去重口径注释收窄、P3 权威文件（ROADMAP / REFERENCE_STANDARD_ROADMAP / V1_SCOPE）Phase 8 与 pump_chemical 状态收口"
 
 # ---------------------------------------------------------------------------
-# 当前产品目标与范围（2026-10-02 产品决定，取代 2026-09-23 映射）
+# Phase 状态：只记录结论与落档链接，不复制执行细节
+# ---------------------------------------------------------------------------
+phase_status:
+  phase_0: 基线（不可变）
+  phase_1: PHASE_1_PASS（历史多角色程序见 historical_evidence）
+  phase_2: "PHASE_2_PASS（PR #10 合并 @ `7e16418a`）"
+  phase_3: "PHASE_3_PASS（PR #11 合并 @ `87d9ef1b`；docs/phase3_acceptance_record.md）"
+  phase_4: "PHASE_4_PASS（PR #12 合并 @ `d6112ea9`；docs/phase4_acceptance_record.md）"
+  phase_5: "PHASE_5_PASS（PR #13 合并 @ `f3e32f84`；docs/phase5_acceptance_record.md）"
+  phase_6: "PHASE_6_PASS（PR #14 合并 @ `6ead21f`；docs/phase6_acceptance_record.md）"
+  phase_7: "PHASE_7_PASS（PR #15 合并 @ `79ea075`；docs/phase7_acceptance_record.md）"
+  phase_8: "EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE（PR #16 合并 @ `64b656ee`；执行细节 PHASE8_EXECUTION_REPORT.md；**不得**自行宣布 PHASE_8_PASS）"
+  phase_9: 未开始
+  automatic_continuation: DISABLED
+
+phase_8_state:
+  pr: "#16"
+  merge_sha: 64b656ee4924fbf09f3fd87596ef1a1a779d1f09
+  branch: phase8/gb19762-excel-batch（已合并）
+  formal_template: equipeffi.device-efficiency.V6（V6-20261005）
+  records_schema_changed: YES (additive only)
+  records_schema_detail: 迁移 003 create_batch_record（独立表）+ 004 extend_batch_record（补列）；schema_version 2 -> 4；单台 record/workspace 语义与列契约不变
+  golden_excel_replay: 29/29 零漂移
+  qa_blockers: QA-P8-001 ～ QA-P8-014 全部 CLOSED（状态见 QA_BACKLOG.md）
+  detail: PHASE8_EXECUTION_REPORT.md（本文件不复制执行细节）
+  next_action: 等待独立验收；不得进入 Phase 9
+
+# ---------------------------------------------------------------------------
+# 当前产品目标与范围（2026-10-02 产品决定；状态以 V1_SCOPE.md / ROADMAP.md 为准）
 # ---------------------------------------------------------------------------
 product_scope:
   decision_id: USER_PROVIDED_PRODUCT_DECISION_2026-10-02
@@ -181,43 +87,24 @@ product_scope:
   complete_scope: pump_water + pump_chemical
   supersedes: USER_PROVIDED_PRODUCT_DECISION_2026-09-23
   authority: V1_SCOPE.md; REFERENCE_STANDARD_ROADMAP.md
-
-  # 三个维度分离，不得互相冒充
-  #   scope_status           = 产品范围决策（本仓维度，保留 IN_V1 / UNDER_REVIEW / POST_V1 三值）
-  #   support_status         = 当前发布能力（本仓发布门禁）
-  #   standard_maturity      = 中央 STANDARD_DEVELOPMENT_GUIDE_V0.1 §19 阶段成熟度
+  # 三个维度分离，不得互相冒充：scope_status / support_status / standard_maturity
   pump_water:
     scope_status: IN_V1
     support_status: SUPPORTED
     standard_maturity: SUPPORTED
-    owner_reconfirmation: 18 / 18 PASS
-    owner_reconfirmation_date: 2026-10-02
-    owner_reconfirmation_evidence: specs/equipment_efficiency/golden/owner_approvals/pump_water_owner_reconfirmation_2026-10-02.json
+    owner_reconfirmation: 18 / 18 PASS (2026-10-02)
   pump_chemical:
     scope_status: IN_V1
-    # Phase 5 Stage D 候选：统一正式产品路径（Qt --qt）已返回 SUPPORTED。
-    # **独立验收通过前不得写成"正式支持已经生效"。**
-    support_status: SUPPORT_PROMOTION_CANDIDATE
-    support_status_effective_value: SUPPORTED
-    support_status_pending: independent acceptance (Stage D)
-    standard_maturity: IMPLEMENTED
-    standard_maturity_candidate: SUPPORTED
-    target_support_status: SUPPORTED
-    owner_business_truth_approval: 11 / 11 PASS
-    owner_business_truth_approval_date: 2026-10-02
-    owner_business_truth_evidence: specs/equipment_efficiency/golden/owner_approvals/pump_chemical_owner_approval_2026-10-02.json
-    golden: specs/equipment_efficiency/golden/pump_chemical/ (11 条 golden-case-0.5，APPROVED；evaluation_layer 未改写)
-    stage_d_evidence_matrix: docs/phase5_stage_d_evidence_matrix.md
-    formal_application_e2e_evidence: specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json
-    release_gate: CentrifugalPumpAnalysisService._release_support('pump_chemical') = SUPPORTED（候选）
-    upgrade_blocked_by:
-      - Standard Development Guide Stage D independent acceptance（唯一剩余 blocker）
-    note: Owner business truth 已批准（11/11）；Stage D 证据闭环已完成并交独立验收。治理状态只写 SUPPORT_PROMOTION_CANDIDATE / READY_FOR_INDEPENDENT_ACCEPTANCE；执行阶段不得自行宣布 Stage D PASS 或 pump_chemical officially SUPPORTED。历史 Record 的 NOT_IN_RELEASE_SCOPE 快照不追溯改写。
+    support_status: SUPPORTED
+    standard_maturity: SUPPORTED
+    effective_since: "Phase 5 Stage D 独立验收通过（PHASE_5_PASS，PR #13 @ f3e32f84）"
+    owner_business_truth_approval: 11 / 11 PASS (2026-10-02)
+    golden: specs/equipment_efficiency/golden/pump_chemical/（11 条 golden-case-0.5，APPROVED；evaluation_layer 未改写）
+    note: Phase 5 之前的 SUPPORT_PROMOTION_CANDIDATE 措辞已随独立验收结束而失效，不得再写回。
   transformer:
     scope_status: POST_V1
     support_status: NOT_IN_RELEASE_SCOPE
     decision: 本轮暂缓；代码、标准数据、测试与历史资产保留，不删除、不重构
-    phase_5_included: false
 
 # ---------------------------------------------------------------------------
 # 当前 central lock
@@ -233,55 +120,34 @@ central_baseline:
   active_guides_read_from: 中央当前已合并版本（GUIDE_INDEX.md §2.1 B 类）
   active_guides_note: GUIDE_INDEX / PRODUCT_DELIVERY_POLICY_V1 / STANDARD_DEVELOPMENT_GUIDE_V0.1 / UI_DESIGN_GUIDELINES_V0.1 在 locked SHA 上不存在，不得按 locked SHA 读取
 
-phase_1_authority:
-  phase_1_pr_1_merge_sha: 1a74ff4cc07e9068783a370ec4269e89245cef38
-  fixed_sha_independent_review: RESOLVED
-  golden_case_named_human_approval: RESOLVED
-  solution_product_review: RESOLVED
-  pump_water_golden_0_4: APPROVED
-  pump_water_owner_reconfirmation: 18 / 18 PASS (2026-10-02)
-  pump_chemical_business_truth: 11 / 11 PASS (2026-10-02)
-  pump_chemical_golden_0_5: APPROVED (11 条 formal records；evaluation_layer 未改写)
-  pump_chemical_standard_maturity: IMPLEMENTED (Phase 5；SUPPORTED 为候选，待独立验收)
-  pump_chemical_support_status: SUPPORT_PROMOTION_CANDIDATE (统一 Qt 正式路径取值 SUPPORTED)
-  pump_chemical_stage_d: READY_FOR_INDEPENDENT_ACCEPTANCE
-
-qzc_a01:
-  status: COMPLETE
-  architecture: V2.1 FROZEN
-
 # ---------------------------------------------------------------------------
-# 当前已知 blocker / 待办
+# 当前已知 blocker / 待办（QA 项状态一律以 QA_BACKLOG.md 为准）
 # ---------------------------------------------------------------------------
 known_blockers:
+  phase_8_independent_acceptance:
+    status: PENDING
+    note: "Phase 8 已 EXECUTION_COMPLETE 并合并 PR #16；尚无独立验收结论，也无 docs/phase8_acceptance_record.md。**不得**自行宣布 PHASE_8_PASS。"
   numeric_contract_v1_adoption_acceptance:
     status: INDEPENDENT_ACCEPTANCE_RECORD_PENDING
     merge_sha: 66835d2ae2e0a8eaee50260f43ee0c52b4858d85
-    merge_pr: PR #5
+    merge_pr: "PR #5"
     acceptance_record_found_in_repo: false
     note: 合并事实不等同于独立验收证据；不得报告为验收 PASS
-  pump_chemical_support_status:
-    status: SUPPORT_PROMOTION_CANDIDATE
-    formal_surface_value: SUPPORTED (PySide6 Qt Desktop --qt)
-    remaining_blocker: Standard Development Guide Stage D independent acceptance
-    business_truth_approval: RESOLVED (11/11, 2026-10-02)
-    stage_d_evidence: COMPLETE (docs/phase5_stage_d_evidence_matrix.md; specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json)
-    note: 业务真值与 Stage D 证据均已就绪；仅剩独立验收结论。见 product_scope.pump_chemical.upgrade_blocked_by
   non_formal_surface_support_deviations:
-    status: REGISTERED_DEVIATION
-    qa_ids: [QA-P5-001, QA-P5-002, QA-P5-003, QA-P5-004, QA-P5-005]
-    note: --json / ApplicationApi / JSONL / CLI / --web / legacy Tk --gui 仍返回 NOT_IN_RELEASE_SCOPE（Phase 6 收口）；V4·Excel 为 Phase 8；Android bridge 与安装/签名/发布产物为 Phase 9。不得误报为 Phase 5 已修复。
-  excel_decimal_ingress:
-    qa_id: QA-EXCEL-001
-    surface: NOT_SHIPPED
-    authoritative_path_impact: 尚待验证
-    must_close_before: Phase 8
-    python_change_this_round: NONE
+    status: 部分关闭 / 其余已登记
+    authority: QA_BACKLOG.md
+    closed:
+      - QA-P5-001 CLOSED（Phase 6 R1）
+      - QA-P5-002 CLOSED（Phase 6 R1）
+      - QA-P5-003 CLOSED（Phase 8 / 8B）
+    still_registered:
+      - QA-P5-004（Android bridge）disposition = Phase 9
+      - QA-P5-005（安装包 / 签名 / 发布产物）disposition = Phase 9
+      - QA-P6-001 / QA-P6-004 / QA-P4-001 / QA-P7-001 / QA-P7-002 仍为 REGISTERED_DEVIATION
+    note: 正式发布用户表面 = PySide6 Qt Desktop；其余 compatibility / development surface 与其 support 语义差异必须保持登记，不得含糊带过，也不得假装已全部关闭。
   as_of_implicit_default_legacy_entries:
     standard_issue: EQP-STD-GB19762-001
-    status: RESOLVED (软件产品决定 2026-10-02；R3 补充决定：as_of 不是标准执行门禁)
-    r3_supplement: 评价日期仅用于记录与追溯；标准生命周期只做非阻断提示；已删除提前日期不执行计算的门禁与对应的 Finalize 白名单例外
-    phase5_update: 正式 Qt 路径的提醒缩短为四字短语（如"该标准尚未实施"）；tooltip 改为"评价日期用于记录与追溯；不影响所选标准的计算"
+    status: RESOLVED（软件产品决定 2026-10-02；R3 补充：as_of 不是标准执行门禁）
     remaining: 既有 CLI/API/JSONL 入口的兼容默认值与旧 as_of 门禁登记保留（QA-P3-003），全局取消须另立任务做兼容影响评估
     locations:
       - src/equipeffi/application/services/evaluation_service.py:13
@@ -295,6 +161,13 @@ known_blockers:
 # 历史证据（只保留链接，不复制正文）
 # ---------------------------------------------------------------------------
 historical_evidence:
+  - docs/phase3_acceptance_record.md
+  - docs/phase4_acceptance_record.md
+  - docs/phase5_acceptance_record.md
+  - docs/phase6_acceptance_record.md
+  - docs/phase7_acceptance_record.md
+  - PHASE8_EXECUTION_REPORT.md
+  - QA_BACKLOG.md（QA-P8-001 ～ QA-P8-014 关闭记录；Phase 3/4/5/6/7 关闭记录）
   - docs/governance/NUMERIC_CONTRACT_V1_ADOPTION_REPORT.md
   - docs/governance/PLATFORM_ADOPTION_REPORT.md
   - QZC_N01_B_EXECUTION_REPORT.md

@@ -78,7 +78,7 @@ def _runtime_notes(wheel_name: str, wheel_hash: str, zipapp_name: str = "") -> b
     text = f"""EquipEffi 便携运行包
 
 本包是跨平台运行基线，不是Windows安装程序或Linux原生安装包。
-它不下载网络依赖；运行前请确认目标系统已安装Python 3.11或更高版本。
+它不下载网络依赖；运行前请确认目标系统已安装Python 3.12或更高版本（项目正式运行时）。
 
 文件：{wheel_name}
 wheel SHA-256：{wheel_hash}
@@ -95,12 +95,12 @@ Linux（在本目录执行）：
   python -m equipeffi --status
   python -m equipeffi --list-device-types
   python -m equipeffi --jsonl   # 按行读取公共JSON请求，适合服务/桥接
-  python -m equipeffi --gui   # Tk可用时原生窗口，否则自动回退Web
-  python -m equipeffi --web --open-browser   # 显式使用浏览器窗口
+  python -m equipeffi --gui   # 正式桌面窗口：与无参数启动、--qt 相同的 PySide6 Qt（需安装 desktop extra）
+  python -m equipeffi --web --open-browser   # 显式使用浏览器窗口（compatibility surface）
 
 {bridge_note}核心判定通过JSON接口与窗口展示层解耦；Excel V4读写仍是独立适配器接口。
 
-{smoke_note}安卓或其他客户端应调用公共ApplicationApi/JSON接口，不依赖Tk和Excel。
+{smoke_note}安卓或其他客户端应调用公共ApplicationApi/JSON接口，不依赖桌面窗口和Excel。
 """
     return text.encode("utf-8")
 
