@@ -107,6 +107,60 @@ RECORDS_MIGRATIONS: tuple[RecordsMigration, ...] = (
     RecordsMigration(2, "002_add_workspace_revision", (
         "ALTER TABLE workspace ADD COLUMN revision INTEGER NOT NULL DEFAULT 1",
     )),
+    # 003（Phase 8）：Excel 批量评价的**最小 additive** 总结记录。
+    #
+    # Owner 规则 9/10：Excel 批量评价**不得**为每个数据行创建普通单台 Record；
+    # 一次 Workbook / 一次离心泵批量评价 → 一条 batch_record 总结记录，逐设备
+    # 详细结果保存在结果 Workbook。允许为此新增最小 additive 持久化结构，
+    # **不得**改变现有单台 `record` 语义——因此这里新建独立表，绝不动 `record`。
+    #
+    # 只存"这一次批次"的客观事实：载体文件与哈希、行数统计、结论分布（JSON）、
+    # 不合法行（JSON）。**不**复制逐设备结果、**不**建 lineage / audit 通用框架。
+    RecordsMigration(3, "003_create_batch_record", (
+        """
+        CREATE TABLE IF NOT EXISTS batch_record (
+            batch_record_id TEXT PRIMARY KEY,
+            standard_code TEXT NOT NULL,
+            device_type TEXT NOT NULL,
+            source_workbook TEXT NOT NULL,
+            source_workbook_sha256 TEXT NOT NULL,
+            result_workbook TEXT,
+            result_workbook_sha256 TEXT,
+            total_rows INTEGER NOT NULL,
+            evaluated_count INTEGER NOT NULL,
+            unevaluated_count INTEGER NOT NULL,
+            invalid_count INTEGER NOT NULL,
+            summary_json TEXT NOT NULL,
+            schema_version INTEGER NOT NULL,
+            created_at_utc TEXT NOT NULL
+        )
+        """,
+        "CREATE INDEX IF NOT EXISTS idx_batch_record_created_at "
+        "ON batch_record (created_at_utc DESC)",
+    )),
+    # 004（Phase 8B）：补齐 Owner 规格要求的批次记录字段。
+    #
+    # 003 已随 Phase 8 的首个提交进入仓库与用户数据库，**不得改写**它
+    # （否则既有 records.sqlite 会因 checksum 变化而被拒绝打开）。
+    # 因此新增 004 以 `ALTER TABLE ... ADD COLUMN` 追加列——additive / compatible，
+    # 旧库升级后新列为 NULL / 默认值，既有数据不受影响。
+    #
+    # 仍**不**建逐行明细表：逐设备详细结果保存在结果 Workbook。
+    RecordsMigration(4, "004_extend_batch_record", (
+        "ALTER TABLE batch_record ADD COLUMN sheet_name TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN evaluation_date TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN source_file_name TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN output_file_name TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN template_id TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN template_version TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN template_sha256 TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN data_row_count INTEGER NOT NULL DEFAULT 0",
+        "ALTER TABLE batch_record ADD COLUMN total_quantity INTEGER NOT NULL DEFAULT 0",
+        "ALTER TABLE batch_record ADD COLUMN evaluated_quantity INTEGER NOT NULL DEFAULT 0",
+        "ALTER TABLE batch_record ADD COLUMN app_version TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN canonical_version TEXT NOT NULL DEFAULT ''",
+        "ALTER TABLE batch_record ADD COLUMN numeric_profile_id TEXT NOT NULL DEFAULT ''",
+    )),
 )
 
 

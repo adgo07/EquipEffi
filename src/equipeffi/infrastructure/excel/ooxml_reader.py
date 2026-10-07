@@ -33,6 +33,21 @@ def _column_index(reference: str) -> int:
 
 
 def _parse_number(value: str) -> Any:
+    """解析 OOXML 数值单元格，**保持可证明的十进制语义**。
+
+    Phase 8 / QA-EXCEL-001：本函数曾经把非整数 `Decimal` 转成 `float`，
+    再经 `str()` 送进正式评价链，等于把 Numeric Contract 降级成 float。
+    实测精度损失（Excel 的十进制文本 → float → str）：
+
+    ```text
+    0.12345678901234567890123456789012345  ->  0.12345678901234568   （35 位变 17 位）
+    12345678901234567890                   ->  1.2345678901234567e+19（大整数被改写）
+    ```
+
+    因此这里直接返回 `int` / `Decimal`：整数值返回 `int`，其余保留 `Decimal`，
+    **绝不经过 `float`**。Excel 自己写出的十进制文本本身就是最好的十进制来源。
+    """
+
     text = value.strip()
     if text == "":
         return ""
@@ -42,7 +57,7 @@ def _parse_number(value: str) -> Any:
         return text
     if number == number.to_integral_value():
         return int(number)
-    return float(number)
+    return number
 
 
 def _inline_text(node: ElementTree.Element) -> str:

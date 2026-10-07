@@ -12,6 +12,36 @@ from zipfile import BadZipFile, ZipFile
 
 
 DEFAULT_V4_TEMPLATE = "设备能效分析空白模板_重构版V4_20260825.xlsx"
+
+#: Phase 8 起 Windows V1 的**正式**用户模板（V4 退出正式用户模板，仅保留
+#: legacy / test 兼容，本阶段不大规模删除旧实现）。
+DEFAULT_V6_TEMPLATE = "设备能效分析空白模板_重构版V6_20261005.xlsx"
+
+#: V6 正式模板身份。`source` 是 Owner 指定的模板基线（构建输入，只读）；
+#: `source_sha256` 是入仓前基线的 SHA-256，用于证明资产来源与派生关系。
+V6_TEMPLATE_IDENTITY: dict[str, str] = {
+    "template_id": "equipeffi.device-efficiency.V6",
+    "template_version": "V6-20261005",
+    "template_kind": "unified-multi-device-blank-template",
+    "filename": DEFAULT_V6_TEMPLATE,
+    "source_filename": "设备能效分析空白模板_重构版V6_变压器.xlsx",
+    "source_sha256": "FDB8C0B09925B5AE0EA0F0A941040B27890B5455E8E5920E02C409EDD4699CA1",
+    "asset_sha256": "EE9DBE17A06081739CFB8EF0D330CE30B4634CBA5CE29CCD1EAB058D09348810",
+    "generated_by": "tools/build_v6_pump_template.py",
+    "authorized_modification": "离心泵",
+    "provenance": (
+        "Owner 指定 V6 统一模板基线经 Phase 8 授权修改（离心泵 Sheet 业务公式退出、"
+        "类别枚举对齐 Application 契约）后入仓；其他 17 个 Sheet 语义不变，"
+        "由 tools/check_v6_untouched_sheets.py 机械验证。"
+    ),
+}
+
+#: V6 模板必须包含的 Sheet（顺序即正式顺序）。
+REQUIRED_V6_SHEETS: tuple[str, ...] = (
+    "变压器", "电动机", "空压机", "离心泵", "离心通风机", "轴流通风机", "鼓风机",
+    "潜水电泵", "工业锅炉", "热处理设备", "热泵和冷水机组", "热泵热水机",
+    "风管送风式空调", "单元式空调", "多联式空调", "注意事项", "模板说明", "配置",
+)
 REQUIRED_V4_SHEETS: tuple[str, ...] = (
     "注意事项",
     "模板说明",
@@ -124,6 +154,41 @@ class V4TemplateResource:
             raise TemplateResourceError("下载目标不能覆盖内置V4模板")
         if not source.is_file():
             raise TemplateResourceError(f"内置V4模板不存在：{source}")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+        return target
+
+
+class V6TemplateResource(V4TemplateResource):
+    """正式 V6 统一模板资源（Phase 8 起 Windows V1 的正式用户模板）。
+
+    复用 V4 的资源定位与"只复制、不写源文件"语义，只替换模板身份与结构契约。
+    """
+
+    def __init__(self, resource_dir: Path | None = None,
+                 *, template_name: str = DEFAULT_V6_TEMPLATE):
+        super().__init__(resource_dir, template_name=template_name)
+
+    @property
+    def identity(self) -> dict[str, str]:
+        return dict(V6_TEMPLATE_IDENTITY)
+
+    def validate(self, path: Path | None = None) -> TemplateValidationResult:
+        candidate = path or self.template_path
+        sheet_names = _workbook_sheet_names(candidate)
+        missing = tuple(sheet for sheet in REQUIRED_V6_SHEETS if sheet not in sheet_names)
+        digest = sha256(candidate.read_bytes()).hexdigest()
+        valid = not missing
+        message = "V6模板结构检查通过" if valid else f"缺少V6工作表：{'、'.join(missing)}"
+        return TemplateValidationResult(str(candidate), digest, sheet_names, missing, valid, message)
+
+    def download_to(self, destination: Path) -> Path:
+        source = self.template_path.resolve()
+        target = destination.resolve()
+        if source == target:
+            raise TemplateResourceError("下载目标不能覆盖内置V6模板")
+        if not source.is_file():
+            raise TemplateResourceError(f"内置V6模板不存在：{source}")
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
         return target

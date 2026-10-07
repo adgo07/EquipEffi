@@ -163,6 +163,41 @@ def create_pump_analysis_service(*, paths=None, with_persistence: bool = True):
     )
 
 
+def create_batch_evaluation_service(*, paths=None):
+    """装配 Excel 批量评价服务（Phase 8）。
+
+    复用与单台分析**同一个** `CentrifugalPumpAnalysisService`，因此 Excel 与 Qt
+    走完全相同的正式业务链路，不存在第二套计算或第二套装配路径。
+    """
+
+    from .application.services.pump_batch_evaluation_service import (
+        PumpBatchEvaluationService,
+    )
+    from . import __version__
+    from .infrastructure.excel.pump_result_writer import PumpResultWorkbookWriter
+    from .infrastructure.excel.pump_workbook_reader import V6PumpWorkbookReader
+    from .infrastructure.excel.template_resource import (
+        V6_TEMPLATE_IDENTITY,
+        V6TemplateResource,
+    )
+    from .infrastructure.persistence.app_data_paths import AppDataPaths
+    from .infrastructure.persistence.sqlite_batch_record_repository import (
+        SqliteBatchRecordRepository,
+    )
+
+    paths = paths if paths is not None else AppDataPaths.default()
+    analysis = create_pump_analysis_service(paths=paths)
+    # 载体端口在装配层注入：Application 只认识 Protocol，不认识 Excel。
+    return PumpBatchEvaluationService(
+        analysis,
+        reader=V6PumpWorkbookReader(),
+        writer=PumpResultWorkbookWriter(),
+        batch_repository=SqliteBatchRecordRepository(paths.records_db),
+        template_identity=V6_TEMPLATE_IDENTITY,
+        template_resource=V6TemplateResource(),
+        app_version=__version__)
+
+
 def launch_qt(*, paths=None) -> int:
     from .infrastructure.runtime_logging import close_logging, install_exception_hook
     from .presentation.qt.app import run
@@ -175,11 +210,13 @@ def launch_qt(*, paths=None) -> int:
     resolved = paths if paths is not None else AppDataPaths.default()
     service, logger = create_settings_runtime(paths=resolved)
     analysis = create_pump_analysis_service(paths=resolved)
+    # Phase 8：批量评价复用**同一个** analysis 服务，Excel 与 Qt 因此走同一条
+    # 正式业务链路，不存在第二套计算路径。
+    batch = create_batch_evaluation_service(paths=resolved)
     previous = install_exception_hook(logger)
     try:
-        # 草稿身份由用户在"分析草稿"区显式命名，不使用随机 session id：
-        # 启动时不绑定任何草稿，用户可新建或从已有草稿列表载入。
-        return run(service, logger, analysis, data_location=resolved.root)
+        return run(service, logger, analysis, batch=batch,
+                   data_location=resolved.root)
     finally:
         sys.excepthook = previous
         close_logging(logger)

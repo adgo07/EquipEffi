@@ -33,7 +33,10 @@ jobs:
   windows-core:
     name: Windows Core (gating)
     runs-on: windows-latest
-    timeout-minutes: 25
+    # Phase 8 R1W：gating 作业现在包含 100/1000/10000 行批量回归与 R1W 结构守卫，
+    # 25 分钟不足以跑完（被取消时无 assertion failure，只是时间不够）。
+    # 这里只为现有门禁提供足够时间，**不删除测试、不减少门禁、不新增 skip**。
+    timeout-minutes: 45
     defaults:
       run:
         shell: pwsh
@@ -81,10 +84,11 @@ jobs:
             tests.unit.test_device_evaluator_matrix -q
 
       # module is identifiable from the step outcome alone (no log access).
-      - name: Phase 2/3/4/5/6/7 settings, lifecycle, Stage D, Product Shell, analysis flow, Qt offscreen (gating)
+      - name: Phase 2/3/4/5/6/7/8 settings, lifecycle, Stage D, Product Shell, analysis flow, Excel batch, R1 blockers, writer structure, namespace preservation, writer identity, Qt background batch, Qt offscreen (gating)
         shell: pwsh
         run: |
           $mods = @(
+            'tests.contract.test_architecture_boundaries',
             'tests.unit.test_composition',
             'tests.unit.test_phase2_settings',
             'tests.unit.test_phase2_logging',
@@ -98,6 +102,15 @@ jobs:
             'tests.unit.test_phase5_chemical_stage_d',
             'tests.unit.test_phase6_product_shell',
             'tests.unit.test_phase7_analysis_history',
+            'tests.unit.test_phase8a_template_reader',
+            'tests.unit.test_phase8b_batch_evaluation',
+            'tests.unit.test_phase8b_batch_consistency',
+            'tests.unit.test_phase8r1_blockers',
+            'tests.unit.test_phase8r1w_writer_structure',
+            'tests.unit.test_phase8r3_namespace_preservation',
+            'tests.unit.test_phase8r4_writer_identity',
+            'tests.unit.test_phase8r4_qt_background',
+            'tests.unit.test_phase8r2_prefixed_writer',
             'tests.unit.test_windows_regression_comparator'
           )
           python -m unittest @mods -v

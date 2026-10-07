@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from decimal import Decimal
 from pathlib import Path
 import shutil
 import tempfile
@@ -98,7 +99,8 @@ class V4ReaderTests(unittest.TestCase):
             self.assertEqual(len(rows), 1)
             self.assertEqual(rows[0].sheet_name, "电动机")
             self.assertEqual(rows[0].row_number, 4)
-            self.assertEqual(rows[0].values["rated_power"], 7.5)
+            # Phase 8 / QA-EXCEL-001：数值保持十进制语义。
+            self.assertEqual(rows[0].values["rated_power"], Decimal("7.5"))
             result = EvaluationFacade(EvaluationService(JsonStandardRepository(ROOT))).evaluate_v4(
                 rows[0].record_id,
                 rows[0].sheet_name,

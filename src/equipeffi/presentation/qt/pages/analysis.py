@@ -54,16 +54,20 @@ from ....application.services.centrifugal_pump_analysis_service import (
     category_field_constraints,
 )
 from ..tokens import TOKENS
-from ..labels import format_metric, issue_code_texts
+from ..labels import format_metric, issue_code_texts, user_conclusion_text
 
 _LOGGER = logging.getLogger("equipeffi.qt.analysis")
 
-#: 规定点参数字段（用户可见标签 + 内部字段名）。
+#: 设备参数字段（用户可见标签 + 内部字段名 + 单位）。
+#:
+#: Owner Phase 8 R1 / UI01：普通界面不用「规定点」这类术语，也不显示
+#: `Q_BEP` / `H_BEP` / `η_BEP` 等复杂符号。**只改 Presentation 文案**：
+#: 内部字段名（`QBEP` / `HBEP` / `speed` / `efficiency`）与业务计算契约不变。
 POINT_FIELDS: tuple[tuple[str, str, str], ...] = (
-    ("QBEP", "规定点流量 Q_BEP", "m³/h"),
-    ("HBEP", "规定点扬程 H_BEP", "m"),
-    ("speed", "规定点转速 n", "r/min"),
-    ("efficiency", "规定点泵效率 η", "%"),
+    ("QBEP", "流量 Q", "m³/h"),
+    ("HBEP", "扬程 H", "m"),
+    ("speed", "转速 n", "r/min"),
+    ("efficiency", "泵效率 η", "%"),
 )
 
 #: 吸入方式选项（沿用已批准业务枚举，不在 UI 新造值）。
@@ -177,13 +181,13 @@ class AnalysisPage(QWidget):
         return group
 
     def _points_group(self) -> QGroupBox:
-        group = QGroupBox("规定点参数（BEP）")
+        group = QGroupBox("设备参数")
         grid = QGridLayout(group)
         self.point_inputs: dict[str, QLineEdit] = {}
         for row, (key, label, unit) in enumerate(POINT_FIELDS):
             grid.addWidget(QLabel(f"{label}（{unit}）"), row, 0)
             edit = QLineEdit()
-            edit.setPlaceholderText("请输入标准规定点数值")
+            edit.setPlaceholderText("请输入设备参数数值")
             grid.addWidget(edit, row, 1)
             self.point_inputs[key] = edit
         grid.addWidget(QLabel("吸入方式"), len(POINT_FIELDS), 0)
@@ -240,7 +244,9 @@ class AnalysisPage(QWidget):
         self.values_label.setTextFormat(Qt.TextFormat.PlainText)
         layout.addWidget(self.values_label)
 
-        # 第三层：普通工程语言解释"为什么得到这个结果"。
+        # Owner Phase 8 R1 / UI02：普通结果区不再展示「判定说明 / 为什么 /
+        # 所选标准 / 标准依据」。底层 explanation / references / provenance
+        # 仍完整保存在 Result 与 Record 中（只是本页不展示）。
         self.reason_label = QLabel("")
         self.reason_label.setWordWrap(True)
         self.reason_label.setTextFormat(Qt.TextFormat.PlainText)
@@ -407,7 +413,9 @@ class AnalysisPage(QWidget):
         """
 
         # 第一层：最终结论 / 等级 / 不适用 / 无法判定。
-        self.conclusion.setText(result.ui_conclusion)
+        # Phase 8 Owner 规则 7：Qt 与 Excel 的用户可见结论必须一致，
+        # 因此共用 Application 的同一套结论文案（「不确定类别」→「无法评价」）。
+        self.conclusion.setText(user_conclusion_text(result))
         first = [f"设备类别：{result.product_category}",
                  f"评价日期：{result.as_of.isoformat()}"]
         if result.grade:
@@ -419,7 +427,6 @@ class AnalysisPage(QWidget):
         hints = issue_code_texts(result.issue_codes)
         if hints:
             first.append("提示：" + "、".join(hints))
-        first.append(f"判定说明：{result.explanation}")
         self.summary.setText("\n".join(first))
 
         # 标准生命周期提示：非阻断。单独展示，不与判定结果混排。
@@ -434,26 +441,24 @@ class AnalysisPage(QWidget):
         if actual_efficiency is not None:
             second.append(f"实际泵效率：{format_metric(actual_efficiency, name=str(actual_key))}%")
         if result.thresholds:
+            # 普通界面限值保留 2 位小数（**仅显示**；等级比较仍用完整精度）。
             second.append("对应等级效率限值：" + "；".join(
-                f"{THRESHOLD_DISPLAY_NAMES.get(name, name)} {value}"
+                f"{THRESHOLD_DISPLAY_NAMES.get(name, name)} "
+                f"{format_metric(value, name=str(name))}"
                 for name, value in result.thresholds.items()))
         if not second:
             second.append("本次评价没有可展示的实际值与限值对比。")
         self.values_label.setText("\n".join(second))
 
-        # 第三层：普通工程语言解释"为什么得到这个结果"。
-        self.reason_label.setText(f"为什么是这个结果：{result.explanation}")
+        # Owner Phase 8 R1 / UI02：删除「为什么是这个结果」「所选标准」
+        # 「标准依据」三块普通用户解释/依据文案。
+        self.reason_label.setText("")
 
-        # 第四层：所选标准与已有标准依据（派生量显示 2 位小数）。
-        standard = result.references.get("standard") or {}
-        basis_lines = [
-            f"所选标准：{standard.get('standard_code') or result.standard_code}"
-            f"《{standard.get('standard_name') or '离心泵能效限定值及能效等级'}》",
-            "标准依据：GB 19762—2025《离心泵能效限定值及能效等级》",
-        ]
+        # 保留：关键计算参数（用户友好名称 + 合理格式化）。
         derived = result.calculation_trace.get("derived") or {}
         if derived:
-            basis_lines.append("关键计算参数：" + "；".join(
+            self.basis.setText("关键计算参数：" + "；".join(
                 f"{name} {format_metric(value, name=str(name))}"
                 for name, value in derived.items()))
-        self.basis.setText("\n".join(basis_lines))
+        else:
+            self.basis.setText("")

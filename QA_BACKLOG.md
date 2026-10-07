@@ -328,3 +328,101 @@ authoritative path impact = 尚待验证
 |---|---|---|---|
 | `QA-P7-001` | `RECORD_VERSION_FIELDS` | `REGISTERED_DEVIATION` | **`RecordSnapshot.ruleset_version` 与 `calculator_version` 实际存的是 rule profile 标识**（如 `pump_water`），不是真正的版本号。Phase 7 审查确认属实。<br>当前 Result 契约中**没有**任何真实可用的规则集版本 / 计算器版本字符串，因此**不得编造**版本值。<br>Phase 7 的处理：① **不伪造**版本；② Presentation 不再把这些字段当作版本展示，审计信息区标注为「规则集标识」；③ 只对新 Record 修正明显错误语义需要 schema 变更，而 Phase 7 默认不改 `records.sqlite` schema，故**不自行变更**。<br>`disposition`：随将来真正引入 Calculator / RuleSet 版本化证据的任务一并处理 |
 | `QA-P7-002` | `LEGACY_RECORD_BASIS` | `REGISTERED_DEVIATION` | **Phase 3～6 形成的旧 Record 未冻结完整标准依据**（如缺 `data_version` / `pack_hash` / `table` / `clause`）。<br>Phase 7 **不**追溯 UPDATE、不补写当前数据、不重新计算、不伪造 provenance；记录详情对这些旧记录**降级显示**「该历史记录保存时未包含完整标准依据。」（机械测试覆盖）。<br>新 Record 已冻结快照自身真实存在且可信的依据。`disposition`：保持现状（历史事实不得追溯改写） |
+
+### Phase 8 承接登记
+
+Phase 8 正式承接以下与 Excel 批量评价直接相关的条目（**不借本 Phase 顺便清理全部 legacy backlog**）：
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-EXCEL-001` | `EXCEL_READER` | **CLOSED（Phase 8A）** | `ooxml_reader._parse_number` 曾把非整数数值 **Decimal → float** 再送进正式评价链，等于把 Numeric Contract 降级。**已修复**：整数返回 `int`、其余保留 `Decimal`，**绝不经过 float**；覆盖整数 / 普通小数 / 35 位长小数 / 科学计数法 / 大整数 / 文本 / 空值。并新增正式 Reader `pump_workbook_reader`，只读正式输入列、行启用为语义式、表头做防御性校验。<br>`disposition`：Phase 8 关闭（测试见 `tests/unit/test_phase8a_template_reader.py`） |
+| `QA-P5-003` | `V4_EXCEL_ADAPTER` | **CLOSED（Phase 8 / 8B 正式 E2E 确认）** | 「Excel 侧存在独立业务算法」问题**已解决**：正式 V6 模板的「离心泵」Sheet 已退出全部可独立产出 GB19762 结果的 Excel 公式（`K`/`L`/`N:X`/`AA`），改由软件批量评价写入；Excel 只做批量输入/输出载体，每行都调用正式 Application 契约。V4 模板降为 `LEGACY`（不再作为正式用户模板，实现保留）。<br>`disposition`：Phase 8 关闭（门禁见 `tools/check_v6_pump_template.py`） |
+| `QA-P6-001` | `LEGACY_TK` | **OPEN（Phase 8 明确不清理）** | legacy Tk 桌面窗口实现保留但不接线。Phase 8 **不**删除该实现，也**不**触碰其表单模型依赖链；`disposition` 保持 Phase 8 之后按需处理。 |
+
+### Phase 8 R1 登记（独立验收 blocker）
+
+被独立验收 `BLOCKED` 的 head 为 `8cb6eec1845cc26bed43e3dfea2dec1c5880729c`。
+四项 blocker 均为真实缺陷，R1 已逐项修复并附机械回归：
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-P8-001` | `EXCEL_RESULT_THRESHOLDS` | **CLOSED（Phase 8 R1）** | 结果 Workbook 的 U/V/W 恒为空：Writer 只消费 `calculation_trace.derived`，而**等级限值在正式 `PumpAnalysisResult.thresholds`**。已新增 `THRESHOLD_COLUMNS` 映射，U/V/W 直接取自正式 thresholds；无正式阈值的状态不写、不伪造。回归：`test_phase8r1_blockers.B1ThresholdWritebackTests` |
+| `QA-P8-002` | `BATCH_STATISTICS` | **CLOSED（Phase 8 R1）** | `INVALID_INPUT` 被当成正式评价：负流量 + 数量=7 时计入 evaluated_quantity=7、input_error_rows=0、attention 为空，并输出「无法判定」。已改为归入**输入错误**：数量合法时计入 total_quantity 与 input_error_quantity，但不计入 evaluated_quantity、不进入任何正式结论数量，且必须出现在需要关注列表。回归：`B2InvalidInputTests` |
+| `QA-P8-003` | `RESULT_WORKBOOK_FIDELITY` | **CLOSED（Phase 8 R1）** | Writer 用 openpyxl 整体重写工作簿，把用户输入精度从 35 位改写成 `100.1234567890124`。已改为**逐字节复制原文件 + 只对结果列做 XML 定点补丁**（数值 `<v>`、文本 inlineStr）。回归：`B3InputPrecisionTests`（含"只有该 worksheet 部件变化"的机械证明） |
+| `QA-P8-004` | `BATCH_PROVENANCE` | **CLOSED（Phase 8 R1）** | `self._first_result` 为实例级状态，导致全非法批次沿用上一批的 Canonical / Numeric 引用。已彻底移除实例级批次状态，改为 `evaluate_workbook` 内局部 `_BatchProvenance`，只记录当前批次真正执行过正式评价的 Result。回归：`B4ProvenanceIsolationTests`（含连续三批与"实例上不得存在批次状态"守卫） |
+
+UI 简化（Owner 决定，非缺陷）：UI01 术语简化 / UI02 结果区删解释与依据 /
+UI03 记录页删「审计信息」展示 / UI04 日志级别中文化。四项均只改 Presentation，
+底层数据、字段 identity 与业务计算契约未变。
+
+### Phase 8 R1W 登记（复审清单外审计发现的 Writer 阻断）
+
+复审对 head `348a1994352e9e16d841a0589b0af2416a83b0df` 再次给出 `PHASE_8_BLOCKED`，
+并提出两个**同一根因**的新 Writer 阻断：Writer 用属性顺序假设匹配 OOXML 元素，
+而 OOXML 不保证属性顺序。
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-P8-005` | `RESULT_WRITER_ROW_MATCH` | **CLOSED（Phase 8 R1W）** | `<row ht="42" customHeight="1" s="184" r="4">`（`r` 不在首位）时，Writer 的行定位失败，结果**整行未写出**，却仍保存"成功"批次记录（静默漏写）。已改为**顺序无关的行扫描器**；且任何结果行定位不到即抛 `ResultWorkbookWriteError`，批次整体失败、**不保存** batch_record。回归：`test_phase8r1w_writer_structure` |
+| `QA-P8-006` | `RESULT_WRITER_CELL_MATCH` | **CLOSED（Phase 8 R1W）** | `<c s="234" r="U4" t="n">`（`s` 在 `r` 之前）时未识别既有单元格，又插入一个 `U4`，输出出现**重复坐标**（工作簿结构无效）。已改为按 `r` 属性（坐标）匹配并就地替换、保留原样式；写回后自校验每个目标坐标恰好出现一次。回归：`test_phase8r1w_writer_structure`（含"全表无重复坐标"机械校验） |
+
+**教训（已落到实现约定）**：OOXML 元素的属性顺序、命名空间前缀、自闭合形式
+都**不是**契约；任何位置/顺序假设都会在真实 Excel 产物上失败。
+解析必须顺序无关，且"没写成"必须是**硬失败**而不是静默成功。
+
+### Phase 8 R3 登记（OOXML 命名空间保持）
+
+复审对 head `fec8fd0ddbcc64e861e05a6ad204463a6d7fcc0c` 再次给出 `PHASE_8_BLOCKED`，
+本轮 blocker 是 namespace 语义被破坏。
+
+| issue_id | 表面 | 状态 | 说明 |
+|---|---|---|---|
+| `QA-P8-007` | `OOXML_DEFAULT_NAMESPACE_DECISION` | **CLOSED（Phase 8 R3）** | `_has_default_namespace()` 只判断"是否存在 `xmlns="…"`"，不判断 URI，于是把「存在任意默认 namespace」当成「已是 SpreadsheetML」。在 `xmlns="别的URI"` + `xmlns:x="MAIN_NS"` 的合法工作表上，Writer 删掉了 `x:` 前缀与 `xmlns:x`，让**全部** SpreadsheetML 元素落进别的命名空间。已改为 `_default_namespace_uri()` 取得真实 URI，并按 A（无默认）/ B（==MAIN）/ C（!=MAIN）三分法决策：**仅 A/B 允许去前缀，C 必须保留**。回归：`test_phase8r3_namespace_preservation` |
+| `QA-P8-008` | `WRITER_CELL_CHILD_NAMESPACE` | **CLOSED（Phase 8 R3）** | `_cell_element_xml` 只给 `c` 加前缀，内容元素 `<v>/<is>/<t>` 未加；在默认命名空间非 MAIN 的工作表里，新插入单元格的**值**会落进别的命名空间。已改为前缀应用到该单元格全部子元素。回归：同上（语义门禁会直接拒绝此类输出） |
+
+**新增最终语义门禁**：`_assert_main_namespace_semantics` 用真正的 namespace-aware
+解析器（`ElementTree` 展开 QName）校验 `worksheet`/`sheetData`/`row`/`c`/`v`
+等核心元素仍属 MAIN_NS。仅"XML 良构"不再算通过；门禁失败 = Writer 硬失败 =
+不产出结果文件、不保存成功 `batch_record`。
+
+**教训**：namespace 正确性不能靠字符串判断（"有没有 xmlns=" 不等于"绑定对不对"），
+必须用能解析 QName 的解析器做最终门禁。
+
+### Phase 8 R4 登记（全面诊断的清单外独立发现）
+
+诊断对象 head `5fea7fa0b79789d49277c504b0913266518416da`（`PHASE_8_BLOCKED`）。
+本轮不再按已知反例逐项扩展正则，而是把**身份判定集中到真正的 XML 词法/命名空间
+模型**（`xml_model.py`），并用**独立解析器**做输入→输出校验
+（`result_invariants.py`）。
+
+| issue_id | 级别 | 表面 | 状态 | 说明 |
+|---|---|---|---|---|
+| `QA-P8-009` | P1 | `WRITER_ATTR_QUOTING` | **CLOSED（R4）** | 合法单引号属性 `r='U4'` 绕过唯一性门禁：输出出现 **2 个真实 `{MAIN}c[@r='U4']`**（一个空、一个 79.786165），仍保存成功 `batch_record`。词法层现按 XML 规范同时支持单/双引号与实体解码。回归：`test_phase8r4_writer_identity` |
+| `QA-P8-010` | P1 | `WRITER_ATTR_NAMESPACE` | **CLOSED（R4）** | 属性按 local-name 取用，`r` 与扩展命名空间的 `e:r` 被合并成同一个键，后者覆盖前者：真正的 U4 被漏掉 → 重复坐标，且正式 Reader reopen 后 U4 **为空**（正式限值静默丢失）。属性身份现包含 namespace（未加前缀的属性**没有** namespace）。回归：同上 |
+| `QA-P8-011` | P2 | `NAMESPACE_GATE_SCOPE` | **CLOSED（R4）** | 语义门禁遍历整棵树、按 local-name 要求 `t/c/row` 全属 MAIN_NS，误拒合法扩展内容（`extLst` 内同名 `e:t`），整批无法完成。门禁现只沿**正式路径** `worksheet/sheetData/row/c/v` 检查，且只下探 MAIN_NS 子树。回归：同上 |
+| `QA-P8-012` | P2 | `ATOMIC_FILE_COMMIT` | **CLOSED（R4）** | 直接 `ZipFile(destination, 'w')` 落盘；磁盘写失败会在**最终文件名**留下残缺 Workbook（仅 1 个 entry），重试还得到 `ResultWorkbookExistsError`。现改为**临时文件 → 重新打开复验 → `os.replace` 原子提交**，任何失败都清理半成品。回归：同上 |
+| `QA-P8-013` | P2 | `QT_BATCH_BLOCKING` | **CLOSED（R4）** | 整批评价在 Qt 主线程同步执行（10,000 行实测约 559s），界面在此期间无法处理事件。现改为工作线程执行 + 进行中状态 + 按钮守卫；计算/统计/数据库语义未变。回归：`test_phase8r4_qt_background` |
+| `QA-P8-014` | P1 | `WRITER_NESTED_PREFIX_SCOPE` | **CLOSED（R4）** | 前缀归一化按**根层声明**推全局；后代重绑定同一前缀时扩展 payload 被静默改写进 SpreadsheetML 命名空间。现按**逐元素词法作用域**判定，且开/闭合标记配对同进退。回归：`test_phase8r4_writer_identity` |
+
+### 性能缺陷（本轮自行引入并修掉）
+
+`WorksheetPatch.apply` 原先逐次拼接字符串（`out = out[:s] + r + out[e:]`），
+在上万个编辑时是 O(n²)：实测 1,000 行补丁阶段 18.7s 中有 15.6s 花在这里，
+5,000 行整批达 460s。改为收集片段后**一次 `join`**，并改为**一次解析、收集全部
+编辑、单遍应用**（不再逐行重解析整份 XML）。修复后线性：
+
+```text
+500 行 3.4s   2,000 行 12.8s   5,000 行 31.8s   10,000 行 63.8s
+```
+
+**教训（已落到实现约定）**：
+
+1. 身份判定必须来自真正的 XML 词法/命名空间解析：属性顺序、单/双引号、命名空间
+   前缀、**属性命名空间**、**嵌套重绑定**都是独立的正确性维度，不能用"假设 + 正则"。
+2. 解析与判定要**顺序无关**、**作用域正确**；命名空间决策必须区分
+   「无默认／== MAIN_NS／!= MAIN_NS」三种情况。
+3. 自检必须**独立**：不要用 Writer 自己的扫描器证明 Writer 正确；输出校验用
+   expat（QName + 无命名空间 `r`）与 ElementTree（路径 + 命名空间语义）。
+4. "没写成"必须是**硬失败**：定位不到行、坐标不唯一、命名空间错误、文件未原子提交，
+   都不得保存成功批次记录，也不得留下残缺结果文件。
+5. 大批量性能要用**真实规模**测量；字符串拼接与"逐行重解析"是两个已经踩到的 O(n²) 陷阱。

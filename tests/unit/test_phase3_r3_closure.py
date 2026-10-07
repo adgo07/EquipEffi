@@ -398,8 +398,13 @@ class RecordsMigrationPreservationTests(_DbCase):
         finally:
             connection.close()
 
-        self.assertEqual(history, [(1, "001_create_workspace_and_record"),
-                                   (2, "002_add_workspace_revision")])
+        # 历史必须与当前迁移清单逐项一致（不硬编码版本号：Phase 8 新增了
+        # additive 迁移 003）；同时强制 001/002 的身份与顺序不变。
+        expected_history = [(m.schema_version, m.migration_id)
+                            for m in RECORDS_MIGRATIONS]
+        self.assertEqual(history, expected_history)
+        self.assertEqual(history[0], (1, "001_create_workspace_and_record"))
+        self.assertEqual(history[1], (2, "002_add_workspace_revision"))
         self.assertEqual(records, [("R-legacy", "1级", "1")])
         self.assertEqual(workspaces, [("W-legacy", 1)])
         self.assertEqual(checksum_001, RECORDS_MIGRATIONS[0].checksum,
@@ -416,7 +421,8 @@ class RecordsMigrationPreservationTests(_DbCase):
             records = connection.execute("SELECT COUNT(*) FROM record").fetchone()[0]
         finally:
             connection.close()
-        self.assertEqual(count, 2)
+        # 幂等：重复迁移不得重复登记历史（条数等于迁移清单长度，而不是固定 2）。
+        self.assertEqual(count, len(RECORDS_MIGRATIONS))
         self.assertEqual(records, 1)
 
     def test_legacy_record_is_still_reopenable_after_upgrade(self):

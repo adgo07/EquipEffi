@@ -40,6 +40,7 @@ from equipeffi.application.services.centrifugal_pump_analysis_service import (
 from equipeffi.presentation.qt.navigation import PAGES
 from equipeffi.presentation.qt.pages import (
     AnalysisPage,
+    BatchPage,
     HomePage,
     RecordsPage,
     SettingsPage,
@@ -124,10 +125,17 @@ def _launch_window(settings, analysis, paths, **kwargs):
     数据目录必须由 **composition** 解析并传入，测试不得自行注入。
     """
 
+    from equipeffi.composition import create_batch_evaluation_service
     from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
 
     resolved = paths if paths is not None else AppDataPaths.default()
-    return MainWindow(settings, analysis, data_location=resolved.root, **kwargs)
+    # Phase 8：「批量评价」是真实一级页面，因此按 launch_qt 的真实装配一并注入
+    # 批量服务；不注入时该页退化为空控件，会让"所有页面都真实"的断言失真。
+    batch = kwargs.pop("batch", None)
+    if batch is None and analysis is not None:
+        batch = create_batch_evaluation_service(paths=resolved)
+    return MainWindow(settings, analysis, batch=batch,
+                      data_location=resolved.root, **kwargs)
 
 
 def _visible_text(widget) -> str:
@@ -248,6 +256,7 @@ class AppShellTests(ProductShellTestCase):
         self.assertIsInstance(window._page_widgets["首页"], HomePage)
         self.assertIsInstance(window._page_widgets["标准库"], StandardsPage)
         self.assertIsInstance(window._page_widgets["新建分析"], AnalysisPage)
+        self.assertIsInstance(window._page_widgets["Excel导入"], BatchPage)
         self.assertIsInstance(window._page_widgets["分析记录"], RecordsPage)
         self.assertIsInstance(window._page_widgets["设置"], SettingsPage)
 
@@ -266,12 +275,18 @@ class AppShellTests(ProductShellTestCase):
                 for phrase in PLACEHOLDER_TEXTS:
                     self.assertNotIn(phrase, text)
 
-    def test_primary_navigation_has_no_excel_or_parameter_library(self):
-        """Excel 属 Phase 8；GB 19762 无独立用户参数库需求。"""
+    def test_primary_navigation_has_no_parameter_library(self):
+        """GB 19762 无独立用户参数库需求（标准参数/限值/依据归标准详情）。
 
-        self.assertNotIn("Excel", " ".join(PAGES))
+        Phase 8 变更：Owner 已授权 Excel 批量评价成为正式产品表面，因此
+        「批量评价」是允许的一级页面；参数库仍然不允许。
+        Phase 6 当时的"导航不得含 Excel"断言已由该 Owner 决定取代。
+        """
+
         self.assertNotIn("参数库", " ".join(PAGES))
-        self.assertEqual(PAGES, ("首页", "标准库", "新建分析", "分析记录", "设置"))
+        self.assertIn("Excel导入", PAGES)
+        self.assertEqual(PAGES, ("首页", "标准库", "新建分析", "Excel导入",
+                                 "分析记录", "设置"))
 
     def test_navigation_contract_only_switches_pages_and_selects_objects(self):
         window = self.window()
@@ -430,12 +445,16 @@ class AnalysisLayeringTests(ProductShellTestCase):
         self.fill(page, WATER)
         result = page.evaluate()
         self.assertIsNotNone(result)
-        # 1 结论 / 2 实际值与限值 / 3 解释 / 4 标准依据 / 5 技术详情（折叠）
+        # Owner Phase 8 R1 / UI02：普通结果区只保留
+        # 最终结论+等级 / 关键计算参数 / 对应等级效率限值。
+        # 已删除：判定说明、为什么、所选标准、标准依据。
         self.assertEqual(page.conclusion.text(), result.ui_conclusion)
         self.assertIn("实际泵效率", page.values_label.text())
         self.assertIn("对应等级效率限值", page.values_label.text())
-        self.assertTrue(page.reason_label.text().strip())
-        self.assertIn("所选标准", page.basis.text())
+        self.assertIn("关键计算参数", page.basis.text())
+        self.assertEqual(page.reason_label.text().strip(), "")
+        self.assertNotIn("所选标准", page.basis.text())
+        self.assertNotIn("标准依据", page.basis.text())
 
     def test_chemical_result_has_the_same_layers(self):
         page = self.page()
@@ -443,7 +462,9 @@ class AnalysisLayeringTests(ProductShellTestCase):
         result = page.evaluate()
         self.assertIsNotNone(result)
         self.assertIn("实际泵效率", page.values_label.text())
-        self.assertIn("所选标准", page.basis.text())
+        # UI02：不再展示"所选标准 / 标准依据"，只保留关键计算参数。
+        self.assertIn("关键计算参数", page.basis.text())
+        self.assertNotIn("所选标准", page.basis.text())
 
     def test_ordinary_layers_do_not_leak_internal_identifiers(self):
         page = self.page()
@@ -631,8 +652,12 @@ class SettingsPageTests(ProductShellTestCase):
 
     def test_log_level_is_a_real_persisted_preference(self):
         page = self.window().settings_page
-        page.log_level.setCurrentText("WARNING")
+        # Owner Phase 8 R1 / UI04：界面显示中文，内部仍保存正式枚举值。
+        index = page.log_level.findData("WARNING")
+        self.assertGreaterEqual(index, 0, "内部值必须作为 item data 保留")
+        page.log_level.setCurrentIndex(index)
         self.assertEqual(self.settings.get("log.level"), "WARNING")
+        self.assertEqual(page.log_level.currentText(), "警告")
 
     def test_no_installer_or_update_system(self):
         # 只检查真实代码，不检查解释性 docstring/注释。

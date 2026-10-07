@@ -30,6 +30,30 @@ FORBIDDEN_SETTING_TOKENS: tuple[str, ...] = (
 )
 
 
+#: 日志级别内部正式枚举值 → 用户可见中文标签（Owner Phase 8 R1 / UI04）。
+#:
+#: 覆盖 SettingsService 实际支持的全部级别；若将来新增级别而此处没有映射，
+#: 界面会回退显示原值（宁可显示原值，也不隐藏一个真实可选项）。
+#: 界面展示顺序：按**严重程度递增**（比字母序更符合用户直觉）。
+LOG_LEVEL_ORDER: tuple[str, ...] = ("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL")
+
+LOG_LEVEL_LABELS: dict[str, str] = {
+    "DEBUG": "调试",
+    "INFO": "信息",
+    "WARNING": "警告",
+    "ERROR": "错误",
+    "CRITICAL": "严重错误",
+}
+
+
+def ordered_log_levels(supported) -> list[str]:
+    """已知级别按严重程度排序；未知级别追加在后面（不隐藏真实可选项）。"""
+
+    known = [value for value in LOG_LEVEL_ORDER if value in supported]
+    extra = sorted(value for value in supported if value not in LOG_LEVEL_ORDER)
+    return known + extra
+
+
 class SettingsPage(QWidget):
     """应用设置 + 关于 + 运行信息。"""
 
@@ -58,11 +82,14 @@ class SettingsPage(QWidget):
         preferences_layout = QVBoxLayout(preferences)
         preferences_layout.addWidget(QLabel("日志级别（记录运行信息时使用）"))
         self.log_level = QComboBox()
-        self.log_level.addItems(sorted(type(settings).LEVELS))
+        # Owner Phase 8 R1 / UI04：普通界面全部显示中文，不展示英文枚举值。
+        # 内部保存值仍是现有正式枚举字符串，**不迁移 settings schema**。
+        for value in ordered_log_levels(type(settings).LEVELS):
+            self.log_level.addItem(LOG_LEVEL_LABELS.get(value, value), value)
         current = settings.get("log.level", "INFO") or "INFO"
-        index = self.log_level.findText(current)
+        index = self.log_level.findData(current)
         self.log_level.setCurrentIndex(index if index >= 0 else 0)
-        self.log_level.currentTextChanged.connect(self._save_log_level)
+        self.log_level.currentIndexChanged.connect(self._save_log_level)
         preferences_layout.addWidget(self.log_level)
 
         self.last_directory = QLabel()
@@ -127,7 +154,12 @@ class SettingsPage(QWidget):
 
     # -- 动作 ---------------------------------------------------------------
 
-    def _save_log_level(self, value: str) -> None:
+    def _save_log_level(self, _index: int) -> None:
+        # 保存的是 **data（内部正式枚举值）**，因此重启后仍能正确恢复；
+        # 界面上看到的始终是中文标签。
+        value = self.log_level.currentData()
+        if value is None:
+            return
         try:
             self.settings.set("log.level", value)
         except (ValueError, TypeError) as error:

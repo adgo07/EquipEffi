@@ -538,15 +538,47 @@ class SystemFailureSeparationTests(Phase7TestCase):
 # --------------------------------------------------------------------------
 
 class Phase7ScopeGuardTests(Phase7TestCase):
-    def test_no_migration_or_schema_change(self):
-        import subprocess
+    def test_records_schema_invariants_hold(self):
+        """Phase 7 退出条件的历史事实 + 仍然有效的长期不变式。
 
-        changed = subprocess.run(
-            ["git", "diff", "--name-only",
-             "6ead21fb6757d5d92ba81851f23e3c41d86598af", "HEAD",
-             "--", "src/equipeffi/infrastructure/persistence/"],
-            cwd=ROOT, capture_output=True, text=True, check=False).stdout.split()
-        self.assertEqual(changed, [], f"records 持久化层被改动：{changed}")
+        Phase 7 **当时**的退出条件确实是「records 持久化层零改动」，该事实已由
+        `docs/phase7_acceptance_record.md` 与 Phase 7 的 PR 承载。
+
+        Phase 8 经 Owner 明确授权新增了 **additive** 迁移 003（独立的
+        `batch_record` 表）。对 HEAD 继续断言「持久化层零改动」会变成假回归，
+        因此这里改为断言**长期不变式**——它们在 Phase 8 之后仍必须成立：
+
+        ```text
+        001 / 002 的 migration_id 与顺序不变（否则旧库会被拒绝打开）
+        record 表列契约不变（单台 Record 语义不得改变）
+        每条迁移都是 additive（不得出现破坏性语句）
+        ```
+        """
+
+        import sqlite3
+        import tempfile
+        from pathlib import Path as _Path
+
+        from equipeffi.infrastructure.persistence.records_migrations import (
+            RECORDS_MIGRATIONS,
+            migrate_records_database,
+        )
+
+        self.assertEqual(
+            [(m.schema_version, m.migration_id) for m in RECORDS_MIGRATIONS][:2],
+            [(1, "001_create_workspace_and_record"),
+             (2, "002_add_workspace_revision")])
+        for migration in RECORDS_MIGRATIONS:
+            with self.subTest(migration=migration.migration_id):
+                migration.assert_additive()
+
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
+            database = _Path(tmp) / "records.sqlite"
+            migrate_records_database(database, app_version="phase7-guard")
+            with sqlite3.connect(database) as connection:
+                columns = [row[1] for row in
+                           connection.execute("PRAGMA table_info(record)")]
+        self.assertEqual(len(columns), 23, "record 表列契约不得改变")
 
     def test_no_reproduce_attempt_or_audit_framework(self):
         qt_dir = ROOT / "src" / "equipeffi" / "presentation" / "qt"

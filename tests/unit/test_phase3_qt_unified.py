@@ -151,7 +151,10 @@ class UnifiedAnalysisPageTests(unittest.TestCase):
         self.assertEqual(self.page.conclusion.text(), "1级")
         self.assertIn("评价结论", "评价结论")  # 结构断言见下
         self.assertIn("设备类别：单级单吸清水离心泵", self.page.summary.text())
-        self.assertIn("标准依据", self.page.basis.text())
+        # Owner Phase 8 R1 / UI02：普通结果区不再展示「标准依据」，
+        # 只保留关键计算参数。
+        self.assertIn("关键计算参数", self.page.basis.text())
+        self.assertNotIn("标准依据", self.page.basis.text())
         self.assertEqual(self.page.last_record_status, "RECORDED")
         self.assertNotIn("pump_water", self.page.basis.text())
 

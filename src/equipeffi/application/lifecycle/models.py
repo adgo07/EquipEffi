@@ -172,3 +172,40 @@ class RecordSnapshot:
     schema_version: int
     created_at_utc: str
     finalized_at_utc: str
+
+
+@dataclass(frozen=True)
+class BatchRecordSnapshot:
+    """一次 Excel 批量评价的**总结**记录（Phase 8，Owner 规则 9/10）。
+
+    刻意**不**是"多个单台 Record 的容器"：它只记录"这一次批次发生过什么"，
+    逐设备详细结果保存在结果 Workbook。不得据此为每个数据行创建普通 Record。
+    """
+
+    batch_record_id: str
+    standard_code: str
+    device_type: str
+    sheet_name: str
+    evaluation_date: str
+    source_workbook: str
+    source_workbook_sha256: str
+    source_file_name: str
+    result_workbook: str | None
+    result_workbook_sha256: str | None
+    output_file_name: str
+    template_id: str
+    template_version: str
+    template_sha256: str
+    total_rows: int
+    evaluated_count: int
+    unevaluated_count: int
+    invalid_count: int
+    data_row_count: int
+    total_quantity: int
+    evaluated_quantity: int
+    summary: dict[str, Any]
+    app_version: str
+    canonical_version: str
+    numeric_profile_id: str
+    schema_version: int
+    created_at_utc: str

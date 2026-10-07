@@ -28,6 +28,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
 from ..tokens import TOKENS
 from ....application.services.centrifugal_pump_analysis_service import (
     THRESHOLD_DISPLAY_NAMES,
+    user_conclusion_from_snapshot,
 )
 from ..labels import support_status_text
 from ..labels import format_metric
@@ -110,14 +111,14 @@ class RecordsPage(QWidget):
 
         # 技术详情渐进展示：内部 rule / data id / Numeric 配置归此处，默认真正收起。
         # Phase 7：普通页面重点是业务详情；内部标识集中在最底部**默认折叠**的
-        # 「审计信息」入口，保留审计能力但不再是普通页面重点。
-        self.technical_box = CollapsibleSection("审计信息（技术诊断用）", expanded=False)
+        # Owner Phase 8 R1 / UI03：普通产品界面**不再展示**「审计信息」区域。
+        # 底层 provenance / snapshot / hash / numeric profile / matched rule /
+        # canonical references **全部继续保存在 Record 中**，只是不在此展示。
+        # 这里保留同名的内部占位控件（不可见、不加入布局），使既有内部调用点
+        # 与测试不会因控件缺失而崩溃；它不出现在用户界面上。
         self.technical = QLabel("")
-        self.technical.setWordWrap(True)
-        self.technical.setTextFormat(Qt.TextFormat.PlainText)
-        self.technical.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.technical_box.set_content(self.technical)
-        detail_layout.addWidget(self.technical_box)
+        self.technical.setVisible(False)
+        self.technical_box = None
         detail_layout.addStretch()
         holder.addWidget(detail_group, 3)
         layout.addLayout(holder, 1)
@@ -195,7 +196,8 @@ class RecordsPage(QWidget):
         if not self._visible:
             self.detail.setText("没有符合条件的记录。" if self._records
                                 else "尚无正式记录。完成一次分析并保存后会显示在这里。")
-            self.technical.setText("")
+            if self.technical is not None:
+                self.technical.setText("")
 
     def clear_filters(self) -> None:
         self.search.clear()
@@ -223,7 +225,7 @@ class RecordsPage(QWidget):
             f"采用标准：{snapshot.standard_code}",
             f"设备类别：{snapshot.product_category}",
             f"评价日期：{snapshot.as_of}",
-            f"评价结论：{snapshot.ui_conclusion}",
+            f"评价结论：{user_conclusion_from_snapshot(result, snapshot.ui_conclusion)}",
         ]
         if snapshot.grade:
             lines.append(f"能效等级：{snapshot.grade}")

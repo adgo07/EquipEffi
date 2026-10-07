@@ -164,6 +164,138 @@ CATEGORY_FIELD_CONSTRAINTS: dict[str, dict[str, str]] = {
 LOCKABLE_FIELDS: tuple[str, ...] = ("stages", "suction")
 
 
+# ======================================================================
+# 面向用户的文案（**唯一来源**）
+# ======================================================================
+#
+# Phase 8 Owner 规则 7：Qt 与 Excel 的**用户可见结论必须一致**。
+# 因此面向用户的文案只能有**一处**定义，Qt（Presentation）与
+# Excel（Infrastructure adapter）都从这里取，不得各自复制一份。
+#
+# 本模块是 Qt 白名单允许导入的 Application 契约
+# （见 tests/contract/test_architecture_boundaries.py），因此它是
+# "Excel 也能用、Qt 也能用"的唯一合法落点。
+
+#: 需要用户先确认泵型时的**用户可见结论**。
+#:
+#: `不确定类别` 是一个**正式类别选择**（Owner 规则 7）：不是非法输入、
+#: 不是"需要先修正才能运行"。
+#: 其 Presentation 结论固定为「无法评价」（**不是**「无法判定」）。
+#: 内部状态仍复用既有 `category_status = UNRESOLVED` +
+#: `requires_category_confirmation = True`，**不新造 Domain enum**。
+USER_CONCLUSION_UNCERTAIN_CATEGORY = "无法评价"
+
+#: 结论缺失时的兜底文案。
+USER_CONCLUSION_FALLBACK = "无法判定"
+
+#: `support_status`（发布门禁维度）→ 用户文案。
+#:
+#: 历史 Record 直接使用同一张表：快照里存的是**当时**的取值，
+#: 因此"显示快照值"本身就等于"显示当时的事实"，不追溯改写。
+SUPPORT_STATUS_LABELS: dict[str, str] = {
+    "SUPPORTED": "正式支持",
+    "NOT_IN_RELEASE_SCOPE": "当前版本未支持",
+}
+
+#: 业务判定提示码（`issue_codes`）→ 用户中文说明。
+#:
+#: 内部码是**审计标识**，普通结果区只能显示中文说明；**没有**映射的码
+#: 一律不展示，而不是退化显示内部英文码。
+ISSUE_CODE_LABELS: dict[str, str] = {
+    "CATEGORY_UNCERTAIN": "尚未确认产品类别",
+    "CATEGORY_UNRESOLVED": "产品类别无法解析",
+    "CATEGORY_MISSING": "缺少产品类别",
+    "CATEGORY_NOT_APPLICABLE": "该产品类别不属于本标准适用范围",
+    "SUCTION_CATEGORY_CONFLICT": "吸入方式与所选类别不一致",
+    "STAGE_CATEGORY_CONFLICT": "级数与所选类别不一致",
+    "FLOW_INVALID": "流量数值无效",
+    "HEAD_INVALID": "扬程数值无效",
+    "SPEED_INVALID": "转速数值无效",
+    "STAGES_INVALID": "级数数值无效",
+    "EFFICIENCY_INVALID": "泵效率数值无效",
+    "SUCTION_INVALID": "吸入方式取值无效",
+    "FLOW_MISSING": "缺少流量",
+    "HEAD_MISSING": "缺少扬程",
+    "SPEED_MISSING": "缺少转速",
+    "STAGES_MISSING": "缺少级数",
+    "EFFICIENCY_MISSING": "缺少泵效率",
+    "SUCTION_MISSING": "缺少吸入方式",
+    "INVALID_INPUT": "输入不合法",
+}
+
+#: 整数型业务量（显示时不补小数位）。
+_INTEGER_METRIC_NAMES: frozenset[str] = frozenset({"级数", "吸入方式系数"})
+
+
+def user_conclusion_text(result: Any) -> str:
+    """用户可见的正式评价结论（Qt 与 Excel **必须**共用本函数）。
+
+    `不确定类别` → 「无法评价」；其余沿用业务结论原文。
+    """
+
+    snapshot = result.as_snapshot() if hasattr(result, "as_snapshot") else dict(result or {})
+    if snapshot.get("requires_category_confirmation"):
+        return USER_CONCLUSION_UNCERTAIN_CATEGORY
+    return str(snapshot.get("ui_conclusion") or USER_CONCLUSION_FALLBACK)
+
+
+def support_status_text(value: str | None) -> str:
+    """把内部 `support_status` 转成用户可见文案（未知/缺失回退「—」）。"""
+
+    if not value:
+        return "—"
+    return SUPPORT_STATUS_LABELS.get(value, "—")
+
+
+def user_conclusion_from_snapshot(result_snapshot: dict[str, Any] | None,
+                                  ui_conclusion: str | None = None) -> str:
+    """从**已固化的 Result 快照**还原用户可见结论（Record 详情用）。
+
+    与 `user_conclusion_text` 同一套规则，因此历史 Record 与实时结果不会出现
+    两种说法；也不重新计算、不按今天重新解释。
+    """
+
+    snapshot = result_snapshot or {}
+    if snapshot.get("requires_category_confirmation"):
+        return USER_CONCLUSION_UNCERTAIN_CATEGORY
+    return str(snapshot.get("ui_conclusion") or ui_conclusion
+               or USER_CONCLUSION_FALLBACK)
+
+
+def issue_code_texts(codes) -> list[str]:
+    """把内部 `issue_codes` 转成用户可见中文说明（丢弃无映射的内部码）。"""
+
+    texts: list[str] = []
+    for code in codes or ():
+        text = ISSUE_CODE_LABELS.get(str(code))
+        if text and text not in texts:
+            texts.append(text)
+    return texts
+
+
+def format_metric(value: Any, *, name: str = "") -> str:
+    """把计算派生量格式化为 **2 位小数**文本（**仅用于显示**）。
+
+    判定基于**数值类型**而不是按名字维护白名单——白名单必然漏掉真实键名。
+    只影响显示文本：**不改变** Decimal 原始值、Numeric Profile、等级比较值、
+    Record 精确快照或 Golden business truth。
+    """
+
+    if value is None:
+        return "—"
+    try:
+        from decimal import Decimal, InvalidOperation
+
+        number = Decimal(str(value).strip())
+    except (InvalidOperation, ValueError, TypeError):
+        return str(value)
+    if not number.is_finite():
+        return str(value)
+    if name in _INTEGER_METRIC_NAMES or number == number.to_integral_value():
+        return str(number.to_integral_value())
+    return f"{number:.2f}"
+
+
 def category_field_constraints(product_category: str | None) -> dict[str, str]:
     """返回该类别被唯一决定的字段；无约束时返回空字典。"""
 
