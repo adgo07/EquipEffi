@@ -28,19 +28,25 @@ from ....application.services.centrifugal_pump_analysis_service import (
 from ..tokens import TOKENS
 from ....application.services.centrifugal_pump_analysis_service import (
     THRESHOLD_DISPLAY_NAMES,
+    RecordQuery,
     user_conclusion_from_snapshot,
 )
 from ..labels import support_status_text
 from ..labels import format_metric
 from ..widgets.collapsible import CollapsibleSection
 
-#: 结论筛选项 → 匹配的 evaluation_status 集合（"全部" 不筛选）。
+#: 结论筛选项 → 匹配的 `evaluation_status` 集合（"全部" 不筛选）。
+#:
+#: 界面只出现**中文业务说法**；机器状态只在内部用于构造 SQL 条件（M2 第五条）。
 CONCLUSION_FILTERS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("全部结论", ()),
     ("已判定等级", ("SUCCESS",)),
-    ("不适用（超出标准范围）", ("OUT_OF_STANDARD_SCOPE",)),
-    ("无法判定（信息不足）", ("INSUFFICIENT_DATA", "INVALID_INPUT")),
+    ("不适用", ("OUT_OF_STANDARD_SCOPE",)),
+    ("资料不足 / 输入有误", ("INSUFFICIENT_DATA", "INVALID_INPUT")),
 )
+
+#: 每页条数（保持简单，不做复杂分页框架）。
+PAGE_SIZE = 100
 
 
 class RecordsPage(QWidget):
@@ -50,8 +56,14 @@ class RecordsPage(QWidget):
         super().__init__()
         self.service = service
         self.navigator = navigator
-        self._records: list = []
+        #: 当前已加载的**投影**（跨页累积，用于列表显示）
         self._visible: list = []
+        #: 符合条件的总数（由 SQL COUNT 给出，不是"已加载条数"）
+        self._total = 0
+        #: 下一页偏移量
+        self._offset = 0
+        #: 已加载条数上限（供测试与提示使用）
+        self._records: list = []
         self._build()
         self.refresh()
 
@@ -130,22 +142,33 @@ class RecordsPage(QWidget):
         self.clear_filters_button = QPushButton("清除筛选")
         self.clear_filters_button.clicked.connect(self.clear_filters)
         buttons.addWidget(self.clear_filters_button)
+        # 简单"加载更多"：不做分页控件，不做页码跳转。
+        self.load_more_button = QPushButton("加载更多")
+        self.load_more_button.clicked.connect(self.load_more)
+        self.load_more_button.setEnabled(False)
+        buttons.addWidget(self.load_more_button)
         buttons.addStretch()
         layout.addLayout(buttons)
 
     # -- 数据 ---------------------------------------------------------------
 
     def refresh(self) -> None:
-        self._records = list(self.service.list_records())
+        """重新查询第一页（筛选条件下沉到 SQL）。"""
+
         self._sync_category_filter()
-        self._apply_filters()
+        self._reload()
 
     def _sync_category_filter(self) -> None:
-        """泵型筛选项来自记录快照，不引入第二份泵型目录。"""
+        """泵型筛选项来自数据库里**真实出现过**的类别，不引入第二份泵型目录。"""
 
         current = self.category_filter.currentText()
-        categories = sorted({record.product_category for record in self._records
-                             if record.product_category})
+        try:
+            categories = list(self.service.record_categories())
+        except Exception:  # noqa: BLE001 - 筛选项不可用不应让整页失效
+            import logging
+
+            logging.getLogger("equipeffi.qt.records").exception("读取泵型筛选项失败")
+            categories = []
         self.category_filter.blockSignals(True)
         self.category_filter.clear()
         self.category_filter.addItem("全部泵型")
@@ -154,35 +177,52 @@ class RecordsPage(QWidget):
         self.category_filter.setCurrentIndex(index if index >= 0 else 0)
         self.category_filter.blockSignals(False)
 
-    def filtered_records(self) -> list:
-        """当前筛选后的记录（只读筛选已有快照字段）。"""
+    def build_query(self, offset: int = 0) -> RecordQuery:
+        """把界面筛选条件转成**查询参数**（筛选在 SQL 里执行）。"""
 
-        keyword = self.search.text().strip().lower()
-        category = self.category_filter.currentText()
         conclusion_index = max(self.conclusion_filter.currentIndex(), 0)
         statuses = CONCLUSION_FILTERS[conclusion_index][1]
-        as_of = self.date_filter.text().strip()
+        category = self.category_filter.currentText()
+        return RecordQuery(
+            keyword=self.search.text().strip(),
+            product_category="" if category in ("", "全部泵型") else category,
+            statuses=tuple(statuses),
+            as_of_prefix=self.date_filter.text().strip(),
+            limit=PAGE_SIZE,
+            offset=max(offset, 0),
+        )
 
-        selected = []
-        for record in self._records:
-            if keyword:
-                haystack = " ".join([
-                    record.record_id, record.product_category, record.standard_code,
-                    record.ui_conclusion,
-                ]).lower()
-                if keyword not in haystack:
-                    continue
-            if category and category != "全部泵型" and record.product_category != category:
-                continue
-            if statuses and record.evaluation_status not in statuses:
-                continue
-            if as_of and not record.as_of.startswith(as_of):
-                continue
-            selected.append(record)
-        return selected
+    def _reload(self) -> None:
+        """重新查询第一页并重建列表。"""
 
-    def _apply_filters(self, *_args) -> None:
-        self._visible = self.filtered_records()
+        self._offset = 0
+        self._visible = []
+        self._load_page(reset=True)
+
+    def load_more(self) -> None:
+        """加载下一页（简单"加载更多"，不引入复杂分页框架）。"""
+
+        if self._offset >= self._total:
+            return
+        self._load_page(reset=False)
+
+    def _load_page(self, *, reset: bool) -> None:
+        try:
+            page = self.service.search_records(self.build_query(self._offset))
+        except Exception:  # noqa: BLE001 - 查询失败只提示，不伪装成"无记录"
+            import logging
+
+            logging.getLogger("equipeffi.qt.records").exception("查询历史记录失败")
+            self.filter_summary.setText("读取历史记录失败，请稍后重试。")
+            return
+        self._total = page.total
+        self._visible = list(page.records) if reset else [*self._visible,
+                                                          *page.records]
+        self._offset = page.offset + len(page.records)
+        self._render_list()
+        self._update_summary()
+
+    def _render_list(self) -> None:
         self.list.blockSignals(True)
         self.list.clear()
         for record in self._visible:
@@ -191,24 +231,47 @@ class RecordsPage(QWidget):
                 f"{record.as_of} | {record.standard_code} | "
                 f"{record.product_category} | {grade}"))
         self.list.blockSignals(False)
-        self.filter_summary.setText(
-            f"共 {len(self._records)} 条记录，当前显示 {len(self._visible)} 条。")
         if not self._visible:
-            self.detail.setText("没有符合条件的记录。" if self._records
+            self.detail.setText("没有符合条件的记录。" if self._total or self.search.text()
                                 else "尚无正式记录。完成一次分析并保存后会显示在这里。")
             if self.technical is not None:
                 self.technical.setText("")
 
+    def _update_summary(self) -> None:
+        shown = len(self._visible)
+        if shown < self._total:
+            self.filter_summary.setText(
+                f"符合条件的记录共 {self._total} 条，已显示最近 {shown} 条"
+                "（可点「加载更多」继续）。")
+        else:
+            self.filter_summary.setText(f"符合条件的记录共 {self._total} 条，已全部显示。")
+        self.load_more_button.setEnabled(shown < self._total)
+
+    def _apply_filters(self, *_args) -> None:
+        """筛选条件变化：回到第一页重新查询。"""
+
+        self._reload()
+
+    def filtered_records(self) -> list:
+        """当前**已加载**的筛选结果（只用于界面显示与测试）。"""
+
+        return list(self._visible)
+
     def clear_filters(self) -> None:
-        self.search.clear()
-        self.date_filter.clear()
-        self.conclusion_filter.setCurrentIndex(0)
-        self.category_filter.setCurrentIndex(0)
-        self._apply_filters()
+        for widget in (self.search, self.date_filter):
+            widget.blockSignals(True)
+            widget.clear()
+            widget.blockSignals(False)
+        for combo in (self.conclusion_filter, self.category_filter):
+            combo.blockSignals(True)
+            combo.setCurrentIndex(0)
+            combo.blockSignals(False)
+        self._reload()
 
     def _on_selected(self, row: int) -> None:
         if row < 0 or row >= len(self._visible):
             return
+        # `show_record` 会用 record_id 取**完整不可变快照**（列表只有轻量投影）。
         self.show_record(self._visible[row].record_id)
 
     def show_record(self, record_id: str) -> str:

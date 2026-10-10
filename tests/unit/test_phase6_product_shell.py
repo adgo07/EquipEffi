@@ -28,6 +28,7 @@ from unittest.mock import patch
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
+from PySide6.QtCore import QCoreApplication, QEvent
 from PySide6.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton
 
 from equipeffi.composition import create_settings_runtime
@@ -93,6 +94,28 @@ def _service(paths=None):
     from equipeffi.composition import create_pump_analysis_service
 
     return create_pump_analysis_service(paths=paths, with_persistence=True)
+
+
+def _dispose_widget(widget) -> None:
+    """最小 Qt 生命周期清理：close -> deleteLater -> flush DeferredDelete -> processEvents。
+
+    为什么必须显式 flush：`close()` 只是隐藏窗口，`deleteLater()` 只把删除排进
+    事件队列。两者都不保证 C++ 侧对象在**本测试结束前**真的销毁，于是对象会
+    推迟到不确定的时刻（下一个测试，甚至解释器收尾阶段）才析构，表现为
+    "没有 FAIL/ERROR、没有 Ran...、进程直接终止"的 Qt 生命周期问题。
+
+    这里只做**测试清理**，不改正式 Presentation 实现。
+    """
+
+    if widget is None:
+        return
+    try:
+        widget.close()
+    except RuntimeError:  # 已经销毁
+        return
+    widget.deleteLater()
+    QCoreApplication.sendPostedEvents(None, QEvent.DeferredDelete)
+    QCoreApplication.processEvents()
 
 
 def _dispose_temp_dir(temp, close_logging, logger) -> None:
@@ -176,7 +199,9 @@ class ProductShellTestCase(unittest.TestCase):
         """
 
         window = _launch_window(self.settings, self.service, self.paths, **kwargs)
-        self.addCleanup(window.close)
+        # 只 `close()` 不足以保证 C++ 对象在下一个测试前析构；
+        # 显式 flush DeferredDelete，避免跨测试 Qt 生命周期污染。
+        self.addCleanup(_dispose_widget, window)
         return window
 
 
@@ -561,11 +586,16 @@ class RecordsPageTests(ProductShellTestCase):
     def test_filter_by_conclusion_uses_snapshot_status(self):
         self._finalize(WATER, "P6-W-2")
         page = self.window().records_page
-        page.conclusion_filter.setCurrentIndex(
-            page.conclusion_filter.findText("已判定等级"))
+        # `findText` 找不到会静默返回 -1，因此这里显式断言选项真实存在
+        # （M2 把结论筛选项改成用户中文文案：不适用 / 资料不足 / 输入有误）。
+        graded = page.conclusion_filter.findText("已判定等级")
+        self.assertGreaterEqual(graded, 0, "必须存在「已判定等级」筛选项")
+        page.conclusion_filter.setCurrentIndex(graded)
         self.assertEqual(len(page.filtered_records()), 1)
-        page.conclusion_filter.setCurrentIndex(
-            page.conclusion_filter.findText("不适用（超出标准范围）"))
+
+        not_applicable = page.conclusion_filter.findText("不适用")
+        self.assertGreaterEqual(not_applicable, 0, "必须存在「不适用」筛选项")
+        page.conclusion_filter.setCurrentIndex(not_applicable)
         self.assertEqual(page.filtered_records(), [])
 
     def test_history_snapshot_is_displayed_without_drift(self):

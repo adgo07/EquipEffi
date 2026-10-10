@@ -175,6 +175,64 @@ class RecordSnapshot:
 
 
 @dataclass(frozen=True)
+class RecordQuery:
+    """历史记录**查询条件**（M2）。
+
+    存在的理由：此前 `RecordsPage` 先取最近 200 条再在界面里筛选，因此
+    第 201 条以后的历史记录虽然存在数据库里，用户却永远搜不到。
+    现在筛选条件下沉到 repository/SQL，界面只负责展示一页。
+
+    这是**查询参数**，不是新的业务模型：字段全部来自 `record` 表既有列，
+    不新增表、不新增列、不新增 migration。
+    """
+
+    #: 关键字：匹配记录编号 / 设备类别 / 标准号 / 结论（不区分大小写）。
+    keyword: str = ""
+    #: 设备类别精确匹配；空串表示不限。
+    product_category: str = ""
+    #: `evaluation_status` 白名单；空元组表示不限。
+    statuses: tuple[str, ...] = ()
+    #: 评价日期前缀（`YYYY-MM-DD`）；空串表示不限。
+    as_of_prefix: str = ""
+    #: 每页条数（界面保持简单，默认 100）。
+    limit: int = 100
+    #: 偏移量，用于"加载更多"。
+    offset: int = 0
+
+
+@dataclass(frozen=True)
+class RecordSummary:
+    """列表展示所需的**轻量投影**。
+
+    刻意不加载 `*_snapshot_json`：历史记录可能很多，列表只需要这几列。
+    打开某条记录时才用 `load_record` 取完整不可变快照。
+    """
+
+    record_id: str
+    standard_code: str
+    product_category: str
+    as_of: str
+    evaluation_status: str
+    grade: str | None
+    ui_conclusion: str
+    finalized_at_utc: str
+
+
+@dataclass(frozen=True)
+class RecordPage:
+    """一页历史记录 + 符合条件总数（用于"已显示 x / 共 y 条"）。"""
+
+    records: tuple[RecordSummary, ...]
+    total: int
+    offset: int
+    limit: int
+
+    @property
+    def has_more(self) -> bool:
+        return self.offset + len(self.records) < self.total
+
+
+@dataclass(frozen=True)
 class BatchRecordSnapshot:
     """一次 Excel 批量评价的**总结**记录（Phase 8，Owner 规则 9/10）。
 

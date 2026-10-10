@@ -10,7 +10,13 @@ from __future__ import annotations
 
 from typing import Protocol
 
-from .models import BatchRecordSnapshot, RecordSnapshot, WorkspaceSnapshot
+from .models import (
+    BatchRecordSnapshot,
+    RecordPage,
+    RecordQuery,
+    RecordSnapshot,
+    WorkspaceSnapshot,
+)
 
 
 class WorkspaceRepository(Protocol):
@@ -28,6 +34,19 @@ class RecordRepository(Protocol):
     def append_record(self, snapshot: RecordSnapshot) -> None: ...
     def load_record(self, record_id: str) -> RecordSnapshot | None: ...
     def list_records(self, limit: int = 200) -> list[RecordSnapshot]: ...
+    def search_records(self, query: RecordQuery) -> RecordPage:
+        """按条件在**存储层**筛选并分页（M2）。
+
+        必须在 SQL 里筛选：此前"先取最近 N 条再在界面筛选"会让更早的历史记录
+        永远搜不到。返回轻量投影 + 总数，不加载快照 JSON。
+        """
+
+        ...
+
+    def distinct_values(self, column: str) -> list[str]:
+        """某一列的现有取值（用于筛选项）；列名必须走实现方白名单。"""
+
+        ...
 
 
 class BatchRecordRepository(Protocol):
