@@ -7,7 +7,7 @@
 - 仓库：`adgo07/EquipEffi`；基线：`master@99c7579307b7c5bf3ea22afdb37770668495612d`（2026-10-11在线核验）。
 - 输入：原V2完整第1–33章，原PDF物理页1–27，正文第1–6章与35张表。
 - PDF SHA256：`862d32069301bb76bcf1477e38befdcc32dfb219a409032c41ff374e88863a3f`。
-- 范围：5份文档；不得改`src`、`transformer.json`、SQLite、测试/Golden/其他设备、中央平台锁。
+- 范围：原5份V2.1交付文档 + 根目录`STANDARD_ISSUES_REGISTER.md`台账补登，共6份**文档**；不得改`src`、`transformer.json`、SQLite、测试/Golden/其他设备、中央平台锁。
 - 仓库治理：`transformer=POST_V1 / NOT_IN_RELEASE_SCOPE`；V2.1不会宣称SUPPORTED。
 
 ## 1.1 平台/Contract Preflight（补充）
