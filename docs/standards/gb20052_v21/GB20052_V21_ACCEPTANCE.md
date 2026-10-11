@@ -10,11 +10,23 @@
 - 范围：5份文档；不得改`src`、`transformer.json`、SQLite、测试/Golden/其他设备、中央平台锁。
 - 仓库治理：`transformer=POST_V1 / NOT_IN_RELEASE_SCOPE`；V2.1不会宣称SUPPORTED。
 
+## 1.1 平台/Contract Preflight（补充）
+
+- 本仓：`EquipEffi/master@99c7579307b7c5bf3ea22afdb37770668495612d`；本PR为文档阶段。
+- `platform-lock.json`指定中央仓`adgo07/Qingzhou-contracts@ee5feb0cc34dbd99790500fadd0c4c932e202a20`；Architecture V2.1和Numeric Contract v1均`FROZEN`，且`auto_follow_main=false`，不得将中央最新main自动当成冻结基线。
+- 相关Frozen：`contracts/numeric/NUMERIC_CONTRACT_V1_FROZEN.md`（按锁定SHA读取）；Unit/Module-Capability/Record/Package仍`DRAFT`，不以本PR提升。
+- **适用 MUST**：十进制权威业务链可复现、权威入口声明转换、正式计算作用域须明确Numeric Profile及传播，插值/单位转换/比较遵循所声明的有效Profile；明确`input/normalized/calculation/comparison/display`数值阶段；无标准另定时正式判级使用完整数值比较。
+- **适用 MUST NOT**：未声明二进制float转换不得冒充权威十进制原值；不得继承隐式精度/舍入、用显示舍入结果比较、无依据在比较前ROUND6、默设业务epsilon；Pump Decimal50不构成变压器全局默认。未来Transformer Numeric Profile须独立批准和测试。
+- 冲突分类：本轮只是本地标准映射补正，未发现已证明的`LOCAL DEFECT`/`CENTRAL CONTRACT GAP`/`REGISTERED DEVIATION`；Pump的专属配置为`ALLOWED PROJECT DIFFERENCE`但不在本轮适用。插值范围歧义归`EQP-STD-GB20052-001`，非中央公共Contract缺口。
+- 是否需修改中央Contract：**否**；不变更平台锁、公共Numeric/Unit/Record契约及生产数据。
+- 标准问题治理：根目录新增`EQP-STD-GB20052-001`～`008`；全部OPEN，D-01～D-08为关联别名，无Owner正式决策或生产支持提升。
+
 ## 2. V2保留性与12项执行覆盖
 
 - V2第1–33章标题仍存在（旧§33改为历史修订摘要，新增加§34–35），包括第1章适用性、表1–35的表路由、Yyn0空白、表9/13阻抗、表15、表20–24、表27–28及插值。
 - CHANGELOG覆盖V21-01～12各一条；补丁规则的解释/来源标签明确，未提交任何新的“已验证35表全部损耗数字”声明。
-- CSV中TABLE_SUMMARY恰35条，按`一条=表×物理容量分支×铁心/联结/温度列×能效等级`的文档候选模型估算共**1734条阈值逻辑记录**（非现行JSON记录数；表1仅对有完整Pk的分支计数）；另附全部识别的关键SPECIAL_ROW源行：表1 7条blank、表2 2条、表15 12条、表27/28各15条、表9/13技术组各2条、330kV5表路线与表8/14优先关系。
+- CSV中TABLE_SUMMARY恰35条，按`一条=表×物理容量分支×铁心/联结/温度列×能效等级`的文档候选模型估算共**1725条阈值逻辑记录**（非现行JSON记录数；表1仅对有完整Pk的分支计数）；另附全部识别的关键SPECIAL_ROW源行：表1 7条blank、表2 2条、表15 12条、表27/28各15条、表9/13技术组各2条、330kV5表路线与表8/14优先关系。
+- **表32勘误**：PDF物理页23/印刷页19仅9个容量（500、630、800、1000、1250、1600、2000、2500、3150 kVA）；3000kVA非原表行；表32 90→81，总数1734→1725（其他表不变）。
 - **残余待验收**：全部35表的每一空载/负载数值单元格与转换后真实行数，仍需独立逐格双人视觉校对。故“数字全表冻结门禁”=PENDING，不填假签字。
 
 ## 3. 原PDF核对的定量/结构金样
@@ -53,9 +65,9 @@
 |表1空白、表23/24空项未当0|PASS（源表结构）|全表空白复核待签|
 |适用/无表值/未达标三类不混淆|PASS（文档语义）|软件实现不在本PR|
 |试验参考温度及单位数据口径|PASS（文档规则）|非标准口径修正需D-06|
-|合法插值/禁止外推/禁止跨组|PASS（文档规则与案例）|疑义D-01/D-04/D-05|
+|合法插值/禁止外推/禁止跨组|计算方法与端点限制文档自检PASS，**适用表范围OPEN**|D-01 / `EQP-STD-GB20052-001`尚待权威解释和Owner批准|
 |全表所有数字逐格签字、已确认可生产JSON|**PENDING / NOT CLAIMED**|D-08：须二次全量数值QA及批准|
-|代码、JSON、数据库、其他设备未变更|拟以PR实际diff最终验证|PR创建后独立复核文件清单|
+|代码、JSON、数据库、其他设备未变更|待按本次最终head实际diff核实|仅5份原交付文档和根目录问题台账，合计6份文档|
 |独立验收与Owner合并许可|**PENDING**|未经审核不得合并/宣称PASS|
 
 ## 5. 建议的独立验收执行顺序
@@ -70,3 +82,14 @@
 
 **DOCS_READY_FOR_INDEPENDENT_REVIEW**（文档结构与关键案例完成；数字全单元格正式冻结门禁PENDING）。
 **未宣称**`V2.1正式验收通过`、`全部35表数值已验真`、`变压器运行时已正确实现`、`支持状态已升级`。
+
+## 7. PR #20三个Codex审查意见与新增纠错
+
+|事项|修正进度|留待独立验收|
+|---|---|---|
+|P1标准问题登记|D-01～08已绑定`EQP-STD-GB20052-001`～`008`并加入权威台账|核对问题16字段与原文证据，均保持OPEN|
+|P2平台预检查|§1.1新增locked SHA、Numeric Frozen、MUST/MUST NOT、冲突分类及无需改中央Contract说明|确认不把Pump配置当变压器默认|
+|P1表32容量|无3000原表行；CSV更新9行、81候选，全文总计1725|PDF页23视觉复核，全部损耗数值仍PENDING|
+|插值范围过度断言|§1与§23纠正为原文事实/解释歧义/候选实现三层|D-01未决，不以候选推生产规则|
+
+本轮执行自检并非独立验收PASS；PR评论由审查者独立确认，不能据此自动合并或冻结35表数值。
