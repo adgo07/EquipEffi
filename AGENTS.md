@@ -231,6 +231,8 @@ Contract Preflight（详见中央 Policy 第 12 节）：读 `platform-lock.json
 - **标准原文事实 / 技术判断 / 软件实现决定必须分开记录**，不得把内部判断或软件选择写成标准明文，不得静默纠正标准。
 - 影响正式业务结果的问题必须可追踪 `Standard Issue → Software Decision → Rule / Calculator → Test / Golden Case`，解释变化须检查测试与历史结果兼容性。
 - 台账字段 / 状态 / 编号以中央 Policy 第 20 节为准。
+- **标准解释长期入口：`docs/standards/README.md`**。先读根目录`STANDARD_ISSUES_REGISTER.md`的唯一稳定编号和状态，再阅读对应标准的映射表、解释档；新解释按`docs/standards/_STANDARD_INTERPRETATIONS_TEMPLATE.md`补原文证据、技术判断、Owner软件决定、待确认条件与受影响案例。**台账仍是唯一状态权威**，标准专属档只作详细解释和历史留痕。
+- 审计合并单元格、重复容量及看似空白时必须核对标准PDF原页图像，不以PDF文本抽取或历史JSON推断。纠正标准映射要连同审计CSV、Golden候选、问题台账、CHANGELOG一并检查；不得无证据将Owner口径标作【标准】或把PROVISIONAL升级为正式实现。单人项目无需为此新增专用CI/繁复审批。
 
 ## 8. UI 治理入口（短）
 
