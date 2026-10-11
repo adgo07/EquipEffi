@@ -132,7 +132,7 @@ EQP-STD-GB19762-001
 
 ## 5. GB 20052—2024 映射V2.1问题登记（2026-10-11）
 
-> 本节按中央治理规则新增稳定编号；D-01～D-08为配套决策文档中的别名。**全部OPEN**：映射建议非官方解释，亦不是已批准的生产规则。标准PDF SHA256：`862d32069301bb76bcf1477e38befdcc32dfb219a409032c41ff374e88863a3f`。
+> 本节按中央治理规则新增稳定编号；D-01～D-08为配套决策文档中的别名。**001/D-01已在软件设计口径层面RESOLVED（Owner 2026-10-11）；002～008仍OPEN**。软件决定不是发布机构官方解释，也不等于已写入生产代码。标准PDF SHA256：`862d32069301bb76bcf1477e38befdcc32dfb219a409032c41ff374e88863a3f`。
 
 ### EQP-STD-GB20052-001 — 插值条文适用范围
 
@@ -147,14 +147,14 @@ EQP-STD-GB19762-001
 |问题说明|插值条文适用范围|
 |支持证据|上传PDF 第4章，PDF物理页5–6/印刷1–2；`docs/standards/gb20052_v21/GB20052_DECISIONS_NEEDED.md` D-01；PR #20|
 |当前技术判断|不能无依据断言该句涵盖表1～35所有类别，也不能武断说只能用于新能源。|
-|软件当前处理方式|【尚待Owner批准的实现候选】可考虑所有表1～35同表同分支相邻有效点插值；其中普通表1～28的覆盖范围待确认，本PR不实施。 变压器仍`POST_V1 / NOT_IN_RELEASE_SCOPE`；本轮未修改运行时代码或JSON。|
-|确认程度|PDF相关原文事实已查；无发布机构就本问题的正式解释。仍需：发布机构/主管部门对条文适用范围的正式释义及Owner软件决定|
+|软件当前处理方式|【Owner已批准的软件设计口径，2026-10-11】普通表1～28及新能源表29～35同表同完整物理分支、相邻有效标准容量点可线性插值，空载/负载分别计算；不得跨分支、外推、取空白为0或以显示值比较。仅文档设计，尚未实施Calculator/JSON；变压器仍`POST_V1 / NOT_IN_RELEASE_SCOPE`。|
+|确认程度|**软件决定已由Owner于2026-10-11在本对话明确批准；未取得发布机构官方解释。** 保留第4章段落位置引起的标准解释空间，产品口径不再等待额外批准。|
 |业务影响|高：误释可能影响表路由/阈值/实际等级或标准数字发布。|
 |关联 Rule / Calculator|文档候选standard_scope / product_table_route / threshold_branch / threshold_row；未来Transformer Calculator。未实施、未修改。|
 |关联测试 / Golden Case|`docs/standards/gb20052_v21/GB20052_V21_ACCEPTANCE.md`文档候选案例；无新批准Golden，无生产测试变更。|
-|状态|`OPEN`|
+|状态|`RESOLVED`（Owner批准的软件解释口径；非发布机构官方解释；不等于生产实现/正式验收）|
 |首次发现日期|2026-10-11（首次正式登记，历史映射讨论可能更早）|
-|最后更新日期|2026-10-11|
+|最后更新日期|2026-10-11（Owner确认插值软件口径）|
 
 ### EQP-STD-GB20052-002 — 表2 630kVA名义阻抗分组
 
@@ -312,4 +312,4 @@ EQP-STD-GB19762-001
 
 ### 后续联动要求
 
-稳定追踪链：`Standard Issue → Owner批准的Software Decision → Transformer Rule/Calculator → Test/Golden Case`。本轮只有第一环节正式登记，尚未批准软件口径或修改计算器。OPEN不得因文档或PR合并自动关闭。
+稳定追踪链：`Standard Issue → Owner批准的Software Decision → Transformer Rule/Calculator → Test/Golden Case`。本轮001/D-01已有Owner的软件口径决定，**尚未进入Calculator或Golden**；其余002～008仍仅正式登记。不得因PR合并自动关闭其余OPEN问题或声称数值全部验证。
