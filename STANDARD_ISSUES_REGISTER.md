@@ -170,13 +170,16 @@ EQP-STD-GB19762-001
 |支持证据|上传PDF 表2，PDF物理页8/印刷4；`docs/standards/gb20052_v21/GB20052_DECISIONS_NEEDED.md` D-02；PR #20|
 |当前技术判断|Owner提出4.2%可归4.0%、5.8%可归6～8%的±10%相对容差实例；是否可用实测值直接选标准物理损耗分支须核对设计/试验基准。|
 |软件当前处理方式|【PROVISIONAL工程建议】先验证设计额定/实测及实际适用GB/T1094.1短路阻抗偏差条件；候选4.0%可按3.6～4.4%、6～8%按5.4～8.8%辅助人工识别。无唯一组或证据不充分仍无法判定；并未修改生产代码。|
+
+> **最新软件决策（优先于上面的历史处理方式）**：【Owner新决定2026-10-12｜软件默认，不是国家标准统一允差】表2单值4.0%对应[3.6%,4.4%]、范围6.0%～8.0%对应[5.4%,8.8%]，允许边界等号。阻抗属于可用唯一组即可进行能效判定，全部不命中→UNABLE_TO_JUDGE/IMPEDANCE_NO_MATCH；不同限值组同时命中且不能唯一选路→UNABLE_TO_JUDGE/BRANCH_AMBIGUOUS。**不得因GB/T1094.1正式允差条款尚未查完阻断正常判级**。旧PROVISIONAL建议由本决定取代；未修改Calculator。
+
 |确认程度|Owner2026-10-11提供±10%工程实例；尚无对该产品/分接/绕组对的正式逐条核验。GB20052没有一律±10%的明文。|
 |业务影响|高：误释可能影响表路由/阈值/实际等级或标准数字发布。|
 |关联 Rule / Calculator|文档候选standard_scope / product_table_route / threshold_branch / threshold_row；未来Transformer Calculator。未实施、未修改。|
 |关联测试 / Golden Case|`docs/standards/gb20052_v21/GB20052_V21_ACCEPTANCE.md`文档候选案例；无新批准Golden，无生产测试变更。|
-|状态|`PROVISIONAL`（有工程选组建议，待规范来源核查）|
+|状态|`RESOLVED`（已批准软件默认±10%选组；非国标明文）|
 |首次发现日期|2026-10-11（首次正式登记，历史映射讨论可能更早）|
-|最后更新日期|2026-10-11（Owner意见与PDF/产品标准证据复核）|
+|最后更新日期|2026-10-12（Owner软件默认/延期决定）|
 
 ### EQP-STD-GB20052-003 — 表列阻抗与允许偏差对应关系
 
@@ -192,13 +195,16 @@ EQP-STD-GB19762-001
 |支持证据|上传PDF 第5.1章及表9/13/27/28，PDF物理页6/12/14/19–20；`docs/standards/gb20052_v21/GB20052_DECISIONS_NEEDED.md` D-03；PR #20|
 |当前技术判断|GB/T 1094.1—2013第10章的阻抗偏差并非所有设备统一±10%：应分主分接/非主分接、阻抗≥10%/＜10%、两绕组或三绕组指定绕组对、各自耦条件审查。Owner的统一±10%意见先作为工程建议。|
 |软件当前处理方式|【PROVISIONAL】不把GB20052表列数值机械解释为实测必须精确相等；亦不将±10%写成统一国家标准允许偏差。明确设备条件与实测/额定口径，查正式条款后再批准判别规则。|
+
+> **最新软件决策（优先于上面的历史处理方式）**：【Owner新决定2026-10-12｜软件默认，不是国家标准统一允差】用于损耗阈值选组的标准阻抗单值v使用[0.9v,1.1v]；范围[a,b]使用[0.9a,1.1b]，包含边界。选组成功继续判级；无匹配或限值冲突→UNABLE_TO_JUDGE；不另设“必须先取得正式试验允差解释”的开发门禁。**不能把软件默认说成GB20052/GB/T1094.1统一法定试验允许误差**。
+
 |确认程度|外部GB/T1094.1—2013第10章/表1说明不同条件允许偏差不同；仍需取得适用版本正式页、核实各产品/绕组组合。|
 |业务影响|高：误释可能影响表路由/阈值/实际等级或标准数字发布。|
 |关联 Rule / Calculator|文档候选standard_scope / product_table_route / threshold_branch / threshold_row；未来Transformer Calculator。未实施、未修改。|
 |关联测试 / Golden Case|`docs/standards/gb20052_v21/GB20052_V21_ACCEPTANCE.md`文档候选案例；无新批准Golden，无生产测试变更。|
-|状态|`PROVISIONAL`（不能宣布统一±10%为标准明文）|
+|状态|`RESOLVED`（已批准软件默认±10%；正式试验允差另论）|
 |首次发现日期|2026-10-11（首次正式登记，历史映射讨论可能更早）|
-|最后更新日期|2026-10-11（Owner意见与PDF/产品标准证据复核）|
+|最后更新日期|2026-10-12（Owner软件默认/延期决定）|
 
 ### EQP-STD-GB20052-004 — 表15特殊低压组覆盖边界
 
@@ -258,13 +264,16 @@ EQP-STD-GB19762-001
 |支持证据|上传PDF 第5.1、6章及负载损耗列，PDF物理页6–26；`docs/standards/gb20052_v21/GB20052_DECISIONS_NEEDED.md` D-06；PR #20|
 |当前技术判断|每台干式设备的B/F/H绝缘等级是单一已确定输入：F设备只取F列，与B/H无关。另需独立核对实际测试Pk是否已按F的120℃或其它规定参考温度校准，两问题不可混同。|
 |软件当前处理方式|【已明确选列】只比较设备自身等级对应列；有效报告已给出相应温度Pk则直接评价，不设计无依据自动温度修正。仅原始/未知参考温度的损耗值仍TEST_CONDITION_UNVERIFIED，正式温度换算条款待查。|
+
+> **最新软件决策（优先于上面的历史处理方式）**：【Owner新决定2026-10-12】暂搁置自动温度换算功能，待实际遇到问题再处理。B/F/H只按自身绝缘等级列比对；报告若提供可与该等级标准参考温度比较的Pk，正常判定，不增设无意义的额外温度输入。报告若**明确**只给出不可比的非参考温度原始损耗，不得伪装成已换算，针对该条记录说明不可比/UNABLE_TO_JUDGE。不得把未实现温度换算作为全部变压器能效功能上线前置门禁。
+
 |确认程度|Owner2026-10-11明确B/F/H只取一个等级；PDF表2/30/32/34有分温度列；第6章引用试验方法。温度换算细则/参数尚未独立取得。|
 |业务影响|高：误释可能影响表路由/阈值/实际等级或标准数字发布。|
 |关联 Rule / Calculator|文档候选standard_scope / product_table_route / threshold_branch / threshold_row；未来Transformer Calculator。未实施、未修改。|
 |关联测试 / Golden Case|`docs/standards/gb20052_v21/GB20052_V21_ACCEPTANCE.md`文档候选案例；无新批准Golden，无生产测试变更。|
-|状态|`OPEN`（B/F/H选列已明确，非规定温度换算仍待依据）|
+|状态|`OPEN`（自动温度换算需求DEFERRED，非当前正常判级阻断）|
 |首次发现日期|2026-10-11（首次正式登记，历史映射讨论可能更早）|
-|最后更新日期|2026-10-11（Owner意见与PDF/产品标准证据复核）|
+|最后更新日期|2026-10-12（Owner软件默认/延期决定）|
 
 ### EQP-STD-GB20052-007 — 表27/28阻抗B/C组识别
 
@@ -280,13 +289,16 @@ EQP-STD-GB19762-001
 |支持证据|上传PDF 表27、28，PDF物理页19–20；`docs/standards/gb20052_v21/GB20052_DECISIONS_NEEDED.md` D-07；PR #20|
 |当前技术判断|Owner强调三绕组阻抗相互耦合，应以高—中、高—低、中—低的完整三元组对照A/B/C；“高—低约等于另外两项相加”仅某些结构下的工程近似，不是通用恒等式。若一律±10%扩展表27/28组值，则B/C可能在三个维度同时重叠。|
 |软件当前处理方式|【PROVISIONAL】三元组必须同时匹配一个组；完全无组→UNABLE_TO_JUDGE，匹配多组→BRANCH_AMBIGUOUS/UNABLE_TO_JUDGE。Owner提议多组匹配OUT_OF_SCOPE暂未批准为正式状态，需先核实设备参考条件和偏差规则；不可凭近似加法自动决定。|
+
+> **最新软件决策（优先于上面的历史处理方式）**：【Owner新决定2026-10-12｜软件默认，不是国家标准统一允差】表27/28重复容量正常，不能因此阻断。高—中、高—低、中—低三阻抗**全部按±10%相对容差**对照A/B/C完整组；一个组命中→按其阈值评价；所有组不匹配→UNABLE_TO_JUDGE/IMPEDANCE_NO_MATCH。多组同时命中时，若本容量的所有等级P0/Pk阈值完全相同→可以按共同阈值评价并保留多个source IDs；若阈值有冲突→UNABLE_TO_JUDGE/BRANCH_AMBIGUOUS，不随意选组。近似阻抗加和不是标准严格等式。
+
 |确认程度|Owner2026-10-11说明三元组物理相关与完整组合；PDF页19-20保留A/B/C。容差扩展造成重叠可数学验证，但无外部正式规则证明多命中应视为标准不适用。|
 |业务影响|高：误释可能影响表路由/阈值/实际等级或标准数字发布。|
 |关联 Rule / Calculator|文档候选standard_scope / product_table_route / threshold_branch / threshold_row；未来Transformer Calculator。未实施、未修改。|
 |关联测试 / Golden Case|`docs/standards/gb20052_v21/GB20052_V21_ACCEPTANCE.md`文档候选案例；无新批准Golden，无生产测试变更。|
-|状态|`PROVISIONAL`（三元组原则已明确，多命中处理需核验）|
+|状态|`RESOLVED`（已批准三阻抗完整匹配及失败策略的软件默认）|
 |首次发现日期|2026-10-11（首次正式登记，历史映射讨论可能更早）|
-|最后更新日期|2026-10-11（Owner意见与PDF/产品标准证据复核）|
+|最后更新日期|2026-10-12（Owner软件默认/延期决定）|
 
 ### EQP-STD-GB20052-008 — 全35表数值校对及生产发布
 
@@ -300,19 +312,19 @@ EQP-STD-GB19762-001
 |问题类型|`IMPLEMENTATION`|
 |问题说明|全35表数值校对及生产发布|
 |支持证据|上传PDF 表1～35，PDF物理页7–26；`docs/standards/gb20052_v21/GB20052_DECISIONS_NEEDED.md` D-08；PR #20|
-|当前技术判断|质量签字是项目批准生产标准值的门禁，不是标准原文额外技术指标。|
-|软件当前处理方式|【质量约定】待逐格复核签字后方可冻结标准数字；本PR不修改生产JSON。 变压器仍`POST_V1 / NOT_IN_RELEASE_SCOPE`；本轮未修改运行时代码或JSON。|
-|确认程度|PDF相关原文事实已查；无发布机构就本问题的正式解释。仍需：35表逐格校对记录、复核人、证据hash及业务批准|
+|当前技术判断|2026-10-12 Owner明确确认全部35表无误，同意合并PR #21，批准工作簿与主映射V2.1共同冻结；此为Owner项目批准，非本轮助手独立双人逐格复核。|
+|软件当前处理方式|【Owner批准冻结】双文件一体作为Transformer开发的正式基准；未经Owner就具体修改事先明确审批，不得改动任一文件（包括Excel重存）。获批修订需新版本、保留旧SHA并核验影响；不等于Calculator/JSON/Golden已实现或软件SUPPORTED。|
+|确认程度|Owner2026-10-12明确宣布35表全部确认无误，作为最终项目批准；旧Excel中待核标记作为历史过程记录保持不动，不虚称本轮助手独立双人复核。两文件哈希见GB20052_V21_FROZEN_BASELINE.md。|
 |业务影响|高：误释可能影响表路由/阈值/实际等级或标准数字发布。|
 |关联 Rule / Calculator|文档候选standard_scope / product_table_route / threshold_branch / threshold_row；未来Transformer Calculator。未实施、未修改。|
 |关联测试 / Golden Case|`docs/standards/gb20052_v21/GB20052_V21_ACCEPTANCE.md`文档候选案例；无新批准Golden，无生产测试变更。|
-|状态|`OPEN`|
+|状态|`RESOLVED`（Owner批准全部35表与主映射V2.1一体冻结）|
 |首次发现日期|2026-10-11（首次正式登记，历史映射讨论可能更早）|
-|最后更新日期|2026-10-11|
+|最后更新日期|2026-10-12（Owner最终审批）|
 
 ### 后续联动要求
 
-稳定追踪链：`Standard Issue → Owner批准的Software Decision → Transformer Rule/Calculator → Test/Golden Case`。001/D-01、004/D-04、005/D-05的软件解释/评价口径已由Owner确认；002/003/007为PROVISIONAL、006/008仍OPEN。**本轮未修改Calculator、JSON或Approved Golden**，解释档及纠错证据见`docs/standards/gb20052_v21/GB20052_STANDARD_INTERPRETATIONS.md`。不得因PR合并自动关闭其余OPEN问题或声称数值全部验证。
+稳定追踪链：`Standard Issue → Owner批准的Software Decision → Transformer Rule/Calculator → Test/Golden Case`。001～005和007软件口径已由Owner明确决定，其中D-02/03/07仅为暂用软件±10%默认，**不是国标统一法定允差**；D-06温度换算仍OPEN但DEFERRED，不阻断正常判级；D-08经Owner确认全部35表无误并批准冻结，RESOLVED。**本轮未修改Calculator、JSON或Approved Golden**，解释档及纠错证据见`docs/standards/gb20052_v21/GB20052_STANDARD_INTERPRETATIONS.md`。不得因PR合并自动关闭其余OPEN问题或声称数值全部验证。
 
 
 > 长期记录入口：`docs/standards/README.md`。本根台账继续保持**稳定ID、正式问题状态的唯一权威**；标准专属解释档存标准原文依据、工程补充、Owner决定和失效解释的历史。未来新标准按模板记录，不新增重复台账或额外发布门禁。

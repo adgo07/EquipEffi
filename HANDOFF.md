@@ -36,6 +36,8 @@ records schema、Application business semantics、Qt 产品功能、标准资源
 - `as_of` 评价日期**不是业务门禁**（Owner，Phase 5；详见 `AGENTS.md` 2.7）。
 - 18 条 `pump_water` golden-case-0.4 与 11 条 `pump_chemical` golden-case-0.5 为已批准业务真值，
   `evaluation_layer` 未改写。
+- GB 20052—2024变压器后续功能开发以[主映射表 V2.1](docs/standards/gb20052_v21/GB20052_变压器主映射表_V2.1.md)和
+  [表1～35人工校对数据工作簿 V2.1](docs/standards/gb20052_v21/GB20052_2024_变压器表1-35人工校对数据工作簿_V2.1.xlsx)为[已批准的一体冻结开发基准](docs/standards/gb20052_v21/GB20052_V21_FROZEN_BASELINE.md)，未经Owner再次批准不得修改；标准PDF仍是原文最高依据，D-08经Owner确认RESOLVED，变压器仍为`POST_V1 / NOT_IN_RELEASE_SCOPE`。
 
 ## 中央锁
 
