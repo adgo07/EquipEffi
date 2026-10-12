@@ -142,3 +142,16 @@ Phase 0B 若未执行，本文件保持起始事实；本次确实未执行 0B�
 | specs/equipment_efficiency/golden/pump_water_replacement_candidates_v0_1.jsonl | 2600e577b25926263823aa7c42a59b8cd1433b5a6d49c2c0075d14543103ced9 |
 
 18 条批准 Golden、7 条历史 Golden、26 条候选与 3 条 replacement provenance 均保持；完整证据见 PHASE2_EXECUTION_REPORT.md。
+
+## GB 20052—2024 变压器 V2.1 开发基准资产（2026-10-12）
+
+以 `origin/master@a0f502b7169339e55871a65f2a37715081925383` 为本次文档资产变更基线。后续变压器功能开发须共同使用主映射表和人工校对数据工作簿；标准PDF是标准事实最高依据。工作簿SHA与本次已修正输出一致。此记录只锁定审阅资产身份，不代表全表数据已完成签字或获准进入生产；`D-08 / EQP-STD-GB20052-008` 仍为 `OPEN`，变压器仍为 `POST_V1 / NOT_IN_RELEASE_SCOPE`。
+
+| 资产 | bytes | SHA-256 | 用途 / 限定 |
+|---|---:|---|---|
+| `docs/standards/README.md` | 3531 | `53BA9D90EE81861242CF618175A08A53E937C7AA0232468554A8FC0D52B46E72` | 标准归档入口与当前变压器开发基准索引 |
+| `docs/standards/gb20052_v21/GB20052_变压器主映射表_V2.1.md` | 47512 | `258466EEAF003F7B182F5DA20F6A1E761217BF4B6D3D2F2C1B8276BC868B04A7` | 软件规则、表路由与解释的总依据 |
+| `docs/standards/gb20052_v21/GB20052_2024_变压器表1-35人工校对数据工作簿_V2.1.xlsx` | 820355 | `35A499BB5406588CDC300C5019BFFD0DE428D3E08CBA21D076CCC8B6F69F2565` | 表1～35逐表数据与校对工作底稿；不等于全表已验收 |
+| GB 20052—2024 原文PDF（本地复核件，未随本PR纳入） | — | `862D32069301BB76BCF1477E38BEFDCC32DFB219A409032C41FF374E88863A3F` | 标准事实的最高依据 |
+
+本次只修改映射/交接/基线表述并纳入校对工作簿；未修改运行代码、`transformer.json`、数据库、Golden或标准支持状态。未运行软件测试（本次没有软件行为改动）。
