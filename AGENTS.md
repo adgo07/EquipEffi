@@ -233,6 +233,7 @@ Contract Preflight（详见中央 Policy 第 12 节）：读 `platform-lock.json
 - 台账字段 / 状态 / 编号以中央 Policy 第 20 节为准。
 - **标准解释长期入口：`docs/standards/README.md`**。先读根目录`STANDARD_ISSUES_REGISTER.md`的唯一稳定编号和状态，再阅读对应标准的映射表、解释档；新解释按`docs/standards/_STANDARD_INTERPRETATIONS_TEMPLATE.md`补原文证据、技术判断、Owner软件决定、待确认条件与受影响案例。**台账仍是唯一状态权威**，标准专属档只作详细解释和历史留痕。
 - 审计合并单元格、重复容量及看似空白时必须核对标准PDF原页图像，不以PDF文本抽取或历史JSON推断。纠正标准映射要连同审计CSV、Golden候选、问题台账、CHANGELOG一并检查；不得无证据将Owner口径标作【标准】或把PROVISIONAL升级为正式实现。单人项目无需为此新增专用CI/繁复审批。
+- **变压器V2.1特别冻结**：`docs/standards/gb20052_v21/GB20052_V21_FROZEN_BASELINE.md`中的主映射与35表Excel**不可拆分，未经Owner针对具体变更事先明确批准不得修改任一份**（含格式化或Excel重存）。需要修正时先登记事实，批准后做新版本保留旧SHA；冻结不自动提升Transformer支持状态，也不增加额外门禁。
 
 ## 8. UI 治理入口（短）
 

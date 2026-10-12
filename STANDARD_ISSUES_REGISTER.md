@@ -312,19 +312,19 @@ EQP-STD-GB19762-001
 |问题类型|`IMPLEMENTATION`|
 |问题说明|全35表数值校对及生产发布|
 |支持证据|上传PDF 表1～35，PDF物理页7–26；`docs/standards/gb20052_v21/GB20052_DECISIONS_NEEDED.md` D-08；PR #20|
-|当前技术判断|质量签字是项目批准生产标准值的门禁，不是标准原文额外技术指标。|
-|软件当前处理方式|【质量约定】待逐格复核签字后方可冻结标准数字；本PR不修改生产JSON。 变压器仍`POST_V1 / NOT_IN_RELEASE_SCOPE`；本轮未修改运行时代码或JSON。|
-|确认程度|PDF相关原文事实已查；无发布机构就本问题的正式解释。仍需：35表逐格校对记录、复核人、证据hash及业务批准|
+|当前技术判断|2026-10-12 Owner明确确认全部35表无误，同意合并PR #21，批准工作簿与主映射V2.1共同冻结；此为Owner项目批准，非本轮助手独立双人逐格复核。|
+|软件当前处理方式|【Owner批准冻结】双文件一体作为Transformer开发的正式基准；未经Owner就具体修改事先明确审批，不得改动任一文件（包括Excel重存）。获批修订需新版本、保留旧SHA并核验影响；不等于Calculator/JSON/Golden已实现或软件SUPPORTED。|
+|确认程度|Owner2026-10-12明确宣布35表全部确认无误，作为最终项目批准；旧Excel中待核标记作为历史过程记录保持不动，不虚称本轮助手独立双人复核。两文件哈希见GB20052_V21_FROZEN_BASELINE.md。|
 |业务影响|高：误释可能影响表路由/阈值/实际等级或标准数字发布。|
 |关联 Rule / Calculator|文档候选standard_scope / product_table_route / threshold_branch / threshold_row；未来Transformer Calculator。未实施、未修改。|
 |关联测试 / Golden Case|`docs/standards/gb20052_v21/GB20052_V21_ACCEPTANCE.md`文档候选案例；无新批准Golden，无生产测试变更。|
-|状态|`OPEN`|
+|状态|`RESOLVED`（Owner批准全部35表与主映射V2.1一体冻结）|
 |首次发现日期|2026-10-11（首次正式登记，历史映射讨论可能更早）|
-|最后更新日期|2026-10-11|
+|最后更新日期|2026-10-12（Owner最终审批）|
 
 ### 后续联动要求
 
-稳定追踪链：`Standard Issue → Owner批准的Software Decision → Transformer Rule/Calculator → Test/Golden Case`。001～005和007软件口径已由Owner明确决定，其中D-02/03/07仅为暂用软件±10%默认，**不是国标统一法定允差**；D-06温度换算仍OPEN但DEFERRED，不阻断正常判级；D-08数字核验OPEN。**本轮未修改Calculator、JSON或Approved Golden**，解释档及纠错证据见`docs/standards/gb20052_v21/GB20052_STANDARD_INTERPRETATIONS.md`。不得因PR合并自动关闭其余OPEN问题或声称数值全部验证。
+稳定追踪链：`Standard Issue → Owner批准的Software Decision → Transformer Rule/Calculator → Test/Golden Case`。001～005和007软件口径已由Owner明确决定，其中D-02/03/07仅为暂用软件±10%默认，**不是国标统一法定允差**；D-06温度换算仍OPEN但DEFERRED，不阻断正常判级；D-08经Owner确认全部35表无误并批准冻结，RESOLVED。**本轮未修改Calculator、JSON或Approved Golden**，解释档及纠错证据见`docs/standards/gb20052_v21/GB20052_STANDARD_INTERPRETATIONS.md`。不得因PR合并自动关闭其余OPEN问题或声称数值全部验证。
 
 
 > 长期记录入口：`docs/standards/README.md`。本根台账继续保持**稳定ID、正式问题状态的唯一权威**；标准专属解释档存标准原文依据、工程补充、Owner决定和失效解释的历史。未来新标准按模板记录，不新增重复台账或额外发布门禁。

@@ -145,13 +145,16 @@ Phase 0B 若未执行，本文件保持起始事实；本次确实未执行 0B�
 
 ## GB 20052—2024 变压器 V2.1 开发基准资产（2026-10-12）
 
-以 `origin/master@a0f502b7169339e55871a65f2a37715081925383` 为本次文档资产变更基线。后续变压器功能开发须共同使用主映射表和人工校对数据工作簿；标准PDF是标准事实最高依据。工作簿SHA与本次已修正输出一致。以下bytes/SHA-256按Git提交中的UTF-8 LF原始blob字节计算（跨Windows/Linux不做CRLF自动转换）；此记录只锁定审阅资产身份，不代表全表数据已完成签字或获准进入生产；`D-08 / EQP-STD-GB20052-008` 仍为 `OPEN`，变压器仍为 `POST_V1 / NOT_IN_RELEASE_SCOPE`。
+以 `origin/master@a0f502b7169339e55871a65f2a37715081925383` 为本次文档资产变更基线。后续变压器功能开发须共同使用主映射表和人工校对数据工作簿；标准PDF是标准事实最高依据。工作簿SHA与本次已修正输出一致。以下bytes/SHA-256按Git提交中的UTF-8 LF原始blob字节计算（跨Windows/Linux不做CRLF自动转换）；此记录只锁定审阅资产身份，指Owner已批准规则和35表数据项目冻结，但不代表Calculator已验收或SUPPORTED；`D-08 / EQP-STD-GB20052-008` 已获Owner最终确认并`RESOLVED`，变压器仍为 `POST_V1 / NOT_IN_RELEASE_SCOPE`。
 
 | 资产 | bytes | SHA-256 | 用途 / 限定 |
 |---|---:|---|---|
-| `docs/standards/README.md` | 3501 | `46A76543C80252A9A0DAECC85B2E1710427CF08B4D6306A742E46A1FF78FF143` | 标准归档入口与当前变压器开发基准索引 |
-| `docs/standards/gb20052_v21/GB20052_变压器主映射表_V2.1.md` | 47091 | `74E448872DDFCA6468ED1707DAFC0F6134075C7A441D74D7AA4B0711F07BC35C` | 软件规则、表路由与解释的总依据 |
-| `docs/standards/gb20052_v21/GB20052_2024_变压器表1-35人工校对数据工作簿_V2.1.xlsx` | 820355 | `35A499BB5406588CDC300C5019BFFD0DE428D3E08CBA21D076CCC8B6F69F2565` | 表1～35逐表数据与校对工作底稿；不等于全表已验收 |
+| `docs/standards/README.md` | 4114 | `D3A54ED17011A0B7260C320FEAF963DE75FFFF1CEA7A3A9E65AAF7CDF04259B5` | 标准归档入口与当前变压器开发基准索引 |
+| `docs/standards/gb20052_v21/GB20052_变压器主映射表_V2.1.md` | 47964 | `5934A9112AEE783B8B0335DB8BBEAD480BDE773C5E4FF365A137E7F9F3C1AE24` | 软件规则、表路由与解释的总依据 |
+| `docs/standards/gb20052_v21/GB20052_2024_变压器表1-35人工校对数据工作簿_V2.1.xlsx` | 820355 | `35A499BB5406588CDC300C5019BFFD0DE428D3E08CBA21D076CCC8B6F69F2565` | Owner批准的35表冻结开发数据，历史待核状态保留为过程记录 |
 | GB 20052—2024 原文PDF（本地复核件，未随本PR纳入） | — | `862D32069301BB76BCF1477E38BEFDCC32DFB219A409032C41FF374E88863A3F` | 标准事实的最高依据 |
 
 本次只修改映射/交接/基线表述并纳入校对工作簿；未修改运行代码、`transformer.json`、数据库、Golden或标准支持状态。未运行软件测试（本次没有软件行为改动）。
+
+
+**最终Owner冻结批准（2026-10-12）**：主映射SHA256=`5934A9112AEE783B8B0335DB8BBEAD480BDE773C5E4FF365A137E7F9F3C1AE24`，工作簿SHA256=`35A499BB5406588CDC300C5019BFFD0DE428D3E08CBA21D076CCC8B6F69F2565`，共同形成不可拆分的正式基准，未经Owner具体事先批准不得修改。见`docs/standards/gb20052_v21/GB20052_V21_FROZEN_BASELINE.md`。变压器支持状态未升级。
