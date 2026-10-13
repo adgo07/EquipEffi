@@ -25,29 +25,19 @@ phase_8_pass_self_declared: false
 
 current_master:
   default_branch: master
-  head_sha: 64b656ee4924fbf09f3fd87596ef1a1a779d1f09
-  head_summary: "PR #16（phase8/gb19762-excel-batch → master）已合并"
+  head_sha: f12b5f29b306c769c0f0e56f5fe433fda7d75ba7
+  head_summary: "本任务开工同步：PR #21变压器双文件冻结已合并；非Phase推进"
   phase_8_acceptance_record: 未生成（docs/phase8_acceptance_record.md 尚不存在）
 
 current_task:
-  task_id: M1-SINGLE-OWNER-MAINTENANCE-SIMPLIFICATION
-  task_kind: maintenance（单人维护简化；不是产品 Phase，不改变任何 Phase 状态或业务语义）
-  branch: maintenance/m1-single-owner-feedback-loop
-  base_sha: 64b656ee4924fbf09f3fd87596ef1a1a779d1f09
-  goals:
-    - CI 纯去重：windows-core job 内同一测试只执行一次（跨 workflow 的 pump 业务门禁刻意保留）；
-      门禁不减少、按 ID 的 known-regression 比较保留
-    - 治理文档收口：三份文件职责分离，消除重复 YAML key、过时 allowed_next 与互相矛盾状态
-    - 统一 Python 3.12 开发入口：tools/setup_dev.ps1（不升级 3.13、不引入环境管理框架）
-    - 修正明显过时的打包诊断/说明（Python 3.11、Tk 正式入口、Web fallback 正式入口）
-  excluded:
-    - 业务真值 / 标准计算 / Golden / Canonical / Numeric
-    - Excel Reader / Writer 业务行为、records schema、Application business semantics
-    - Qt 产品功能、标准资源、V6 模板、Phase 9 打包实现与发行包裁剪
-  pr: "#17"
-  pr_status: OPEN（等待 Owner 决定是否合并；Agent 不自行合并）
-  next_action: 已推送并创建 PR #17；三个 gating job 全绿；等待 Owner 验收/合并决定
-  review_fixes: "见 PR #17 评论——P1 比较器 expectedFailures 元组解包回归（已修 + 回归测试）、P2 workflow 去重口径注释收窄、P3 权威文件（ROADMAP / REFERENCE_STANDARD_ROADMAP / V1_SCOPE）Phase 8 与 pump_chemical 状态收口"
+  task_id: STANDARD-ARCHIVE-ORGANIZATION
+  task_kind: 文档维护（不改变Phase、标准解释、支持状态或业务语义）
+  branch: codex/standard-archive-conventions
+  base_sha: f12b5f29b306c769c0f0e56f5fe433fda7d75ba7
+  status: EXECUTION_COMPLETE
+  summary: docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md
+  next_action: 文档整理分支供审阅（PR见本次任务附件）；不自行合并或进入Phase 9
+  previous_task_evidence: PR #17及Git历史中的M1维护记录
 
 # ---------------------------------------------------------------------------
 # Phase 状态：只记录结论与落档链接，不复制执行细节

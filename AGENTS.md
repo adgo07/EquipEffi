@@ -226,6 +226,8 @@ Contract Preflight（详见中央 Policy 第 12 节）：读 `platform-lock.json
 
 ## 7. Standard Issues 治理入口（短）
 
+- **标准归档与映射模板**：遵循[docs/standards/README.md](docs/standards/README.md)的标准号/年份目录及唯一入口；规则映射与已核验表值配套，结构检查与数值核验分别留痕。旧路径跳转、冻结资产原位兼容，完整归档规则只在该入口维护。
+
 - 开工前读 `STANDARD_ISSUES_REGISTER.md`，确认是否涉及已有 Issue。
 - **先登记再实现**：发现标准疑似笔误、歧义、冲突、未规定、术语、引用或软件实现解释问题时，必须先登记台账，再完成正式实现说明。
 - **标准原文事实 / 技术判断 / 软件实现决定必须分开记录**，不得把内部判断或软件选择写成标准明文，不得静默纠正标准。
