@@ -169,3 +169,7 @@ Phase 0B 若未执行，本文件保持起始事实；本次确实未执行 0B�
 | `specs/equipment_efficiency/profiles/pump_chemical.md` → `docs/standards/gb19762_2025/profiles/pump_chemical.md` | `23a7279ce9dbc78d60d1a4b17a44c0e7ff3d97a51be0263c95138a2e76918834` | `a34d044b79dd28640697c8d5a1c8a5096d713ee5df17f53d7a37a5f5caf2b782` |
 
 变压器双文件SHA继续以[原冻结清单](docs/standards/gb20052_v21/GB20052_V21_FROZEN_BASELINE.md)为准，本次核对两项均未变化；不重存XLSX。新入口与验证范围见[整理摘要](docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md)。
+
+### PR #22 验收修复补记（2026-10-13）
+
+化工泵迁移正文仅加强页首历史措辞说明，`preserved-profile-body`以下未变。UTF-8/LF SHA-256由`a34d044b79dd28640697c8d5a1c8a5096d713ee5df17f53d7a37a5f5caf2b782`更新为`7dfd314574395c3eb59fafc4d2c1e50112b3eb5c44ac205df9388c7b70842991`；上表保留首次迁移时的历史哈希。冻结变压器双文件、Golden及运行时资源未修改。
