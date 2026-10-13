@@ -6,23 +6,20 @@
 
 ## 当前状态
 
-- 路线 `EquipEffi V2.3`；默认分支 `master`，head `64b656ee4924fbf09f3fd87596ef1a1a779d1f09`（PR #16 合并）。
+- 路线 `EquipEffi V2.3`；本任务起点为默认分支 `master` 的 `f12b5f29b306c769c0f0e56f5fe433fda7d75ba7`（PR #21 合并）；产品Phase状态见下。
 - 已验收 Phase：`1 = PHASE_1_PASS`、`2 = PHASE_2_PASS`（PR #10）、`3 = PHASE_3_PASS`（PR #11）、`4 = PHASE_4_PASS`（PR #12）、`5 = PHASE_5_PASS`（PR #13）、`6 = PHASE_6_PASS`（PR #14）、`7 = PHASE_7_PASS`（PR #15）。
 - **Phase 8（GB 19762 Excel 批量评价闭环）= `EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`**（PR #16 已合并）。
   **不得**自行宣布 `PHASE_8_PASS`；不得进入 Phase 9。`automatic_continuation = DISABLED`。
 
 ## 当前任务
 
-**M1 — Single-owner Maintenance Simplification**（单人维护简化，**不是**产品 Phase）。
-分支 `maintenance/m1-single-owner-feedback-loop`，base `64b656ee`。范围仅四项：
-
-1. CI 纯去重（同一测试不重复跑，门禁不减）；
-2. 治理文档收口（本文件与 `AGENTS.md` / `TASK_STATE.md` 职责分离）；
-3. 统一 Python 3.12 开发入口 `tools/setup_dev.ps1`；
-4. 修正明显过时的 Tk / Web / Python 3.11 打包说明。
-
-**明确不做**：业务真值、标准计算、Golden、Canonical、Numeric、Excel Reader/Writer 业务行为、
-records schema、Application business semantics、Qt 产品功能、标准资源、V6 模板、Phase 9 打包实现。
+标准档案目录规范化（2026-10-13，文档维护；不是产品Phase）。
+分支`codex/standard-archive-conventions`；总入口为[标准档案](docs/standards/README.md)。
+水泵映射迁入标准号/年份目录，旧路径保留跳转；变压器新建年份入口，冻结双文件原位原字节保留。
+规则与表值配套、结构与数值核验分开，D-08沿用根台账的Owner批准记录；未执行全量逐格数值复核。
+变更与验证见[本次摘要](docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md)。
+PR #22验收修复：移除根台账过时的汇总状态，化工泵页首点名被取代的候选措辞；各Issue状态字段及D-08不变。新head的CI结果以GitHub检查为准，独立复验尚待完成。
+此前M1工作保留于PR #17及Git历史，本任务不改变其实现或验收结论。
 
 ## 长期关键事实（不随 Phase 变化）
 

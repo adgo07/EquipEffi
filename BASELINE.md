@@ -158,3 +158,18 @@ Phase 0B 若未执行，本文件保持起始事实；本次确实未执行 0B�
 
 
 **最终Owner冻结批准（2026-10-12）**：主映射SHA256=`5934A9112AEE783B8B0335DB8BBEAD480BDE773C5E4FF365A137E7F9F3C1AE24`，工作簿SHA256=`35A499BB5406588CDC300C5019BFFD0DE428D3E08CBA21D076CCC8B6F69F2565`，共同形成不可拆分的正式基准，未经Owner具体事先批准不得修改。见`docs/standards/gb20052_v21/GB20052_V21_FROZEN_BASELINE.md`。变压器支持状态未升级。
+
+## 2026-10-13 标准映射归档附录（不改Phase 0历史基线）
+
+仅记录水泵映射正文迁移，哈希按UTF-8/LF；新正文新增历史时期说明并修正共同契约的相对链接，原有业务正文逐字保留。旧路径变为跳转页。
+
+| 迁移路径 | 迁移前正文SHA-256 | 迁移后正文SHA-256 |
+|---|---|---|
+| `specs/equipment_efficiency/profiles/pump_water.md` → `docs/standards/gb19762_2025/profiles/pump_water.md` | `5ea911f4b3a1dd368f4b5e39384897cd9b11bd209a38ce7f9a205004e91d6403` | `3c05073853c72a7295c13c97c6b02578e1b27bd69cd020e4a8cd5fe9b378d25b` |
+| `specs/equipment_efficiency/profiles/pump_chemical.md` → `docs/standards/gb19762_2025/profiles/pump_chemical.md` | `23a7279ce9dbc78d60d1a4b17a44c0e7ff3d97a51be0263c95138a2e76918834` | `a34d044b79dd28640697c8d5a1c8a5096d713ee5df17f53d7a37a5f5caf2b782` |
+
+变压器双文件SHA继续以[原冻结清单](docs/standards/gb20052_v21/GB20052_V21_FROZEN_BASELINE.md)为准，本次核对两项均未变化；不重存XLSX。新入口与验证范围见[整理摘要](docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md)。
+
+### PR #22 验收修复补记（2026-10-13）
+
+化工泵迁移正文仅加强页首历史措辞说明，`preserved-profile-body`以下未变。UTF-8/LF SHA-256由`a34d044b79dd28640697c8d5a1c8a5096d713ee5df17f53d7a37a5f5caf2b782`更新为`7dfd314574395c3eb59fafc4d2c1e50112b3eb5c44ac205df9388c7b70842991`；上表保留首次迁移时的历史哈希。冻结变压器双文件、Golden及运行时资源未修改。
