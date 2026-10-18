@@ -233,6 +233,8 @@ Contract Preflight（详见中央 Policy 第 12 节）：读 `platform-lock.json
 - 运行时使用由上述批准依据实现的标准定义、Canonical 与专用 Calculator；不要求运行时解析 Markdown 或校对工作簿。可生成的表值/字段投影尽量生成，各端只维护控件、列位置、排版和传输映射；Excel/Word 不另建正式算法。实际执行的标准版本、映射/数据依据和计算器版本须可追溯；旧 JSON、历史代码或旧回归结果不能反过来覆盖批准依据。
 - 已批准依据之间如有冲突，先按本节登记具体证据与影响，不擅自改冻结文件。普通遵循既有依据的维护继续执行第2.0节轻治理，不新增多角色审批、专用数据库、重复报告或每标准一套 CI。2026-10-18 的实现差距与后续建议见[仓库检查报告](docs/governance/REPOSITORY_AUDIT_20261018.md)；报告中的整改建议不自动构成代码修复、范围提升或阶段验收。
 
+- **通用结果用语与当前映射使用边界**：按[标准档案规范](docs/standards/README.md)的对应章节执行；新增标准、字段展示与导出维护先读该处，完整约定只在该入口维护。
+
 ### 7.2 标准问题登记与冻结资产
 
 - **标准归档与映射模板**：遵循[docs/standards/README.md](docs/standards/README.md)的标准号/年份目录及唯一入口；规则映射与已核验表值配套，结构检查与数值核验分别留痕。旧路径跳转、冻结资产原位兼容，完整归档规则只在该入口维护。
@@ -266,3 +268,4 @@ Contract Preflight（详见中央 Policy 第 12 节）：读 `platform-lock.json
 - 正式 Design / Execution / Acceptance Report 必须含平台预检查：本仓 SHA、locked central SHA、相关 Frozen Contract、适用 MUST / MUST NOT、冲突分类、是否需改中央 Contract；不涉及中央公共语义时写 `本任务不涉及中央公共 Contract。`
 - 涉及 Standard Issue 时必须写明：是否存在相关问题；问题编号；是否改变既有软件解释。
 - 中文优先：不影响 Python/JSON/YAML/schema/API/enum/stable ID、测试与跨平台兼容时，界面文字、治理文档、路线、报告、PR/Issue 描述优先中文；机器字段保持英文。
+
