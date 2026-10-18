@@ -218,13 +218,22 @@ Excel 配置自动改变正式业务算法；必须建立 Workbook 配置 ↔ Ap
 
 ## 6. 中央交付原则与 Contract Preflight（短入口）
 
-中央 ACTIVE 指南（都不是 Frozen Contract；正文只在中央）：`docs/governance/PRODUCT_DELIVERY_POLICY_V1.md`、`docs/governance/STANDARD_DEVELOPMENT_GUIDE_V0.1.md`（见 9、10 节）、`docs/ui/UI_DESIGN_GUIDELINES_V0.1.md`（见 8 节）。
+中央 ACTIVE 指南（都不是 Frozen Contract；正文只在中央）：`docs/governance/PRODUCT_DELIVERY_POLICY_V1.md`、`docs/governance/STANDARD_DEVELOPMENT_GUIDE_V0.1.md`（见 9、10 节）、中央 `docs/GUIDE_INDEX.md` §3.4 路由的当前 UI 指南（见 8 节）。
 
 交付原则只留名称，正文以中央 Policy 为准：**Windows-first**；**Reference Standard first**（`GB 19762—2025`）；**Product-core-first**；**Excel-as-adapter**（Excel 只调用同一 evaluator / Calculator，不复制第二套算法）；**Cross-platform-ready**（不依赖 Windows-only API）；**逐标准扩展**（Reference Standard 闭环前不批量迁移 17 个 Profile）。真实状态见 `REFERENCE_STANDARD_ROADMAP.md`。
 
 Contract Preflight（详见中央 Policy 第 12 节）：读 `platform-lock.json` → 确认 locked SHA → 按 locked SHA 读相关 Frozen Contract → 提取适用 MUST / MUST NOT → 按第 5 节分类冲突 → 确认后再设计或编码。不得直接读中央 `main` 并认为本仓须自动跟随；升级须用户明确授权并经独立治理变更锁文件。
 
 ## 7. Standard Issues 治理入口（短）
+
+### 7.1 批准映射与所有交付端的共同依据
+
+- **各标准经 Owner 批准的映射表、配套已核验表值及明确批准的软件决定，是该标准接入设计、实现和真值测试的核心业务基准。** 原标准仍是最高标准事实证据；映射须如实保留原文异常，标准事实、技术判断与软件决定分层记录，不得静默纠正原文或将软件决定冒称国标明文。批准状态与成套资产以该标准唯一入口为准，不因本条新增而提升任何候选或支持状态。
+- **GUI、Excel、Word、API 及未来各平台必须复用同一正式业务字段定义、Application/Calculator 与结果语义。** 业务名称、单位、候选项、输入语义和结果指标以批准依据为准，不得各端独立维护并自行改写；已有 Owner 批准的展示别名记录来源及适用位置。显示名称不得承担稳定字段/指标 ID 的职责。
+- 运行时使用由上述批准依据实现的标准定义、Canonical 与专用 Calculator；不要求运行时解析 Markdown 或校对工作簿。可生成的表值/字段投影尽量生成，各端只维护控件、列位置、排版和传输映射；Excel/Word 不另建正式算法。实际执行的标准版本、映射/数据依据和计算器版本须可追溯；旧 JSON、历史代码或旧回归结果不能反过来覆盖批准依据。
+- 已批准依据之间如有冲突，先按本节登记具体证据与影响，不擅自改冻结文件。普通遵循既有依据的维护继续执行第2.0节轻治理，不新增多角色审批、专用数据库、重复报告或每标准一套 CI。2026-10-18 的实现差距与后续建议见[仓库检查报告](docs/governance/REPOSITORY_AUDIT_20261018.md)；报告中的整改建议不自动构成代码修复、范围提升或阶段验收。
+
+### 7.2 标准问题登记与冻结资产
 
 - **标准归档与映射模板**：遵循[docs/standards/README.md](docs/standards/README.md)的标准号/年份目录及唯一入口；规则映射与已核验表值配套，结构检查与数值核验分别留痕。旧路径跳转、冻结资产原位兼容，完整归档规则只在该入口维护。
 
@@ -239,7 +248,7 @@ Contract Preflight（详见中央 Policy 第 12 节）：读 `platform-lock.json
 
 ## 8. UI 治理入口（短）
 
-涉及桌面 UI 的 Design / Execution / Acceptance 必须读中央 `UI_DESIGN_GUIDELINES_V0.1.md`（`ACTIVE / EVOLVING`，不是 Frozen Contract）。要点：① 用户可见内容中文优先；② 普通 UI 不默认泄露 `key` / `field_id` / `rule_id` / `internal_id`、Python 变量、原始 JSON、调试标识；③ 简单业务 `One-page first`，不强制单页；④ 技术 trace、Numeric Profile、Calculator version、内部 Rule 渐进展示，不删审计能力；⑤ 按真实用户任务而非数据库 / JSON 组织页面；⑥ 推荐模式不等于强制布局。该指南不改变本仓锁文件、Phase 门禁或业务结论，也不授权 UI 重构。
+涉及桌面 UI 的 Design / Execution / Acceptance 必须按中央当前已合并 `docs/GUIDE_INDEX.md` §3.4 读取适用版本；本次检查时为 `UI_DESIGN_GUIDELINES_V0.2.md`、`UI_PRODUCT_FAMILY_SPEC_V0.1.md`、`UI_ACCEPTANCE_CHECKLIST_V0.1.md`（`ACTIVE / EVOLVING`，不是 Frozen Contract）。旧 UI 指南 v0.1 仅作历史材料，不与当前指南并行约束设计。只检查当前任务涉及的项目，读取 UI 指南不修改 `platform-lock.json`。要点：① 用户可见内容中文优先；② 普通 UI 不默认泄露 `key` / `field_id` / `rule_id` / `internal_id`、Python 变量、原始 JSON、调试标识；③ 简单业务 `One-page first`，不强制单页；④ 技术 trace、Numeric Profile、Calculator version、内部 Rule 渐进展示，不删审计能力；⑤ 按真实用户任务而非数据库 / JSON 组织页面；⑥ 推荐模式不等于强制布局。该指南不改变本仓锁文件、Phase 门禁或业务结论，也不授权 UI 重构。
 
 ## 9. 新标准开发入口（Standard Development）
 
