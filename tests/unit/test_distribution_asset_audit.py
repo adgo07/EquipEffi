@@ -40,6 +40,7 @@ class DistributionAssetAuditTests(unittest.TestCase):
     def test_declared_assets_keep_canonical_pump_metadata_and_both_templates(self):
         names = {path.relative_to(ROOT / "src" / "equipeffi").as_posix() for path in runtime_asset_paths(ROOT)}
         self.assertIn("standard_manifest.json", names)
+        self.assertIn("resources/TEMPLATE_MANIFEST.json", names)
         self.assertIn("resources/standards/pump.json", names)
         self.assertIn("resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx", names)
         self.assertIn("resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx", names)
@@ -49,6 +50,7 @@ class DistributionAssetAuditTests(unittest.TestCase):
         self.assertIn("prune 标准原文", manifest)
         self.assertIn("prune docs/standards", manifest)
         self.assertNotIn("global-exclude *.pdf", manifest)
+        self.assertIn("include src/equipeffi/resources/TEMPLATE_MANIFEST.json", manifest)
         self.assertIn("include src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx", manifest)
 
     def test_generated_report_pdf_is_allowed_by_content_and_output_path(self):
@@ -130,6 +132,7 @@ class DistributionAssetAuditTests(unittest.TestCase):
             (package / "entrypoint.py").write_text("def main(): return 0\n", encoding="utf-8")
             (package / "standard_manifest.json").write_text('{"packs": []}', encoding="utf-8")
             (package / "resources" / "standards" / "pump.json").write_text("{}", encoding="utf-8")
+            (package / "resources" / "TEMPLATE_MANIFEST.json").write_text("{}", encoding="utf-8")
             (package / "resources" / "standards" / "developer-notes.md").write_text("source notes", encoding="utf-8")
             (package / "resources" / "standards" / "scan.png").write_bytes(b"\x89PNG\r\n\x1a\n")
             (package / "resources" / "templates" / "设备能效分析空白模板_重构版V4_20260825.xlsx").write_bytes(b"v4")

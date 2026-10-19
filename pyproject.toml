@@ -30,6 +30,7 @@ where = ["src"]
 [tool.setuptools.package-data]
 equipeffi = [
     "standard_manifest.json",
+    "resources/TEMPLATE_MANIFEST.json",
     "resources/elimination_catalog_batches_1_4.json",
     "resources/elimination_catalog_industry_2024.json",
     "resources/standards/*.json",
