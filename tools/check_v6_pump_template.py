@@ -17,6 +17,8 @@ D. 吸入方式 / 级数验证与 Application 的类别字段约束一致
 E. 数量验证为"正整数 > 0"
 F. 正式空白模板内**不存在**可独立产出业务结果的第二套 Excel 算法
 G. 其他设备 Sheet 语义不变（对基线快照比对）
+H. manifest 输入 field_id / unit 与 Application 元数据一致；
+   输出 metric_key / unit 与稳定结果指标契约一致
 
 用法::
 
@@ -152,6 +154,47 @@ def _application_contract():
     }
 
 
+def input_field_application_issues(fields) -> tuple[str, ...]:
+    """校验 manifest 输入字段 ID / 单位与正式离心泵 Application 元数据一致。"""
+
+    from equipeffi.domain.evaluation.metadata import get_device_profile
+
+    profile = get_device_profile("centrifugal_pump")
+    application_fields = {
+        str(field.v4_field_id): field
+        for field in profile.input_fields
+        if field.v4_field_id
+    }
+    input_fields = [field for field in fields if field.get("role") == "input"]
+    field_ids = [str(field.get("field_id") or "").strip()
+                 for field in input_fields]
+    issues: list[str] = []
+    duplicates = sorted({field_id for field_id in field_ids
+                         if field_id and field_ids.count(field_id) > 1})
+    if duplicates:
+        issues.append(f"重复 field_id={duplicates}")
+
+    expected_ids = set(application_fields)
+    actual_ids = set(field_ids)
+    if actual_ids != expected_ids:
+        issues.append(
+            f"field_id 不一致：缺少={sorted(expected_ids - actual_ids)}；"
+            f"未知={sorted(actual_ids - expected_ids)}")
+
+    for field in input_fields:
+        field_id = str(field.get("field_id") or "").strip()
+        application_field = application_fields.get(field_id)
+        if application_field is None:
+            continue
+        actual_unit = str(field.get("unit") or "-").strip()
+        expected_unit = str(application_field.unit or "-").strip()
+        if actual_unit != expected_unit:
+            issues.append(
+                f"{field.get('column')}:{field_id} unit {actual_unit!r} "
+                f"!= Application {expected_unit!r}")
+    return tuple(issues)
+
+
 def _config_category_values(workbook) -> tuple[str, ...]:
     config = workbook[CONFIG_SHEET]
     values: list[str] = []
@@ -223,6 +266,15 @@ def run_checks(template: Path = TEMPLATE) -> Report:
                        device_contracts == PUBLIC_DEVICE_NAMES,
                        f"清单 {len(device_contracts)} 个设备 Sheet / Application "
                        f"{len(PUBLIC_DEVICE_NAMES)} 个正式类型")
+            input_issues = input_field_application_issues(
+                PUMP_CONTRACT["fields"])
+            report.add(
+                "manifest_input_field_ids_and_units_match_application",
+                not input_issues,
+                "; ".join(input_issues) or
+                f"{sum(field.get('role') == 'input' for field in PUMP_CONTRACT['fields'])} "
+                "个输入字段 ID / 单位均匹配 Application 元数据")
+
             metric_definitions = {
                 item.metric_id: item for item in PUMP_RESULT_METRIC_DEFINITIONS
             }

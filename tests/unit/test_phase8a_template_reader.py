@@ -103,6 +103,26 @@ class TemplateAssetTests(unittest.TestCase):
             for field in PUMP_SHEET_CONTRACT["fields"]
             if field.get("role") == "input"))
 
+    def test_manifest_input_field_ids_and_units_match_application(self):
+        from tools.check_v6_pump_template import input_field_application_issues
+
+        fields = [dict(field) for field in PUMP_SHEET_CONTRACT["fields"]]
+        self.assertEqual(input_field_application_issues(fields), ())
+
+        changed_unit = [dict(field) for field in fields]
+        flow = next(field for field in changed_unit
+                    if field.get("field_id") == "flow")
+        flow["unit"] = "L/s"
+        self.assertTrue(any("Application" in issue
+                            for issue in input_field_application_issues(changed_unit)))
+
+        changed_id = [dict(field) for field in fields]
+        flow = next(field for field in changed_id
+                    if field.get("field_id") == "flow")
+        flow["field_id"] = "unknown_input"
+        self.assertTrue(any("field_id 不一致" in issue
+                            for issue in input_field_application_issues(changed_id)))
+
     def test_result_metric_columns_resolve_to_application_ids_and_units(self):
         expected_keys = {
             "N": "specific_speed", "O": "c1", "P": "c2", "Q": "c3",

@@ -200,8 +200,15 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
                          "pump-input.v1")
         provenance = record.summary["evaluation_provenance"]
         self.assertEqual(provenance["standard_code"], "GB 19762-2025")
-        self.assertTrue(provenance["standard_version"])
-        self.assertTrue(provenance["ruleset_version"])
+        self.assertEqual(provenance["standard_year"], "2025")
+        self.assertIsNone(provenance["standard_version"])
+        expected_data_version = self.analysis._standards.get_pack(
+            "pump_water")["data_version"]
+        self.assertEqual(provenance["data_version"], expected_data_version)
+        self.assertNotEqual(provenance["data_version"], provenance["standard_year"])
+        self.assertEqual(provenance["data_versions"], [expected_data_version])
+        self.assertEqual(provenance["rule_profiles"], ["pump_water"])
+        self.assertIsNone(provenance["ruleset_version"])
         self.assertTrue(provenance["calculator_version"])
         self.assertTrue(provenance["result_contract_version"])
 
@@ -241,6 +248,10 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
         self.assertEqual(result.summary.data_row_count, 2)
         self.assertEqual(result.summary.concluded_rows, 2)
         self.assertEqual(len(result.summary.conclusion_quantities), 1)
+        provenance = self.repository.list_batch_records()[0].summary[
+            "evaluation_provenance"]
+        self.assertEqual(provenance["rule_profiles"],
+                         ["pump_water", "pump_chemical"])
 
     def test_uncertain_category_is_unevaluated_not_skipped(self):
         result = self.run_batch([self.water_row(F="不确定类别")])

@@ -29,6 +29,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 from dataclasses import dataclass, field, replace
 from datetime import date, datetime, timezone
 from decimal import Decimal, InvalidOperation
@@ -105,8 +106,10 @@ class _BatchProvenance:
     canonical_version: str = ""
     numeric_profile_id: str = ""
     canonical_package_hash: str = ""
-    standard_version: str = ""
-    ruleset_version: str = ""
+    standard_code: str = ""
+    standard_year: str = ""
+    data_versions: list[str] = field(default_factory=list)
+    rule_profiles: list[str] = field(default_factory=list)
     calculator_version: str = ""
     result_contract_version: str = ""
 
@@ -119,9 +122,17 @@ class _BatchProvenance:
             self.numeric_profile_id = references.get("numeric_profile_id", "")
         if not self.canonical_package_hash:
             self.canonical_package_hash = references.get("canonical_package_hash", "")
+        if not self.standard_code:
+            self.standard_code = references.get("standard_code", "")
+        if not self.standard_year:
+            self.standard_year = references.get("standard_year", "")
+        data_version = references.get("data_version", "")
+        if data_version and data_version not in self.data_versions:
+            self.data_versions.append(data_version)
+        rule_profile = references.get("rule_profile", "")
+        if rule_profile and rule_profile not in self.rule_profiles:
+            self.rule_profiles.append(rule_profile)
         for attribute, key in (
-            ("standard_version", "standard_version"),
-            ("ruleset_version", "ruleset_version"),
             ("calculator_version", "calculator_version"),
             ("result_contract_version", "result_contract_version"),
         ):
@@ -426,15 +437,23 @@ class PumpBatchEvaluationService:
             "sheet_contract_revision": identity.get(
                 "sheet_contract_revision", ""),
         }
+        data_version = (provenance.data_versions[0]
+                        if len(provenance.data_versions) == 1 else None)
         summary_snapshot["evaluation_provenance"] = {
-            "standard_code": PUMP_STANDARD_CODE,
-            "standard_version": provenance.standard_version,
-            "ruleset_version": provenance.ruleset_version,
-            "calculator_version": provenance.calculator_version,
-            "result_contract_version": provenance.result_contract_version,
-            "canonical_version": provenance.canonical_version,
-            "canonical_package_hash": provenance.canonical_package_hash,
-            "numeric_profile_id": provenance.numeric_profile_id,
+            "standard_code": provenance.standard_code or None,
+            "standard_year": provenance.standard_year or None,
+            # 标准身份由标准号和年份表达；结果引用没有独立 standard_version。
+            "standard_version": None,
+            "data_version": data_version,
+            "data_versions": list(provenance.data_versions),
+            "rule_profiles": list(provenance.rule_profiles),
+            # _pack_reference 提供 rule_profile，不提供规则集版本。
+            "ruleset_version": None,
+            "calculator_version": provenance.calculator_version or None,
+            "result_contract_version": provenance.result_contract_version or None,
+            "canonical_version": provenance.canonical_version or None,
+            "canonical_package_hash": provenance.canonical_package_hash or None,
+            "numeric_profile_id": provenance.numeric_profile_id or None,
         }
         self.batch_repository.append_batch_record(BatchRecordSnapshot(
             batch_record_id=result.batch_record_id,
@@ -470,10 +489,10 @@ class PumpBatchEvaluationService:
 
 
 def _version_references(result) -> dict[str, str]:
-    """从**已产生的正式评价结果**取 Canonical / Numeric 引用。
+    """从**已产生的正式评价结果**读取标准身份与 pack provenance。
 
-    这些引用只存在于 Result 契约里（标准仓储本身没有版本属性），因此取自
-    本批次首个成功评价的结果。取不到时留空，**不得编造**。
+    标准号、标准年份、data_version 与 rule_profile 均按 Result 的正式引用
+    语义提取；不存在的独立版本字段不从其他字段推造。取不到时留空。
     """
 
     if result is None:
@@ -481,22 +500,29 @@ def _version_references(result) -> dict[str, str]:
     references = dict(getattr(result, "references", None) or {})
     standard = dict(references.get("standard") or {})
     out: dict[str, str] = {}
+    standard_code = str(
+        standard.get("standard_code") or getattr(result, "standard_code", "") or ""
+    ).strip()
+    if standard_code:
+        out["standard_code"] = standard_code
+        year_match = re.search(r"[-—](\d{4})$", standard_code)
+        if year_match:
+            out["standard_year"] = year_match.group(1)
     data_version = str(standard.get("data_version") or "").strip()
     if data_version:
+        # canonical_version 是既有批次列；summary 同时以 data_version 保留
+        # 正式 pack reference 的原字段语义。
         out["canonical_version"] = data_version
+        out["data_version"] = data_version
     profile = str(references.get("numeric_profile_id") or "").strip()
     if profile:
         out["numeric_profile_id"] = profile
     pack_hash = str(standard.get("pack_hash") or "").strip()
     if pack_hash:
         out["canonical_package_hash"] = pack_hash
-    for key, reference_key in (
-        ("standard_version", "data_version"),
-        ("ruleset_version", "rule_profile"),
-    ):
-        value = str(standard.get(reference_key) or "").strip()
-        if value:
-            out[key] = value
+    rule_profile = str(standard.get("rule_profile") or "").strip()
+    if rule_profile:
+        out["rule_profile"] = rule_profile
     for key in ("calculator_version", "result_contract_version"):
         value = str(references.get(key) or "").strip()
         if value:
