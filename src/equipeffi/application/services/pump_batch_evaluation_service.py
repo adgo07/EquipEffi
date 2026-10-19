@@ -105,6 +105,10 @@ class _BatchProvenance:
     canonical_version: str = ""
     numeric_profile_id: str = ""
     canonical_package_hash: str = ""
+    standard_version: str = ""
+    ruleset_version: str = ""
+    calculator_version: str = ""
+    result_contract_version: str = ""
 
     def observe(self, result) -> None:
         self.evaluated += 1
@@ -115,6 +119,14 @@ class _BatchProvenance:
             self.numeric_profile_id = references.get("numeric_profile_id", "")
         if not self.canonical_package_hash:
             self.canonical_package_hash = references.get("canonical_package_hash", "")
+        for attribute, key in (
+            ("standard_version", "standard_version"),
+            ("ruleset_version", "ruleset_version"),
+            ("calculator_version", "calculator_version"),
+            ("result_contract_version", "result_contract_version"),
+        ):
+            if not getattr(self, attribute):
+                setattr(self, attribute, references.get(key, ""))
 
 
 @dataclass
@@ -306,7 +318,7 @@ class PumpBatchEvaluationService:
         )
         if persist and self.batch_repository is not None:
             try:
-                self._persist(result, provenance)
+                self._persist(result, provenance, workbook.template_identity)
             except Exception as error:  # noqa: BLE001 - 明确报告，不中断结果交付
                 result.batch_record_error = f"{type(error).__name__}: {error}"
         return result
@@ -389,11 +401,12 @@ class PumpBatchEvaluationService:
     # -- 持久化 ------------------------------------------------------------
 
     def _persist(self, result: BatchEvaluationResult,
-                 provenance: "_BatchProvenance") -> None:
+                 provenance: "_BatchProvenance",
+                 source_template_identity: dict[str, str] | None = None) -> None:
         from ...application.lifecycle import BatchRecordSnapshot
 
         summary = result.summary
-        identity = self.template_identity
+        identity = dict(source_template_identity or self.template_identity)
         # 只允许使用**当前批次**真正执行过正式评价所得的引用；
         # 若本批在进入正式评价前就全部失败，这几个字段保持空，
         # 按现有结构采取最诚实的表示（不伪造 Result、不沿用上一批）。
@@ -401,6 +414,27 @@ class PumpBatchEvaluationService:
             "canonical_version": provenance.canonical_version,
             "numeric_profile_id": provenance.numeric_profile_id,
             "canonical_package_hash": provenance.canonical_package_hash,
+        }
+        summary_snapshot = summary.as_dict()
+        summary_snapshot["template"] = {
+            "template_id": identity.get("template_id", ""),
+            "template_version": identity.get("template_version", ""),
+            "asset_sha256": identity.get("asset_sha256", ""),
+            "template_contract_revision": identity.get(
+                "template_contract_revision", ""),
+            "sheet_id": identity.get("sheet_id", ""),
+            "sheet_contract_revision": identity.get(
+                "sheet_contract_revision", ""),
+        }
+        summary_snapshot["evaluation_provenance"] = {
+            "standard_code": PUMP_STANDARD_CODE,
+            "standard_version": provenance.standard_version,
+            "ruleset_version": provenance.ruleset_version,
+            "calculator_version": provenance.calculator_version,
+            "result_contract_version": provenance.result_contract_version,
+            "canonical_version": provenance.canonical_version,
+            "canonical_package_hash": provenance.canonical_package_hash,
+            "numeric_profile_id": provenance.numeric_profile_id,
         }
         self.batch_repository.append_batch_record(BatchRecordSnapshot(
             batch_record_id=result.batch_record_id,
@@ -426,7 +460,7 @@ class PumpBatchEvaluationService:
             evaluated_count=summary.concluded_rows,
             unevaluated_count=summary.unevaluated_rows,
             invalid_count=(summary.input_error_rows + summary.execution_error_rows),
-            summary=summary.as_dict(),
+            summary=summary_snapshot,
             app_version=self.app_version,
             canonical_version=references.get("canonical_version", ""),
             numeric_profile_id=references.get("numeric_profile_id", ""),
@@ -456,6 +490,17 @@ def _version_references(result) -> dict[str, str]:
     pack_hash = str(standard.get("pack_hash") or "").strip()
     if pack_hash:
         out["canonical_package_hash"] = pack_hash
+    for key, reference_key in (
+        ("standard_version", "data_version"),
+        ("ruleset_version", "rule_profile"),
+    ):
+        value = str(standard.get(reference_key) or "").strip()
+        if value:
+            out[key] = value
+    for key in ("calculator_version", "result_contract_version"):
+        value = str(references.get(key) or "").strip()
+        if value:
+            out[key] = value
     return out
 
 

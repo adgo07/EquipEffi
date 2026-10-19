@@ -185,9 +185,24 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
 
     def test_one_batch_evaluation_creates_exactly_one_batch_record(self):
         result = self.run_batch([self.water_row(), self.water_row(B="泵2", C="M-002")])
-        self.assertEqual(len(self.repository.list_batch_records()), 1)
-        self.assertEqual(result.batch_record_id,
-                         self.repository.list_batch_records()[0].batch_record_id)
+        records = self.repository.list_batch_records()
+        self.assertEqual(len(records), 1)
+        record = records[0]
+        self.assertEqual(result.batch_record_id, record.batch_record_id)
+        self.assertEqual(record.template_id, "equipeffi.device-efficiency.V6")
+        self.assertEqual(record.template_version, "V6-20261005")
+        self.assertEqual(record.template_sha256, V6TemplateResource().identity["asset_sha256"])
+        self.assertEqual(record.summary["template"]["template_contract_revision"],
+                         "unified-v6.v1")
+        self.assertEqual(record.summary["template"]["sheet_id"], "centrifugal_pump")
+        self.assertEqual(record.summary["template"]["sheet_contract_revision"],
+                         "pump-input.v1")
+        provenance = record.summary["evaluation_provenance"]
+        self.assertEqual(provenance["standard_code"], "GB 19762-2025")
+        self.assertTrue(provenance["standard_version"])
+        self.assertTrue(provenance["ruleset_version"])
+        self.assertTrue(provenance["calculator_version"])
+        self.assertTrue(provenance["result_contract_version"])
 
     def test_no_per_row_single_records_are_created(self):
         result = self.run_batch([self.water_row(), self.water_row(B="泵2", C="M-002"),

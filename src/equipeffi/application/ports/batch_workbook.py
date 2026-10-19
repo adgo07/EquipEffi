@@ -30,6 +30,9 @@ class BatchSourceWorkbook:
     path: str
     rows: tuple[BatchSourceRow, ...]
     skipped_blank_rows: int = 0
+    # Adapter-reported source identity is provenance, not a business input.
+    # The Application persists it with the batch and does not interpret Excel.
+    template_identity: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass

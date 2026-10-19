@@ -19,6 +19,7 @@ import tempfile
 import tracemalloc
 import unittest
 from decimal import Decimal
+from importlib import resources as importlib_resources
 from pathlib import Path
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
@@ -38,9 +39,14 @@ from equipeffi.infrastructure.excel.pump_workbook_reader import (
     V6PumpWorkbookReader,
 )
 from equipeffi.infrastructure.excel.template_resource import (
+    PUMP_SHEET_CONTRACT,
     REQUIRED_V6_SHEETS,
+    TEMPLATE_MANIFEST,
+    V6_TEMPLATE_ENTRY,
     V6_TEMPLATE_IDENTITY,
     V6TemplateResource,
+    _resolve_v6_identity_from_names,
+    identity_defined_names,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -68,6 +74,49 @@ class TemplateAssetTests(unittest.TestCase):
         resource = V6TemplateResource()
         self.assertEqual(resource.validate().sha256.upper(),
                          V6_TEMPLATE_IDENTITY["asset_sha256"])
+
+    def test_manifest_is_at_a_packaged_resource_path(self):
+        manifest = importlib_resources.files("equipeffi").joinpath(
+            "resources", "TEMPLATE_MANIFEST.json")
+        self.assertTrue(manifest.is_file())
+        self.assertEqual(TEMPLATE_MANIFEST["schema"], "equipeffi.template-manifest.v2")
+
+    def test_legacy_v6_is_identified_by_exact_manifest_structure(self):
+        validation = V6TemplateResource().validate()
+        self.assertTrue(validation.is_valid, validation.message)
+        self.assertEqual(validation.identity_source, "legacy-structure")
+        self.assertEqual(validation.identity["template_id"],
+                         V6_TEMPLATE_IDENTITY["template_id"])
+        self.assertEqual(validation.identity["template_version"], "V6-20261005")
+        self.assertEqual(validation.sheet_contracts["centrifugal_pump"],
+                         PUMP_SHEET_CONTRACT["contract_revision"])
+
+    def test_sheet_machine_ids_and_pump_input_mapping_are_manifest_owned(self):
+        sheet_ids = [sheet["sheet_id"] for sheet in V6_TEMPLATE_ENTRY["sheets"]]
+        self.assertEqual(len(sheet_ids), len(set(sheet_ids)))
+        self.assertEqual(INPUT_COLUMNS, tuple(
+            (field["column"], field["field_id"])
+            for field in PUMP_SHEET_CONTRACT["fields"]
+            if field.get("role") == "input"))
+
+    def test_declared_identity_requires_a_known_version_and_all_sheet_revisions(self):
+        encoded = {name: (f'"{value}"',)
+                   for name, value in identity_defined_names(V6_TEMPLATE_ENTRY).items()}
+        entry, source, issues = _resolve_v6_identity_from_names(encoded)
+        self.assertEqual(source, "declared")
+        self.assertEqual(entry["template_version"], V6_TEMPLATE_IDENTITY["template_version"])
+        self.assertEqual(issues, ())
+
+        unknown = dict(encoded)
+        unknown["EQUIPEFFI_TEMPLATE_VERSION"] = ('"V6-20990101"',)
+        entry, _, issues = _resolve_v6_identity_from_names(unknown)
+        self.assertIsNone(entry)
+        self.assertTrue(any("不支持的模板身份" in item for item in issues))
+
+        partial = {"EQUIPEFFI_TEMPLATE_ID": encoded["EQUIPEFFI_TEMPLATE_ID"]}
+        entry, _, issues = _resolve_v6_identity_from_names(partial)
+        self.assertIsNone(entry)
+        self.assertTrue(any("标记不完整" in item for item in issues))
 
     def test_owner_baseline_is_tracked_and_untouched(self):
         """构建输入（Owner 指定的 V6 基线）必须**入仓**且未被写回或改写。
@@ -362,9 +411,7 @@ class ReaderRowEnablementTests(unittest.TestCase):
         rows = self._read(mutate)
         self.assertEqual(len(rows), 1)
         read_fields = set(rows[0].values)
-        for letter, field_id in RESULT_COLUMNS:
-            with self.subTest(field=field_id):
-                self.assertNotIn(field_id, read_fields)
+        self.assertEqual(read_fields, {field_id for _, field_id in INPUT_COLUMNS})
         self.assertNotIn("999.99", str(rows[0].values))
         self.assertNotIn("1级", str(rows[0].values))
 
@@ -381,6 +428,22 @@ class ReaderRowEnablementTests(unittest.TestCase):
             workbook.close()
             with self.assertRaises(OOXMLReadError):
                 V6PumpWorkbookReader(require_template_structure=False).read(target)
+
+    def test_unsupported_input_unit_is_rejected_by_validation_and_reader(self):
+        from equipeffi.infrastructure.excel.ooxml_reader import OOXMLReadError
+
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "unsupported-unit.xlsx"
+            workbook = _blank_workbook()
+            workbook[PUMP_SHEET]["G3"] = "流量\n(L/s)"
+            workbook.save(target)
+            workbook.close()
+
+            validation = V6TemplateResource().validate(target)
+            self.assertFalse(validation.is_valid)
+            self.assertIn("G 列", validation.message)
+            with self.assertRaisesRegex(OOXMLReadError, "G 列"):
+                V6PumpWorkbookReader().read(target)
 
 
 class ReaderCapacityTests(unittest.TestCase):

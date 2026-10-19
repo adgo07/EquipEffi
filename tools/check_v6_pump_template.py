@@ -34,49 +34,54 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 import openpyxl
-from openpyxl.utils import get_column_letter
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
+from equipeffi.domain.evaluation.device_types import PUBLIC_DEVICE_NAMES
+from equipeffi.infrastructure.excel.template_resource import (
+    V6_TEMPLATE_ENTRY,
+    V6_TEMPLATE_IDENTITY,
+    V6TemplateResource,
+    pump_header_issues,
+)
 
 TEMPLATE = (REPO_ROOT / "src" / "equipeffi" / "resources" / "templates"
-            / "设备能效分析空白模板_重构版V6_20261005.xlsx")
-PUMP_SHEET = "离心泵"
-CONFIG_SHEET = "配置"
-TABLE_NAME = "TblPump"
-MANIFEST = TEMPLATE.parent / "TEMPLATE_MANIFEST.json"
-FIRST_DATA_ROW = 4
-LAST_DATA_ROW = 103
-EXPECTED_COLUMNS = 27
-CATEGORY_COLUMN = "AE"
-CATEGORY_FIRST_ROW = 2
-
-#: 必须存在且顺序固定的 Sheet（Owner 指定基线）。
-EXPECTED_SHEETS: tuple[str, ...] = (
-    "变压器", "电动机", "空压机", "离心泵", "离心通风机", "轴流通风机", "鼓风机",
-    "潜水电泵", "工业锅炉", "热处理设备", "热泵和冷水机组", "热泵热水机",
-    "风管送风式空调", "单元式空调", "多联式空调", "注意事项", "模板说明", "配置",
-)
+            / V6_TEMPLATE_IDENTITY["filename"])
+MANIFEST = REPO_ROOT / "src" / "equipeffi" / "resources" / "TEMPLATE_MANIFEST.json"
+PUMP_CONTRACT = next(sheet for sheet in V6_TEMPLATE_ENTRY["sheets"]
+                     if sheet["sheet_id"] == "centrifugal_pump")
+PUMP_SHEET = PUMP_CONTRACT["sheet_name"]
+CONFIG_SHEET = next(sheet["sheet_name"] for sheet in V6_TEMPLATE_ENTRY["sheets"]
+                    if sheet["sheet_id"] == "configuration")
+CONFIGURATION_CONTRACT = V6_TEMPLATE_ENTRY["configuration_contract"]
+TABLE_NAME = PUMP_CONTRACT["table"]["name"]
+FIRST_DATA_ROW = int(PUMP_CONTRACT["header_row"]) + 1
+LAST_DATA_ROW = int(re.search(r"\d+$", PUMP_CONTRACT["table"]["ref"]).group())
+EXPECTED_COLUMNS = len(PUMP_CONTRACT["fields"])
+CATEGORY_COLUMN = CONFIGURATION_CONTRACT["pump_category_enum"]["column"]
+CATEGORY_FIRST_ROW = int(CONFIGURATION_CONTRACT["pump_category_enum"]["first_row"])
+EXPECTED_SHEETS = tuple(sheet["sheet_name"] for sheet in V6_TEMPLATE_ENTRY["sheets"])
 
 #: 结果列：本阶段必须**不含业务公式**，由软件批量评价后写入。
-BUSINESS_FORMULA_COLUMNS: tuple[str, ...] = (
-    "K", "L", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "AA",
-)
+BUSINESS_FORMULA_COLUMNS: tuple[str, ...] = tuple(
+    field["column"] for field in PUMP_CONTRACT["fields"]
+    if field.get("clear_template_formula"))
 
 #: 结果列（列头保留，值由软件写入）——用于"结果列仍存在"的检查。
 RESULT_HEADERS: dict[str, str] = {
-    "K": "单吸/双吸", "L": "级数", "N": "比转速", "O": "C1", "P": "C2", "Q": "C3",
-    "R": "基准效率", "S": "效率修正值", "T": "规定点效率", "U": "1级效率",
-    "V": "2级效率", "W": "3级效率", "X": "能效等级", "AA": "自动备注",
+    field["column"]: field["label"] for field in PUMP_CONTRACT["fields"]
+    if field.get("role") == "result"
 }
 
 #: 可由用户编辑的输入列（`Y` 为图片、`Z` 为文本，见列头契约）。
-EDITABLE_COLUMNS: tuple[str, ...] = ("B", "C", "D", "E", "F", "G", "H", "I", "J",
-                                     "K", "L", "M", "Y", "Z")
+EDITABLE_COLUMNS: tuple[str, ...] = tuple(
+    field["column"] for field in PUMP_CONTRACT["fields"]
+    if field.get("role") == "input")
 #: 结果列（软件写入，锁定）。注意 `K`（单吸/双吸）与 `L`（级数）是**用户输入**列：
 #: 它们不再由 Excel 公式推导，因此必须保持可编辑，不属于锁定列。
-LOCKED_COLUMNS: tuple[str, ...] = (
-    "A",) + tuple(c for c in BUSINESS_FORMULA_COLUMNS if c not in ("K", "L"))
+LOCKED_COLUMNS: tuple[str, ...] = ("A",) + tuple(
+    field["column"] for field in PUMP_CONTRACT["fields"]
+    if field.get("role") == "result")
 
 #: 业务算法特征：出现这些即视为"模板内存在第二套 GB19762 业务算法"。
 BUSINESS_ALGORITHM_MARKERS: tuple[str, ...] = (
@@ -177,12 +182,13 @@ def run_checks(template: Path = TEMPLATE) -> Report:
     workbook = openpyxl.load_workbook(template, data_only=False)
 
     # --- A. 资产身份 -------------------------------------------------------
-    # 模板清单必须与实际资产一致，且与运行时身份常量一致：
-    # 三者（清单 / 资产字节 / 代码常量）不得各自漂移。
+    # 资产 hash 只用于检查空白发布资产；Reader 对用户填写后的 Workbook
+    # 按声明身份/legacy 结构和字段/单位契约校验，不拿填写后文件 hash 与空白资产比较。
     if MANIFEST.is_file():
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
         entry = next((t for t in manifest["templates"]
-                      if t.get("status") == "FORMAL"), None)
+                      if t.get("template_id") == manifest.get("formal_windows_v1_template")
+                      and t.get("status") == "FORMAL"), None)
         report.add("manifest_formal_entry_present", entry is not None)
         if entry is not None:
             report.add("manifest_asset_sha_matches_file",
@@ -194,15 +200,35 @@ def run_checks(template: Path = TEMPLATE) -> Report:
             report.add("manifest_asset_size_matches",
                        entry.get("asset_size_bytes") == template.stat().st_size,
                        f"{entry.get('asset_size_bytes')} vs {template.stat().st_size}")
+            manifest_sheets = tuple(sheet["sheet_name"] for sheet in entry.get("sheets", ()))
             report.add("manifest_sheet_order_matches",
-                       tuple(entry.get("sheet_order") or ()) == EXPECTED_SHEETS,
-                       "清单 Sheet 顺序与契约一致")
+                       manifest_sheets == EXPECTED_SHEETS,
+                       "清单 Sheet 顺序与模板契约一致")
             report.add("manifest_declares_authorized_sheet",
                        (entry.get("authorized_modification") or {}).get("sheet") == PUMP_SHEET)
+            sheet_ids = [sheet.get("sheet_id") for sheet in entry.get("sheets", ())]
+            report.add("manifest_sheet_machine_ids_unique",
+                       len(sheet_ids) == len(set(sheet_ids)) and all(sheet_ids),
+                       f"{len(sheet_ids)} 个 Sheet 契约")
+            device_contracts = {
+                sheet["sheet_id"]: sheet["sheet_name"]
+                for sheet in entry.get("sheets", ())
+                if sheet.get("sheet_id") in PUBLIC_DEVICE_NAMES
+            }
+            report.add("manifest_device_sheet_ids_match_application",
+                       device_contracts == PUBLIC_DEVICE_NAMES,
+                       f"清单 {len(device_contracts)} 个设备 Sheet / Application "
+                       f"{len(PUBLIC_DEVICE_NAMES)} 个正式类型")
     else:
         report.add("manifest_present", False, str(MANIFEST))
 
-    report.add("sheet_set_matches_owner_baseline",
+    resource_validation = V6TemplateResource().validate(template)
+    report.add("runtime_template_identity_and_structure_valid",
+               resource_validation.is_valid, resource_validation.message)
+    report.add("legacy_identity_uses_strict_structure_path",
+               resource_validation.identity_source == "legacy-structure",
+               resource_validation.identity_source)
+    report.add("sheet_order_matches_manifest",
                tuple(workbook.sheetnames) == EXPECTED_SHEETS,
                f"实际 {len(workbook.sheetnames)} 个 Sheet")
     report.add("pump_sheet_present", PUMP_SHEET in workbook.sheetnames)
@@ -213,7 +239,7 @@ def run_checks(template: Path = TEMPLATE) -> Report:
     table = sheet.tables.get(TABLE_NAME)
     report.add("pump_table_present", table is not None, TABLE_NAME)
     if table is not None:
-        expected_ref = f"A3:{get_column_letter(EXPECTED_COLUMNS)}{LAST_DATA_ROW}"
+        expected_ref = PUMP_CONTRACT["table"]["ref"]
         report.add("pump_table_ref", table.ref == expected_ref,
                    f"{table.ref}（期望 {expected_ref}）")
         report.add("pump_table_columns", len(table.tableColumns) == EXPECTED_COLUMNS,
@@ -221,12 +247,17 @@ def run_checks(template: Path = TEMPLATE) -> Report:
     report.add("pump_sheet_protected", bool(sheet.protection.sheet))
     report.add("config_sheet_protected", bool(workbook[CONFIG_SHEET].protection.sheet))
 
-    header_mismatch: list[str] = []
-    for column, expected in RESULT_HEADERS.items():
-        actual = str(sheet[f"{column}3"].value or "").replace("\n", "")
-        if expected not in actual:
-            header_mismatch.append(f"{column}3={actual!r} 期望含 {expected!r}")
-    report.add("result_columns_kept", not header_mismatch, "；".join(header_mismatch))
+    header_row = int(PUMP_CONTRACT["header_row"])
+    header = [sheet.cell(header_row, column).value
+              for column in range(1, EXPECTED_COLUMNS + 1)]
+    header_mismatch = pump_header_issues(header, PUMP_CONTRACT)
+    report.add("pump_header_labels_and_units_match_manifest",
+               not header_mismatch, "；".join(header_mismatch))
+    result_headers_present = all(
+        str(sheet[f"{column}{header_row}"].value or "").split("\n", 1)[0].strip()
+        == expected
+        for column, expected in RESULT_HEADERS.items())
+    report.add("result_columns_kept", result_headers_present)
 
     lock_mismatch: list[str] = []
     for column in LOCKED_COLUMNS:
@@ -249,7 +280,8 @@ def run_checks(template: Path = TEMPLATE) -> Report:
                "「其他类别」已就位且旧文案已退出")
     report.add("category_enum_has_uncertain",
                "不确定类别" in excel_categories)
-    defined = workbook.defined_names.get("EV_PUMP_CATEGORY")
+    category_defined_name = CONFIGURATION_CONTRACT["pump_category_enum"]["defined_name"]
+    defined = workbook.defined_names.get(category_defined_name)
     last_category_row = CATEGORY_FIRST_ROW + len(contract["categories"]) - 1
     expected_range = (f"'{CONFIG_SHEET}'!${CATEGORY_COLUMN}${CATEGORY_FIRST_ROW}"
                       f":${CATEGORY_COLUMN}${last_category_row}")
@@ -258,7 +290,7 @@ def run_checks(template: Path = TEMPLATE) -> Report:
                f"{defined.value if defined else None}（期望 {expected_range}）")
     category_dv = _validations(sheet).get("F", [])
     report.add("category_validation_points_at_enum",
-               any("EV_PUMP_CATEGORY" in str(dv.formula1) for dv in category_dv),
+               any(category_defined_name in str(dv.formula1) for dv in category_dv),
                f"{len(category_dv)} 条验证")
 
     # --- D. 吸入方式 / 级数约束与 Application 一致 -------------------------
@@ -341,8 +373,9 @@ def run_checks(template: Path = TEMPLATE) -> Report:
 
     # --- G. FieldDictionary 仍可机械读取 -----------------------------------
     config = workbook[CONFIG_SHEET]
-    dictionary = config.tables.get("FieldDictionary")
-    report.add("field_dictionary_present", dictionary is not None, "FieldDictionary")
+    dictionary_name = CONFIGURATION_CONTRACT["field_dictionary_table"]
+    dictionary = config.tables.get(dictionary_name)
+    report.add("field_dictionary_present", dictionary is not None, dictionary_name)
     if dictionary is not None:
         pump_rows = 0
         for row in range(2, config.max_row + 1):
