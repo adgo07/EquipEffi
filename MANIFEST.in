@@ -1,0 +1,27 @@
+# Source distribution inputs. Runtime files stay explicitly listed in pyproject.toml.
+# Do not globally exclude PDF files: user reports and standard-source documents are distinct.
+include README.md
+include pyproject.toml
+recursive-include src/equipeffi *.py
+include src/equipeffi/standard_manifest.json
+include src/equipeffi/resources/elimination_catalog_batches_1_4.json
+include src/equipeffi/resources/elimination_catalog_industry_2024.json
+recursive-include src/equipeffi/resources/standards *.json
+include src/equipeffi/resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx
+include src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx
+
+# Standard originals and working evidence are developer inputs, not app distribution assets.
+prune 标准原文
+prune standard_sources
+prune standards/originals
+prune docs/standard_sources
+prune docs/standard_originals
+prune docs/standards
+
+# Never package local build output, caches, or temporary editing workspaces.
+prune build
+prune dist
+prune outputs
+prune .tmp_sheet_edit
+prune node_modules
+global-exclude __pycache__ *.py[cod]

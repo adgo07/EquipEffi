@@ -19,15 +19,22 @@ desktop = ["tkinterdnd2>=0.4", "PySide6>=6.8,<7"]
 tools = ["openpyxl>=3.1", "python-docx>=1.1"]
 test = ["pytest>=8"]
 
+[tool.setuptools]
+# Only files declared below are runtime data. VCS-discovered package files must
+# not silently expand the installed application payload.
+include-package-data = false
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
 equipeffi = [
     "standard_manifest.json",
-    "resources/*.json",
+    "resources/elimination_catalog_batches_1_4.json",
+    "resources/elimination_catalog_industry_2024.json",
     "resources/standards/*.json",
-    "resources/templates/*.xlsx",
+    "resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx",
+    "resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
 ]
 
 [tool.pytest.ini_options]

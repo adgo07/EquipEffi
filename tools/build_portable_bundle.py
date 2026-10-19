@@ -16,8 +16,10 @@ from typing import Iterable, Sequence
 
 try:
     from .build_lock import build_lock
+    from .check_distribution_assets import audit_artifact
 except ImportError:  # direct execution: ``python tools/build_portable_bundle.py``
     from build_lock import build_lock
+    from check_distribution_assets import audit_artifact
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -176,6 +178,11 @@ def _build_bundle_unlocked(
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         for name in sorted(files):
             archive.writestr(_zip_info(name), files[name])
+    if (root / "pyproject.toml").is_file():
+        asset_audit = audit_artifact(output, root=root)
+        if not asset_audit.is_valid:
+            output.unlink(missing_ok=True)
+            raise ValueError("便携包运行资源审计失败: " + "; ".join(asset_audit.errors))
     members = tuple(sorted(files))
     return BundleResult(output, members, _sha256_file(output))
 
