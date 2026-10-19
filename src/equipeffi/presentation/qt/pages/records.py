@@ -27,12 +27,14 @@ from ....application.services.centrifugal_pump_analysis_service import (
 )
 from ..tokens import TOKENS
 from ....application.services.centrifugal_pump_analysis_service import (
+    PUMP_ANALYSIS_DETAIL_METRIC_IDS,
+    PUMP_LEVEL_LIMIT_METRIC_IDS,
+    PUMP_METRIC_IDS,
     THRESHOLD_DISPLAY_NAMES,
     RecordQuery,
     user_conclusion_from_snapshot,
 )
-from ..labels import support_status_text
-from ..labels import format_metric
+from ..labels import format_metric, support_status_text, user_grade_text
 from ..widgets.collapsible import CollapsibleSection
 
 #: 结论筛选项 → 匹配的 `evaluation_status` 集合（"全部" 不筛选）。
@@ -41,7 +43,7 @@ from ..widgets.collapsible import CollapsibleSection
 CONCLUSION_FILTERS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("全部结论", ()),
     ("已判定等级", ("SUCCESS",)),
-    ("不适用", ("OUT_OF_STANDARD_SCOPE",)),
+    ("不在范围", ("OUT_OF_STANDARD_SCOPE",)),
     ("资料不足 / 输入有误", ("INSUFFICIENT_DATA", "INVALID_INPUT")),
 )
 
@@ -226,10 +228,13 @@ class RecordsPage(QWidget):
         self.list.blockSignals(True)
         self.list.clear()
         for record in self._visible:
-            grade = record.grade or record.ui_conclusion
+            conclusion = user_conclusion_from_snapshot(
+                {"grade": record.grade,
+                 "evaluation_status": record.evaluation_status},
+                record.ui_conclusion)
             self.list.addItem(QListWidgetItem(
                 f"{record.as_of} | {record.standard_code} | "
-                f"{record.product_category} | {grade}"))
+                f"{record.product_category} | {conclusion}"))
         self.list.blockSignals(False)
         if not self._visible:
             self.detail.setText("没有符合条件的记录。" if self._total or self.search.text()
@@ -290,8 +295,9 @@ class RecordsPage(QWidget):
             f"评价日期：{snapshot.as_of}",
             f"评价结论：{user_conclusion_from_snapshot(result, snapshot.ui_conclusion)}",
         ]
-        if snapshot.grade:
-            lines.append(f"能效等级：{snapshot.grade}")
+        grade_text = user_grade_text(snapshot.grade)
+        if grade_text:
+            lines.append(f"能效等级：{grade_text}")
         # 冻结的判定解释与缺失信息：这是"为什么是这个结论"的唯一依据，
         # 资料不足（INSUFFICIENT_DATA）的 Record 尤其必须能看到缺了什么。
         missing = result.get("missing_fields") or []
@@ -312,19 +318,50 @@ class RecordsPage(QWidget):
             lines.append(f"企业/项目名称：{input_snapshot['project_name']}")
         if input_snapshot.get("equipment_no"):
             lines.append(f"设备编号：{input_snapshot['equipment_no']}")
-        thresholds = result.get("thresholds") or {}
-        if thresholds:
-            # 只格式化**显示**；快照里的原值保持完整精度，不写回。
+        metric_snapshot = result.get("metrics_by_id")
+        actual_metric = (metric_snapshot.get(PUMP_METRIC_IDS["actual_efficiency"])
+                         if isinstance(metric_snapshot, dict) else None)
+        if not isinstance(actual_metric, dict):
+            actual_value = (result.get("extra_metrics") or {}).get("泵效率_%")
+        else:
+            actual_value = actual_metric.get("value")
+        if actual_value is not None:
+            lines.append(f"实际泵效率：{format_metric(actual_value, name='泵效率_%')}%")
+        stable_thresholds = []
+        if isinstance(metric_snapshot, dict):
+            stable_thresholds = [metric_snapshot[metric_id]
+                                 for metric_id in PUMP_LEVEL_LIMIT_METRIC_IDS
+                                 if isinstance(metric_snapshot.get(metric_id), dict)]
+        if stable_thresholds:
             lines.append("原等级阈值：" + "；".join(
-                f"{THRESHOLD_DISPLAY_NAMES.get(name, name)} "
-                f"{format_metric(value, name=str(name))}"
-                for name, value in thresholds.items()))
-        derived = (result.get("calculation_trace") or {}).get("derived") or {}
-        if derived:
-            # 必须保留**名称**：只显示数值串会让用户无法理解该参数是什么。
+                f"{metric.get('display_name') or metric.get('metric_id')} "
+                f"{format_metric(metric.get('value'), name=str(metric.get('display_name') or ''))}"
+                for metric in stable_thresholds))
+        else:
+            thresholds = result.get("thresholds") or {}
+            if thresholds:
+                # 只格式化**显示**；快照里的原值保持完整精度，不写回。
+                lines.append("原等级阈值：" + "；".join(
+                    f"{THRESHOLD_DISPLAY_NAMES.get(name, name)} "
+                    f"{format_metric(value, name=str(name))}"
+                    for name, value in thresholds.items()))
+        stable_details = []
+        if isinstance(metric_snapshot, dict):
+            stable_details = [metric_snapshot[metric_id]
+                              for metric_id in PUMP_ANALYSIS_DETAIL_METRIC_IDS
+                              if isinstance(metric_snapshot.get(metric_id), dict)]
+        if stable_details:
             lines.append("原关键计算参数：" + "；".join(
-                f"{name} {format_metric(value, name=str(name))}"
-                for name, value in derived.items()))
+                f"{metric.get('display_name') or metric.get('metric_id')} "
+                f"{format_metric(metric.get('value'), name=str(metric.get('display_name') or ''))}"
+                for metric in stable_details))
+        else:
+            derived = (result.get("calculation_trace") or {}).get("derived") or {}
+            if derived:
+                # 必须保留**名称**：只显示数值串会让用户无法理解该参数是什么。
+                lines.append("原关键计算参数：" + "；".join(
+                    f"{name} {format_metric(value, name=str(name))}"
+                    for name, value in derived.items()))
 
         # 标准依据：只展示快照里**真实存在**的依据，不伪造。
         # Phase 3～6 的旧 Record 可能未冻结这些字段，此时降级说明而不是编造。

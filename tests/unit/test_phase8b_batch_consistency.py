@@ -139,7 +139,11 @@ class GoldenExcelReplayTests(unittest.TestCase):
                     self.assertEqual(outcome.conclusion, "输入错误")
                 else:
                     self.assertFalse(outcome.is_input_error)
-                    self.assertEqual(outcome.conclusion, expected.get("ui_conclusion"))
+                    self.assertEqual(outcome.conclusion, user_conclusion_text({
+                        "evaluation_status": status,
+                        "grade": expected.get("grade"),
+                        "ui_conclusion": expected.get("ui_conclusion"),
+                    }))
                     self.assertEqual(outcome.grade, expected.get("grade"))
 
     def test_batch_result_snapshot_equals_single_application_snapshot(self):
@@ -249,15 +253,15 @@ class ConclusionCoverageTests(unittest.TestCase):
             source, destination=self.root / f"r_{name}", as_of=AS_OF, persist=False)
 
     def test_official_conclusions_are_distinguishable(self):
-        """1级 / 2级 / 3级 / 未达标 / 不适用 / 无法评价 六种正式结论。"""
+        """覆盖六类面向用户的正式结论。"""
 
         goldens = {data["case_id"]: data for _p, _f, data in _approved_goldens()}
         wanted = {
             "GC-PUMP-V4-WATER-SINGLE-SUCTION-L1": "1级",
             "GC-PUMP-V4-WATER-SINGLE-L2": "2级",
             "GC-PUMP-V4-WATER-SINGLE-L3": "3级",
-            "GC-PUMP-V4-WATER-BELOW-MINIMUM": "未达标",
-            "GC-PUMP-V4-WATER-CATEGORY-OTHER": "不适用",
+            "GC-PUMP-V4-WATER-BELOW-MINIMUM": "未达3级",
+            "GC-PUMP-V4-WATER-CATEGORY-OTHER": "不在范围",
         }
         rows = []
         for case_id, _expected in wanted.items():
@@ -268,13 +272,13 @@ class ConclusionCoverageTests(unittest.TestCase):
                 if value not in (None, ""):
                     row[column] = value
             rows.append(row)
-        # 不确定类别 -> 无法评价
+        # 不确定类别 -> 无法判定
         rows.append({"D": 1, "B": "uncertain", "F": "不确定类别",
                      "G": 100, "H": 50, "I": 2900, "J": 45, "K": "单吸", "L": 1, "M": 80})
 
         result = self._run(rows, "conclusions.xlsx")
         conclusions = [outcome.conclusion for outcome in result.outcomes]
-        for expected in list(wanted.values()) + ["无法评价"]:
+        for expected in list(wanted.values()) + ["无法判定"]:
             with self.subTest(conclusion=expected):
                 self.assertIn(expected, conclusions)
 
@@ -287,7 +291,8 @@ class ConclusionCoverageTests(unittest.TestCase):
         outcome = result.outcomes[0]
         self.assertTrue(outcome.is_input_error)
         self.assertEqual(outcome.conclusion, "输入错误")
-        self.assertNotIn(outcome.conclusion, ("1级", "2级", "3级", "未达标", "不适用", "无法评价"))
+        self.assertNotIn(outcome.conclusion,
+                         ("1级", "2级", "3级", "未达3级", "不在范围", "无法判定"))
         self.assertIsNone(outcome.evaluation_status)
 
 
@@ -383,7 +388,7 @@ class BoundaryAndShapeTests(unittest.TestCase):
                 self.assertIsNotNone(outcome.evaluation_status)
 
     def test_range_boundaries_do_not_crash(self):
-        """范围边界（流量极小/极大）必须给出正式结论或明确不适用，不得异常。"""
+        """范围边界（流量极小/极大）必须给出正式结论或明确不在范围，不得异常。"""
 
         result = self._run([
             {"D": 1, "F": "单级单吸清水离心泵", "G": 1, "H": 50, "I": 2900,

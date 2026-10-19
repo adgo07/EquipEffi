@@ -32,7 +32,7 @@ class PumpResultMetric:
 @dataclass(frozen=True)
 class _MetricDefinition:
     metric_id: str
-    source: Literal["calculated_metrics", "limits"]
+    source: Literal["actual_metrics", "calculated_metrics", "limits"]
     source_key: str
     display_name: str
     unit: str
@@ -46,6 +46,7 @@ PUMP_METRIC_IDS: dict[str, str] = {
     "flow_for_specific_speed": "pump.flow_for_specific_speed",
     "head_per_stage": "pump.head_per_stage",
     "specific_speed": "pump.specific_speed",
+    "actual_efficiency": "pump.actual_efficiency",
     "output_power": "pump.output_power",
     "c1": "pump.c1",
     "c2": "pump.c2",
@@ -59,6 +60,8 @@ PUMP_METRIC_IDS: dict[str, str] = {
 }
 
 PUMP_RESULT_METRIC_DEFINITIONS: tuple[_MetricDefinition, ...] = (
+    _MetricDefinition(PUMP_METRIC_IDS["actual_efficiency"], "actual_metrics",
+                      "泵效率_%", "实际泵效率", "%"),
     _MetricDefinition(PUMP_METRIC_IDS["suction_factor"], "calculated_metrics",
                       "suction_factor", "吸入方式系数", "1"),
     _MetricDefinition(PUMP_METRIC_IDS["stage_count"], "calculated_metrics",
@@ -104,6 +107,22 @@ THRESHOLD_DISPLAY_NAMES: dict[str, str] = {
     if item.source == "limits"
 }
 
+# Presentation groups reference stable identifiers, preserving the established
+# order while keeping result selection independent from translated labels.
+PUMP_LEVEL_LIMIT_METRIC_IDS: tuple[str, ...] = (
+    PUMP_METRIC_IDS["grade_1_efficiency_limit"],
+    PUMP_METRIC_IDS["grade_2_efficiency_limit"],
+    PUMP_METRIC_IDS["grade_3_efficiency_limit"],
+)
+PUMP_ANALYSIS_DETAIL_METRIC_IDS: tuple[str, ...] = tuple(
+    PUMP_METRIC_IDS[name]
+    for name in (
+        "suction_factor", "stage_count", "flow_for_specific_speed",
+        "head_per_stage", "specific_speed", "output_power",
+        "base_efficiency", "efficiency_correction", "specified_efficiency",
+    )
+)
+
 
 def _decimal_text(value: Any) -> str:
     """Preserve the Application scalar's existing text without presentation rounding."""
@@ -114,6 +133,7 @@ def _decimal_text(value: Any) -> str:
 def project_pump_metrics(
     calculated_metrics: dict[str, Any] | None,
     limits: dict[str, Any] | None,
+    actual_metrics: dict[str, Any] | None = None,
 ) -> dict[str, PumpResultMetric]:
     """Project existing evaluator outputs under stable IDs.
 
@@ -122,6 +142,7 @@ def project_pump_metrics(
     """
 
     sources = {
+        "actual_metrics": actual_metrics or {},
         "calculated_metrics": calculated_metrics or {},
         "limits": limits or {},
     }

@@ -43,15 +43,20 @@ from ..lifecycle import (
 )
 from ..result_projection import (
     DERIVED_DISPLAY_NAMES,
+    PUMP_ANALYSIS_DETAIL_METRIC_IDS,
+    PUMP_LEVEL_LIMIT_METRIC_IDS,
+    PUMP_METRIC_IDS,
     PumpResultMetric,
     THRESHOLD_DISPLAY_NAMES,
     project_pump_metrics,
 )
 from .pump_release_gate import pump_release_support
+from .pump_calculator_version import PUMP_CALCULATOR_VERSION
 
 PUMP_PUBLIC_DEVICE_TYPE = "centrifugal_pump"
 GB19762_STANDARD_CODE = "GB 19762-2025"
 GB19762_PACK_ID = "gb19762_2025_water_v1"
+PUMP_STANDARD_IDENTITY_KEY = "standard_code"
 
 #: 内部 rule profile；只有这两个值可以出现在 result.rule_profile 中。
 RULE_PROFILES: tuple[str, ...] = ("pump_water", "pump_chemical")
@@ -77,7 +82,8 @@ def _pump_payload(request: "PumpAnalysisRequest") -> dict[str, Any]:
     return request.raw_values() | {
         "project_name": request.project_name,
         "equipment_no": request.equipment_no,
-    } | business_keys_metadata(PUMP_FINGERPRINT_KEYS)
+        PUMP_STANDARD_IDENTITY_KEY: request.standard_code,
+    } | business_keys_metadata((*PUMP_FINGERPRINT_KEYS, PUMP_STANDARD_IDENTITY_KEY))
 
 #: 已确认“不适用”的类别文本（沿用 evaluator 既有契约，不在此新造规则）。
 OTHER_CATEGORY_VALUES: frozenset[str] = frozenset(
@@ -189,10 +195,10 @@ LOCKABLE_FIELDS: tuple[str, ...] = ("stages", "suction")
 #:
 #: `不确定类别` 是一个**正式类别选择**（Owner 规则 7）：不是非法输入、
 #: 不是"需要先修正才能运行"。
-#: 其 Presentation 结论固定为「无法评价」（**不是**「无法判定」）。
+#: 面向用户统一显示为「无法判定」。
 #: 内部状态仍复用既有 `category_status = UNRESOLVED` +
 #: `requires_category_confirmation = True`，**不新造 Domain enum**。
-USER_CONCLUSION_UNCERTAIN_CATEGORY = "无法评价"
+USER_CONCLUSION_UNCERTAIN_CATEGORY = "无法判定"
 
 #: 结论缺失时的兜底文案。
 USER_CONCLUSION_FALLBACK = "无法判定"
@@ -215,6 +221,7 @@ ISSUE_CODE_LABELS: dict[str, str] = {
     "CATEGORY_UNRESOLVED": "产品类别无法解析",
     "CATEGORY_MISSING": "缺少产品类别",
     "CATEGORY_NOT_APPLICABLE": "该产品类别不属于本标准适用范围",
+    "STANDARD_IDENTITY_MISMATCH": "所选标准与当前分析规则不一致",
     "SUCTION_CATEGORY_CONFLICT": "吸入方式与所选类别不一致",
     "STAGE_CATEGORY_CONFLICT": "级数与所选类别不一致",
     "FLOW_INVALID": "流量数值无效",
@@ -237,15 +244,45 @@ _INTEGER_METRIC_NAMES: frozenset[str] = frozenset({"级数", "吸入方式系数
 
 
 def user_conclusion_text(result: Any) -> str:
-    """用户可见的正式评价结论（Qt 与 Excel **必须**共用本函数）。
-
-    `不确定类别` → 「无法评价」；其余沿用业务结论原文。
-    """
+    """用户可见的正式评价结论（Qt 与 Excel **必须**共用本函数）。"""
 
     snapshot = result.as_snapshot() if hasattr(result, "as_snapshot") else dict(result or {})
+    return _user_conclusion_from_values(snapshot)
+
+
+def user_grade_text(value: object) -> str:
+    """把内部泵等级码投影为用户文案；未知内部值不泄漏到 Qt。"""
+
+    text = "" if value is None else str(value).strip()
+    if text in {"1", "2", "3"}:
+        return f"{text}级"
+    if text in {"1级", "2级", "3级"}:
+        return text
+    if text in {"BELOW_MINIMUM", "未达标", "未达3级"}:
+        return "未达3级"
+    return ""
+
+
+def _user_conclusion_from_values(snapshot: dict[str, Any],
+                                 ui_conclusion: str | None = None) -> str:
+    raw = str(snapshot.get("ui_conclusion") or ui_conclusion or "").strip()
     if snapshot.get("requires_category_confirmation"):
         return USER_CONCLUSION_UNCERTAIN_CATEGORY
-    return str(snapshot.get("ui_conclusion") or USER_CONCLUSION_FALLBACK)
+    status = snapshot.get("evaluation_status")
+    if status == "OUT_OF_STANDARD_SCOPE":
+        return "不在范围"
+    if status in {"INVALID_INPUT", "INSUFFICIENT_DATA", "EXECUTION_ERROR"}:
+        return USER_CONCLUSION_FALLBACK
+    grade = user_grade_text(snapshot.get("grade"))
+    if grade:
+        return grade
+    if raw in {"1级", "2级", "3级"}:
+        return raw
+    if raw in {"未达标", "未达3级"} or snapshot.get("grade") == "BELOW_MINIMUM":
+        return "未达3级"
+    if raw in {"不适用", "不在范围"}:
+        return "不在范围"
+    return USER_CONCLUSION_FALLBACK
 
 
 #: 历史记录查询条件 / 结果 / 分页：**经本契约再导出**。
@@ -311,11 +348,7 @@ def user_conclusion_from_snapshot(result_snapshot: dict[str, Any] | None,
     两种说法；也不重新计算、不按今天重新解释。
     """
 
-    snapshot = result_snapshot or {}
-    if snapshot.get("requires_category_confirmation"):
-        return USER_CONCLUSION_UNCERTAIN_CATEGORY
-    return str(snapshot.get("ui_conclusion") or ui_conclusion
-               or USER_CONCLUSION_FALLBACK)
+    return _user_conclusion_from_values(result_snapshot or {}, ui_conclusion)
 
 
 def issue_code_texts(codes) -> list[str]:
@@ -443,7 +476,7 @@ class PumpAnalysisRequest:
             "equipment_no": self.equipment_no,
         }
 
-    def request_fingerprint(self) -> str:
+    def request_fingerprint(self, *, include_standard_identity: bool = True) -> str:
         """输入指纹：对影响业务结论的全部输入取稳定哈希。
 
         Finalize 用它证明"被固化的结果确实对应当前 Workspace 的输入"，
@@ -459,6 +492,8 @@ class PumpAnalysisRequest:
         }
         for key in PUMP_FINGERPRINT_KEYS:
             values[key] = getattr(self, key)
+        if include_standard_identity:
+            values[PUMP_STANDARD_IDENTITY_KEY] = self.standard_code
         return stable_fingerprint(values)
 
 
@@ -757,9 +792,10 @@ class CentrifugalPumpAnalysisService:
 
     def _base_result(self, request: PumpAnalysisRequest, pack: dict[str, Any],
                      rule_profile: str | None) -> dict[str, Any]:
+        standard_reference = self._pack_reference(pack, rule_profile or "")
         return {
             "rule_profile": rule_profile,
-            "standard_code": request.standard_code,
+            "standard_code": standard_reference["standard_code"],
             "product_category": request.product_category,
             "as_of": request.as_of,
             # 固化本次评价所用的完整输入与指纹：Finalize 必须核对它们，
@@ -769,9 +805,9 @@ class CentrifugalPumpAnalysisService:
             "workspace_revision": request.workspace_revision,
             "provenance": self._ruleset_provenance(rule_profile),
             "references": {
-                "standard": self._pack_reference(pack, rule_profile or ""),
+                "standard": standard_reference,
                 "numeric_profile_id": "EQUIPEFFI_PUMP_DECIMAL50_V2",
-                "calculator_version": rule_profile or "",
+                "calculator_version": PUMP_CALCULATOR_VERSION,
                 "result_contract_version": "1.0",
             },
         }
@@ -816,6 +852,9 @@ class CentrifugalPumpAnalysisService:
         if not isinstance(request.as_of, date):
             raise AnalysisError("as_of 必须是显式日期，统一分析入口不提供隐式默认值")
 
+        if request.standard_code != GB19762_STANDARD_CODE:
+            return self._standard_identity_mismatch(request)
+
         category = str(request.product_category or "").strip()
         if not category:
             return self._unresolved(request, reason="未提供产品类别，无法确定适用的标准泵型。")
@@ -834,6 +873,12 @@ class CentrifugalPumpAnalysisService:
             )
 
         pack = self._pack(rule_profile)
+        pack_standard_code = str(pack.get("standard_code") or "").strip()
+        if pack_standard_code != request.standard_code:
+            raise RuntimeError(
+                f"规则包标准身份不匹配: request={request.standard_code!r}, "
+                f"pack={pack_standard_code!r}"
+            )
         # Owner 正式决定（2026-10-02，取代此前"提前日期不执行计算"的设计）：
         # 评价日期 `as_of` **只用于**默认新建日期、用户手动修改、Record 追溯与
         # Reopen 显示，**不是标准执行门禁**。用户可以主动使用未实施、现行或已废止的
@@ -867,7 +912,8 @@ class CentrifugalPumpAnalysisService:
             missing_fields=tuple(result.missing_fields),
             matched_rule_id=matched_rule_id,
             thresholds=self._thresholds(result),
-            metrics_by_id=project_pump_metrics(result.calculated_metrics, result.limits),
+            metrics_by_id=project_pump_metrics(
+                result.calculated_metrics, result.limits, result.actual_metrics),
             calculation_trace=self._trace(result, rule_profile),
             extra_metrics=self._extra_metrics(result),
             explanation=result.explanation,
@@ -879,6 +925,31 @@ class CentrifugalPumpAnalysisService:
         )
 
     # -- 特殊结果 -----------------------------------------------------------
+
+    def _standard_identity_mismatch(self, request: PumpAnalysisRequest) -> PumpAnalysisResult:
+        """拒绝把未实现的标准身份送进 GB 19762 规则链。"""
+
+        return PumpAnalysisResult(
+            rule_profile=None,
+            standard_code=GB19762_STANDARD_CODE,
+            product_category=request.product_category,
+            as_of=request.as_of,
+            evaluation_status="INVALID_INPUT",
+            category_status="INVALID_INPUT",
+            support_status=None,
+            ui_conclusion=Conclusion.UNABLE_TO_JUDGE.value,
+            grade=None,
+            issue_codes=("STANDARD_IDENTITY_MISMATCH",),
+            explanation=(
+                f"当前泵分析仅支持 {GB19762_STANDARD_CODE}；"
+                f"所选标准 {request.standard_code!r} 与当前规则不一致，未执行评价。"
+            ),
+            **self._frozen_fields(request),
+            **self._category_provenance_dict(
+                "标准身份不匹配，未执行任何规则集", status="INVALID_INPUT"),
+            finalizable=False,
+            not_finalizable_reason="标准身份与当前规则不一致，不能形成正式记录。",
+        )
 
     @staticmethod
     def _frozen_fields(request: PumpAnalysisRequest) -> dict[str, Any]:
@@ -1109,6 +1180,9 @@ class CentrifugalPumpAnalysisService:
         """把草稿还原成统一输入，并绑定草稿修订号。"""
 
         payload = workspace.payload
+        payload_standard = payload.get(PUMP_STANDARD_IDENTITY_KEY)
+        if payload_standard is not None and payload_standard != workspace.standard_code:
+            raise AnalysisError("草稿载荷与标准身份字段不一致，拒绝读取草稿")
         return PumpAnalysisRequest(
             product_category=workspace.product_category,
             as_of=date.fromisoformat(workspace.as_of),
@@ -1231,6 +1305,8 @@ class CentrifugalPumpAnalysisService:
             raise AnalysisError("结果与输入的设备类别不一致，拒绝固化正式记录")
         if result.as_of != request.as_of:
             raise AnalysisError("结果与输入的评价日期不一致，拒绝固化正式记录")
+        if result.standard_code != request.standard_code:
+            raise AnalysisError("结果与输入的标准身份不一致，拒绝固化正式记录")
 
         # (4) Canonical hash 只在**实际执行了具体 rule_profile** 时才是必需证据。
         #     类别级结论（其他类别 / 类别缺失等）没有 ruleset，不得伪造 provenance，
@@ -1246,6 +1322,13 @@ class CentrifugalPumpAnalysisService:
             canonical_hash = str(
                 result.references.get("standard", {}).get("pack_hash", "") or ""
             ).strip()
+            reference_standard_code = str(
+                result.references.get("standard", {}).get("standard_code", "") or ""
+            ).strip()
+            if reference_standard_code != request.standard_code:
+                raise AnalysisError(
+                    "结果的标准依据与请求的标准身份不一致；拒绝固化正式记录"
+                )
             if not canonical_hash:
                 raise AnalysisError(
                     "实际执行了规则集的结果未携带 Canonical 包哈希，"
@@ -1277,11 +1360,18 @@ class CentrifugalPumpAnalysisService:
                 raise AnalysisError(
                     "草稿已在分析之后被修改，当前结果已过期；请重新分析后再保存正式记录"
                 )
+            if workspace.standard_code != request.standard_code:
+                raise AnalysisError("草稿标准身份与待固化结果不一致，拒绝固化正式记录")
+            if workspace.payload.get(PUMP_STANDARD_IDENTITY_KEY) is not None:
+                # 新 Workspace 的自描述元数据包含标准身份，需与结果指纹完整一致。
+                if workspace.request_fingerprint() != expected:
+                    raise AnalysisError("草稿标准或输入与待固化结果不一致，拒绝固化正式记录")
             # 显式传入本产品的业务键集合：Phase 4 之前的旧草稿没有
             # `_business_keys` 元数据，其"缺失字段 = None"的语义只能由产品层提供
             # （从载荷内容反推会静默改变历史指纹，已实测会拒绝 Base 本可合法
             # 固化的 INSUFFICIENT_DATA 草稿）。
-            if workspace.request_fingerprint(PUMP_FINGERPRINT_KEYS) != expected:
+            elif workspace.request_fingerprint(PUMP_FINGERPRINT_KEYS) != request.request_fingerprint(
+                    include_standard_identity=False):
                 raise AnalysisError("草稿输入与待固化结果不一致，拒绝固化正式记录")
 
         now = _utc_now()

@@ -31,6 +31,7 @@ class PumpResultProjectionTests(unittest.TestCase):
                 "规定点效率_%": Decimal("71.2300"),
             },
             {"1级效率_%": Decimal("71.23")},
+            {"泵效率_%": Decimal("80.1250")},
         )
 
         self.assertEqual(projected[PUMP_METRIC_IDS["specific_speed"]].value,
@@ -41,6 +42,9 @@ class PumpResultProjectionTests(unittest.TestCase):
         self.assertEqual(projected[PUMP_METRIC_IDS["output_power"]].value,
                          "2.452500")
         self.assertEqual(projected[PUMP_METRIC_IDS["output_power"]].unit, "kW")
+        self.assertEqual(projected[PUMP_METRIC_IDS["actual_efficiency"]].value,
+                         "80.1250")
+        self.assertEqual(projected[PUMP_METRIC_IDS["actual_efficiency"]].unit, "%")
         self.assertEqual(
             projected[PUMP_METRIC_IDS["grade_1_efficiency_limit"]].value,
             "71.23",
@@ -73,6 +77,7 @@ class PumpResultProjectionTests(unittest.TestCase):
             result.thresholds["1级能效效率限值（%）"],
         )
         self.assertTrue(all(PUMP_METRIC_IDS[key] in metrics for key in ("c1", "c2", "c3")))
+        self.assertEqual(metrics[PUMP_METRIC_IDS["actual_efficiency"]].value, "90")
         self.assertEqual(metrics[PUMP_METRIC_IDS["c1"]].unit, "%")
         self.assertIn(PUMP_METRIC_IDS["specific_speed"],
                       result.as_snapshot()["metrics_by_id"])

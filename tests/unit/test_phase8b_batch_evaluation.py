@@ -5,7 +5,7 @@
 - 输出结果是**新** Workbook，不覆盖输入；其他设备 Sheet 不丢
 - 结果写回只写结果列；旧计算结果不作为业务输入
 - 数量必须正整数 > 0（Excel 验证 + 软件验证都在）
-- 「不确定类别」→「无法评价」，且 Qt 与 Excel 结论一致
+- 「不确定类别」→「无法判定」，且 Qt 与 Excel 结论一致
 - 逐设备详细结果保存在结果 Workbook
 - 批次汇总含结论分布与需要关注的行
 - 系统异常不伪装成业务结论
@@ -245,11 +245,11 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
         result = self.run_batch([self.water_row(F="不确定类别")])
         self.assertEqual(result.summary.data_row_count, 1, "不确定类别行不得被静默跳过")
         self.assertEqual(result.summary.unevaluated_rows, 1)
-        self.assertEqual(result.summary.conclusion_quantities.get("无法评价"), 1)
+        self.assertEqual(result.summary.conclusion_quantities.get("无法判定"), 1)
 
     def test_other_category_is_out_of_scope(self):
         result = self.run_batch([self.water_row(F="其他类别")])
-        self.assertEqual(result.summary.conclusion_quantities.get("不适用"), 1)
+        self.assertEqual(result.summary.conclusion_quantities.get("不在范围"), 1)
         self.assertEqual(result.summary.unevaluated_rows, 0)
 
     def test_row_with_only_location_is_read_and_reported(self):
@@ -284,7 +284,7 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
         self.assertEqual(outcome.conclusion, "执行失败")
         self.assertTrue(outcome.is_execution_error)
         self.assertNotIn(outcome.conclusion,
-                         ("1级", "2级", "3级", "未达标", "不适用", "无法评价"))
+                         ("1级", "2级", "3级", "未达3级", "不在范围", "无法判定"))
         self.assertTrue(any("系统执行失败" in message for message in outcome.messages))
 
     def test_system_failure_on_one_row_does_not_abort_the_batch(self):
@@ -406,13 +406,13 @@ class ConclusionConsistencyTests(BatchTestCase):
 
         self.assertIs(labels.user_conclusion_text, user_conclusion_text)
 
-    def test_uncertain_category_is_unable_to_evaluate_in_excel(self):
+    def test_uncertain_category_is_unable_to_determine_in_excel(self):
         result = self.run_batch([self.water_row(F="不确定类别")])
-        self.assertEqual(result.outcomes[0].conclusion, "无法评价")
+        self.assertEqual(result.outcomes[0].conclusion, "无法判定")
         sheet = openpyxl.load_workbook(result.result_workbook)[PUMP_SHEET]
-        self.assertEqual(sheet[f"X{FIRST_DATA_ROW}"].value, "无法评价")
+        self.assertEqual(sheet[f"X{FIRST_DATA_ROW}"].value, "无法判定")
 
-    def test_uncertain_category_is_unable_to_evaluate_in_qt(self):
+    def test_uncertain_category_is_unable_to_determine_in_qt(self):
         from equipeffi.presentation.qt.pages.analysis import AnalysisPage
 
         page = AnalysisPage(self.analysis, as_of=date.today())
@@ -422,15 +422,15 @@ class ConclusionConsistencyTests(BatchTestCase):
                            ("speed", "2900"), ("efficiency", "80")):
             page.point_inputs[key].setText(value)
         page.evaluate()
-        self.assertEqual(page.conclusion.text(), "无法评价")
+        self.assertEqual(page.conclusion.text(), "无法判定")
 
     def test_qt_and_excel_agree_for_every_conclusion_shape(self):
         from equipeffi.presentation.qt.pages.analysis import AnalysisPage
 
         cases = (
             ("单级单吸清水离心泵", "1级"),
-            ("其他类别", "不适用"),
-            ("不确定类别", "无法评价"),
+            ("其他类别", "不在范围"),
+            ("不确定类别", "无法判定"),
         )
         for index, (category, expected) in enumerate(cases):
             with self.subTest(category=category):
@@ -525,7 +525,7 @@ class BatchPageTests(BatchTestCase):
                           side_effect=RuntimeError("模拟装配失败")):
             self.assertIsNone(page.run())
         self.assertIn("批量评价未能完成", page.summary_label.text())
-        self.assertNotIn("无法评价", page.summary_label.text())
+        self.assertNotIn("无法判定", page.summary_label.text())
 
 
 class CompositionWiringTests(BatchTestCase):

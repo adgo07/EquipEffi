@@ -28,6 +28,7 @@ from ...application.services.centrifugal_pump_analysis_service import (
     issue_code_texts,
     support_status_text,
     user_conclusion_text,
+    user_grade_text,
     user_facing_issue_kind,
     user_facing_status,
 )
@@ -43,6 +44,7 @@ __all__ = [
     "issue_code_texts",
     "support_status_text",
     "user_conclusion_text",
+    "user_grade_text",
     "user_facing_issue_kind",
     "user_facing_status",
 ]

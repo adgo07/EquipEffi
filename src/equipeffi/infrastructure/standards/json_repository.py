@@ -91,14 +91,18 @@ class JsonStandardRepository:
                 source.relative_to(self.root)
             except ValueError as exc:
                 raise StandardPackError(f"标准包越出允许根目录: {source}") from exc
+        try:
             source_exists = source.is_file()
-        else:
-            source_exists = source.is_file()
+        except OSError as exc:
+            raise StandardPackError(f"无法访问标准包文件: {source}") from exc
         if not source_exists:
+            status = str(entry.get("status", StandardDataStatus.EXTRACTED.value))
+            if status.casefold() == StandardDataStatus.ACTIVE.value:
+                raise StandardPackError(f"正式启用的标准包文件不存在: {source}")
             return {
                 "pack_id": entry["pack_id"],
                 "device_type": device_type,
-                "status": entry.get("status", StandardDataStatus.EXTRACTED.value),
+                "status": status,
                 "unavailable_reason": entry.get("unavailable_reason", "标准数据文件不存在"),
             }
         # M3-G1：同一实例内同一标准包只读一次；命中缓存时只做 deepcopy。
@@ -121,10 +125,15 @@ class JsonStandardRepository:
         # Pump formula coefficients and table boundaries are decimal source
         # literals.  Keep their JSON lexemes exact instead of first parsing
         # them as binary floats; other packages retain their historical loader.
-        if device_type in {"pump_water", "pump_chemical"}:
-            data = json.loads(source.read_text(encoding="utf-8"), parse_float=Decimal)
-        else:
-            data = json.loads(source.read_text(encoding="utf-8"))
+        try:
+            if device_type in {"pump_water", "pump_chemical"}:
+                data = json.loads(source.read_text(encoding="utf-8"), parse_float=Decimal)
+            else:
+                data = json.loads(source.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+            raise StandardPackError(f"无法读取或解析标准包文件 {source}: {exc}") from exc
+        if not isinstance(data, dict):
+            raise StandardPackError(f"标准包 JSON 顶层必须是对象: {source}")
         data["pack_id"] = entry["pack_id"]
         data["device_type"] = device_type
         data["status"] = entry.get("status", StandardDataStatus.NORMALIZED.value)
