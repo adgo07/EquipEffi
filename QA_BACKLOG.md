@@ -567,3 +567,9 @@ Numeric Profile、comparison precision、V6 模板、record / batch_record schem
 | issue_id | legacy_id/audit_id | profile_id | location | description | business_risk | engineering_risk | release_surface | classification | target_phase | status | evidence | decision |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | QA-SIMP-X-001 | SIMPLIFICATION-20261019-X | pump_water / pump_chemical | `template_resource.py` / `pump_workbook_reader.py` / V6 manifest | 正式模板身份仍由 Python 常量重复维护，运行时只检查 Sheet 是否存在；泵 Reader 丢弃表头换行后的单位，可能把字段改单位的工作簿按原单位读取。当前 manifest 路径也未落在 wheel 的 `resources/*.json` 包含规则内。 | 单位或字段映射漂移可能造成输入语义错误；本项不更改 GB 19762 计算规则或 Golden 真值 | M | V1_RUNTIME | P1 | 软件简化 X 线（Owner 授权） | OPEN | `V6TemplateResource.validate`、`V6PumpWorkbookReader._verify_headers`、`pyproject.toml` package-data 对照 | 以打包可用的唯一 manifest 驱动身份与泵 Sheet 结构契约；已声明版本必须匹配实际结构，未标记旧版仅严格识别 V6-20261005 结构；单位不匹配明确拒绝。 |
+
+## Simplification C line (2026-10-19)
+
+| issue_id | legacy_id/audit_id | profile_id | location | description | business_risk | engineering_risk | release_surface | classification | target_phase | status | evidence | decision |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| QA-SIMP-C-001 | F01/F03/F05/F06 | pump_water / pump_chemical | `CentrifugalPumpAnalysisService`, standard repository, Qt result views | Standard identity can be mismatched or omitted from fingerprints; result metrics depend on Chinese labels; calculator version records only Profile; active resource failures can appear as invalid business input | Standard/record identity, formal result output, or system failure classification may be wrong | H | V1_RUNTIME | P1 | Simplification C | OPEN | `origin/docs/approved-mapping-audit-20261018` F01/F03/F05/F06; targeted regressions to be added in this task | Fix at existing Application/repository/display boundaries; preserve Decimal50 decisions, 29 approved Golden truths, record eligibility and historical snapshots. |

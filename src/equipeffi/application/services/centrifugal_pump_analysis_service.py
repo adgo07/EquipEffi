@@ -41,6 +41,12 @@ from ..lifecycle import (
     business_keys_metadata,
     stable_fingerprint,
 )
+from ..result_projection import (
+    DERIVED_DISPLAY_NAMES,
+    PumpResultMetric,
+    THRESHOLD_DISPLAY_NAMES,
+    project_pump_metrics,
+)
 from .pump_release_gate import pump_release_support
 
 PUMP_PUBLIC_DEVICE_TYPE = "centrifugal_pump"
@@ -495,6 +501,8 @@ class PumpAnalysisResult:
     requires_category_confirmation: bool = False
     finalizable: bool = False
     not_finalizable_reason: str = ""
+    #: Stable, additive result indicator projection; legacy fields above remain available.
+    metrics_by_id: dict[str, PumpResultMetric] = field(default_factory=dict)
 
     def as_snapshot(self) -> dict[str, Any]:
         """可 JSON 序列化的快照（用于 Record / 展示投影）。"""
@@ -513,6 +521,7 @@ class PumpAnalysisResult:
             "missing_fields": list(self.missing_fields),
             "matched_rule_id": self.matched_rule_id,
             "thresholds": dict(self.thresholds),
+            "metrics_by_id": {key: value.as_dict() for key, value in self.metrics_by_id.items()},
             "calculation_trace": dict(self.calculation_trace),
             "extra_metrics": dict(self.extra_metrics),
             "explanation": self.explanation,
@@ -552,26 +561,6 @@ _TRACE_KEYS_BY_PROFILE: dict[str, tuple[str, ...]] = {
     "pump_chemical": ("suction_factor", "stage_count", "q_for_ns_m3s", "h_for_ns_m",
                       "ns_raw", "输出功率_kW", "基准效率_%", "效率修正值_%",
                       "规定点效率_%"),
-}
-
-#: 内部派生量 → 用户可理解名称（UI 只消费本表，不直接暴露内部键）。
-DERIVED_DISPLAY_NAMES: dict[str, str] = {
-    "suction_factor": "吸入方式系数",
-    "stage_count": "级数",
-    "q_for_ns_m3s": "比转速用流量（m³/s）",
-    "h_for_ns_m": "单级扬程（m）",
-    "ns_raw": "比转速 ns",
-    "输出功率_kW": "输出功率（kW）",
-    "基准效率_%": "基准效率 η_b（%）",
-    "效率修正值_%": "效率修正值 Δη（%）",
-    "规定点效率_%": "规定点效率 η₀（%）",
-}
-
-#: 内部阈值键 → 用户可理解名称。
-THRESHOLD_DISPLAY_NAMES: dict[str, str] = {
-    "1级效率_%": "1级能效效率限值（%）",
-    "2级效率_%": "2级能效效率限值（%）",
-    "3级效率_%": "3级能效效率限值（%）",
 }
 
 
@@ -878,6 +867,7 @@ class CentrifugalPumpAnalysisService:
             missing_fields=tuple(result.missing_fields),
             matched_rule_id=matched_rule_id,
             thresholds=self._thresholds(result),
+            metrics_by_id=project_pump_metrics(result.calculated_metrics, result.limits),
             calculation_trace=self._trace(result, rule_profile),
             extra_metrics=self._extra_metrics(result),
             explanation=result.explanation,
