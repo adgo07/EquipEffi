@@ -244,7 +244,7 @@ _INTEGER_METRIC_NAMES: frozenset[str] = frozenset({"级数", "吸入方式系数
 
 
 def user_conclusion_text(result: Any) -> str:
-    """用户可见的正式评价结论（Qt 与 Excel **必须**共用本函数）。"""
+    """用户可见的评价结论与行状态文案（Qt 与 Excel **必须**共用本函数）。"""
 
     snapshot = result.as_snapshot() if hasattr(result, "as_snapshot") else dict(result or {})
     return _user_conclusion_from_values(snapshot)
@@ -271,7 +271,13 @@ def _user_conclusion_from_values(snapshot: dict[str, Any],
     status = snapshot.get("evaluation_status")
     if status == "OUT_OF_STANDARD_SCOPE":
         return "不在范围"
-    if status in {"INVALID_INPUT", "INSUFFICIENT_DATA", "EXECUTION_ERROR"}:
+    if status == "INVALID_INPUT":
+        # 与批量适配器当前正式行结论一致；这是输入问题，不是业务判定。
+        return "输入错误"
+    if status == "EXECUTION_ERROR":
+        # 与批量适配器当前正式行结论一致；系统失败不得伪装成业务判定。
+        return "执行失败"
+    if status == "INSUFFICIENT_DATA":
         return USER_CONCLUSION_FALLBACK
     grade = user_grade_text(snapshot.get("grade"))
     if grade:

@@ -12,6 +12,6 @@ PUMP_CALCULATOR_SOURCE_FILES: tuple[str, ...] = (
 )
 
 PUMP_CALCULATOR_VERSION = (
-    "pump-calculator:sha256:fe33a288210678508e85a3a806d83fd5"
-    "8ba8c46fbdac98184879d3fd0e60e856"
+    "pump-calculator:sha256:6c2e9b5031c349ba014ee295273e3f0a0"
+    "ac4dbd4fb53252f90ae165378202f16"
 )

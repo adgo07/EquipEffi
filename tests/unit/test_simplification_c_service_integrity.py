@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from datetime import date
 from pathlib import Path
 import tempfile
@@ -17,6 +18,7 @@ from equipeffi.application.services.centrifugal_pump_analysis_service import (
     PUMP_FINGERPRINT_KEYS,
     PUMP_STANDARD_IDENTITY_KEY,
     PumpAnalysisRequest,
+    PumpAnalysisResult,
     CentrifugalPumpAnalysisService,
     _pump_payload,
     user_conclusion_from_snapshot,
@@ -31,6 +33,8 @@ from equipeffi.infrastructure.standards.json_repository import (
     JsonStandardRepository,
     StandardPackError,
 )
+
+os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -224,7 +228,9 @@ class UserDisplayProjectionTests(unittest.TestCase):
             ({"evaluation_status": "INSUFFICIENT_DATA", "ui_conclusion": "无法判定"},
              "无法判定"),
             ({"evaluation_status": "INVALID_INPUT", "grade": "2",
-              "ui_conclusion": "2级"}, "无法判定"),
+              "ui_conclusion": "2级"}, "输入错误"),
+            ({"evaluation_status": "EXECUTION_ERROR", "grade": "1",
+              "ui_conclusion": "1级"}, "执行失败"),
             ({"evaluation_status": None, "requires_category_confirmation": True,
               "ui_conclusion": "无法评价"}, "无法判定"),
         )
@@ -232,6 +238,23 @@ class UserDisplayProjectionTests(unittest.TestCase):
             with self.subTest(snapshot=snapshot):
                 self.assertEqual(user_conclusion_text(snapshot), expected)
                 self.assertEqual(user_conclusion_from_snapshot(snapshot), expected)
+
+                live_result = PumpAnalysisResult(
+                    rule_profile=None,
+                    standard_code=GB19762_STANDARD_CODE,
+                    product_category="单级单吸清水离心泵",
+                    as_of=date(2026, 10, 19),
+                    evaluation_status=snapshot.get("evaluation_status"),
+                    category_status=None,
+                    support_status=None,
+                    ui_conclusion=snapshot.get("ui_conclusion", ""),
+                    grade=snapshot.get("grade"),
+                    requires_category_confirmation=bool(
+                        snapshot.get("requires_category_confirmation")),
+                )
+                self.assertEqual(user_conclusion_text(live_result), expected)
+                self.assertEqual(
+                    user_conclusion_from_snapshot(live_result.as_snapshot()), expected)
 
     def test_internal_grade_codes_never_leak_to_user_text(self):
         self.assertEqual(user_grade_text("1"), "1级")
@@ -249,6 +272,128 @@ class PumpCalculatorVersionTests(unittest.TestCase):
             digest.update(b"\0")
         self.assertEqual(PUMP_CALCULATOR_VERSION,
                          f"pump-calculator:sha256:{digest.hexdigest()}")
+
+
+class QtBatchDisplayWiringTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        from PySide6.QtWidgets import QApplication
+
+        cls.app = QApplication.instance() or QApplication([])
+
+    @staticmethod
+    def _service():
+        return CentrifugalPumpAnalysisService(
+            JsonStandardRepository(ROOT / "src" / "equipeffi"))
+
+    @staticmethod
+    def _write_input(path: Path, *, flow: int, efficiency: int = 80) -> None:
+        import openpyxl
+
+        from equipeffi.infrastructure.excel.pump_workbook_reader import PUMP_SHEET
+        from equipeffi.infrastructure.excel.template_resource import V6TemplateResource
+
+        V6TemplateResource().download_to(path)
+        workbook = openpyxl.load_workbook(path)
+        sheet = workbook[PUMP_SHEET]
+        row = 4
+        for column, value in {
+            "B": "测试泵", "C": "C-001", "D": 1, "E": "1号车间",
+            "F": "单级单吸清水离心泵", "G": flow, "H": 50, "I": 2900,
+            "J": 45, "K": "单吸", "L": 1, "M": efficiency,
+        }.items():
+            sheet[f"{column}{row}"] = value
+        workbook.save(path)
+        workbook.close()
+
+    @staticmethod
+    def _batch(service):
+        from equipeffi.application.services.pump_batch_evaluation_service import (
+            PumpBatchEvaluationService,
+        )
+        from equipeffi.infrastructure.excel.pump_result_writer import (
+            PumpResultWorkbookWriter,
+        )
+        from equipeffi.infrastructure.excel.pump_workbook_reader import (
+            V6PumpWorkbookReader,
+        )
+
+        return PumpBatchEvaluationService(
+            service,
+            reader=V6PumpWorkbookReader(),
+            writer=PumpResultWorkbookWriter(),
+        )
+
+    @staticmethod
+    def _page(service):
+        from equipeffi.presentation.qt.pages.analysis import AnalysisPage
+
+        page = AnalysisPage(service, as_of=date(2026, 10, 19))
+        page.category.setCurrentIndex(
+            page.category.findData("单级单吸清水离心泵"))
+        for key, value in (
+            ("QBEP", "-1"), ("HBEP", "50"),
+            ("speed", "2900"), ("efficiency", "80"),
+        ):
+            page.point_inputs[key].setText(value)
+        return page
+
+    def test_invalid_input_stays_separate_in_live_qt_and_batch_results(self):
+        import openpyxl
+
+        from equipeffi.infrastructure.excel.pump_workbook_reader import PUMP_SHEET
+
+        service = self._service()
+        page = self._page(service)
+        self.addCleanup(page.deleteLater)
+        live_result = page.evaluate()
+        self.assertEqual(live_result.evaluation_status, "INVALID_INPUT")
+        self.assertEqual(page.conclusion.text(), "输入错误")
+        self.assertEqual(service.list_records(), [])
+
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "input.xlsx"
+            destination = Path(temp) / "result.xlsx"
+            self._write_input(source, flow=-1)
+            batch = self._batch(service).evaluate_workbook(
+                source, destination=destination,
+                as_of=date(2026, 10, 19), persist=False)
+            outcome = batch.outcomes[0]
+            self.assertTrue(outcome.is_input_error)
+            self.assertEqual(outcome.conclusion, page.conclusion.text())
+            self.assertEqual(outcome.conclusion, "输入错误")
+            workbook = openpyxl.load_workbook(destination, data_only=True)
+            self.addCleanup(workbook.close)
+            self.assertEqual(workbook[PUMP_SHEET]["X4"].value, "输入错误")
+
+    def test_execution_failure_stays_separate_in_live_qt_and_batch_results(self):
+        import openpyxl
+
+        from equipeffi.infrastructure.excel.pump_workbook_reader import PUMP_SHEET
+        from equipeffi.presentation.qt.pages.analysis import SYSTEM_FAILURE_TEXT
+
+        service = self._service()
+        page = self._page(service)
+        self.addCleanup(page.deleteLater)
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "input.xlsx"
+            destination = Path(temp) / "result.xlsx"
+            self._write_input(source, flow=100)
+            with patch.object(service, "evaluate", side_effect=RuntimeError("simulated failure")):
+                self.assertIsNone(page.evaluate())
+                self.assertEqual(page.conclusion.text(), "—")
+                self.assertEqual(page.summary.text(), SYSTEM_FAILURE_TEXT)
+
+                batch = self._batch(service).evaluate_workbook(
+                    source, destination=destination,
+                    as_of=date(2026, 10, 19), persist=False)
+            outcome = batch.outcomes[0]
+            self.assertTrue(outcome.is_execution_error)
+            self.assertEqual(outcome.conclusion, "执行失败")
+            self.assertNotEqual(outcome.conclusion, "无法判定")
+            workbook = openpyxl.load_workbook(destination, data_only=True)
+            self.addCleanup(workbook.close)
+            self.assertEqual(workbook[PUMP_SHEET]["X4"].value, "执行失败")
 
 
 if __name__ == "__main__":
