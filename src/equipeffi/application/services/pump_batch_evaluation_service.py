@@ -510,6 +510,7 @@ def _outcome_from_result(row_number: int, result,
 
     snapshot = result.as_snapshot()
     derived = dict((result.calculation_trace or {}).get("derived") or {})
+    metrics_by_id = dict(getattr(result, "metrics_by_id", None) or {})
     messages: list[str] = []
     missing = snapshot.get("missing_fields") or []
     if missing:
@@ -529,6 +530,7 @@ def _outcome_from_result(row_number: int, result,
         messages=tuple(messages),
         derived=derived,
         thresholds=thresholds,
+        metrics_by_id=metrics_by_id,
         quantity=quantity)
 
 

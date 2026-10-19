@@ -26,6 +26,10 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 import openpyxl
 
+from equipeffi.application.result_projection import (
+    PUMP_METRIC_IDS,
+    PUMP_RESULT_METRIC_DEFINITIONS,
+)
 from equipeffi.application.services.centrifugal_pump_analysis_service import (
     CATEGORY_FIELD_CONSTRAINTS,
     PUMP_CATEGORIES,
@@ -98,6 +102,24 @@ class TemplateAssetTests(unittest.TestCase):
             (field["column"], field["field_id"])
             for field in PUMP_SHEET_CONTRACT["fields"]
             if field.get("role") == "input"))
+
+    def test_result_metric_columns_resolve_to_application_ids_and_units(self):
+        expected_keys = {
+            "N": "specific_speed", "O": "c1", "P": "c2", "Q": "c3",
+            "R": "base_efficiency", "S": "efficiency_correction",
+            "T": "specified_efficiency", "U": "grade_1_efficiency_limit",
+            "V": "grade_2_efficiency_limit", "W": "grade_3_efficiency_limit",
+        }
+        fields = [field for field in PUMP_SHEET_CONTRACT["fields"]
+                  if field.get("metric_key")]
+        self.assertEqual({field["column"]: field["metric_key"] for field in fields},
+                         expected_keys)
+        definitions = {item.metric_id: item
+                       for item in PUMP_RESULT_METRIC_DEFINITIONS}
+        for field in fields:
+            with self.subTest(column=field["column"]):
+                metric_id = PUMP_METRIC_IDS[field["metric_key"]]
+                self.assertEqual(field["metric_unit"], definitions[metric_id].unit)
 
     def test_declared_identity_requires_a_known_version_and_all_sheet_revisions(self):
         encoded = {name: (f'"{value}"',)

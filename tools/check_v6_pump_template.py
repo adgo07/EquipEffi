@@ -38,6 +38,10 @@ import openpyxl
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 from equipeffi.domain.evaluation.device_types import PUBLIC_DEVICE_NAMES
+from equipeffi.application.result_projection import (
+    PUMP_METRIC_IDS,
+    PUMP_RESULT_METRIC_DEFINITIONS,
+)
 from equipeffi.infrastructure.excel.template_resource import (
     V6_TEMPLATE_ENTRY,
     V6_TEMPLATE_IDENTITY,
@@ -219,6 +223,46 @@ def run_checks(template: Path = TEMPLATE) -> Report:
                        device_contracts == PUBLIC_DEVICE_NAMES,
                        f"清单 {len(device_contracts)} 个设备 Sheet / Application "
                        f"{len(PUBLIC_DEVICE_NAMES)} 个正式类型")
+            metric_definitions = {
+                item.metric_id: item for item in PUMP_RESULT_METRIC_DEFINITIONS
+            }
+            metric_fields = [field for field in PUMP_CONTRACT["fields"]
+                             if field.get("role") == "result"
+                             and field.get("metric_key")]
+            metric_keys = [str(field["metric_key"]) for field in metric_fields]
+            unknown_keys = sorted(set(metric_keys) - set(PUMP_METRIC_IDS))
+            metric_ids = [PUMP_METRIC_IDS[key] for key in metric_keys
+                          if key in PUMP_METRIC_IDS]
+            unit_mismatches: list[str] = []
+            for field in metric_fields:
+                key = str(field["metric_key"])
+                if key not in PUMP_METRIC_IDS:
+                    continue
+                metric_id = PUMP_METRIC_IDS[key]
+                definition = metric_definitions.get(metric_id)
+                expected_unit = definition.unit if definition is not None else "<missing>"
+                if definition is None or field.get("metric_unit") != expected_unit:
+                    unit_mismatches.append(
+                        f"{field['column']}:{field.get('metric_unit')!r} != "
+                        f"{expected_unit!r}")
+            incomplete_metrics = [
+                field["column"] for field in PUMP_CONTRACT["fields"]
+                if field.get("role") == "result"
+                and bool(field.get("metric_key")) != bool(field.get("metric_unit"))
+            ]
+            metric_mapping_valid = (
+                bool(metric_fields)
+                and not unknown_keys
+                and len(metric_keys) == len(set(metric_keys))
+                and len(metric_ids) == len(set(metric_ids))
+                and not unit_mismatches
+                and not incomplete_metrics
+            )
+            report.add(
+                "manifest_result_metric_projection_matches_application",
+                metric_mapping_valid,
+                f"unknown keys={unknown_keys}; unit mismatches={unit_mismatches}; "
+                f"incomplete fields={incomplete_metrics}")
     else:
         report.add("manifest_present", False, str(MANIFEST))
 

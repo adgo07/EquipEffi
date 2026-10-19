@@ -26,6 +26,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 import openpyxl
 
 from equipeffi.application.lifecycle import BatchRecordSnapshot
+from equipeffi.application.result_projection import PUMP_METRIC_IDS
 from equipeffi.application.services.centrifugal_pump_analysis_service import (
     PUMP_CATEGORIES,
     user_conclusion_text,
@@ -355,6 +356,10 @@ class ResultWorkbookTests(BatchTestCase):
         self.assertEqual(written["X"], "1级")
         self.assertIsNotNone(written["N"], "比转速应写回")
         self.assertIsNotNone(written["AA"], "自动备注应写回")
+        speed_metric = result.outcomes[0].metrics_by_id[
+            PUMP_METRIC_IDS["specific_speed"]]
+        self.assertEqual(speed_metric.metric_id, "pump.specific_speed")
+        self.assertEqual(speed_metric.unit, "1")
 
     def test_input_columns_are_preserved_verbatim(self):
         self.fill([self.water_row(B="保留我", C="M-999", E="9号车间")])
