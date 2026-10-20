@@ -108,7 +108,7 @@ class StandardPackFirstAccessTests(unittest.TestCase):
             self.assertEqual(repeat, first)
 
     def test_each_device_type_is_cached_separately(self):
-        """同一 Canonical 文件服务两个设备类型时，各自只读一次。"""
+        """共享 Canonical 的每个 Profile 首次各自校验，后续复用自身缓存。"""
 
         repository = JsonStandardRepository(ROOT)
         with count_pack_load_work() as first:
@@ -118,10 +118,13 @@ class StandardPackFirstAccessTests(unittest.TestCase):
         with count_pack_load_work() as third:
             repository.get_pack("pump_chemical")
 
-        self.assertEqual(first["read_text"], 1)
-        self.assertEqual(second["read_text"], 1, "另一个设备类型仍须自己读一次")
-        self.assertEqual(second["validate"], 0, "同一 Canonical 源的结构校验仍只做一次")
-        self.assertEqual(third["read_text"], 0)
+        first_work = {"read_text": 1, "json_loads": 1, "sha256": 1, "validate": 1}
+        no_work = {"read_text": 0, "json_loads": 0, "sha256": 0, "validate": 0}
+        self.assertEqual(first, first_work, "pump_water 首次访问必须完整读取、解析、哈希和校验")
+        self.assertEqual(
+            second, first_work,
+            "pump_chemical 是另一个 Profile，首次访问也必须完整读取、解析、哈希和校验")
+        self.assertEqual(third, no_work, "同一 Profile 后续访问不得重复读取、解析、哈希或校验")
         self.assertEqual(chemical["device_type"], "pump_chemical")
 
 
