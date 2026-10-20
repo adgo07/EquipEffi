@@ -59,9 +59,11 @@ class JsonStandardRepository:
         self._validator = StandardPackValidator()
         # A batch may request the same standard pack thousands of times.  The
         # resource is immutable for the lifetime of this repository, so cache
-        # the successful structural validation by source rather than walking
-        # a large shared HVAC pack for every record.
-        self._validated_sources: set[str] = set()
+        # successful validation by source and profile.  The active water and
+        # chemical pump entries share one JSON file but have distinct required
+        # structures, so a source-only key would let the first profile bypass
+        # validation of the second.
+        self._validated_sources: set[tuple[str, str]] = set()
         # M3-G1：同一个 repository 实例里，同一个标准包只做一次
         # read → parse → validate → SHA-256，并缓存组装完成的快照。
         # 缓存范围**严格限定在本实例**：不是进程级缓存、不是磁盘缓存、
@@ -142,7 +144,7 @@ class JsonStandardRepository:
         # 注入实际 Canonical 源的 SHA-256（UTF-8、CRLF→LF）。这是业务真值来源
         # 的客观指纹，供 Record 固化与审计；不得用 commit SHA 或空值冒充。
         data["pack_hash"] = self._source_sha256(source)
-        validation_key = str(source)
+        validation_key = (str(source), device_type)
         if validation_key not in self._validated_sources:
             issues = self._validator.validate(data)
             if issues:

@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 import tempfile
@@ -202,15 +203,91 @@ class StandardPackFailureBoundaryTests(unittest.TestCase):
             source.write_text("{}", encoding="utf-8")
             repository = JsonStandardRepository(root, root / "manifest.json")
             real_read_text = Path.read_text
+            read_failure_injected = False
+            resolved_source = source.resolve()
 
             def fail_pack_read(path, *args, **kwargs):
-                if path == source:
+                nonlocal read_failure_injected
+                if path.resolve() == resolved_source:
+                    read_failure_injected = True
                     raise PermissionError("test resource access failure")
                 return real_read_text(path, *args, **kwargs)
 
             with patch.object(Path, "read_text", fail_pack_read):
                 with self.assertRaisesRegex(StandardPackError, "无法读取或解析标准包"):
                     repository.get_pack("pump_water")
+            self.assertTrue(read_failure_injected, "测试必须实际注入标准包读取失败")
+
+    @staticmethod
+    def _active_pump_repository(root: Path):
+        source = root / "pump.json"
+        manifest = root / "manifest.json"
+        source.write_text(
+            (ROOT / "src" / "equipeffi" / "resources" / "standards" / "pump.json")
+            .read_text(encoding="utf-8"),
+            encoding="utf-8",
+        )
+        manifest.write_text(json.dumps({
+            "packs": [
+                {"device_type": "pump_water", "pack_id": "water-test-v1",
+                 "source": "pump.json", "status": "active"},
+                {"device_type": "pump_chemical", "pack_id": "chemical-test-v1",
+                 "source": "pump.json", "status": "active"},
+            ],
+        }), encoding="utf-8")
+        return JsonStandardRepository(root, manifest), source
+
+    def test_active_water_profile_rejects_an_empty_required_ci_table(self):
+        with tempfile.TemporaryDirectory() as temp:
+            repository, source = self._active_pump_repository(Path(temp))
+            pack = json.loads(source.read_text(encoding="utf-8"))
+            pack["water"]["ci"] = []
+            source.write_text(json.dumps(pack), encoding="utf-8")
+
+            with self.assertRaisesRegex(StandardPackError, r"pump_water.*water\.ci"):
+                repository.get_pack("pump_water")
+
+    def test_active_pump_profiles_accept_the_canonical_required_structures(self):
+        with tempfile.TemporaryDirectory() as temp:
+            repository, _source = self._active_pump_repository(Path(temp))
+
+            water = repository.get_pack("pump_water")
+            chemical = repository.get_pack("pump_chemical")
+
+            self.assertTrue(water["water"]["ci"])
+            self.assertTrue(chemical["chemical"]["level_offsets"])
+
+    def test_active_chemical_profile_rejects_a_missing_required_table(self):
+        with tempfile.TemporaryDirectory() as temp:
+            repository, source = self._active_pump_repository(Path(temp))
+            pack = json.loads(source.read_text(encoding="utf-8"))
+            pack["chemical"]["level_offsets"] = []
+            source.write_text(json.dumps(pack), encoding="utf-8")
+
+            with self.assertRaisesRegex(StandardPackError, r"pump_chemical.*chemical\.level_offsets"):
+                repository.get_pack("pump_chemical")
+
+    def test_malformed_chemical_pump_kind_is_wrapped_as_pack_error(self):
+        for bad_kind in ([], {}):
+            with self.subTest(bad_kind=bad_kind), tempfile.TemporaryDirectory() as temp:
+                repository, source = self._active_pump_repository(Path(temp))
+                pack = json.loads(source.read_text(encoding="utf-8"))
+                pack["chemical"]["level_offsets"][0]["pump"] = bad_kind
+                source.write_text(json.dumps(pack), encoding="utf-8")
+
+                with self.assertRaisesRegex(StandardPackError, "pump_chemical.*结构校验失败"):
+                    repository.get_pack("pump_chemical")
+
+    def test_shared_pack_source_is_validated_for_each_active_pump_profile(self):
+        with tempfile.TemporaryDirectory() as temp:
+            repository, source = self._active_pump_repository(Path(temp))
+            repository.get_pack("pump_water")
+            pack = json.loads(source.read_text(encoding="utf-8"))
+            pack["chemical"]["level_offsets"] = []
+            source.write_text(json.dumps(pack), encoding="utf-8")
+
+            with self.assertRaisesRegex(StandardPackError, r"pump_chemical.*chemical\.level_offsets"):
+                repository.get_pack("pump_chemical")
 
     def test_missing_inactive_pack_keeps_existing_unavailable_shell(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -266,6 +343,19 @@ class UserDisplayProjectionTests(unittest.TestCase):
 
 
 class PumpCalculatorVersionTests(unittest.TestCase):
+    def test_source_fingerprint_declares_grading_numeric_and_range_dependencies(self):
+        required_sources = {
+            "src/equipeffi/application/result_projection.py",
+            "src/equipeffi/application/services/pump_release_gate.py",
+            "src/equipeffi/domain/evaluation/device_evaluators.py",
+            "src/equipeffi/domain/evaluation/evaluators/shared.py",
+            "src/equipeffi/domain/evaluation/decimal_math.py",
+            "src/equipeffi/domain/evaluation/grading.py",
+            "src/equipeffi/domain/common/enums.py",
+            "src/equipeffi/domain/common/models.py",
+        }
+        self.assertTrue(required_sources.issubset(set(PUMP_CALCULATOR_SOURCE_FILES)))
+
     def test_calculator_version_matches_the_reviewed_source_fingerprint(self):
         digest = hashlib.sha256()
         for relative_path in PUMP_CALCULATOR_SOURCE_FILES:
@@ -275,6 +365,57 @@ class PumpCalculatorVersionTests(unittest.TestCase):
             digest.update(b"\0")
         self.assertEqual(PUMP_CALCULATOR_VERSION,
                          f"pump-calculator:sha256:{digest.hexdigest()}")
+
+
+@dataclass(frozen=True)
+class _HomeHistoryRecord:
+    record_id: str
+    product_category: str
+    grade: str | None
+    evaluation_status: str
+    ui_conclusion: str
+    as_of: str
+
+
+class HomePageHistoricalProjectionTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        from PySide6.QtWidgets import QApplication
+
+        cls.app = QApplication.instance() or QApplication([])
+
+    def test_recent_history_uses_shared_snapshot_projection_without_mutating_records(self):
+        from equipeffi.presentation.qt.pages.home import HomePage
+
+        records = (
+            _HomeHistoryRecord("R1", "测试泵", "1", "SUCCESS", "1级", "2026-10-20"),
+            _HomeHistoryRecord("R2", "测试泵", "2", "SUCCESS", "2级", "2026-10-20"),
+            _HomeHistoryRecord("R3", "测试泵", "3", "SUCCESS", "3级", "2026-10-20"),
+            _HomeHistoryRecord("R4", "测试泵", "BELOW_MINIMUM", "SUCCESS", "未达标", "2026-10-20"),
+            _HomeHistoryRecord("R5", "测试泵", None, "OUT_OF_STANDARD_SCOPE", "不适用", "2026-10-20"),
+        )
+        before = records
+
+        class HistoryService:
+            def standard_overview(self):
+                return {"standard_code": "GB 19762-2025", "standard_name": "离心泵能效", "effective_date": "2026-03-01"}
+
+            def list_records(self, *, limit):
+                self.limit = limit
+                return records
+
+        service = HistoryService()
+        page = HomePage(service)
+        page.refresh()
+
+        expected = ("1级", "2级", "3级", "未达3级", "不在范围")
+        rendered = tuple(page.records.item(index).text() for index in range(page.records.count()))
+        self.assertEqual(service.limit, 5)
+        for record, label in zip(records, expected):
+            with self.subTest(record_id=record.record_id):
+                row = next(text for text in rendered if record.record_id in text)
+                self.assertIn(f"　{label}　", row)
+        self.assertEqual(records, before, "首页展示不得改写历史记录")
 
 
 class QtBatchDisplayWiringTests(unittest.TestCase):
