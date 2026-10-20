@@ -34,10 +34,10 @@ current_task:
   task_kind: Owner 授权软件简化首批（不改变 Phase、标准解释或支持范围）
   branch: codex/simplification-integration-20261019
   base_sha: 2c7807f32ef08d18554014328efd4ceaa356726f
-  status: ACCEPTED_FOR_PR
+  status: LOCAL_REVERIFIED_REMOTE_GATE_REQUIRED
   design: docs/governance/SIMPLIFICATION_IMPLEMENTATION_20261019.md
   acceptance: docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md
-  next_action: 提交 PR 供审阅，不直接合并或正式发布
+  next_action: 六项修复已本地复验并更新 PR 24；远端最终 Head 门禁与计数见 PR 检查及说明，不自动合并
   source_mapping_work: 源 checkout 既有未提交资料保留，不纳入本批
   previous_task_evidence: docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md
 

@@ -128,5 +128,204 @@
     "artifacts/simplification-acceptance-20261020/actual.json": "8ecb6e2e45ac0026eaccfde540a413e19e7b2e1e454cabd4cd3b1e398ffe0668",
     "artifacts/simplification-acceptance-20261020/comparison.json": "ad844733a99352a5997a3a8339da1e7609c1c4486375e35cd2435f7ce2d642f6",
     "artifacts/full-suite-console-20261020.log": "51e090ccb5a5dddcde3fc1ce9530e57248a600058f081106c229716e6d431097"
+  },
+  "first_round_acceptance_status": "WITHDRAWN_AFTER_EXTERNAL_REVIEW",
+  "r1": {
+    "runtime_sha": "34259c0",
+    "code_and_tests_sha": "3a30b5700f9a1c221c10700ce7d056e72d97b637",
+    "local_status": "SIX_FIXES_REVERIFIED",
+    "xp_tests": {
+      "run": 96,
+      "pass": 96,
+      "fail": 0,
+      "error": 0,
+      "skip": 0
+    },
+    "c_history_golden_architecture_first_run": {
+      "run": 217,
+      "pass": 216,
+      "fail": 1,
+      "error": 0,
+      "skip": 0,
+      "failure_id": "tests.unit.test_m3_standard_pack_cache.StandardPackFirstAccessTests.test_each_device_type_is_cached_separately"
+    },
+    "m3_after_test_expectation_fix": {
+      "run": 12,
+      "pass": 12,
+      "fail": 0,
+      "error": 0,
+      "skip": 0
+    },
+    "artifact_audit": [
+      {
+        "path": "C:\\Users\\WANGWEI\\.codex\\worktrees\\equipeffi-simplification-integration\\EquipEffi\\artifacts\\pr24-r1-build\\equipeffi-0.2.1-py3-none-any.whl",
+        "kind": "wheel",
+        "is_valid": true,
+        "errors": [],
+        "warnings": [],
+        "checks": {
+          "member_count": 283,
+          "runtime_asset_count": 18,
+          "declared_runtime_assets": [
+            "equipeffi/resources/TEMPLATE_MANIFEST.json",
+            "equipeffi/resources/elimination_catalog_batches_1_4.json",
+            "equipeffi/resources/elimination_catalog_industry_2024.json",
+            "equipeffi/resources/standards/blower.json",
+            "equipeffi/resources/standards/boiler.json",
+            "equipeffi/resources/standards/compressor.json",
+            "equipeffi/resources/standards/fan.json",
+            "equipeffi/resources/standards/gb30253_2024_pdf_verified_v1.json",
+            "equipeffi/resources/standards/heat_treatment.json",
+            "equipeffi/resources/standards/hvac_thresholds.json",
+            "equipeffi/resources/standards/motor_hv.json",
+            "equipeffi/resources/standards/motor_lv.json",
+            "equipeffi/resources/standards/pump.json",
+            "equipeffi/resources/standards/submersible.json",
+            "equipeffi/resources/standards/transformer.json",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
+            "equipeffi/standard_manifest.json"
+          ],
+          "missing_runtime_assets": [],
+          "unexpected_runtime_resources": [],
+          "standard_source_findings": [],
+          "allowed_report_pdfs": []
+        }
+      },
+      {
+        "path": "C:\\Users\\WANGWEI\\.codex\\worktrees\\equipeffi-simplification-integration\\EquipEffi\\artifacts\\pr24-r1-build\\equipeffi-0.2.1.tar.gz",
+        "kind": "sdist",
+        "is_valid": true,
+        "errors": [],
+        "warnings": [],
+        "checks": {
+          "member_count": 289,
+          "runtime_asset_count": 18,
+          "declared_runtime_assets": [
+            "equipeffi/resources/TEMPLATE_MANIFEST.json",
+            "equipeffi/resources/elimination_catalog_batches_1_4.json",
+            "equipeffi/resources/elimination_catalog_industry_2024.json",
+            "equipeffi/resources/standards/blower.json",
+            "equipeffi/resources/standards/boiler.json",
+            "equipeffi/resources/standards/compressor.json",
+            "equipeffi/resources/standards/fan.json",
+            "equipeffi/resources/standards/gb30253_2024_pdf_verified_v1.json",
+            "equipeffi/resources/standards/heat_treatment.json",
+            "equipeffi/resources/standards/hvac_thresholds.json",
+            "equipeffi/resources/standards/motor_hv.json",
+            "equipeffi/resources/standards/motor_lv.json",
+            "equipeffi/resources/standards/pump.json",
+            "equipeffi/resources/standards/submersible.json",
+            "equipeffi/resources/standards/transformer.json",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
+            "equipeffi/standard_manifest.json"
+          ],
+          "missing_runtime_assets": [],
+          "unexpected_runtime_resources": [],
+          "standard_source_findings": [],
+          "allowed_report_pdfs": []
+        }
+      },
+      {
+        "path": "C:\\Users\\WANGWEI\\.codex\\worktrees\\equipeffi-simplification-integration\\EquipEffi\\artifacts\\pr24-r1-build\\portable.pyz",
+        "kind": "zipapp",
+        "is_valid": true,
+        "errors": [],
+        "warnings": [],
+        "checks": {
+          "member_count": 279,
+          "runtime_asset_count": 18,
+          "declared_runtime_assets": [
+            "equipeffi/resources/TEMPLATE_MANIFEST.json",
+            "equipeffi/resources/elimination_catalog_batches_1_4.json",
+            "equipeffi/resources/elimination_catalog_industry_2024.json",
+            "equipeffi/resources/standards/blower.json",
+            "equipeffi/resources/standards/boiler.json",
+            "equipeffi/resources/standards/compressor.json",
+            "equipeffi/resources/standards/fan.json",
+            "equipeffi/resources/standards/gb30253_2024_pdf_verified_v1.json",
+            "equipeffi/resources/standards/heat_treatment.json",
+            "equipeffi/resources/standards/hvac_thresholds.json",
+            "equipeffi/resources/standards/motor_hv.json",
+            "equipeffi/resources/standards/motor_lv.json",
+            "equipeffi/resources/standards/pump.json",
+            "equipeffi/resources/standards/submersible.json",
+            "equipeffi/resources/standards/transformer.json",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
+            "equipeffi/standard_manifest.json"
+          ],
+          "missing_runtime_assets": [],
+          "unexpected_runtime_resources": [],
+          "standard_source_findings": [],
+          "allowed_report_pdfs": []
+        }
+      },
+      {
+        "path": "C:\\Users\\WANGWEI\\.codex\\worktrees\\equipeffi-simplification-integration\\EquipEffi\\artifacts\\pr24-r1-build\\portable.zip",
+        "kind": "bundle-or-native-zip",
+        "is_valid": true,
+        "errors": [],
+        "warnings": [],
+        "checks": {
+          "member_count": 590,
+          "runtime_asset_count": 18,
+          "declared_runtime_assets": [
+            "equipeffi/resources/TEMPLATE_MANIFEST.json",
+            "equipeffi/resources/elimination_catalog_batches_1_4.json",
+            "equipeffi/resources/elimination_catalog_industry_2024.json",
+            "equipeffi/resources/standards/blower.json",
+            "equipeffi/resources/standards/boiler.json",
+            "equipeffi/resources/standards/compressor.json",
+            "equipeffi/resources/standards/fan.json",
+            "equipeffi/resources/standards/gb30253_2024_pdf_verified_v1.json",
+            "equipeffi/resources/standards/heat_treatment.json",
+            "equipeffi/resources/standards/hvac_thresholds.json",
+            "equipeffi/resources/standards/motor_hv.json",
+            "equipeffi/resources/standards/motor_lv.json",
+            "equipeffi/resources/standards/pump.json",
+            "equipeffi/resources/standards/submersible.json",
+            "equipeffi/resources/standards/transformer.json",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
+            "equipeffi/standard_manifest.json"
+          ],
+          "missing_runtime_assets": [],
+          "unexpected_runtime_resources": [],
+          "standard_source_findings": [],
+          "allowed_report_pdfs": []
+        }
+      }
+    ],
+    "artifact_imports": [
+      {
+        "artifact": "wheel",
+        "exit": 0,
+        "stdout": "artifact-v6-ok",
+        "stderr": ""
+      },
+      {
+        "artifact": "zipapp",
+        "exit": 0,
+        "stdout": "artifact-v6-ok",
+        "stderr": ""
+      },
+      {
+        "artifact": "portable-wheel",
+        "exit": 0,
+        "stdout": "artifact-v6-ok",
+        "stderr": ""
+      }
+    ],
+    "compileall": "PASS",
+    "template_gate": "PASS",
+    "untouched_sheets": {
+      "checked": 17,
+      "diffs": 0
+    },
+    "native_build": "NOT_RUN_PYINSTALLER_UNAVAILABLE",
+    "remote_gate": "REQUIRED_SEE_PR_24_CURRENT_HEAD",
+    "local_full_suite": "NOT_RUN_IN_R1_REMOTE_FULL_SUITE_REQUIRED"
   }
 }

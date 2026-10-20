@@ -15,7 +15,7 @@
 
 2026-10-19 Owner 授权的软件简化首批：核心结果/标准身份、统一 Excel 版本兼容、原文排除和交付资产检查。
 隔离分支 `codex/simplification-integration-20261019`；[任务书](docs/governance/SIMPLIFICATION_IMPLEMENTATION_20261019.md)。
-三项跨线问题与历史测试断言已退回修复并通过独立验收；[验收记录](docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md)。全量 1,565 项中 1,562 通过、3 项既有 V4 基线失败，无新增回归；提交 PR 供审阅，不直接合并。
+首轮结论因外部六项发现撤回；C/X/P 修复现已本地独立复验，当前 PR #24 的远端门禁与计数见 PR 检查和说明；[验收记录](docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md)保留失败、退回及复验事实。不自动合并或发布。
 源 checkout 的未提交标准映射资料保留，未纳入本批；此前[归档整理记录](docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md)继续保留。
 后续公共用例、页面骨架、旧路径退出、第二标准接入不属于本批已完成项。
 

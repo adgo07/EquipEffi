@@ -184,3 +184,5 @@ Phase 0B 若未执行，本文件保持起始事实；本次确实未执行 0B�
 | `src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx` → `src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx` | `ee9dbe17a06081739cfb8ef0d330ce30b4634cba5ce29ccd1eab058d09348810` | `ee9dbe17a06081739cfb8ef0d330ce30b4634cba5ce29ccd1eab058d09348810` |
 
 `platform-lock.json`、`PLATFORM_BASELINE.md`、Canonical、Approved Golden、变压器 V2.1 冻结双文件均无差异。计算器身份改由受测试保护的源文件指纹维护，见 `pump_calculator_version.py`。本次不修改历史 Phase 0 基线。
+
+R1（2026-10-20）仅扩充计算器源指纹覆盖至实际判级与数值等依赖，当前标识为 `pump-calculator:sha256:fc3e67e75543621a7cf8420713cb4dabb49f72cedf43b0f0765d2be1fa7fd759`。本轮运行资源未变，上表 manifest/V6 哈希不变；Canonical、Approved Golden、变压器冻结双文件及中央锁继续无差异。
