@@ -35,6 +35,7 @@ from equipeffi.application.lifecycle import (
 )
 from equipeffi.application.services.centrifugal_pump_analysis_service import (
     PUMP_FINGERPRINT_KEYS,
+    PUMP_STANDARD_IDENTITY_KEY,
     AnalysisError,
     CentrifugalPumpAnalysisService,
     PumpAnalysisRequest,
@@ -153,7 +154,7 @@ class WorkspaceSnapshotIsDeviceNeutralTests(unittest.TestCase):
 
 
 class FingerprintSingleSourceTests(unittest.TestCase):
-    """G02：单一算法 + 单一业务键来源，且与 Phase 3 逐字节一致。"""
+    """G02：单一指纹算法，并保留显式的 Phase 3 兼容投影。"""
 
     @staticmethod
     def _phase3_reference(values: dict) -> str:
@@ -175,7 +176,7 @@ class FingerprintSingleSourceTests(unittest.TestCase):
         request = self._request()
         reference = self._phase3_reference(
             {key: str(getattr(request, key)) for key in self._keys()})
-        self.assertEqual(request.request_fingerprint(), reference)
+        self.assertEqual(request.request_fingerprint(include_standard_identity=False), reference)
 
     def test_none_and_empty_string_keep_phase3_semantics(self):
         for value in (None, "", "0"):
@@ -183,9 +184,11 @@ class FingerprintSingleSourceTests(unittest.TestCase):
                 request = self._request(efficiency=value)
                 reference = self._phase3_reference(
                     {key: str(getattr(request, key)) for key in self._keys()})
-                self.assertEqual(request.request_fingerprint(), reference)
-        self.assertNotEqual(self._request(efficiency=None).request_fingerprint(),
-                            self._request(efficiency="").request_fingerprint())
+                self.assertEqual(
+                    request.request_fingerprint(include_standard_identity=False), reference)
+        self.assertNotEqual(
+            self._request(efficiency=None).request_fingerprint(include_standard_identity=False),
+            self._request(efficiency="").request_fingerprint(include_standard_identity=False))
 
     def test_request_and_workspace_agree_through_the_same_implementation(self):
         request = self._request()
@@ -195,8 +198,9 @@ class FingerprintSingleSourceTests(unittest.TestCase):
             device_type="centrifugal_pump", product_category=request.product_category,
             rule_profile="pump_water", as_of=request.as_of.isoformat(), payload=payload,
             schema_version=2, created_at_utc="c", updated_at_utc="u")
-        self.assertEqual(snapshot.request_fingerprint(PUMP_FINGERPRINT_KEYS),
-                         request.request_fingerprint())
+        self.assertEqual(
+            snapshot.request_fingerprint(PUMP_FINGERPRINT_KEYS),
+            request.request_fingerprint(include_standard_identity=False))
 
     def test_helper_normalizes_none_exactly_like_phase3(self):
         self.assertEqual(stable_fingerprint({"a": None}),
@@ -276,9 +280,10 @@ class FingerprintHasNoProductImportCouplingTests(unittest.TestCase):
 
         self.service.create_workspace("W-meta", self._request(WATER))
         workspace = self.service.load_workspace("W-meta")
-        self.assertEqual(business_key_names(workspace.payload), PUMP_FINGERPRINT_KEYS)
-        self.assertEqual(workspace.request_fingerprint(), workspace.request_fingerprint(
-            PUMP_FINGERPRINT_KEYS))
+        expected_keys = (*PUMP_FINGERPRINT_KEYS, PUMP_STANDARD_IDENTITY_KEY)
+        self.assertEqual(business_key_names(workspace.payload), expected_keys)
+        self.assertEqual(workspace.request_fingerprint(),
+                         workspace.request_fingerprint(expected_keys))
 
     def test_legacy_snapshot_requires_explicit_keys_instead_of_guessing(self):
         """Phase 4 之前的旧快照无参调用必须显式报错，而不是猜一个投影。
@@ -302,7 +307,7 @@ class FingerprintHasNoProductImportCouplingTests(unittest.TestCase):
         with self.assertRaises(LifecycleError):
             legacy.request_fingerprint()
         self.assertEqual(legacy.request_fingerprint(PUMP_FINGERPRINT_KEYS),
-                         request.request_fingerprint())
+                         request.request_fingerprint(include_standard_identity=False))
 
     def test_lifecycle_module_has_no_ambient_registration(self):
         """生命周期层不得再提供全局可变注册点。"""
@@ -421,10 +426,14 @@ class Phase3WorkspaceFixtureCompatibilityTests(unittest.TestCase):
         self.assertEqual(request.as_of, AS_OF)
         self.assertEqual(request.efficiency, "90")
 
-        # 指纹必须与 Phase 3 逐字节一致，否则历史草稿会被判成"已改动"
-        expected = PumpAnalysisRequest(WATER, AS_OF, **VALUES).request_fingerprint()
-        self.assertEqual(workspace.request_fingerprint(), expected)
-        self.assertEqual(request.request_fingerprint(), expected)
+        # 历史元数据只记录 Phase 3 业务字段：旧投影必须保持逐字节一致，
+        # 新 request 则额外包含标准身份，Finalize 仍接受未变化的旧草稿。
+        expected_legacy = PumpAnalysisRequest(WATER, AS_OF, **VALUES).request_fingerprint(
+            include_standard_identity=False)
+        expected_current = PumpAnalysisRequest(WATER, AS_OF, **VALUES).request_fingerprint()
+        self.assertEqual(workspace.request_fingerprint(), expected_legacy)
+        self.assertEqual(request.request_fingerprint(), expected_current)
+        self.assertNotEqual(expected_legacy, expected_current)
 
         result = service.evaluate_workspace("W-phase3")
         self.assertEqual(result.evaluation_status, "SUCCESS")
@@ -434,7 +443,7 @@ class Phase3WorkspaceFixtureCompatibilityTests(unittest.TestCase):
                                   request=request, result=result)
         self.assertEqual(record.record_id, "R-phase3")
         self.assertEqual(record.as_of, AS_OF.isoformat())
-        self.assertEqual(record.input_snapshot["request_fingerprint"], expected)
+        self.assertEqual(record.input_snapshot["request_fingerprint"], expected_current)
         self.assertEqual(record.input_snapshot["workspace_revision"], 1)
 
         # Reopen 完全依赖不可变快照，不重算

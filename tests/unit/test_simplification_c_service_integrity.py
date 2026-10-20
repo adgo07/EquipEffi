@@ -58,6 +58,9 @@ class StandardIdentityTests(unittest.TestCase):
             suction=correct.suction, stages=correct.stages,
             standard_code="GB 20052-2024")
 
+        self.assertEqual(
+            correct.request_fingerprint(include_standard_identity=False),
+            wrong.request_fingerprint(include_standard_identity=False))
         self.assertNotEqual(correct.request_fingerprint(), wrong.request_fingerprint())
         result = service.evaluate(wrong)
         self.assertEqual(result.evaluation_status, "INVALID_INPUT")

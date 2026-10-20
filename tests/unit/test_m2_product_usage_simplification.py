@@ -232,8 +232,9 @@ class HistorySearchTests(M2TestCase):
         self.app.processEvents()
         self.assertEqual(page._total, 260)
 
-        page.conclusion_filter.setCurrentIndex(
-            page.conclusion_filter.findText("不适用"))
+        out_of_scope = page.conclusion_filter.findText("不在范围")
+        self.assertGreaterEqual(out_of_scope, 0, "必须存在「不在范围」筛选项")
+        page.conclusion_filter.setCurrentIndex(out_of_scope)
         self.app.processEvents()
         self.assertEqual(page._total, 0)
 
