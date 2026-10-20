@@ -98,4 +98,4 @@ C 先给 X 稳定指标 ID/值/单位接口说明与提交；X 在接口可用�
 - P 原文排除与交付资产：01a1548a-26e3-75f3-bdfd-246d0fa37241。
 - 协调集成分支：codex/simplification-integration-20261019，从 origin/master 建立；验收方不代写执行线业务实现。
 
-本节只记录本任务调度，不替代 TASK_STATE 或 QA 台账。首批状态为执行中，尚未验收。
+本节只记录本任务调度，不替代 TASK_STATE 或 QA 台账。首批已完成执行及 2026-10-20 独立验收；见 [验收记录](SIMPLIFICATION_ACCEPTANCE_20261019.md)。后续工作包仍待下发，本节不自动授权继续。

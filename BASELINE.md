@@ -173,3 +173,14 @@ Phase 0B 若未执行，本文件保持起始事实；本次确实未执行 0B�
 ### PR #22 验收修复补记（2026-10-13）
 
 化工泵迁移正文仅加强页首历史措辞说明，`preserved-profile-body`以下未变。UTF-8/LF SHA-256由`a34d044b79dd28640697c8d5a1c8a5096d713ee5df17f53d7a37a5f5caf2b782`更新为`7dfd314574395c3eb59fafc4d2c1e50112b3eb5c44ac205df9388c7b70842991`；上表保留首次迁移时的历史哈希。冻结变压器双文件、Golden及运行时资源未修改。
+
+## 2026-10-19 软件简化首批资源基线
+
+比较基线 `2c7807f32ef08d18554014328efd4ceaa356726f`；JSON 使用 UTF-8/LF，XLSX 使用原始字节。旧 manifest 移到运行时 JSON 资源入口并扩充 Sheet 契约；正式 V6 工作簿原字节保持。
+
+| 资源路径 | 修改前 SHA-256 | 修改后 SHA-256 |
+|---|---|---|
+| `src/equipeffi/resources/templates/TEMPLATE_MANIFEST.json` → `src/equipeffi/resources/TEMPLATE_MANIFEST.json` | `6755e24efdd348195b0d9b82b9e7eb969fb70015204ce38c762defa99501ed20` | `14646b1e9d8a876821263298889d14d359d54018b08955558d06d119ddb0d55e` |
+| `src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx` → `src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx` | `ee9dbe17a06081739cfb8ef0d330ce30b4634cba5ce29ccd1eab058d09348810` | `ee9dbe17a06081739cfb8ef0d330ce30b4634cba5ce29ccd1eab058d09348810` |
+
+`platform-lock.json`、`PLATFORM_BASELINE.md`、Canonical、Approved Golden、变压器 V2.1 冻结双文件均无差异。计算器身份改由受测试保护的源文件指纹维护，见 `pump_calculator_version.py`。本次不修改历史 Phase 0 基线。

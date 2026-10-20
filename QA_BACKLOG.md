@@ -578,3 +578,7 @@ Numeric Profile、comparison precision、V6 模板、record / batch_record schem
 | issue_id | legacy_id/audit_id | profile_id | location | description | business_risk | engineering_risk | release_surface | classification | target_phase | status | evidence | decision |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | QA-SIMP-P-001 | SIMP-P-PACKAGING-001 | shared | `pyproject.toml`; wheel/sdist/zipapp/portable/native 构建路径 | 运行时资源打包边界不统一：zipapp 与 native 会从源码目录复制未声明资源，产物未统一检查标准原件、扫描页及完整原文副本 | 发布包误带开发原件；不改变评价结论 | M | V1_RUNTIME | P1 | 本轮软件简化 | CLOSED | 干净集成快照（a825835 + P 修复 ed9ad50）：wheel/sdist/zipapp/portable 构建成功，实际产物均审计为 18 项运行资源、0 缺失、0 标准原件发现；隔离导入 wheel、zipapp、portable 内嵌 wheel 均来自产物，TEMPLATE_MANIFEST 可读、V6 结构校验通过、Reader 返回 0 行；针对性 unittest 38/38 通过。PyInstaller 未安装，本轮未构建原生二进制；native 资源声明路径由 3 项构建器单测覆盖。 | 所有构建器统一以 `pyproject.toml` 声明为运行资源边界；产物审计按内容、路径和签名检测标准原件/扫描页/完整原文，按报告路径允许用户报告 PDF；保留 Canonical、标准元数据、V4/V6 模板及追溯哈希。 |
+
+### 软件简化首批独立验收补记（2026-10-20）
+
+QA-SIMP-C-001 / X-001 / P-001 经退回修复后独立复验收口。X 批次追溯改为分别记录标准号/年份、数据版本和全部实际 Profile；不存在的独立版本明确 null，输入字段/单位机械 Gate 已补。最终集成全量 1,565 项：1,562 pass、3 项既有 V4 基线 fail、0 error、0 skip；exact-ID Gate PASS。模板 17 个未处理 Sheet 0 diffs，四类产物审计通过。原生二进制 NOT_RUN（缺少 PyInstaller）。完整证据唯一入口：[独立验收记录](docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md)。各执行线原始数字作为历史证据保留，不替代集成验收。

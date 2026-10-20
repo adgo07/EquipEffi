@@ -179,7 +179,7 @@ git fetch origin                   # 同步远端
 5. Excel 类别选项必须与软件正式类别**完全一致**（8 个正式泵型 + 「其他类别」+「不确定类别」）；
    Excel 原「其他（请备注说明）」正式改为「其他类别」，**不得混用**。
 6. 「其他类别」继续遵循当前正式软件业务语义，不因 Excel 文案调整重新定义其业务含义。
-7. 「不确定类别」是**正式类别选择**，不是非法输入。选择后用户可见正式评价结论 =「无法评价」，
+7. 「不确定类别」是**正式类别选择**，不是非法输入。选择后用户可见正式评价结论 =「无法判定」（Owner 2026-10-19 更新），
    进入批量评价结果与批次汇总；优先沿用现有正式 business status，**不**仅为中文文案新造 Domain enum。
    Qt 与 Excel 的用户可见结论必须一致。
 8. 「数量」必须为**必填正整数 > 0**；不得空白默认 1、不得 0 / 负数 / 小数。
@@ -218,7 +218,7 @@ Excel 配置自动改变正式业务算法；必须建立 Workbook 配置 ↔ Ap
 
 ## 6. 中央交付原则与 Contract Preflight（短入口）
 
-中央 ACTIVE 指南（都不是 Frozen Contract；正文只在中央）：`docs/governance/PRODUCT_DELIVERY_POLICY_V1.md`、`docs/governance/STANDARD_DEVELOPMENT_GUIDE_V0.1.md`（见 9、10 节）、`docs/ui/UI_DESIGN_GUIDELINES_V0.1.md`（见 8 节）。
+中央 ACTIVE 指南（都不是 Frozen Contract；正文只在中央）：`docs/governance/PRODUCT_DELIVERY_POLICY_V1.md`、`docs/governance/STANDARD_DEVELOPMENT_GUIDE_V0.1.md`（见 9、10 节）、`docs/ui/UI_DESIGN_GUIDELINES_V0.2.md`（见 8 节）。
 
 交付原则只留名称，正文以中央 Policy 为准：**Windows-first**；**Reference Standard first**（`GB 19762—2025`）；**Product-core-first**；**Excel-as-adapter**（Excel 只调用同一 evaluator / Calculator，不复制第二套算法）；**Cross-platform-ready**（不依赖 Windows-only API）；**逐标准扩展**（Reference Standard 闭环前不批量迁移 17 个 Profile）。真实状态见 `REFERENCE_STANDARD_ROADMAP.md`。
 
@@ -239,7 +239,7 @@ Contract Preflight（详见中央 Policy 第 12 节）：读 `platform-lock.json
 
 ## 8. UI 治理入口（短）
 
-涉及桌面 UI 的 Design / Execution / Acceptance 必须读中央 `UI_DESIGN_GUIDELINES_V0.1.md`（`ACTIVE / EVOLVING`，不是 Frozen Contract）。要点：① 用户可见内容中文优先；② 普通 UI 不默认泄露 `key` / `field_id` / `rule_id` / `internal_id`、Python 变量、原始 JSON、调试标识；③ 简单业务 `One-page first`，不强制单页；④ 技术 trace、Numeric Profile、Calculator version、内部 Rule 渐进展示，不删审计能力；⑤ 按真实用户任务而非数据库 / JSON 组织页面；⑥ 推荐模式不等于强制布局。该指南不改变本仓锁文件、Phase 门禁或业务结论，也不授权 UI 重构。
+涉及桌面 UI 的 Design / Execution / Acceptance 必须读中央 `UI_DESIGN_GUIDELINES_V0.2.md`（`ACTIVE / EVOLVING`，不是 Frozen Contract）。要点：① 用户可见内容中文优先；② 普通 UI 不默认泄露 `key` / `field_id` / `rule_id` / `internal_id`、Python 变量、原始 JSON、调试标识；③ 简单业务 `One-page first`，不强制单页；④ 技术 trace、Numeric Profile、Calculator version、内部 Rule 渐进展示，不删审计能力；⑤ 按真实用户任务而非数据库 / JSON 组织页面；⑥ 推荐模式不等于强制布局。该指南不改变本仓锁文件、Phase 门禁或业务结论，也不授权 UI 重构。
 
 ## 9. 新标准开发入口（Standard Development）
 
@@ -257,3 +257,12 @@ Contract Preflight（详见中央 Policy 第 12 节）：读 `platform-lock.json
 - 正式 Design / Execution / Acceptance Report 必须含平台预检查：本仓 SHA、locked central SHA、相关 Frozen Contract、适用 MUST / MUST NOT、冲突分类、是否需改中央 Contract；不涉及中央公共语义时写 `本任务不涉及中央公共 Contract。`
 - 涉及 Standard Issue 时必须写明：是否存在相关问题；问题编号；是否改变既有软件解释。
 - 中文优先：不影响 Python/JSON/YAML/schema/API/enum/stable ID、测试与跨平台兼容时，界面文字、治理文档、路线、报告、PR/Issue 描述优先中文；机器字段保持英文。
+
+
+## 12. 本轮软件简化的 Owner 决定（2026-10-19）
+
+- 标准原文仅供开发取证，最终软件不含原标准PDF、扫描页或完整原文副本；开发原件不得删除。必要结构化数据、条款定位和来源哈希保留，正式离线计算不依赖原件或联网。
+- Excel批量导入导出为核心正式功能：沿用全设备统一Workbook，各设备Sheet逐项接通；清水/化工泵共用离心泵Sheet。工作簿修订、Sheet结构契约与实际标准/计算器版本分别管理；未知不兼容结构不猜测；结果另存且保持未处理Sheet。
+- 当前三级体系显示统一为「1级、2级、3级、未达3级、不在范围、无法判定」。输入错误、执行失败、软件未支持仍独立表达；不改变底层状态、记录资格和历史原始快照。
+- 变压器映射已完成；成套冻结保护和既有Scope/支持状态继续有效，不能据此自动宣布软件SUPPORTED。
+- 本轮实施与验收范围见[任务书](docs/governance/SIMPLIFICATION_IMPLEMENTATION_20261019.md)；不是Phase 8独立验收，不进入Phase 9。

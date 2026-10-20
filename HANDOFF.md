@@ -13,13 +13,11 @@
 
 ## 当前任务
 
-标准档案目录规范化（2026-10-13，文档维护；不是产品Phase）。
-分支`codex/standard-archive-conventions`；总入口为[标准档案](docs/standards/README.md)。
-水泵映射迁入标准号/年份目录，旧路径保留跳转；变压器新建年份入口，冻结双文件原位原字节保留。
-规则与表值配套、结构与数值核验分开，D-08沿用根台账的Owner批准记录；未执行全量逐格数值复核。
-变更与验证见[本次摘要](docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md)。
-PR #22验收修复：移除根台账过时的汇总状态，化工泵页首点名被取代的候选措辞；各Issue状态字段及D-08不变。新head的CI结果以GitHub检查为准，独立复验尚待完成。
-此前M1工作保留于PR #17及Git历史，本任务不改变其实现或验收结论。
+2026-10-19 Owner 授权的软件简化首批：核心结果/标准身份、统一 Excel 版本兼容、原文排除和交付资产检查。
+隔离分支 `codex/simplification-integration-20261019`；[任务书](docs/governance/SIMPLIFICATION_IMPLEMENTATION_20261019.md)。
+三项跨线问题与历史测试断言已退回修复并通过独立验收；[验收记录](docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md)。全量 1,565 项中 1,562 通过、3 项既有 V4 基线失败，无新增回归；提交 PR 供审阅，不直接合并。
+源 checkout 的未提交标准映射资料保留，未纳入本批；此前[归档整理记录](docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md)继续保留。
+后续公共用例、页面骨架、旧路径退出、第二标准接入不属于本批已完成项。
 
 ## 长期关键事实（不随 Phase 变化）
 
