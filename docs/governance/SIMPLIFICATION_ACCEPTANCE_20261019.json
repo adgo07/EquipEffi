@@ -327,5 +327,22 @@
     "native_build": "NOT_RUN_PYINSTALLER_UNAVAILABLE",
     "remote_gate": "REQUIRED_SEE_PR_24_CURRENT_HEAD",
     "local_full_suite": "NOT_RUN_IN_R1_REMOTE_FULL_SUITE_REQUIRED"
+  },
+  "r2": {
+    "code_and_tests_sha": "7fd740b916c19da395400286fa2fe25f04a8449b",
+    "issue": "QA-SIMP-X-003",
+    "local_status": "PASS",
+    "independent_tests": {
+      "run": 228,
+      "pass": 228,
+      "fail": 0,
+      "error": 0,
+      "skip": 0,
+      "duration_seconds": 213.44
+    },
+    "compileall": "PASS",
+    "diff_check": "PASS",
+    "remote_gate": "REQUIRED_SEE_PR_24_CURRENT_HEAD",
+    "distribution_rebuild": "NOT_RUN_NO_PACKAGING_OR_ASSET_CHANGE"
   }
 }

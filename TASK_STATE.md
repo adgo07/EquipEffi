@@ -37,7 +37,7 @@ current_task:
   status: LOCAL_REVERIFIED_REMOTE_GATE_REQUIRED
   design: docs/governance/SIMPLIFICATION_IMPLEMENTATION_20261019.md
   acceptance: docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md
-  next_action: 六项修复已本地复验并更新 PR 24；远端最终 Head 门禁与计数见 PR 检查及说明，不自动合并
+  next_action: 六项修复与 R2 两项补充已本地复验并更新 PR 24；远端最终 Head 门禁与计数见 PR 检查及说明，不自动合并
   source_mapping_work: 源 checkout 既有未提交资料保留，不纳入本批
   previous_task_evidence: docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md
 

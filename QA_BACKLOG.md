@@ -589,3 +589,5 @@ Numeric Profile、comparison precision、V6 模板、record / batch_record schem
 
 
 R1（2026-10-20）：QA-SIMP-C/X/P-002 已完成主会话本地复验；X/P 96/96，C/Golden/历史/架构首轮 217 项有 1 项旧缓存预期失败，修订后 M3 12/12；四类实际产物审计及三类隔离导入通过。远端当前 Head 仍须满足无新增回归门禁，结论与 run 见 PR #24；本地完整事实见上述验收记录。
+
+R2（2026-10-20）：QA-SIMP-X-003 经主会话固定代码 SHA `7fd740b` 独立复验，Reader/批次/R1/架构共 228/228，compileall、差异检查通过；CI 当前 Head 证据见 PR #24。无 schema、模板、标准真值或支持状态变更。

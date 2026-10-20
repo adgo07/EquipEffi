@@ -84,3 +84,14 @@
 - 本轮本地不重复运行耗时全量/万行测试；由 PR 当前 Head 的 Windows Core 全量套件和 Pump Conformance 完成远端复核。提交此记录时远端新一轮尚未运行，不能提前记为 PASS；实际 run、计数和结论更新到 PR #24 说明。
 
 本地六项修复复验通过，QA-SIMP-C/X/P-002 收口；PR 仍须通过远端无新增回归门禁，不自动合并、不发布、不宣布 PHASE_8_PASS。首轮撤回事实与旧 CI 失败记录保留。
+
+
+## 本地补充意见 R2（2026-10-20）
+
+Owner 授权采纳本地意见的两项补充，QA-SIMP-X-003。运行代码与测试 SHA：`7fd740b916c19da395400286fa2fe25f04a8449b`；本节后续提交仅整理证据。本任务不涉及中央公共 Contract；locked SHA 仍为 `ee5feb0cc34dbd99790500fadd0c4c932e202a20`。沿用上文平台 MUST/MUST NOT，分类 LOCAL DEFECT，无新增 Standard Issue，不改变标准解释。
+
+- Reader 把实际识别的 `identity_source` 传至 `batch_record.summary.template`，区分 `declared` 与 `legacy-structure`；输入没有证据时为空，即使默认模板声称 `declared` 也不回退。保留历史快照，不增加数据库字段或迁移。
+- 数量非法值回归的输出文件名改用确定性序号，消除随机 hash 取模碰撞，业务断言不变。
+- 主会话独立运行 Reader、批次、Phase 8 R1、架构与元数据共 **228 run / 228 pass / 0 fail / 0 error / 0 skip**，213.440 秒；包含实际 SQLite 批次快照、两种来源及无来源防伪、Table 缺失/扩缩兼容。compileall 与 git diff --check 通过。
+- 子会话另验证模板 Gate 39/39；未改模板资产、Canonical、Approved Golden、冻结文件、锁或持久化 schema。本轮不重复构建未受影响的分发资产；R1 产物审计保留原 SHA 适用范围。
+- 本地补充复验通过；当前最终 Head 的 CI 结论及 run 继续以 PR #24 说明和检查为准，未运行前不提前宣称通过。不合并、不发布、不宣布 Phase 8 PASS。原本地验收草稿保持原位，不改写其历史结论。
