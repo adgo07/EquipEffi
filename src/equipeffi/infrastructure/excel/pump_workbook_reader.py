@@ -28,6 +28,7 @@ from .template_resource import (
     PUMP_SHEET,
     PUMP_SHEET_CONTRACT,
     input_field_columns,
+    pump_data_layout_issues,
     pump_header_issues,
 )
 
@@ -82,6 +83,13 @@ class V6PumpWorkbookReader:
         input_columns = input_field_columns(contract)
         with OOXMLWorkbook(source) as workbook:
             grid = workbook.rows(sheet_name)
+            merged_ranges = workbook.merged_ranges(sheet_name)
+
+        layout_issues = pump_data_layout_issues(merged_ranges, contract)
+        if layout_issues:
+            raise OOXMLReadError(
+                "离心泵 Sheet 数据区布局与输入/结果读写契约冲突："
+                + "；".join(layout_issues))
 
         header_row = int(contract["header_row"]) - 1
         if header_row < 0 or header_row >= len(grid):
@@ -115,8 +123,8 @@ class V6PumpWorkbookReader:
     def _check_structure(self, source: Path):
         from .template_resource import V6TemplateResource
 
-        # Header units are checked against the same manifest contract below,
-        # using the already-read worksheet grid. Avoid materializing the 10k-row
+        # Header units and merge layout are checked against the same manifest
+        # contract from one worksheet parse. Avoid materializing the 10k-row
         # sheet twice on the batch input path.
         validation = V6TemplateResource().validate(source, check_pump_sheet=False)
         if not validation.is_valid:

@@ -372,6 +372,43 @@ class ResultWorkbookTests(BatchTestCase):
         self.assertEqual(speed_metric.metric_id, "pump.specific_speed")
         self.assertEqual(speed_metric.unit, "1")
 
+    def test_three_efficiency_limits_survive_result_workbook_reopen(self):
+        result = self.run_batch([self.water_row()])
+        workbook = openpyxl.load_workbook(result.result_workbook, data_only=True)
+        try:
+            sheet = workbook[PUMP_SHEET]
+            limits = [sheet[f"{column}{FIRST_DATA_ROW}"].value
+                      for column in ("U", "V", "W")]
+            self.assertTrue(all(isinstance(value, (int, float))
+                                for value in limits), limits)
+        finally:
+            workbook.close()
+
+    def test_conflicting_merge_is_rejected_before_output_or_batch_record(self):
+        from equipeffi.infrastructure.excel.ooxml_reader import OOXMLReadError
+
+        self.fill([self.water_row()])
+        workbook = openpyxl.load_workbook(self.source)
+        sheet = workbook[PUMP_SHEET]
+        del sheet.tables["TblPump"]
+        sheet.merge_cells(f"U{FIRST_DATA_ROW}:W{FIRST_DATA_ROW}")
+        workbook.save(self.source)
+        workbook.close()
+        source_hash = hashlib.sha256(self.source.read_bytes()).hexdigest()
+        validation = V6TemplateResource().validate(self.source)
+        self.assertFalse(validation.is_valid)
+        self.assertIn("U4:W4", validation.message)
+        destination = self.root / "不应生成.xlsx"
+
+        with self.assertRaisesRegex(OOXMLReadError, "U4:W4"):
+            self.batch.evaluate_workbook(self.source, destination=destination)
+
+        self.assertTrue(self.source.is_file())
+        self.assertEqual(hashlib.sha256(self.source.read_bytes()).hexdigest(),
+                         source_hash)
+        self.assertFalse(destination.exists())
+        self.assertEqual(self.repository.list_batch_records(), [])
+
     def test_input_columns_are_preserved_verbatim(self):
         self.fill([self.water_row(B="保留我", C="M-999", E="9号车间")])
         result = self.batch.evaluate_workbook(

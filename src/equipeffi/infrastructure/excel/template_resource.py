@@ -5,6 +5,7 @@ from hashlib import sha256
 import importlib.resources as resources
 import json
 from pathlib import Path
+import re
 import shutil
 import tempfile
 from typing import Any
@@ -80,6 +81,58 @@ def _column_index(letter: str) -> int:
     for char in letter.upper():
         value = value * 26 + ord(char) - ord("A") + 1
     return value - 1
+
+
+def _cell_position(reference: str) -> tuple[int, int] | None:
+    match = re.fullmatch(r"\$?([A-Z]{1,3})\$?([1-9]\d*)",
+                         str(reference).strip().upper())
+    if match is None:
+        return None
+    return _column_index(match.group(1)), int(match.group(2))
+
+
+def pump_data_layout_issues(
+        merged_ranges: tuple[str, ...] | list[str],
+        contract: dict[str, Any] | None = None) -> tuple[str, ...]:
+    """Reject data-area merges that obscure pump input or result cells.
+
+    The data area is intentionally unbounded: Table size is not a Reader capacity
+    limit, and a missing Table alone does not make an otherwise compatible sheet
+    invalid.
+    """
+
+    selected = contract or PUMP_SHEET_CONTRACT
+    first_data_row = int(selected["header_row"]) + 1
+    fields = [field for field in selected["fields"]
+              if field.get("role") in {"input", "result"}]
+    affected_columns = {
+        _column_index(str(field["column"])): str(field["column"])
+        for field in fields
+    }
+    issues: list[str] = []
+    for reference in merged_ranges:
+        parts = str(reference).split(":")
+        if len(parts) != 2:
+            issues.append(f"离心泵数据区合并范围格式无效：{reference!r}")
+            continue
+        start = _cell_position(parts[0])
+        end = _cell_position(parts[1])
+        if start is None or end is None:
+            issues.append(f"离心泵数据区合并范围格式无效：{reference!r}")
+            continue
+        min_column, max_column = sorted((start[0], end[0]))
+        max_row = max(start[1], end[1])
+        if max_row < first_data_row:
+            continue
+        covered_columns = [
+            column for index, column in sorted(affected_columns.items())
+            if min_column <= index <= max_column
+        ]
+        if covered_columns:
+            issues.append(
+                f"离心泵数据区合并范围 {reference} 覆盖输入/结果列 "
+                f"{'、'.join(covered_columns)}（第 {first_data_row} 行起不允许合并）")
+    return tuple(issues)
 
 
 def _header_parts(value: Any) -> tuple[str, str, tuple[str, ...]]:
@@ -411,6 +464,10 @@ class V6TemplateResource(V4TemplateResource):
             try:
                 with OOXMLWorkbook(candidate) as workbook:
                     grid = workbook.rows(pump_contract["sheet_name"])
+                    merged_ranges = workbook.merged_ranges(
+                        pump_contract["sheet_name"])
+                issues.extend(pump_data_layout_issues(
+                    merged_ranges, pump_contract))
                 header_index = int(pump_contract["header_row"]) - 1
                 if header_index < 0 or header_index >= len(grid):
                     issues.append(f"离心泵表头行无效：{pump_contract['header_row']}")

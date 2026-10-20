@@ -430,6 +430,38 @@ class ReaderRowEnablementTests(unittest.TestCase):
         self.assertEqual(rows[0].row_number, FIRST_DATA_ROW + 500)
         self.assertEqual(rows[0].values["device_name"], "表外设备")
 
+    def test_missing_table_alone_does_not_reject_compatible_sheet(self):
+        def mutate(sheet):
+            del sheet.tables["TblPump"]
+            sheet["B4"] = "普通区域设备"
+            sheet["D4"] = 1
+
+        rows = self._read(mutate)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].values["device_name"], "普通区域设备")
+
+    def test_row_after_shrunk_table_range_is_still_read(self):
+        def mutate(sheet):
+            sheet.tables["TblPump"].ref = "A3:AA4"
+            sheet["B5"] = "缩小Table后的设备"
+            sheet["D5"] = 1
+
+        rows = self._read(mutate)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].row_number, 5)
+        self.assertEqual(rows[0].values["device_name"], "缩小Table后的设备")
+
+    def test_row_after_expanded_table_range_is_still_read(self):
+        def mutate(sheet):
+            sheet.tables["TblPump"].ref = "A3:AA150"
+            sheet["B150"] = "扩展Table后的设备"
+            sheet["D150"] = 1
+
+        rows = self._read(mutate)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].row_number, 150)
+        self.assertEqual(rows[0].values["device_name"], "扩展Table后的设备")
+
     def test_row_number_is_one_based_excel_coordinate(self):
         def mutate(sheet):
             sheet[f"B{FIRST_DATA_ROW}"] = "首行"
