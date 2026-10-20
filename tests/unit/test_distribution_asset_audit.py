@@ -53,15 +53,31 @@ class DistributionAssetAuditTests(unittest.TestCase):
         self.assertIn("include src/equipeffi/resources/TEMPLATE_MANIFEST.json", manifest)
         self.assertIn("include src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx", manifest)
 
-    def test_generated_report_pdf_is_allowed_by_content_and_output_path(self):
+    def test_runtime_report_pdf_is_not_an_installation_asset(self):
         with tempfile.TemporaryDirectory() as tmp:
             wheel = self._wheel(
                 Path(tmp) / "equipeffi.whl",
                 {"reports/evaluation-result.pdf": b"%PDF-1.7\nEquipEffi evaluation result\n%%EOF"},
             )
             result = audit_artifact(wheel, root=ROOT)
-        self.assertTrue(result.is_valid, result.errors)
-        self.assertEqual(result.checks["allowed_report_pdfs"], ["reports/evaluation-result.pdf"])
+        self.assertFalse(result.is_valid)
+        self.assertEqual(result.checks["allowed_report_pdfs"], [])
+        self.assertTrue(any("reports/evaluation-result.pdf" in item
+                            for item in result.checks["standard_source_findings"]))
+
+    def test_same_pdf_is_rejected_when_path_looks_like_report(self):
+        pdf = b"%PDF-1.7\nEquipEffi evaluation result\n%%EOF"
+        findings = {}
+        with tempfile.TemporaryDirectory() as tmp:
+            for relative in ("docs/GB19762-2025.pdf", "reports/evaluation-result.pdf"):
+                wheel = self._wheel(Path(tmp) / (relative.split("/")[-1] + ".whl"), {relative: pdf})
+                result = audit_artifact(wheel, root=ROOT)
+                findings[relative] = result
+        for relative, result in findings.items():
+            with self.subTest(path=relative):
+                self.assertFalse(result.is_valid)
+                self.assertTrue(any(relative in item
+                                    for item in result.checks["standard_source_findings"]))
 
     def test_source_pdf_is_detected_when_renamed_as_png(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -2,8 +2,9 @@
 
 Runtime package data is declared once in pyproject.toml and consumed by setuptools,
 zipapp, and native builds. This audit inspects actual wheel/sdist/zipapp/portable/native
-outputs. It classifies PDFs by their file signature and report location, and recognizes
-common image signatures so renamed scan pages cannot pass on filename alone.
+outputs. It rejects PDFs in install artifacts regardless of path because user-generated
+reports belong outside the package. It also recognizes common image signatures so renamed
+scan pages cannot pass on filename alone.
 """
 from __future__ import annotations
 
@@ -29,7 +30,6 @@ CORE_RUNTIME_ASSETS = frozenset(
         "resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
     }
 )
-_REPORT_PATH_PARTS = frozenset({"report", "reports", "result", "results", "报告", "结果"})
 _SOURCE_PATH_PARTS = frozenset(
     {
         "标准原文",
@@ -208,13 +208,6 @@ def _path_parts(path: str) -> tuple[str, ...]:
     )
 
 
-def _is_report_path(path: str) -> bool:
-    parts = _path_parts(path)
-    if any(part in _REPORT_PATH_PARTS for part in parts):
-        return True
-    return any(token in parts[-1] for token in ("报告", "report", "result")) if parts else False
-
-
 def _is_source_path(path: str) -> bool:
     parts = _path_parts(path)
     if any(part in _SOURCE_PATH_PARTS for part in parts):
@@ -367,7 +360,6 @@ def audit_artifact(path: Path, *, root: Path = ROOT) -> AssetAudit:
 
         image_kind = _image_kind(data[: min(len(data), 2_000_000)])
         pdf = _pdf_magic(data)
-        report_path = _is_report_path(member_path)
         source_path = _is_source_path(member_path)
         full_text = _looks_like_full_standard_text(member_path, data[: min(len(data), 2_000_000)])
 
@@ -375,20 +367,18 @@ def audit_artifact(path: Path, *, root: Path = ROOT) -> AssetAudit:
             source_findings.append(f"{member_path}: 检测到标准号、国家标准标题及多条正文结构")
         elif source_path and (pdf or image_kind or Path(member_path.split("!", 1)[-1]).suffix.lower() in _TEXT_SUFFIXES):
             source_findings.append(f"{member_path}: 路径表明其为标准原件/扫描页来源")
-        elif pdf and not report_path:
-            # Inspect actual PDF signatures rather than banning by suffix. PDF outputs
-            # placed under report/result paths remain valid; other embedded PDFs need
-            # an explicit product decision and cannot silently ship with the app.
-            source_findings.append(f"{member_path}: PDF内容不在用户报告输出路径中")
-        elif pdf and report_path:
-            allowed_report_pdfs.append(member_path)
+        elif pdf:
+            # Runtime-generated reports are user output, not install-package assets.
+            # No PDF examples are currently approved for distribution, so paths cannot
+            # create an exception. A future package asset needs an explicit allowlist.
+            source_findings.append(f"{member_path}: PDF不在显式批准的随包资产清单中")
         elif image_kind and _looks_like_page_scan(data, image_kind):
             source_findings.append(f"{member_path}: {image_kind} 图像具有高分辨率标准页比例")
 
     if unexpected_resources:
         errors.append("运行包含有 pyproject.toml 未声明的 resources 文件: " + ", ".join(sorted(unexpected_resources)))
     if source_findings:
-        errors.append("产物疑似包含标准原件、扫描页或完整原文: " + "; ".join(sorted(source_findings)))
+        errors.append("产物包含未批准的标准原件、扫描页、PDF或完整原文: " + "; ".join(sorted(source_findings)))
     checks["unexpected_runtime_resources"] = sorted(unexpected_resources)
     checks["standard_source_findings"] = sorted(source_findings)
     checks["allowed_report_pdfs"] = sorted(allowed_report_pdfs)
