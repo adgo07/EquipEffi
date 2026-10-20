@@ -427,7 +427,7 @@ class PumpBatchEvaluationService:
             "canonical_package_hash": provenance.canonical_package_hash,
         }
         summary_snapshot = summary.as_dict()
-        summary_snapshot["template"] = {
+        template_snapshot = {
             "template_id": identity.get("template_id", ""),
             "template_version": identity.get("template_version", ""),
             "asset_sha256": identity.get("asset_sha256", ""),
@@ -437,6 +437,13 @@ class PumpBatchEvaluationService:
             "sheet_contract_revision": identity.get(
                 "sheet_contract_revision", ""),
         }
+        # 只从本次 Reader 的结构识别结果传来源；默认模板配置不能代替
+        # 输入 Workbook 的身份来源证据。
+        identity_source = str(
+            (source_template_identity or {}).get("identity_source") or ""
+        ).strip()
+        template_snapshot["identity_source"] = identity_source
+        summary_snapshot["template"] = template_snapshot
         data_version = (provenance.data_versions[0]
                         if len(provenance.data_versions) == 1 else None)
         summary_snapshot["evaluation_provenance"] = {

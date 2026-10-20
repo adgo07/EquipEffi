@@ -114,6 +114,10 @@ class V6PumpWorkbookReader:
             "sheet_id": str(contract["sheet_id"]),
             "sheet_contract_revision": str(contract["contract_revision"]),
         })
+        identity_source = (str(validation.identity_source or "").strip()
+                           if validation else "")
+        if identity_source:
+            template_identity["identity_source"] = identity_source
         return BatchSourceWorkbook(path=str(source), rows=tuple(rows),
                                    skipped_blank_rows=blank,
                                    template_identity=template_identity)

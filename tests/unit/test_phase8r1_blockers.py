@@ -235,10 +235,10 @@ class B2InvalidInputTests(R1TestCase):
     def test_invalid_quantity_does_not_invent_devices(self):
         """数量非法：不得虚构设备数量，也不得进入任何数量统计。"""
 
-        for bad in ("", 0, -3, 1.5):
+        for index, bad in enumerate(("", 0, -3, 1.5), start=1):
             with self.subTest(quantity=bad):
                 result = self.run_batch(
-                    [self.water(D=bad)], f"b2_q_{abs(hash(str(bad))) % 1000}")
+                    [self.water(D=bad)], f"b2_q_{index}")
                 summary = result.summary
                 self.assertEqual(summary.total_quantity, 0)
                 self.assertEqual(summary.evaluated_quantity, 0)

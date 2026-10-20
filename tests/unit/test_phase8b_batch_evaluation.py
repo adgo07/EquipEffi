@@ -47,7 +47,11 @@ from equipeffi.infrastructure.excel.pump_workbook_reader import (
     PUMP_SHEET,
     V6PumpWorkbookReader,
 )
-from equipeffi.infrastructure.excel.template_resource import V6TemplateResource
+from equipeffi.infrastructure.excel.template_resource import (
+    V6TemplateResource,
+    V6_TEMPLATE_ENTRY,
+    identity_defined_names,
+)
 from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
 from equipeffi.infrastructure.persistence.records_migrations import (
     RECORDS_MIGRATIONS,
@@ -198,6 +202,8 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
         self.assertEqual(record.summary["template"]["sheet_id"], "centrifugal_pump")
         self.assertEqual(record.summary["template"]["sheet_contract_revision"],
                          "pump-input.v1")
+        self.assertEqual(record.summary["template"]["identity_source"],
+                         "legacy-structure")
         provenance = record.summary["evaluation_provenance"]
         self.assertEqual(provenance["standard_code"], "GB 19762-2025")
         self.assertEqual(provenance["standard_year"], "2025")
@@ -211,6 +217,43 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
         self.assertIsNone(provenance["ruleset_version"])
         self.assertTrue(provenance["calculator_version"])
         self.assertTrue(provenance["result_contract_version"])
+
+    def test_declared_template_identity_source_is_recorded_in_batch_snapshot(self):
+        from openpyxl.workbook.defined_name import DefinedName
+
+        workbook = openpyxl.load_workbook(self.source, data_only=False)
+        for name, value in identity_defined_names(V6_TEMPLATE_ENTRY).items():
+            workbook.defined_names.add(
+                DefinedName(name, attr_text=f'"{value}"'))
+        workbook.save(self.source)
+        workbook.close()
+
+        validation = V6TemplateResource().validate(self.source)
+        self.assertTrue(validation.is_valid, validation.message)
+        self.assertEqual(validation.identity_source, "declared")
+
+        result = self.run_batch([self.water_row()])
+        record = self.repository.load_batch_record(result.batch_record_id)
+        self.assertEqual(record.summary["template"]["identity_source"], "declared")
+
+    def test_identity_source_is_empty_without_reader_structure_evidence(self):
+        from equipeffi.application.ports.batch_workbook import BatchSourceWorkbook
+
+        self.batch.reader = V6PumpWorkbookReader(require_template_structure=False)
+        self.fill([self.water_row()])
+        workbook = self.batch.reader.read(self.source)
+        unverified_workbook = BatchSourceWorkbook(
+            path=workbook.path, rows=workbook.rows,
+            skipped_blank_rows=workbook.skipped_blank_rows,
+            template_identity={})
+        # A configured default template source is not evidence about this input.
+        self.batch.template_identity["identity_source"] = "declared"
+        with patch.object(self.batch.reader, "read",
+                          return_value=unverified_workbook):
+            result = self.batch.evaluate_workbook(
+                self.source, destination=self.root / "无来源结果.xlsx")
+        record = self.repository.load_batch_record(result.batch_record_id)
+        self.assertEqual(record.summary["template"]["identity_source"], "")
 
     def test_no_per_row_single_records_are_created(self):
         result = self.run_batch([self.water_row(), self.water_row(B="泵2", C="M-002"),
