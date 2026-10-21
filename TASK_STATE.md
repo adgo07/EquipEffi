@@ -41,7 +41,7 @@ current_task:
   merged_pr: "#24"
   merge_sha: 0d4eae855e16c99d0ef96bda3b39bfc5b26b4641
   next_plan: docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md
-  next_action: 按后续方案优先安排 Application 小范围去重；本轮未启动下一批实现
+  next_action: 按修订方案先做短调用盘点，再选一至两处真实公共职责去重；新功能/UI 美化暂缓，本轮未启动实现
   source_mapping_work: 源 checkout 既有未提交资料保留，不纳入本批
   previous_task_evidence: docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md
 
