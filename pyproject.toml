@@ -7,8 +7,7 @@ name = "equipeffi"
 version = "0.2.1"
 description = "设备能效分析工具"
 requires-python = ">=3.12,<3.13"
-# 判定内核、公共API及OOXML适配器只使用Python标准库；将文档/表格
-# 生成工具依赖放入可选组，便于Linux服务和安卓桥接层安装轻量核心包。
+# 判定核心和标准资源使用Python标准库；桌面界面依赖由可选desktop组提供。
 dependencies = []
 
 [project.scripts]
@@ -34,7 +33,6 @@ equipeffi = [
     "resources/elimination_catalog_batches_1_4.json",
     "resources/elimination_catalog_industry_2024.json",
     "resources/standards/*.json",
-    "resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx",
     "resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
 ]
 

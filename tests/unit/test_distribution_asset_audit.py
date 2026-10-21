@@ -37,13 +37,13 @@ class DistributionAssetAuditTests(unittest.TestCase):
                 archive.addfile(info, BytesIO(content))
         return path
 
-    def test_declared_assets_keep_canonical_pump_metadata_and_both_templates(self):
+    def test_declared_assets_keep_canonical_pump_metadata_and_formal_v6_template(self):
         names = {path.relative_to(ROOT / "src" / "equipeffi").as_posix() for path in runtime_asset_paths(ROOT)}
         self.assertIn("standard_manifest.json", names)
         self.assertIn("resources/TEMPLATE_MANIFEST.json", names)
         self.assertIn("resources/standards/pump.json", names)
-        self.assertIn("resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx", names)
         self.assertIn("resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx", names)
+        self.assertNotIn("resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx", names)
 
     def test_sdist_excludes_source_directories_without_globally_banning_pdf_reports(self):
         manifest = (ROOT / "MANIFEST.in").read_text(encoding="utf-8")
@@ -151,7 +151,6 @@ class DistributionAssetAuditTests(unittest.TestCase):
             (package / "resources" / "TEMPLATE_MANIFEST.json").write_text("{}", encoding="utf-8")
             (package / "resources" / "standards" / "developer-notes.md").write_text("source notes", encoding="utf-8")
             (package / "resources" / "standards" / "scan.png").write_bytes(b"\x89PNG\r\n\x1a\n")
-            (package / "resources" / "templates" / "设备能效分析空白模板_重构版V4_20260825.xlsx").write_bytes(b"v4")
             (package / "resources" / "templates" / "设备能效分析空白模板_重构版V6_20261005.xlsx").write_bytes(b"v6")
             (package / "resources" / "knowledge" / "README.md").write_text("draft", encoding="utf-8")
             output = build_zipapp(root, root / "dist" / "test.pyz")
@@ -159,6 +158,7 @@ class DistributionAssetAuditTests(unittest.TestCase):
                 names = set(archive.namelist())
         self.assertIn("equipeffi/resources/standards/pump.json", names)
         self.assertIn("equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx", names)
+        self.assertNotIn("equipeffi/resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx", names)
         self.assertNotIn("equipeffi/resources/standards/developer-notes.md", names)
         self.assertNotIn("equipeffi/resources/standards/scan.png", names)
         self.assertNotIn("equipeffi/resources/knowledge/README.md", names)

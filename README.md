@@ -30,4 +30,4 @@ EquipEffi 当前正式桌面产品使用 PySide6 Qt。标准映射、配套表�
 
 正式产品面向 Windows Qt 桌面使用。当前评价范围只有 GB 19762—2025 离心泵；V6 模板的其他设备工作表尚未接通评价。当前仓库未提供面向普通用户的独立安装器或已发布安装包，以上为从源码安装的方式。
 
-旧 Web、ApplicationApi、JSON/JSONL 客户端、Android 桥接和 V4 工作簿处理链正在本轮退役中，不属于受支持的产品入口。相关代码尚未全部删除；本说明不表示旧链已经完成删除，也不承诺它们继续兼容。
+旧 Tk、Web、ApplicationApi、JSON/JSONL 客户端、Android 桥接和 V4 工作簿处理链已退出维护并删除。命令行保留无参数启动、`--qt` / `--gui`、`--help` 和 `--status`；`--status` 检查 Qt、V6 模板及两个正式泵 Profile 的可用性。无界面集成使用 `create_pump_analysis_service(with_persistence=False)`，与桌面共用正式计算链。

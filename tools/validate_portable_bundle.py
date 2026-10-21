@@ -1,4 +1,4 @@
-"""校验EquipEffi便携ZIP的清单、哈希和最小运行文件集合。"""
+"""校验 headless 便携 ZIP 的清单、哈希和正式安装文件。"""
 from __future__ import annotations
 
 import argparse
@@ -12,27 +12,26 @@ from typing import Any, Sequence
 REQUIRED_MEMBERS = {
     "SHA256SUMS.txt",
     "运行说明.txt",
+    "README.md",
+    "scripts/README.md",
     "scripts/install_windows.ps1",
     "scripts/install_native_windows.ps1",
     "scripts/install_linux.sh",
+    "tools/validate_portable_bundle.py",
+}
+FORBIDDEN_MEMBERS = {
     "scripts/install_linux_service.sh",
     "scripts/equipeffi-web.service.template",
     "scripts/run_jsonl_windows.ps1",
     "scripts/run_jsonl_linux.sh",
+    "scripts/run_web_windows.ps1",
+    "scripts/run_web_linux.sh",
     "tools/smoke_jsonl.py",
     "tools/validate_android_skeleton.py",
     "docs/10_跨平台运行与模块边界.md",
     "docs/11_JSONL协议与Android桥接.md",
-    "android/README.md",
-    "android/settings.gradle.kts",
-    "android/build.gradle.kts",
-    "android/gradle.properties",
-    "android/bridge/build.gradle.kts",
-    "android/app/build.gradle.kts",
-    "android/app/src/main/AndroidManifest.xml",
-    "android/app/src/main/kotlin/com/equipeffi/android/MainActivity.kt",
-    "android/bridge/src/main/kotlin/com/equipeffi/bridge/JsonlBridgeClient.kt",
 }
+FORBIDDEN_PREFIXES = ("android/",)
 
 
 def _sha256(content: bytes) -> str:
@@ -53,7 +52,10 @@ def validate(bundle: Path) -> dict[str, Any]:
             checks["duplicate_members"] = sorted({name for name in names if names.count(name) > 1})
             if checks["duplicate_members"]:
                 errors.append("便携ZIP包含重复成员名")
-            unsafe = [name for name in names if name.startswith(("/", "\\")) or ".." in Path(name).parts]
+            unsafe = [
+                name for name in names
+                if name.startswith(("/", chr(92))) or ".." in Path(name).parts
+            ]
             checks["unsafe_members"] = sorted(unsafe)
             if unsafe:
                 errors.append("便携ZIP包含不安全路径")
@@ -61,6 +63,15 @@ def validate(bundle: Path) -> dict[str, Any]:
             checks["missing_required_members"] = missing
             if missing:
                 errors.append("便携ZIP缺少必要文件: " + ", ".join(missing))
+            forbidden = sorted(
+                name for name in unique_names
+                if name in FORBIDDEN_MEMBERS
+                or name.startswith(FORBIDDEN_PREFIXES)
+                or (name.lower().endswith(".xlsx") and "v4" in name.lower())
+            )
+            checks["retired_members"] = forbidden
+            if forbidden:
+                errors.append("便携ZIP包含已退役发布成员: " + ", ".join(forbidden))
             if "SHA256SUMS.txt" not in unique_names:
                 return {"is_valid": False, "errors": errors, "checks": checks}
             checksum_text = archive.read("SHA256SUMS.txt").decode("utf-8")
@@ -87,11 +98,9 @@ def validate(bundle: Path) -> dict[str, Any]:
             if checksum_errors:
                 errors.extend(checksum_errors)
             checks["wheel_members"] = sorted(name for name in names if name.endswith(".whl"))
-            checks["zipapp_members"] = sorted(name for name in names if name.endswith(".pyz"))
+            checks["optional_zipapp_members"] = sorted(name for name in names if name.endswith(".pyz"))
             if not checks["wheel_members"]:
                 errors.append("便携ZIP未包含wheel")
-            if not checks["zipapp_members"]:
-                errors.append("便携ZIP未包含.pyz")
     except (OSError, BadZipFile, UnicodeDecodeError) as exc:
         errors.append(f"便携ZIP读取失败: {exc}")
     checks["sha256"] = _sha256(bundle.read_bytes()) if bundle.is_file() else ""
@@ -99,7 +108,7 @@ def validate(bundle: Path) -> dict[str, Any]:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="校验EquipEffi便携ZIP")
+    parser = argparse.ArgumentParser(description="校验EquipEffi headless便携ZIP")
     parser.add_argument("bundle", type=Path)
     args = parser.parse_args(argv)
     result = validate(args.bundle)

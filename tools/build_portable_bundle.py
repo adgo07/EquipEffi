@@ -1,8 +1,8 @@
-"""构建不依赖网络的EquipEffi便携发布包。
+"""构建不依赖网络的EquipEffi headless 便携包。
 
-该脚本只打包已经构建好的wheel、启动脚本和运行文档，不尝试创建原生
-安装程序，也不把用户数据、标准源文件或临时目录带入发布包。ZIP中的
-清单和SHA256SUMS便于在Windows、Linux或后续移动端桥接层中核验内容。
+该脚本只打包已经构建好的wheel、安装脚本和运行文档，不尝试创建原生
+安装程序，也不把用户数据、标准源文件或临时目录带入发布包。Qt桌面依赖
+不内置在wheel/.pyz中，桌面安装应按README安装desktop extra。
 """
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ import hashlib
 from io import BytesIO
 from pathlib import Path
 import zipfile
-from typing import Iterable, Sequence
+from typing import Sequence
 
 try:
     from .build_lock import build_lock
@@ -64,45 +64,22 @@ def _read_required(root: Path, relative: str) -> bytes:
 
 def _runtime_notes(wheel_name: str, wheel_hash: str, zipapp_name: str = "") -> bytes:
     zipapp_note = f"可直接运行的zipapp：{zipapp_name}\n  python {zipapp_name} --status\n\n" if zipapp_name else ""
-    bridge_note = (
-        "直接使用JSONL启动脚本：\n"
-        f"  Windows: .\\scripts\\run_jsonl_windows.ps1 -PyzPath .\\{zipapp_name}\n"
-        f"  Linux:   sh scripts/run_jsonl_linux.sh ./{zipapp_name}\n\n"
-        if zipapp_name
-        else ""
-    )
-    smoke_note = (
-        "发布包自检（在本目录执行）：\n"
-        f"  python tools/smoke_jsonl.py --pyz .\\{zipapp_name}\n\n"
-        if zipapp_name
-        else ""
-    )
     text = f"""EquipEffi 便携运行包
 
-本包是跨平台运行基线，不是Windows安装程序或Linux原生安装包。
-它不下载网络依赖；运行前请确认目标系统已安装Python 3.12或更高版本（项目正式运行时）。
+本包包含 headless wheel 与安装/核验脚本，不是Windows原生安装程序。
+运行前请确认目标系统已安装Python 3.12（项目支持的版本）。
+PySide6 Qt桌面依赖不随wheel或.pyz内置；桌面用户请按README安装desktop extra。
 
 文件：{wheel_name}
 wheel SHA-256：{wheel_hash}
 
 {zipapp_note}Windows PowerShell（在本目录执行）：
   .\\scripts\\install_windows.ps1 -WheelPath .\\{wheel_name}
-  .\\scripts\\run_web_windows.ps1 -OpenBrowser
 
 Linux（在本目录执行）：
   sh scripts/install_linux.sh ./{wheel_name}
-  EQUIPEFFI_WEB_OPEN_BROWSER=1 sh scripts/run_web_linux.sh
 
-安装完成后可运行：
-  python -m equipeffi --status
-  python -m equipeffi --list-device-types
-  python -m equipeffi --jsonl   # 按行读取公共JSON请求，适合服务/桥接
-  python -m equipeffi --gui   # 正式桌面窗口：与无参数启动、--qt 相同的 PySide6 Qt（需安装 desktop extra）
-  python -m equipeffi --web --open-browser   # 显式使用浏览器窗口（compatibility surface）
-
-{bridge_note}核心判定通过JSON接口与窗口展示层解耦；Excel V4读写仍是独立适配器接口。
-
-{smoke_note}安卓或其他客户端应调用公共ApplicationApi/JSON接口，不依赖桌面窗口和Excel。
+安装后可运行 `python -m equipeffi --status` 检查正式泵标准包和V6模板资源。
 """
     return text.encode("utf-8")
 
@@ -130,36 +107,9 @@ def _build_bundle_unlocked(
         "scripts/install_windows.ps1": _read_required(root, "scripts/install_windows.ps1"),
         "scripts/install_native_windows.ps1": _read_required(root, "scripts/install_native_windows.ps1"),
         "scripts/install_linux.sh": _read_required(root, "scripts/install_linux.sh"),
-        "scripts/install_linux_service.sh": _read_required(root, "scripts/install_linux_service.sh"),
-        "scripts/equipeffi-web.service.template": _read_required(root, "scripts/equipeffi-web.service.template"),
-        "scripts/run_jsonl_windows.ps1": _read_required(root, "scripts/run_jsonl_windows.ps1"),
-        "scripts/run_jsonl_linux.sh": _read_required(root, "scripts/run_jsonl_linux.sh"),
-        "scripts/run_web_windows.ps1": _read_required(root, "scripts/run_web_windows.ps1"),
-        "scripts/run_web_linux.sh": _read_required(root, "scripts/run_web_linux.sh"),
         "scripts/README.md": _read_required(root, "scripts/README.md"),
-        "tools/smoke_jsonl.py": _read_required(root, "tools/smoke_jsonl.py"),
         "tools/validate_portable_bundle.py": _read_required(root, "tools/validate_portable_bundle.py"),
-        "tools/validate_android_skeleton.py": _read_required(root, "tools/validate_android_skeleton.py"),
         "README.md": _read_required(root, "README.md"),
-        "docs/10_跨平台运行与模块边界.md": _read_required(root, "docs/10_跨平台运行与模块边界.md"),
-        "docs/11_JSONL协议与Android桥接.md": _read_required(root, "docs/11_JSONL协议与Android桥接.md"),
-        # Android桥接源码只包含协议传输，随便携包分发以便移动端工程直接复用；
-        # 不把Python业务代码或标准数据复制到移动端。
-        "android/README.md": _read_required(root, "android/README.md"),
-        "android/settings.gradle.kts": _read_required(root, "android/settings.gradle.kts"),
-        "android/build.gradle.kts": _read_required(root, "android/build.gradle.kts"),
-        "android/gradle.properties": _read_required(root, "android/gradle.properties"),
-        "android/bridge/build.gradle.kts": _read_required(root, "android/bridge/build.gradle.kts"),
-        "android/app/build.gradle.kts": _read_required(root, "android/app/build.gradle.kts"),
-        "android/app/src/main/AndroidManifest.xml": _read_required(
-            root, "android/app/src/main/AndroidManifest.xml"
-        ),
-        "android/app/src/main/kotlin/com/equipeffi/android/MainActivity.kt": _read_required(
-            root, "android/app/src/main/kotlin/com/equipeffi/android/MainActivity.kt"
-        ),
-        "android/bridge/src/main/kotlin/com/equipeffi/bridge/JsonlBridgeClient.kt": _read_required(
-            root, "android/bridge/src/main/kotlin/com/equipeffi/bridge/JsonlBridgeClient.kt"
-        ),
     }
     if zipapp is not None:
         zipapp = Path(zipapp).resolve()

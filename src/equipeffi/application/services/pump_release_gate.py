@@ -1,18 +1,7 @@
-"""离心泵发布支持门禁的**单一事实源**（Phase 6 G06）。
+"""离心泵发布支持门禁的单一事实源。
 
-为什么需要它：Phase 5 提升了 `pump_chemical` 的支持状态，但当时只改了统一
-纵向切片路径（`CentrifugalPumpAnalysisService`）。遗留 `EvaluationService`
-（供 `--json` / `ApplicationApi` / JSONL / CLI / `--web` 使用）另有一份硬编码，
-因此**共享 Application/CLI 语义**仍把石化泵错误短路成 `NOT_IN_RELEASE_SCOPE`
-（独立验收登记为 `QA-P5-001` / `QA-P5-002(b)`）。
-
-本模块把该策略收敛为一份，两个使用方都从这里取：
-
-    CentrifugalPumpAnalysisService._release_support
-    EvaluationService._pump_release_support
-
-放这里而不是放在 `lifecycle` 包里：`lifecycle` 是**设备无关**的生命周期契约，
-不得出现泵专属知识（Phase 4 G01 的边界）。
+正式清水泵与石油化工泵分析服务通过本模块读取已批准的支持状态。
+该状态只表述发布范围，不改变 Calculator 的专业规则。
 """
 from __future__ import annotations
 

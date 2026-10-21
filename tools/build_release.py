@@ -1,13 +1,11 @@
-"""构建并审计EquipEffi核心wheel（Windows/Linux通用）。
+"""构建并审计EquipEffi当前Qt/V6与正式泵分析运行链。
 
-发布流程只依赖当前Python和项目声明的构建后端，不初始化Tk、不读取Excel
+发布流程只依赖当前Python和项目声明的构建后端，不启动Qt窗口、不读取Excel
 输入文件。默认使用 ``--no-index``，避免构建过程中意外访问网络；若本机
 构建依赖未准备好，命令会明确失败而不是偷偷改变标准数据。
 
 用法：
     python tools/build_release.py
-    python tools/build_release.py --output-dir dist --skip-review
-    python tools/build_release.py --output-dir dist --review-book outputs/review.xlsx
     python tools/build_release.py --output-dir dist --portable-output dist/equipeffi-portable.zip
 """
 from __future__ import annotations
@@ -23,13 +21,13 @@ import sys
 from typing import Sequence
 
 try:
-    from .audit_release import _default_review_book, audit_project
+    from .audit_release import audit_project
     from .build_portable_bundle import build_bundle
     from .build_zipapp import build_zipapp
     from .build_lock import build_lock
     from .validate_portable_bundle import validate as validate_portable_bundle
 except ImportError:  # direct execution: ``python tools/build_release.py``
-    from audit_release import _default_review_book, audit_project
+    from audit_release import audit_project
     from build_portable_bundle import build_bundle
     from build_zipapp import build_zipapp
     from build_lock import build_lock
@@ -37,56 +35,9 @@ except ImportError:  # direct execution: ``python tools/build_release.py``
 
 
 ROOT = Path(__file__).resolve().parents[1]
-V4_TEMPLATE_NAME = "设备能效分析空白模板_重构版V4_20260825.xlsx"
 # 固定构建纪元，避免 wheel 的 ZIP 时间戳随每次构建漂移；源码内容变化
 # 仍会产生新的哈希。该日期与本项目的判定基准日期保持同一发布周期。
 REPRODUCIBLE_BUILD_EPOCH = "1787443200"
-
-
-def sync_runtime_template(root: Path, output_dir: Path) -> Path | None:
-    """Copy the protected runtime V4 template alongside release artifacts.
-
-    The template is a first-class deliverable, but setuptools only places it
-    inside the wheel.  Keeping a standalone copy in the release directory
-    makes the workbook users download match the code package.  Missing source
-    templates are tolerated for isolated unit-test roots; a source/template
-    path is never overwritten.
-    """
-    source = Path(root) / "src" / "equipeffi" / "resources" / "templates" / V4_TEMPLATE_NAME
-    if not source.is_file():
-        return None
-    target_dir = Path(output_dir)
-    target_dir.mkdir(parents=True, exist_ok=True)
-    target = target_dir / V4_TEMPLATE_NAME
-    if source.resolve() != target.resolve():
-        shutil.copy2(source, target)
-    return target
-
-
-def sync_review_book(review_book: Path | None, output_dir: Path) -> Path | None:
-    """Copy the audited human-readable standard workbook into a release dir.
-
-    The review workbook is an explicit release deliverable, but it lives
-    outside the Python wheel.  Copying it here keeps the workbook, template,
-    audit JSON and executable artifacts in one independently reproducible
-    directory.  A source already located in ``output_dir`` is left untouched;
-    the original review file is never modified.
-    """
-
-    if review_book is None:
-        return None
-    source = Path(review_book).resolve()
-    # 与 ``sync_runtime_template`` 一致：审计层负责报告缺失校对册，
-    # 发布层不因可选的人可读副本缺失而改变原有的非强制构建语义。
-    # ``--require-activation`` 仍会由 activation gate 阻断该发布。
-    if not source.is_file():
-        return None
-    target_dir = Path(output_dir).resolve()
-    target_dir.mkdir(parents=True, exist_ok=True)
-    target = target_dir / source.name
-    if source != target:
-        shutil.copy2(source, target)
-    return target
 
 
 def release_report_path(output_dir: Path) -> Path:
@@ -183,52 +134,19 @@ def main(argv: Sequence[str] | None = None) -> int:
         type=Path,
         help="便携ZIP内的.pyz输出路径；仅在指定--portable-output时使用，默认与ZIP同名改为.pyz",
     )
-    parser.add_argument(
-        "--require-activation",
-        action="store_true",
-        help="要求校对册已就绪且所有标准包active，否则构建以失败退出",
-    )
-    parser.add_argument(
-        "--review-book",
-        type=Path,
-        help="人工校对册路径；未指定时按最新交付目录、历史交付目录顺序自动寻找",
-    )
-    parser.add_argument("--skip-review", action="store_true", help="跳过人工校对册审计")
     args = parser.parse_args(argv)
-    if args.require_activation and args.skip_review:
-        parser.error("--require-activation不能与--skip-review同时使用")
     root = Path(args.root).resolve()
     output_dir = Path(args.output_dir).resolve() if args.output_dir else root / "dist"
     try:
         wheel = build_wheel(root, output_dir, timeout=args.timeout)
         sdist = build_sdist(root, output_dir, timeout=args.timeout) if args.sdist else None
-        runtime_template = sync_runtime_template(root, output_dir)
-        review = None
-        if not args.skip_review:
-            if args.review_book is not None:
-                review = args.review_book.resolve()
-            else:
-                review = _default_review_book(root)
-        audit_kwargs = {"review_book": review, "wheel": wheel}
+        audit_kwargs = {"wheel": wheel}
         if sdist is not None:
             audit_kwargs["sdist"] = sdist
         audit = audit_project(root, **audit_kwargs)
         payload = {"wheel": str(wheel), "audit": asdict(audit)}
         if sdist is not None:
             payload["sdist"] = str(sdist)
-        if runtime_template is not None:
-            payload["template"] = str(runtime_template)
-        synced_review = sync_review_book(review, output_dir)
-        if synced_review is not None:
-            payload["review_book"] = str(synced_review)
-        activation_gate = {"required": bool(args.require_activation), "ready": True, "blockers": []}
-        if args.require_activation:
-            review_checks = audit.checks.get("human_review_book") or {}
-            activation_gate["ready"] = bool(review_checks.get("activation_ready"))
-            activation_gate["blockers"] = list(review_checks.get("activation_blockers") or [])
-            if not review_checks:
-                activation_gate["blockers"] = ["未找到人工校对册或未执行校对册审计"]
-        payload["activation_gate"] = activation_gate
         if audit.is_valid and args.portable_output:
             portable_output = Path(args.portable_output).resolve()
             zipapp_output = (
@@ -252,7 +170,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         payload["audit_report"] = str(report_path)
         write_release_report(payload, output_dir)
         print(json.dumps(payload, ensure_ascii=False, indent=2, default=str))
-        return 0 if audit.is_valid and activation_gate["ready"] else 1
+        return 0 if audit.is_valid else 1
     except (OSError, subprocess.SubprocessError, RuntimeError, ValueError) as exc:
         print(json.dumps({"error": type(exc).__name__, "message": str(exc)}, ensure_ascii=False, indent=2), file=sys.stderr)
         return 2

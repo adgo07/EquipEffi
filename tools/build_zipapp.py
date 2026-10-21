@@ -1,6 +1,6 @@
 """从源码生成可直接用 ``python`` 运行的EquipEffi ``.pyz``。
 
-该格式适合Linux服务、Windows便携运行和后续Android桥接层的原型验证；
+该格式适合Linux headless服务和Windows便携运行；
 它不需要安装wheel，也不包含第三方依赖。正式桌面窗口（PySide6 Qt）仍只在显式使用 ``--gui`` / ``--qt`` 或无参数启动时导入。
 """
 from __future__ import annotations

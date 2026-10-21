@@ -1,20 +1,9 @@
-"""正式外层装配入口。
-
-核心判定不需要读取V4工作簿，也不应因启动JSON/JSONL服务而触发Excel
-资源解析。模板契约作为可选能力由本模块按需加载，供CLI、桌面和Web
-展示层复用同一套服务构造逻辑。
-"""
+"""正式产品运行时装配入口。"""
 from __future__ import annotations
 
-import logging
 from pathlib import Path
-from xml.etree.ElementTree import ParseError
-from typing import Any
 
 from .infrastructure.standards.json_repository import JsonStandardRepository
-from .presentation.api.application_api import ApplicationApi
-from .application.services.evaluation_facade import EvaluationFacade
-from .application.services.evaluation_service import EvaluationService
 
 
 def _default_project_root() -> Path:
@@ -37,61 +26,6 @@ def _create_standard_repository(project_root: Path | None = None) -> JsonStandar
     if package_manifest.is_file():
         return JsonStandardRepository(package_manifest.parent, manifest=package_manifest)
     return JsonStandardRepository(root)
-
-
-def load_v4_contract() -> tuple[Any, Any] | tuple[None, None]:
-    """Load the packaged V4 contract only when a presentation layer needs it.
-
-    The returned resource manager is kept alongside the contract so a package
-    imported from a zip file retains the temporary materialized workbook for
-    the lifetime of the caller.  A missing or invalid template is intentionally
-    represented by ``(None, None)``; the public API has a dependency-free
-    fallback schema for manual/JSON input.
-    """
-
-    # These imports are deliberately local: importing the core API must not
-    # initialize the Excel/template adapter or inspect an XLSX file.
-    from .infrastructure.excel.template_resource import V4TemplateResource
-    from .infrastructure.excel.v4_reader import V4WorkbookReaderImpl
-    from .infrastructure.excel.ooxml_reader import OOXMLReadError
-    from .infrastructure.excel.template_resource import TemplateResourceError
-
-    try:
-        template_resource = V4TemplateResource()
-        contract = V4WorkbookReaderImpl().read_contract(template_resource.template_path)
-    except (OOXMLReadError, TemplateResourceError, OSError, ParseError) as exc:
-        logging.getLogger("equipeffi.composition").warning("V4 契约加载失败，保留兼容回退：%s", exc)
-        return None, None
-    return contract, template_resource
-
-
-def create_core_api(*, project_root: Path | None = None) -> ApplicationApi:
-    """Create the core JSON/API service without loading the V4 workbook."""
-
-    repository = _create_standard_repository(project_root)
-    facade = EvaluationFacade(EvaluationService(repository))
-    return ApplicationApi(facade)
-
-
-def create_application_api(
-    *,
-    project_root: Path | None = None,
-    load_template: bool = False,
-) -> tuple[ApplicationApi, Any, Any]:
-    """Create an API and optionally attach the parsed V4 contract.
-
-    Returns ``(api, contract, resource_manager)``.  The latter two values are
-    exposed so a desktop/Web caller can retain the resource manager when a
-    wheel is imported directly from a zip archive.  Existing callers that only
-    need JSON evaluation should use the default ``load_template=False``.
-    """
-
-    repository = _create_standard_repository(project_root)
-    contract = resource_manager = None
-    if load_template:
-        contract, resource_manager = load_v4_contract()
-    facade = EvaluationFacade(EvaluationService(repository), contract=contract)
-    return ApplicationApi(facade, contract=contract), contract, resource_manager
 
 
 def create_settings_runtime(*, paths=None, stream=None):
@@ -137,9 +71,7 @@ def create_records_runtime(*, paths=None):
 def create_pump_analysis_service(*, paths=None, with_persistence: bool = True):
     """装配统一 GB 19762 离心泵分析服务。
 
-    返回 `CentrifugalPumpAnalysisService`；`with_persistence=True` 时同时接入
-    records.sqlite 的 Workspace / Record 仓储。标准仓库复用与核心 API 相同的
-    `JsonStandardRepository`，不建立第二套标准加载路径。
+    with_persistence=True 时接入 records.sqlite 的 Workspace / Record 仓储。
     """
 
     from . import __version__
@@ -158,11 +90,7 @@ def create_pump_analysis_service(*, paths=None, with_persistence: bool = True):
 
 
 def create_batch_evaluation_service(*, paths=None):
-    """装配 Excel 批量评价服务（Phase 8）。
-
-    复用与单台分析**同一个** `CentrifugalPumpAnalysisService`，因此 Excel 与 Qt
-    走完全相同的正式业务链路，不存在第二套计算或第二套装配路径。
-    """
+    """创建正式 Excel 批量评价服务，与单台分析复用同一个分析服务。"""
 
     from .application.services.pump_batch_evaluation_service import (
         PumpBatchEvaluationService,
@@ -199,13 +127,11 @@ def launch_qt(*, paths=None) -> int:
 
     from .infrastructure.persistence.app_data_paths import AppDataPaths
 
-    # 正式启动路径必须解析出**真实**数据目录并一路传到设置页，
-    # 不得让 UI 只在测试注入时才显示路径。
+    # 解析真实数据目录并传递给设置页。
     resolved = paths if paths is not None else AppDataPaths.default()
     service, logger = create_settings_runtime(paths=resolved)
     analysis = create_pump_analysis_service(paths=resolved)
-    # Phase 8：批量评价复用**同一个** analysis 服务，Excel 与 Qt 因此走同一条
-    # 正式业务链路，不存在第二套计算路径。
+    # 批量评价复用同一个正式分析服务。
     batch = create_batch_evaluation_service(paths=resolved)
     previous = install_exception_hook(logger)
     try:

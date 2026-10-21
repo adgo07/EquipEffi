@@ -2,17 +2,17 @@
 
 本工具只负责调用目标机已有的 PyInstaller，不下载依赖、不修改标准数据，
 并把包内 JSON/XLSX 资源显式加入构建命令。当前支持在 Windows/Linux 上构建
-对应平台的 onedir 目录；Android 仍使用 JSONL 桥接，不把 Tk 打包进移动端。
+对应平台的 onedir 目录；构建完成后通过打包后的 ``--status`` 检查 Qt/V6 和正式泵服务。
 """
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
-import sys
 import zipfile
 from typing import Sequence
 
@@ -144,7 +144,6 @@ def build_native(
     *,
     tool: str | None = None,
     python_path: str | None = None,
-    gui_python_path: str | None = None,
     name: str = "equipeffi",
     timeout: int = 600,
 ) -> dict[str, object]:
@@ -166,53 +165,56 @@ def build_native(
         raise RuntimeError("native目录运行资源审计失败: " + "; ".join(asset_audit.errors))
     digest = __import__("hashlib").sha256(executable.read_bytes()).hexdigest()
     warn_path = executable.parents[2] / "build" / name / f"warn-{name}.txt"
-    warning_text = warn_path.read_text(encoding="utf-8", errors="replace") if warn_path.is_file() else ""
-    # 静态PyInstaller警告不足以证明窗口可启动。诊断工具只读检查目标构建
-    # Python，不启动主窗口。
-    #
-    # 注意（M1 文案修正）：`gui_capable` / `presentation_mode` 是**历史 Tk 时代的
-    # 构建诊断字段**，字段名与取值（native_tk / web_fallback）为兼容
-    # `tools/audit_release.py` 的既有校验而保留，**不代表当前 UI 入口**。
-    # Phase 6 起正式桌面 Shell 为 PySide6 Qt（无参数 / --gui / --qt 同一入口），
-    # 不存在「Tk 不可用则回退 Web 窗口」的行为。发行包裁剪属于 Phase 9。
+    # 用构建后的真实启动程序运行无GUI的 --status，核验打包后 Qt、V6资源和正式泵服务。
+    # 该诊断不会创建 QApplication，也不会迁移或写入用户数据库。
     try:
-        # 直接执行``python tools/build_native.py``时，sys.path首项是tools目录，
-        # 将仓库根目录补入后才能导入同目录的诊断模块；作为模块导入时无影响。
-        if str(Path(root).resolve()) not in sys.path:
-            sys.path.insert(0, str(Path(root).resolve()))
-        from tools.check_gui_environment import diagnose
-
-        requested_python = gui_python_path or python_path
-        if requested_python and Path(requested_python).resolve() != Path(sys.executable).resolve():
-            diagnostic_script = Path(root).resolve() / "tools" / "check_gui_environment.py"
-            completed = subprocess.run(
-                [requested_python, str(diagnostic_script)],
-                cwd=str(Path(root).resolve()),
-                check=True,
-                capture_output=True,
-                text=True,
-                timeout=30,
-            )
-            gui_environment = json.loads(completed.stdout)
-        else:
-            gui_environment = diagnose()
-    except Exception as exc:  # 构建脚本作为单文件复制时仍能返回可审计结果
-        gui_environment = {"ready": False, "error": f"GUI环境诊断失败：{exc}"}
-    gui_capable = (
-        "missing module named tkinter" not in warning_text.lower()
-        and bool(gui_environment.get("ready"))
-    )
+        status_environment = os.environ.copy()
+        # 冻结的 Python 程序将诊断 JSON 写到管道时也使用 UTF-8，
+        # 与下方显式解码保持一致，避免 Windows 系统代码页误解中文。
+        status_environment["PYTHONIOENCODING"] = "utf-8"
+        status = subprocess.run(
+            [str(executable), "--status"],
+            cwd=str(Path(root).resolve()),
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            env=status_environment,
+            timeout=45,
+        )
+        status_payload = json.loads(status.stdout)
+        desktop = status_payload.get("desktop", {})
+        qt_capable = (
+            isinstance(desktop, dict)
+            and desktop.get("surface") == "PySide6 Qt"
+            and desktop.get("available") is True
+        )
+        status_ready = status.returncode == 0 and status_payload.get("ready") is True
+        qt_environment = {
+            "surface": desktop.get("surface", "") if isinstance(desktop, dict) else "",
+            "available": qt_capable,
+            "status_ready": status_ready,
+            "template_available": status_payload.get("template", {}).get("available") is True,
+            "pump_profiles": status_payload.get("pump_profiles", {}),
+        }
+        status_error = ""
+        if not status_ready:
+            status_error = status.stderr.strip() or status.stdout.strip() or f"--status返回码{status.returncode}"
+    except Exception as exc:  # 构建可保留诊断结果，由发行审计阻止不完整产物
+        qt_capable = False
+        status_ready = False
+        qt_environment = {"surface": "PySide6 Qt", "available": False, "status_ready": False}
+        status_error = f"打包后--status检查失败：{type(exc).__name__}: {exc}"
     return {
         "platform": "windows" if executable.suffix.lower() == ".exe" else "linux",
         "name": name,
         "executable": str(executable),
         "sha256": digest,
-        "gui_capable": gui_capable,
-        # 历史 Tk 时代构建诊断字段，取值为兼容 tools/audit_release.py 校验而保留；
-        # 不表示当前 UI 入口，也不表示 --gui 会回退到 Web 窗口（见上方说明）。
-        "presentation_mode": "native_tk" if gui_capable else "web_fallback",
-        "gui_environment_ready": bool(gui_environment.get("ready")),
-        "gui_environment_error": str(gui_environment.get("error", "")),
+        "qt_capable": qt_capable,
+        "presentation_mode": "pyside6_qt" if qt_capable else "unavailable",
+        "status_ready": status_ready,
+        "qt_environment": qt_environment,
+        "status_smoke_error": status_error,
         "warnings_file": str(warn_path) if warn_path.is_file() else "",
         "command": command,
     }
@@ -224,7 +226,6 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--output-dir", type=Path, default=ROOT / "dist" / "native")
     parser.add_argument("--tool", default="", help="PyInstaller可执行文件路径；默认从PATH查找")
     parser.add_argument("--python", dest="python_path", default="", help="用指定Python执行`-m PyInstaller`；默认用当前解释器")
-    parser.add_argument("--gui-python", default="", help="GUI预检使用的Python；默认跟随--python或当前Python")
     parser.add_argument("--name", default="equipeffi")
     parser.add_argument("--timeout", type=int, default=600)
     parser.add_argument("--report", type=Path, help="可选：将构建摘要写入JSON")
@@ -236,26 +237,27 @@ def main(argv: Sequence[str] | None = None) -> int:
             args.output_dir,
             tool=args.tool or None,
             python_path=args.python_path or None,
-            gui_python_path=args.gui_python or None,
             name=args.name,
             timeout=args.timeout,
         )
     except (FileNotFoundError, OSError, subprocess.SubprocessError, RuntimeError) as exc:
         parser.error(str(exc))
-    if args.zip_output:
+    if args.zip_output and result.get("status_ready") is True:
         # 报告作为ZIP旁车文件保留，避免把包含ZIP自身SHA-256的报告再嵌入ZIP
         # 形成循环哈希；`--report`会在下面写入包含package摘要的完整报告。
         result["package"] = package_native(Path(str(result["executable"])), args.zip_output)
         package_audit = audit_artifact(Path(str(result["package"]["path"])), root=args.root)
         if not package_audit.is_valid:
             parser.error("native ZIP运行资源审计失败: " + "; ".join(package_audit.errors))
+    elif args.zip_output:
+        result["package_error"] = "打包后的 --status 未就绪，未生成 native ZIP"
     payload = json.dumps(result, ensure_ascii=False, indent=2)
     if args.report:
         report = Path(args.report).resolve()
         report.parent.mkdir(parents=True, exist_ok=True)
         report.write_text(payload + "\n", encoding="utf-8")
     print(payload)
-    return 0
+    return 0 if result.get("status_ready") is True else 1
 
 
 if __name__ == "__main__":

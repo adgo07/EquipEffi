@@ -1,13 +1,8 @@
-"""可重复执行的EquipEffi发布审计。
-
-该脚本把分散的交付验收合并成一个只读命令：检查15类公共接口、17个
-内部标准包、永磁同步电机复核激活门禁、V4模板/验证覆盖、人工校对册同源性，
-以及wheel中是否包含自洽的资源。它不修改任何输入文件，也不负责把人工
-建议修订写回标准JSON。
+"""只读核验当前 Qt/V6、正式泵服务及已声明的发布资源。
 
 用法（在仓库根目录）：
     python tools/audit_release.py
-    python tools/audit_release.py --wheel tmp/release-20260826/equipeffi-0.2.1-py3-none-any.whl
+    python tools/audit_release.py --wheel dist/equipeffi-0.2.1-py3-none-any.whl
 """
 from __future__ import annotations
 
@@ -17,7 +12,6 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import re
 import subprocess
 import sys
 from zipfile import BadZipFile, ZipFile
@@ -26,21 +20,24 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
-_DEFAULT_REVIEW = object()
+
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from equipeffi.application.services.v4_template_contract import V4_DEVICE_SHEETS  # noqa: E402
-from equipeffi.application.services.evaluation_service import EvaluationService  # noqa: E402
-from equipeffi.domain.common.enums import Conclusion, EliminationScope  # noqa: E402
-from equipeffi.domain.common.models import DeviceDraft  # noqa: E402
-from equipeffi.domain.evaluation.device_specs import get_device_spec, list_device_specs  # noqa: E402
-from equipeffi.domain.evaluation.device_types import PUBLIC_DEVICE_TYPES, public_device_types  # noqa: E402
-from equipeffi.domain.evaluation.device_evaluators import ChemicalPumpEvaluator, WaterPumpEvaluator  # noqa: E402
-from equipeffi.domain.evaluation.elimination import EliminationMatcher  # noqa: E402
-from equipeffi.infrastructure.excel.template_resource import DEFAULT_V4_TEMPLATE  # noqa: E402
-from equipeffi.infrastructure.excel.v4_template_audit import audit_v4_template  # noqa: E402
-from equipeffi.infrastructure.standards.json_repository import JsonStandardRepository  # noqa: E402
+from datetime import date
+
+from equipeffi.application.services.centrifugal_pump_analysis_service import (
+    PumpAnalysisRequest,
+)
+from equipeffi.domain.evaluation.elimination import EliminationMatcher
+from equipeffi.infrastructure.excel.pump_workbook_reader import V6PumpWorkbookReader
+from equipeffi.infrastructure.excel.template_resource import (
+    DEFAULT_V6_TEMPLATE,
+    V6_TEMPLATE_IDENTITY,
+    V6TemplateResource,
+)
+from equipeffi.infrastructure.standards.json_repository import JsonStandardRepository
+
 try:
     from .check_distribution_assets import audit_artifact
 except ImportError:  # direct execution
@@ -56,14 +53,6 @@ except ImportError:  # direct execution
 
 INDUSTRY_EXPECTED_IDS = frozenset(item[0] for item in INDUSTRY_EXPECTED)
 
-try:  # import as ``tools.audit_release`` from tests or another Python module
-    from .audit_v4_validations import audit as audit_validations  # type: ignore[no-redef]  # noqa: E402
-    from .validate_human_review_book import validate as validate_review_book  # type: ignore[no-redef]  # noqa: E402
-except ImportError:  # direct execution: ``python tools/audit_release.py``
-    from audit_v4_validations import audit as audit_validations  # noqa: E402
-    from validate_human_review_book import validate as validate_review_book  # noqa: E402
-
-
 @dataclass(frozen=True)
 class ReleaseAudit:
     is_valid: bool
@@ -72,43 +61,12 @@ class ReleaseAudit:
     checks: dict[str, Any]
 
 
-def _default_review_book(root: Path) -> Path:
-    """按交付日期/ ``latest`` 标记选择校对册，避免误读历史版本。"""
-
-    output_root = Path(root) / "outputs"
-    candidates = [
-        path for directory in output_root.glob("final_*")
-        for path in [directory / "设备能效标准数据_人工校对版.xlsx"]
-        if path.is_file()
-    ]
-    if candidates:
-        def sort_key(path: Path) -> tuple[str, int, int]:
-            match = re.search(r"final_(\d{8})", path.parent.name)
-            date_key = match.group(1) if match else "00000000"
-            latest_key = int("latest" in path.parent.name.lower())
-            return date_key, latest_key, path.stat().st_mtime_ns
-
-        return max(candidates, key=sort_key)
-    # 保留稳定的缺失文件提示路径，便于调用方显示下一步动作。
-    return output_root / "final_latest" / "设备能效标准数据_人工校对版.xlsx"
-
-
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
-
-
-def _audit_public_contract(errors: list[str], checks: dict[str, Any]) -> None:
-    public = tuple(public_device_types())
-    checks["public_device_type_count"] = len(public)
-    if len(public) != 15 or tuple(PUBLIC_DEVICE_TYPES) != tuple(item["code"] for item in public):
-        errors.append("公共设备类型不是固定的15类V4接口")
-    if set(V4_DEVICE_SHEETS) != {item["sheet"] for item in public}:
-        errors.append("公共设备类型与V4设备sheet集合不一致")
-    checks["public_device_types"] = [item["code"] for item in public]
 
 
 def _audit_manifest(src: Path, errors: list[str], checks: dict[str, Any]) -> None:
@@ -229,8 +187,8 @@ def _audit_standard_provenance(
     except Exception as exc:  # pragma: no cover - provenance is supplementary
         warnings.append(f"标准来源覆盖审计异常: {type(exc).__name__}: {exc}")
         return
-    # 将完整逐包数据保留在JSON审计中，便于维护者后续按包补录，不把它
-    # 变成发布硬门禁；PMSM的激活门禁仍由manifest/校对册审计负责。
+    # 将逐包数据保留在JSON审计中，便于维护者补录来源信息；此覆盖率不作
+    # 发布硬门禁，也不改变标准包的支持状态。
     checks["standard_provenance"] = result
     incomplete = [
         item for item in result.get("packs", [])
@@ -294,79 +252,6 @@ def _audit_elimination_catalog(errors: list[str], checks: dict[str, Any]) -> Non
             errors.append(f"产业目录机器资源存在未登记规则: {', '.join(extra_ids)}")
         if duplicate_ids:
             errors.append(f"产业目录机器资源存在重复规则ID: {', '.join(duplicate_ids)}")
-        # 受控产业目录不是全文时，发布门禁还要验证“未命中”不会
-        # 静默降级为能效等级；明确命中则必须继续保留淘汰优先级。
-        try:
-            manifest_path = SRC / "equipeffi" / "standard_manifest.json"
-            service = EvaluationService(
-                JsonStandardRepository(SRC / "equipeffi", manifest=manifest_path),
-                elimination=matcher,
-            )
-            unknown = service.evaluate(
-                DeviceDraft(
-                    "AUDIT-INDUSTRY-UNKNOWN",
-                    "compressor",
-                    {"model": "AUDIT-UNLISTED-MODEL"},
-                ),
-                elimination_scope=EliminationScope.INDUSTRY_ONLY,
-            )
-            explicit = service.evaluate(
-                DeviceDraft(
-                    "AUDIT-INDUSTRY-EXPLICIT",
-                    "compressor",
-                    {"model": "3W-0.9/7"},
-                ),
-                elimination_scope=EliminationScope.INDUSTRY_ONLY,
-            )
-            combined_motor = service.evaluate(
-                DeviceDraft(
-                    "AUDIT-COMBINED-MOTOR",
-                    "motor_lv",
-                    {
-                        "model": "YB160M-4",
-                        "frame_size_mm": 160,
-                        "rated_voltage_v": 660,
-                    },
-                ),
-                elimination_scope=EliminationScope.INDUSTRY_AND_MOTOR_BATCHES,
-            )
-            # 适配器通常传入枚举，但配置文件/第三方调用也可能传入
-            # 中文字符串；审计这个路径，确保字符串不会绕过目录筛选。
-            string_scope_batch_only_model = service.evaluate(
-                DeviceDraft(
-                    "AUDIT-STRING-SCOPE-BATCH-ONLY",
-                    "transformer",
-                    {"model": "S8-100", "production_year": 1997},
-                ),
-                elimination_scope=EliminationScope.INDUSTRY_ONLY.value,
-            )
-            behavior = {
-                "catalog_complete": bool(matcher.industry_catalog_complete),
-                "unknown_model_conclusion": unknown.conclusion.value,
-                "explicit_model_conclusion": explicit.conclusion.value,
-                "combined_motor_batch_conclusion": combined_motor.conclusion.value,
-                "string_scope_batch_only_model_conclusion": string_scope_batch_only_model.conclusion.value,
-                "unknown_trace_output": next(
-                    (
-                        item.get("output", "")
-                        for item in unknown.trace
-                        if item.get("step_type") == "淘汰检查"
-                    ),
-                    "",
-                ),
-            }
-            checks["industry_scope_behavior"] = behavior
-            if not matcher.industry_catalog_complete:
-                if unknown.conclusion is not Conclusion.UNABLE_TO_JUDGE:
-                    errors.append("非全文产业目录未命中时错误地继续了能效判定")
-                if explicit.conclusion is not Conclusion.ELIMINATED:
-                    errors.append("产业目录明确命中未保持淘汰优先级")
-                if combined_motor.conclusion is not Conclusion.ELIMINATED:
-                    errors.append("组合口径下四批目录明确命中未保持淘汰优先级")
-                if string_scope_batch_only_model.conclusion is not Conclusion.UNABLE_TO_JUDGE:
-                    errors.append("字符串淘汰口径绕过产业目录过滤")
-        except Exception as exc:  # pragma: no cover - release audit must report
-            errors.append(f"产业目录口径行为审计异常: {type(exc).__name__}: {exc}")
     except Exception as exc:  # pragma: no cover - audit should report, not crash
         errors.append(f"淘汰目录加载审计异常: {type(exc).__name__}: {exc}")
 
@@ -407,152 +292,111 @@ def _audit_industry_source(pdf: Path, errors: list[str], checks: dict[str, Any])
 
 
 def _audit_evaluator_examples(src: Path, errors: list[str], checks: dict[str, Any]) -> None:
-    """用每个内部profile的标准示例做一次非破坏性端到端烟测。"""
-    manifest_path = src / "equipeffi" / "standard_manifest.json"
+    """通过当前正式泵 Use Case 核验两个标准包及关键输入边界。"""
+
     try:
-        service = EvaluationService(JsonStandardRepository(src / "equipeffi", manifest=manifest_path))
+        from equipeffi.composition import create_pump_analysis_service
 
-        def evaluate_example(device_type: str, record_id: str, values: dict[str, Any]):
-            # Release audit checks **profile evaluator** evidence, so it calls the
-            # evaluator directly and never goes through the product release gate.
-            #
-            # Phase 5 note: the unified formal product path
-            # (CentrifugalPumpAnalysisService, used by Qt `--qt`) now reports
-            # `pump_chemical = SUPPORTED` as a **support promotion candidate**
-            # (pending independent acceptance). The legacy EvaluationService /
-            # ApplicationApi surfaces still return NOT_IN_RELEASE_SCOPE and are
-            # registered as REGISTERED_DEVIATION in QA_BACKLOG (QA-P5-001/002).
-            # This smoke test is unaffected by either: it bypasses the release gate.
-            evaluator_type = {
-                "pump_water": WaterPumpEvaluator,
-                "pump_chemical": ChemicalPumpEvaluator,
-            }.get(device_type)
-            if evaluator_type is not None:
-                return evaluator_type().evaluate(values, service.standards.get_pack(device_type))
-            return service.evaluate(DeviceDraft(record_id, device_type, values))
+        service = create_pump_analysis_service(with_persistence=False)
+        overview = service.standard_overview()
+        profiles = {
+            str(item.get("rule_profile")): item
+            for item in overview.get("scopes", [])
+            if isinstance(item, dict)
+        }
+        expected_profiles = {"pump_water", "pump_chemical"}
+        checks["pump_profiles"] = {
+            profile: {
+                "available": bool(
+                    profiles.get(profile, {}).get("support_status") == "SUPPORTED"
+                    and profiles.get(profile, {}).get("pack_id")
+                ),
+                "support_status": profiles.get(profile, {}).get("support_status"),
+                "pack_id": profiles.get(profile, {}).get("pack_id"),
+            }
+            for profile in sorted(expected_profiles)
+        }
+        if set(profiles) != expected_profiles:
+            errors.append("正式泵服务必须只发布pump_water与pump_chemical两个profile")
+        for profile, state in checks["pump_profiles"].items():
+            if not state["available"]:
+                errors.append(f"正式泵profile不可用或未SUPPORTED: {profile}")
 
-        results: dict[str, str] = {}
-        trace_data_ids: dict[str, list[str]] = {}
-        for device_type in list_device_specs():
-            example = dict(get_device_spec(device_type).get("example", {}))
-            result = evaluate_example(device_type, f"RELEASE-{device_type}", example)
-            results[device_type] = result.conclusion.value
-            standard_step = next(
-                (item for item in result.trace if item.get("step_type") == "标准查询结果"),
-                None,
-            )
-            ids = [str(item) for item in (standard_step or {}).get("data_ids", []) if item not in (None, "")]
-            trace_data_ids[device_type] = ids
-            # 所有已激活标准包的成功示例必须留下可回溯的标准记录ID；
-            # 对于标准原文“—”导致的不在范围示例，仍需保留查表轨迹。
-            if result.conclusion.value != "无法判定" and not ids:
-                errors.append(f"评价器示例{device_type}缺少标准查询结果data_id")
-        checks["evaluator_examples"] = results
-        checks["evaluator_trace_data_ids"] = trace_data_ids
-        # 级数是多级泵公式的离散输入轴；发布审计用一个绕过上层
-        # V4验证的字符串值确认评价器仍会拒绝非整数，避免手工/API
-        # 入口把虚构的单级扬程带入比转速计算。
-        integer_stage_results: dict[str, str] = {}
-        for device_type, category in (("pump_water", "多级"), ("pump_chemical", "多级石油化工离心泵")):
-            example = dict(get_device_spec(device_type).get("example", {}))
-            example.update({"category": category, "stages": "1.5"})
-            invalid_stage = evaluate_example(device_type, f"RELEASE-{device_type}-INVALID-STAGES", example)
-            integer_stage_results[device_type] = invalid_stage.conclusion.value
-            if (
-                invalid_stage.conclusion is not Conclusion.UNABLE_TO_JUDGE
-                or "级数" in invalid_stage.missing_fields
-                or invalid_stage.evaluation_status != "INVALID_INPUT"
-                or "STAGES_INVALID" not in invalid_stage.issue_codes
-            ):
-                errors.append(f"评价器示例{device_type}未将已提供的非整数级数标记为INVALID_INPUT")
-        checks["pump_integer_stage_validation"] = integer_stage_results
-        range_miss_context: dict[str, Any] = {}
-        for device_type, category in (("pump_water", "单级单吸"), ("pump_chemical", "单级石油化工离心泵")):
-            example = dict(get_device_spec(device_type).get("example", {}))
-            example.update({
-                "category": category, "suction": "单吸", "stages": "1",
-                "flow_m3h": "0.1", "head_m": "50", "rated_speed_rpm": "2900",
-                "pump_efficiency": "80",
-            })
-            range_miss = evaluate_example(device_type, f"RELEASE-{device_type}-RANGE-MISS", example)
-            has_context = (
-                range_miss.conclusion is Conclusion.NOT_APPLICABLE
-                and "泵效率_%" in range_miss.actual_metrics
-                and "比转速" in range_miss.calculated_metrics
-                and "输出功率_kW" in range_miss.calculated_metrics
-            )
-            range_miss_context[device_type] = has_context
-            if not has_context:
-                errors.append(f"评价器示例{device_type}范围外终止时丢失实际/计算指标")
-        checks["pump_range_miss_context"] = range_miss_context
-        early_context_cases = {
-            "transformer": (
-                "transformer",
-                {"model": "AUDIT-TRANSFORMER", "category": "10kV油浸式三相双绕组无励磁调压配电变压器", "capacity_kva": 999999, "core_material": "电工钢带", "connection": "Dyn11/Yzn11", "no_load_loss_w": 120, "load_loss_w": 1140},
-                Conclusion.OUT_OF_SCOPE,
-                ("空载损耗_W", "负载损耗_W"),
-                (),
+        examples = {
+            "pump_water": PumpAnalysisRequest(
+                product_category="单级单吸清水离心泵",
+                as_of=date.today(),
+                QBEP="100", HBEP="50", speed="2900",
+                efficiency="90", suction="单吸", stages="1",
             ),
-            "motor_lv": (
-                "motor_lv",
-                {"category": "三相异步电动机（一般用途）", "rated_power_kw": 99999, "poles": 4, "rated_efficiency": 98},
-                Conclusion.OUT_OF_SCOPE,
-                ("额定效率_%",),
-                (),
-            ),
-            "compressor": (
-                "compressor",
-                {"category": "一般用喷油回转（工频）", "input_power_kw": 1.6, "discharge_pressure_mpa": 0.3, "cooling_method": "风冷", "specific_power": 5.8},
-                Conclusion.OUT_OF_SCOPE,
-                ("机组比功率_kW/(m3/min)",),
-                (),
-            ),
-            "blower": (
-                "blower",
-                {"category": "单级双支撑低速离心鼓风机", "impeller_width_mm": 30, "impeller_diameter_mm": 300, "polytropic_efficiency": 80},
-                Conclusion.OUT_OF_SCOPE,
-                ("多变效率_%",),
-                ("b2/D2",),
-            ),
-            "fan": (
-                "fan",
-                {"category": "离心通风机", "machine_no": 10, "pressure_coefficient": 5, "specific_speed": 40, "compression_correction": 1, "fan_efficiency": 80},
-                Conclusion.OUT_OF_SCOPE,
-                ("最高通风机效率ηr_%",),
-                ("压力系数",),
-            ),
-            "submersible": (
-                "submersible",
-                {"category": "小型潜水电泵", "subtype": "未列入标准的型式", "rated_power_kw": 1.5, "pump_efficiency": 50, "efficiency_tolerance": 2, "flow_m3h": 20, "pump_form": "下泵式", "specific_speed": 50, "motor_efficiency": 71},
-                Conclusion.OUT_OF_SCOPE,
-                ("电泵效率_%",),
-                ("规定效率ηDB_%",),
-            ),
-            "multi_split_static_pressure": (
-                "multi_split_ac",
-                {"category": "风冷单冷", "cooling_capacity_w": 10000, "rated_power_kw": 2, "external_static_pressure_pa": 120, "seer": 5.5, "eer": 3.6},
-                Conclusion.UNABLE_TO_JUDGE,
-                ("SEER",),
-                (),
-            ),
-            "heat_treatment": (
-                "heat_treatment",
-                {"category": "箱式多用炉", "energy_type": "电力", "equivalent_weight_t": 1, "total_electricity_kwh": 600},
-                Conclusion.UNABLE_TO_JUDGE,
-                ("电炉可比单耗",),
-                ("可比单耗未舍入值",),
+            "pump_chemical": PumpAnalysisRequest(
+                product_category="单级石油化工离心泵",
+                as_of=date.today(),
+                QBEP="100", HBEP="14", speed="2900",
+                efficiency="73", suction="单吸", stages="1",
             ),
         }
-        early_context_results: dict[str, bool] = {}
-        for name, (device_type, values, expected, actual_keys, calculated_keys) in early_context_cases.items():
-            context_result = service.evaluate(DeviceDraft(f"RELEASE-{name}-CONTEXT", device_type, values))
-            has_context = context_result.conclusion is expected and all(key in context_result.actual_metrics for key in actual_keys) and all(key in context_result.calculated_metrics for key in calculated_keys)
-            early_context_results[name] = has_context
+        example_results: dict[str, dict[str, Any]] = {}
+        for profile, request in examples.items():
+            result = service.evaluate(request)
+            example_results[profile] = {
+                "evaluation_status": result.evaluation_status,
+                "ui_conclusion": result.ui_conclusion,
+                "matched_rule_id": result.matched_rule_id,
+                "support_status": result.support_status,
+            }
+            if (
+                result.rule_profile != profile
+                or result.evaluation_status != "SUCCESS"
+                or result.support_status != "SUPPORTED"
+                or result.ui_conclusion not in {"1级", "2级", "3级", "未达3级"}
+                or not result.matched_rule_id
+            ):
+                errors.append(f"正式泵服务示例未完成可追溯评价: {profile}")
+        checks["pump_examples"] = example_results
+
+        invalid_stage_results: dict[str, str] = {}
+        for profile, category in (
+            ("pump_water", "多级清水离心泵"),
+            ("pump_chemical", "多级石油化工离心泵"),
+        ):
+            result = service.evaluate(PumpAnalysisRequest(
+                product_category=category,
+                as_of=date.today(),
+                QBEP="100", HBEP="50", speed="2900",
+                efficiency="90", suction="单吸", stages="1.5",
+            ))
+            invalid_stage_results[profile] = str(result.evaluation_status)
+            if (
+                result.evaluation_status != "INVALID_INPUT"
+                or "STAGES_INVALID" not in result.issue_codes
+            ):
+                errors.append(f"{profile}未将非整数级数拒绝为INVALID_INPUT")
+        checks["pump_integer_stage_validation"] = invalid_stage_results
+
+        range_miss: dict[str, bool] = {}
+        for profile, category in (
+            ("pump_water", "单级单吸清水离心泵"),
+            ("pump_chemical", "单级石油化工离心泵"),
+        ):
+            result = service.evaluate(PumpAnalysisRequest(
+                product_category=category,
+                as_of=date.today(),
+                QBEP="0.1", HBEP="50", speed="2900",
+                efficiency="80", suction="单吸", stages="1",
+            ))
+            has_context = (
+                result.evaluation_status == "OUT_OF_STANDARD_SCOPE"
+                and result.matched_rule_id is None
+                and {"pump.actual_efficiency", "pump.specific_speed", "pump.output_power"}
+                    <= set(result.metrics_by_id)
+            )
+            range_miss[profile] = has_context
             if not has_context:
-                errors.append(f"评价器示例{name}终止时未保留已计算指标")
-        checks["early_termination_context"] = early_context_results
-    except Exception as exc:  # pragma: no cover - converts a release failure to JSON
-        errors.append(f"标准评价器示例烟测异常: {type(exc).__name__}: {exc}")
+                errors.append(f"{profile}范围外终止时未保留正式输入派生指标")
+        checks["pump_range_miss_context"] = range_miss
+    except Exception as exc:  # pragma: no cover - release audit must report a JSON diagnostic
+        errors.append(f"正式泵服务烟测异常: {type(exc).__name__}: {exc}")
 
 
 def _audit_workbooks(
@@ -560,31 +404,29 @@ def _audit_workbooks(
     warnings: list[str],
     checks: dict[str, Any],
     template: Path,
-    review_book: Path | None,
 ) -> None:
+    """校验正式 V6 模板身份、工作表结构和空白泵输入区。"""
+
     if not template.is_file():
-        errors.append(f"V4模板不存在: {template}")
+        errors.append(f"正式V6模板不存在: {template}")
         return
-    template_result = audit_v4_template(template)
-    checks["template"] = asdict(template_result)
-    if not template_result.is_valid:
-        errors.append("V4模板结构/保护/公式审计失败")
-    validation_result = audit_validations(template)
-    checks["template_validations"] = validation_result
-    if not validation_result.get("is_valid"):
-        errors.append("V4模板数据验证覆盖审计失败")
-    if review_book is None:
-        return
-    if not review_book.is_file():
-        warnings.append(f"未找到人工校对册，跳过同源校验: {review_book}")
-        return
-    review_result = validate_review_book(review_book)
-    checks["human_review_book"] = review_result
-    if not review_result.get("is_valid"):
-        errors.append("人工校对册同源/保护审计失败")
+    try:
+        result = V6TemplateResource().validate(template)
+        checks["template"] = asdict(result)
+        checks["template_identity"] = V6_TEMPLATE_IDENTITY
+        if not result.is_valid:
+            errors.append("正式V6模板身份或契约校验失败")
+        workbook = V6PumpWorkbookReader().read(template)
+        checks["template_empty_pump_rows"] = len(workbook.rows)
+        if workbook.rows:
+            errors.append("正式V6空白模板的离心泵输入区不应预载数据行")
+    except Exception as exc:
+        errors.append(f"正式V6模板检查异常: {type(exc).__name__}: {exc}")
 
 
 def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any], wheel: Path | None, root: Path) -> None:
+    """核验 wheel 具备 Qt/V6 正式产品链和不依赖 UI 的正式泵服务。"""
+
     if wheel is None:
         return
     if not wheel.is_file():
@@ -593,12 +435,17 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
     checks["wheel"] = {"path": str(wheel.resolve()), "sha256": _sha256(wheel)}
     required = {
         "equipeffi/__init__.py",
+        "equipeffi/entrypoint.py",
+        "equipeffi/composition.py",
+        "equipeffi/presentation/qt/app.py",
+        "equipeffi/presentation/qt/shell.py",
+        "equipeffi/application/services/centrifugal_pump_analysis_service.py",
+        "equipeffi/infrastructure/excel/template_resource.py",
+        "equipeffi/infrastructure/excel/pump_workbook_reader.py",
         "equipeffi/standard_manifest.json",
-        f"equipeffi/resources/templates/{DEFAULT_V4_TEMPLATE}",
-        "equipeffi/resources/standards/gb30253_2024_pdf_verified_v1.json",
-        "equipeffi/resources/elimination_catalog_batches_1_4.json",
-        "equipeffi/resources/elimination_catalog_industry_2024.json",
-        "equipeffi/presentation/api/jsonl_server.py",
+        f"equipeffi/resources/templates/{DEFAULT_V6_TEMPLATE}",
+        "equipeffi/resources/standards/pump.json",
+        "equipeffi/resources/TEMPLATE_MANIFEST.json",
     }
     try:
         with ZipFile(wheel) as archive:
@@ -607,16 +454,35 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
             checks["wheel_member_count"] = len(names)
             checks["wheel_missing_members"] = missing
             if missing:
-                errors.append("wheel缺少必要资源: " + ", ".join(missing))
-            if "equipeffi/resources/standards/motor_pmsm.json" in names:
-                errors.append("wheel包含禁止加载的旧永磁同步电机JSON")
+                errors.append("wheel缺少当前Qt/V6运行文件: " + ", ".join(missing))
+            if any(name.endswith(".xlsx") and "V4" in name for name in names):
+                errors.append("wheel包含已退役的V4模板")
+            metadata_members = sorted(
+                name for name in names
+                if name.endswith(".dist-info/METADATA")
+            )
+            checks["wheel_metadata_members"] = metadata_members
+            metadata = archive.read(metadata_members[0]).decode("utf-8", errors="replace") if metadata_members else ""
+            has_desktop_extra = (
+                "Provides-Extra: desktop" in metadata
+                and "PySide6" in metadata
+            )
+            checks["wheel_desktop_extra_declared"] = has_desktop_extra
+            if not has_desktop_extra:
+                errors.append("wheel未声明PySide6 desktop extra")
             try:
                 manifest = json.loads(archive.read("equipeffi/standard_manifest.json"))
-                pmsm = next(item for item in manifest["packs"] if item["device_type"] == "motor_pmsm")
-                checks["wheel_pmsm_status"] = pmsm.get("status", "")
-                if pmsm.get("status") != "active":
-                    errors.append("wheel中的永磁同步电机标准包未标记为active")
-            except (KeyError, StopIteration, json.JSONDecodeError) as exc:
+                pump_packs = {
+                    str(item.get("device_type")): str(item.get("pack_id") or "")
+                    for item in manifest["packs"]
+                    if item.get("device_type") in {"pump_water", "pump_chemical"}
+                }
+                checks["wheel_pump_pack_ids"] = pump_packs
+                if set(pump_packs) != {"pump_water", "pump_chemical"} or any(
+                    not pack_id for pack_id in pump_packs.values()
+                ):
+                    errors.append("wheel标准manifest缺少正式清水泵/石化泵资源身份")
+            except (KeyError, json.JSONDecodeError, TypeError) as exc:
                 errors.append(f"wheel中的标准manifest无效: {exc}")
     except (OSError, BadZipFile) as exc:
         errors.append(f"wheel不是有效压缩包: {exc}")
@@ -625,52 +491,80 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
     if not asset_audit.is_valid:
         errors.extend(asset_audit.errors)
     warnings.extend(asset_audit.warnings)
-    # 成员存在并不等于资源加载路径正确；用隔离的Python进程从wheel本身
-    # 读取manifest、模板和一个普通电机样例，避免误用当前源码目录。
-    code = (
-        "from equipeffi.entrypoint import _api; "
-        "api=_api(); "
-        "assert len(api.device_types()) == 15; "
-        "status=api.status(); "
-        "assert status['public_device_type_count'] == 15 and status['elimination']['entry_count'] > 0; "
-        "assert api.schema('motor')['fields']; "
-        "result=api.evaluate({'device_type':'motor','values':{"
-        "'category':'三相异步电动机（一般用途）','rated_voltage':'0.4',"
-        "'rated_power':7.5,'poles':4,'rated_speed':1480,'efficiency':98}}); "
-        "assert result['conclusion'] == '1级'; "
-        "from equipeffi.infrastructure.excel.template_resource import V6TemplateResource; "
-        "from equipeffi.infrastructure.excel.pump_workbook_reader import V6PumpWorkbookReader; "
-        "v6=V6TemplateResource(); "
-        "assert v6.validate().is_valid; "
-        "template_input=V6PumpWorkbookReader().read(v6.template_path); "
-        "assert not template_input.rows; "
-        "batch=api.evaluate_batch({'records':[{'record_id':'W-BATCH','device_type':'motor','values':{"
-        "'category':'三相异步电动机','rated_voltage':'0.4','rated_power':7.5,"
-        "'poles':4,'rated_speed':1480,'efficiency':98}}]}); "
-        "assert len(batch) == 1 and batch[0]['record_id'] == 'W-BATCH'; "
-        "import io, json; from equipeffi.presentation.api.jsonl_server import run_jsonl; "
-        "stream=io.StringIO(); run_jsonl(api, io.StringIO('{\\\"op\\\":\\\"status\\\"}\\n{\\\"op\\\":\\\"quit\\\"}\\n'), stream); "
-        "assert [json.loads(line)['op'] for line in stream.getvalue().splitlines()] == ['status','quit']; "
-        "print('wheel-runtime-ok')"
-    )
+
     env = dict(os.environ)
     env.pop("PYTHONPATH", None)
+    env["PYTHONPATH"] = str(wheel.resolve())
+    headless_code = """
+from datetime import date
+from equipeffi.application.services.centrifugal_pump_analysis_service import PumpAnalysisRequest
+from equipeffi.composition import create_pump_analysis_service
+from equipeffi.infrastructure.excel.pump_workbook_reader import V6PumpWorkbookReader
+from equipeffi.infrastructure.excel.template_resource import V6TemplateResource
+service = create_pump_analysis_service(with_persistence=False)
+scopes = {item['rule_profile']: item for item in service.standard_overview()['scopes']}
+assert set(scopes) == {'pump_water', 'pump_chemical'}
+assert all(item['support_status'] == 'SUPPORTED' and item['pack_id'] for item in scopes.values())
+result = service.evaluate(PumpAnalysisRequest('单级单吸清水离心泵', date.today(), QBEP='100', HBEP='50', speed='2900', efficiency='90', suction='单吸', stages='1'))
+assert result.evaluation_status == 'SUCCESS' and result.rule_profile == 'pump_water'
+resource = V6TemplateResource()
+assert resource.validate().is_valid
+assert not V6PumpWorkbookReader().read(resource.template_path).rows
+print('headless-pump-v6-ok')
+"""
     try:
         runtime = subprocess.run(
-            [sys.executable, "-S", "-c", code],
+            [sys.executable, "-S", "-c", headless_code],
             cwd=str(wheel.parent),
-            env={**env, "PYTHONPATH": str(wheel.resolve())},
+            env=env,
             check=False,
             capture_output=True,
             text=True,
-            timeout=30,
+            timeout=45,
         )
     except (OSError, subprocess.SubprocessError) as exc:
-        errors.append(f"wheel运行时烟测无法启动: {exc}")
+        errors.append(f"wheel headless运行时烟测无法启动: {exc}")
     else:
-        checks["wheel_runtime_stdout"] = runtime.stdout.strip()
-        if runtime.returncode != 0 or runtime.stdout.strip() != "wheel-runtime-ok":
-            errors.append(f"wheel运行时烟测失败: {runtime.stderr.strip() or runtime.stdout.strip()}")
+        checks["wheel_headless_stdout"] = runtime.stdout.strip()
+        if runtime.returncode != 0 or runtime.stdout.strip() != "headless-pump-v6-ok":
+            errors.append(f"wheel headless泵/V6烟测失败: {runtime.stderr.strip() or runtime.stdout.strip()}")
+
+    try:
+        status = subprocess.run(
+            [sys.executable, "-m", "equipeffi", "--status"],
+            cwd=str(wheel.parent),
+            env=env,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=45,
+        )
+        status_payload = json.loads(status.stdout)
+        checks["wheel_status"] = status_payload
+        valid_status = (
+            set(status_payload) == {"ready", "desktop", "template", "pump_profiles"}
+            and status_payload.get("desktop", {}).get("surface") == "PySide6 Qt"
+            and status_payload.get("desktop", {}).get("available") is True
+            and status_payload.get("template", {}).get("available") is True
+            and status_payload.get("template", {}).get("template_id") == V6_TEMPLATE_IDENTITY["template_id"]
+            and status_payload.get("template", {}).get("template_version") == V6_TEMPLATE_IDENTITY["template_version"]
+            and set(status_payload.get("pump_profiles", {})) == {"pump_water", "pump_chemical"}
+            and all(
+                item.get("available") is True
+                and item.get("support_status") == "SUPPORTED"
+                and item.get("pack_id")
+                for item in status_payload["pump_profiles"].values()
+            )
+            and status_payload.get("ready") is True
+            and status.returncode == 0
+        )
+        if not valid_status:
+            errors.append(
+                "wheel --status未验证当前Qt/V6/正式泵profile: "
+                + (status.stderr.strip() or json.dumps(status_payload, ensure_ascii=False))
+            )
+    except (OSError, subprocess.SubprocessError, json.JSONDecodeError) as exc:
+        errors.append(f"wheel --status运行时烟测失败: {type(exc).__name__}: {exc}")
 
 
 def _audit_sdist(sdist: Path | None, root: Path, errors: list[str], warnings: list[str], checks: dict[str, Any]) -> None:
@@ -715,13 +609,17 @@ def _audit_native_report(
     if not isinstance(report, dict):
         errors.append("原生构建报告必须是JSON对象")
         return
-    required = ("platform", "executable", "gui_capable", "presentation_mode")
+    required = ("platform", "executable", "qt_capable", "presentation_mode", "status_ready")
     missing = [key for key in required if key not in report]
     if missing:
         errors.append("原生构建报告缺少字段: " + ", ".join(missing))
     mode = str(report.get("presentation_mode", ""))
-    if mode not in {"native_tk", "web_fallback"}:
+    if mode not in {"pyside6_qt", "unavailable"}:
         errors.append(f"原生构建报告presentation_mode无效: {mode}")
+    if not report.get("qt_capable") or mode != "pyside6_qt":
+        errors.append("原生桌面包未证明PySide6 Qt可用")
+    if not report.get("status_ready"):
+        errors.append("原生桌面包--status未验证Qt/V6/正式泵服务")
     executable = Path(str(report.get("executable", "")))
     if not executable.is_file():
         errors.append(f"原生构建报告指向的可执行文件不存在: {executable}")
@@ -755,8 +653,10 @@ def _audit_native_report(
         "report": str(report_path.resolve()),
         "platform": report.get("platform", ""),
         "executable": str(executable),
-        "gui_capable": bool(report.get("gui_capable")),
+        "qt_capable": bool(report.get("qt_capable")),
         "presentation_mode": mode,
+        "status_ready": bool(report.get("status_ready")),
+        "qt_environment": report.get("qt_environment", {}),
         "sha256": str(report.get("sha256", "")),
     }
     if package_check:
@@ -791,7 +691,6 @@ def audit_project(
     root: Path = ROOT,
     *,
     template: Path | None = None,
-    review_book: Path | None | object = _DEFAULT_REVIEW,
     wheel: Path | None = None,
     sdist: Path | None = None,
     elimination_source_dir: Path | None = None,
@@ -808,20 +707,18 @@ def audit_project(
     errors: list[str] = []
     warnings: list[str] = []
     checks: dict[str, Any] = {"root": str(root)}
-    _audit_public_contract(errors, checks)
     _audit_manifest(source_root, errors, checks)
     _audit_pmsm_confirmed_no_data(source_root, errors, checks)
     _audit_hvac_boundaries(source_root, errors, checks)
     _audit_standard_provenance(source_root, warnings, checks, standard_source_dir)
     _audit_elimination_catalog(errors, checks)
     _audit_evaluator_examples(source_root, errors, checks)
-    template_path = Path(template) if template else source_root / "equipeffi" / "resources" / "templates" / DEFAULT_V4_TEMPLATE
-    review_path = (
-        _default_review_book(root)
-        if review_book is _DEFAULT_REVIEW
-        else Path(review_book) if review_book is not None else None
+    template_path = (
+        Path(template)
+        if template
+        else source_root / "equipeffi" / "resources" / "templates" / DEFAULT_V6_TEMPLATE
     )
-    _audit_workbooks(errors, warnings, checks, template_path, review_path)
+    _audit_workbooks(errors, warnings, checks, template_path)
     _audit_wheel(errors, warnings, checks, Path(wheel) if wheel else None, root)
     _audit_sdist(Path(sdist) if sdist else None, root, errors, warnings, checks)
     if elimination_source_dir is not None:
@@ -839,7 +736,6 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="审计EquipEffi项目发布状态")
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--template", type=Path)
-    parser.add_argument("--review-book", type=Path)
     parser.add_argument("--wheel", type=Path)
     parser.add_argument("--sdist", type=Path, help="可选：检查源码分发包中的实际成员")
     parser.add_argument("--elimination-source-dir", type=Path, help="可选：核对第一至第四批DOCX来源目录")
@@ -859,10 +755,6 @@ def main(argv: list[str] | None = None) -> int:
         "native_report": args.native_report,
         "portable_bundle": args.portable_bundle,
     }
-    # 不传--review-book时使用项目默认校对册；显式传空值无法通过CLI表达，
-    # 需要跳过时由Python API传 review_book=None（构建脚本使用该接口）。
-    if args.review_book is not None:
-        audit_kwargs["review_book"] = args.review_book
     result = audit_project(args.root, **audit_kwargs)
     payload = json.dumps(asdict(result), ensure_ascii=False, indent=2, default=str)
     print(payload)
