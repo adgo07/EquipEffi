@@ -26,7 +26,9 @@
 - C 线提交 `a899415245b9dcbe4da933fc84e8f7ea4148f7c9`；集成代码 Head `97e6687`。子会话 composition 5/5，兼容 API 与 Qt/Excel 装配组合 126/126。
 - 主会话独立验证：97 run / 97 pass / 0 fail / 0 error / 0 skip（86.324 秒）；包括 composition、entrypoint、architecture_boundaries、GoldenExcelReplayTests、phase7_analysis_history。覆盖 29 条 Approved Golden 的真实 Excel 重放、单台/批次结果一致性及自动保存/历史规则。日志位于集成工作树 artifacts/batch2-independent.log（本地产物不入 Git）。
 - 主会话审阅完整差异；三入口旧构造已退出，加载顺序和求值时机保持；关键资源与标准目录对起点 git diff 为空。git diff --check 通过。
-- 本地独立验收通过；[PR #25](https://github.com/adgo07/EquipEffi/pull/25) 已提交；远端 CI 待完成，尚不能称远端通过。已有基线问题按原 exact-ID 门禁核对，不扩大允许名单。
+- 最终验收 Head `32b649c24a1437d19daf5ccff381b31d1c2ee5bd`；远端 Windows Core：1,582 run / 1,566 pass / 9 fail / 4 error / 3 skip，exact-ID PASS；新增失败、错误、恶化、意外跳过、基线测试缺失均为空。原有基线失败保留，允许名单未改动。[完整证据](https://github.com/adgo07/EquipEffi/actions/runs/39557231929/artifacts/12327310692)。
+- [Pump Conformance](https://github.com/adgo07/EquipEffi/actions/runs/39557231953)：196/196；架构/元数据113/113；compileall、资源启动、空白检查通过。自动代码审查在 `357c73b` 无发现，其后仅两份状态文档变化，主会话已核对。
+- 2026-10-21 按 Owner 授权合并 [PR #25](https://github.com/adgo07/EquipEffi/pull/25)，合并 SHA `392b57f26bf0a7d2fddc1911ad293019a014c942`。结论：本批验收收口；不等同于全量测试全通过。本次合并后仅更新验收与交接文档，不重复业务测试。
 - 原生 EXE 构建：NOT_RUN；本批无发布工程。Phase 8 状态不提升。
 
 Knowledge capture：无。

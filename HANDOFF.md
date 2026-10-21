@@ -6,15 +6,14 @@
 
 ## 当前状态
 
-- 路线 `EquipEffi V2.3`；最近业务合并点为默认分支 `master` 的 `0d4eae855e16c99d0ef96bda3b39bfc5b26b4641`（PR #24 合并）；产品Phase状态见下。
+- 路线 `EquipEffi V2.3`；最近业务合并点为默认分支 `master` 的 `392b57f26bf0a7d2fddc1911ad293019a014c942`（PR #25 合并）；产品Phase状态见下。
 - 已验收 Phase：`1 = PHASE_1_PASS`、`2 = PHASE_2_PASS`（PR #10）、`3 = PHASE_3_PASS`（PR #11）、`4 = PHASE_4_PASS`（PR #12）、`5 = PHASE_5_PASS`（PR #13）、`6 = PHASE_6_PASS`（PR #14）、`7 = PHASE_7_PASS`（PR #15）。
 - **Phase 8（GB 19762 Excel 批量评价闭环）= `EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`**（PR #16 已合并）。
   **不得**自行宣布 `PHASE_8_PASS`；不得进入 Phase 9。`automatic_continuation = DISABLED`。
 
 ## 当前任务
 
-软件简化首批 PR #24 已于 2026-10-21 按 Owner 指令合并（`0d4eae8`）。最终 Head `017362f` 的远端门禁通过，无新增回归；已有失败与原生构建未验证项见[验收记录](docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md)。
-[下一步方案](docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md)已落档：只做现有功能内的一至两处应用职责去重，其后字段/结果同源、旧路径及维护收尾；新功能和 UI 美化暂缓，按需启用执行线。Owner 已授权启动第二批：仅收拢三处标准仓库装配，保留各入口实例与既有行为；[本批独立验证](docs/governance/SIMPLIFICATION_BATCH2_20261021.md)已完成，当前状态见 TASK_STATE。
+软件简化第二批 [PR #25](https://github.com/adgo07/EquipEffi/pull/25) 已按 Owner 授权验收并合并，收拢三处标准仓库装配。最终 Head 远端门禁无新增回归，原有基线失败保留；证据见[本批验收记录](docs/governance/SIMPLIFICATION_BATCH2_20261021.md)。当前状态见 TASK_STATE；后续先核实实际维护负担，不机械启动第三批。首批历史见[PR #24 验收记录](docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md)。
 源 checkout 的未提交标准映射资料及本地验收草稿保持原位，不纳入本次文档提交；变压器支持范围、冻结资产及 Phase 状态不变。
 
 ## 长期关键事实（不随 Phase 变化）
