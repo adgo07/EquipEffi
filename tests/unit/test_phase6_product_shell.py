@@ -587,15 +587,15 @@ class RecordsPageTests(ProductShellTestCase):
         self._finalize(WATER, "P6-W-2")
         page = self.window().records_page
         # `findText` 找不到会静默返回 -1，因此这里显式断言选项真实存在
-        # （M2 把结论筛选项改成用户中文文案：不适用 / 资料不足 / 输入有误）。
+        # （结论筛选项使用面向用户的中文文案）。
         graded = page.conclusion_filter.findText("已判定等级")
         self.assertGreaterEqual(graded, 0, "必须存在「已判定等级」筛选项")
         page.conclusion_filter.setCurrentIndex(graded)
         self.assertEqual(len(page.filtered_records()), 1)
 
-        not_applicable = page.conclusion_filter.findText("不适用")
-        self.assertGreaterEqual(not_applicable, 0, "必须存在「不适用」筛选项")
-        page.conclusion_filter.setCurrentIndex(not_applicable)
+        out_of_scope = page.conclusion_filter.findText("不在范围")
+        self.assertGreaterEqual(out_of_scope, 0, "必须存在「不在范围」筛选项")
+        page.conclusion_filter.setCurrentIndex(out_of_scope)
         self.assertEqual(page.filtered_records(), [])
 
     def test_history_snapshot_is_displayed_without_drift(self):

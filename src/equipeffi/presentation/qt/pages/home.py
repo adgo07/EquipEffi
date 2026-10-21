@@ -17,6 +17,9 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from ....application.services.centrifugal_pump_analysis_service import (
+    user_conclusion_from_snapshot,
+)
 from ..tokens import TOKENS
 
 
@@ -86,9 +89,13 @@ Phase 7：普通用户界面没有「分析草稿」概念，因此本页不提�
         self._record_ids = []
         self.records.clear()
         for record in self.service.list_records(limit=5):
-            grade = f"{record.grade}" if record.grade else record.ui_conclusion
+            conclusion = user_conclusion_from_snapshot(
+                {"grade": record.grade,
+                 "evaluation_status": record.evaluation_status},
+                record.ui_conclusion,
+            )
             self.records.addItem(QListWidgetItem(
-                f"{record.record_id}　{record.product_category}　{grade}"
+                f"{record.record_id}　{record.product_category}　{conclusion}"
                 f"　{record.as_of}"))
             self._record_ids.append(record.record_id)
 

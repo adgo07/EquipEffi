@@ -35,6 +35,7 @@ import os
 import re
 import shutil
 import uuid
+from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
@@ -42,6 +43,7 @@ from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from ...application.ports.batch_workbook import BatchRowOutcome
+from ...application.result_projection import PUMP_METRIC_IDS
 from .result_invariants import (
     InvariantViolation,
     assert_input_preserved,
@@ -58,40 +60,41 @@ from .worksheet_patch import (
     column_number,
     split_reference,
 )
+from .template_resource import PUMP_SHEET, PUMP_SHEET_CONTRACT
 from .xml_model import EMPTY, END, MAIN_NS, START, parse_elements, scan_tags
 
-PUMP_SHEET = "离心泵"
-
-#: 派生列：列 -> 正式 `calculation_trace.derived` 的键（含中文后缀的键按前缀匹配）。
-_DERIVED_FIELDS: tuple[tuple[str, str], ...] = (
-    ("N", "比转速 ns"),
-    ("O", "C1"),
-    ("P", "C2"),
-    ("Q", "C3"),
-    ("R", "基准效率（%）"),
-    ("S", "效率修正值（%）"),
-    ("T", "规定点效率（%）"),
+#: 数值结果列：Workbook 列 → manifest metric_key → Application 稳定指标 ID / 单位。
+_METRIC_FIELDS: tuple[tuple[str, str, str], ...] = tuple(
+    (field["column"], PUMP_METRIC_IDS[field["metric_key"]],
+     str(field["metric_unit"]))
+    for field in PUMP_SHEET_CONTRACT["fields"]
+    if field.get("role") == "result" and field.get("metric_key")
 )
 
-#: 等级限值列：**只读正式 `PumpAnalysisResult.thresholds`**，绝不重算。
+#: 兼容常量：旧调用方可继续看到等级阈值的 Result 键；Writer 不通过这些文案取值。
 THRESHOLD_COLUMNS: tuple[tuple[str, str], ...] = (
     ("U", "1级能效效率限值（%）"),
     ("V", "2级能效效率限值（%）"),
     ("W", "3级能效效率限值（%）"),
 )
 
+_DERIVED_FIELDS: tuple[tuple[str, str], ...] = tuple(
+    (column, metric_id) for column, metric_id, _unit in _METRIC_FIELDS
+    if column not in {item[0] for item in THRESHOLD_COLUMNS}
+)
 _DERIVED_BY_COLUMN: dict[str, str] = dict(_DERIVED_FIELDS)
 _THRESHOLD_BY_COLUMN: dict[str, str] = dict(THRESHOLD_COLUMNS)
 
 #: 会被写入的结果列（其余一律原样保留）。
 RESULT_COLUMNS: tuple[str, ...] = tuple(
-    column for column, _ in _DERIVED_FIELDS
-) + tuple(column for column, _ in THRESHOLD_COLUMNS) + ("X", "AA")
+    field["column"] for field in PUMP_SHEET_CONTRACT["fields"]
+    if field.get("role") == "result")
 
 #: 全部结果列定义（列 -> 中文表头），供一致性检查与文档使用。
 RESULT_FIELDS: tuple[tuple[str, str], ...] = tuple(
-    (column, name) for column, name in _DERIVED_FIELDS
-) + tuple(THRESHOLD_COLUMNS) + (("X", "结论"), ("AA", "说明"))
+    (field["column"], field["label"])
+    for field in PUMP_SHEET_CONTRACT["fields"]
+    if field.get("role") == "result")
 
 RESULT_FILENAME_INFIX = "_评价结果_"
 
@@ -139,19 +142,26 @@ def _as_number(value) -> str | None:
         return text
 
 
-def _derived_value(outcome: BatchRowOutcome, name: str) -> str | None:
-    derived = outcome.derived or {}
-    if name in derived:
-        return _as_number(derived[name])
-    prefix = name.split("（")[0]
-    for key, value in derived.items():
-        if str(key).strip().startswith(prefix):
-            return _as_number(value)
-    return None
-
-
-def _threshold_value(outcome: BatchRowOutcome, name: str) -> str | None:
-    return _as_number((outcome.thresholds or {}).get(name))
+def _metric_value(outcome: BatchRowOutcome, metric_id: str,
+                  expected_unit: str) -> str | None:
+    metric = (outcome.metrics_by_id or {}).get(metric_id)
+    if metric is None:
+        return None
+    if isinstance(metric, Mapping):
+        actual_id = metric.get("metric_id")
+        value = metric.get("value")
+        unit = metric.get("unit")
+    else:
+        actual_id = getattr(metric, "metric_id", None)
+        value = getattr(metric, "value", None)
+        unit = getattr(metric, "unit", None)
+    if actual_id != metric_id:
+        raise ResultWorkbookWriteError(
+            f"结果指标身份不匹配：期望 {metric_id!r}，实际 {actual_id!r}")
+    if unit != expected_unit:
+        raise ResultWorkbookWriteError(
+            f"结果指标单位不匹配：{metric_id} 期望 {expected_unit!r}，实际 {unit!r}")
+    return _as_number(value)
 
 
 def cell_payloads(outcome: BatchRowOutcome) -> dict[str, tuple[str, str] | None]:
@@ -162,11 +172,8 @@ def cell_payloads(outcome: BatchRowOutcome) -> dict[str, tuple[str, str] | None]
     """
 
     payloads: dict[str, tuple[str, str] | None] = {}
-    for column, name in _DERIVED_FIELDS:
-        value = _derived_value(outcome, name)
-        payloads[column] = None if value is None else ("n", value)
-    for column, name in THRESHOLD_COLUMNS:
-        value = _threshold_value(outcome, name)
+    for column, metric_id, unit in _METRIC_FIELDS:
+        value = _metric_value(outcome, metric_id, unit)
         payloads[column] = None if value is None else ("n", value)
     payloads["X"] = ("s", outcome.conclusion or "")
     messages = [message for message in (outcome.messages or []) if message]

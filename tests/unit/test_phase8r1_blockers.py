@@ -216,7 +216,7 @@ class B2InvalidInputTests(R1TestCase):
         self.assertEqual(len(summary.issues), 1)
         self.assertEqual(summary.issues[0].row_number, FIRST_DATA_ROW)
         self.assertEqual(summary.issues[0].kind, "INPUT_ERROR")
-        for conclusion in ("1级", "2级", "3级", "未达标", "不适用", "无法评价"):
+        for conclusion in ("1级", "2级", "3级", "未达3级", "不在范围", "无法判定"):
             with self.subTest(forbidden=conclusion):
                 self.assertNotIn(conclusion, summary.conclusion_quantities)
 
@@ -235,10 +235,10 @@ class B2InvalidInputTests(R1TestCase):
     def test_invalid_quantity_does_not_invent_devices(self):
         """数量非法：不得虚构设备数量，也不得进入任何数量统计。"""
 
-        for bad in ("", 0, -3, 1.5):
+        for index, bad in enumerate(("", 0, -3, 1.5), start=1):
             with self.subTest(quantity=bad):
                 result = self.run_batch(
-                    [self.water(D=bad)], f"b2_q_{abs(hash(str(bad))) % 1000}")
+                    [self.water(D=bad)], f"b2_q_{index}")
                 summary = result.summary
                 self.assertEqual(summary.total_quantity, 0)
                 self.assertEqual(summary.evaluated_quantity, 0)
@@ -247,18 +247,18 @@ class B2InvalidInputTests(R1TestCase):
                 self.assertTrue(result.outcomes[0].is_input_error)
 
     def test_uncertain_category_with_quantity_is_a_formal_conclusion(self):
-        """「不确定类别」不是 INVALID_INPUT：形成正式结论「无法评价」并按数量计。"""
+        """「不确定类别」不是 INVALID_INPUT：形成正式结论「无法判定」并按数量计。"""
 
         result = self.run_batch(
             [self.water(B="未定", F="不确定类别", D=4)], "b2_uncertain")
         summary, outcome = result.summary, result.outcomes[0]
         self.assertFalse(outcome.is_input_error)
-        self.assertEqual(outcome.conclusion, "无法评价")
+        self.assertEqual(outcome.conclusion, "无法判定")
         self.assertEqual(summary.input_error_rows, 0)
         self.assertEqual(summary.total_quantity, 4)
-        # 「无法评价」是正式用户结论：进入结论数量与"未评价"计数；
+        # 「无法判定」是正式用户结论：进入结论数量与"未评价"计数；
         # evaluated_quantity 仅统计**有 evaluation_status 的正式评价**（台）。
-        self.assertEqual(summary.conclusion_quantities.get("无法评价"), 4)
+        self.assertEqual(summary.conclusion_quantities.get("无法判定"), 4)
         self.assertEqual(summary.unevaluated_rows, 1)
 
     def test_quantity_identities_hold_in_a_mixed_batch(self):
@@ -269,15 +269,15 @@ class B2InvalidInputTests(R1TestCase):
             self.chemical(B="化工", D=5),                          # 1级 x5
             self.water(B="负流量", D=7, G=-1),                     # 输入错误
             self.water(B="坏数量", D=0),                           # 输入错误（数量非法）
-            self.water(B="未定", F="不确定类别", D=3),               # 无法评价 x3
-            self.water(B="其他", F="其他类别", D=2),                # 不适用 x2
+            self.water(B="未定", F="不确定类别", D=3),               # 无法判定 x3
+            self.water(B="其他", F="其他类别", D=2),                # 不在范围 x2
         ], "b2_mixed")
         summary = result.summary
 
         self.assertEqual(summary.data_row_count, 6)
         # 数量恒等：总量 = 合法数量之和（非法数量不贡献）
         self.assertEqual(summary.total_quantity, 20 + 5 + 7 + 3 + 2)
-        # evaluated_quantity = 有正式 evaluation_status 的数量（1级/2级/不适用）
+        # evaluated_quantity = 有正式 evaluation_status 的数量（1级/2级/不在范围）
         self.assertEqual(summary.evaluated_quantity, 20 + 5 + 2)
         # 输入错误：负流量 + 坏数量 = 2 行
         self.assertEqual(summary.input_error_rows, 2)
@@ -285,9 +285,9 @@ class B2InvalidInputTests(R1TestCase):
         # 正式结论数量逐个核对
         self.assertEqual(summary.conclusion_quantities.get("2级"), 20)
         self.assertEqual(summary.conclusion_quantities.get("1级"), 5)
-        self.assertEqual(summary.conclusion_quantities.get("无法评价"), 3)
-        self.assertEqual(summary.conclusion_quantities.get("不适用"), 2)
-        for conclusion in ("1级", "2级", "3级", "未达标", "不适用", "无法评价"):
+        self.assertEqual(summary.conclusion_quantities.get("无法判定"), 3)
+        self.assertEqual(summary.conclusion_quantities.get("不在范围"), 2)
+        for conclusion in ("1级", "2级", "3级", "未达3级", "不在范围", "无法判定"):
             with self.subTest(forbidden=INVALID_CONCLUSION):
                 self.assertNotEqual(conclusion, INVALID_CONCLUSION)
         self.assertNotIn(INVALID_CONCLUSION, summary.conclusion_quantities)
@@ -298,7 +298,7 @@ class B2InvalidInputTests(R1TestCase):
         self.assertEqual(sum(summary.conclusion_quantities.values()),
                          summary.evaluated_quantity
                          + sum(v for k, v in summary.conclusion_quantities.items()
-                               if k == "无法评价"))
+                               if k == "无法判定"))
 
     def test_result_workbook_marks_input_error_rows_distinctly(self):
         result = self.run_batch([self.water(D=7, G=-1)], "b2_wb")

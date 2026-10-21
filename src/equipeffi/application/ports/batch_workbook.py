@@ -30,6 +30,9 @@ class BatchSourceWorkbook:
     path: str
     rows: tuple[BatchSourceRow, ...]
     skipped_blank_rows: int = 0
+    # Adapter-reported source identity is provenance, not a business input.
+    # The Application persists it with the batch and does not interpret Excel.
+    template_identity: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass
@@ -52,6 +55,9 @@ class BatchRowOutcome:
     messages: tuple[str, ...] = ()
     derived: dict[str, Any] = field(default_factory=dict)
     thresholds: dict[str, Any] = field(default_factory=dict)
+    # Formal Result projection keyed by stable metric ID; presentation adapters
+    # must not infer business values from localized calculation trace labels.
+    metrics_by_id: dict[str, Any] = field(default_factory=dict)
     quantity: int = 0
     is_input_error: bool = False
     is_execution_error: bool = False

@@ -1,0 +1,152 @@
+{
+  "schema": "equipeffi.template-manifest.v2",
+  "generated_by": "tools/build_v6_pump_template.py",
+  "note": "模板身份、Sheet 机器身份与载体结构契约的唯一维护入口。业务类别及评价约束仍唯一来自正式 Application 契约，由 tools/check_v6_pump_template.py 机械比对。",
+  "identity_markers": {
+    "method": "workbook-defined-names",
+    "template_id": "EQUIPEFFI_TEMPLATE_ID",
+    "template_version": "EQUIPEFFI_TEMPLATE_VERSION",
+    "template_contract_revision": "EQUIPEFFI_TEMPLATE_CONTRACT_REVISION",
+    "sheet_contract_prefix": "EQUIPEFFI_SHEET_CONTRACT_"
+  },
+  "formal_windows_v1_template": "equipeffi.device-efficiency.V6",
+  "templates": [
+    {
+      "template_id": "equipeffi.device-efficiency.V6",
+      "template_version": "V6-20261005",
+      "template_kind": "unified-multi-device-blank-template",
+      "template_contract_revision": "unified-v6.v1",
+      "status": "FORMAL",
+      "input_compatibility": "ACCEPTED",
+      "legacy_import_compatibility": true,
+      "filename": "设备能效分析空白模板_重构版V6_20261005.xlsx",
+      "asset_sha256": "EE9DBE17A06081739CFB8EF0D330CE30B4634CBA5CE29CCD1EAB058D09348810",
+      "asset_size_bytes": 398096,
+      "source_filename": "设备能效分析空白模板_重构版V6_变压器.xlsx",
+      "source_sha256": "FDB8C0B09925B5AE0EA0F0A941040B27890B5455E8E5920E02C409EDD4699CA1",
+      "source_size_bytes": 493067,
+      "source_provenance": "产品负责人（Owner）Phase 8 指定的统一模板基线，来源路径 outputs/设备能效分析空白模板_重构版V6_变压器.xlsx；构建时只读，绝不写回。",
+      "sheets": [
+        {"sheet_id": "transformer", "sheet_name": "变压器", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "motor", "sheet_name": "电动机", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "compressor", "sheet_name": "空压机", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {
+          "sheet_id": "centrifugal_pump",
+          "sheet_name": "离心泵",
+          "contract_revision": "pump-input.v1",
+          "status": "CONNECTED",
+          "header_row": 3,
+          "table": {"name": "TblPump", "ref": "A3:AA103"},
+          "fields": [
+            {"column": "A", "role": "index", "label": "序号"},
+            {"column": "B", "role": "input", "field_id": "device_name", "label": "设备名称"},
+            {"column": "C", "role": "input", "field_id": "model", "label": "型号"},
+            {"column": "D", "role": "input", "field_id": "quantity", "label": "数量"},
+            {"column": "E", "role": "input", "field_id": "location", "label": "安装位置"},
+            {"column": "F", "role": "input", "field_id": "category", "label": "设备类别"},
+            {"column": "G", "role": "input", "field_id": "flow", "label": "流量", "unit": "m³/h"},
+            {"column": "H", "role": "input", "field_id": "head", "label": "扬程", "unit": "m"},
+            {"column": "I", "role": "input", "field_id": "speed", "label": "额定转速", "unit": "r/min"},
+            {"column": "J", "role": "input", "field_id": "power", "label": "额定功率", "unit": "kW"},
+            {"column": "K", "role": "input", "field_id": "suction", "label": "单吸/双吸", "clear_template_formula": true},
+            {"column": "L", "role": "input", "field_id": "stages", "label": "级数", "unit": "级", "clear_template_formula": true},
+            {"column": "M", "role": "input", "field_id": "efficiency", "label": "泵效率", "unit": "%"},
+            {"column": "N", "role": "result", "label": "比转速", "metric_key": "specific_speed", "metric_unit": "1", "clear_template_formula": true},
+            {"column": "O", "role": "result", "label": "C1", "metric_key": "c1", "metric_unit": "%", "clear_template_formula": true},
+            {"column": "P", "role": "result", "label": "C2", "metric_key": "c2", "metric_unit": "%", "clear_template_formula": true},
+            {"column": "Q", "role": "result", "label": "C3", "metric_key": "c3", "metric_unit": "%", "clear_template_formula": true},
+            {"column": "R", "role": "result", "label": "基准效率", "unit": "%", "metric_key": "base_efficiency", "metric_unit": "%", "clear_template_formula": true},
+            {"column": "S", "role": "result", "label": "效率修正值", "unit": "%", "metric_key": "efficiency_correction", "metric_unit": "%", "clear_template_formula": true},
+            {"column": "T", "role": "result", "label": "规定点效率", "unit": "%", "metric_key": "specified_efficiency", "metric_unit": "%", "clear_template_formula": true},
+            {"column": "U", "role": "result", "label": "1级效率", "unit": "%", "metric_key": "grade_1_efficiency_limit", "metric_unit": "%", "clear_template_formula": true},
+            {"column": "V", "role": "result", "label": "2级效率", "unit": "%", "metric_key": "grade_2_efficiency_limit", "metric_unit": "%", "clear_template_formula": true},
+            {"column": "W", "role": "result", "label": "3级效率", "unit": "%", "metric_key": "grade_3_efficiency_limit", "metric_unit": "%", "clear_template_formula": true},
+            {"column": "X", "role": "result", "label": "能效等级", "clear_template_formula": true},
+            {"column": "Y", "role": "input", "field_id": "photo", "label": "铭牌照片"},
+            {"column": "Z", "role": "input", "field_id": "fill_note", "label": "备注/其他证明材料"},
+            {"column": "AA", "role": "result", "label": "自动备注", "clear_template_formula": true}
+          ]
+        },
+        {"sheet_id": "centrifugal_fan", "sheet_name": "离心通风机", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "axial_fan", "sheet_name": "轴流通风机", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "blower", "sheet_name": "鼓风机", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "submersible_pump", "sheet_name": "潜水电泵", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "industrial_boiler", "sheet_name": "工业锅炉", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "heat_treatment", "sheet_name": "热处理设备", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "heat_pump_chiller", "sheet_name": "热泵和冷水机组", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "heat_pump_water_heater", "sheet_name": "热泵热水机", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "duct_ac", "sheet_name": "风管送风式空调", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "unitary_ac", "sheet_name": "单元式空调", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "multi_split_ac", "sheet_name": "多联式空调", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "instructions", "sheet_name": "注意事项", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "template_notes", "sheet_name": "模板说明", "contract_revision": "v6-preserved", "status": "PRESERVED_ONLY"},
+        {"sheet_id": "configuration", "sheet_name": "配置", "contract_revision": "pump-config.v1", "status": "CONNECTED"}
+      ],
+      "authorized_modification": {
+        "sheet": "离心泵",
+        "phase": "Phase 8",
+        "changes": [
+          "退出可独立产出 GB19762 结果的 Excel 业务公式（K 吸入方式、L 级数、N:X 比转速/C1~C3/基准效率/效率修正值/规定点效率/1~3级效率/能效等级、AA 自动备注）；结果列/列头/样式/锁定全部保留，改由软件批量评价写入。",
+          "类别下拉 EV_PUMP_CATEGORY 与正式类别枚举逐项一致：『其他（请备注说明）』改为『其他类别』，新增『不确定类别』。",
+          "吸入方式/级数验证改为枚举约束（去掉由类别推导的 OFFSET），与 Application 契约一致：石油化工泵的单级/多级不代表吸入方式自动固定。",
+          "数量验证保持正整数 > 0。"
+        ],
+        "indirect": [
+          "配置 Sheet 的 AE 列（EV_PUMP_CATEGORY 枚举）与 FieldDictionary 中『离心泵』行的描述列同步。"
+        ]
+      },
+      "untouched_sheets": 17,
+      "untouched_verification": "tools/check_v6_untouched_sheets.py（cell values/formulas、number_format、protection、data validation、tables、sheet order、merged cells、defined names 逐项比对，0 差异）",
+      "conformance_check": "tools/check_v6_pump_template.py",
+      "configuration_contract": {
+        "field_dictionary_table": "FieldDictionary",
+        "pump_category_enum": {
+          "column": "AE",
+          "first_row": 2,
+          "defined_name": "EV_PUMP_CATEGORY"
+        }
+      },
+      "capacity_strategy": {
+        "mechanism": "Excel Table（TblPump，27 列 × 100 数据行）+ 语义式 Reader",
+        "user_action_required": "无：用户直接在表内继续填写或粘贴，Excel 原生 Table 自动扩展；软件端不询问行数、不逐 Sheet 扩容。",
+        "business_row_limit": "none",
+        "measured": {
+          "rows_3": {
+            "file_size_bytes": 398216,
+            "read_seconds": 0.04,
+            "peak_memory_bytes": 1677721,
+            "truncated": false
+          },
+          "rows_100": {
+            "file_size_bytes": 398629,
+            "read_seconds": 0.051,
+            "peak_memory_bytes": 1992294,
+            "truncated": false
+          },
+          "rows_1000": {
+            "file_size_bytes": 454144,
+            "read_seconds": 0.325,
+            "peak_memory_bytes": 11429478,
+            "truncated": false
+          },
+          "rows_10000": {
+            "file_size_bytes": 1001062,
+            "read_seconds": 3.075,
+            "peak_memory_bytes": 104543436,
+            "truncated": false
+          }
+        },
+        "measured_by": "tools/measure_v6_capacity.py"
+      }
+    },
+    {
+      "template_id": "equipeffi.device-efficiency.V4",
+      "template_version": "V4-20260825",
+      "template_kind": "legacy-multi-device-blank-template",
+      "status": "LEGACY",
+      "filename": "设备能效分析空白模板_重构版V4_20260825.xlsx",
+      "asset_sha256": null,
+      "note": "Phase 8 起不再是正式用户模板；保留 legacy / test 兼容，本阶段不删除其实现。V4 的既有失败见 BASELINE.md，不在本阶段修复。"
+    }
+  ]
+}

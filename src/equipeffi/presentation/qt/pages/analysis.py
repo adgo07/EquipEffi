@@ -47,6 +47,9 @@ from PySide6.QtWidgets import (
 from ....application.services.centrifugal_pump_analysis_service import (
     PUMP_CATEGORIES,
     PUMP_CATEGORY_GROUPS,
+    PUMP_ANALYSIS_DETAIL_METRIC_IDS,
+    PUMP_LEVEL_LIMIT_METRIC_IDS,
+    PUMP_METRIC_IDS,
     THRESHOLD_DISPLAY_NAMES,
     CentrifugalPumpAnalysisService,
     PumpAnalysisRequest,
@@ -54,7 +57,12 @@ from ....application.services.centrifugal_pump_analysis_service import (
     category_field_constraints,
 )
 from ..tokens import TOKENS
-from ..labels import format_metric, issue_code_texts, user_conclusion_text
+from ..labels import (
+    format_metric,
+    issue_code_texts,
+    user_conclusion_text,
+    user_grade_text,
+)
 
 _LOGGER = logging.getLogger("equipeffi.qt.analysis")
 
@@ -412,14 +420,15 @@ class AnalysisPage(QWidget):
         Record 中，只是本页不展示。
         """
 
-        # 第一层：最终结论 / 等级 / 不适用 / 无法判定。
+        # 第一层：最终结论 / 等级 / 不在范围 / 无法判定。
         # Phase 8 Owner 规则 7：Qt 与 Excel 的用户可见结论必须一致，
-        # 因此共用 Application 的同一套结论文案（「不确定类别」→「无法评价」）。
+        # 因此共用 Application 的同一套结论文案。
         self.conclusion.setText(user_conclusion_text(result))
         first = [f"设备类别：{result.product_category}",
                  f"评价日期：{result.as_of.isoformat()}"]
-        if result.grade:
-            first.append(f"能效等级：{result.grade}")
+        grade_text = user_grade_text(result.grade)
+        if grade_text:
+            first.append(f"能效等级：{grade_text}")
         if result.missing_fields:
             first.append("缺失信息：" + "、".join(result.missing_fields))
         # 普通结果区只显示用户可读的中文说明；内部 `issue_codes` 是审计标识，
@@ -437,11 +446,23 @@ class AnalysisPage(QWidget):
         # 第二层：关键实际值与对应限值（派生量显示 2 位小数；限值保持原文精度）。
         second: list[str] = []
         actual_key = "泵效率_%"
-        actual_efficiency = (result.extra_metrics or {}).get(actual_key)
+        actual_metric = (result.metrics_by_id or {}).get(
+            PUMP_METRIC_IDS["actual_efficiency"])
+        actual_efficiency = (actual_metric.value if actual_metric is not None
+                             else (result.extra_metrics or {}).get(actual_key))
         if actual_efficiency is not None:
             second.append(f"实际泵效率：{format_metric(actual_efficiency, name=str(actual_key))}%")
-        if result.thresholds:
+        metrics = result.metrics_by_id or {}
+        stable_thresholds = [metrics[metric_id] for metric_id in PUMP_LEVEL_LIMIT_METRIC_IDS
+                             if metric_id in metrics]
+        if stable_thresholds:
             # 普通界面限值保留 2 位小数（**仅显示**；等级比较仍用完整精度）。
+            second.append("对应等级效率限值：" + "；".join(
+                f"{metric.display_name} "
+                f"{format_metric(metric.value, name=metric.display_name)}"
+                for metric in stable_thresholds))
+        elif result.thresholds:
+            # Phase 3–8 历史结果对象仍可按原显示映射读取。
             second.append("对应等级效率限值：" + "；".join(
                 f"{THRESHOLD_DISPLAY_NAMES.get(name, name)} "
                 f"{format_metric(value, name=str(name))}"
@@ -455,10 +476,19 @@ class AnalysisPage(QWidget):
         self.reason_label.setText("")
 
         # 保留：关键计算参数（用户友好名称 + 合理格式化）。
-        derived = result.calculation_trace.get("derived") or {}
-        if derived:
+        stable_details = [result.metrics_by_id[metric_id]
+                          for metric_id in PUMP_ANALYSIS_DETAIL_METRIC_IDS
+                          if metric_id in result.metrics_by_id]
+        if stable_details:
             self.basis.setText("关键计算参数：" + "；".join(
-                f"{name} {format_metric(value, name=str(name))}"
-                for name, value in derived.items()))
+                f"{metric.display_name} "
+                f"{format_metric(metric.value, name=metric.display_name)}"
+                for metric in stable_details))
         else:
-            self.basis.setText("")
+            derived = result.calculation_trace.get("derived") or {}
+            if derived:
+                self.basis.setText("关键计算参数：" + "；".join(
+                    f"{name} {format_metric(value, name=str(name))}"
+                    for name, value in derived.items()))
+            else:
+                self.basis.setText("")

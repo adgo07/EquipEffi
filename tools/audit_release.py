@@ -41,6 +41,10 @@ from equipeffi.domain.evaluation.elimination import EliminationMatcher  # noqa: 
 from equipeffi.infrastructure.excel.template_resource import DEFAULT_V4_TEMPLATE  # noqa: E402
 from equipeffi.infrastructure.excel.v4_template_audit import audit_v4_template  # noqa: E402
 from equipeffi.infrastructure.standards.json_repository import JsonStandardRepository  # noqa: E402
+try:
+    from .check_distribution_assets import audit_artifact
+except ImportError:  # direct execution
+    from check_distribution_assets import audit_artifact
 
 # 产业目录当前只纳入用户明确列出的设备相关条目：11项原文拆分成13条
 # 受控规则。将ID清单放在发布审计中，使没有原始PDF可读时也能发现过期、
@@ -580,7 +584,7 @@ def _audit_workbooks(
         errors.append("人工校对册同源/保护审计失败")
 
 
-def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any], wheel: Path | None) -> None:
+def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any], wheel: Path | None, root: Path) -> None:
     if wheel is None:
         return
     if not wheel.is_file():
@@ -616,6 +620,11 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
                 errors.append(f"wheel中的标准manifest无效: {exc}")
     except (OSError, BadZipFile) as exc:
         errors.append(f"wheel不是有效压缩包: {exc}")
+    asset_audit = audit_artifact(wheel, root=root)
+    checks["wheel_distribution_asset_audit"] = asdict(asset_audit)
+    if not asset_audit.is_valid:
+        errors.extend(asset_audit.errors)
+    warnings.extend(asset_audit.warnings)
     # 成员存在并不等于资源加载路径正确；用隔离的Python进程从wheel本身
     # 读取manifest、模板和一个普通电机样例，避免误用当前源码目录。
     code = (
@@ -629,6 +638,12 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
         "'category':'三相异步电动机（一般用途）','rated_voltage':'0.4',"
         "'rated_power':7.5,'poles':4,'rated_speed':1480,'efficiency':98}}); "
         "assert result['conclusion'] == '1级'; "
+        "from equipeffi.infrastructure.excel.template_resource import V6TemplateResource; "
+        "from equipeffi.infrastructure.excel.pump_workbook_reader import V6PumpWorkbookReader; "
+        "v6=V6TemplateResource(); "
+        "assert v6.validate().is_valid; "
+        "template_input=V6PumpWorkbookReader().read(v6.template_path); "
+        "assert not template_input.rows; "
         "batch=api.evaluate_batch({'records':[{'record_id':'W-BATCH','device_type':'motor','values':{"
         "'category':'三相异步电动机','rated_voltage':'0.4','rated_power':7.5,"
         "'poles':4,'rated_speed':1480,'efficiency':98}}]}); "
@@ -658,6 +673,19 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
             errors.append(f"wheel运行时烟测失败: {runtime.stderr.strip() or runtime.stdout.strip()}")
 
 
+def _audit_sdist(sdist: Path | None, root: Path, errors: list[str], warnings: list[str], checks: dict[str, Any]) -> None:
+    if sdist is None:
+        return
+    if not sdist.is_file():
+        warnings.append(f"未找到sdist，跳过源码包资产审计: {sdist}")
+        return
+    asset_audit = audit_artifact(sdist, root=root)
+    checks["sdist_distribution_asset_audit"] = asdict(asset_audit)
+    if not asset_audit.is_valid:
+        errors.extend(asset_audit.errors)
+    warnings.extend(asset_audit.warnings)
+
+
 def _audit_elimination_sources(source_dir: Path, errors: list[str], checks: dict[str, Any]) -> None:
     """可选地核对外部DOCX来源；不传目录时保持离线发布审计自包含。"""
     try:
@@ -670,7 +698,13 @@ def _audit_elimination_sources(source_dir: Path, errors: list[str], checks: dict
         errors.append("第一至第四批淘汰目录DOCX来源核对失败")
 
 
-def _audit_native_report(report_path: Path, errors: list[str], checks: dict[str, Any]) -> None:
+def _audit_native_report(
+    report_path: Path,
+    errors: list[str],
+    warnings: list[str],
+    checks: dict[str, Any],
+    root: Path,
+) -> None:
     """核验可选的PyInstaller构建报告及其可执行文件。"""
 
     try:
@@ -727,9 +761,15 @@ def _audit_native_report(report_path: Path, errors: list[str], checks: dict[str,
     }
     if package_check:
         checks["native_build"]["package"] = package_check
+        if package_check.get("path") and Path(str(package_check["path"])).is_file():
+            asset_audit = audit_artifact(Path(str(package_check["path"])), root=root)
+            checks["native_build"]["package_asset_audit"] = asdict(asset_audit)
+            if not asset_audit.is_valid:
+                errors.extend(asset_audit.errors)
+            warnings.extend(asset_audit.warnings)
 
 
-def _audit_portable_bundle(bundle_path: Path, errors: list[str], checks: dict[str, Any]) -> None:
+def _audit_portable_bundle(bundle_path: Path, errors: list[str], warnings: list[str], checks: dict[str, Any], root: Path) -> None:
     """校验便携ZIP清单和成员哈希。"""
 
     try:
@@ -740,6 +780,11 @@ def _audit_portable_bundle(bundle_path: Path, errors: list[str], checks: dict[st
     checks["portable_bundle"] = result
     if not result.get("is_valid"):
         errors.append("便携ZIP清单/哈希审计失败")
+    asset_audit = audit_artifact(bundle_path, root=root)
+    checks["portable_distribution_asset_audit"] = asdict(asset_audit)
+    if not asset_audit.is_valid:
+        errors.extend(asset_audit.errors)
+    warnings.extend(asset_audit.warnings)
 
 
 def audit_project(
@@ -748,6 +793,7 @@ def audit_project(
     template: Path | None = None,
     review_book: Path | None | object = _DEFAULT_REVIEW,
     wheel: Path | None = None,
+    sdist: Path | None = None,
     elimination_source_dir: Path | None = None,
     industry_source_pdf: Path | None = None,
     standard_source_dir: Path | None = None,
@@ -776,15 +822,16 @@ def audit_project(
         else Path(review_book) if review_book is not None else None
     )
     _audit_workbooks(errors, warnings, checks, template_path, review_path)
-    _audit_wheel(errors, warnings, checks, Path(wheel) if wheel else None)
+    _audit_wheel(errors, warnings, checks, Path(wheel) if wheel else None, root)
+    _audit_sdist(Path(sdist) if sdist else None, root, errors, warnings, checks)
     if elimination_source_dir is not None:
         _audit_elimination_sources(Path(elimination_source_dir), errors, checks)
     if industry_source_pdf is not None:
         _audit_industry_source(Path(industry_source_pdf), errors, checks)
     if native_report is not None:
-        _audit_native_report(Path(native_report), errors, checks)
+        _audit_native_report(Path(native_report), errors, warnings, checks, root)
     if portable_bundle is not None:
-        _audit_portable_bundle(Path(portable_bundle), errors, checks)
+        _audit_portable_bundle(Path(portable_bundle), errors, warnings, checks, root)
     return ReleaseAudit(not errors, tuple(errors), tuple(warnings), checks)
 
 
@@ -794,6 +841,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--template", type=Path)
     parser.add_argument("--review-book", type=Path)
     parser.add_argument("--wheel", type=Path)
+    parser.add_argument("--sdist", type=Path, help="可选：检查源码分发包中的实际成员")
     parser.add_argument("--elimination-source-dir", type=Path, help="可选：核对第一至第四批DOCX来源目录")
     parser.add_argument("--industry-source-pdf", type=Path, help="可选：核对2024年产业目录设备条目原始PDF")
     parser.add_argument("--standard-source-dir", type=Path, help="可选：标准PDF目录，仅用于来源文件名存在性提示")
@@ -804,6 +852,7 @@ def main(argv: list[str] | None = None) -> int:
     audit_kwargs: dict[str, Any] = {
         "template": args.template,
         "wheel": args.wheel,
+        "sdist": args.sdist,
         "elimination_source_dir": args.elimination_source_dir,
         "industry_source_pdf": args.industry_source_pdf,
         "standard_source_dir": args.standard_source_dir,

@@ -5,7 +5,7 @@
 - 输出结果是**新** Workbook，不覆盖输入；其他设备 Sheet 不丢
 - 结果写回只写结果列；旧计算结果不作为业务输入
 - 数量必须正整数 > 0（Excel 验证 + 软件验证都在）
-- 「不确定类别」→「无法评价」，且 Qt 与 Excel 结论一致
+- 「不确定类别」→「无法判定」，且 Qt 与 Excel 结论一致
 - 逐设备详细结果保存在结果 Workbook
 - 批次汇总含结论分布与需要关注的行
 - 系统异常不伪装成业务结论
@@ -26,6 +26,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 import openpyxl
 
 from equipeffi.application.lifecycle import BatchRecordSnapshot
+from equipeffi.application.result_projection import PUMP_METRIC_IDS
 from equipeffi.application.services.centrifugal_pump_analysis_service import (
     PUMP_CATEGORIES,
     user_conclusion_text,
@@ -46,7 +47,11 @@ from equipeffi.infrastructure.excel.pump_workbook_reader import (
     PUMP_SHEET,
     V6PumpWorkbookReader,
 )
-from equipeffi.infrastructure.excel.template_resource import V6TemplateResource
+from equipeffi.infrastructure.excel.template_resource import (
+    V6TemplateResource,
+    V6_TEMPLATE_ENTRY,
+    identity_defined_names,
+)
 from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
 from equipeffi.infrastructure.persistence.records_migrations import (
     RECORDS_MIGRATIONS,
@@ -185,9 +190,70 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
 
     def test_one_batch_evaluation_creates_exactly_one_batch_record(self):
         result = self.run_batch([self.water_row(), self.water_row(B="泵2", C="M-002")])
-        self.assertEqual(len(self.repository.list_batch_records()), 1)
-        self.assertEqual(result.batch_record_id,
-                         self.repository.list_batch_records()[0].batch_record_id)
+        records = self.repository.list_batch_records()
+        self.assertEqual(len(records), 1)
+        record = records[0]
+        self.assertEqual(result.batch_record_id, record.batch_record_id)
+        self.assertEqual(record.template_id, "equipeffi.device-efficiency.V6")
+        self.assertEqual(record.template_version, "V6-20261005")
+        self.assertEqual(record.template_sha256, V6TemplateResource().identity["asset_sha256"])
+        self.assertEqual(record.summary["template"]["template_contract_revision"],
+                         "unified-v6.v1")
+        self.assertEqual(record.summary["template"]["sheet_id"], "centrifugal_pump")
+        self.assertEqual(record.summary["template"]["sheet_contract_revision"],
+                         "pump-input.v1")
+        self.assertEqual(record.summary["template"]["identity_source"],
+                         "legacy-structure")
+        provenance = record.summary["evaluation_provenance"]
+        self.assertEqual(provenance["standard_code"], "GB 19762-2025")
+        self.assertEqual(provenance["standard_year"], "2025")
+        self.assertIsNone(provenance["standard_version"])
+        expected_data_version = self.analysis._standards.get_pack(
+            "pump_water")["data_version"]
+        self.assertEqual(provenance["data_version"], expected_data_version)
+        self.assertNotEqual(provenance["data_version"], provenance["standard_year"])
+        self.assertEqual(provenance["data_versions"], [expected_data_version])
+        self.assertEqual(provenance["rule_profiles"], ["pump_water"])
+        self.assertIsNone(provenance["ruleset_version"])
+        self.assertTrue(provenance["calculator_version"])
+        self.assertTrue(provenance["result_contract_version"])
+
+    def test_declared_template_identity_source_is_recorded_in_batch_snapshot(self):
+        from openpyxl.workbook.defined_name import DefinedName
+
+        workbook = openpyxl.load_workbook(self.source, data_only=False)
+        for name, value in identity_defined_names(V6_TEMPLATE_ENTRY).items():
+            workbook.defined_names.add(
+                DefinedName(name, attr_text=f'"{value}"'))
+        workbook.save(self.source)
+        workbook.close()
+
+        validation = V6TemplateResource().validate(self.source)
+        self.assertTrue(validation.is_valid, validation.message)
+        self.assertEqual(validation.identity_source, "declared")
+
+        result = self.run_batch([self.water_row()])
+        record = self.repository.load_batch_record(result.batch_record_id)
+        self.assertEqual(record.summary["template"]["identity_source"], "declared")
+
+    def test_identity_source_is_empty_without_reader_structure_evidence(self):
+        from equipeffi.application.ports.batch_workbook import BatchSourceWorkbook
+
+        self.batch.reader = V6PumpWorkbookReader(require_template_structure=False)
+        self.fill([self.water_row()])
+        workbook = self.batch.reader.read(self.source)
+        unverified_workbook = BatchSourceWorkbook(
+            path=workbook.path, rows=workbook.rows,
+            skipped_blank_rows=workbook.skipped_blank_rows,
+            template_identity={})
+        # A configured default template source is not evidence about this input.
+        self.batch.template_identity["identity_source"] = "declared"
+        with patch.object(self.batch.reader, "read",
+                          return_value=unverified_workbook):
+            result = self.batch.evaluate_workbook(
+                self.source, destination=self.root / "无来源结果.xlsx")
+        record = self.repository.load_batch_record(result.batch_record_id)
+        self.assertEqual(record.summary["template"]["identity_source"], "")
 
     def test_no_per_row_single_records_are_created(self):
         result = self.run_batch([self.water_row(), self.water_row(B="泵2", C="M-002"),
@@ -225,16 +291,20 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
         self.assertEqual(result.summary.data_row_count, 2)
         self.assertEqual(result.summary.concluded_rows, 2)
         self.assertEqual(len(result.summary.conclusion_quantities), 1)
+        provenance = self.repository.list_batch_records()[0].summary[
+            "evaluation_provenance"]
+        self.assertEqual(provenance["rule_profiles"],
+                         ["pump_water", "pump_chemical"])
 
     def test_uncertain_category_is_unevaluated_not_skipped(self):
         result = self.run_batch([self.water_row(F="不确定类别")])
         self.assertEqual(result.summary.data_row_count, 1, "不确定类别行不得被静默跳过")
         self.assertEqual(result.summary.unevaluated_rows, 1)
-        self.assertEqual(result.summary.conclusion_quantities.get("无法评价"), 1)
+        self.assertEqual(result.summary.conclusion_quantities.get("无法判定"), 1)
 
     def test_other_category_is_out_of_scope(self):
         result = self.run_batch([self.water_row(F="其他类别")])
-        self.assertEqual(result.summary.conclusion_quantities.get("不适用"), 1)
+        self.assertEqual(result.summary.conclusion_quantities.get("不在范围"), 1)
         self.assertEqual(result.summary.unevaluated_rows, 0)
 
     def test_row_with_only_location_is_read_and_reported(self):
@@ -269,7 +339,7 @@ class BatchEvaluationSemanticsTests(BatchTestCase):
         self.assertEqual(outcome.conclusion, "执行失败")
         self.assertTrue(outcome.is_execution_error)
         self.assertNotIn(outcome.conclusion,
-                         ("1级", "2级", "3级", "未达标", "不适用", "无法评价"))
+                         ("1级", "2级", "3级", "未达3级", "不在范围", "无法判定"))
         self.assertTrue(any("系统执行失败" in message for message in outcome.messages))
 
     def test_system_failure_on_one_row_does_not_abort_the_batch(self):
@@ -340,6 +410,47 @@ class ResultWorkbookTests(BatchTestCase):
         self.assertEqual(written["X"], "1级")
         self.assertIsNotNone(written["N"], "比转速应写回")
         self.assertIsNotNone(written["AA"], "自动备注应写回")
+        speed_metric = result.outcomes[0].metrics_by_id[
+            PUMP_METRIC_IDS["specific_speed"]]
+        self.assertEqual(speed_metric.metric_id, "pump.specific_speed")
+        self.assertEqual(speed_metric.unit, "1")
+
+    def test_three_efficiency_limits_survive_result_workbook_reopen(self):
+        result = self.run_batch([self.water_row()])
+        workbook = openpyxl.load_workbook(result.result_workbook, data_only=True)
+        try:
+            sheet = workbook[PUMP_SHEET]
+            limits = [sheet[f"{column}{FIRST_DATA_ROW}"].value
+                      for column in ("U", "V", "W")]
+            self.assertTrue(all(isinstance(value, (int, float))
+                                for value in limits), limits)
+        finally:
+            workbook.close()
+
+    def test_conflicting_merge_is_rejected_before_output_or_batch_record(self):
+        from equipeffi.infrastructure.excel.ooxml_reader import OOXMLReadError
+
+        self.fill([self.water_row()])
+        workbook = openpyxl.load_workbook(self.source)
+        sheet = workbook[PUMP_SHEET]
+        del sheet.tables["TblPump"]
+        sheet.merge_cells(f"U{FIRST_DATA_ROW}:W{FIRST_DATA_ROW}")
+        workbook.save(self.source)
+        workbook.close()
+        source_hash = hashlib.sha256(self.source.read_bytes()).hexdigest()
+        validation = V6TemplateResource().validate(self.source)
+        self.assertFalse(validation.is_valid)
+        self.assertIn("U4:W4", validation.message)
+        destination = self.root / "不应生成.xlsx"
+
+        with self.assertRaisesRegex(OOXMLReadError, "U4:W4"):
+            self.batch.evaluate_workbook(self.source, destination=destination)
+
+        self.assertTrue(self.source.is_file())
+        self.assertEqual(hashlib.sha256(self.source.read_bytes()).hexdigest(),
+                         source_hash)
+        self.assertFalse(destination.exists())
+        self.assertEqual(self.repository.list_batch_records(), [])
 
     def test_input_columns_are_preserved_verbatim(self):
         self.fill([self.water_row(B="保留我", C="M-999", E="9号车间")])
@@ -391,13 +502,13 @@ class ConclusionConsistencyTests(BatchTestCase):
 
         self.assertIs(labels.user_conclusion_text, user_conclusion_text)
 
-    def test_uncertain_category_is_unable_to_evaluate_in_excel(self):
+    def test_uncertain_category_is_unable_to_determine_in_excel(self):
         result = self.run_batch([self.water_row(F="不确定类别")])
-        self.assertEqual(result.outcomes[0].conclusion, "无法评价")
+        self.assertEqual(result.outcomes[0].conclusion, "无法判定")
         sheet = openpyxl.load_workbook(result.result_workbook)[PUMP_SHEET]
-        self.assertEqual(sheet[f"X{FIRST_DATA_ROW}"].value, "无法评价")
+        self.assertEqual(sheet[f"X{FIRST_DATA_ROW}"].value, "无法判定")
 
-    def test_uncertain_category_is_unable_to_evaluate_in_qt(self):
+    def test_uncertain_category_is_unable_to_determine_in_qt(self):
         from equipeffi.presentation.qt.pages.analysis import AnalysisPage
 
         page = AnalysisPage(self.analysis, as_of=date.today())
@@ -407,15 +518,15 @@ class ConclusionConsistencyTests(BatchTestCase):
                            ("speed", "2900"), ("efficiency", "80")):
             page.point_inputs[key].setText(value)
         page.evaluate()
-        self.assertEqual(page.conclusion.text(), "无法评价")
+        self.assertEqual(page.conclusion.text(), "无法判定")
 
     def test_qt_and_excel_agree_for_every_conclusion_shape(self):
         from equipeffi.presentation.qt.pages.analysis import AnalysisPage
 
         cases = (
             ("单级单吸清水离心泵", "1级"),
-            ("其他类别", "不适用"),
-            ("不确定类别", "无法评价"),
+            ("其他类别", "不在范围"),
+            ("不确定类别", "无法判定"),
         )
         for index, (category, expected) in enumerate(cases):
             with self.subTest(category=category):
@@ -510,7 +621,7 @@ class BatchPageTests(BatchTestCase):
                           side_effect=RuntimeError("模拟装配失败")):
             self.assertIsNone(page.run())
         self.assertIn("批量评价未能完成", page.summary_label.text())
-        self.assertNotIn("无法评价", page.summary_label.text())
+        self.assertNotIn("无法判定", page.summary_label.text())
 
 
 class CompositionWiringTests(BatchTestCase):

@@ -6,20 +6,15 @@
 
 ## 当前状态
 
-- 路线 `EquipEffi V2.3`；本任务起点为默认分支 `master` 的 `f12b5f29b306c769c0f0e56f5fe433fda7d75ba7`（PR #21 合并）；产品Phase状态见下。
+- 路线 `EquipEffi V2.3`；最近业务合并点为默认分支 `master` 的 `392b57f26bf0a7d2fddc1911ad293019a014c942`（PR #25 合并）；产品Phase状态见下。
 - 已验收 Phase：`1 = PHASE_1_PASS`、`2 = PHASE_2_PASS`（PR #10）、`3 = PHASE_3_PASS`（PR #11）、`4 = PHASE_4_PASS`（PR #12）、`5 = PHASE_5_PASS`（PR #13）、`6 = PHASE_6_PASS`（PR #14）、`7 = PHASE_7_PASS`（PR #15）。
 - **Phase 8（GB 19762 Excel 批量评价闭环）= `EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`**（PR #16 已合并）。
   **不得**自行宣布 `PHASE_8_PASS`；不得进入 Phase 9。`automatic_continuation = DISABLED`。
 
 ## 当前任务
 
-标准档案目录规范化（2026-10-13，文档维护；不是产品Phase）。
-分支`codex/standard-archive-conventions`；总入口为[标准档案](docs/standards/README.md)。
-水泵映射迁入标准号/年份目录，旧路径保留跳转；变压器新建年份入口，冻结双文件原位原字节保留。
-规则与表值配套、结构与数值核验分开，D-08沿用根台账的Owner批准记录；未执行全量逐格数值复核。
-变更与验证见[本次摘要](docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md)。
-PR #22验收修复：移除根台账过时的汇总状态，化工泵页首点名被取代的候选措辞；各Issue状态字段及D-08不变。新head的CI结果以GitHub检查为准，独立复验尚待完成。
-此前M1工作保留于PR #17及Git历史，本任务不改变其实现或验收结论。
+软件简化第二批 [PR #25](https://github.com/adgo07/EquipEffi/pull/25) 已按 Owner 授权验收并合并，收拢三处标准仓库装配。最终 Head 远端门禁无新增回归，原有基线失败保留；证据见[本批验收记录](docs/governance/SIMPLIFICATION_BATCH2_20261021.md)。当前状态见 TASK_STATE；后续先核实实际维护负担，不机械启动第三批。首批历史见[PR #24 验收记录](docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md)。
+源 checkout 的未提交标准映射资料及本地验收草稿保持原位，不纳入本次文档提交；变压器支持范围、冻结资产及 Phase 状态不变。
 
 ## 长期关键事实（不随 Phase 变化）
 

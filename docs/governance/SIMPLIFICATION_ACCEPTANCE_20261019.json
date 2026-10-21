@@ -1,0 +1,369 @@
+{
+  "accepted_code_and_tests_sha": "265a808d8bc8d922c87a876cf9f7bf4916e6e151",
+  "runtime_code_sha": "39eaf1d29cf4d082dee812dd8fce649355cf9c36",
+  "full_suite": {
+    "executable": "G:\\Python Project\\EquipEffi\\.venv\\Scripts\\python.exe",
+    "python_version": "3.12.14 (main, Sep  1 2026, 14:17:39) [MSC v.1944 64 bit (AMD64)]",
+    "duration_seconds": 737.4310851000009,
+    "run": 1565,
+    "pass": 1562,
+    "fail": 3,
+    "error": 0,
+    "skip": 0,
+    "expected_fail": 0,
+    "unexpected_success": 0,
+    "failure_ids": [
+      "tests.unit.test_v4_reader.V4ReaderTests.test_copied_v4_row_is_read_and_evaluated",
+      "tests.unit.test_v4_writer.V4WriterTests.test_end_to_end_v4_1500_rows_read_evaluate_write_and_reopen",
+      "tests.unit.test_v4_writer.V4WriterTests.test_writer_creates_new_workbook_with_locked_results"
+    ],
+    "error_ids": [],
+    "skip_ids": [],
+    "expected_failure_ids": [],
+    "unexpected_success_ids": [],
+    "raw_suite_success": false
+  },
+  "comparison": {
+    "gate": "PASS",
+    "new_failures": [],
+    "new_errors": [],
+    "worsened_failure_to_error": [],
+    "unexpected_skips": [],
+    "missing_baseline_tests": [],
+    "unexpected_successes": [],
+    "unexpected_expected_failures": [],
+    "fixed_known_tests": [
+      "tests.unit.test_build_lock.BuildLockTests.test_second_process_is_rejected_without_waiting",
+      "tests.unit.test_desktop_form_model.DesktopFormModelTests.test_builtin_template_download_is_available_without_excel_callbacks",
+      "tests.unit.test_jsonl_smoke.JsonlSmokeToolTests.test_source_entrypoint_protocol_smoke",
+      "tests.unit.test_jsonl_smoke.JsonlSmokeToolTests.test_source_entrypoint_runs_in_isolated_python_mode",
+      "tests.unit.test_release_audit.ReleaseAuditTests.test_build_release_auto_selects_latest_review_book",
+      "tests.unit.test_release_audit.ReleaseAuditTests.test_build_release_portable_output_builds_and_embeds_zipapp",
+      "tests.unit.test_release_audit.ReleaseAuditTests.test_source_and_bundled_wheel_pass_release_audit",
+      "tests.unit.test_release_audit.ReleaseAuditTests.test_sync_review_book_copies_audited_book_without_touching_source",
+      "tests.unit.test_release_audit.ReleaseAuditTests.test_write_release_report_uses_delivery_directory_name",
+      "tests.unit.test_v4_template_resource.V4TemplateResourceTests.test_download_copies_to_new_file_without_overwriting_source",
+      "tests.unit.test_zipapp.ZipappTests.test_zipapp_contains_package_resources_and_runs_status"
+    ],
+    "improved_error_to_failure": [],
+    "baseline_tightening_hint": true
+  },
+  "artifact_imports": [
+    {
+      "artifact": "wheel",
+      "exit": 0,
+      "stdout": "artifact-v6-ok",
+      "stderr": ""
+    },
+    {
+      "artifact": "zipapp",
+      "exit": 0,
+      "stdout": "artifact-v6-ok",
+      "stderr": ""
+    },
+    {
+      "artifact": "portable-wheel",
+      "exit": 0,
+      "stdout": "artifact-v6-ok",
+      "stderr": ""
+    }
+  ],
+  "asset_audits": [
+    {
+      "filename": "equipeffi-0.2.1-py3-none-any.whl",
+      "sha256": "a69bb764a7c19a2f0cf31d870c965b9164f2cafb9a706c4d5c3bab27ed99b0f6",
+      "kind": "wheel",
+      "is_valid": true,
+      "errors": [],
+      "standard_source_findings": []
+    },
+    {
+      "filename": "equipeffi-0.2.1.tar.gz",
+      "sha256": "19099b7f093cfbf25521518fc5df61b6cccbcaf52edddd0c078db553306d7406",
+      "kind": "sdist",
+      "is_valid": true,
+      "errors": [],
+      "standard_source_findings": []
+    },
+    {
+      "filename": "portable.pyz",
+      "sha256": "99c20924be0095277a83e560c2904ebd875147bb70d2bb4b41937abd3633cfde",
+      "kind": "zipapp",
+      "is_valid": true,
+      "errors": [],
+      "standard_source_findings": []
+    },
+    {
+      "filename": "portable.zip",
+      "sha256": "c55b1614f55e5b9f5315958a168066641eea37d7c034129e24f48a223a7e4960",
+      "kind": "bundle-or-native-zip",
+      "is_valid": true,
+      "errors": [],
+      "standard_source_findings": []
+    }
+  ],
+  "large_volume": {
+    "instrumentation": "tracemalloc; not a production benchmark",
+    "rows": [
+      {
+        "count": 100,
+        "seconds": 3.432,
+        "peak_MiB": 22.2
+      },
+      {
+        "count": 1000,
+        "seconds": 23.411,
+        "peak_MiB": 108.7
+      },
+      {
+        "count": 10000,
+        "seconds": 229.849,
+        "peak_MiB": 1000.6
+      }
+    ]
+  },
+  "native_binary": "NOT_RUN: PyInstaller unavailable",
+  "local_log_sha256": {
+    "artifacts/simplification-acceptance-20261020/full_suite.log": "620ae0a8c50811e39d66a387700a659e267a182157bad01c38b277aa7bd3bd25",
+    "artifacts/simplification-acceptance-20261020/actual.json": "8ecb6e2e45ac0026eaccfde540a413e19e7b2e1e454cabd4cd3b1e398ffe0668",
+    "artifacts/simplification-acceptance-20261020/comparison.json": "ad844733a99352a5997a3a8339da1e7609c1c4486375e35cd2435f7ce2d642f6",
+    "artifacts/full-suite-console-20261020.log": "51e090ccb5a5dddcde3fc1ce9530e57248a600058f081106c229716e6d431097"
+  },
+  "first_round_acceptance_status": "WITHDRAWN_AFTER_EXTERNAL_REVIEW",
+  "r1": {
+    "runtime_sha": "34259c0",
+    "code_and_tests_sha": "3a30b5700f9a1c221c10700ce7d056e72d97b637",
+    "local_status": "SIX_FIXES_REVERIFIED",
+    "xp_tests": {
+      "run": 96,
+      "pass": 96,
+      "fail": 0,
+      "error": 0,
+      "skip": 0
+    },
+    "c_history_golden_architecture_first_run": {
+      "run": 217,
+      "pass": 216,
+      "fail": 1,
+      "error": 0,
+      "skip": 0,
+      "failure_id": "tests.unit.test_m3_standard_pack_cache.StandardPackFirstAccessTests.test_each_device_type_is_cached_separately"
+    },
+    "m3_after_test_expectation_fix": {
+      "run": 12,
+      "pass": 12,
+      "fail": 0,
+      "error": 0,
+      "skip": 0
+    },
+    "artifact_audit": [
+      {
+        "path": "C:\\Users\\WANGWEI\\.codex\\worktrees\\equipeffi-simplification-integration\\EquipEffi\\artifacts\\pr24-r1-build\\equipeffi-0.2.1-py3-none-any.whl",
+        "kind": "wheel",
+        "is_valid": true,
+        "errors": [],
+        "warnings": [],
+        "checks": {
+          "member_count": 283,
+          "runtime_asset_count": 18,
+          "declared_runtime_assets": [
+            "equipeffi/resources/TEMPLATE_MANIFEST.json",
+            "equipeffi/resources/elimination_catalog_batches_1_4.json",
+            "equipeffi/resources/elimination_catalog_industry_2024.json",
+            "equipeffi/resources/standards/blower.json",
+            "equipeffi/resources/standards/boiler.json",
+            "equipeffi/resources/standards/compressor.json",
+            "equipeffi/resources/standards/fan.json",
+            "equipeffi/resources/standards/gb30253_2024_pdf_verified_v1.json",
+            "equipeffi/resources/standards/heat_treatment.json",
+            "equipeffi/resources/standards/hvac_thresholds.json",
+            "equipeffi/resources/standards/motor_hv.json",
+            "equipeffi/resources/standards/motor_lv.json",
+            "equipeffi/resources/standards/pump.json",
+            "equipeffi/resources/standards/submersible.json",
+            "equipeffi/resources/standards/transformer.json",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
+            "equipeffi/standard_manifest.json"
+          ],
+          "missing_runtime_assets": [],
+          "unexpected_runtime_resources": [],
+          "standard_source_findings": [],
+          "allowed_report_pdfs": []
+        }
+      },
+      {
+        "path": "C:\\Users\\WANGWEI\\.codex\\worktrees\\equipeffi-simplification-integration\\EquipEffi\\artifacts\\pr24-r1-build\\equipeffi-0.2.1.tar.gz",
+        "kind": "sdist",
+        "is_valid": true,
+        "errors": [],
+        "warnings": [],
+        "checks": {
+          "member_count": 289,
+          "runtime_asset_count": 18,
+          "declared_runtime_assets": [
+            "equipeffi/resources/TEMPLATE_MANIFEST.json",
+            "equipeffi/resources/elimination_catalog_batches_1_4.json",
+            "equipeffi/resources/elimination_catalog_industry_2024.json",
+            "equipeffi/resources/standards/blower.json",
+            "equipeffi/resources/standards/boiler.json",
+            "equipeffi/resources/standards/compressor.json",
+            "equipeffi/resources/standards/fan.json",
+            "equipeffi/resources/standards/gb30253_2024_pdf_verified_v1.json",
+            "equipeffi/resources/standards/heat_treatment.json",
+            "equipeffi/resources/standards/hvac_thresholds.json",
+            "equipeffi/resources/standards/motor_hv.json",
+            "equipeffi/resources/standards/motor_lv.json",
+            "equipeffi/resources/standards/pump.json",
+            "equipeffi/resources/standards/submersible.json",
+            "equipeffi/resources/standards/transformer.json",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
+            "equipeffi/standard_manifest.json"
+          ],
+          "missing_runtime_assets": [],
+          "unexpected_runtime_resources": [],
+          "standard_source_findings": [],
+          "allowed_report_pdfs": []
+        }
+      },
+      {
+        "path": "C:\\Users\\WANGWEI\\.codex\\worktrees\\equipeffi-simplification-integration\\EquipEffi\\artifacts\\pr24-r1-build\\portable.pyz",
+        "kind": "zipapp",
+        "is_valid": true,
+        "errors": [],
+        "warnings": [],
+        "checks": {
+          "member_count": 279,
+          "runtime_asset_count": 18,
+          "declared_runtime_assets": [
+            "equipeffi/resources/TEMPLATE_MANIFEST.json",
+            "equipeffi/resources/elimination_catalog_batches_1_4.json",
+            "equipeffi/resources/elimination_catalog_industry_2024.json",
+            "equipeffi/resources/standards/blower.json",
+            "equipeffi/resources/standards/boiler.json",
+            "equipeffi/resources/standards/compressor.json",
+            "equipeffi/resources/standards/fan.json",
+            "equipeffi/resources/standards/gb30253_2024_pdf_verified_v1.json",
+            "equipeffi/resources/standards/heat_treatment.json",
+            "equipeffi/resources/standards/hvac_thresholds.json",
+            "equipeffi/resources/standards/motor_hv.json",
+            "equipeffi/resources/standards/motor_lv.json",
+            "equipeffi/resources/standards/pump.json",
+            "equipeffi/resources/standards/submersible.json",
+            "equipeffi/resources/standards/transformer.json",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
+            "equipeffi/standard_manifest.json"
+          ],
+          "missing_runtime_assets": [],
+          "unexpected_runtime_resources": [],
+          "standard_source_findings": [],
+          "allowed_report_pdfs": []
+        }
+      },
+      {
+        "path": "C:\\Users\\WANGWEI\\.codex\\worktrees\\equipeffi-simplification-integration\\EquipEffi\\artifacts\\pr24-r1-build\\portable.zip",
+        "kind": "bundle-or-native-zip",
+        "is_valid": true,
+        "errors": [],
+        "warnings": [],
+        "checks": {
+          "member_count": 590,
+          "runtime_asset_count": 18,
+          "declared_runtime_assets": [
+            "equipeffi/resources/TEMPLATE_MANIFEST.json",
+            "equipeffi/resources/elimination_catalog_batches_1_4.json",
+            "equipeffi/resources/elimination_catalog_industry_2024.json",
+            "equipeffi/resources/standards/blower.json",
+            "equipeffi/resources/standards/boiler.json",
+            "equipeffi/resources/standards/compressor.json",
+            "equipeffi/resources/standards/fan.json",
+            "equipeffi/resources/standards/gb30253_2024_pdf_verified_v1.json",
+            "equipeffi/resources/standards/heat_treatment.json",
+            "equipeffi/resources/standards/hvac_thresholds.json",
+            "equipeffi/resources/standards/motor_hv.json",
+            "equipeffi/resources/standards/motor_lv.json",
+            "equipeffi/resources/standards/pump.json",
+            "equipeffi/resources/standards/submersible.json",
+            "equipeffi/resources/standards/transformer.json",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx",
+            "equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
+            "equipeffi/standard_manifest.json"
+          ],
+          "missing_runtime_assets": [],
+          "unexpected_runtime_resources": [],
+          "standard_source_findings": [],
+          "allowed_report_pdfs": []
+        }
+      }
+    ],
+    "artifact_imports": [
+      {
+        "artifact": "wheel",
+        "exit": 0,
+        "stdout": "artifact-v6-ok",
+        "stderr": ""
+      },
+      {
+        "artifact": "zipapp",
+        "exit": 0,
+        "stdout": "artifact-v6-ok",
+        "stderr": ""
+      },
+      {
+        "artifact": "portable-wheel",
+        "exit": 0,
+        "stdout": "artifact-v6-ok",
+        "stderr": ""
+      }
+    ],
+    "compileall": "PASS",
+    "template_gate": "PASS",
+    "untouched_sheets": {
+      "checked": 17,
+      "diffs": 0
+    },
+    "native_build": "NOT_RUN_PYINSTALLER_UNAVAILABLE",
+    "remote_gate": "REQUIRED_SEE_PR_24_CURRENT_HEAD",
+    "local_full_suite": "NOT_RUN_IN_R1_REMOTE_FULL_SUITE_REQUIRED"
+  },
+  "r2": {
+    "code_and_tests_sha": "7fd740b916c19da395400286fa2fe25f04a8449b",
+    "issue": "QA-SIMP-X-003",
+    "local_status": "PASS",
+    "independent_tests": {
+      "run": 228,
+      "pass": 228,
+      "fail": 0,
+      "error": 0,
+      "skip": 0,
+      "duration_seconds": 213.44
+    },
+    "compileall": "PASS",
+    "diff_check": "PASS",
+    "remote_gate": "REQUIRED_SEE_PR_24_CURRENT_HEAD",
+    "distribution_rebuild": "NOT_RUN_NO_PACKAGING_OR_ASSET_CHANGE"
+  },
+  "final_remote_verification": {
+    "head": "017362f8adb6e1314b8e160b8656f5621e61cd92",
+    "windows_run_id": 39443870485,
+    "pump_run_id": 39443870266,
+    "run": 1580,
+    "pass": 1564,
+    "fail": 9,
+    "error": 4,
+    "skip": 3,
+    "duration_seconds": 855.068,
+    "exact_id_gate": "PASS",
+    "new_regressions": 0,
+    "pump_tests_pass": 196,
+    "architecture_tests_pass": 113
+  },
+  "merge": {
+    "pr": 24,
+    "sha": "0d4eae855e16c99d0ef96bda3b39bfc5b26b4641",
+    "owner_authorized_date": "2026-10-21",
+    "merged": true
+  }
+}

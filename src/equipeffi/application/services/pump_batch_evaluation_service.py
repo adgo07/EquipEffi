@@ -29,6 +29,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 from dataclasses import dataclass, field, replace
 from datetime import date, datetime, timezone
 from decimal import Decimal, InvalidOperation
@@ -105,6 +106,12 @@ class _BatchProvenance:
     canonical_version: str = ""
     numeric_profile_id: str = ""
     canonical_package_hash: str = ""
+    standard_code: str = ""
+    standard_year: str = ""
+    data_versions: list[str] = field(default_factory=list)
+    rule_profiles: list[str] = field(default_factory=list)
+    calculator_version: str = ""
+    result_contract_version: str = ""
 
     def observe(self, result) -> None:
         self.evaluated += 1
@@ -115,6 +122,22 @@ class _BatchProvenance:
             self.numeric_profile_id = references.get("numeric_profile_id", "")
         if not self.canonical_package_hash:
             self.canonical_package_hash = references.get("canonical_package_hash", "")
+        if not self.standard_code:
+            self.standard_code = references.get("standard_code", "")
+        if not self.standard_year:
+            self.standard_year = references.get("standard_year", "")
+        data_version = references.get("data_version", "")
+        if data_version and data_version not in self.data_versions:
+            self.data_versions.append(data_version)
+        rule_profile = references.get("rule_profile", "")
+        if rule_profile and rule_profile not in self.rule_profiles:
+            self.rule_profiles.append(rule_profile)
+        for attribute, key in (
+            ("calculator_version", "calculator_version"),
+            ("result_contract_version", "result_contract_version"),
+        ):
+            if not getattr(self, attribute):
+                setattr(self, attribute, references.get(key, ""))
 
 
 @dataclass
@@ -306,7 +329,7 @@ class PumpBatchEvaluationService:
         )
         if persist and self.batch_repository is not None:
             try:
-                self._persist(result, provenance)
+                self._persist(result, provenance, workbook.template_identity)
             except Exception as error:  # noqa: BLE001 - 明确报告，不中断结果交付
                 result.batch_record_error = f"{type(error).__name__}: {error}"
         return result
@@ -389,11 +412,12 @@ class PumpBatchEvaluationService:
     # -- 持久化 ------------------------------------------------------------
 
     def _persist(self, result: BatchEvaluationResult,
-                 provenance: "_BatchProvenance") -> None:
+                 provenance: "_BatchProvenance",
+                 source_template_identity: dict[str, str] | None = None) -> None:
         from ...application.lifecycle import BatchRecordSnapshot
 
         summary = result.summary
-        identity = self.template_identity
+        identity = dict(source_template_identity or self.template_identity)
         # 只允许使用**当前批次**真正执行过正式评价所得的引用；
         # 若本批在进入正式评价前就全部失败，这几个字段保持空，
         # 按现有结构采取最诚实的表示（不伪造 Result、不沿用上一批）。
@@ -401,6 +425,42 @@ class PumpBatchEvaluationService:
             "canonical_version": provenance.canonical_version,
             "numeric_profile_id": provenance.numeric_profile_id,
             "canonical_package_hash": provenance.canonical_package_hash,
+        }
+        summary_snapshot = summary.as_dict()
+        template_snapshot = {
+            "template_id": identity.get("template_id", ""),
+            "template_version": identity.get("template_version", ""),
+            "asset_sha256": identity.get("asset_sha256", ""),
+            "template_contract_revision": identity.get(
+                "template_contract_revision", ""),
+            "sheet_id": identity.get("sheet_id", ""),
+            "sheet_contract_revision": identity.get(
+                "sheet_contract_revision", ""),
+        }
+        # 只从本次 Reader 的结构识别结果传来源；默认模板配置不能代替
+        # 输入 Workbook 的身份来源证据。
+        identity_source = str(
+            (source_template_identity or {}).get("identity_source") or ""
+        ).strip()
+        template_snapshot["identity_source"] = identity_source
+        summary_snapshot["template"] = template_snapshot
+        data_version = (provenance.data_versions[0]
+                        if len(provenance.data_versions) == 1 else None)
+        summary_snapshot["evaluation_provenance"] = {
+            "standard_code": provenance.standard_code or None,
+            "standard_year": provenance.standard_year or None,
+            # 标准身份由标准号和年份表达；结果引用没有独立 standard_version。
+            "standard_version": None,
+            "data_version": data_version,
+            "data_versions": list(provenance.data_versions),
+            "rule_profiles": list(provenance.rule_profiles),
+            # _pack_reference 提供 rule_profile，不提供规则集版本。
+            "ruleset_version": None,
+            "calculator_version": provenance.calculator_version or None,
+            "result_contract_version": provenance.result_contract_version or None,
+            "canonical_version": provenance.canonical_version or None,
+            "canonical_package_hash": provenance.canonical_package_hash or None,
+            "numeric_profile_id": provenance.numeric_profile_id or None,
         }
         self.batch_repository.append_batch_record(BatchRecordSnapshot(
             batch_record_id=result.batch_record_id,
@@ -426,7 +486,7 @@ class PumpBatchEvaluationService:
             evaluated_count=summary.concluded_rows,
             unevaluated_count=summary.unevaluated_rows,
             invalid_count=(summary.input_error_rows + summary.execution_error_rows),
-            summary=summary.as_dict(),
+            summary=summary_snapshot,
             app_version=self.app_version,
             canonical_version=references.get("canonical_version", ""),
             numeric_profile_id=references.get("numeric_profile_id", ""),
@@ -436,10 +496,10 @@ class PumpBatchEvaluationService:
 
 
 def _version_references(result) -> dict[str, str]:
-    """从**已产生的正式评价结果**取 Canonical / Numeric 引用。
+    """从**已产生的正式评价结果**读取标准身份与 pack provenance。
 
-    这些引用只存在于 Result 契约里（标准仓储本身没有版本属性），因此取自
-    本批次首个成功评价的结果。取不到时留空，**不得编造**。
+    标准号、标准年份、data_version 与 rule_profile 均按 Result 的正式引用
+    语义提取；不存在的独立版本字段不从其他字段推造。取不到时留空。
     """
 
     if result is None:
@@ -447,15 +507,33 @@ def _version_references(result) -> dict[str, str]:
     references = dict(getattr(result, "references", None) or {})
     standard = dict(references.get("standard") or {})
     out: dict[str, str] = {}
+    standard_code = str(
+        standard.get("standard_code") or getattr(result, "standard_code", "") or ""
+    ).strip()
+    if standard_code:
+        out["standard_code"] = standard_code
+        year_match = re.search(r"[-—](\d{4})$", standard_code)
+        if year_match:
+            out["standard_year"] = year_match.group(1)
     data_version = str(standard.get("data_version") or "").strip()
     if data_version:
+        # canonical_version 是既有批次列；summary 同时以 data_version 保留
+        # 正式 pack reference 的原字段语义。
         out["canonical_version"] = data_version
+        out["data_version"] = data_version
     profile = str(references.get("numeric_profile_id") or "").strip()
     if profile:
         out["numeric_profile_id"] = profile
     pack_hash = str(standard.get("pack_hash") or "").strip()
     if pack_hash:
         out["canonical_package_hash"] = pack_hash
+    rule_profile = str(standard.get("rule_profile") or "").strip()
+    if rule_profile:
+        out["rule_profile"] = rule_profile
+    for key in ("calculator_version", "result_contract_version"):
+        value = str(references.get(key) or "").strip()
+        if value:
+            out[key] = value
     return out
 
 
@@ -465,6 +543,7 @@ def _outcome_from_result(row_number: int, result,
 
     snapshot = result.as_snapshot()
     derived = dict((result.calculation_trace or {}).get("derived") or {})
+    metrics_by_id = dict(getattr(result, "metrics_by_id", None) or {})
     messages: list[str] = []
     missing = snapshot.get("missing_fields") or []
     if missing:
@@ -484,6 +563,7 @@ def _outcome_from_result(row_number: int, result,
         messages=tuple(messages),
         derived=derived,
         thresholds=thresholds,
+        metrics_by_id=metrics_by_id,
         quantity=quantity)
 
 

@@ -67,7 +67,7 @@ def _inline_text(node: ElementTree.Element) -> str:
 class OOXMLWorkbook:
     """只读、无外部依赖的xlsx基础读取器。
 
-    它只读取单元格值和工作表名称，不保存或改写压缩包，因此不会破坏图片、保护和公式。
+    它只读取单元格值、工作表名称和合并范围，不保存或改写压缩包，因此不会破坏图片、保护和公式。
     """
 
     def __init__(self, path: Path):
@@ -78,6 +78,7 @@ class OOXMLWorkbook:
             raise OOXMLReadError(f"无法打开xlsx文件: {exc}") from exc
         self._shared_strings = self._read_shared_strings()
         self._sheets = self._read_sheet_targets()
+        self._merged_ranges: dict[str, tuple[str, ...]] = {}
 
     def __enter__(self) -> "OOXMLWorkbook":
         return self
@@ -122,6 +123,13 @@ class OOXMLWorkbook:
     def sheet_names(self) -> tuple[str, ...]:
         return tuple(self._sheets)
 
+    def merged_ranges(self, sheet_name: str) -> tuple[str, ...]:
+        """Return merge references captured while parsing this sheet with rows()."""
+
+        if sheet_name not in self._sheets:
+            raise OOXMLReadError(f"工作簿中不存在sheet: {sheet_name}")
+        return self._merged_ranges.get(sheet_name, ())
+
     def rows(self, sheet_name: str) -> list[list[Any]]:
         target = self._sheets.get(sheet_name)
         if not target:
@@ -130,6 +138,12 @@ class OOXMLWorkbook:
             root = ElementTree.fromstring(self.archive.read(target))
         except (KeyError, ElementTree.ParseError) as exc:
             raise OOXMLReadError(f"sheet结构无效({sheet_name}): {exc}") from exc
+        merge_cells = root.find(_tag(_MAIN_NS, "mergeCells"))
+        self._merged_ranges[sheet_name] = (
+            tuple(node.attrib.get("ref", "")
+                  for node in merge_cells.findall(_tag(_MAIN_NS, "mergeCell")))
+            if merge_cells is not None else ()
+        )
         rows: dict[int, dict[int, Any]] = {}
         max_row = 0
         max_col = 0

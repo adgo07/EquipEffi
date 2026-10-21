@@ -38,6 +38,7 @@ from equipeffi.application.lifecycle import (
 )
 from equipeffi.application.services.centrifugal_pump_analysis_service import (
     PUMP_FINGERPRINT_KEYS,
+    PUMP_STANDARD_IDENTITY_KEY,
     CentrifugalPumpAnalysisService,
     PumpAnalysisRequest,
 )
@@ -130,10 +131,11 @@ class FingerprintImportDecouplingTests(unittest.TestCase):
     def test_workspace_persists_its_own_business_key_metadata(self):
         self.service.create_workspace("W-meta", self._request(WATER))
         workspace = self.service.load_workspace("W-meta")
-        self.assertEqual(business_key_names(workspace.payload), PUMP_FINGERPRINT_KEYS)
+        expected_keys = (*PUMP_FINGERPRINT_KEYS, PUMP_STANDARD_IDENTITY_KEY)
+        self.assertEqual(business_key_names(workspace.payload), expected_keys)
         self.assertIn(BUSINESS_KEYS_METADATA_KEY, workspace.payload)
         self.assertEqual(workspace.request_fingerprint(),
-                         workspace.request_fingerprint(PUMP_FINGERPRINT_KEYS))
+                         workspace.request_fingerprint(expected_keys))
 
     def test_legacy_snapshot_requires_explicit_keys_instead_of_guessing(self):
         """旧快照（无元数据）无参调用必须显式报错，而不是猜一个投影。
@@ -155,7 +157,7 @@ class FingerprintImportDecouplingTests(unittest.TestCase):
             legacy.request_fingerprint()
         # 显式传入业务键即恢复正确语义
         self.assertEqual(legacy.request_fingerprint(PUMP_FINGERPRINT_KEYS),
-                         request.request_fingerprint())
+                         request.request_fingerprint(include_standard_identity=False))
 
     def _insert_legacy_workspace(self, workspace_id: str,
                                  request: PumpAnalysisRequest) -> None:
@@ -242,7 +244,9 @@ class FingerprintImportDecouplingTests(unittest.TestCase):
         """带元数据的新草稿：子进程只加载 lifecycle 也得到同一指纹。"""
 
         request = self._request(WATER)
-        payload = request.raw_values() | business_keys_metadata(PUMP_FINGERPRINT_KEYS)
+        payload = request.raw_values() | {
+            PUMP_STANDARD_IDENTITY_KEY: request.standard_code,
+        } | business_keys_metadata((*PUMP_FINGERPRINT_KEYS, PUMP_STANDARD_IDENTITY_KEY))
         expected = WorkspaceSnapshot(
             workspace_id="W", standard_code="GB 19762-2025",
             device_type="centrifugal_pump", product_category=WATER,

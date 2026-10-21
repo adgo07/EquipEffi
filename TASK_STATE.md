@@ -25,19 +25,24 @@ phase_8_pass_self_declared: false
 
 current_master:
   default_branch: master
-  head_sha: f12b5f29b306c769c0f0e56f5fe433fda7d75ba7
-  head_summary: "本任务开工同步：PR #21变压器双文件冻结已合并；非Phase推进"
+  head_ref: origin/master
+  product_baseline_sha: 392b57f26bf0a7d2fddc1911ad293019a014c942
+  head_summary: "2026-10-21 PR #25 已验收并合并，非 Phase 推进"
   phase_8_acceptance_record: 未生成（docs/phase8_acceptance_record.md 尚不存在）
 
 current_task:
-  task_id: STANDARD-ARCHIVE-ORGANIZATION
-  task_kind: 文档维护（不改变Phase、标准解释、支持状态或业务语义）
-  branch: codex/standard-archive-conventions
-  base_sha: f12b5f29b306c769c0f0e56f5fe433fda7d75ba7
-  status: EXECUTION_COMPLETE
-  summary: docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md
-  next_action: 文档整理分支供审阅（PR见本次任务附件）；不自行合并或进入Phase 9
-  previous_task_evidence: PR #17及Git历史中的M1维护记录
+  task_id: SIMPLIFICATION-BATCH-2-20261021
+  task_kind: Owner 授权现有功能简化；标准仓库装配去重
+  branch: codex/simplification-batch2-20261021
+  base_sha: 3d692f6ac6ddfeab15967086ecad95405f3f0d50
+  status: MERGED
+  pr: "#25"
+  merge_sha: 392b57f26bf0a7d2fddc1911ad293019a014c942
+  design: docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md
+  acceptance: docs/governance/SIMPLIFICATION_BATCH2_20261021.md
+  next_action: 本批已收口；后续先核实实际维护负担，不机械启动第三批
+  source_mapping_work: 源 checkout 既有未提交资料保留，不纳入本批
+  previous_task_evidence: docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md
 
 # ---------------------------------------------------------------------------
 # Phase 状态：只记录结论与落档链接，不复制执行细节

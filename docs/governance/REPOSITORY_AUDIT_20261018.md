@@ -1,5 +1,7 @@
 # EquipEffi 仓库检查报告
 
+> 历史检查报告：以下发现与数字仅对应 `2c7807f`。后续 PR #24 已实施部分修复，PR #25 已完成装配去重；当前完成情况以 [首批验收](SIMPLIFICATION_ACCEPTANCE_20261019.md)、[第二批验收](SIMPLIFICATION_BATCH2_20261021.md)及 QA_BACKLOG 为准。不得将本报告的旧缺陷描述当成当前未修复结论。
+
 检查日期：2026年10月18日。对象：王玮及后续负责 EquipEffi 的 AI 执行者。
 
 ## 一 总体结论

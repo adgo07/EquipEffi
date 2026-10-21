@@ -22,6 +22,9 @@ class ZipappTests(unittest.TestCase):
                 self.assertIn("equipeffi/standard_manifest.json", archive.namelist())
                 self.assertIn("equipeffi/resources/elimination_catalog_batches_1_4.json", archive.namelist())
                 self.assertIn("equipeffi/resources/elimination_catalog_industry_2024.json", archive.namelist())
+                self.assertIn("equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx", archive.namelist())
+                self.assertNotIn("equipeffi/resources/README.md", archive.namelist())
+                self.assertNotIn("equipeffi/resources/standards/README.md", archive.namelist())
             completed = subprocess.run(
                 [sys.executable, str(output), "--status"],
                 cwd=tmp,
