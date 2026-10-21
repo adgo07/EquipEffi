@@ -35,10 +35,11 @@ current_task:
   task_kind: Owner 授权现有功能简化；标准仓库装配去重
   branch: codex/simplification-batch2-20261021
   base_sha: 3d692f6ac6ddfeab15967086ecad95405f3f0d50
-  status: LOCAL_ACCEPTANCE_PASS
+  status: PR_OPEN_CI_PENDING
+  pr: "#25"
   design: docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md
   acceptance: docs/governance/SIMPLIFICATION_BATCH2_20261021.md
-  next_action: 提交 PR 并核对远端既有门禁；不自动合并
+  next_action: 核对 PR #25 远端既有门禁；不自动合并
   source_mapping_work: 源 checkout 既有未提交资料保留，不纳入本批
   previous_task_evidence: docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md
 

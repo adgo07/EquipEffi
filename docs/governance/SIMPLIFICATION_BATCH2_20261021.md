@@ -26,7 +26,7 @@
 - C 线提交 `a899415245b9dcbe4da933fc84e8f7ea4148f7c9`；集成代码 Head `97e6687`。子会话 composition 5/5，兼容 API 与 Qt/Excel 装配组合 126/126。
 - 主会话独立验证：97 run / 97 pass / 0 fail / 0 error / 0 skip（86.324 秒）；包括 composition、entrypoint、architecture_boundaries、GoldenExcelReplayTests、phase7_analysis_history。覆盖 29 条 Approved Golden 的真实 Excel 重放、单台/批次结果一致性及自动保存/历史规则。日志位于集成工作树 artifacts/batch2-independent.log（本地产物不入 Git）。
 - 主会话审阅完整差异；三入口旧构造已退出，加载顺序和求值时机保持；关键资源与标准目录对起点 git diff 为空。git diff --check 通过。
-- 本地独立验收通过；远端 CI：提交 PR 后核对，尚不能称远端通过。已有基线问题按原 exact-ID 门禁核对，不扩大允许名单。
+- 本地独立验收通过；[PR #25](https://github.com/adgo07/EquipEffi/pull/25) 已提交；远端 CI 待完成，尚不能称远端通过。已有基线问题按原 exact-ID 门禁核对，不扩大允许名单。
 - 原生 EXE 构建：NOT_RUN；本批无发布工程。Phase 8 状态不提升。
 
 Knowledge capture：无。
