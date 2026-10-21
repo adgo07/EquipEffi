@@ -11,7 +11,7 @@
 
 1. 直接退役：删除已授权的旧桌面/适配器实现及专属测试，并精简治理资料。本步已提交 [PR #26](https://github.com/adgo07/EquipEffi/pull/26)，远端检查已通过，尚未合并。
 2. 旧链整体退出：按方案移除 Web、Android、旧 API/JSONL/V4 专属链及配套资源与测试；已提交草稿 [PR #27](https://github.com/adgo07/EquipEffi/pull/27)，依赖 PR #26；V6 容量及工作簿专项验收已通过。
-3. 工程收口：草稿 [PR #28](https://github.com/adgo07/EquipEffi/pull/28) 依赖 PR #27。QA-RET-001/002 经 Owner 将 ZIP 正常解压到普通用户目录后本机交互复验正常；此前直接运行受限构建目录 EXE 导致 Low 完整性进程的证据已记入 QA。当前处理 QA-RET-003：Windows 桌面包取消控制台黑框，待新包验证。
+3. 工程收口：草稿 [PR #28](https://github.com/adgo07/EquipEffi/pull/28) 依赖 PR #27。QA-RET-001/002 经 Owner 将 ZIP 正常解压到普通用户目录后本机交互复验正常；此前直接运行受限构建目录 EXE 导致 Low 完整性进程的证据已记入 QA。当前处理 QA-RET-003：Windows 桌面包已改为 GUI 子系统，ee64e131 新包通过实际首页启动、定向测试及资源检查，已提供 ZIP 待 Owner 外观确认。
 
 集成起点为 `master@332d79c7d999feb4047c920ecb4359655bf9440e`。主会话统筹分步验收；本文件不复制执行日志、测试数字或历史阶段报告。当前机器没有干净 Windows / Sandbox；本机隔离结果不等于干净机器验收，也不构成 Phase 8 独立验收。
 
