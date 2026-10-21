@@ -107,6 +107,7 @@ class BatchPage(QWidget):
         #: 后台执行状态（None 表示空闲）
         self._thread = None
         self._worker = None
+        self._outcome_received = False
         self._build()
 
     # -- 构建 --------------------------------------------------------------
@@ -446,7 +447,7 @@ class BatchPage(QWidget):
     def start_run(self):
         """用户点击「批量评价」：在**后台线程**执行，主线程保持可响应。"""
 
-        if self.busy:
+        if self.busy or self._thread is not None:
             return None
         source = self.source_edit.text().strip()
         if not source:
@@ -455,6 +456,7 @@ class BatchPage(QWidget):
         target = self.resolve_target()
         self.last_result = None
         self._reset_quick_actions()
+        self._outcome_received = False
         self._set_busy(True, "正在批量评价，请稍候…（大批量可能需要几分钟）")
 
         thread = QThread(self)
@@ -472,7 +474,7 @@ class BatchPage(QWidget):
 
     def _set_busy(self, busy: bool, message: str = "") -> None:
         self.busy = busy
-        self.run_button.setEnabled(not busy)
+        self.run_button.setEnabled(not busy and self._thread is None)
         if message:
             self.check_label.setText(message)
 
@@ -484,15 +486,22 @@ class BatchPage(QWidget):
         available = bool(path is not None and path.exists())
         self.open_result_button.setEnabled(available)
         self.open_folder_button.setEnabled(available)
-        self._set_busy(False, self._completion_message(result))
+        self._outcome_received = True
+        self._set_busy(self._thread is not None, self._completion_message(result))
 
     def _on_failed(self, error_name: str) -> None:
         self._show_error(f"{SYSTEM_FAILURE_TEXT}\n（{error_name}）")
-        self._set_busy(False, "批量评价失败。请查看下方提示，修正后重试。")
+        self._outcome_received = True
+        self._set_busy(
+            self._thread is not None,
+            "批量评价失败。请查看下方提示，修正后重试。",
+        )
 
     def _on_thread_finished(self) -> None:
         self._thread = None
         self._worker = None
+        if self._outcome_received:
+            self._set_busy(False)
         self.background_idle.emit()
 
     def has_active_run(self) -> bool:

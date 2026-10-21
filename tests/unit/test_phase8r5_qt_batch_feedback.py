@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QThread, Qt
 from PySide6.QtWidgets import QApplication
 
 import openpyxl
@@ -87,6 +87,51 @@ class QtBatchFeedbackTests(unittest.TestCase):
         records = SqliteBatchRecordRepository(self.paths.records_db).list_batch_records()
         self.assertEqual(len(records), 1)
         self.assertEqual(records[0].batch_record_id, result.batch_record_id)
+
+    def test_new_run_waits_until_previous_thread_finishes(self):
+        self.page.set_source(self.source)
+        first = self.root / "第一次.xlsx"
+        self.page.target_edit.setText(str(first))
+        result = self.page.run()
+        self.assertIsNotNone(result)
+
+        entered = threading.Event()
+        release = threading.Event()
+
+        class HeldThread(QThread):
+            def run(self):
+                entered.set()
+                release.wait(10)
+
+        previous = HeldThread(self.page)
+        previous.finished.connect(self.page._on_thread_finished)
+        self.page._thread = previous
+        self.page._worker = object()
+        self.page._set_busy(True, "正在批量评价…")
+        previous.start()
+        try:
+            self.assertTrue(entered.wait(2), "前一线程应进入可控收尾窗口")
+            self.page._on_finished(result)
+
+            self.assertTrue(self.page.busy)
+            self.assertIn("批量评价已完成", self.page.check_label.text())
+            self.assertFalse(self.page.run_button.isEnabled())
+            self.page.target_edit.setText(str(self.root / "第二次.xlsx"))
+            self.assertIsNone(self.page.start_run())
+            self.assertIs(self.page._thread, previous)
+            self.assertTrue(previous.isRunning())
+        finally:
+            release.set()
+            self.assertTrue(previous.wait(2000), "前一线程应能正常收尾")
+            self.app.processEvents()
+
+        self.assertIsNone(self.page._thread)
+        self.assertFalse(self.page.busy)
+        self.assertTrue(self.page.run_button.isEnabled())
+        next_thread = self.page.start_run()
+        self.assertIsNotNone(next_thread)
+        self._finish_run()
+        self.assertTrue((self.root / "第二次.xlsx").exists())
 
     def test_rerun_disables_previous_result_actions_until_new_output_is_ready(self):
         self.page.set_source(self.source)
