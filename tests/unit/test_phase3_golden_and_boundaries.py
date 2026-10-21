@@ -17,9 +17,11 @@ from __future__ import annotations
 
 import json
 import unittest
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
 from pathlib import Path
+
+from jsonschema import Draft202012Validator, FormatChecker
 
 from equipeffi.application.services.centrifugal_pump_analysis_service import (
     CentrifugalPumpAnalysisService,
@@ -84,6 +86,37 @@ class ApprovedGoldenReplayTests(unittest.TestCase):
         cls.service = _service()
         cls.water = _load(WATER_DIR, "golden-case-0.4")
         cls.chemical = _load(CHEMICAL_DIR, "golden-case-0.5")
+
+    def test_approved_records_match_versioned_schema_and_named_review(self):
+        schema_dir = ROOT / "specs/equipment_efficiency/schemas"
+        for version, cases in (("0_4", self.water), ("0_5", self.chemical)):
+            schema = json.loads((schema_dir / f"golden_case_{version}.schema.json").read_text(
+                encoding="utf-8"))
+            Draft202012Validator.check_schema(schema)
+            validator = Draft202012Validator(schema, format_checker=FormatChecker())
+            for case in cases:
+                with self.subTest(version=version, case=case["case_id"]):
+                    errors = sorted(validator.iter_errors(case),
+                                    key=lambda error: list(error.absolute_path))
+                    details = "; ".join(
+                        f"{error.json_path}: {error.message}" for error in errors)
+                    self.assertEqual(details, "", f"正式 Golden 结构不符合 0.{version[-1]} schema")
+                    self.assertEqual(case["case_status"], "APPROVED")
+                    self.assertEqual(case["approval_status"], "APPROVED")
+                    self.assertEqual(case["review_status"], "APPROVED")
+                    self.assertTrue(case["review_owner"].strip())
+                    reviewed_at = datetime.fromisoformat(
+                        case["reviewed_at"].replace("Z", "+00:00"))
+                    approved_at = datetime.fromisoformat(
+                        case["approved_at"].replace("Z", "+00:00"))
+                    self.assertLessEqual(reviewed_at, approved_at)
+                    self.assertTrue(case["approval_basis"])
+                    self.assertTrue(case["known_limits"])
+                    self.assertEqual(case["review_flags"], [])
+                    roles = {item["evidence_role"]
+                             for item in case["source_sidecar"]["source_references"]}
+                    self.assertIn("STANDARD", roles)
+                    self.assertIn("CANONICAL_PACK", roles)
 
     def test_owner_approved_case_count_is_29(self):
         self.assertEqual(len(self.water), 18, "pump_water 0.4 批准案例数必须为 18")

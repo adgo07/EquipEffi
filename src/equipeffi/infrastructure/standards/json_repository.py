@@ -15,8 +15,7 @@ from .pack_validator import StandardPackValidator
 def repository_text_sha256(data: bytes) -> str:
     """仓库既有文本哈希规则：UTF-8 文本、CRLF→LF 归一后 SHA-256（大写十六进制）。
 
-    与 `tools/validate_phase1_contracts.py::_sha256(normalize_repository_text=True)`
-    和 `tools/build_phase3_chemical_golden.py::canonical_file_sha256` 保持一致。
+    与已记录的 Golden / Canonical 仓库文本哈希口径保持一致。
     """
 
     return hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest().upper()
