@@ -95,3 +95,10 @@ Owner 授权采纳本地意见的两项补充，QA-SIMP-X-003。运行代码与�
 - 主会话独立运行 Reader、批次、Phase 8 R1、架构与元数据共 **228 run / 228 pass / 0 fail / 0 error / 0 skip**，213.440 秒；包含实际 SQLite 批次快照、两种来源及无来源防伪、Table 缺失/扩缩兼容。compileall 与 git diff --check 通过。
 - 子会话另验证模板 Gate 39/39；未改模板资产、Canonical、Approved Golden、冻结文件、锁或持久化 schema。本轮不重复构建未受影响的分发资产；R1 产物审计保留原 SHA 适用范围。
 - 本地补充复验通过；当前最终 Head 的 CI 结论及 run 继续以 PR #24 说明和检查为准，未运行前不提前宣称通过。不合并、不发布、不宣布 Phase 8 PASS。原本地验收草稿保持原位，不改写其历史结论。
+
+
+## 最终远端复验与合并（2026-10-21 落档）
+
+验收 Head `017362f8adb6e1314b8e160b8656f5621e61cd92`：[Windows Core #150](https://github.com/adgo07/EquipEffi/actions/runs/39443870485) 1,580 run / 1,564 pass / 9 fail / 4 error / 3 skip，855.068 秒，exact-ID PASS、无新增回归；[Pump Conformance #150](https://github.com/adgo07/EquipEffi/actions/runs/39443870266) 196/196；架构/元数据113/113，编译、Whitespace、资源 smoke 通过。上述结果不等于全量全通过，原生构建仍 NOT_RUN。
+
+Owner 于 2026-10-21 明确授权合并，[PR #24](https://github.com/adgo07/EquipEffi/pull/24) 已合并为 `0d4eae855e16c99d0ef96bda3b39bfc5b26b4641`。此前“不自动合并”限定已由这次显式指令满足；历史记录保留。未发布、不改变 Phase/support 状态。后续见[下一步方案](SIMPLIFICATION_NEXT_STEPS_20261021.md)。

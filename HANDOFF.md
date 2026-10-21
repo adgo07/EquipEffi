@@ -6,18 +6,16 @@
 
 ## 当前状态
 
-- 路线 `EquipEffi V2.3`；本任务起点为默认分支 `master` 的 `f12b5f29b306c769c0f0e56f5fe433fda7d75ba7`（PR #21 合并）；产品Phase状态见下。
+- 路线 `EquipEffi V2.3`；最近业务合并点为默认分支 `master` 的 `0d4eae855e16c99d0ef96bda3b39bfc5b26b4641`（PR #24 合并）；产品Phase状态见下。
 - 已验收 Phase：`1 = PHASE_1_PASS`、`2 = PHASE_2_PASS`（PR #10）、`3 = PHASE_3_PASS`（PR #11）、`4 = PHASE_4_PASS`（PR #12）、`5 = PHASE_5_PASS`（PR #13）、`6 = PHASE_6_PASS`（PR #14）、`7 = PHASE_7_PASS`（PR #15）。
 - **Phase 8（GB 19762 Excel 批量评价闭环）= `EXECUTION_COMPLETE` / `READY_FOR_INDEPENDENT_ACCEPTANCE`**（PR #16 已合并）。
   **不得**自行宣布 `PHASE_8_PASS`；不得进入 Phase 9。`automatic_continuation = DISABLED`。
 
 ## 当前任务
 
-2026-10-19 Owner 授权的软件简化首批：核心结果/标准身份、统一 Excel 版本兼容、原文排除和交付资产检查。
-隔离分支 `codex/simplification-integration-20261019`；[任务书](docs/governance/SIMPLIFICATION_IMPLEMENTATION_20261019.md)。
-首轮结论因外部六项发现撤回；C/X/P 六项修复及身份来源/测试命名两项补充均已本地独立复验，当前 PR #24 的远端门禁与计数见 PR 检查和说明；[验收记录](docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md)保留失败、退回及复验事实。不自动合并或发布。
-源 checkout 的未提交标准映射资料保留，未纳入本批；此前[归档整理记录](docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md)继续保留。
-后续公共用例、页面骨架、旧路径退出、第二标准接入不属于本批已完成项。
+软件简化首批 PR #24 已于 2026-10-21 按 Owner 指令合并（`0d4eae8`）。最终 Head `017362f` 的远端门禁通过，无新增回归；已有失败与原生构建未验证项见[验收记录](docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md)。
+[下一步方案](docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md)已落档：优先 Application 小范围去重，其后字段/页面共用部分、旧路径退出；本轮未启动后续代码实施，未正式发布。
+源 checkout 的未提交标准映射资料及本地验收草稿保持原位，不纳入本次文档提交；变压器支持范围、冻结资产及 Phase 状态不变。
 
 ## 长期关键事实（不随 Phase 变化）
 

@@ -344,5 +344,26 @@
     "diff_check": "PASS",
     "remote_gate": "REQUIRED_SEE_PR_24_CURRENT_HEAD",
     "distribution_rebuild": "NOT_RUN_NO_PACKAGING_OR_ASSET_CHANGE"
+  },
+  "final_remote_verification": {
+    "head": "017362f8adb6e1314b8e160b8656f5621e61cd92",
+    "windows_run_id": 39443870485,
+    "pump_run_id": 39443870266,
+    "run": 1580,
+    "pass": 1564,
+    "fail": 9,
+    "error": 4,
+    "skip": 3,
+    "duration_seconds": 855.068,
+    "exact_id_gate": "PASS",
+    "new_regressions": 0,
+    "pump_tests_pass": 196,
+    "architecture_tests_pass": 113
+  },
+  "merge": {
+    "pr": 24,
+    "sha": "0d4eae855e16c99d0ef96bda3b39bfc5b26b4641",
+    "owner_authorized_date": "2026-10-21",
+    "merged": true
   }
 }
