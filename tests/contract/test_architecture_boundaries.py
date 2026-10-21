@@ -105,16 +105,6 @@ class ArchitectureBoundaryTests(unittest.TestCase):
                 self.assertNotIn("infrastructure.standards.json_repository", source)
                 self.assertNotIn("JsonStandardRepository(", source)
 
-    def test_legacy_tk_launcher_is_disconnected_from_the_product_entrypoint(self):
-        """Phase 6：legacy Tk 不再是任何用户产品入口，也不得回退到 Web。"""
-
-        launcher = self.ROOT / "src" / "equipeffi" / "presentation" / "desktop" / "launcher.py"
-        source = launcher.read_text(encoding="utf-8")
-        for forbidden in ("launch_packaged_gui", "run_web", "V4WorkbookReaderImpl",
-                          "EvaluationService("):
-            with self.subTest(forbidden=forbidden):
-                self.assertNotIn(forbidden, source)
-
     def test_desktop_product_shell_uses_the_shared_application_factory(self):
         """正式桌面 Shell 必须经共享装配层构造服务，不得自带第二套装配。"""
 

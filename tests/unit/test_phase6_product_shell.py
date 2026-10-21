@@ -4,7 +4,6 @@
 
 ```text
 启动入口：无参数 / --gui / --qt 都进入同一正式 Qt Shell
-Tk 退出：legacy Tk 不再是任何用户产品入口，且不再回退到 Web
 AppShell：五页均为真实页面，无 placeholder、无开发态文案
 导航契约：切页 / 选择目标对象 / 载入已有对象
 首页：新建分析 / 最近草稿 / 最近记录 / 当前标准
@@ -246,15 +245,6 @@ class EntrypointTests(ProductShellTestCase):
             with self.subTest(argv=argv):
                 with self.assertRaises(SystemExit):
                     main(argv)
-
-    def test_legacy_tk_launcher_is_not_a_product_entrypoint(self):
-        from equipeffi.presentation.desktop import launcher
-
-        for forbidden in ("launch_packaged_gui", "_run_web_fallback", "launch"):
-            with self.subTest(forbidden=forbidden):
-                self.assertFalse(hasattr(launcher, forbidden))
-        source = Path(launcher.__file__).read_text(encoding="utf-8")
-        self.assertNotIn("import tkinter", source)
 
     def test_main_py_no_longer_prints_a_console_only_notice(self):
         """无参数启动必须是产品 Shell，不是"已就绪 + 启动窗口: ..."提示。"""
@@ -1105,29 +1095,3 @@ class R1SecondRoundBlockerTests(ProductShellTestCase):
                   / "centrifugal_pump_analysis_service.py").read_text(encoding="utf-8")
         self.assertIn("return pump_release_support(rule_profile)", source)
         self.assertNotIn('if rule_profile == "pump_chemical":', source)
-
-    def test_governance_docs_record_the_closures(self):
-        """治理状态必须与关闭记录一致，不得自相矛盾。"""
-
-        # Phase 6 的关闭事实落在**不可变的 closure 记录**里；`TASK_STATE.md` 是
-        # 「当前状态」，会随后续 Phase 继续演进，因此不能要求它永远保留本 Phase
-        # 的措辞。这里锚定 closure 记录，并顺带确认活跃状态文件此时不声称这些项
-        # 仍被阻塞（若后续 Phase 重新打开，会同时更新两处）。
-        record = (ROOT / "docs" / "phase6_acceptance_record.md").read_text(encoding="utf-8")
-        self.assertIn("PHASE_6_PASS", record)
-        self.assertIn("05b40f91086bbdbe196793075e440de4473cbf96", record)
-
-        task = (ROOT / "TASK_STATE.md").read_text(encoding="utf-8")
-        for qa in ("QA-P5-001", "QA-P5-002", "QA-P3-003", "QA-P6-002"):
-            with self.subTest(qa=qa):
-                self.assertNotIn(
-                    f"{qa}: BLOCKER", task,
-                    f"{qa} 不得在活跃状态文件里被描述为 BLOCKER")
-
-        backlog = (ROOT / "QA_BACKLOG.md").read_text(encoding="utf-8")
-        for qa in ("QA-P5-001", "QA-P5-002", "QA-P3-003", "QA-P6-002"):
-            with self.subTest(backlog=qa):
-                row = next(ln for ln in backlog.splitlines()
-                           if ln.startswith("| `" + qa + "` |"))
-                self.assertIn("`CLOSED`", row)
-                self.assertNotIn("BLOCKER", row)

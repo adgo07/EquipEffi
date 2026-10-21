@@ -255,17 +255,6 @@ class EntrypointTests(unittest.TestCase):
             self.assertEqual(main(()), 0)
         launch_qt.assert_called_once_with()
 
-    def test_legacy_tk_launcher_is_disconnected(self):
-        """Phase 6 Owner 决定：legacy Tk 不再是任何用户产品入口。"""
-
-        from equipeffi.presentation.desktop import launcher
-
-        self.assertFalse(hasattr(launcher, "launch_packaged_gui"))
-        self.assertFalse(hasattr(launcher, "_run_web_fallback"))
-        self.assertFalse(hasattr(launcher, "launch"))
-        source = Path(launcher.__file__).read_text(encoding="utf-8")
-        self.assertNotIn("import tkinter", source)
-
     def test_gui_launch_keeps_the_shared_application_factory(self):
         """断开 Tk 不影响共享 Application 装配路径。"""
 

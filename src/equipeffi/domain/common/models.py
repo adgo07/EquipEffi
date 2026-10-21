@@ -6,14 +6,6 @@ from .issues import ValidationIssue
 
 
 @dataclass
-class RawDeviceRecord:
-    record_id: str
-    device_type: str
-    values: dict[str, Any] = field(default_factory=dict)
-    source: dict[str, Any] = field(default_factory=dict)
-
-
-@dataclass
 class DeviceDraft:
     record_id: str
     device_type: str
@@ -70,11 +62,3 @@ class EvaluationResult:
         """
 
         return self.elimination_match
-
-
-@dataclass
-class ReportModel:
-    project_id: str
-    results: list[EvaluationResult] = field(default_factory=list)
-    summary: dict[str, Any] = field(default_factory=dict)
-    issues: list[ValidationIssue] = field(default_factory=list)
