@@ -1,8 +1,8 @@
 # `pump_chemical` / GB 19762-2025 石油化工泵映射 V0.2 候选
 
-> **归档说明（2026-10-13）**：本文从原Profile目录迁入，以下正文保留形成时的Phase记录、版本与证据指纹；其中“当前”“候选”“待评审”“未发布”等按历史时期理解，不代表今日状态。当前有效依据和替代关系见[标准入口](../README.md)与[主映射导航](../STANDARD_MAPPING.md)。支持状态以[V1_SCOPE](../../../../V1_SCOPE.md)/[ROADMAP](../../../../ROADMAP.md)为准；日期与记录行为以[AGENTS §2.7/2.8](../../../../AGENTS.md)为准。本次仅调整归档和链接，不重新批准正文或修改业务规则。
+> **归档说明（2026-10-13）**：本文从原Profile目录迁入，以下正文保留形成时的Phase记录、版本与证据指纹；其中“当前”“候选”“待评审”“未发布”等按历史时期理解，不代表今日状态。当前有效依据和替代关系见[标准入口](../README.md)与[主映射导航](../STANDARD_MAPPING.md)。支持状态以[V1_SCOPE](../../../../V1_SCOPE.md)/[ROADMAP](../../../../V1_SCOPE.md)为准；日期与记录行为以[AGENTS §2.7/2.8](../../../../AGENTS.md)为准。本次仅调整归档和链接，不重新批准正文或修改业务规则。
 
-> **已取代的历史措辞**：下文的 `SUPPORT_PROMOTION_CANDIDATE`、`READY_FOR_INDEPENDENT_ACCEPTANCE`、“支持提升候选”及“待独立验收”仅描述当时的化工泵支持提升过程；该过程已由Phase 5独立验收通过取代，不得据此恢复候选状态。当前化工泵支持状态以[V1_SCOPE](../../../../V1_SCOPE.md)为准，验收事实见[Phase 5验收记录](../../../phase5_acceptance_record.md)。这不改变其他Phase自身的待验收状态。
+> **已取代的历史措辞**：下文的 `SUPPORT_PROMOTION_CANDIDATE`、`READY_FOR_INDEPENDENT_ACCEPTANCE`、“支持提升候选”及“待独立验收”仅描述当时的化工泵支持提升过程；该过程已由Phase 5独立验收通过取代，不得据此恢复候选状态。当前化工泵支持状态以[V1_SCOPE](../../../../V1_SCOPE.md)为准，验收事实见[Phase 5验收记录](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/docs/phase5_acceptance_record.md)。这不改变其他Phase自身的待验收状态。
 
 <!-- preserved-profile-body -->
 

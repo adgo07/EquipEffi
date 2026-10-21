@@ -26,7 +26,7 @@ Phase 8 — GB 19762 Excel 批量评价闭环。
 
 ## 1. G00 — Phase 7 收口 + Phase 8 rebaseline
 
-新增 [docs/phase7_acceptance_record.md](docs/phase7_acceptance_record.md)：
+新增 [docs/phase7_acceptance_record.md](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/docs/phase7_acceptance_record.md)：
 
 | 记录项 | 值 |
 |---|---|

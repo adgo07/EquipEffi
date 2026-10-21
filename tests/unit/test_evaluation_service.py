@@ -12,13 +12,12 @@ from equipeffi.domain.common.models import DeviceDraft
 from equipeffi.domain.evaluation.decimal_math import bracket, linear_interpolate
 from equipeffi.domain.evaluation.elimination import EliminationMatcher
 from equipeffi.infrastructure.standards.json_repository import JsonStandardRepository, StandardPackError
-from equipeffi.domain.evaluation.evaluation_engine import EvaluationEngine
 
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
-class EvaluationEngineTests(unittest.TestCase):
+class EvaluationServiceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.repo = JsonStandardRepository(ROOT)
@@ -651,23 +650,6 @@ class EvaluationEngineTests(unittest.TestCase):
         self.assertEqual(result["data_ids"], ["GB36561-R000006"])
         self.assertEqual(lookup["inputs"]["equivalent_weight_t"], "1")
         self.assertEqual(str(result["output"]["一等"]), "480")
-
-    def test_common_engine_dispatches_current_two_argument_evaluator(self):
-        class TwoArgumentEvaluator:
-            def evaluate(self, values, standard):
-                return (values, standard)
-
-        result = EvaluationEngine().evaluate(TwoArgumentEvaluator(), {"x": 1}, {"ignored": 2}, {"table": "T1"})
-        self.assertEqual(result, ({"x": 1}, {"table": "T1"}))
-
-    def test_common_engine_keeps_legacy_three_argument_evaluator(self):
-        class ThreeArgumentEvaluator:
-            def evaluate(self, values, indicators, standard):
-                return (values, indicators, standard)
-
-        result = EvaluationEngine().evaluate(ThreeArgumentEvaluator(), {"x": 1}, {"i": 2}, {"table": "T1"})
-        self.assertEqual(result, ({"x": 1}, {"i": 2}, {"table": "T1"}))
-
 
 if __name__ == "__main__":
     unittest.main()

@@ -13,7 +13,6 @@
     "skip": 3
   },
   "known_failure_ids": [
-    "tests.unit.test_desktop_form_model.DesktopFormModelTests.test_builtin_template_download_is_available_without_excel_callbacks",
     "tests.unit.test_release_audit.ReleaseAuditTests.test_build_release_auto_selects_latest_review_book",
     "tests.unit.test_release_audit.ReleaseAuditTests.test_build_release_portable_output_builds_and_embeds_zipapp",
     "tests.unit.test_release_audit.ReleaseAuditTests.test_sync_review_book_copies_audited_book_without_touching_source",
@@ -47,7 +46,6 @@
       "tests.unit.test_release_audit.ReleaseAuditTests.test_build_release_portable_output_builds_and_embeds_zipapp",
       "tests.unit.test_release_audit.ReleaseAuditTests.test_sync_review_book_copies_audited_book_without_touching_source",
       "tests.unit.test_release_audit.ReleaseAuditTests.test_write_release_report_uses_delivery_directory_name",
-      "tests.unit.test_desktop_form_model.DesktopFormModelTests.test_builtin_template_download_is_available_without_excel_callbacks",
       "tests.unit.test_v4_template_resource.V4TemplateResourceTests.test_download_copies_to_new_file_without_overwriting_source"
     ],
     "fails_in_both_environments": [
@@ -57,5 +55,6 @@
       "tests.unit.test_release_audit.ReleaseAuditTests.test_source_and_bundled_wheel_pass_release_audit"
     ],
     "note": "environment_only 的 10 项在 Python 3.12.14 本机通过（runner 的 8.3 短名路径与控制台编码差异）；不可据此从基线删除，否则 CI gate 会把它们当成 new_failure/new_error。Phase 3 未修复这 14 项中的任何一项，也未隐藏它们。"
-  }
+  },
+  "retirement_note": "2026-10-21 Owner 授权旧 Tk 退役；仅移除同时删除的 test_desktop_form_model 专属失败 ID，其余基线保持，最终在保留测试真实通过后退出允许表。"
 }

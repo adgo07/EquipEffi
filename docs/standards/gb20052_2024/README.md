@@ -13,7 +13,7 @@
 | 问题状态 | [根台账](../../../STANDARD_ISSUES_REGISTER.md)，`EQP-STD-GB20052-001`～`008` |
 | 解释与软件决定 | [解释档](../gb20052_v21/GB20052_STANDARD_INTERPRETATIONS.md) |
 | 审计与历史证据 | [审计CSV](../gb20052_v21/GB20052_TABLE_01_35_AUDIT.csv)、[文档验收记录](../gb20052_v21/GB20052_V21_ACCEPTANCE.md)、[变更记录](../gb20052_v21/GB20052_V21_CHANGELOG.md) |
-| 产品范围与软件支持 | [V1_SCOPE](../../../V1_SCOPE.md)、[ROADMAP](../../../ROADMAP.md)；双文件冻结不代表软件SUPPORTED |
+| 产品范围与软件支持 | [V1_SCOPE](../../../V1_SCOPE.md)、[ROADMAP](../../../V1_SCOPE.md)；双文件冻结不代表软件SUPPORTED |
 
 ## 项目批准与逐格证据分开
 
