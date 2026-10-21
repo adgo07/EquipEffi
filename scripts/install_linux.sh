@@ -24,6 +24,6 @@ if [ ! -x "$VENV/bin/python" ]; then
 fi
 "$VENV/bin/python" -m pip install --no-deps --no-index --upgrade "$WHEEL_PATH"
 
-echo "EquipEffi已安装到：$INSTALL_DIR"
-echo "启动核心CLI：$VENV/bin/python -m equipeffi --list-device-types"
-echo "启动窗口（系统提供Tk时）：$VENV/bin/python -m equipeffi --gui"
+echo "EquipEffi headless核心已安装到：$INSTALL_DIR"
+echo "环境诊断：$VENV/bin/python -m equipeffi --status"
+echo "正式Qt桌面需安装desktop extra：$VENV/bin/python -m pip install 'equipeffi[desktop]'"

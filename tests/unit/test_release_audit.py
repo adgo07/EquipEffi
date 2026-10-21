@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import shutil
 import json
 from hashlib import sha256
 import tempfile
@@ -12,11 +13,9 @@ from tools.build_release import (
     REPRODUCIBLE_BUILD_EPOCH,
     build_wheel,
     release_report_path,
-    sync_review_book,
-    sync_runtime_template,
     write_release_report,
 )
-from tools.audit_release import _audit_pmsm_confirmed_no_data, _default_review_book
+from tools.audit_release import _audit_pmsm_confirmed_no_data
 from tools.build_release import main as build_release_main
 from tools.audit_release import audit_project
 from tools.audit_release import ReleaseAudit
@@ -29,6 +28,22 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class ReleaseAuditTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls._wheel_fixture = tempfile.TemporaryDirectory()
+        temp_root = Path(cls._wheel_fixture.name)
+        project = temp_root / "project"
+        package = project / "src" / "equipeffi"
+        package.parent.mkdir(parents=True)
+        shutil.copytree(ROOT / "src" / "equipeffi", package)
+        for name in ("pyproject.toml", "MANIFEST.in", "README.md"):
+            shutil.copy2(ROOT / name, project / name)
+        cls.current_wheel = build_wheel(project, temp_root / "dist")
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._wheel_fixture.cleanup()
+
     def test_pmsm_confirmed_no_data_audit_rejects_accidental_value(self):
         """用户确认的三处空值被重建脚本误填时，发布审计必须阻断。"""
         source = ROOT / "src" / "equipeffi" / "resources" / "standards" / "gb30253_2024_pdf_verified_v1.json"
@@ -46,70 +61,6 @@ class ReleaseAuditTests(unittest.TestCase):
             _audit_pmsm_confirmed_no_data(root, errors, checks)
         self.assertFalse(checks["pmsm_confirmed_no_data"]["is_valid"])
         self.assertTrue(errors)
-
-    def test_default_review_book_prefers_latest_delivery(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            old = root / "outputs" / "final_20260826" / "设备能效标准数据_人工校对版.xlsx"
-            latest = root / "outputs" / "final_20260827_web_latest" / "设备能效标准数据_人工校对版.xlsx"
-            old.parent.mkdir(parents=True)
-            latest.parent.mkdir(parents=True)
-            old.write_bytes(b"old")
-            latest.write_bytes(b"latest")
-            self.assertEqual(_default_review_book(root), latest)
-
-    def test_default_review_book_accepts_newer_date_without_code_change(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            old = root / "outputs" / "final_20260827_web_latest" / "设备能效标准数据_人工校对版.xlsx"
-            newer = root / "outputs" / "final_20260828_web" / "设备能效标准数据_人工校对版.xlsx"
-            old.parent.mkdir(parents=True)
-            newer.parent.mkdir(parents=True)
-            old.write_bytes(b"old")
-            newer.write_bytes(b"newer")
-            self.assertEqual(_default_review_book(root), newer)
-
-    def test_sync_runtime_template_copies_protected_template_without_touching_source(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            source = root / "src" / "equipeffi" / "resources" / "templates"
-            source.mkdir(parents=True)
-            template = source / "设备能效分析空白模板_重构版V4_20260825.xlsx"
-            template.write_bytes(b"protected-template")
-            target = sync_runtime_template(root, root / "dist")
-            self.assertIsNotNone(target)
-            self.assertEqual(target.read_bytes(), b"protected-template")
-            self.assertEqual(template.read_bytes(), b"protected-template")
-
-    def test_sync_review_book_copies_audited_book_without_touching_source(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            source = root / "review" / "设备能效标准数据_人工校对版.xlsx"
-            output = root / "release"
-            source.parent.mkdir(parents=True)
-            source.write_bytes(b"audited-review-book")
-
-            target = sync_review_book(source, output)
-
-            self.assertEqual(target, output / source.name)
-            self.assertEqual(target.read_bytes(), b"audited-review-book")
-            self.assertEqual(source.read_bytes(), b"audited-review-book")
-
-    def test_sync_review_book_leaves_same_directory_source_in_place(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            output = Path(tmp)
-            source = output / "review.xlsx"
-            source.write_bytes(b"same-dir")
-
-            target = sync_review_book(source, output)
-
-            self.assertEqual(target, source.resolve())
-            self.assertEqual(source.read_bytes(), b"same-dir")
-
-    def test_sync_review_book_tolerates_missing_optional_source(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            missing = Path(tmp) / "missing.xlsx"
-            self.assertIsNone(sync_review_book(missing, Path(tmp) / "release"))
 
     def test_write_release_report_uses_delivery_directory_name(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -134,7 +85,7 @@ class ReleaseAuditTests(unittest.TestCase):
                 (output / "equipeffi-0.2.1-py3-none-any.whl").write_bytes(b"wheel")
 
             with patch("tools.build_release.subprocess.run", side_effect=fake_run):
-                result = build_wheel(ROOT, output)
+                result = build_wheel(output, output)
             self.assertEqual(result.name, "equipeffi-0.2.1-py3-none-any.whl")
 
     def test_build_wheel_clears_stale_setuptools_cache(self):
@@ -154,10 +105,8 @@ class ReleaseAuditTests(unittest.TestCase):
             self.assertEqual(result.read_bytes(), b"wheel")
 
     def test_source_and_bundled_wheel_pass_release_audit(self):
-        wheel = ROOT / "outputs" / "final_20260830_pmsm_active" / "equipeffi-0.2.1-py3-none-any.whl"
-        result = audit_project(ROOT, review_book=None, wheel=wheel)
+        result = audit_project(ROOT, wheel=self.current_wheel)
         self.assertTrue(result.is_valid, result.errors)
-        self.assertEqual(result.checks["public_device_type_count"], 15)
         self.assertEqual(result.checks["manifest_pack_count"], 17)
         self.assertEqual(result.checks["elimination_catalog"]["source_entry_count"], 413)
         self.assertEqual(result.checks["elimination_catalog"]["industry_source_item_count"], 11)
@@ -167,43 +116,21 @@ class ReleaseAuditTests(unittest.TestCase):
         self.assertEqual(result.checks["elimination_catalog"]["industry_missing_rule_ids"], [])
         self.assertEqual(result.checks["elimination_catalog"]["industry_extra_rule_ids"], [])
         self.assertEqual(result.checks["elimination_catalog"]["industry_duplicate_rule_ids"], [])
-        self.assertEqual(result.checks["industry_scope_behavior"]["unknown_model_conclusion"], "无法判定")
-        self.assertEqual(result.checks["industry_scope_behavior"]["explicit_model_conclusion"], "淘汰")
-        self.assertEqual(result.checks["industry_scope_behavior"]["combined_motor_batch_conclusion"], "淘汰")
         self.assertEqual(result.checks["pmsm_status"], "active")
         self.assertTrue(result.checks["pmsm_confirmed_no_data"]["is_valid"])
         self.assertEqual(
             result.checks["pmsm_confirmed_no_data"]["actual_no_data_indexes"],
             [5, 12, 19],
         )
-        self.assertEqual(result.checks["wheel_pmsm_status"], "active")
         self.assertEqual(result.checks["wheel_missing_members"], [])
-        self.assertEqual(result.checks["template_validations"]["errors"], [])
-        self.assertTrue(result.checks["evaluator_trace_data_ids"]["motor_lv"])
-        self.assertTrue(result.checks["evaluator_trace_data_ids"]["motor_pmsm"])
-        self.assertEqual(result.checks["pump_integer_stage_validation"], {"pump_water": "无法判定", "pump_chemical": "无法判定"})
+        self.assertTrue(result.checks["wheel_distribution_asset_audit"]["is_valid"])
+        self.assertEqual(result.checks["wheel_headless_stdout"], "headless-pump-v6-ok")
+        self.assertTrue(result.checks["wheel_status"]["ready"])
+        self.assertTrue(result.checks["wheel_status"]["desktop"]["available"])
+        self.assertTrue(result.checks["template"]["is_valid"])
+        self.assertEqual(result.checks["pump_profiles"].keys(), {"pump_water", "pump_chemical"})
+        self.assertEqual(result.checks["pump_integer_stage_validation"], {"pump_water": "INVALID_INPUT", "pump_chemical": "INVALID_INPUT"})
         self.assertEqual(result.checks["pump_range_miss_context"], {"pump_water": True, "pump_chemical": True})
-        self.assertEqual(result.checks["early_termination_context"], {"transformer": True, "motor_lv": True, "compressor": True, "fan": True, "blower": True, "submersible": True, "multi_split_static_pressure": True, "heat_treatment": True})
-        self.assertNotIn("human_review_book", result.checks)
-
-    def test_build_release_require_activation_fails_closed(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            wheel = Path(tmp) / "equipeffi-0.2.1-py3-none-any.whl"
-            wheel.write_bytes(b"wheel")
-            audit = ReleaseAudit(
-                is_valid=True,
-                errors=(),
-                warnings=(),
-                checks={"human_review_book": {
-                    "activation_ready": False,
-                    "activation_blockers": ["PMSM仍为normalized"],
-                }},
-            )
-            with patch("tools.build_release.build_wheel", return_value=wheel), patch(
-                "tools.build_release.audit_project", return_value=audit
-            ), patch("builtins.print"):
-                code = build_release_main(["--root", str(ROOT), "--output-dir", tmp, "--require-activation"])
-            self.assertEqual(code, 1)
 
     def test_build_release_portable_output_builds_and_embeds_zipapp(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -225,34 +152,11 @@ class ReleaseAuditTests(unittest.TestCase):
                 code = build_release_main([
                     "--root", str(root), "--output-dir", str(root),
                     "--portable-output", str(portable), "--zipapp-output", str(zipapp),
-                    "--skip-review",
                 ])
             self.assertEqual(code, 0)
             build_pyz.assert_called_once_with(root, zipapp)
             build_zip.assert_called_once_with(wheel, portable, root=root, zipapp=zipapp)
             validate_zip.assert_called_once_with(portable)
-
-    def test_build_release_auto_selects_latest_review_book(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            output = root / "dist"
-            output.mkdir()
-            wheel = output / "equipeffi-0.2.1-py3-none-any.whl"
-            wheel.write_bytes(b"wheel")
-            review = root / "outputs" / "final_20260827_web_latest" / "设备能效标准数据_人工校对版.xlsx"
-            review.parent.mkdir(parents=True)
-            review.write_bytes(b"review")
-            audit = ReleaseAudit(is_valid=True, errors=(), warnings=(), checks={})
-            with patch("tools.build_release.build_wheel", return_value=wheel), patch(
-                "tools.build_release.audit_project", return_value=audit
-            ) as audit_project, patch("builtins.print"):
-                code = build_release_main(["--root", str(root), "--output-dir", str(output)])
-            self.assertEqual(code, 0)
-            audit_project.assert_called_once_with(root, review_book=review, wheel=wheel)
-
-    def test_build_release_rejects_activation_without_review(self):
-        with self.assertRaises(SystemExit):
-            build_release_main(["--require-activation", "--skip-review"])
 
     def test_audit_cli_can_write_machine_readable_report(self):
         audit = ReleaseAudit(is_valid=True, errors=(), warnings=(), checks={"marker": "ok"})
@@ -278,13 +182,14 @@ class ReleaseAuditTests(unittest.TestCase):
             report.write_text(json.dumps({
                 "platform": "windows",
                 "executable": str(executable),
-                "gui_capable": False,
-                "presentation_mode": "web_fallback",
+                "qt_capable": True,
+                "presentation_mode": "pyside6_qt",
+                "status_ready": True,
                 "sha256": "stub",
             }), encoding="utf-8")
-            result = audit_project(ROOT, review_book=None, native_report=report)
+            result = audit_project(ROOT, native_report=report)
             self.assertTrue(result.is_valid, result.errors)
-            self.assertEqual(result.checks["native_build"]["presentation_mode"], "web_fallback")
+            self.assertEqual(result.checks["native_build"]["presentation_mode"], "pyside6_qt")
 
     def test_audit_validates_native_package_hash_and_entrypoint(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -302,12 +207,13 @@ class ReleaseAuditTests(unittest.TestCase):
             report.write_text(json.dumps({
                 "platform": "windows",
                 "executable": str(executable),
-                "gui_capable": False,
-                "presentation_mode": "web_fallback",
+                "qt_capable": True,
+                "presentation_mode": "pyside6_qt",
+                "status_ready": True,
                 "sha256": sha256(b"stub").hexdigest(),
                 "package": {"path": str(package), "sha256": package_hash},
             }), encoding="utf-8")
-            result = audit_project(ROOT, review_book=None, native_report=report)
+            result = audit_project(ROOT, native_report=report)
             self.assertTrue(result.is_valid, result.errors)
             self.assertEqual(result.checks["native_build"]["package"]["actual_sha256"], package_hash)
 

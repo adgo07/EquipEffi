@@ -216,18 +216,13 @@ class EntrypointTests(ProductShellTestCase):
             self.assertEqual(main([]), 0)
         launch.assert_called_once_with()
 
-    def test_none_argv_means_console_arguments_not_empty(self):
-        """``argv is None`` 不得被当成"无参数启动"。
-
-        否则 zipapp / ``runpy`` / ``python -m equipeffi`` 会误入桌面事件循环，
-        把 ``--status`` / ``--jsonl`` 等路径吞掉。
-        """
-
+    def test_none_argv_uses_console_status_option(self):
         from equipeffi.entrypoint import main
 
         with patch("equipeffi.composition.launch_qt", return_value=0) as launch:
-            with patch("sys.argv", ["equipeffi", "--status"]):
-                self.assertEqual(main(), 0)
+            with patch("equipeffi.entrypoint._runtime_status", return_value={"ready": True}):
+                with patch("sys.argv", ["equipeffi", "--status"]):
+                    self.assertEqual(main(), 0)
         launch.assert_not_called()
 
     def test_gui_and_qt_launch_the_same_shell(self):
@@ -241,7 +236,7 @@ class EntrypointTests(ProductShellTestCase):
     def test_desktop_options_reject_business_input(self):
         from equipeffi.entrypoint import main
 
-        for argv in (["--gui", "--status"], ["--qt", "--jsonl"]):
+        for argv in (["--gui", "--status"], ["--qt", "--status"]):
             with self.subTest(argv=argv):
                 with self.assertRaises(SystemExit):
                     main(argv)
@@ -697,112 +692,16 @@ class QaClosureTests(ProductShellTestCase):
     """R1：QA-P5-001 / QA-P5-002(b) / QA-P3-003 已在本 Phase 内**真正关闭**。"""
 
     def test_qa_p5_001_and_002b_are_closed(self):
-        """共享 Application/CLI 语义不再把石化泵短路为 NOT_IN_RELEASE_SCOPE。"""
+        """正式泵分析服务将石化泵报告为受支持 Profile。"""
 
-        from equipeffi.application.services.evaluation_service import EvaluationService
-        from equipeffi.domain.common.models import DeviceDraft
-
-        legacy = EvaluationService(JsonStandardRepository(SRC))
-        result = legacy.evaluate(DeviceDraft(
-            record_id="QA-CLOSED", device_type="pump_chemical",
-            raw_values={"category": "单级石油化工离心泵", "suction": "单吸",
-                        "stages": "1", "flow_m3h": 100, "head_m": 14,
-                        "rated_speed_rpm": 2900, "pump_efficiency": 73}))
+        result = self.service.evaluate(_request(CHEMICAL, record_id="QA-CLOSED"))
         self.assertEqual(result.support_status, "SUPPORTED")
         self.assertNotIn("PROFILE_NOT_IN_RELEASE_SCOPE", result.issue_codes)
 
-    def test_qa_p3_003_legacy_as_of_gate_no_longer_blocks_pumps(self):
-        """旧 as_of 门禁仍在代码里，但对离心泵已不再生效（Owner 规则）。"""
-
-        from equipeffi.application.services.evaluation_service import EvaluationService
-        from equipeffi.domain.common.models import DeviceDraft
-
-        source = (SRC / "equipeffi" / "application" / "services"
-                  / "evaluation_service.py").read_text(encoding="utf-8")
-        self.assertIn("effective_as_of < effective_date", source)
-        self.assertIn("PUMP_RULE_PROFILES", source)
-
-        legacy = EvaluationService(JsonStandardRepository(SRC))
-        early = legacy.evaluate(DeviceDraft(
-            record_id="QA-DATE", device_type="pump_water",
-            raw_values={"category": "单级单吸清水离心泵", "suction": "单吸",
-                        "stages": "1", "flow_m3h": 100, "head_m": 50,
-                        "rated_speed_rpm": 2900, "pump_efficiency": 90}),
-            as_of="2026-02-28")
-        self.assertEqual(early.evaluation_status, "SUCCESS")
-        self.assertNotIn("标准生效日期",
-                         {item.get("step_type") for item in early.trace})
-
-    #: Golden 相关实现文件中，**具名授权**后方可改动的清单。
-    #: 未列入的文件必须与 base 完全一致。
-    #: 每个被授权的文件都必须仍在 ``evidence_registry.json`` 中保留登记的历史快照
-    #: （历史证据不可变、实现可演进）——这一点由本测试机械校验，不再只是口头约定。
-    AUTHORIZED_FROZEN_CHANGES = {
-        "src/equipeffi/application/services/evaluation_service.py":
-            "Phase 6 R1：关闭入口语义 QA（QA-P5-001 / QA-P3-003）",
-        "src/equipeffi/infrastructure/standards/json_repository.py":
-            "M3-G1（Owner 授权）：标准包 repository 实例级缓存；只缓存 "
-            "read/parse/validate/SHA-256 结果并**保留 deepcopy**，不改变任何业务真值",
-    }
-
-    def test_frozen_implementation_files_are_unchanged_from_base(self):
-        """Golden 相关实现文件只允许**具名授权**的改动，其余必须与 base 完全一致。
-
-        历史意图不变：Golden 相关实现与 Canonical 不得被静默改写。
-        实现可以演进，但必须具名授权，且该文件的历史快照仍登记在
-        ``specs/equipment_efficiency/evidence_registry.json`` 的
-        ``historical_repository_hashes``（历史证据不可变、实现可演进）。
-        """
-
-        import json
-        import subprocess
-
-        frozen = (
-            "src/equipeffi/application/services/input_normalization.py",
-            "src/equipeffi/domain/evaluation/evaluators/pump.py",
-            "src/equipeffi/domain/evaluation/device_evaluators.py",
-            "src/equipeffi/domain/evaluation/decimal_math.py",
-            "src/equipeffi/domain/evaluation/device_types.py",
-            "src/equipeffi/domain/evaluation/evaluator_registry.py",
-            "src/equipeffi/infrastructure/standards/json_repository.py",
-            "src/equipeffi/resources/standards/pump.json",
-        )
-        for args in (["--name-only", "f3e32f84123937ed6caa2b84b7cc0cd04c3100e0", "HEAD"],
-                     ["--name-only"]):
-            completed = subprocess.run(["git", "diff", *args, "--", *frozen],
-                                       cwd=ROOT, capture_output=True, text=True,
-                                       check=False)
-            unexpected = sorted(set(completed.stdout.split())
-                                - set(self.AUTHORIZED_FROZEN_CHANGES))
-            self.assertEqual(unexpected, [], f"受保护实现文件被改动：{unexpected}")
-
-        registry = json.loads((ROOT / "specs" / "equipment_efficiency"
-                               / "evidence_registry.json").read_text(encoding="utf-8"))
-        registered = {str(item.get("artifact_path", "")).replace("\\", "/")
-                      for item in registry["historical_repository_hashes"]}
-        for path, reason in self.AUTHORIZED_FROZEN_CHANGES.items():
-            with self.subTest(authorized_path=path):
-                self.assertIn(path, registered,
-                              f"被授权改动的文件缺少登记的历史快照：{path}（{reason}）")
-
-    def test_evaluation_service_history_is_registered_not_rewritten(self):
-        """历史证据不可变：候选与批准 Golden 均未被改写，只补登记。"""
-
-        import json
-
-        registry = json.loads((ROOT / "specs" / "equipment_efficiency"
-                               / "evidence_registry.json").read_text(encoding="utf-8"))
-        entries = [item for item in registry["historical_repository_hashes"]
-                   if item["artifact_path"].endswith("evaluation_service.py")]
-        self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0]["case_schema_version"], "golden-case-0.3")
-        self.assertEqual(
-            entries[0]["artifact_sha256"],
-            "EEF8731E5A162C81441D83BAC4C493D0F9EA5A0014CEC1E44BF5E82535DEB8ED")
 
 
-class EntrySurfaceParityTests(ProductShellTestCase):
-    """B1：同一 pump_chemical 输入在正式入口与非正式入口必须语义一致。"""
+class FormalPumpServiceTests(ProductShellTestCase):
+    """验证正式离心泵分析服务的支持状态和日期语义。"""
 
     CHEMICAL_VALUES = {
         "category": "单级石油化工离心泵", "suction": "单吸", "stages": "1",
@@ -810,74 +709,33 @@ class EntrySurfaceParityTests(ProductShellTestCase):
         "pump_efficiency": 73,
     }
 
-    def test_shared_application_semantics_match_the_formal_slice(self):
-        from equipeffi.application.services.evaluation_service import EvaluationService
-        from equipeffi.domain.common.models import DeviceDraft
+    def test_formal_service_supports_chemical_profile_and_returns_grade(self):
+        result = self.service.evaluate(_request(CHEMICAL, record_id="R1-PARITY"))
+        self.assertEqual(result.rule_profile, "pump_chemical")
+        self.assertEqual(result.support_status, "SUPPORTED")
+        self.assertIsNotNone(result.grade)
 
-        request = _request(CHEMICAL, record_id="R1-PARITY")
-        formal = self.service.evaluate(request)
-        self.assertEqual(formal.support_status, "SUPPORTED")
+    def test_evaluation_date_is_a_non_blocking_formal_service_notice(self):
+        """生命周期日期只生成提示，不改变正式业务状态或计算能力。"""
 
-        legacy = EvaluationService(JsonStandardRepository(SRC))
-        shared = legacy.evaluate(DeviceDraft(
-            record_id="R1-PARITY", device_type="pump_chemical",
-            raw_values=self.CHEMICAL_VALUES))
-        # 共享 Application/CLI 语义必须与正式纵向切片一致。
-        self.assertEqual(shared.support_status, formal.support_status)
-        self.assertEqual(shared.reference_conclusion or shared.conclusion,
-                         formal.ui_conclusion)
-        self.assertEqual(shared.grade, formal.grade)
+        from dataclasses import replace
+        from datetime import date
 
-    def test_application_api_returns_supported_for_chemical(self):
-        from equipeffi.composition import create_application_api
-
-        api, _contract, _resource = create_application_api(
-            project_root=ROOT, load_template=False)
-        record = api.evaluate({
-            "record_id": "R1-API", "device_type": "centrifugal_pump",
-            "values": self.CHEMICAL_VALUES, "as_of": WATER_AS_OF()})
-        self.assertEqual(record["support_status"], "SUPPORTED")
-        self.assertNotIn("PROFILE_NOT_IN_RELEASE_SCOPE", record.get("issue_codes", []))
-
-    def test_cli_json_entrypoint_returns_supported_for_chemical(self):
-        import json as _json
-        import subprocess
-
-        # 必须显式指定编码：CI 的默认代码页不是 UTF-8，中文结论会触发
-        # UnicodeDecodeError（'charmap' codec）。PYTHONIOENCODING 保证子进程
-        # 以 UTF-8 输出，encoding= 保证父进程以 UTF-8 解码。
-        completed = subprocess.run(
-            [sys.executable, "main.py", "--device-type", "centrifugal_pump",
-             "--json", _json.dumps(self.CHEMICAL_VALUES, ensure_ascii=False),
-             "--as-of", WATER_AS_OF(), "--record-id", "R1-CLI"],
-            cwd=ROOT, capture_output=True, text=True, encoding="utf-8", timeout=180,
-            env={**os.environ, "PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1",
-                 "PYTHONIOENCODING": "utf-8"})
-        self.assertEqual(completed.returncode, 0, completed.stderr[-500:])
-        payload = _json.loads(completed.stdout)
-        self.assertEqual(payload["support_status"], "SUPPORTED")
-
-    def test_evaluation_date_never_blocks_any_entry(self):
-        """评价日期不再是任何入口的业务门禁（Owner 规则）。"""
-
-        from equipeffi.application.services.evaluation_service import EvaluationService
-        from equipeffi.domain.common.models import DeviceDraft
-
-        legacy = EvaluationService(JsonStandardRepository(SRC))
         for as_of in ("2026-02-28", "2026-03-01", "2026-03-02"):
             with self.subTest(as_of=as_of):
-                shared = legacy.evaluate(DeviceDraft(
-                    record_id="R1-DATE", device_type="pump_chemical",
-                    raw_values=self.CHEMICAL_VALUES), as_of=as_of)
-                self.assertEqual(shared.support_status, "SUPPORTED")
-                self.assertTrue(shared.calculated_metrics)
-                self.assertNotIn("标准生效日期",
-                                 {item.get("step_type") for item in shared.trace})
-
-    def test_chemical_longer_blocked_by_profile_range_short_circuit(self):
-        source = (SRC / "equipeffi" / "application" / "services"
-                  / "evaluation_service.py").read_text(encoding="utf-8")
-        self.assertNotIn("PROFILE_NOT_IN_RELEASE_SCOPE", source)
+                request = replace(
+                    _request(CHEMICAL, record_id="R1-DATE"),
+                    as_of=date.fromisoformat(as_of),
+                )
+                result = self.service.evaluate(request)
+                self.assertEqual(result.support_status, "SUPPORTED")
+                self.assertEqual(result.evaluation_status, "SUCCESS")
+                self.assertTrue(result.metrics_by_id)
+                self.assertEqual(result.issue_codes, ())
+                if as_of < "2026-03-01":
+                    self.assertEqual(result.warnings, ("该标准尚未实施",))
+                else:
+                    self.assertEqual(result.warnings, ())
 
     def test_pump_release_gate_is_the_single_source_of_truth(self):
         from equipeffi.application.services import pump_release_gate
@@ -1058,35 +916,22 @@ class R1SecondRoundBlockerTests(ProductShellTestCase):
         self.assertEqual(issue_code_texts(["TOTALLY_UNKNOWN_CODE"]), [])
         self.assertEqual(issue_code_texts(["CATEGORY_UNCERTAIN"]), ["尚未确认产品类别"])
 
-    def test_shared_release_gate_is_actually_used_by_both_paths(self):
-        """内存替换共享策略后，两条路径必须**同步**变化。
-
-        这是"共用单一事实源"的机械证明：如果任一路径仍硬编码，
-        替换后两者就会分叉。
-        """
+    def test_release_gate_controls_formal_support_status(self):
+        """替换唯一发布门禁时，正式服务的 Profile 状态同步改变。"""
 
         from equipeffi.application.services import pump_release_gate as gate
-        from equipeffi.application.services.evaluation_service import EvaluationService
-        from equipeffi.domain.common.models import DeviceDraft
 
-        values = {"category": "单级石油化工离心泵", "suction": "单吸", "stages": "1",
-                  "flow_m3h": 100, "head_m": 14, "rated_speed_rpm": 2900,
-                  "pump_efficiency": 73}
-        legacy = EvaluationService(JsonStandardRepository(SRC))
         original = gate.PUMP_RELEASE_SUPPORT["pump_chemical"]
-
-        def observe():
-            unified = CentrifugalPumpAnalysisService._release_support("pump_chemical")
-            shared = legacy.evaluate(DeviceDraft(
-                record_id="GATE", device_type="pump_chemical",
-                raw_values=values)).support_status
-            return unified, shared
-
+        request = _request(CHEMICAL, record_id="GATE")
         try:
             gate.PUMP_RELEASE_SUPPORT["pump_chemical"] = "SUPPORTED"
-            self.assertEqual(observe(), ("SUPPORTED", "SUPPORTED"))
+            supported = self.service.evaluate(request)
+            self.assertEqual(supported.support_status, "SUPPORTED")
             gate.PUMP_RELEASE_SUPPORT["pump_chemical"] = "NOT_IN_RELEASE_SCOPE"
-            self.assertEqual(observe(), ("NOT_IN_RELEASE_SCOPE", "NOT_IN_RELEASE_SCOPE"))
+            unsupported = self.service.evaluate(request)
+            self.assertEqual(unsupported.support_status, "NOT_IN_RELEASE_SCOPE")
+            self.assertEqual(unsupported.evaluation_status, supported.evaluation_status)
+            self.assertEqual(unsupported.grade, supported.grade)
         finally:
             gate.PUMP_RELEASE_SUPPORT["pump_chemical"] = original
 

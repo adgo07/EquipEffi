@@ -9,8 +9,8 @@
 
 本轮按唯一执行方案 [`docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md`](docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md) 依赖顺序执行三步：
 
-1. 直接退役：删除已授权的旧桌面/适配器实现及专属测试，并精简治理资料。本步正在集成。
-2. 旧链整体退出：按方案移除 Web、Android、旧 API/JSONL/V4 专属链及配套资源与测试。
+1. 直接退役：删除已授权的旧桌面/适配器实现及专属测试，并精简治理资料。本步已提交 [PR #26](https://github.com/adgo07/EquipEffi/pull/26)，等待最终远端检查。
+2. 旧链整体退出：按方案移除 Web、Android、旧 API/JSONL/V4 专属链及配套资源与测试；当前正在实施与集成。
 3. 工程收口：整合仍需字段/断言、CI 与失败基线，完成当前保留功能验证。
 
 集成起点为 `master@332d79c7d999feb4047c920ecb4359655bf9440e`。主会话统筹分步验收；本文件不复制执行日志、测试数字或历史阶段报告。当前机器没有干净 Windows / Sandbox；本机隔离结果不等于干净机器验收，也不构成 Phase 8 独立验收。

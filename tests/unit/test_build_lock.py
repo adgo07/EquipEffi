@@ -16,14 +16,15 @@ class BuildLockTests(unittest.TestCase):
     def test_second_process_is_rejected_without_waiting(self):
         script = """from pathlib import Path
 import sys
-import time
 from tools.build_lock import build_lock
 
 with build_lock(Path(sys.argv[1]), operation='测试构建'):
     print('locked', flush=True)
-    time.sleep(0.8)
+    sys.stdin.read(1)
 """
         env = os.environ.copy()
+        env["PYTHONIOENCODING"] = "utf-8"
+        env["PYTHONUTF8"] = "1"
         env["PYTHONPATH"] = str(ROOT) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "project"
@@ -32,6 +33,7 @@ with build_lock(Path(sys.argv[1]), operation='测试构建'):
                 [sys.executable, "-c", script, str(root)],
                 cwd=str(ROOT),
                 env=env,
+                stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
@@ -46,12 +48,14 @@ with build_lock(Path(sys.argv[1]), operation='测试构建'):
                     capture_output=True,
                     text=True,
                     encoding="utf-8",
-                    timeout=3,
+                    timeout=15,
                 )
                 self.assertNotEqual(second.returncode, 0)
                 self.assertIn("已有测试构建在运行", second.stderr)
             finally:
-                first.wait(timeout=3)
+                if first.stdin is not None:
+                    first.stdin.close()
+                first.wait(timeout=15)
                 if first.stdout is not None:
                     first.stdout.close()
                 if first.stderr is not None:

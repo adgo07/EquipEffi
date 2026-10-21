@@ -1110,10 +1110,7 @@ class CentrifugalPumpAnalysisService:
     def _release_support(rule_profile: str) -> str | None:
         """发布门禁：**委托**给共享单一事实源。
 
-        Phase 6 R1：这里曾经硬编码 `pump_water` / `pump_chemical` → `SUPPORTED`。
-        那使"与遗留 `EvaluationService` 共用同一份门禁策略"只停留在注释里：
-        在内存中替换共享策略后，两条路径会返回不同状态。现在改为直接调用
-        `pump_release_gate.pump_release_support`，使该声明可被机械证明。
+        发布门禁由共享策略集中维护，业务结论仍由泵 Calculator 决定。
 
         策略本体与依据见 `application/services/pump_release_gate.py`。
         """

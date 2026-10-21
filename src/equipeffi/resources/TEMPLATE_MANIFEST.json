@@ -138,15 +138,6 @@
         },
         "measured_by": "tools/measure_v6_capacity.py"
       }
-    },
-    {
-      "template_id": "equipeffi.device-efficiency.V4",
-      "template_version": "V4-20260825",
-      "template_kind": "legacy-multi-device-blank-template",
-      "status": "LEGACY",
-      "filename": "设备能效分析空白模板_重构版V4_20260825.xlsx",
-      "asset_sha256": null,
-      "note": "Phase 8 起不再是正式用户模板；保留 legacy / test 兼容，本阶段不删除其实现。V4 的既有失败见 BASELINE.md，不在本阶段修复。"
     }
   ]
 }

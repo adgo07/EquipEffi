@@ -3,8 +3,11 @@ import json
 from pathlib import Path
 import unittest
 
-from equipeffi.application.services.evaluation_service import EvaluationService
-from equipeffi.domain.common.models import DeviceDraft
+from datetime import date
+from equipeffi.application.services.centrifugal_pump_analysis_service import (
+    CentrifugalPumpAnalysisService, PumpAnalysisRequest,
+)
+from equipeffi.application.result_projection import PUMP_METRIC_IDS
 from equipeffi.infrastructure.standards.json_repository import JsonStandardRepository
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -16,26 +19,36 @@ class ApprovedPumpGoldenTests(unittest.TestCase):
                  for path in sorted((ROOT / "specs/equipment_efficiency/golden/pump_water").glob("*.json"))]
         approved = [case for case in cases if case.get("case_schema_version") == "golden-case-0.4"]
         self.assertEqual(len(approved), 18)
-        service = EvaluationService(JsonStandardRepository(ROOT))
+        service = CentrifugalPumpAnalysisService(JsonStandardRepository(ROOT))
         derived = {"suction_factor": "suction_factor", "stage_count": "stage_count",
-                   "q_for_ns_m3s": "q_for_ns_m3s", "h_for_ns_m": "h_for_ns_m", "ns_raw": "ns_raw",
-                   "eta_b": "基准效率_%", "delta_eta": "效率修正值_%", "eta_0": "规定点效率_%",
-                   "output_power_kw": "输出功率_kW"}
+                   "q_for_ns_m3s": "flow_for_specific_speed", "h_for_ns_m": "head_per_stage",
+                   "ns_raw": "specific_speed", "eta_b": "base_efficiency",
+                   "delta_eta": "efficiency_correction", "eta_0": "specified_efficiency",
+                   "output_power_kw": "output_power"}
         for case in approved:
             with self.subTest(case=case["case_id"]):
                 self.assertEqual(case["approval_status"], "APPROVED")
                 self.assertTrue(case["review_owner"])
-                result = service.evaluate(DeviceDraft(case["case_id"], case["device_type"], case["raw_inputs"]),
-                                          as_of="2026-08-23")
+                raw = case["raw_inputs"]
+                result = service.evaluate(PumpAnalysisRequest(
+                    product_category=raw["product_type"], as_of=date(2026, 8, 23),
+                    QBEP=raw.get("QBEP"), HBEP=raw.get("HBEP"), speed=raw.get("speed"),
+                    efficiency=raw.get("efficiency"), suction=raw.get("suction"),
+                    stages=raw.get("stages"), record_id=case["case_id"],
+                ))
                 expected = case["expected_result"]
-                for field in ("support_status", "category_status", "evaluation_status", "grade", "issue_codes"):
+                for field in ("category_status", "evaluation_status", "grade"):
                     self.assertEqual(getattr(result, field), expected[field], field)
-                self.assertEqual(result.conclusion.value, expected["ui_conclusion"])
+                # 正式服务对没有选中规则Profile的类别级结论不声明发布支持；
+                # Golden保留旧入口的历史支持字段，业务真值与中间量仍逐项精确比较。
+                self.assertEqual(result.support_status,
+                                 expected["support_status"] if result.rule_profile else None)
+                self.assertEqual(list(result.issue_codes), expected["issue_codes"])
+                self.assertEqual(result.ui_conclusion, expected["ui_conclusion"])
                 trace = case["expected_calculation_trace"]
                 for key, metric in derived.items():
-                    value = result.calculated_metrics.get(metric)
-                    self.assertEqual(None if value is None else str(value), trace["derived"][key], key)
-                lookup = result.lookups[0] if result.lookups else {}
-                self.assertEqual(lookup.get("data_id"), trace["matched_rule_id"])
-                self.assertEqual([str(value) for value in result.calculated_metrics.get("grade_thresholds_internal", [])],
+                    value = result.metrics_by_id.get(PUMP_METRIC_IDS[metric])
+                    self.assertEqual(None if value is None else value.value, trace["derived"][key], key)
+                self.assertEqual(result.matched_rule_id, trace["matched_rule_id"])
+                self.assertEqual(result.calculation_trace.get("thresholds_internal", []),
                                  trace["grade_thresholds_internal"])

@@ -15,8 +15,6 @@ from zipfile import BadZipFile, ZipFile
 from .ooxml_reader import OOXMLReadError, OOXMLWorkbook
 
 
-DEFAULT_V4_TEMPLATE = "设备能效分析空白模板_重构版V4_20260825.xlsx"
-
 MANIFEST_FILENAME = "TEMPLATE_MANIFEST.json"
 
 
@@ -163,30 +161,8 @@ def pump_header_issues(header: list[Any], contract: dict[str, Any] | None = None
             expected = expected_label + (f" ({expected_unit})" if expected_unit else "")
             issues.append(f"{column} 列期望「{expected}」，实际为「{actual}」")
     return tuple(issues)
-REQUIRED_V4_SHEETS: tuple[str, ...] = (
-    "注意事项",
-    "模板说明",
-    "配置",
-    "变压器",
-    "电动机",
-    "空压机",
-    "离心泵",
-    "离心通风机",
-    "轴流通风机",
-    "鼓风机",
-    "潜水电泵",
-    "工业锅炉",
-    "热处理设备",
-    "热泵和冷水机组",
-    "热泵热水机",
-    "风管送风式空调",
-    "单元式空调",
-    "多联式空调",
-)
-
-
 class TemplateResourceError(ValueError):
-    """模板资源不存在、损坏或结构不符合V4契约。"""
+    """模板资源不存在、损坏或结构不符合模板契约。"""
 
 
 @dataclass(frozen=True)
@@ -359,13 +335,11 @@ def _resolve_v6_identity_from_names(
     return entry, "declared", tuple(issues)
 
 
-class V4TemplateResource:
-    """内置V4空白模板资源管理器。
+class V6TemplateResource:
+    """正式 V6 统一模板资源（Windows V1 的正式用户模板）。"""
 
-    只复制模板，不在源文件上写入；Excel读取/回写由后续适配器负责。
-    """
-
-    def __init__(self, resource_dir: Path | None = None, *, template_name: str = DEFAULT_V4_TEMPLATE):
+    def __init__(self, resource_dir: Path | None = None,
+                 *, template_name: str = DEFAULT_V6_TEMPLATE):
         self._temporary_resource_dir: tempfile.TemporaryDirectory[str] | None = None
         if resource_dir is not None:
             self.resource_dir = Path(resource_dir)
@@ -379,14 +353,12 @@ class V4TemplateResource:
             self.template_path = filesystem_path
             return
 
-        # A wheel can be imported directly from a zip path (and some mobile
-        # bridges use the same resource loader).  ``Path(__file__)`` is then
-        # not a real filesystem path, so materialize only this small template
-        # into a managed temporary directory.
         try:
-            bundled = resources.files("equipeffi").joinpath("resources", "templates", template_name)
+            bundled = resources.files("equipeffi").joinpath(
+                "resources", "templates", template_name)
             if bundled.is_file():
-                self._temporary_resource_dir = tempfile.TemporaryDirectory(prefix="equipeffi-template-")
+                self._temporary_resource_dir = tempfile.TemporaryDirectory(
+                    prefix="equipeffi-template-")
                 self.resource_dir = Path(self._temporary_resource_dir.name)
                 self.template_path = self.resource_dir / template_name
                 self.template_path.write_bytes(bundled.read_bytes())
@@ -398,43 +370,12 @@ class V4TemplateResource:
 
     def fingerprint(self) -> str:
         if not self.template_path.is_file():
-            raise TemplateResourceError(f"内置V4模板不存在：{self.template_path}")
+            raise TemplateResourceError(f"内置V6模板不存在：{self.template_path}")
         digest = sha256()
         with self.template_path.open("rb") as source:
             for chunk in iter(lambda: source.read(1024 * 1024), b""):
                 digest.update(chunk)
         return digest.hexdigest()
-
-    def validate(self, path: Path | None = None) -> TemplateValidationResult:
-        candidate = path or self.template_path
-        sheet_names = _workbook_sheet_names(candidate)
-        missing = tuple(sheet for sheet in REQUIRED_V4_SHEETS if sheet not in sheet_names)
-        digest = sha256(candidate.read_bytes()).hexdigest()
-        valid = not missing
-        message = "V4模板结构检查通过" if valid else f"缺少V4工作表：{'、'.join(missing)}"
-        return TemplateValidationResult(str(candidate), digest, sheet_names, missing, valid, message)
-
-    def download_to(self, destination: Path) -> Path:
-        source = self.template_path.resolve()
-        target = destination.resolve()
-        if source == target:
-            raise TemplateResourceError("下载目标不能覆盖内置V4模板")
-        if not source.is_file():
-            raise TemplateResourceError(f"内置V4模板不存在：{source}")
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source, target)
-        return target
-
-
-class V6TemplateResource(V4TemplateResource):
-    """正式 V6 统一模板资源（Phase 8 起 Windows V1 的正式用户模板）。
-
-    复用 V4 的资源定位与"只复制、不写源文件"语义，只替换模板身份与结构契约。
-    """
-
-    def __init__(self, resource_dir: Path | None = None,
-                 *, template_name: str = DEFAULT_V6_TEMPLATE):
-        super().__init__(resource_dir, template_name=template_name)
 
     @property
     def identity(self) -> dict[str, str]:

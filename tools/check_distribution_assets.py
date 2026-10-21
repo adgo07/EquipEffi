@@ -26,7 +26,6 @@ CORE_RUNTIME_ASSETS = frozenset(
         "standard_manifest.json",
         "resources/TEMPLATE_MANIFEST.json",
         "resources/standards/pump.json",
-        "resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx",
         "resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
     }
 )

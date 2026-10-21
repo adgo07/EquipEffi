@@ -6,10 +6,9 @@ from decimal import Decimal
 import json
 from unittest.mock import patch
 
-from equipeffi.application.services.evaluation_service import EvaluationService
 from equipeffi.domain.common.enums import Conclusion
-from equipeffi.domain.common.models import DeviceDraft
 from equipeffi.domain.evaluation.device_specs import list_device_specs
+from equipeffi.domain.evaluation.evaluator_registry import EVALUATOR_FACTORIES
 from equipeffi.domain.evaluation.device_evaluators import BlowerEvaluator, ChemicalPumpEvaluator, HeatTreatmentEvaluator, HvacEvaluator, MotorEvaluator, PmsmEvaluator, _interval_hit
 from equipeffi.infrastructure.standards.json_repository import JsonStandardRepository
 
@@ -20,18 +19,18 @@ ROOT = Path(__file__).resolve().parents[2]
 class DeviceEvaluatorMatrixTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.service = EvaluationService(JsonStandardRepository(ROOT))
+        cls.standards = JsonStandardRepository(ROOT)
         cls.specs = list_device_specs()
 
     def evaluate(self, device_type: str, values: dict):
-        # pump_chemical is in V1 target scope but remains gated from public
-        # release; legacy formula regressions exercise its profile evaluator
-        # directly. The public NOT_IN_RELEASE_SCOPE gate is tested separately.
-        if device_type == "pump_chemical":
-            return ChemicalPumpEvaluator().evaluate(values, self.service.standards.get_pack("pump_chemical"))
-        return self.service.evaluate(
-            DeviceDraft(record_id=f"TEST-{device_type}", device_type=device_type, raw_values=values)
-        )
+        # Candidate formulas and boundaries run directly against their domain Calculator.
+        inputs = {"record_id": f"TEST-{device_type}", **values}
+        if device_type == "submersible" and inputs.get("subtype") == "QDX":
+            # The old candidate example used a short alias; calculators consume
+            # the standard row label directly after adapter normalization.
+            inputs["subtype"] = "QDX和QD"
+        return EVALUATOR_FACTORIES[device_type]().evaluate(
+            inputs, self.standards.get_pack(device_type))
 
     def test_all_17_examples_return_structured_result(self):
         expected = {
@@ -1696,31 +1695,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(result.lookups[0]["match_status"], "标准行未命中")
         self.assertNotIn("电加热锅炉能效限定值_%", result.calculated_metrics)
 
-    def test_v4_electric_boiler_category_is_split_without_fuel_heat_fields(self):
-        from equipeffi.application.services.evaluation_facade import EvaluationFacade
 
-        result = EvaluationFacade(EvaluationService(JsonStandardRepository(ROOT))).evaluate_v4(
-            "V4-BOILER-E", "工业锅炉", {
-                "device_name": "电锅炉", "model": "EB-1", "quantity": 1,
-                "category": "电锅炉", "fuel": "电力", "thermal_power": 1,
-                "design_efficiency": 97, "photo": "photo",
-            },
-        )
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_3)
-        self.assertEqual(result.standard_reference["clause"], "5.2")
-
-    def test_v4_non_condensing_boiler_category_sets_non_condensing_class(self):
-        from equipeffi.application.services.evaluation_facade import EvaluationFacade
-
-        result = EvaluationFacade(EvaluationService(JsonStandardRepository(ROOT))).evaluate_v4(
-            "V4-BOILER-NC", "工业锅炉", {
-                "category": "室燃燃烧锅炉（无冷凝）", "fuel": "天然气",
-                "thermal_power": 1, "design_efficiency": 95,
-            },
-        )
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_2)
-        normalized = next(item for item in result.trace if item.get("step_type") == "输入规范化")
-        self.assertTrue(any(change.get("target_field") == "condensing" and change.get("value") == "非冷凝" for change in normalized["changes"]))
 
     def test_invalid_numeric_text_is_reported_as_unable(self):
         values = dict(self.specs["pump_water"]["example"], flow_m3h="不是数字")
@@ -3403,23 +3378,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
         self.assertIn("轮毂比", result.missing_fields)
 
-    def test_heat_treatment_selects_power_or_temperature_specification_from_v4_fields(self):
-        result = self.evaluate("heat_treatment", {
-            "category": "箱式多用炉",
-            "energy_type": "电炉",
-            "rated_power_kw": 60,
-            "rated_temperature_c": 800,
-            "equivalent_weight_t": 1,
-            "total_electricity_kwh": 600,
-        })
-        self.assertEqual(result.conclusion, Conclusion.SECOND_CLASS)
-        self.assertEqual(result.standard_reference["table"], "表8")
-        self.assertEqual(result.lookups[0]["source_page"], 11)
-        self.assertEqual(result.lookups[0]["data_id"], "GB36561-R000006")
-        self.assertEqual(result.lookups[0]["source_clause"], "表8")
-        self.assertEqual(result.lookups[0]["inputs"]["equivalent_weight_t"], "1")
-        self.assertEqual(result.lookups[0]["thresholds"], ["480", "630", "760"])
-        self.assertTrue(result.lookups[0]["specification"])
 
     def test_heat_treatment_normal_lookup_preserves_query_context(self):
         """热处理设备正常计算记录应保留能源、能耗和炉型条件。"""
@@ -3774,22 +3732,18 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
 
         # 标准包若出现重叠区间，不能任取一个α；但两个候选查表行仍需留在轨迹中。
         from copy import deepcopy
-        ambiguous_pack = deepcopy(self.service.standards.get_pack("heat_treatment"))
+        ambiguous_pack = deepcopy(self.standards.get_pack("heat_treatment"))
         ambiguous_pack["fuel_coefficients"] = [
             {"fuel": "天然气", "alpha": 1.1, "condition": "30000～40000 kJ/m³", "source_page": 12},
             {"fuel": "天然气", "alpha": 1.2, "condition": "34000～42000 kJ/m³", "source_page": 12},
         ]
-        ambiguous_service = EvaluationService(self.service.standards)
         ambiguous_service._pack_cache["heat_treatment"] = ambiguous_pack
-        ambiguous = ambiguous_service.evaluate(DeviceDraft(
-            record_id="TEST-heat-treatment-ambiguous-fuel",
-            device_type="heat_treatment",
-            raw_values={
-                "category": "辊底炉", "energy_type": "天然气",
-                "equivalent_weight_t": 1, "fuel_consumption": 100,
-                "fuel_calorific_value_kjkg": 35000,
-            },
-        ))
+        ambiguous = EVALUATOR_FACTORIES["heat_treatment"]().evaluate({
+            "record_id": "TEST-heat-treatment-ambiguous-fuel",
+            "category": "辊底炉", "energy_type": "天然气",
+            "equivalent_weight_t": 1, "fuel_consumption": 100,
+            "fuel_calorific_value_kjkg": 35000,
+        }, ambiguous_pack)
         self.assertEqual(ambiguous.conclusion, Conclusion.UNABLE_TO_JUDGE)
         self.assertEqual([item["match_status"] for item in ambiguous.lookups], ["多重命中", "多重命中"])
         ambiguous_standard = next(step for step in ambiguous.trace if step.get("step_type") == "标准查询结果")
@@ -3812,50 +3766,8 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
         self.assertIn("总耗电量", result.missing_fields)
 
-    def test_v4_transformer_field_ids_are_accepted_and_traced(self):
-        canonical = self.specs["transformer"]["example"]
-        v4 = {
-            "model": canonical["model"],
-            "category": canonical["category"],
-            "rated_capacity": canonical["capacity_kva"],
-            "core_material": canonical["core_material"],
-            "connection": canonical["connection"],
-            "no_load_loss": canonical["no_load_loss_w"],
-            "load_loss": canonical["load_loss_w"],
-        }
-        result = self.evaluate("transformer", v4)
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
-        changes = result.trace[0]["changes"]
-        self.assertTrue(any(item.get("target_field") == "capacity_kva" for item in changes))
 
-    def test_v4_transformer_not_applicable_discriminators_match_blank_standard_cells(self):
-        result = self.evaluate("transformer", {
-            "category": "35kV油浸式三相双绕组无励磁调压电力变压器",
-            "rated_capacity": 3150,
-            "core_material": "不适用",
-            "insulation": "不适用",
-            "connection": "不适用",
-            "no_load_loss": 1700,
-            "load_loss": 21000,
-        })
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
-        changes = result.trace[0]["changes"]
-        self.assertTrue(any(item.get("field") == "connection" and item.get("value") == "" for item in changes))
 
-    def test_v4_high_voltage_motor_selects_table_from_voltage_and_cooling(self):
-        result = self.evaluate("motor_hv", {
-            "category": "卧式电动机",
-            "rated_voltage": 6,
-            "cooling": "IC01",
-            "rated_power": 200,
-            "poles": 2,
-            "rated_speed": 2980,
-            "rated_efficiency": 94,
-        })
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
-        self.assertEqual(result.standard_reference["table"][:2], "表1")
-        voltage_change = next(item for item in result.trace[0]["changes"] if item.get("target_field") == "rated_voltage_v")
-        self.assertEqual(voltage_change["value"], 6000)
 
     def test_high_voltage_motor_10kv_routes_to_table2_without_nearest_table_fallback(self):
         """GB 30254-2024的10 kV+IC01离散组应命中表2，而非复用表1。"""
@@ -4190,18 +4102,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
         self.assertEqual(len(standard_step["data_ids"]), 204)
 
-    def test_v4_pmsm_fields_select_pdf_voltage_and_cooling_groups(self):
-        result = self.evaluate("motor_pmsm", {
-            "category": "变频调速永磁同步电动机",
-            "rated_voltage": 380,
-            "cooling": "不适用",
-            "rated_power": 5.5,
-            "poles": 4,
-            "rated_speed": 1500,
-            "rated_efficiency": 94,
-            "efficiency_90_speed": 94,
-        })
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
 
     def test_pmsm_unitless_kv_voltage_selects_medium_voltage_tables(self):
         result = self.evaluate("motor_pmsm", {
@@ -4591,44 +4491,8 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
         self.assertEqual(standard_step["clause"], result.standard_reference["table"])
 
-    def test_v4_pump_fields_and_full_category_are_accepted(self):
-        result = self.evaluate("pump_water", {
-            "category": "单级双吸清水离心泵",
-            "suction": "双吸",
-            "flow": 100,
-            "head": 50,
-            "speed": 2900,
-            "power": 20,
-            "stages": 1,
-            "efficiency": 80,
-        })
-        self.assertIn(result.conclusion, {Conclusion.LEVEL_1, Conclusion.LEVEL_2, Conclusion.LEVEL_3, Conclusion.NOT_COMPLIANT})
-        self.assertEqual(result.calculated_metrics["计算流量_m3/h"], 50)
 
-    def test_v4_boiler_fields_and_roman_fuel_class_are_accepted(self):
-        result = self.evaluate("boiler", {
-            "category": "蒸汽锅炉",
-            "combustion": "层状燃烧",
-            "fuel": "烟煤",
-            "fuel_class": "II类",
-            "condensing": "否",
-            "evaporation": 10,
-            "lhv": 19000,
-            "vdaf": 25,
-            "design_efficiency": 90,
-        })
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
 
-    def test_v4_heat_pump_water_heater_combines_small_capacity_methods(self):
-        result = self.evaluate("heat_pump_water_heater", {
-            "category": "普通型",
-            "heating_method": "一次加热式",
-            "with_pump": "否",
-            "heating_capacity": 5,
-            "rated_power": 1.2,
-            "cop": 4.6,
-        })
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
 
     def test_heat_pump_water_heater_ten_kw_boundary_and_five_level_equality(self):
         """10 kW进入标准的另一容量档，等于5级阈值仍应判为5级。"""
@@ -4716,19 +4580,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(lookup["match_status"], "设计指标数值非正")
         self.assertEqual(lookup["capacity_band"], "heating_capacity_kw>=10")
 
-    def test_v4_duct_ac_converts_kw_and_dynamic_metric(self):
-        result = self.evaluate("duct_ac", {
-            "category": "风管送风式空调（热泵）机组",
-            "cooling": "风冷式",
-            "mode": "单冷型",
-            "enthalpy": "不适用",
-            "cooling_capacity": 5,
-            "rated_power": 1.2,
-            "indicator_name": "SEER",
-            "indicator_value": 4.2,
-        })
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
-        self.assertEqual(str(result.actual_metrics["SEER"]), "4.2")
 
     def test_duct_ac_open_capacity_lower_bound_is_preserved(self):
         """GB 37479表1中7100 W以上档位的下限为开区间。"""
@@ -4827,17 +4678,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(str(result.lookups[0]["provided_metric_value"]), "4.2")
         self.assertEqual(str(result.actual_metrics["EER"]), "4.2")
 
-    def test_v4_unitary_ac_combines_cooling_and_category(self):
-        result = self.evaluate("unitary_ac", {
-            "category": "普通单元式空调机",
-            "cooling": "风冷式",
-            "mode": "单冷型",
-            "cooling_capacity": 10,
-            "rated_power": 2,
-            "indicator_name": "SEER",
-            "indicator_value": 4.5,
-        })
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
 
     def test_unitary_ac_full_category_and_cooling_conflict_keeps_candidates(self):
         """完整类别与冷却方式冲突时不能静默套用错误标准行。"""
@@ -5295,23 +5135,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertFalse(above_lookup["capacity_boundary"]["min_inclusive"])
         self.assertEqual(above_lookup["thresholds"], [3.4, 3.0, 2.6])
 
-    def test_v4_multi_split_ac_maps_three_dynamic_metrics(self):
-        result = self.evaluate("multi_split_ac", {
-            "category": "风冷式单冷型多联机",
-            "cooling_capacity": 10,
-            "rated_power": 2,
-            "external_static": 0,
-            "indicator1_name": "SEER",
-            "indicator1_value": 5.5,
-            "indicator2_name": "EERmin",
-            "indicator2_value": 2.1,
-        })
-        # 表1中EERmin按等级分别为3.60/2.90/2.10；EERmin=2.10时只能达到3级。
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_3)
-        self.assertTrue(any(item.get("metric") == "EERmin" for item in result.comparisons))
-        self.assertEqual(result.limits["1级EERmin"], 3.6)
-        self.assertEqual(result.limits["2级EERmin"], 2.9)
-        self.assertEqual(result.limits["3级EERmin"], 2.1)
 
     def test_multi_split_ac_auxiliary_indicator_name_mismatch_is_not_treated_as_missing_only(self):
         """编号辅助指标填错名称时，应保留该输入并明确指出通道不匹配。"""
@@ -5429,34 +5252,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             if item.get("metric") in {"COP(-12℃)", "COP(-20℃)"}
         ))
 
-    def test_v4_multi_split_low_temperature_fields_map_and_equal_thresholds_pass(self):
-        """V4字段在表4等阈值场景下保留换算、查表和固定门槛轨迹。"""
-        result = self.evaluate("multi_split_ac", {
-            "category": "低温多联机",
-            "heating_capacity": 10,
-            "rated_power": 2,
-            "external_static": 0,
-            "primary_metric_value": 3.4,
-            "cop_minus12_value": 2.2,
-            "cop_minus20_value": 1.8,
-        })
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
-        self.assertEqual(result.missing_fields, [])
-        self.assertEqual(result.actual_metrics["HSPF"], Decimal("3.4"))
-        self.assertEqual(result.actual_metrics["COP(-12℃)"], Decimal("2.2"))
-        self.assertEqual(result.actual_metrics["COP(-20℃)"], Decimal("1.8"))
-        self.assertEqual(result.calculated_metrics["容量分档"], "heating_capacity_w<=18000")
-        self.assertEqual(result.lookups[0]["data_id"], "GB21454-T4-01")
-        self.assertEqual(result.lookups[0]["source_page"], "PDF第5页")
-        self.assertEqual(result.lookups[0]["comparison_channels"], ["HSPF", "COP(-12℃)", "COP(-20℃)"])
-        self.assertEqual(result.lookups[0]["fixed_gate_thresholds"]["COP(-12℃)"], [2.2, 2.2, 2.2])
-        self.assertEqual(result.lookups[0]["fixed_gate_thresholds"]["COP(-20℃)"], [1.8, 1.8, 1.8])
-        normalization = next(item for item in result.trace if item.get("step_type") == "输入规范化")
-        conversion = next(item for item in normalization["changes"] if item.get("source_field") == "heating_capacity")
-        self.assertEqual(conversion["source_unit"], "kW")
-        self.assertEqual(conversion["target_unit"], "W")
-        self.assertEqual(conversion["value"], Decimal("10000"))
-        self.assertTrue(all(item.get("passed") is True for item in result.comparisons))
 
     def test_multi_split_positive_static_pressure_requires_standard_correction(self):
         base = {
@@ -5599,39 +5394,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertTrue(result.standard_reference["clause"])
         self.assertTrue(any(item.get("step_type") == "标准查询结果" for item in result.trace))
 
-    def test_heat_pump_chiller_v4_auxiliary_metrics_feed_fixed_gates(self):
-        pack = {
-            "status": "active",
-            "devices": {
-                "heat_pump_chiller": {
-                    "records": [{
-                        "data_id": "TEST-GB19577",
-                        "table": "表3",
-                        "conditions": {"product_standard": "GB/T25127.2", "unit_type": "地板采暖型"},
-                        "range_metric": "heating_capacity_kw",
-                        "max": 35,
-                        "metric_field": "hspf",
-                        "metric_name": "HSPF",
-                        "thresholds": [3.6, 3.2, 2.8],
-                        "fixed_gates": [
-                            {"field": "cop_dh", "name": "COPdh", "threshold": 2.0},
-                            {"field": "cop_h", "name": "COPh", "threshold": 2.3},
-                        ],
-                    }]
-                }
-            },
-        }
-        result = HvacEvaluator("heat_pump_chiller").evaluate({
-            "record_id": "TEST-GB19577",
-            "product_standard": "GB/T25127.2",
-            "unit_type": "地板采暖型",
-            "heating_capacity_kw": 20,
-            "primary_metric_value": 4.0,
-            "aux_metric1_value": 2.1,
-            "aux_metric2_value": 2.4,
-        }, pack)
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
-        self.assertEqual({item["metric"] for item in result.comparisons[-6:]}, {"COPdh", "COPh"})
 
     def test_heat_pump_chiller_normal_lookup_preserves_query_context(self):
         """热泵和冷水机组正常查表应保留产品条件和容量查询轴。"""

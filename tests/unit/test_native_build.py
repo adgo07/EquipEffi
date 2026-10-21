@@ -1,11 +1,16 @@
 from __future__ import annotations
 
+from contextlib import nullcontext, redirect_stdout
+import io
+import json
 from pathlib import Path
 import tempfile
 import unittest
 import zipfile
+from types import SimpleNamespace
+from unittest.mock import patch
 
-from tools.build_native import build_native_command, package_native
+from tools.build_native import build_native, build_native_command, main, package_native
 from tools.check_distribution_assets import runtime_asset_paths
 
 
@@ -13,6 +18,81 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class NativeBuildTests(unittest.TestCase):
+    def test_native_status_smoke_uses_utf8_for_child_and_json_decode(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            executable = root / "dist" / "equipeffi" / "equipeffi.exe"
+            status_payload = {
+                "ready": True,
+                "desktop": {"surface": "PySide6 Qt", "available": True},
+                "template": {"template_id": "V6测试模板", "available": True},
+                "pump_profiles": {"pump_water": {}, "pump_chemical": {}},
+            }
+
+            def fake_run(command, **kwargs):
+                if command == ["fake-pyinstaller"]:
+                    executable.parent.mkdir(parents=True)
+                    executable.write_bytes(b"native executable")
+                    return SimpleNamespace(returncode=0)
+                self.assertEqual(command, [str(executable), "--status"])
+                self.assertTrue(kwargs["text"])
+                self.assertEqual(kwargs["encoding"], "utf-8")
+                self.assertEqual(kwargs["env"]["PYTHONIOENCODING"], "utf-8")
+                return SimpleNamespace(
+                    returncode=0,
+                    stdout=json.dumps(status_payload, ensure_ascii=False),
+                    stderr="",
+                )
+
+            with (
+                patch("tools.build_native.build_native_command", return_value=(["fake-pyinstaller"], executable)),
+                patch("tools.build_native.build_lock", return_value=nullcontext()),
+                patch("tools.build_native.audit_artifact", return_value=SimpleNamespace(is_valid=True, errors=[])),
+                patch("tools.build_native.subprocess.run", side_effect=fake_run),
+            ):
+                result = build_native(root, tool="fake-pyinstaller")
+
+        self.assertTrue(result["status_ready"])
+        self.assertTrue(result["qt_environment"]["template_available"])
+
+    def test_main_fails_and_preserves_report_without_zip_when_status_is_not_ready(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            zip_path = root / "native.zip"
+            report_path = root / "native-report.json"
+            failed_result = {
+                "executable": str(root / "equipeffi.exe"),
+                "status_ready": False,
+                "status_smoke_error": "QtWidgets 加载失败",
+            }
+            stdout = io.StringIO()
+            with (
+                patch("tools.build_native.build_native", return_value=failed_result),
+                patch("tools.build_native.package_native") as package_mock,
+                redirect_stdout(stdout),
+            ):
+                exit_code = main(
+                    [
+                        "--root",
+                        str(root),
+                        "--output-dir",
+                        str(root / "build"),
+                        "--zip-output",
+                        str(zip_path),
+                        "--report",
+                        str(report_path),
+                    ]
+                )
+
+            self.assertEqual(exit_code, 1)
+            package_mock.assert_not_called()
+            self.assertFalse(zip_path.exists())
+            output_payload = json.loads(stdout.getvalue())
+            report_payload = json.loads(report_path.read_text(encoding="utf-8"))
+            self.assertEqual(output_payload["status_smoke_error"], "QtWidgets 加载失败")
+            self.assertIn("未生成 native ZIP", output_payload["package_error"])
+            self.assertEqual(report_payload, output_payload)
+
     def test_windows_command_adds_only_declared_runtime_resources(self):
         with tempfile.TemporaryDirectory() as tmp:
             command, executable = build_native_command(

@@ -30,10 +30,29 @@ class ZipappTests(unittest.TestCase):
                 cwd=tmp,
                 capture_output=True,
                 text=True,
-                check=True,
+                check=False,
             )
-            self.assertIn('"public_device_type_count": 15', completed.stdout)
-            self.assertIn('"entry_count": 124', completed.stdout)
+            payload = __import__("json").loads(completed.stdout)
+            # .pyz uses the host's installed desktop extra; native-package Qt
+            # validation is performed separately against the built executable.
+            self.assertEqual(payload["desktop"]["surface"], "PySide6 Qt")
+            self.assertTrue(payload["desktop"]["available"])
+            self.assertIn("template_id", payload["template"])
+            self.assertIn("template_version", payload["template"])
+            self.assertEqual(set(payload["pump_profiles"]), {"pump_water", "pump_chemical"})
+            self.assertTrue(all(
+                profile["available"] and profile["support_status"] == "SUPPORTED"
+                and profile["pack_id"]
+                for profile in payload["pump_profiles"].values()
+            ))
+            expected_ready = (
+                payload["desktop"]["available"]
+                and payload["template"]["available"]
+                and all(profile["available"] for profile in payload["pump_profiles"].values())
+            )
+            self.assertTrue(expected_ready)
+            self.assertEqual(payload["ready"], expected_ready)
+            self.assertEqual(completed.returncode, 0 if expected_ready else 1)
 
     def test_zipapp_is_byte_stable(self):
         with tempfile.TemporaryDirectory() as tmp:

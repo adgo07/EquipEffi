@@ -64,8 +64,8 @@ if ($CreateShortcut) {
     $shortcut = $shell.CreateShortcut($shortcutPath)
     $shortcut.TargetPath = $installed
     $shortcut.WorkingDirectory = $target
-    $shortcut.Arguments = "--gui"
-    $shortcut.Description = "EquipEffi设备能效分析（Tk不可用时自动回退Web窗口）"
+    $shortcut.Arguments = "--qt"
+    $shortcut.Description = "EquipEffi PySide6 Qt设备能效分析"
     $shortcut.Save()
 }
 
@@ -74,5 +74,5 @@ if ($LASTEXITCODE -ne 0) {
     throw "安装后状态检查失败，退出码：$LASTEXITCODE"
 }
 Write-Output "EquipEffi Windows原生包已安装到：$target"
-Write-Output "启动：$installed --gui"
+Write-Output "启动：$installed --qt"
 Write-Output $statusText.Trim()

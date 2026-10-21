@@ -1,41 +1,19 @@
-# GitHub 发布目录说明
+# 仓库与交付内容边界
 
-本仓库的运行时唯一入口是 `src/equipeffi/`。提交或上传 GitHub 时，按下面的边界整理：
+运行代码位于 `src/equipeffi/`。正式用户入口是 PySide6 Qt，批量输入/输出使用 V6 全设备工作簿；当前接通离心泵 Sheet。产品范围见 `V1_SCOPE.md`。
 
-## 应提交
+## 仓内保留
 
-- `src/equipeffi/`：领域评价、应用服务、接口、展示层、已复核标准 JSON、淘汰目录和 V4 模板；
-- `tests/`：单元、契约和集成测试；`tests/samples/` 为本机样例，已忽略；
-- `tools/`：标准数据审计、发布审计和开发辅助脚本；需要外部 PDF/DOCX 时通过命令行参数提供路径；
-- `docs/`、`HANDOFF.md`、`HANDOFF_20260831.md`、`MIGRATION_INVENTORY_20260831.md`：规则、来源、架构和交接记录；
-- `android/`、`scripts/`：跨平台桥接和启动脚本；
-- 根目录 `main.py`、`pyproject.toml`、`.gitignore`、`README.md`。
+- `src/equipeffi/`：领域计算、正式应用服务、Qt、Excel 与持久化适配器、标准资源及正式模板。
+- `tests/`：保留功能的单元、契约与集成测试。旧表面退役时一并退出其专属测试，有价值的业务断言迁入保留链路。
+- `tools/`、`scripts/`：现行标准核验、构建与启动工具；原始 PDF/DOCX 通过外部路径提供。
+- `docs/standards/`、`specs/`：标准映射、解释、批准真值和必要证据。开发资料不等于随包发布资料。
+- `README.md`、`AGENTS.md`、`TASK_STATE.md`、`V1_SCOPE.md`、`QA_BACKLOG.md`：分别承载使用、长期规则、当前任务、产品范围和开放问题；不重复保留交接流水。
 
-## 不应提交
+## 交付与本地文件
 
-- `outputs/`、`tmp/`、`_codex/`、构建目录和 Python 缓存；
-- 根目录 `standards/`、`standards2/`、`template/`：这些是本机原始/校对/旧模板工作区，不是运行时数据源；
-- 旧 `core/`、`devices/`、`gui/`、`config.py`、`build.py` 和依赖旧架构的测试入口；
-- 旧 `motor_pmsm.json`、粗校对/清洗版 PMSM Excel、`~$` 临时文件和由它们生成的历史结果。
+运行包只纳入打包清单明确列出的代码与资源。标准原始 PDF/DOCX、人工校对册、开发映射、测试与过程文档不得因整目录复制进入软件。正式 V6 模板、清单及版本身份须成套检查；其他设备专业候选资源的保留不代表其已获正式支持。
 
-## 标准数据边界
+`outputs/`、`artifacts/`、临时目录、构建环境、缓存与用户数据不提交。原始输入、用户工作簿和正式记录不覆盖、不因代码清理删除。
 
-运行时只读取 `src/equipeffi/standard_manifest.json` 显式列出的资源。永磁同步电机只允许
-`gb30253_2024_pdf_verified_v1.json`；第一至第四批淘汰目录和产业目录受控子集分别位于
-`resources/elimination_catalog_batches_1_4.json`、`resources/elimination_catalog_industry_2024.json`。
-原始标准 PDF、四批 DOCX 和人工校对工作簿保留在项目外部或 `outputs/`，不复制进运行时目录。
-
-## Git 操作
-
-整理完成后只从一个命名分支提交，并在提交前检查：
-
-```powershell
-git status --short
-git diff --cached --name-status
-$env:PYTHONPATH = "src"
-python -m compileall -q src
-python -m unittest discover -s tests -p 'test_*.py'
-```
-
-不要使用 `git reset --hard`、`git checkout -- .` 或 `git clean -fd`；如果发现两套工作树，
-先保存差异，再决定合并或丢弃。
+提交前检查 `git status --short`、已暂存差异及适用测试。只提交本任务明确修改，不以清理仓库为由丢弃其他工作区的未提交内容。

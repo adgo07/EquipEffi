@@ -28,6 +28,6 @@ if (-not (Test-Path -LiteralPath (Join-Path $venv "Scripts\python.exe"))) {
 $python = Join-Path $venv "Scripts\python.exe"
 & $python -m pip install --no-deps --no-index --upgrade $wheel
 
-Write-Output "EquipEffi已安装到：$target"
-Write-Output "启动窗口：$python -m equipeffi --gui"
-Write-Output "命令行：$python -m equipeffi --list-device-types"
+Write-Output "EquipEffi headless核心已安装到：$target"
+Write-Output "环境诊断：$python -m equipeffi --status"
+Write-Output "正式Qt桌面需安装desktop extra：$python -m pip install 'equipeffi[desktop]'"

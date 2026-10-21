@@ -5,7 +5,6 @@ import ast
 from importlib.util import resolve_name
 import unittest
 
-from equipeffi.application.services.v4_template_contract import V4_DEVICE_SHEETS
 from equipeffi.domain.evaluation.device_types import (
     PUBLIC_DEVICE_NAMES,
     PUBLIC_DEVICE_TYPES,
@@ -84,8 +83,10 @@ class ArchitectureBoundaryTests(unittest.TestCase):
         self.assertEqual(modules_from_ast(ast.parse(source), "equipeffi.application.services"),
                          ["equipeffi.infrastructure.persistence", "PySide6.QtCore"])
 
-    def test_public_device_names_match_v4_sheet_order(self):
-        self.assertEqual(tuple(PUBLIC_DEVICE_NAMES[code] for code in PUBLIC_DEVICE_TYPES), V4_DEVICE_SHEETS)
+    def test_public_device_names_follow_registry_order(self):
+        self.assertEqual(tuple(PUBLIC_DEVICE_NAMES), PUBLIC_DEVICE_TYPES)
+        self.assertEqual(tuple(PUBLIC_DEVICE_NAMES[code] for code in PUBLIC_DEVICE_TYPES),
+                         tuple(PUBLIC_DEVICE_NAMES.values()))
 
     def test_registry_contains_exact_internal_profiles(self):
         self.assertEqual(len(EVALUATOR_FACTORIES), 17)

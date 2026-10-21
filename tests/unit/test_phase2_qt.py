@@ -139,10 +139,10 @@ class QtShellTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertIn('"exit": 0', result.stdout)
 
-    def test_qt_entrypoint_isolated_from_evaluation_factory(self):
+    def test_qt_entrypoint_launches_without_status_diagnostics(self):
         from equipeffi.entrypoint import main
         with patch("equipeffi.composition.launch_qt", return_value=0) as launch:
-            with patch("equipeffi.entrypoint.create_application_api", side_effect=AssertionError):
+            with patch("equipeffi.entrypoint._runtime_status", side_effect=AssertionError):
                 self.assertEqual(main(["--qt"]), 0)
         launch.assert_called_once()
         with self.assertRaises(SystemExit):
