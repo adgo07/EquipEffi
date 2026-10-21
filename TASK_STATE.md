@@ -9,9 +9,9 @@
 
 本轮按唯一执行方案 [`docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md`](docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md) 依赖顺序执行三步：
 
-1. 直接退役：删除已授权的旧桌面/适配器实现及专属测试，并精简治理资料。本步已提交 [PR #26](https://github.com/adgo07/EquipEffi/pull/26)，等待最终远端检查。
-2. 旧链整体退出：按方案移除 Web、Android、旧 API/JSONL/V4 专属链及配套资源与测试；已提交草稿 [PR #27](https://github.com/adgo07/EquipEffi/pull/27)，依赖 PR #26；正在完成 V6 容量验收。
-3. 工程收口：已提交草稿 [PR #28](https://github.com/adgo07/EquipEffi/pull/28)，依赖 PR #27。统一套件、失败基线退役与本机隔离包验证尚在收口。
+1. 直接退役：删除已授权的旧桌面/适配器实现及专属测试，并精简治理资料。本步已提交 [PR #26](https://github.com/adgo07/EquipEffi/pull/26)，远端检查已通过，尚未合并。
+2. 旧链整体退出：按方案移除 Web、Android、旧 API/JSONL/V4 专属链及配套资源与测试；已提交草稿 [PR #27](https://github.com/adgo07/EquipEffi/pull/27)，依赖 PR #26；V6 容量及工作簿专项验收已通过。
+3. 工程收口：已提交草稿 [PR #28](https://github.com/adgo07/EquipEffi/pull/28)，依赖 PR #27。保留测试失败已修复，历史失败允许表已退出，统一套件正在远端复验。原生包已在本机隔离目录启动；最终 ZIP 正在构建，桌面点击验收因窗口控制工具捕获超时尚未完成。
 
 集成起点为 `master@332d79c7d999feb4047c920ecb4359655bf9440e`。主会话统筹分步验收；本文件不复制执行日志、测试数字或历史阶段报告。当前机器没有干净 Windows / Sandbox；本机隔离结果不等于干净机器验收，也不构成 Phase 8 独立验收。
 
