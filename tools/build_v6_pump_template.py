@@ -37,49 +37,47 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import openpyxl
+from openpyxl.workbook.defined_name import DefinedName
 from openpyxl.worksheet.datavalidation import DataValidation
+import re
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from equipeffi.infrastructure.excel.template_resource import (
+    CONFIGURATION_CONTRACT,
+    PUMP_SHEET_CONTRACT,
+    V6_TEMPLATE_IDENTITY,
+    V6_TEMPLATE_ENTRY,
+    identity_defined_names,
+)
 
 #: Owner 指定的 V6 模板基线（**受跟踪的构建输入**；只读取，绝不写回）。
 #: 入仓而非依赖本地 outputs/，否则 CI 上无法复现生成与来源校验。
 DEFAULT_SOURCE = (REPO_ROOT / "specs" / "equipment_efficiency" / "templates"
-                  / "设备能效分析空白模板_重构版V6_变压器.xlsx")
+                  / V6_TEMPLATE_IDENTITY["source_filename"])
 #: 正式模板资产（产品运行时只使用入仓版本，不依赖本地开发路径）。
 DEFAULT_OUTPUT = (REPO_ROOT / "src" / "equipeffi" / "resources" / "templates"
-                  / "设备能效分析空白模板_重构版V6_20261005.xlsx")
+                  / V6_TEMPLATE_IDENTITY["filename"])
 
 #: Owner 指定基线的期望 SHA-256（来源证据；不匹配即中止，防止静默换基线）。
-OWNER_BASELINE_SHA256 = "FDB8C0B09925B5AE0EA0F0A941040B27890B5455E8E5920E02C409EDD4699CA1"
+OWNER_BASELINE_SHA256 = V6_TEMPLATE_IDENTITY["source_sha256"]
 
-PUMP_SHEET = "离心泵"
-CONFIG_SHEET = "配置"
+PUMP_SHEET = PUMP_SHEET_CONTRACT["sheet_name"]
+CONFIG_SHEET = next(sheet["sheet_name"] for sheet in V6_TEMPLATE_ENTRY["sheets"]
+                    if sheet["sheet_id"] == "configuration")
 
 #: 「离心泵」Sheet 中必须退出模板的**业务算法**列。
-BUSINESS_FORMULA_COLUMNS: tuple[str, ...] = (
-    "K",   # 单吸/双吸（由类别推导）
-    "L",   # 级数（由类别推导）
-    "N",   # 比转速
-    "O",   # C1
-    "P",   # C2
-    "Q",   # C3
-    "R",   # 基准效率
-    "S",   # 效率修正值
-    "T",   # 规定点效率
-    "U",   # 1级效率
-    "V",   # 2级效率
-    "W",   # 3级效率
-    "X",   # 能效等级
-    "AA",  # 自动备注（依赖上述业务公式形成评价结论）
-)
+BUSINESS_FORMULA_COLUMNS: tuple[str, ...] = tuple(
+    field["column"] for field in PUMP_SHEET_CONTRACT["fields"]
+    if field.get("clear_template_formula"))
 
 #: 数据行范围（与 `TblPump` 一致；容量策略见统一容量说明）。
-FIRST_DATA_ROW = 4
-LAST_DATA_ROW = 103
+FIRST_DATA_ROW = int(PUMP_SHEET_CONTRACT["header_row"]) + 1
+LAST_DATA_ROW = int(re.search(r"\d+$", PUMP_SHEET_CONTRACT["table"]["ref"]).group())
 
 #: 「配置」Sheet 中 `EV_PUMP_CATEGORY` 所在列与起始行。
-CATEGORY_COLUMN = "AE"
-CATEGORY_FIRST_ROW = 2
+CATEGORY_COLUMN = CONFIGURATION_CONTRACT["pump_category_enum"]["column"]
+CATEGORY_FIRST_ROW = int(CONFIGURATION_CONTRACT["pump_category_enum"]["first_row"])
 
 #: FieldDictionary 中「离心泵」Sheet 需要同步的字段行（按"字段ID"定位，不写死行号）。
 FIELD_DICTIONARY_REQUIRED_UPDATES: dict[str, dict[str, str]] = {
@@ -143,7 +141,7 @@ def _patch_categories(workbook) -> tuple[str, ...]:
         config[f"{CATEGORY_COLUMN}{CATEGORY_FIRST_ROW + offset}"] = name
 
     last_row = CATEGORY_FIRST_ROW + len(categories) - 1
-    workbook.defined_names["EV_PUMP_CATEGORY"].value = (
+    workbook.defined_names[CONFIGURATION_CONTRACT["pump_category_enum"]["defined_name"]].value = (
         f"'{CONFIG_SHEET}'!${CATEGORY_COLUMN}${CATEGORY_FIRST_ROW}"
         f":${CATEGORY_COLUMN}${last_row}")
     return categories
@@ -232,8 +230,25 @@ def _patch_field_dictionary(workbook) -> None:
                 config.cell(row, column).value = text
 
 
+def _patch_identity_markers(workbook) -> None:
+    """Embed machine-readable identity/Sheet revisions from the release manifest.
+
+    The committed V6-20261005 asset is deliberately kept byte-for-byte as the
+    legacy unmarked baseline. This opt-in path is for a separately named marked
+    projection; the marker values themselves have no second hand-maintained map.
+    """
+
+    for name, value in identity_defined_names(V6_TEMPLATE_ENTRY).items():
+        literal = '"' + value.replace('"', '""') + '"'
+        existing = workbook.defined_names.get(name)
+        if existing is not None:
+            del workbook.defined_names[name]
+        workbook.defined_names.add(DefinedName(name=name, attr_text=literal))
+
+
 def build(source: Path = DEFAULT_SOURCE, output: Path = DEFAULT_OUTPUT,
-          *, enforce_owner_hash: bool = True) -> BuildReport:
+          *, enforce_owner_hash: bool = True,
+          embed_identity_markers: bool = False) -> BuildReport:
     source = Path(source)
     output = Path(output)
     if not source.exists():
@@ -254,6 +269,11 @@ def build(source: Path = DEFAULT_SOURCE, output: Path = DEFAULT_OUTPUT,
     cleared = _clear_business_formulas(workbook)
     _patch_validations(workbook, categories)
     _patch_field_dictionary(workbook)
+    if embed_identity_markers:
+        if output.resolve() == DEFAULT_OUTPUT.resolve():
+            raise SystemExit(
+                "身份标记会改变工作簿结构；请输出到单独路径，不得覆盖当前 V6 legacy 资产")
+        _patch_identity_markers(workbook)
 
     output.parent.mkdir(parents=True, exist_ok=True)
     workbook.save(output)
@@ -269,10 +289,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--allow-other-baseline", action="store_true",
                         help="允许非 Owner 指定基线（仅用于实验，不用于正式资产）")
+    parser.add_argument("--embed-identity-markers", action="store_true",
+                        help="从发布清单生成模板与各 Sheet 的机器身份标记（必须另存为独立文件）")
     args = parser.parse_args(argv)
 
     report = build(args.source, args.output,
-                   enforce_owner_hash=not args.allow_other_baseline)
+                   enforce_owner_hash=not args.allow_other_baseline,
+                   embed_identity_markers=args.embed_identity_markers)
     print(f"source       : {report.source}")
     print(f"source sha256: {report.source_sha256}")
     print(f"output       : {report.output}")

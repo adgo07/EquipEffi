@@ -25,19 +25,21 @@ phase_8_pass_self_declared: false
 
 current_master:
   default_branch: master
-  head_sha: f12b5f29b306c769c0f0e56f5fe433fda7d75ba7
-  head_summary: "本任务开工同步：PR #21变压器双文件冻结已合并；非Phase推进"
+  head_sha: 2c7807f32ef08d18554014328efd4ceaa356726f
+  head_summary: "2026-10-19 软件简化首批开工同步；非 Phase 推进"
   phase_8_acceptance_record: 未生成（docs/phase8_acceptance_record.md 尚不存在）
 
 current_task:
-  task_id: STANDARD-ARCHIVE-ORGANIZATION
-  task_kind: 文档维护（不改变Phase、标准解释、支持状态或业务语义）
-  branch: codex/standard-archive-conventions
-  base_sha: f12b5f29b306c769c0f0e56f5fe433fda7d75ba7
-  status: EXECUTION_COMPLETE
-  summary: docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md
-  next_action: 文档整理分支供审阅（PR见本次任务附件）；不自行合并或进入Phase 9
-  previous_task_evidence: PR #17及Git历史中的M1维护记录
+  task_id: SIMPLIFICATION-BATCH-1-20261019
+  task_kind: Owner 授权软件简化首批（不改变 Phase、标准解释或支持范围）
+  branch: codex/simplification-integration-20261019
+  base_sha: 2c7807f32ef08d18554014328efd4ceaa356726f
+  status: LOCAL_REVERIFIED_REMOTE_GATE_REQUIRED
+  design: docs/governance/SIMPLIFICATION_IMPLEMENTATION_20261019.md
+  acceptance: docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md
+  next_action: 六项修复与 R2 两项补充已本地复验并更新 PR 24；远端最终 Head 门禁与计数见 PR 检查及说明，不自动合并
+  source_mapping_work: 源 checkout 既有未提交资料保留，不纳入本批
+  previous_task_evidence: docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md
 
 # ---------------------------------------------------------------------------
 # Phase 状态：只记录结论与落档链接，不复制执行细节

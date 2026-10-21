@@ -22,6 +22,7 @@ from tools.audit_release import audit_project
 from tools.audit_release import ReleaseAudit
 from tools.audit_release import main as audit_release_main
 from tools.build_portable_bundle import BundleResult
+from tools.check_distribution_assets import runtime_asset_members
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -294,6 +295,8 @@ class ReleaseAuditTests(unittest.TestCase):
             package = root / "equipeffi.zip"
             with zipfile.ZipFile(package, "w") as archive:
                 archive.writestr("equipeffi/equipeffi.exe", b"stub")
+                for member, source in runtime_asset_members(ROOT).items():
+                    archive.write(source, member)
             package_hash = sha256(package.read_bytes()).hexdigest()
             report = root / "native.json"
             report.write_text(json.dumps({

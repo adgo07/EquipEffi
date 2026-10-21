@@ -13,8 +13,10 @@ from typing import Sequence
 
 try:
     from .build_lock import build_lock
+    from .check_distribution_assets import audit_artifact, runtime_asset_members
 except ImportError:  # direct execution: ``python tools/build_zipapp.py``
     from build_lock import build_lock
+    from check_distribution_assets import audit_artifact, runtime_asset_members
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,17 +46,22 @@ def _build_zipapp_unlocked(source_root: Path = ROOT, output: Path = DEFAULT_OUTP
             "    raise SystemExit(main())\n"
         ).encode("utf-8")
     }
-    for path in sorted(package_root.rglob("*")):
-        if not path.is_file() or "__pycache__" in path.parts or path.suffix in {".pyc", ".pyo"}:
+    for path in sorted(package_root.rglob("*.py")):
+        if not path.is_file() or "__pycache__" in path.parts:
             continue
         relative = path.relative_to(source_root / "src").as_posix()
         files[relative] = path.read_bytes()
+    for member, path in runtime_asset_members(source_root).items():
+        files[member] = path.read_bytes()
     if "equipeffi/entrypoint.py" not in files or "equipeffi/standard_manifest.json" not in files:
         raise FileNotFoundError("源码包缺少入口或standard_manifest.json")
     output.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         for name in sorted(files):
             archive.writestr(_zip_info(name), files[name])
+    audit = audit_artifact(output, root=source_root)
+    if not audit.is_valid:
+        raise RuntimeError("zipapp运行资源审计失败: " + "; ".join(audit.errors))
     return output
 
 

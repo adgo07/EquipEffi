@@ -146,11 +146,37 @@ def build_wheel(root: Path = ROOT, output_dir: Path | None = None, *, timeout: i
         return max(candidates, key=lambda path: path.stat().st_mtime_ns)
 
 
+def build_sdist(root: Path = ROOT, output_dir: Path | None = None, *, timeout: int = 180) -> Path:
+    """Build an offline source distribution and return the new archive."""
+    root = Path(root).resolve()
+    with build_lock(root, operation="sdist构建"):
+        target = (Path(output_dir) if output_dir else root / "dist").resolve()
+        target.mkdir(parents=True, exist_ok=True)
+        before = {path.name: path.stat().st_mtime_ns for pattern in ("*.tar.gz", "*.tgz") for path in target.glob(pattern)}
+        command = [
+            sys.executable,
+            "-c",
+            "import os; from setuptools.build_meta import build_sdist; print(build_sdist(os.environ['EQUIPEFFI_SDIST_DEST']))",
+        ]
+        build_env = os.environ.copy()
+        build_env["SOURCE_DATE_EPOCH"] = REPRODUCIBLE_BUILD_EPOCH
+        build_env["EQUIPEFFI_SDIST_DEST"] = str(target)
+        subprocess.run(command, cwd=str(root), check=True, timeout=timeout, env=build_env)
+        candidates = [
+            path for pattern in ("*.tar.gz", "*.tgz") for path in target.glob(pattern)
+            if path.name not in before or path.stat().st_mtime_ns > before[path.name]
+        ]
+        if not candidates:
+            raise RuntimeError(f"构建命令成功但未在{target}发现新sdist")
+        return max(candidates, key=lambda path: path.stat().st_mtime_ns)
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="构建并审计EquipEffi wheel")
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output-dir", type=Path)
-    parser.add_argument("--timeout", type=int, default=180, help="wheel构建超时秒数，默认180")
+    parser.add_argument("--timeout", type=int, default=180, help="构建超时秒数，默认180")
+    parser.add_argument("--sdist", action="store_true", help="同时构建并审计源码分发包")
     parser.add_argument("--portable-output", type=Path, help="审计通过后同时生成离线便携ZIP")
     parser.add_argument(
         "--zipapp-output",
@@ -175,6 +201,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     output_dir = Path(args.output_dir).resolve() if args.output_dir else root / "dist"
     try:
         wheel = build_wheel(root, output_dir, timeout=args.timeout)
+        sdist = build_sdist(root, output_dir, timeout=args.timeout) if args.sdist else None
         runtime_template = sync_runtime_template(root, output_dir)
         review = None
         if not args.skip_review:
@@ -182,8 +209,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                 review = args.review_book.resolve()
             else:
                 review = _default_review_book(root)
-        audit = audit_project(root, review_book=review, wheel=wheel)
+        audit_kwargs = {"review_book": review, "wheel": wheel}
+        if sdist is not None:
+            audit_kwargs["sdist"] = sdist
+        audit = audit_project(root, **audit_kwargs)
         payload = {"wheel": str(wheel), "audit": asdict(audit)}
+        if sdist is not None:
+            payload["sdist"] = str(sdist)
         if runtime_template is not None:
             payload["template"] = str(runtime_template)
         synced_review = sync_review_book(review, output_dir)

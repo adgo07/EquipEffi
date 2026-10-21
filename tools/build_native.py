@@ -18,8 +18,10 @@ from typing import Sequence
 
 try:
     from .build_lock import build_lock
+    from .check_distribution_assets import audit_artifact, runtime_asset_paths
 except ImportError:  # direct execution
     from build_lock import build_lock
+    from check_distribution_assets import audit_artifact, runtime_asset_paths
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -124,14 +126,14 @@ def build_native_command(
         str(specpath),
         "--paths",
         str(root / "src"),
-        "--add-data",
-        _data_arg(manifest, "equipeffi", path_separator=separator),
-        "--add-data",
-        _data_arg(resources, "equipeffi/resources", path_separator=separator),
         "--collect-submodules",
         "equipeffi",
         str(entry),
     ]
+    for asset in runtime_asset_paths(root):
+        relative = asset.relative_to(package).parent.as_posix()
+        destination = f"equipeffi/{relative}" if relative != "." else "equipeffi"
+        command.extend(["--add-data", _data_arg(asset, destination, path_separator=separator)])
     executable = distpath / name / (f"{name}.exe" if separator == ";" else name)
     return command, executable
 
@@ -159,6 +161,9 @@ def build_native(
         subprocess.run(command, cwd=str(Path(root).resolve()), check=True, timeout=timeout)
     if not executable.exists():
         raise RuntimeError(f"PyInstaller命令成功但未找到预期启动文件：{executable}")
+    asset_audit = audit_artifact(executable.parent, root=Path(root))
+    if not asset_audit.is_valid:
+        raise RuntimeError("native目录运行资源审计失败: " + "; ".join(asset_audit.errors))
     digest = __import__("hashlib").sha256(executable.read_bytes()).hexdigest()
     warn_path = executable.parents[2] / "build" / name / f"warn-{name}.txt"
     warning_text = warn_path.read_text(encoding="utf-8", errors="replace") if warn_path.is_file() else ""
@@ -241,6 +246,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         # 报告作为ZIP旁车文件保留，避免把包含ZIP自身SHA-256的报告再嵌入ZIP
         # 形成循环哈希；`--report`会在下面写入包含package摘要的完整报告。
         result["package"] = package_native(Path(str(result["executable"])), args.zip_output)
+        package_audit = audit_artifact(Path(str(result["package"]["path"])), root=args.root)
+        if not package_audit.is_valid:
+            parser.error("native ZIP运行资源审计失败: " + "; ".join(package_audit.errors))
     payload = json.dumps(result, ensure_ascii=False, indent=2)
     if args.report:
         report = Path(args.report).resolve()

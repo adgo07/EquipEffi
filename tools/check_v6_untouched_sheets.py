@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -22,16 +23,26 @@ import openpyxl
 from openpyxl.utils import get_column_letter
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from equipeffi.infrastructure.excel.template_resource import (
+    CONFIG_SHEET as MANIFEST_CONFIG_SHEET,
+    PUMP_SHEET,
+    V6_TEMPLATE_ENTRY,
+    V6_TEMPLATE_IDENTITY,
+    identity_defined_names,
+)
+
 DEFAULT_BASELINE = (REPO_ROOT / "specs" / "equipment_efficiency" / "templates"
-                    / "设备能效分析空白模板_重构版V6_变压器.xlsx")
+                    / V6_TEMPLATE_IDENTITY["source_filename"])
 DEFAULT_TEMPLATE = (REPO_ROOT / "src" / "equipeffi" / "resources" / "templates"
-                    / "设备能效分析空白模板_重构版V6_20261005.xlsx")
+                    / V6_TEMPLATE_IDENTITY["filename"])
 
 #: 本阶段唯一授权修改的 Sheet。
-AUTHORIZED_SHEET = "离心泵"
+AUTHORIZED_SHEET = PUMP_SHEET
 #: 授权修改的间接影响面：`EV_PUMP_CATEGORY` 在「配置」Sheet 上，且 FieldDictionary
 #: 的「离心泵」行会被同步。配置 Sheet 只允许这些坐标变化。
-CONFIG_SHEET = "配置"
+CONFIG_SHEET = MANIFEST_CONFIG_SHEET
+IDENTITY_MARKER_NAMES = frozenset(identity_defined_names(V6_TEMPLATE_ENTRY))
 ALLOWED_CONFIG_CELLS: frozenset[str] = frozenset(
     [f"AE{row}" for row in range(2, 62)]
     + [f"{col}{row}" for row in range(2, 400) for col in ("H", "I", "N")]
@@ -154,11 +165,12 @@ def run_checks(baseline_path: Path = DEFAULT_BASELINE,
             report.differences.append(Difference(
                 name, "merged_cells", "(sheet)", "见基线", "见模板"))
 
-    # defined names：允许 EV_PUMP_CATEGORY 变化，其余必须完全一致。
+    # defined names：模板专属发布身份由 release manifest 生成；泵类别范围
+    # 允许按 Application 契约变化，其余原有业务名称必须完全一致。
     base_names = {k: str(v.value) for k, v in baseline.defined_names.items()}
     new_names = {k: str(v.value) for k, v in template.defined_names.items()}
     for key in sorted(set(base_names) | set(new_names)):
-        if key == "EV_PUMP_CATEGORY":
+        if key == "EV_PUMP_CATEGORY" or key in IDENTITY_MARKER_NAMES:
             continue
         if base_names.get(key) != new_names.get(key):
             report.differences.append(Difference(

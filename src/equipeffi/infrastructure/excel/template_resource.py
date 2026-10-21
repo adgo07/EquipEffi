@@ -3,45 +3,166 @@ from __future__ import annotations
 from dataclasses import dataclass
 from hashlib import sha256
 import importlib.resources as resources
+import json
 from pathlib import Path
+import re
 import shutil
 import tempfile
-from typing import Iterable
+from typing import Any
 from xml.etree import ElementTree
 from zipfile import BadZipFile, ZipFile
+
+from .ooxml_reader import OOXMLReadError, OOXMLWorkbook
 
 
 DEFAULT_V4_TEMPLATE = "设备能效分析空白模板_重构版V4_20260825.xlsx"
 
-#: Phase 8 起 Windows V1 的**正式**用户模板（V4 退出正式用户模板，仅保留
-#: legacy / test 兼容，本阶段不大规模删除旧实现）。
-DEFAULT_V6_TEMPLATE = "设备能效分析空白模板_重构版V6_20261005.xlsx"
+MANIFEST_FILENAME = "TEMPLATE_MANIFEST.json"
 
-#: V6 正式模板身份。`source` 是 Owner 指定的模板基线（构建输入，只读）；
-#: `source_sha256` 是入仓前基线的 SHA-256，用于证明资产来源与派生关系。
-V6_TEMPLATE_IDENTITY: dict[str, str] = {
-    "template_id": "equipeffi.device-efficiency.V6",
-    "template_version": "V6-20261005",
-    "template_kind": "unified-multi-device-blank-template",
-    "filename": DEFAULT_V6_TEMPLATE,
-    "source_filename": "设备能效分析空白模板_重构版V6_变压器.xlsx",
-    "source_sha256": "FDB8C0B09925B5AE0EA0F0A941040B27890B5455E8E5920E02C409EDD4699CA1",
-    "asset_sha256": "EE9DBE17A06081739CFB8EF0D330CE30B4634CBA5CE29CCD1EAB058D09348810",
-    "generated_by": "tools/build_v6_pump_template.py",
-    "authorized_modification": "离心泵",
-    "provenance": (
-        "Owner 指定 V6 统一模板基线经 Phase 8 授权修改（离心泵 Sheet 业务公式退出、"
-        "类别枚举对齐 Application 契约）后入仓；其他 17 个 Sheet 语义不变，"
-        "由 tools/check_v6_untouched_sheets.py 机械验证。"
-    ),
-}
 
-#: V6 模板必须包含的 Sheet（顺序即正式顺序）。
-REQUIRED_V6_SHEETS: tuple[str, ...] = (
-    "变压器", "电动机", "空压机", "离心泵", "离心通风机", "轴流通风机", "鼓风机",
-    "潜水电泵", "工业锅炉", "热处理设备", "热泵和冷水机组", "热泵热水机",
-    "风管送风式空调", "单元式空调", "多联式空调", "注意事项", "模板说明", "配置",
+def _read_manifest() -> dict[str, Any]:
+    """Read the one packaged template release manifest."""
+
+    filesystem_path = Path(__file__).resolve().parents[2] / "resources" / MANIFEST_FILENAME
+    if filesystem_path.is_file():
+        return json.loads(filesystem_path.read_text(encoding="utf-8"))
+    try:
+        packaged = resources.files("equipeffi").joinpath("resources", MANIFEST_FILENAME)
+        return json.loads(packaged.read_text(encoding="utf-8"))
+    except (FileNotFoundError, ModuleNotFoundError, OSError) as exc:
+        raise RuntimeError(f"未能读取随包分发的模板清单：{MANIFEST_FILENAME}") from exc
+
+
+TEMPLATE_MANIFEST = _read_manifest()
+V6_TEMPLATE_ENTRY: dict[str, Any] = next(
+    entry for entry in TEMPLATE_MANIFEST["templates"]
+    if entry.get("template_id") == TEMPLATE_MANIFEST["formal_windows_v1_template"]
+    and entry.get("status") == "FORMAL"
 )
+V6_TEMPLATE_IDENTITY: dict[str, str] = {
+    "template_id": V6_TEMPLATE_ENTRY["template_id"],
+    "template_version": V6_TEMPLATE_ENTRY["template_version"],
+    "template_kind": V6_TEMPLATE_ENTRY["template_kind"],
+    "filename": V6_TEMPLATE_ENTRY["filename"],
+    "source_filename": V6_TEMPLATE_ENTRY["source_filename"],
+    "source_sha256": V6_TEMPLATE_ENTRY["source_sha256"],
+    "asset_sha256": V6_TEMPLATE_ENTRY["asset_sha256"],
+    "generated_by": TEMPLATE_MANIFEST["generated_by"],
+    "authorized_modification": V6_TEMPLATE_ENTRY["authorized_modification"]["sheet"],
+    "provenance": V6_TEMPLATE_ENTRY["source_provenance"],
+    "template_contract_revision": V6_TEMPLATE_ENTRY["template_contract_revision"],
+}
+DEFAULT_V6_TEMPLATE = V6_TEMPLATE_IDENTITY["filename"]
+REQUIRED_V6_SHEETS: tuple[str, ...] = tuple(
+    sheet["sheet_name"] for sheet in V6_TEMPLATE_ENTRY["sheets"]
+)
+PUMP_SHEET_CONTRACT: dict[str, Any] = next(
+    sheet for sheet in V6_TEMPLATE_ENTRY["sheets"]
+    if sheet.get("sheet_id") == "centrifugal_pump"
+)
+PUMP_SHEET = PUMP_SHEET_CONTRACT["sheet_name"]
+CONFIG_SHEET = next(
+    sheet["sheet_name"] for sheet in V6_TEMPLATE_ENTRY["sheets"]
+    if sheet.get("sheet_id") == "configuration"
+)
+CONFIGURATION_CONTRACT: dict[str, Any] = V6_TEMPLATE_ENTRY["configuration_contract"]
+CONFIG_TABLE = CONFIGURATION_CONTRACT["field_dictionary_table"]
+
+
+def input_field_columns(contract: dict[str, Any] | None = None) -> tuple[tuple[str, str], ...]:
+    selected = contract or PUMP_SHEET_CONTRACT
+    return tuple((field["column"], field["field_id"])
+                 for field in selected["fields"]
+                 if field.get("role") == "input" and field.get("field_id"))
+
+
+def _column_index(letter: str) -> int:
+    value = 0
+    for char in letter.upper():
+        value = value * 26 + ord(char) - ord("A") + 1
+    return value - 1
+
+
+def _cell_position(reference: str) -> tuple[int, int] | None:
+    match = re.fullmatch(r"\$?([A-Z]{1,3})\$?([1-9]\d*)",
+                         str(reference).strip().upper())
+    if match is None:
+        return None
+    return _column_index(match.group(1)), int(match.group(2))
+
+
+def pump_data_layout_issues(
+        merged_ranges: tuple[str, ...] | list[str],
+        contract: dict[str, Any] | None = None) -> tuple[str, ...]:
+    """Reject data-area merges that obscure pump input or result cells.
+
+    The data area is intentionally unbounded: Table size is not a Reader capacity
+    limit, and a missing Table alone does not make an otherwise compatible sheet
+    invalid.
+    """
+
+    selected = contract or PUMP_SHEET_CONTRACT
+    first_data_row = int(selected["header_row"]) + 1
+    fields = [field for field in selected["fields"]
+              if field.get("role") in {"input", "result"}]
+    affected_columns = {
+        _column_index(str(field["column"])): str(field["column"])
+        for field in fields
+    }
+    issues: list[str] = []
+    for reference in merged_ranges:
+        parts = str(reference).split(":")
+        if len(parts) != 2:
+            issues.append(f"离心泵数据区合并范围格式无效：{reference!r}")
+            continue
+        start = _cell_position(parts[0])
+        end = _cell_position(parts[1])
+        if start is None or end is None:
+            issues.append(f"离心泵数据区合并范围格式无效：{reference!r}")
+            continue
+        min_column, max_column = sorted((start[0], end[0]))
+        max_row = max(start[1], end[1])
+        if max_row < first_data_row:
+            continue
+        covered_columns = [
+            column for index, column in sorted(affected_columns.items())
+            if min_column <= index <= max_column
+        ]
+        if covered_columns:
+            issues.append(
+                f"离心泵数据区合并范围 {reference} 覆盖输入/结果列 "
+                f"{'、'.join(covered_columns)}（第 {first_data_row} 行起不允许合并）")
+    return tuple(issues)
+
+
+def _header_parts(value: Any) -> tuple[str, str, tuple[str, ...]]:
+    text = str(value or "").replace("\r", "").strip()
+    parts = tuple(part.strip() for part in text.split("\n"))
+    label = parts[0] if parts else ""
+    unit = parts[1] if len(parts) > 1 else ""
+    if (len(unit) >= 2 and unit[0] == "(" and unit[-1] == ")"
+            and unit[1:-1].strip()):
+        unit = unit[1:-1].strip()
+    return label, unit, parts[2:]
+
+
+def pump_header_issues(header: list[Any], contract: dict[str, Any] | None = None) -> tuple[str, ...]:
+    """Compare exact pump header labels and units with the selected sheet contract."""
+
+    selected = contract or PUMP_SHEET_CONTRACT
+    issues: list[str] = []
+    for field in selected["fields"]:
+        column = field["column"]
+        index = _column_index(column)
+        value = header[index] if index < len(header) else ""
+        label, unit, extra = _header_parts(value)
+        expected_label = str(field.get("label") or "")
+        expected_unit = str(field.get("unit") or "")
+        if label != expected_label or unit != expected_unit or extra:
+            actual = label + (f" ({unit})" if unit else "")
+            expected = expected_label + (f" ({expected_unit})" if expected_unit else "")
+            issues.append(f"{column} 列期望「{expected}」，实际为「{actual}」")
+    return tuple(issues)
 REQUIRED_V4_SHEETS: tuple[str, ...] = (
     "注意事项",
     "模板说明",
@@ -76,6 +197,11 @@ class TemplateValidationResult:
     missing_sheets: tuple[str, ...]
     is_valid: bool
     message: str
+    identity: dict[str, str] | None = None
+    sheet_contracts: dict[str, str] | None = None
+    identity_source: str = ""
+    pump_sheet_contract: dict[str, Any] | None = None
+    issues: tuple[str, ...] = ()
 
 
 def _workbook_sheet_names(path: Path) -> tuple[str, ...]:
@@ -90,6 +216,147 @@ def _workbook_sheet_names(path: Path) -> tuple[str, ...]:
         raise TemplateResourceError(f"Excel工作簿结构XML无效：{exc}") from exc
     namespace = {"main": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
     return tuple(str(node.attrib.get("name", "")) for node in root.findall("main:sheets/main:sheet", namespace) if node.attrib.get("name"))
+
+
+def _workbook_defined_names(path: Path) -> dict[str, tuple[str, ...]]:
+    try:
+        with ZipFile(path) as archive:
+            xml = archive.read("xl/workbook.xml")
+        root = ElementTree.fromstring(xml)
+    except (BadZipFile, KeyError, OSError, ElementTree.ParseError) as exc:
+        raise TemplateResourceError(f"无法读取Excel模板身份标记：{exc}") from exc
+    namespace = {"main": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+    values: dict[str, list[str]] = {}
+    for node in root.findall("main:definedNames/main:definedName", namespace):
+        name = str(node.attrib.get("name", ""))
+        # Identity markers are workbook-scoped. Local names must not shadow them.
+        if name and "localSheetId" not in node.attrib:
+            values.setdefault(name, []).append(node.text or "")
+    return {name: tuple(items) for name, items in values.items()}
+
+
+def _string_name_value(expression: str) -> str | None:
+    text = expression.strip()
+    if text.startswith("="):
+        text = text[1:].strip()
+    if len(text) < 2 or text[0] != '"' or text[-1] != '"':
+        return None
+    return text[1:-1].replace('""', '"')
+
+
+def _entry_identity(entry: dict[str, Any]) -> dict[str, str]:
+    return {
+        "template_id": str(entry["template_id"]),
+        "template_version": str(entry["template_version"]),
+        "template_kind": str(entry.get("template_kind", "")),
+        "template_contract_revision": str(entry.get("template_contract_revision", "")),
+        "filename": str(entry.get("filename", "")),
+        "asset_sha256": str(entry.get("asset_sha256") or ""),
+    }
+
+
+def identity_defined_names(entry: dict[str, Any]) -> dict[str, str]:
+    """Workbook-scoped name/value pairs generated from one manifest entry."""
+
+    markers = TEMPLATE_MANIFEST["identity_markers"]
+    values = {
+        markers["template_id"]: str(entry["template_id"]),
+        markers["template_version"]: str(entry["template_version"]),
+        markers["template_contract_revision"]: str(entry["template_contract_revision"]),
+    }
+    for sheet in entry.get("sheets", ()):
+        values[f"{markers['sheet_contract_prefix']}{sheet['sheet_id']}"] = str(
+            sheet.get("contract_revision") or "")
+    return values
+
+
+def _resolve_v6_identity(path: Path) -> tuple[dict[str, Any] | None, str, tuple[str, ...]]:
+    """Resolve an explicit identity, or permit only the registered legacy structure."""
+
+    try:
+        names = _workbook_defined_names(path)
+    except TemplateResourceError as exc:
+        return None, "", (str(exc),)
+    return _resolve_v6_identity_from_names(names)
+
+
+def _resolve_v6_identity_from_names(
+        names: dict[str, tuple[str, ...]]) -> tuple[dict[str, Any] | None, str, tuple[str, ...]]:
+    markers = TEMPLATE_MANIFEST["identity_markers"]
+    marker_names = {
+        markers["template_id"],
+        markers["template_version"],
+        markers["template_contract_revision"],
+    }
+    prefixed_markers = [name for name in names
+                        if name.startswith(markers["sheet_contract_prefix"])]
+    present = marker_names.intersection(names)
+    has_any_marker = bool(present or prefixed_markers)
+    if not has_any_marker:
+        legacy_entries = [entry for entry in TEMPLATE_MANIFEST["templates"]
+                          if entry.get("legacy_import_compatibility") is True
+                          and entry.get("input_compatibility") == "ACCEPTED"]
+        if len(legacy_entries) == 1:
+            return legacy_entries[0], "legacy-structure", ()
+        if len(legacy_entries) > 1:
+            return None, "legacy-structure", (
+                "存在多个允许的无标记 legacy 版本，必须先按其完整结构唯一识别",)
+        return None, "", ("工作簿没有版本标记，且此模板版本不允许 legacy 结构识别",)
+
+    issues: list[str] = []
+    if present != marker_names:
+        missing = sorted(marker_names - present)
+        issues.append("模板身份标记不完整，缺少：" + "、".join(missing))
+    values: dict[str, str] = {}
+    for name in marker_names:
+        items = names.get(name, ())
+        if len(items) != 1:
+            if len(items) > 1:
+                issues.append(f"模板身份标记重复：{name}")
+            continue
+        parsed = _string_name_value(items[0])
+        if parsed is None:
+            issues.append(f"模板身份标记格式无效：{name}")
+        else:
+            values[name] = parsed
+
+    if issues:
+        return None, "declared", tuple(issues)
+    template_id = values[markers["template_id"]]
+    template_version = values[markers["template_version"]]
+    revision = values[markers["template_contract_revision"]]
+    entry = next((item for item in TEMPLATE_MANIFEST["templates"]
+                  if item.get("template_id") == template_id
+                  and item.get("template_version") == template_version
+                  and item.get("input_compatibility") == "ACCEPTED"), None)
+    if entry is None:
+        return None, "declared", (
+            f"不支持的模板身份：{template_id} / {template_version}",)
+    if revision != str(entry.get("template_contract_revision") or ""):
+        issues.append(
+            f"模板契约修订不匹配：声明 {revision}，清单期望 "
+            f"{entry.get('template_contract_revision', '')}")
+
+    expected_sheets = {sheet["sheet_id"]: str(sheet.get("contract_revision") or "")
+                       for sheet in entry.get("sheets", ())}
+    for sheet_id, expected_revision in expected_sheets.items():
+        name = f"{markers['sheet_contract_prefix']}{sheet_id}"
+        items = names.get(name, ())
+        if len(items) != 1:
+            issues.append(f"Sheet 契约标记缺失或重复：{sheet_id}")
+            continue
+        actual_revision = _string_name_value(items[0])
+        if actual_revision != expected_revision:
+            issues.append(
+                f"Sheet 契约修订不匹配：{sheet_id} 声明 {actual_revision!r}，"
+                f"清单期望 {expected_revision!r}")
+    unexpected_sheet_markers = sorted(
+        name[len(markers["sheet_contract_prefix"]):]
+        for name in prefixed_markers
+        if name[len(markers["sheet_contract_prefix"]):] not in expected_sheets)
+    if unexpected_sheet_markers:
+        issues.append("存在未登记的 Sheet 契约标记：" + "、".join(unexpected_sheet_markers))
+    return entry, "declared", tuple(issues)
 
 
 class V4TemplateResource:
@@ -173,14 +440,61 @@ class V6TemplateResource(V4TemplateResource):
     def identity(self) -> dict[str, str]:
         return dict(V6_TEMPLATE_IDENTITY)
 
-    def validate(self, path: Path | None = None) -> TemplateValidationResult:
+    def validate(self, path: Path | None = None, *,
+                 check_pump_sheet: bool = True) -> TemplateValidationResult:
         candidate = path or self.template_path
         sheet_names = _workbook_sheet_names(candidate)
-        missing = tuple(sheet for sheet in REQUIRED_V6_SHEETS if sheet not in sheet_names)
+        entry, identity_source, identity_issues = _resolve_v6_identity(candidate)
+        contract_entry = entry or V6_TEMPLATE_ENTRY
+        expected_sheets = tuple(
+            sheet["sheet_name"] for sheet in contract_entry.get("sheets", ())
+        ) or REQUIRED_V6_SHEETS
+        missing = tuple(sheet for sheet in expected_sheets if sheet not in sheet_names)
+        issues = list(identity_issues)
+        if sheet_names != expected_sheets:
+            issues.append(
+                "Sheet 集合或顺序与模板契约不符："
+                f"实际 {sheet_names!r}，期望 {expected_sheets!r}")
+
+        pump_contract = next((sheet for sheet in contract_entry.get("sheets", ())
+                              if sheet.get("sheet_id") == "centrifugal_pump"), None)
+        if pump_contract is None:
+            issues.append("模板清单没有离心泵 Sheet 契约")
+        elif check_pump_sheet and pump_contract["sheet_name"] in sheet_names:
+            try:
+                with OOXMLWorkbook(candidate) as workbook:
+                    grid = workbook.rows(pump_contract["sheet_name"])
+                    merged_ranges = workbook.merged_ranges(
+                        pump_contract["sheet_name"])
+                issues.extend(pump_data_layout_issues(
+                    merged_ranges, pump_contract))
+                header_index = int(pump_contract["header_row"]) - 1
+                if header_index < 0 or header_index >= len(grid):
+                    issues.append(f"离心泵表头行无效：{pump_contract['header_row']}")
+                else:
+                    issues.extend(pump_header_issues(grid[header_index], pump_contract))
+            except (OOXMLReadError, KeyError, TypeError, ValueError) as exc:
+                issues.append(f"无法验证离心泵 Sheet 契约：{exc}")
+
         digest = sha256(candidate.read_bytes()).hexdigest()
-        valid = not missing
-        message = "V6模板结构检查通过" if valid else f"缺少V6工作表：{'、'.join(missing)}"
-        return TemplateValidationResult(str(candidate), digest, sheet_names, missing, valid, message)
+        valid = entry is not None and not missing and not issues
+        if valid:
+            message = "V6模板结构检查通过"
+        else:
+            details = list(issues)
+            if missing:
+                details.append("缺少工作表：" + "、".join(missing))
+            message = "V6模板不兼容：" + "；".join(details or ["未知模板版本"])
+        identity = _entry_identity(entry) if entry is not None else {}
+        sheet_contracts = ({
+            str(sheet["sheet_id"]): str(sheet.get("contract_revision") or "")
+            for sheet in contract_entry.get("sheets", ())
+        } if entry is not None else {})
+        return TemplateValidationResult(
+            str(candidate), digest, sheet_names, missing, valid, message,
+            identity=identity, sheet_contracts=sheet_contracts,
+            identity_source=identity_source, pump_sheet_contract=pump_contract,
+            issues=tuple(issues))
 
     def download_to(self, destination: Path) -> Path:
         source = self.template_path.resolve()

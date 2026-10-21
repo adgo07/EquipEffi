@@ -59,9 +59,11 @@ class JsonStandardRepository:
         self._validator = StandardPackValidator()
         # A batch may request the same standard pack thousands of times.  The
         # resource is immutable for the lifetime of this repository, so cache
-        # the successful structural validation by source rather than walking
-        # a large shared HVAC pack for every record.
-        self._validated_sources: set[str] = set()
+        # successful validation by source and profile.  The active water and
+        # chemical pump entries share one JSON file but have distinct required
+        # structures, so a source-only key would let the first profile bypass
+        # validation of the second.
+        self._validated_sources: set[tuple[str, str]] = set()
         # M3-G1：同一个 repository 实例里，同一个标准包只做一次
         # read → parse → validate → SHA-256，并缓存组装完成的快照。
         # 缓存范围**严格限定在本实例**：不是进程级缓存、不是磁盘缓存、
@@ -91,14 +93,18 @@ class JsonStandardRepository:
                 source.relative_to(self.root)
             except ValueError as exc:
                 raise StandardPackError(f"标准包越出允许根目录: {source}") from exc
+        try:
             source_exists = source.is_file()
-        else:
-            source_exists = source.is_file()
+        except OSError as exc:
+            raise StandardPackError(f"无法访问标准包文件: {source}") from exc
         if not source_exists:
+            status = str(entry.get("status", StandardDataStatus.EXTRACTED.value))
+            if status.casefold() == StandardDataStatus.ACTIVE.value:
+                raise StandardPackError(f"正式启用的标准包文件不存在: {source}")
             return {
                 "pack_id": entry["pack_id"],
                 "device_type": device_type,
-                "status": entry.get("status", StandardDataStatus.EXTRACTED.value),
+                "status": status,
                 "unavailable_reason": entry.get("unavailable_reason", "标准数据文件不存在"),
             }
         # M3-G1：同一实例内同一标准包只读一次；命中缓存时只做 deepcopy。
@@ -121,10 +127,15 @@ class JsonStandardRepository:
         # Pump formula coefficients and table boundaries are decimal source
         # literals.  Keep their JSON lexemes exact instead of first parsing
         # them as binary floats; other packages retain their historical loader.
-        if device_type in {"pump_water", "pump_chemical"}:
-            data = json.loads(source.read_text(encoding="utf-8"), parse_float=Decimal)
-        else:
-            data = json.loads(source.read_text(encoding="utf-8"))
+        try:
+            if device_type in {"pump_water", "pump_chemical"}:
+                data = json.loads(source.read_text(encoding="utf-8"), parse_float=Decimal)
+            else:
+                data = json.loads(source.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+            raise StandardPackError(f"无法读取或解析标准包文件 {source}: {exc}") from exc
+        if not isinstance(data, dict):
+            raise StandardPackError(f"标准包 JSON 顶层必须是对象: {source}")
         data["pack_id"] = entry["pack_id"]
         data["device_type"] = device_type
         data["status"] = entry.get("status", StandardDataStatus.NORMALIZED.value)
@@ -133,7 +144,7 @@ class JsonStandardRepository:
         # 注入实际 Canonical 源的 SHA-256（UTF-8、CRLF→LF）。这是业务真值来源
         # 的客观指纹，供 Record 固化与审计；不得用 commit SHA 或空值冒充。
         data["pack_hash"] = self._source_sha256(source)
-        validation_key = str(source)
+        validation_key = (str(source), device_type)
         if validation_key not in self._validated_sources:
             issues = self._validator.validate(data)
             if issues:
