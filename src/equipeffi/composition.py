@@ -29,6 +29,16 @@ def _default_project_root() -> Path:
     return Path.cwd().resolve()
 
 
+def _create_standard_repository(project_root: Path | None = None) -> JsonStandardRepository:
+    """Create a fresh standard repository using the shared package-first rule."""
+
+    root = Path(project_root).resolve() if project_root is not None else _default_project_root()
+    package_manifest = Path(__file__).resolve().parent / "standard_manifest.json"
+    if package_manifest.is_file():
+        return JsonStandardRepository(package_manifest.parent, manifest=package_manifest)
+    return JsonStandardRepository(root)
+
+
 def load_v4_contract() -> tuple[Any, Any] | tuple[None, None]:
     """Load the packaged V4 contract only when a presentation layer needs it.
 
@@ -58,12 +68,7 @@ def load_v4_contract() -> tuple[Any, Any] | tuple[None, None]:
 def create_core_api(*, project_root: Path | None = None) -> ApplicationApi:
     """Create the core JSON/API service without loading the V4 workbook."""
 
-    root = Path(project_root).resolve() if project_root is not None else _default_project_root()
-    package_manifest = Path(__file__).resolve().parent / "standard_manifest.json"
-    if package_manifest.is_file():
-        repository = JsonStandardRepository(package_manifest.parent, manifest=package_manifest)
-    else:
-        repository = JsonStandardRepository(root)
+    repository = _create_standard_repository(project_root)
     facade = EvaluationFacade(EvaluationService(repository))
     return ApplicationApi(facade)
 
@@ -81,12 +86,7 @@ def create_application_api(
     need JSON evaluation should use the default ``load_template=False``.
     """
 
-    root = Path(project_root).resolve() if project_root is not None else _default_project_root()
-    package_manifest = Path(__file__).resolve().parent / "standard_manifest.json"
-    if package_manifest.is_file():
-        repository = JsonStandardRepository(package_manifest.parent, manifest=package_manifest)
-    else:
-        repository = JsonStandardRepository(root)
+    repository = _create_standard_repository(project_root)
     contract = resource_manager = None
     if load_template:
         contract, resource_manager = load_v4_contract()
@@ -146,14 +146,8 @@ def create_pump_analysis_service(*, paths=None, with_persistence: bool = True):
     from .application.services.centrifugal_pump_analysis_service import (
         CentrifugalPumpAnalysisService,
     )
-    from .infrastructure.standards.json_repository import JsonStandardRepository
 
-    root = _default_project_root()
-    package_manifest = Path(__file__).resolve().parent / "standard_manifest.json"
-    if package_manifest.is_file():
-        repository = JsonStandardRepository(package_manifest.parent, manifest=package_manifest)
-    else:
-        repository = JsonStandardRepository(root)
+    repository = _create_standard_repository()
 
     workspaces = records = None
     if with_persistence:

@@ -31,19 +31,17 @@ current_master:
   phase_8_acceptance_record: 未生成（docs/phase8_acceptance_record.md 尚不存在）
 
 current_task:
-  task_id: SIMPLIFICATION-BATCH-1-20261019
-  task_kind: Owner 授权软件简化首批（不改变 Phase、标准解释或支持范围）
-  branch: codex/simplification-integration-20261019
-  base_sha: 2c7807f32ef08d18554014328efd4ceaa356726f
-  status: MERGED
-  design: docs/governance/SIMPLIFICATION_IMPLEMENTATION_20261019.md
-  acceptance: docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md
-  merged_pr: "#24"
-  merge_sha: 0d4eae855e16c99d0ef96bda3b39bfc5b26b4641
-  next_plan: docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md
-  next_action: 按修订方案先做短调用盘点，再选一至两处真实公共职责去重；新功能/UI 美化暂缓，本轮未启动实现
+  task_id: SIMPLIFICATION-BATCH-2-20261021
+  task_kind: Owner 授权现有功能简化；标准仓库装配去重
+  branch: codex/simplification-batch2-20261021
+  base_sha: 3d692f6ac6ddfeab15967086ecad95405f3f0d50
+  status: PR_OPEN_CI_PENDING
+  pr: "#25"
+  design: docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md
+  acceptance: docs/governance/SIMPLIFICATION_BATCH2_20261021.md
+  next_action: 核对 PR #25 远端既有门禁；不自动合并
   source_mapping_work: 源 checkout 既有未提交资料保留，不纳入本批
-  previous_task_evidence: docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md
+  previous_task_evidence: docs/governance/SIMPLIFICATION_ACCEPTANCE_20261019.md
 
 # ---------------------------------------------------------------------------
 # Phase 状态：只记录结论与落档链接，不复制执行细节
