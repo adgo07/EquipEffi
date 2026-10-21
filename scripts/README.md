@@ -24,7 +24,7 @@ python -m equipeffi --qt
 
 ## 构建 wheel、zipapp 与便携包
 
-在本机已安装项目构建依赖的环境中执行：
+先安装 `setuptools>=68` 和 `wheel`；以下 wheel 构建使用离线、非隔离模式，不会临时下载构建依赖。随后执行：
 
 ~~~powershell
 python tools/build_release.py --output-dir dist
@@ -41,12 +41,23 @@ python -m equipeffi --status
 
 ## Windows 原生 Qt 包
 
-在目标 Windows Python 环境已安装 PyInstaller 与 PySide6 时，可生成当前 Qt 桌面程序的 onedir 包：
+本轮 Windows 验证使用 Python 3.12、PySide6 6.8.3 和 PyInstaller 6.22.3。用独立构建环境，并限制构建时的 PATH，避免把其他软件的同名 DLL 收进包中：
 
 ~~~powershell
-python tools/build_native.py --python .venv\Scripts\python.exe --report dist/native/native-windows-build.json --zip-output dist/native/equipeffi-windows-qt.zip
-python tools/audit_release.py --native-report dist/native/native-windows-build.json
+py -3.12 -m venv .native-build
+$buildPython = (Resolve-Path .native-build/Scripts/python.exe).Path
+& $buildPython -m pip install PySide6==6.8.3 PyInstaller==6.22.3
+$buildOriginalPath = $env:PATH
+$buildWindowsDir = [Environment]::GetFolderPath('Windows')
+try {
+    $env:PATH = "$buildWindowsDir\System32;$buildWindowsDir"
+    & $buildPython tools/build_native.py --python $buildPython --report dist/native/native-windows-build.json --zip-output dist/native/equipeffi-windows-qt.zip
+} finally {
+    $env:PATH = $buildOriginalPath
+}
 ~~~
+
+构建工具会运行实际 EXE 的 `--status`；Qt、V6 或正式泵资源不可用时返回失败且不生成 ZIP。还应把产物复制到独立目录，清空 Python 路径后运行 EXE，检查桌面操作。更换 Qt 或构建器版本需重新做该验证，不能只凭构建命令成功判断可交付。本机隔离验证不等同于干净 Windows 机器验证。
 
 安装已有原生 ZIP 时，可先解包到临时目录校验，再复制到用户目录：
 

@@ -64,7 +64,7 @@ class ReleaseAuditTests(unittest.TestCase):
 
     def test_write_release_report_uses_delivery_directory_name(self):
         with tempfile.TemporaryDirectory() as tmp:
-            output = Path(tmp) / "final_20260830_test"
+            output = Path(tmp).resolve() / "final_20260830_test"
             report = write_release_report({"is_valid": True, "marker": "ok"}, output)
 
             self.assertEqual(report, output / "发布审计_20260830_test.json")
@@ -134,7 +134,7 @@ class ReleaseAuditTests(unittest.TestCase):
 
     def test_build_release_portable_output_builds_and_embeds_zipapp(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+            root = Path(tmp).resolve()
             wheel = root / "equipeffi-0.2.1-py3-none-any.whl"
             zipapp = root / "portable.pyz"
             portable = root / "portable.zip"

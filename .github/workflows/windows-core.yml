@@ -10,16 +10,12 @@ name: Windows Core
 #   - whitespace-check  : Whitespace check (gating)
 #
 # 统一门禁：
-#   - windows-core 只执行一次 unittest 全量发现，覆盖全部当前测试，包括 tests/contract。
-#   - 当前 Pump 数值、PUMP-RP 参考断言、Golden 与 Qt 产品测试均由该套件执行。
-#   - 已知失败比较器只读取全量发现落盘结果，不会重新执行测试。
+#   - windows-core 只运行一次 unittest 全量发现，覆盖全部当前测试，包括 tests/contract。
+#   - Pump 数值、PUMP-RP 参考断言、Golden 与 Qt 产品测试均由该套件执行。
 #
-# 真实结果口径（不得弱化）：
-#   - 仓库当前仍存在已知 baseline failures（见 tests/baselines/windows_full_suite_known.json）。
-#     **workflow green 只表示「没有新增回归」，绝不等于「全量测试全部通过」。**
-#   - known regression 仍按**精确测试 ID + 类型**比较；unknown failure / error /
-#     新增 skip / failure→error 恶化 / 基线测试缺失，一律使 gate FAIL。
-
+# 真实结果口径：
+#   - unittest 的真实退出码直接决定门禁；任一失败或错误都会使 job 失败。
+#   - 完整 verbose 输出保存并上传为 artifacts/windows-core/full_suite.log。
 on:
   push:
     branches: [master]
@@ -73,23 +69,22 @@ jobs:
       - name: Compileall
         run: python -m compileall -q src tools tests
 
-      # 契约目录含 __init__.py，由下面唯一次全量发现自然纳入。
-      # 本 job 内唯一一次 full discover：执行并落盘真实结果。
-      # 该步骤绿灯仅代表「套件执行完成」，真实 fail/error/skip 见 summary.txt。
-      - name: Full suite (single execution, record real results)
-        run: python tools/check_windows_regressions.py --mode run --output artifacts/phase2-regression
+      # 全量测试只运行一次；unittest 的真实退出码直接作为门禁结果。
+      - name: Full suite (single execution with log)
+        run: |
+          $logPath = "artifacts/windows-core/full_suite.log"
+          New-Item -ItemType Directory -Force -Path (Split-Path $logPath) | Out-Null
+          python -m unittest discover -s tests -t . -v 2>&1 | Tee-Object -FilePath $logPath
+          $testExitCode = $LASTEXITCODE
+          if ($testExitCode -ne 0) { exit $testExitCode }
 
-      # 只读取上一步已落盘的结果做按 ID 比较，不重新执行任何测试。
-      - name: Known-regression comparator by exact test id (gating)
-        run: python tools/check_windows_regressions.py --mode compare --output artifacts/phase2-regression
-
-      - name: Upload exact regression evidence
+      - name: Upload full-suite log
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: phase2-regression-evidence
-          path: artifacts/phase2-regression/
-
+          name: windows-core-full-suite-log
+          path: artifacts/windows-core/full_suite.log
+          if-no-files-found: ignore
       - name: Package and resource smoke
         run: |
           python -m equipeffi --status
