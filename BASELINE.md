@@ -125,7 +125,7 @@ Phase 0B 若未执行，本文件保持起始事实；本次确实未执行 0B�
 | `src/equipeffi/domain/evaluation/evaluators/pump.py` | inherited from base | `615F7EC884CF4EB103FFD74804DFE1A5E2616E0B317AD9C457E16213EDB1FFBB` | SHA-256 为提交中 LF 规范文本字节；泵状态修订；Decimal50、GB 19762—2025 公式、ns_raw 正式分档及总 Q/H 和 suction/stages 换算保持冻结，详见新契约和独立定点测试。 |
 | `src/equipeffi/application/services/evaluation_service.py` | inherited from base | `EEF8731E5A162C81441D83BAC4C493D0F9EA5A0014CEC1E44BF5E82535DEB8ED` | SHA-256 为提交中 LF 规范文本字节；应用路由状态修订；清水泵公开准入、化工泵未发布状态在应用边界明确表达。 |
 
-本轮正式命令、环境、用时、统计和全量测试已有失败详见 [IMPLEMENTATION_REPORT.md](IMPLEMENTATION_REPORT.md)。该快照不构成 Golden 批准或 Phase 1 PASS。七个旧 Golden 0.1 文件和其 hash 未改；validator 仅通过版本化来源登记识别一项确切历史 Canonical 指纹，未知指纹仍失败。
+本轮正式命令、环境、用时、统计和全量测试已有失败详见 [IMPLEMENTATION_REPORT.md](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/IMPLEMENTATION_REPORT.md)。该快照不构成 Golden 批准或 Phase 1 PASS。七个旧 Golden 0.1 文件和其 hash 未改；validator 仅通过版本化来源登记识别一项确切历史 Canonical 指纹，未知指纹仍失败。
 
 ## Phase 2 非破坏性工程增量（2026-10-02）
 
@@ -168,7 +168,7 @@ Phase 0B 若未执行，本文件保持起始事实；本次确实未执行 0B�
 | `specs/equipment_efficiency/profiles/pump_water.md` → `docs/standards/gb19762_2025/profiles/pump_water.md` | `5ea911f4b3a1dd368f4b5e39384897cd9b11bd209a38ce7f9a205004e91d6403` | `3c05073853c72a7295c13c97c6b02578e1b27bd69cd020e4a8cd5fe9b378d25b` |
 | `specs/equipment_efficiency/profiles/pump_chemical.md` → `docs/standards/gb19762_2025/profiles/pump_chemical.md` | `23a7279ce9dbc78d60d1a4b17a44c0e7ff3d97a51be0263c95138a2e76918834` | `a34d044b79dd28640697c8d5a1c8a5096d713ee5df17f53d7a37a5f5caf2b782` |
 
-变压器双文件SHA继续以[原冻结清单](docs/standards/gb20052_v21/GB20052_V21_FROZEN_BASELINE.md)为准，本次核对两项均未变化；不重存XLSX。新入口与验证范围见[整理摘要](docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md)。
+变压器双文件SHA继续以[原冻结清单](docs/standards/gb20052_v21/GB20052_V21_FROZEN_BASELINE.md)为准，本次核对两项均未变化；不重存XLSX。新入口与验证范围见[整理摘要](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/docs/governance/STANDARD_ARCHIVE_ORGANIZATION_20261013.md)。
 
 ### PR #22 验收修复补记（2026-10-13）
 

@@ -35,8 +35,8 @@
 
 |标准号/年份|标准名称|设备/Profile|唯一标准入口|当前映射/数据依据|支持状态依据|
 |---|---|---|---|---|---|
-|GB 19762—2025|离心泵能效限定值及能效等级|pump_water / pump_chemical|[gb19762_2025](gb19762_2025/README.md)|[共同及分支映射](gb19762_2025/STANDARD_MAPPING.md)，既有Canonical/Golden与原PDF定位见入口|[V1_SCOPE](../../V1_SCOPE.md) / [ROADMAP](../../ROADMAP.md)|
-|GB 20052—2024|电力变压器能效限定值及能效等级|transformer|[gb20052_2024](gb20052_2024/README.md)|现有V2.1主映射与35表工作簿共同冻结，实体保留在gb20052_v21|[V1_SCOPE](../../V1_SCOPE.md) / [ROADMAP](../../ROADMAP.md)|
+|GB 19762—2025|离心泵能效限定值及能效等级|pump_water / pump_chemical|[gb19762_2025](gb19762_2025/README.md)|[共同及分支映射](gb19762_2025/STANDARD_MAPPING.md)，既有Canonical/Golden与原PDF定位见入口|[V1_SCOPE](../../V1_SCOPE.md) / [ROADMAP](../../V1_SCOPE.md)|
+|GB 20052—2024|电力变压器能效限定值及能效等级|transformer|[gb20052_2024](gb20052_2024/README.md)|现有V2.1主映射与35表工作簿共同冻结，实体保留在gb20052_v21|[V1_SCOPE](../../V1_SCOPE.md) / [ROADMAP](../../V1_SCOPE.md)|
 
 本表列已建档入口，不代表所有现存软件标准包均已完成映射。后续标准实际开展时加一行；计划项必须标“尚未建档”，不预建十几个空目录。这里不复制问题状态、Profile状态或批准结论作为第二权威。
 

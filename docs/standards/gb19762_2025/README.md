@@ -11,8 +11,8 @@
 | 原文证据 | [evidence_registry.json](../../../specs/equipment_efficiency/evidence_registry.json) 的 `GB19762-2025-PDF`，含相对定位符与SHA；通过外部证据根定位原PDF |
 | 现有表值/系数资产 | [pump.json](../../../src/equipeffi/resources/standards/pump.json) 的water/chemical分支；这是既有Canonical资产，不是独立逐格复核证据 |
 | Golden及批准证据 | [water](../../../specs/equipment_efficiency/golden/pump_water/)、[chemical](../../../specs/equipment_efficiency/golden/pump_chemical/)、[批准记录](../../../specs/equipment_efficiency/golden/owner_approvals/) |
-| 软件支持与范围 | [V1_SCOPE](../../../V1_SCOPE.md)、[ROADMAP](../../../ROADMAP.md) |
-| 验收证据 | [Phase 3](../../phase3_acceptance_record.md)、[Phase 5](../../phase5_acceptance_record.md) |
+| 软件支持与范围 | [V1_SCOPE](../../../V1_SCOPE.md)、[ROADMAP](../../../V1_SCOPE.md) |
+| 验收证据 | [Phase 3](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/docs/phase3_acceptance_record.md)、[Phase 5](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/docs/phase5_acceptance_record.md) |
 | 问题与解释 | [根台账](../../../STANDARD_ISSUES_REGISTER.md)：`EQP-STD-GB19762-001`；日期规则同时读取[AGENTS §2.7/2.8](../../../AGENTS.md) |
 
 ## 原文与数据边界
