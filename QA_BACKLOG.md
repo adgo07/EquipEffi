@@ -12,6 +12,7 @@ OPEN / VERIFY / REGISTERED_DEVIATION 都按原状态保留，不自动授权代�
 
 | issue_id | 原状态 | 当前表面 / 目标 | 当前风险与证据边界 |
 |---|---|---|---|
+| QA-RET-001 | VERIFY | Qt 批量评价验收 | Owner 实测结果 Workbook 正常但完成文案残留、批次历史不可见、打开 WPS 崩溃及文件夹 ShellExecute error 5。已修复完成/失败状态与可复制的打开失败提示；接通既有 batch_record 只读历史、加载更多；真实旧批次 2 行/4台/1级可见且原库哈希不变。补充 frozen Windows 外部启动的 DLL/PATH/Qt 插件路径清理并恢复（PyInstaller 官方说明），69 项集成定向检查通过。WPS/Explorer 正常桌面启动实测仍待确认，不能把根因候选当作已验证结论。无标准解释、算法、Golden 或数据库 schema 变更。 |
 | QA-P1-006 | OPEN | V1_RUNTIME / Future | 资源包标为 `active` 只代表可加载，不等于其来源、范围、Golden 和支持状态均已验收；具体支持范围仍以 `V1_SCOPE.md` 为准。 |
 | QA-AUD-001 | OPEN | NOT_SHIPPED / Future | `domain/devices/` 中的候选壳与 `domain/evaluation` 并存；保留供后续边界/调用证据判断，本轮不据此删除专业候选。 |
 | QA-AUD-002 | OPEN | V1_RUNTIME / Future | `device_evaluators.py` 兼容门面与延迟反向导入仍增加维护和调用理解成本；保留其现有运行依赖。 |

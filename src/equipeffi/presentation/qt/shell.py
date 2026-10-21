@@ -31,7 +31,7 @@ from .tokens import TOKENS
 class MainWindow(QMainWindow):
     def __init__(self, settings: SettingsService, analysis=None, *,
                  batch=None, workspace_id: str | None = None, app_version: str = "",
-                 data_location=None):
+                 data_location=None, external_launch_context=None):
         super().__init__()
         self.settings = settings
         self.app_version = app_version or _app_version()
@@ -62,11 +62,16 @@ class MainWindow(QMainWindow):
         self.analysis_page = AnalysisPage(analysis, navigator=self) if analysis is not None else None
         # Phase 8：批量评价页只在装配了批量服务时构建（Excel 仍是 adapter 表面）。
         self.batch_page = (
-            BatchPage(batch, navigator=self, settings=settings)
+            BatchPage(
+                batch, navigator=self, settings=settings,
+                external_launch_context=external_launch_context,
+            )
             if batch is not None else None)
         if self.batch_page is not None:
             self.batch_page.background_idle.connect(self._finish_deferred_close)
-        self.records_page = RecordsPage(analysis, navigator=self) if analysis is not None else None
+        self.records_page = (
+            RecordsPage(analysis, navigator=self, batch=batch)
+            if analysis is not None else None)
         self.settings_page = SettingsPage(settings, analysis, app_version=self.app_version,
                                          data_location=data_location, navigator=self)
 
@@ -128,7 +133,11 @@ class MainWindow(QMainWindow):
         page = self.records_page
         if page is None:
             return
+        already_selected = self.navigation.currentRow() == PAGES.index("分析记录")
         self._show_page("分析记录")
+        # currentRowChanged 会在切页时刷新；同页打开时显式刷新批次和单台记录。
+        if already_selected:
+            page.refresh()
         if record_id:
             page.show_record(record_id)
 

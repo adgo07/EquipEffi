@@ -123,6 +123,7 @@ def create_batch_evaluation_service(*, paths=None):
 def launch_qt(*, paths=None) -> int:
     from .infrastructure.runtime_logging import close_logging, install_exception_hook
     from .presentation.qt.app import run
+    from .infrastructure.external_launch import external_launch_environment
     import sys
 
     from .infrastructure.persistence.app_data_paths import AppDataPaths
@@ -136,7 +137,8 @@ def launch_qt(*, paths=None) -> int:
     previous = install_exception_hook(logger)
     try:
         return run(service, logger, analysis, batch=batch,
-                   data_location=resolved.root)
+                   data_location=resolved.root,
+                   external_launch_context=external_launch_environment)
     finally:
         sys.excepthook = previous
         close_logging(logger)
