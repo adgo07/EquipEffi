@@ -34,13 +34,17 @@ class NativeBuildTests(unittest.TestCase):
                     executable.parent.mkdir(parents=True)
                     executable.write_bytes(b"native executable")
                     return SimpleNamespace(returncode=0)
-                self.assertEqual(command, [str(executable), "--status"])
+                self.assertEqual(command[:2], [str(executable), "--status"])
+                self.assertEqual(command[2], "--status-file")
                 self.assertTrue(kwargs["text"])
                 self.assertEqual(kwargs["encoding"], "utf-8")
                 self.assertEqual(kwargs["env"]["PYTHONIOENCODING"], "utf-8")
+                Path(command[3]).write_text(
+                    json.dumps(status_payload, ensure_ascii=False), encoding="utf-8"
+                )
                 return SimpleNamespace(
                     returncode=0,
-                    stdout=json.dumps(status_payload, ensure_ascii=False),
+                    stdout="this must not be parsed as the status JSON",
                     stderr="",
                 )
 
@@ -102,6 +106,7 @@ class NativeBuildTests(unittest.TestCase):
                 path_separator=";",
             )
         self.assertIn("--onedir", command)
+        self.assertIn("--windowed", command)
         self.assertIn("--collect-submodules", command)
         data_args = [command[index + 1] for index, item in enumerate(command[:-1]) if item == "--add-data"]
         expected_args = set()
@@ -128,6 +133,7 @@ class NativeBuildTests(unittest.TestCase):
         self.assertTrue(any(f"{ROOT / 'src' / 'equipeffi' / 'resources' / 'standards' / 'pump.json'}:" in item for item in data_args))
         self.assertEqual(executable.name, "equipeffi")
         self.assertNotEqual(executable.suffix.lower(), ".exe")
+        self.assertNotIn("--windowed", command)
 
     def test_native_package_is_stable_and_contains_report(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -3,6 +3,8 @@ from __future__ import annotations
 from contextlib import redirect_stdout
 from io import StringIO
 import json
+from pathlib import Path
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -47,6 +49,24 @@ class EntrypointTests(unittest.TestCase):
                 self.assertTrue(profile["available"])
                 self.assertEqual(profile["support_status"], "SUPPORTED")
                 self.assertTrue(profile["pack_id"])
+
+    def test_status_file_works_without_stdout(self):
+        payload = {"ready": True, "desktop": {"surface": "PySide6 Qt"}}
+        with tempfile.TemporaryDirectory() as tmp:
+            status_file = Path(tmp) / "nested" / "status.json"
+            with patch("equipeffi.entrypoint._runtime_status", return_value=payload), \
+                    patch("sys.stdout", None):
+                self.assertEqual(
+                    main(["--status", "--status-file", str(status_file)]), 0
+                )
+            self.assertEqual(
+                json.loads(status_file.read_text(encoding="utf-8")), payload
+            )
+
+    def test_status_file_requires_status_mode(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(SystemExit):
+                main(["--status-file", str(Path(tmp) / "status.json")])
 
     def test_qt_and_status_cannot_be_combined(self):
         for argv in (["--qt", "--status"], ["--gui", "--status"]):

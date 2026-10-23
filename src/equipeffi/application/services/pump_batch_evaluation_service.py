@@ -38,6 +38,7 @@ from typing import Any, Callable
 from uuid import uuid4
 
 from ..ports.batch_workbook import BatchRowOutcome, BatchSourceRow
+from ..lifecycle import AnalysisError, BatchRecordSnapshot
 from .centrifugal_pump_analysis_service import (
     CentrifugalPumpAnalysisService,
     PUMP_CATEGORIES,
@@ -272,6 +273,23 @@ class PumpBatchEvaluationService:
         self.app_version = app_version
         self._record_id_factory = record_id_factory or (
             lambda: f"BATCH-{uuid4().hex[:12]}")
+
+    def list_batch_records(self, limit: int = 50) -> list[BatchRecordSnapshot]:
+        """只读列出最近批次摘要；limit 由调用方递增以继续访问更早记录。"""
+
+        if self.batch_repository is None:
+            return []
+        return self.batch_repository.list_batch_records(limit=limit)
+
+    def open_batch_record(self, batch_record_id: str) -> BatchRecordSnapshot:
+        """按原样读取一条不可变批次快照，不重算、不改写历史。"""
+
+        if self.batch_repository is None:
+            raise AnalysisError("未装配批次记录仓储，无法打开历史批次")
+        snapshot = self.batch_repository.load_batch_record(batch_record_id)
+        if snapshot is None:
+            raise AnalysisError(f"批次记录不存在: {batch_record_id}")
+        return snapshot
 
     # -- 空白模板一次输出 --------------------------------------------------
 

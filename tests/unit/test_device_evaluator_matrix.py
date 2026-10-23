@@ -718,35 +718,26 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         )
         self.assertTrue(all(item.get("no_data") is not True for item in result.lookups))
 
-    def test_pmsm_voltage_just_above_1140v_does_not_default_to_low_voltage_table(self):
-        """1140 V以上且未命中3/6/10 kV离散组时必须范围外，不能默认低压表。"""
+    def test_pmsm_unknown_explicit_voltage_group_does_not_default_to_low_voltage_table(self):
+        """领域输入只接受明确电压组；未知组不能静默回退到≤1140 V标准表。"""
         result = self.evaluate("motor_pmsm", {
             "category": "异步起动永磁同步电动机",
-            "rated_voltage": Decimal("1140.1"),
-            "rated_power": 5.5,
+            "voltage_group": "1140.1V",
+            "rated_power_kw": 5.5,
             "poles": 4,
             "rated_efficiency": 94,
         })
-        self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
-        self.assertIn("额定电压", result.explanation)
+        self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
+        self.assertIn("无法唯一确定永磁同步电机标准表", result.explanation)
+        self.assertEqual(result.lookups, [])
         self.assertNotEqual(result.conclusion, Conclusion.LEVEL_1)
-        self.assertTrue(result.lookups)
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["match_status"], "额定电压未命中")
-        self.assertEqual(lookup["query_conditions"]["rated_voltage_v"], "1140.1")
-        self.assertEqual(lookup["candidate_count"], 29)
-        self.assertEqual(
-            sum(item["row_count"] for item in lookup["candidate_tables"]),
-            len(lookup["data_ids"]),
-        )
-        self.assertGreater(len(lookup["data_ids"]), 0)
-
+        self.assertEqual(result.actual_metrics["额定效率_%"], Decimal("94"))
     def test_pmsm_voltage_1140v_closed_upper_boundary_keeps_lookup_context(self):
         """标准表1的≤1140 V闭上限应正常命中，并保留电压查询上下文。"""
         result = self.evaluate("motor_pmsm", {
             "category": "异步起动永磁同步电动机",
-            "rated_voltage": Decimal("1140"),
-            "rated_power": 5.5,
+            "voltage_group": "≤1140V",
+            "rated_power_kw": 5.5,
             "poles": 4,
             "rated_efficiency": Decimal("94.0"),
         })
@@ -756,7 +747,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             with self.subTest(level=level):
                 self.assertEqual(lookup["table"], "表1")
                 self.assertEqual(lookup["level"], level)
-                self.assertEqual(lookup["query_conditions"]["rated_voltage_v"], "1140")
                 self.assertEqual(lookup["query_conditions"]["voltage_group"], "≤1140V")
                 self.assertEqual(lookup["query_conditions"]["product"], "异步起动")
                 self.assertEqual(lookup["query_conditions"]["rated_power_kw"], "5.5")
@@ -767,9 +757,10 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """3 kV与IC86W应命中表2，不得回退其他冷却组，并保留原始冷却方式。"""
         result = self.evaluate("motor_pmsm", {
             "category": "异步起动永磁同步电动机",
-            "rated_voltage": Decimal("3000"),
+            "voltage_group": "3kV(3.3kV)/6kV",
             "cooling_method": "IC86W",
-            "rated_power": 200,
+            "cooling_group": "IC81W/IC86W/IC71W(IC3W7)",
+            "rated_power_kw": 200,
             "poles": 4,
             "rated_efficiency": Decimal("94.6"),
         })
@@ -779,7 +770,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             with self.subTest(level=level):
                 self.assertEqual(lookup["table"], "表2")
                 self.assertEqual(lookup["level"], level)
-                self.assertEqual(lookup["query_conditions"]["rated_voltage_v"], "3000")
                 self.assertEqual(lookup["query_conditions"]["voltage_group"], "3kV(3.3kV)/6kV")
                 self.assertEqual(lookup["query_conditions"]["cooling_method"], "IC86W")
                 self.assertEqual(lookup["query_conditions"]["cooling_group"], "IC81W/IC86W/IC71W(IC3W7)")
@@ -792,9 +782,10 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """6 kV与IC416应命中表3，并保留表号、页码和冷却分组证据。"""
         result = self.evaluate("motor_pmsm", {
             "category": "异步起动永磁同步电动机",
-            "rated_voltage": Decimal("6000"),
+            "voltage_group": "3kV(3.3kV)/6kV",
             "cooling_method": "IC416",
-            "rated_power": 200,
+            "cooling_group": "IC411/IC416",
+            "rated_power_kw": 200,
             "poles": 4,
             "rated_efficiency": Decimal("95.0"),
         })
@@ -805,7 +796,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
                 self.assertEqual(lookup["table"], "表3")
                 self.assertEqual(lookup["source_clause"], "表3")
                 self.assertEqual(lookup["source_pages"], [10])
-                self.assertEqual(lookup["query_conditions"]["rated_voltage_v"], "6000")
                 self.assertEqual(lookup["query_conditions"]["voltage_group"], "3kV(3.3kV)/6kV")
                 self.assertEqual(lookup["query_conditions"]["cooling_method"], "IC416")
                 self.assertEqual(lookup["query_conditions"]["cooling_group"], "IC411/IC416")
@@ -1382,6 +1372,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
     def test_boiler_full_category_and_condensing_conflict_keeps_candidates(self):
         """完整类别与独立冷凝字段冲突时不得静默套用非冷凝标准行。"""
         result = self.evaluate("boiler", {
+            "combustion_method": "室燃锅炉",
             "category": "室燃燃烧锅炉（燃气冷凝）",
             "fuel": "天然气",
             "condensing": "非冷凝",
@@ -3737,7 +3728,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             {"fuel": "天然气", "alpha": 1.1, "condition": "30000～40000 kJ/m³", "source_page": 12},
             {"fuel": "天然气", "alpha": 1.2, "condition": "34000～42000 kJ/m³", "source_page": 12},
         ]
-        ambiguous_service._pack_cache["heat_treatment"] = ambiguous_pack
         ambiguous = EVALUATOR_FACTORIES["heat_treatment"]().evaluate({
             "record_id": "TEST-heat-treatment-ambiguous-fuel",
             "category": "辊底炉", "energy_type": "天然气",
@@ -4103,35 +4093,37 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(len(standard_step["data_ids"]), 204)
 
 
-    def test_pmsm_unitless_kv_voltage_selects_medium_voltage_tables(self):
+    def test_pmsm_explicit_medium_voltage_group_selects_standard_table(self):
+        """领域契约使用明确电压组和冷却组，不依赖旧服务对裸kV值的猜测转换。"""
         result = self.evaluate("motor_pmsm", {
             "category": "异步起动永磁同步电动机",
-            "rated_voltage": 6,
-            "cooling": "IC81W",
-            "rated_power": 200,
+            "voltage_group": "3kV(3.3kV)/6kV",
+            "cooling_method": "IC81W",
+            "cooling_group": "IC81W/IC86W/IC71W(IC3W7)",
+            "rated_power_kw": 200,
             "poles": 4,
             "rated_efficiency": 95,
         })
         self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
-        normalization = next(item for item in result.trace if item.get("step_type") == "输入规范化")
-        voltage_change = next(item for item in normalization["changes"] if item.get("target_field") == "voltage_group")
-        self.assertEqual(voltage_change["normalized_voltage_v"], Decimal("6000"))
-        self.assertEqual(voltage_change["value"], "3kV(3.3kV)/6kV")
+        self.assertTrue(result.lookups)
+        for lookup in result.lookups:
+            self.assertEqual(lookup["query_conditions"]["voltage_group"], "3kV(3.3kV)/6kV")
+            self.assertEqual(lookup["query_conditions"]["cooling_group"], "IC81W/IC86W/IC71W(IC3W7)")
 
-    def test_motor_voltage_suffixes_are_not_multiplied_twice(self):
+    def test_motor_canonical_voltage_input_routes_to_standard_table_without_conversion(self):
+        """高压电动机Evaluator接收V为单位的数值字段，并按该值选表。"""
         result = self.evaluate("motor_hv", {
-            "category": "卧式电动机",
-            "rated_voltage": "6000V",
-            "cooling": "IC01",
-            "rated_power": 200,
+            "category": "卧式",
+            "rated_voltage_v": 6000,
+            "cooling_method": "IC01",
+            "rated_power_kw": 200,
             "poles": 2,
-            "rated_speed": 2980,
             "rated_efficiency": 94,
         })
         self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
-        normalization = next(item for item in result.trace if item.get("step_type") == "输入规范化")
-        voltage_change = next(item for item in normalization["changes"] if item.get("target_field") == "rated_voltage_v")
-        self.assertEqual(voltage_change["value"], Decimal("6000"))
+        self.assertEqual(result.standard_reference["table"][:2], "表1")
+        self.assertEqual(result.lookups[0]["table"][:2], "表1")
+        self.assertEqual(result.lookups[0]["data_ids"], ["GB30254-R000001"])
 
     def test_pmsm_lookup_trace_has_stable_data_ids_before_activation(self):
         """PMSM激活后也必须能追溯到表、行、维度、等级；不依赖真实包状态。"""
@@ -4497,11 +4489,11 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
     def test_heat_pump_water_heater_ten_kw_boundary_and_five_level_equality(self):
         """10 kW进入标准的另一容量档，等于5级阈值仍应判为5级。"""
         result = self.evaluate("heat_pump_water_heater", {
-            "category": "普通型",
-            "heating_method": "循环加热式",
-            "with_pump": "否",
-            "heating_capacity": 10,
-            "rated_power": 2.4,
+            "unit_type": "普通型",
+            "heating_method": "循环加热",
+            "provides_pump": "否",
+            "heating_capacity_kw": 10,
+            "rated_power_kw": 2.4,
             "cop": 3.7,
         })
         self.assertEqual(result.conclusion, Conclusion.LEVEL_5)
@@ -4513,11 +4505,11 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
     def test_heat_pump_water_heater_ten_kw_inclusive_band_is_preserved(self):
         """表1的循环加热带泵档从10 kW起含下限，证据不得写成严格大于。"""
         result = self.evaluate("heat_pump_water_heater", {
-            "category": "普通型",
-            "heating_method": "循环加热式",
-            "with_pump": "是",
-            "heating_capacity": 10,
-            "rated_power": 2.4,
+            "unit_type": "普通型",
+            "heating_method": "循环加热",
+            "provides_pump": "是",
+            "heating_capacity_kw": 10,
+            "rated_power_kw": 2.4,
             "cop": 3.6,
         })
         self.assertEqual(result.conclusion, Conclusion.LEVEL_5)
@@ -4528,11 +4520,11 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
     def test_heat_pump_water_heater_missing_cop_keeps_capacity_lookup_context(self):
         """缺少COP早退时仍须保留已命中的10 kW容量分档证据。"""
         result = self.evaluate("heat_pump_water_heater", {
-            "category": "普通型",
-            "heating_method": "循环加热式",
-            "with_pump": "是",
-            "heating_capacity": 10,
-            "rated_power": 2.4,
+            "unit_type": "普通型",
+            "heating_method": "循环加热",
+            "provides_pump": "是",
+            "heating_capacity_kw": 10,
+            "rated_power_kw": 2.4,
         })
         self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
         self.assertEqual(result.missing_fields, ["性能系数COP"])
@@ -4543,11 +4535,11 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
     def test_heat_pump_water_heater_invalid_cop_keeps_raw_value_in_lookup(self):
         """非法COP早退时保留原始文本，且不把它伪装成数值指标。"""
         result = self.evaluate("heat_pump_water_heater", {
-            "category": "普通型",
-            "heating_method": "循环加热式",
-            "with_pump": "是",
-            "heating_capacity": 10,
-            "rated_power": 2.4,
+            "unit_type": "普通型",
+            "heating_method": "循环加热",
+            "provides_pump": "是",
+            "heating_capacity_kw": 10,
+            "rated_power_kw": 2.4,
             "cop": "4．0",  # 全角小数点，当前数值解析不能可靠解释
         })
         self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
@@ -4563,11 +4555,11 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
     def test_heat_pump_water_heater_zero_cop_keeps_raw_value_in_lookup(self):
         """COP为零时保留原始零值，并明确标记非正数早退。"""
         result = self.evaluate("heat_pump_water_heater", {
-            "category": "普通型",
-            "heating_method": "循环加热式",
-            "with_pump": "是",
-            "heating_capacity": 10,
-            "rated_power": 2.4,
+            "unit_type": "普通型",
+            "heating_method": "循环加热",
+            "provides_pump": "是",
+            "heating_capacity_kw": 10,
+            "rated_power_kw": 2.4,
             "cop": 0,
         })
         self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
@@ -4587,7 +4579,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             "product_type": "风管送风式机组",
             "cooling_source": "风冷式",
             "mode": "单冷型",
-            "cooling_capacity": 7.1001,
+            "cooling_capacity_w": Decimal("7100.1"),
             "seer": 3.0,
         })
         self.assertEqual(result.conclusion, Conclusion.LEVEL_3)
@@ -4600,7 +4592,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         result = self.evaluate("duct_ac", {
             "product_type": "风管送风式机组",
             "cooling_source": "水冷式",
-            "cooling_capacity": 14.0001,
+            "cooling_capacity_w": Decimal("14000.1"),
             "iplv": 3.3,
         })
         self.assertEqual(result.conclusion, Conclusion.LEVEL_3)
@@ -4625,7 +4617,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             "product_type": "风管送风式机组",
             "cooling_source": "风冷式",
             "mode": "热泵型",
-            "cooling_capacity": 7.1,
+            "cooling_capacity_w": 7100,
             "apf": 2.9,
         })
         self.assertEqual(at_boundary.conclusion, Conclusion.LEVEL_3)
@@ -4644,7 +4636,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             "product_type": "风管送风式机组",
             "cooling_source": "风冷式",
             "mode": "热泵型",
-            "cooling_capacity": 7.1001,
+            "cooling_capacity_w": Decimal("7100.1"),
             "apf": 2.8,
         })
         self.assertEqual(above_boundary.conclusion, Conclusion.LEVEL_3)
@@ -4658,12 +4650,11 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
     def test_duct_ac_indicator_name_mismatch_does_not_silently_judge(self):
         """填写的指标名称与标准行不一致时，不能把通用值当成标准指标判级。"""
         values = {
-            "category": "风管送风式空调（热泵）机组",
-            "cooling": "风冷式",
+            "product_type": "风管送风式机组",
+            "cooling_source": "风冷式",
             "mode": "单冷型",
-            "enthalpy": "不适用",
-            "cooling_capacity": 5,
-            "rated_power": 1.2,
+            "enthalpy_difference": "不适用",
+            "cooling_capacity_w": 5000,
             # 该容量/型式标准行要求SEER；EER是错误的指标名称。
             "indicator_name": "EER",
             "indicator_value": 4.2,
@@ -4685,10 +4676,9 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             # GB 19576表1分别列出风冷式和水冷式单元式空调机；
             # 这里故意让完整类别与独立冷却方式相反。
             "category": "风冷式单元式空调机",
-            "cooling": "水冷式",
+            "cooling_source": "水冷式",
             "mode": "单冷型",
-            "cooling_capacity": 10,
-            "rated_power": 2,
+            "cooling_capacity_w": 10000,
             "indicator_name": "SEER",
             "indicator_value": 4.5,
         })
@@ -4709,7 +4699,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """GB 19576表1水冷单元式空调机低于7 kW不在标准容量范围。"""
         result = self.evaluate("unitary_ac", {
             "category": "水冷式单元式空调机",
-            "cooling_capacity": 6.9999,
+            "cooling_capacity_w": Decimal("6999.9000"),
             "iplv": 4.0,
         })
         self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
@@ -4740,7 +4730,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """水冷单元式空调机要求IPLV时，错误SEER不能被静默判级。"""
         result = self.evaluate("unitary_ac", {
             "category": "水冷式单元式空调机",
-            "cooling_capacity": 10,
+            "cooling_capacity_w": 10000,
             "indicator_name": "SEER",
             "indicator_value": 4.5,
         })
@@ -4767,7 +4757,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """水冷单元式空调机IPLV缺失时保留容量查表证据并明确早退状态。"""
         result = self.evaluate("unitary_ac", {
             "category": "水冷式单元式空调机",
-            "cooling_capacity": 10,
+            "cooling_capacity_w": 10000,
         })
         self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
         self.assertEqual(result.missing_fields, ["IPLV"])
@@ -4797,7 +4787,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """GB 19576表1水冷IPLV等于3级阈值时应判为3级。"""
         result = self.evaluate("unitary_ac", {
             "category": "水冷式单元式空调机",
-            "cooling_capacity": 10,
+            "cooling_capacity_w": 10000,
             "iplv": 3.3,
         })
         self.assertEqual(result.conclusion, Conclusion.LEVEL_3)
@@ -4827,7 +4817,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         result = self.evaluate("unitary_ac", {
             "category": "风冷式单元式空调机",
             "mode": "单冷型",
-            "cooling_capacity": 10,
+            "cooling_capacity_w": 10000,
             "seer": 2.9,
         })
         self.assertEqual(result.conclusion, Conclusion.LEVEL_3)
@@ -4858,7 +4848,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         result = self.evaluate("unitary_ac", {
             "category": "风冷式单元式空调机",
             "mode": "单冷型",
-            "cooling_capacity": 10,
+            "cooling_capacity_w": 10000,
             "seer": 2.89,
         })
         self.assertEqual(result.conclusion, Conclusion.NOT_COMPLIANT)
@@ -4875,7 +4865,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         at_boundary = self.evaluate("unitary_ac", {
             "category": "风冷式单元式空调机",
             "mode": "单冷型",
-            "cooling_capacity": 14,
+            "cooling_capacity_w": 14000,
             "seer": 2.9,
         })
         self.assertEqual(at_boundary.conclusion, Conclusion.LEVEL_3)
@@ -4894,7 +4884,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         above_boundary = self.evaluate("unitary_ac", {
             "category": "风冷式单元式空调机",
             "mode": "单冷型",
-            "cooling_capacity": 14.0001,
+            "cooling_capacity_w": Decimal("14000.1"),
             "seer": 2.7,
         })
         self.assertEqual(above_boundary.conclusion, Conclusion.LEVEL_3)
@@ -4914,7 +4904,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """GB 19576表1计算机房风冷AEER等于3级阈值时应判为3级。"""
         result = self.evaluate("unitary_ac", {
             "category": "计算机和数据处理机房用单元式空调机",
-            "cooling": "风冷式",
+            "cooling_source": "风冷式",
             "aeer": 3.0,
         })
         self.assertEqual(result.conclusion, Conclusion.LEVEL_3)
@@ -4941,7 +4931,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """GB 19576表1计算机房水冷AEER等于3级阈值时应判为3级。"""
         result = self.evaluate("unitary_ac", {
             "category": "计算机和数据处理机房用单元式空调机",
-            "cooling": "水冷式",
+            "cooling_source": "水冷式",
             "aeer": 3.5,
         })
         self.assertEqual(result.conclusion, Conclusion.LEVEL_3)
@@ -4968,7 +4958,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """GB 19576表1计算机房水冷AEER低于3级阈值时应判为未达标。"""
         result = self.evaluate("unitary_ac", {
             "category": "计算机和数据处理机房用单元式空调机",
-            "cooling": "水冷式",
+            "cooling_source": "水冷式",
             "aeer": 3.49,
         })
         self.assertEqual(result.conclusion, Conclusion.NOT_COMPLIANT)
@@ -4983,7 +4973,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """GB 19576表1计算机房风冷AEER低于3级阈值时应判为未达标。"""
         result = self.evaluate("unitary_ac", {
             "category": "计算机和数据处理机房用单元式空调机",
-            "cooling": "风冷式",
+            "cooling_source": "风冷式",
             "aeer": 2.99,
         })
         self.assertEqual(result.conclusion, Conclusion.NOT_COMPLIANT)
@@ -5106,7 +5096,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         at_boundary = self.evaluate("unitary_ac", {
             "category": "风冷式单元式空调机",
             "mode": "热泵型",
-            "cooling_capacity": 14,
+            "cooling_capacity_w": 14000,
             "apf": 2.7,
         })
         self.assertEqual(at_boundary.conclusion, Conclusion.LEVEL_3)
@@ -5124,7 +5114,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         above_boundary = self.evaluate("unitary_ac", {
             "category": "风冷式单元式空调机",
             "mode": "热泵型",
-            "cooling_capacity": 14.0001,
+            "cooling_capacity_w": Decimal("14000.1"),
             "apf": 2.6,
         })
         self.assertEqual(above_boundary.conclusion, Conclusion.LEVEL_3)
@@ -5139,10 +5129,10 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
     def test_multi_split_ac_auxiliary_indicator_name_mismatch_is_not_treated_as_missing_only(self):
         """编号辅助指标填错名称时，应保留该输入并明确指出通道不匹配。"""
         result = self.evaluate("multi_split_ac", {
-            "category": "风冷式单冷型多联机",
-            "cooling_capacity": 10,
+            "category": "风冷单冷",
+            "cooling_capacity_w": 10000,
             "rated_power": 2,
-            "external_static": 0,
+            "external_static_pressure_pa": 0,
             "indicator1_name": "SEER",
             "indicator1_value": 5.5,
             # 表1第二通道要求EERmin，这里故意填写COP(-12℃)。
@@ -5165,7 +5155,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """GB 21454表1的SEER与EERmin必须按同一等级AND判定。"""
         base = {
             "category": "风冷单冷",
-            "cooling_capacity": 10,
+            "cooling_capacity_w": 10000,
             "seer": 5.5,
         }
         level1 = self.evaluate("multi_split_ac", {**base, "eer": 3.6})
@@ -5208,7 +5198,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """GB 21454表4的HSPF、-12℃COP和-20℃COP均为AND门槛。"""
         base = {
             "category": "低温机组",
-            "heating_capacity": 10,
+            "heating_capacity_w": 10000,
             "hspf": 3.4,
             "cop_minus12": 2.2,
             "cop_minus20": 1.8,
@@ -5256,11 +5246,10 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
     def test_multi_split_positive_static_pressure_requires_standard_correction(self):
         base = {
             "category": "风冷单冷",
-            "cooling_capacity": 10,
-            "rated_power": 2,
-            "external_static": 120,
-            "primary_metric_value": 5.5,
-            "eer_min_value": 3.6,
+            "cooling_capacity_w": 10000,
+            "external_static_pressure_pa": 120,
+            "seer": 5.5,
+            "eer": 3.6,
         }
         missing = self.evaluate("multi_split_ac", base)
         self.assertEqual(missing.conclusion, Conclusion.UNABLE_TO_JUDGE)
@@ -5292,10 +5281,10 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
     def test_multi_split_static_pressure_boundaries_keep_standard_context(self):
         base = {
             "category": "风冷单冷",
-            "cooling_capacity": 10,
-            "external_static": 0,
-            "primary_metric_value": 5.5,
-            "eer_min_value": 3.6,
+            "cooling_capacity_w": 10000,
+            "external_static_pressure_pa": 0,
+            "seer": 5.5,
+            "eer": 3.6,
         }
         # 静压为0时无需引用修正结果，原始主指标可以直接判定。
         zero = self.evaluate("multi_split_ac", base)
@@ -5319,14 +5308,14 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             with self.subTest(field=field, value=value):
                 result = self.evaluate("multi_split_ac", {
                     **base,
-                    "external_static": 120,
+                    "external_static_pressure_pa": 120,
                     field: value,
                 })
                 self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
                 self.assertIn(reason, result.explanation)
                 self.assertEqual(result.lookups[-1]["data_id"], "GB21454-T1-01")
 
-        invalid_static = self.evaluate("multi_split_ac", {**base, "external_static": "bad"})
+        invalid_static = self.evaluate("multi_split_ac", {**base, "external_static_pressure_pa": "bad"})
         self.assertEqual(invalid_static.conclusion, Conclusion.UNABLE_TO_JUDGE)
         self.assertIn("机外静压不是有效数值", invalid_static.explanation)
         self.assertEqual(invalid_static.lookups[-1]["data_id"], "GB21454-T1-01")
@@ -5359,7 +5348,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             "product_type": "直接蒸发式全新风机组",
             "cooling_source": "水冷式(水环式)",
             "enthalpy_difference": "小焓差",
-            "cooling_capacity": 14.0001,
+            "cooling_capacity_w": Decimal("14000.1000"),
             "eer": 4.3,
         })
         self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
@@ -5380,12 +5369,11 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
 
     def test_hvac_matched_missing_metric_retains_standard_row_lookup(self):
         result = self.evaluate("duct_ac", {
-            "category": "风管送风式空调（热泵）机组",
-            "cooling": "风冷式",
+            "product_type": "风管送风式机组",
+            "cooling_source": "风冷式",
             "mode": "单冷型",
-            "enthalpy": "不适用",
-            "cooling_capacity": 5,
-            "rated_power": 1.2,
+            "enthalpy_difference": "不适用",
+            "cooling_capacity_w": 5000,
         })
         self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
         self.assertIn("SEER", result.missing_fields)
@@ -5528,48 +5516,48 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
                 "category": "蒸气压缩循环冷水（热泵）机组-舒适型", "product_standard": "GB/T 18430.1",
                 "unit_type": "舒适型", "source": "水冷式",
                 "evaluation_system": "综合部分负荷/季节性能指标体系（表1）",
-                "cooling_capacity": 100, "primary_metric_value": 6.0, "aux_metric1_value": 4.2,
+                "cooling_capacity_kw": 100, "primary_metric_value": 6.0, "aux_metric1_value": 4.2,
             }, "表1", Conclusion.LEVEL_1),
             ({
                 "category": "蒸气压缩循环冷水（热泵）机组-舒适型", "product_standard": "GB/T 18430.1",
                 "unit_type": "舒适型", "source": "水冷式",
                 "evaluation_system": "制冷性能系数COPc指标体系（表2）",
-                "cooling_capacity": 100, "primary_metric_value": 5.3,
+                "cooling_capacity_kw": 100, "primary_metric_value": 5.3,
             }, "表2", Conclusion.LEVEL_1),
             ({
                 "category": "低环境温度空气源热泵（冷水）机组", "product_standard": "GB/T 25127.2",
                 "unit_type": "地板采暖型", "source": "空气源",
                 "evaluation_system": "对应产品类别指标体系（表3～表8）",
-                "heating_capacity": 20, "primary_metric_value": 3.6,
+                "heating_capacity_kw": 20, "primary_metric_value": 3.6,
                 "aux_metric1_value": 2.0, "aux_metric2_value": 2.3,
             }, "表3", Conclusion.LEVEL_1),
             ({
                 "category": "水（地）源热泵机组", "product_standard": "GB/T 19409",
                 "unit_type": "冷热水型-热泵型", "source": "水环式",
                 "evaluation_system": "对应产品类别指标体系（表3～表8）",
-                "cooling_capacity": 200, "primary_metric_value": 5.1,
+                "cooling_capacity_kw": 200, "primary_metric_value": 5.1,
             }, "表4", Conclusion.LEVEL_1),
             ({
                 "category": "溴化锂吸收式冷（温）水机组", "product_standard": "GB/T 18431",
                 "unit_type": "饱和蒸汽压力0.4MPa", "source": "饱和蒸汽",
-                "evaluation_system": "对应产品类别指标体系（表3～表8）", "cooling_capacity": 100, "primary_metric_value": 1.05,
+                "evaluation_system": "对应产品类别指标体系（表3～表8）", "cooling_capacity_kw": 100, "primary_metric_value": 1.05,
             }, "表5", Conclusion.LEVEL_1),
             ({
                 "category": "蒸气压缩循环高温热泵机组", "product_standard": "GB/T 25861",
                 "unit_type": "H1a", "source": "水源",
-                "evaluation_system": "对应产品类别指标体系（表3～表8）", "heating_capacity": 100, "primary_metric_value": 4.0,
+                "evaluation_system": "对应产品类别指标体系（表3～表8）", "heating_capacity_kw": 100, "primary_metric_value": 4.0,
             }, "表6", Conclusion.LEVEL_1),
             ({
                 "category": "间接蒸发冷却冷水机组", "product_standard": "JB/T 14642",
                 "unit_type": "标准机型", "source": "不适用",
                 "evaluation_system": "对应产品类别指标体系（表3～表8）",
-                "cooling_capacity": 80, "primary_metric_value": 17, "aux_metric1_value": 9,
+                "cooling_capacity_kw": 80, "primary_metric_value": 17, "aux_metric1_value": 9,
             }, "表7", Conclusion.LEVEL_1),
             ({
                 "category": "一体式冷水（热泵）机组", "product_standard": "JB/T 12839",
                 "unit_type": "风冷式", "source": "不适用",
                 "evaluation_system": "对应产品类别指标体系（表3～表8）",
-                "cooling_capacity": 50, "primary_metric_value": 4.4, "aux_metric1_value": 2.7,
+                "cooling_capacity_kw": 50, "primary_metric_value": 4.4, "aux_metric1_value": 2.7,
             }, "表8", Conclusion.LEVEL_1),
         ]
         for values, table, expected in cases:
@@ -5589,8 +5577,8 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             "evaluation_system": "制冷性能系数COPc指标体系（表2）",
             "primary_metric_value": 5.5,
         }
-        at_300 = self.evaluate("heat_pump_chiller", {**base, "cooling_capacity": 300})
-        above_300 = self.evaluate("heat_pump_chiller", {**base, "cooling_capacity": 300.01})
+        at_300 = self.evaluate("heat_pump_chiller", {**base, "cooling_capacity_kw": 300})
+        above_300 = self.evaluate("heat_pump_chiller", {**base, "cooling_capacity_kw": 300.01})
         self.assertEqual(at_300.limits["1级COPc"], 5.3)
         self.assertEqual(above_300.limits["1级COPc"], 5.8)
         self.assertNotEqual(at_300.lookups[-1].get("data_id"), above_300.lookups[-1].get("data_id"))
@@ -5602,7 +5590,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             "product_standard": "GB/T 18430.1",
             "unit_type": "舒适型", "source": "水冷式",
             "evaluation_system": "制冷性能系数COPc指标体系（表2）",
-            "cooling_capacity": 100,
+            "cooling_capacity_kw": 100,
         }
         # 1级已经由COPc确定时，不应强制索要只约束3级的替代指标。
         level1 = self.evaluate("heat_pump_chiller", {**base, "primary_metric_value": 5.3})

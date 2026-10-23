@@ -22,8 +22,9 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from contextlib import nullcontext
 
-from PySide6.QtCore import QObject, QThread, QUrl, Signal
+from PySide6.QtCore import QObject, QThread, QUrl, Qt, Signal
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import (
     QFileDialog,
@@ -95,16 +96,18 @@ class BatchPage(QWidget):
     LAST_DIR_SETTING = "last.directory"
 
     def __init__(self, batch: PumpBatchEvaluationService, navigator=None,
-                 settings=None):
+                 settings=None, external_launch_context=None):
         super().__init__()
         self.batch = batch
         self.navigator = navigator
         #: 可选的设置服务：只用于记住上次选择的目录
         self.settings = settings
+        self._external_launch_context = external_launch_context or nullcontext
         self.last_result = None
         #: 后台执行状态（None 表示空闲）
         self._thread = None
         self._worker = None
+        self._outcome_received = False
         self._build()
 
     # -- 构建 --------------------------------------------------------------
@@ -158,6 +161,10 @@ class BatchPage(QWidget):
         # 自动检查结果（不再需要用户点一次「导入检查」）
         self.check_label = QLabel("选择 Excel 后会自动检查。")
         self.check_label.setWordWrap(True)
+        self.check_label.setTextFormat(Qt.TextFormat.PlainText)
+        self.check_label.setTextInteractionFlags(
+            Qt.TextInteractionFlag.TextSelectableByMouse
+        )
         picker_layout.addWidget(self.check_label)
 
         # 输出位置：默认自动生成，只有想改时才展开
@@ -344,12 +351,29 @@ class BatchPage(QWidget):
         self.open_result_button.setEnabled(False)
         self.open_folder_button.setEnabled(False)
 
+    @staticmethod
+    def _completion_message(result) -> str:
+        if result.batch_record_saved:
+            return "批量评价已完成，结果工作簿和批次总结记录均已保存。"
+        return (
+            "批量评价已完成，但批次总结记录保存失败；详情见下方提示。"
+        )
+
     def result_path(self) -> Path | None:
         """上次成功生成的结果工作簿路径（没有则 None）。"""
 
         result = self.last_result
         path = getattr(result, "result_workbook", None) if result is not None else None
         return Path(path) if path else None
+
+    def _try_open_path(self, path: Path) -> bool:
+        # 装配层注入打包环境清理；界面不依赖平台实现。
+        try:
+            with self._external_launch_context():
+                return _open_path(path)
+        except Exception:
+            logging.getLogger("equipeffi.qt.batch").exception("系统打开失败：%s", path)
+            return False
 
     def open_result(self) -> bool:
         """用系统默认程序打开结果工作簿。"""
@@ -358,7 +382,14 @@ class BatchPage(QWidget):
         if path is None or not path.exists():
             self.check_label.setText("还没有可打开的结果文件，请先完成一次批量评价。")
             return False
-        return _open_path(path)
+        if self._try_open_path(path):
+            self.check_label.setText("已请求系统打开结果工作簿。")
+            return True
+        self.check_label.setText(
+            "系统未能打开结果工作簿。请检查文件关联或访问权限，"
+            f"并在文件资源管理器中手动打开：{path}"
+        )
+        return False
 
     def open_result_folder(self) -> bool:
         """在文件管理器中定位结果工作簿（只打开目录，不做最近文件系统）。"""
@@ -367,7 +398,14 @@ class BatchPage(QWidget):
         if path is None or not path.exists():
             self.check_label.setText("还没有可打开的结果文件，请先完成一次批量评价。")
             return False
-        return _open_path(path.parent)
+        if self._try_open_path(path.parent):
+            self.check_label.setText("已请求系统打开结果所在文件夹。")
+            return True
+        self.check_label.setText(
+            "系统未能打开结果所在文件夹。请在文件资源管理器地址栏中粘贴此路径，"
+            f"并检查访问权限：{path.parent}"
+        )
+        return False
 
     # -- 执行 --------------------------------------------------------------
 
@@ -387,6 +425,7 @@ class BatchPage(QWidget):
             return None
         target = self.resolve_target()
         self.last_result = None
+        self._reset_quick_actions()
         try:
             result = self.batch.evaluate_workbook(Path(source), destination=target)
         except Exception as error:  # noqa: BLE001 - UI 只提示，真实原因进日志
@@ -394,6 +433,7 @@ class BatchPage(QWidget):
 
             logging.getLogger("equipeffi.qt.batch").exception("批量评价失败")
             self._show_error(f"{SYSTEM_FAILURE_TEXT}\n（{type(error).__name__}）")
+            self.check_label.setText("批量评价失败。请查看下方提示，修正后重试。")
             return None
         self.last_result = result
         self._render(result)
@@ -401,12 +441,13 @@ class BatchPage(QWidget):
         available = bool(path is not None and path.exists())
         self.open_result_button.setEnabled(available)
         self.open_folder_button.setEnabled(available)
+        self.check_label.setText(self._completion_message(result))
         return result
 
     def start_run(self):
         """用户点击「批量评价」：在**后台线程**执行，主线程保持可响应。"""
 
-        if self.busy:
+        if self.busy or self._thread is not None:
             return None
         source = self.source_edit.text().strip()
         if not source:
@@ -414,6 +455,8 @@ class BatchPage(QWidget):
             return None
         target = self.resolve_target()
         self.last_result = None
+        self._reset_quick_actions()
+        self._outcome_received = False
         self._set_busy(True, "正在批量评价，请稍候…（大批量可能需要几分钟）")
 
         thread = QThread(self)
@@ -431,7 +474,7 @@ class BatchPage(QWidget):
 
     def _set_busy(self, busy: bool, message: str = "") -> None:
         self.busy = busy
-        self.run_button.setEnabled(not busy)
+        self.run_button.setEnabled(not busy and self._thread is None)
         if message:
             self.check_label.setText(message)
 
@@ -443,15 +486,22 @@ class BatchPage(QWidget):
         available = bool(path is not None and path.exists())
         self.open_result_button.setEnabled(available)
         self.open_folder_button.setEnabled(available)
-        self._set_busy(False)
+        self._outcome_received = True
+        self._set_busy(self._thread is not None, self._completion_message(result))
 
     def _on_failed(self, error_name: str) -> None:
         self._show_error(f"{SYSTEM_FAILURE_TEXT}\n（{error_name}）")
-        self._set_busy(False)
+        self._outcome_received = True
+        self._set_busy(
+            self._thread is not None,
+            "批量评价失败。请查看下方提示，修正后重试。",
+        )
 
     def _on_thread_finished(self) -> None:
         self._thread = None
         self._worker = None
+        if self._outcome_received:
+            self._set_busy(False)
         self.background_idle.emit()
 
     def has_active_run(self) -> bool:

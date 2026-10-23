@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import tempfile
 import zipfile
 from typing import Sequence
 
@@ -116,6 +117,7 @@ def build_native_command(
         "--noconfirm",
         "--clean",
         "--onedir",
+        *(["--windowed"] if separator == ";" else []),
         "--name",
         name,
         "--distpath",
@@ -169,20 +171,31 @@ def build_native(
     # 该诊断不会创建 QApplication，也不会迁移或写入用户数据库。
     try:
         status_environment = os.environ.copy()
-        # 冻结的 Python 程序将诊断 JSON 写到管道时也使用 UTF-8，
-        # 与下方显式解码保持一致，避免 Windows 系统代码页误解中文。
         status_environment["PYTHONIOENCODING"] = "utf-8"
-        status = subprocess.run(
-            [str(executable), "--status"],
-            cwd=str(Path(root).resolve()),
-            check=False,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            env=status_environment,
-            timeout=45,
-        )
-        status_payload = json.loads(status.stdout)
+        # windowed executable 的 sys.stdout/sys.stderr 为 None；状态通过专用文件
+        # 回传，避免构建核验依赖控制台管道。
+        with tempfile.TemporaryDirectory(
+                prefix="equipeffi-native-status-"
+            ) as status_dir:
+            status_file = Path(status_dir) / "status.json"
+            status = subprocess.run(
+                [str(executable), "--status", "--status-file", str(status_file)],
+                cwd=str(Path(root).resolve()),
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                env=status_environment,
+                timeout=45,
+            )
+            if not status_file.is_file():
+                detail = status.stderr.strip() or status.stdout.strip()
+                suffix = f"；子进程输出：{detail}" if detail else ""
+                raise RuntimeError(
+                    "打包后的 --status 未生成状态文件 "
+                    f"（返回码 {status.returncode}）{suffix}"
+                )
+            status_payload = json.loads(status_file.read_text(encoding="utf-8"))
         desktop = status_payload.get("desktop", {})
         qt_capable = (
             isinstance(desktop, dict)
@@ -199,7 +212,8 @@ def build_native(
         }
         status_error = ""
         if not status_ready:
-            status_error = status.stderr.strip() or status.stdout.strip() or f"--status返回码{status.returncode}"
+            detail = status.stderr.strip() or status.stdout.strip()
+            status_error = detail or f"--status返回码{status.returncode}"
     except Exception as exc:  # 构建可保留诊断结果，由发行审计阻止不完整产物
         qt_capable = False
         status_ready = False

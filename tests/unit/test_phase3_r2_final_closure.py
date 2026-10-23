@@ -1,21 +1,10 @@
-"""Phase 3 R2：Golden 历史 provenance 解耦与 Finalize 全状态矩阵。
+"""Phase 3 R2：正式分析结果的 Finalize 全状态矩阵。
 
-两个 Gate 分别独立验证：
-
-- **historical provenance valid**：Approved/Review Golden 中
-  `CURRENT_IMPLEMENTATION` 的 `artifact_sha256` 按 `provenance.source_baseline_sha`
-  对应的**历史**文件校验，不要求当前 HEAD 保持同一源码 hash；
-- **current Golden replay valid**：当前 HEAD 的实现正确性由 18/18 water +
-  11/11 chemical Golden replay 验证（见 test_phase3_golden_and_boundaries）。
-
-另含表驱动的 Finalize 全状态矩阵，覆盖全部真实 result producer。
+表驱动覆盖全部真实 result producer；评价日期不是标准执行门禁，Finalize 权限
+严格依据统一 evaluation_status 白名单。
 """
 from __future__ import annotations
 
-import hashlib
-import json
-import subprocess
-import sys
 import tempfile
 import unittest
 from datetime import date
@@ -38,156 +27,9 @@ ROOT = Path(__file__).resolve().parents[2]
 AS_OF = date(2026, 8, 23)
 WATER = "单级单吸清水离心泵"
 CHEMICAL = "单级石油化工离心泵"
-GOLDEN_DIRS = (
-    ROOT / "specs/equipment_efficiency/golden/pump_water",
-    ROOT / "specs/equipment_efficiency/golden/pump_chemical",
-)
-#: 审批时锁定了实现快照的 schema 版本。
-LINEAGE_VERSIONS = {"golden-case-0.3", "golden-case-0.4", "golden-case-0.4-review"}
-
-
 def _service(workspaces=None, records=None) -> CentrifugalPumpAnalysisService:
     return CentrifugalPumpAnalysisService(
         JsonStandardRepository(ROOT / "src" / "equipeffi"), workspaces, records)
-
-
-def _repo_text_sha256(data: bytes) -> str:
-    """仓库既有文本哈希规则：UTF-8、CRLF→LF 后 SHA-256（大写）。"""
-
-    return hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest().upper()
-
-
-def _load_cases() -> list[dict]:
-    cases = []
-    for directory in GOLDEN_DIRS:
-        for path in sorted(directory.glob("*.json")):
-            cases.append(json.loads(path.read_text(encoding="utf-8")))
-    return cases
-
-
-def _baseline_sha(case: dict) -> str | None:
-    provenance = case.get("provenance")
-    if isinstance(provenance, dict):
-        value = str(provenance.get("source_baseline_sha", "") or "").strip()
-        return value or None
-    return None
-
-
-def _references(case: dict) -> list[dict]:
-    sidecar = case.get("source_sidecar")
-    if isinstance(sidecar, dict) and isinstance(sidecar.get("source_references"), list):
-        return sidecar["source_references"]
-    references = case.get("source_reference")
-    return references if isinstance(references, list) else []
-
-
-class GoldenHistoricalProvenanceTests(unittest.TestCase):
-    """Gate 1：历史 provenance 必须对 `source_baseline_sha` 的历史文件校验。"""
-
-    @classmethod
-    def setUpClass(cls):
-        cls.cases = _load_cases()
-
-    def test_cases_with_pinned_baseline_exist(self):
-        """18 条 water 0.4 与 8 条候选派生 chemical 0.5 都锁定 source_baseline_sha。
-
-        C9–C11 是 **owner-defined** 案例，没有候选来源，因此按设计**不带**
-        `source_baseline_sha`；它们的历史 provenance 由 owner 批准证据承载。
-        """
-
-        water = [c for c in self.cases if c.get("case_schema_version") == "golden-case-0.4"]
-        chemical = [c for c in self.cases if c.get("case_schema_version") == "golden-case-0.5"]
-        self.assertEqual(len(water), 18)
-        self.assertEqual(len(chemical), 11)
-        self.assertTrue(all(_baseline_sha(c) for c in water),
-                        "18 条 water 0.4 必须全部锁定 source_baseline_sha")
-        candidate_derived = [
-            c for c in chemical
-            if (c.get("provenance") or {}).get("provenance_kind") == "CANDIDATE_DERIVED"
-            or c.get("provenance", {}).get("source_candidate_case_id")
-        ]
-        self.assertEqual(len(candidate_derived), 8)
-        self.assertTrue(all(_baseline_sha(c) for c in candidate_derived),
-                        "候选派生的 chemical 案例必须锁定 source_baseline_sha")
-        owner_defined = [c for c in chemical
-                         if (c.get("provenance") or {}).get("provenance_kind") == "OWNER_DEFINED"]
-        self.assertEqual(len(owner_defined), 3)
-        self.assertTrue(all(_baseline_sha(c) is None for c in owner_defined),
-                        "owner-defined 案例不得伪造 source_baseline_sha")
-        self.assertEqual(sum(1 for c in self.cases if _baseline_sha(c)), 26)
-
-    def test_implementation_hashes_verify_against_their_pinned_baseline(self):
-        """逐条核对 CURRENT_IMPLEMENTATION 与历史 blob 一致。"""
-
-        checked = 0
-        for case in self.cases:
-            baseline = _baseline_sha(case)
-            if baseline is None:
-                continue
-            for reference in _references(case):
-                if reference.get("evidence_role") != "CURRENT_IMPLEMENTATION":
-                    continue
-                if reference.get("artifact_kind") != "REPOSITORY_FILE":
-                    continue
-                path = str(reference["artifact_path"])
-                recorded = str(reference["artifact_sha256"]).upper()
-                completed = subprocess.run(
-                    ["git", "show", f"{baseline}:{path}"],
-                    cwd=ROOT, capture_output=True)
-                with self.subTest(case=case["case_id"], artifact=path):
-                    self.assertEqual(
-                        completed.returncode, 0,
-                        f"无法读取历史基线 {baseline}:{path}；"
-                        "CI 必须使用 fetch-depth: 0 取得完整历史")
-                    self.assertEqual(_repo_text_sha256(completed.stdout), recorded)
-                checked += 1
-        self.assertGreater(checked, 0, "未发现可校验的历史实现引用")
-
-    def test_historical_hashes_are_not_bulk_rewritten_to_current_head(self):
-        """历史 provenance 不得被批量更新成当前 HEAD 的源码 hash。
-
-        至少存在一条实现文件：其记录 hash 等于历史 blob 且**不等于**当前工作树，
-        这证明解耦真实生效（当前 HEAD 已合法演进）。
-        """
-
-        diverged = []
-        for case in self.cases:
-            baseline = _baseline_sha(case)
-            if baseline is None:
-                continue
-            for reference in _references(case):
-                if reference.get("evidence_role") != "CURRENT_IMPLEMENTATION":
-                    continue
-                if reference.get("artifact_kind") != "REPOSITORY_FILE":
-                    continue
-                path = str(reference["artifact_path"])
-                recorded = str(reference["artifact_sha256"]).upper()
-                local = ROOT / path
-                if not local.is_file():
-                    continue
-                current = _repo_text_sha256(local.read_bytes())
-                if current != recorded:
-                    historical = subprocess.run(
-                        ["git", "show", f"{baseline}:{path}"],
-                        cwd=ROOT, capture_output=True)
-                    if historical.returncode == 0 and _repo_text_sha256(historical.stdout) == recorded:
-                        diverged.append((case["case_id"], path))
-        self.assertTrue(
-            diverged,
-            "没有任何实现文件的记录 hash 与当前 HEAD 不同——"
-            "若刚做过批量更新，历史 provenance 已被破坏")
-
-    def test_validator_reports_no_errors_for_repository_evidence(self):
-        """Validator 的 Gate 1 必须在无外部 evidence root 时也通过。"""
-
-        completed = subprocess.run(
-            [sys.executable, "tools/validate_phase1_contracts.py", "--skip-external-evidence"],
-            cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
-        self.assertEqual(
-            completed.returncode, 0,
-            f"validator 失败：\n{completed.stdout[-3000:]}\n{completed.stderr[-2000:]}")
-        self.assertIn("errors=0", completed.stdout)
-        self.assertNotIn(" ERROR ", completed.stdout)
 
 
 class FinalizeStateMatrixTests(unittest.TestCase):

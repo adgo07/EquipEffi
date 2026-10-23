@@ -3,4 +3,5 @@ from equipeffi.entrypoint import main
 
 
 if __name__ == "__main__":
+    # 不捕获启动异常，保留 PyInstaller windowed 模式的默认异常提示。
     raise SystemExit(main())

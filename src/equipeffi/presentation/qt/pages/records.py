@@ -18,6 +18,7 @@ from PySide6.QtWidgets import (
     QListWidget,
     QListWidgetItem,
     QPushButton,
+    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -49,15 +50,18 @@ CONCLUSION_FILTERS: tuple[tuple[str, tuple[str, ...]], ...] = (
 
 #: 每页条数（保持简单，不做复杂分页框架）。
 PAGE_SIZE = 100
+BATCH_RECORD_PAGE_SIZE = 50
 
 
 class RecordsPage(QWidget):
     """正式记录历史页。"""
 
-    def __init__(self, service: CentrifugalPumpAnalysisService, navigator=None):
+    def __init__(self, service: CentrifugalPumpAnalysisService, navigator=None, *,
+                 batch=None):
         super().__init__()
         self.service = service
         self.navigator = navigator
+        self.batch_service = batch
         #: 当前已加载的**投影**（跨页累积，用于列表显示）
         self._visible: list = []
         #: 符合条件的总数（由 SQL COUNT 给出，不是"已加载条数"）
@@ -66,6 +70,10 @@ class RecordsPage(QWidget):
         self._offset = 0
         #: 已加载条数上限（供测试与提示使用）
         self._records: list = []
+        #: 批次列表按需递增加载；每次多取一条作为“还有更早记录”的哨兵。
+        self._batch_limit = BATCH_RECORD_PAGE_SIZE
+        self._batch_visible: list = []
+        self._batch_has_more = False
         self._build()
         self.refresh()
 
@@ -79,8 +87,19 @@ class RecordsPage(QWidget):
         font.setPixelSize(TOKENS.title_font_size)
         font.setBold(True)
         heading.setFont(font)
-        layout.addWidget(heading)
+        heading_row = QHBoxLayout()
+        heading_row.addWidget(heading)
+        heading_row.addStretch()
+        self.refresh_button = QPushButton("刷新")
+        self.refresh_button.clicked.connect(self.refresh)
+        heading_row.addWidget(self.refresh_button)
+        layout.addLayout(heading_row)
 
+        self.tabs = QTabWidget()
+        self.single_tab = QWidget()
+        single_layout = QVBoxLayout(self.single_tab)
+
+        single_layout.addWidget(QLabel("以下筛选仅作用于单台分析记录。"))
         filters = QHBoxLayout()
         filters.addWidget(QLabel("搜索"))
         self.search = QLineEdit()
@@ -105,10 +124,10 @@ class RecordsPage(QWidget):
         self.date_filter.setPlaceholderText("YYYY-MM-DD")
         self.date_filter.textChanged.connect(self._apply_filters)
         filters.addWidget(self.date_filter, 1)
-        layout.addLayout(filters)
+        single_layout.addLayout(filters)
 
         self.filter_summary = QLabel("")
-        layout.addWidget(self.filter_summary)
+        single_layout.addWidget(self.filter_summary)
 
         holder = QHBoxLayout()
         self.list = QListWidget()
@@ -123,42 +142,195 @@ class RecordsPage(QWidget):
         self.detail.setAlignment(Qt.AlignmentFlag.AlignTop)
         detail_layout.addWidget(self.detail)
 
-        # 技术详情渐进展示：内部 rule / data id / Numeric 配置归此处，默认真正收起。
-        # Phase 7：普通页面重点是业务详情；内部标识集中在最底部**默认折叠**的
-        # Owner Phase 8 R1 / UI03：普通产品界面**不再展示**「审计信息」区域。
-        # 底层 provenance / snapshot / hash / numeric profile / matched rule /
-        # canonical references **全部继续保存在 Record 中**，只是不在此展示。
-        # 这里保留同名的内部占位控件（不可见、不加入布局），使既有内部调用点
-        # 与测试不会因控件缺失而崩溃；它不出现在用户界面上。
+        # Owner Phase 8 R1 / UI03：普通产品界面不展示审计信息区域。
+        # 证据继续保存在 Record；这里保留不可见占位以兼容既有内部调用点。
         self.technical = QLabel("")
         self.technical.setVisible(False)
         self.technical_box = None
         detail_layout.addStretch()
         holder.addWidget(detail_group, 3)
-        layout.addLayout(holder, 1)
+        single_layout.addLayout(holder, 1)
 
         buttons = QHBoxLayout()
-        self.refresh_button = QPushButton("刷新")
-        self.refresh_button.clicked.connect(self.refresh)
-        buttons.addWidget(self.refresh_button)
         self.clear_filters_button = QPushButton("清除筛选")
         self.clear_filters_button.clicked.connect(self.clear_filters)
         buttons.addWidget(self.clear_filters_button)
-        # 简单"加载更多"：不做分页控件，不做页码跳转。
         self.load_more_button = QPushButton("加载更多")
         self.load_more_button.clicked.connect(self.load_more)
         self.load_more_button.setEnabled(False)
         buttons.addWidget(self.load_more_button)
         buttons.addStretch()
-        layout.addLayout(buttons)
+        single_layout.addLayout(buttons)
+        self.tabs.addTab(self.single_tab, "单台分析记录")
+
+        self.batch_tab = None
+        self.batch_list = None
+        self.batch_detail = None
+        self.batch_summary = None
+        self.batch_load_more_button = None
+        if self.batch_service is not None:
+            self.batch_tab = QWidget()
+            batch_layout = QVBoxLayout(self.batch_tab)
+            batch_layout.addWidget(QLabel(
+                "批次记录独立于单台分析记录，单台筛选不会影响此列表。"))
+            self.batch_summary = QLabel("尚无批量评价记录。")
+            batch_layout.addWidget(self.batch_summary)
+
+            batch_holder = QHBoxLayout()
+            self.batch_list = QListWidget()
+            self.batch_list.currentRowChanged.connect(self._on_batch_selected)
+            batch_holder.addWidget(self.batch_list, 2)
+
+            batch_detail_group = QGroupBox("批次详情（只读）")
+            batch_detail_layout = QVBoxLayout(batch_detail_group)
+            self.batch_detail = QLabel("请选择一条批次记录。")
+            self.batch_detail.setWordWrap(True)
+            self.batch_detail.setTextFormat(Qt.TextFormat.PlainText)
+            self.batch_detail.setAlignment(Qt.AlignmentFlag.AlignTop)
+            batch_detail_layout.addWidget(self.batch_detail)
+            batch_holder.addWidget(batch_detail_group, 3)
+            batch_layout.addLayout(batch_holder, 1)
+
+            batch_buttons = QHBoxLayout()
+            self.batch_load_more_button = QPushButton("加载更多批次")
+            self.batch_load_more_button.clicked.connect(
+                self.load_more_batch_records)
+            self.batch_load_more_button.setEnabled(False)
+            batch_buttons.addWidget(self.batch_load_more_button)
+            batch_buttons.addStretch()
+            batch_layout.addLayout(batch_buttons)
+            self.tabs.addTab(self.batch_tab, "批量评价记录")
+
+        layout.addWidget(self.tabs, 1)
 
     # -- 数据 ---------------------------------------------------------------
 
     def refresh(self) -> None:
-        """重新查询第一页（筛选条件下沉到 SQL）。"""
+        """刷新单台记录与批次记录；两类数据各走自身只读服务。"""
 
         self._sync_category_filter()
         self._reload()
+        self.refresh_batch_records()
+
+    def refresh_batch_records(self) -> None:
+        """重新读取最近批次；不读取工作簿，也不运行评价器。"""
+
+        if self.batch_service is None:
+            return
+        self._batch_limit = BATCH_RECORD_PAGE_SIZE
+        self._load_batch_records()
+
+    def load_more_batch_records(self) -> None:
+        """递增读取上限，使列表中的更早批次始终可继续访问。"""
+
+        if self.batch_service is None or not self._batch_has_more:
+            return
+        self._batch_limit += BATCH_RECORD_PAGE_SIZE
+        self._load_batch_records()
+
+    def _load_batch_records(self) -> None:
+        try:
+            records = list(self.batch_service.list_batch_records(
+                limit=self._batch_limit + 1))
+        except Exception:  # noqa: BLE001 - 失败明确显示，不伪装成无历史
+            import logging
+
+            logging.getLogger("equipeffi.qt.records").exception(
+                "查询批量评价记录失败")
+            self.batch_summary.setText("读取批量评价记录失败，请稍后重试。")
+            self.batch_load_more_button.setEnabled(False)
+            return
+
+        selected_id = None
+        selected_row = self.batch_list.currentRow()
+        if 0 <= selected_row < len(self._batch_visible):
+            selected_id = self._batch_visible[selected_row].batch_record_id
+        self._batch_has_more = len(records) > self._batch_limit
+        self._batch_visible = records[:self._batch_limit]
+        self.batch_list.blockSignals(True)
+        self.batch_list.clear()
+        for record in self._batch_visible:
+            date_text = record.evaluation_date or record.created_at_utc[:10]
+            saved_at = record.created_at_utc.replace("T", " ")
+            source_name = record.source_file_name or "未记录文件名"
+            self.batch_list.addItem(QListWidgetItem(
+                f"{date_text} | {saved_at} UTC | {source_name} | "
+                f"{record.standard_code} | {record.data_row_count} 行 | "
+                f"{record.total_quantity} 台"))
+        self.batch_list.blockSignals(False)
+
+        if not self._batch_visible:
+            self.batch_detail.setText(
+                "尚无批量评价记录。完成一次 Excel 批量评价后会显示在这里。")
+        else:
+            selected_index = next(
+                (i for i, record in enumerate(self._batch_visible)
+                 if record.batch_record_id == selected_id),
+                0)
+            # setCurrentRow 会经 currentRowChanged 打开所选快照一次。
+            self.batch_list.setCurrentRow(selected_index)
+        if self._batch_has_more:
+            self.batch_summary.setText(
+                f"已显示最近 {len(self._batch_visible)} 条批次记录；"
+                "还有更早记录，可继续加载。")
+        else:
+            self.batch_summary.setText(
+                f"已显示 {len(self._batch_visible)} 条批次记录，"
+                "已全部显示。")
+        self.batch_load_more_button.setEnabled(self._batch_has_more)
+
+    def _on_batch_selected(self, row: int) -> None:
+        if row < 0 or row >= len(self._batch_visible):
+            return
+        self.show_batch_record(self._batch_visible[row].batch_record_id)
+
+    def show_batch_record(self, batch_record_id: str) -> str:
+        """显示批次原始摘要快照；只读，不触发重新评价。"""
+
+        try:
+            snapshot = self.batch_service.open_batch_record(batch_record_id)
+        except Exception:  # noqa: BLE001 - 列表项失效时保留明确错误状态
+            import logging
+
+            logging.getLogger("equipeffi.qt.records").exception(
+                "打开批量评价记录失败")
+            text = "无法读取这条批次记录，请刷新后重试。"
+            self.batch_detail.setText(text)
+            return text
+
+        summary = snapshot.summary if isinstance(snapshot.summary, dict) else {}
+        source_name = snapshot.source_file_name or "未记录"
+        result_name = snapshot.output_file_name or "未生成"
+        lines = [
+            f"采用标准：{snapshot.standard_code or '未记录'}",
+            f"工作表：{snapshot.sheet_name or '未记录'}",
+            f"评价日期：{snapshot.evaluation_date or '未记录'}",
+            f"输入工作簿：{source_name}",
+            f"结果工作簿：{result_name}",
+            f"数据行数：{snapshot.data_row_count}",
+            f"设备数量总计：{snapshot.total_quantity} 台",
+            f"完成正式评价行数：{snapshot.evaluated_count} 行",
+            f"完成正式评价数量：{snapshot.evaluated_quantity} 台",
+            f"未形成正式结论行数：{snapshot.unevaluated_count} 行",
+        ]
+        if "input_error_rows" in summary or "execution_error_rows" in summary:
+            lines.extend((
+                f"输入错误行数：{summary.get('input_error_rows', 0)} 行",
+                f"执行失败行数：{summary.get('execution_error_rows', 0)} 行",
+            ))
+        else:
+            lines.append(f"输入错误或执行失败行数：{snapshot.invalid_count} 行")
+        conclusion_quantities = summary.get("conclusion_quantities")
+        if isinstance(conclusion_quantities, dict) and conclusion_quantities:
+            distribution = "；".join(
+                f"{name} {quantity} 台"
+                for name, quantity in conclusion_quantities.items())
+            lines.append(f"正式结论分布：{distribution}")
+        if snapshot.created_at_utc:
+            lines.append(f"保存时间：{snapshot.created_at_utc}")
+        text = "\n".join(lines)
+        self.batch_detail.setText(text)
+        return text
 
     def _sync_category_filter(self) -> None:
         """泵型筛选项来自数据库里**真实出现过**的类别，不引入第二份泵型目录。"""

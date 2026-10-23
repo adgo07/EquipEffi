@@ -23,17 +23,17 @@
 
 王玮作为 GB 19762—2025 离心泵标准负责人，已于 2026-09-28T11:03:04+08:00 完成 18 条记录的具名批准。正式文件保留 review/candidate 的已审业务 payload 与来源 provenance；approval basis 和适用限制随每条正式记录保存。Golden named-human approval gate 为 RESOLVED。
 
-## 标准证据与复验
+## 标准证据与当前回归
 
-标准 PDF 不提交到 Git。证据注册表固定其 SHA-256 和相对定位符；本机复验需通过 `--external-evidence-root` 或 `EQUIPEFFI_EXTERNAL_EVIDENCE_ROOT` 提供标准目录。CI 使用 `--skip-external-evidence` 时只验证 schema、registry pins、仓库文件 hashes 和候选 provenance，并明确报告外部 PDF 字节检查已跳过。
+标准 PDF 不提交到 Git。证据注册表、Golden source sidecar 和批准记录保留标准来源、相对定位符及登记哈希作为来源证据。外部 PDF 字节与历史实现 blob 的核对属于已完成的审批/实验过程，不再随每次 CI 重复执行。
+
+当前正式回归直接验证 18 条 pump_water 0.4 与 11 条 pump_chemical 0.5 Approved Golden 的 schema、业务结论和计算 trace，并覆盖当前统一服务边界。运行命令：
 
 ```powershell
-python tools/validate_phase1_contracts.py `
-  --negative-probe `
-  --candidate-jsonl specs/equipment_efficiency/golden/pump_e2e_v0_3_candidates.jsonl `
-  --candidate-jsonl specs/equipment_efficiency/golden/pump_water_replacement_candidates_v0_1.jsonl `
-  --approval-review-dir specs/equipment_efficiency/golden/pump_water_approval_review `
-  --external-evidence-root <包含注册标准相对路径的目录>
+$env:PYTHONPATH = "src;."
+python -m unittest `
+  tests.unit.test_phase2_approved_golden `
+  tests.unit.test_phase3_golden_and_boundaries -v
 ```
 
 3 条 replacement candidate 已分别将 Canonical `stable_data_ids` 对齐到 trace T3-09、T3-10、T3-05；原始 0.3 记录没有改写，替代来源由注册表/hash validator 验证。精确表3边界由 generated boundary test 负责，首批人工 Golden 不要求重复穷举端点。该测试覆盖全部 water Canonical 行的 q_min/q_max 等值及两侧 ±1e-6；人工 review package 只保留必要代表场景，不要求新增 Q=5/Q=300 Golden。

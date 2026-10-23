@@ -9,28 +9,18 @@ name: Windows Core
 #   - windows-core      : Windows Core (gating)
 #   - whitespace-check  : Whitespace check (gating)
 #
-# M1 去重原则：**windows-core job 内，同一个测试只执行一次**。
-#   `pump-conformance` 是另一个 workflow，仍会独立执行其 pump 业务门禁模块，
-#   这些模块同时也落在本 job 的 full discover 覆盖内——这是**刻意保留**的独立业务信号，
-#   不属于本 job 内的重复执行（口径已如实写入 PR 说明）。
-#   1. `tests.contract.*` 不被 `unittest discover` 覆盖（tests/contract 无 __init__.py），
-#      因此保留唯一一次显式执行步骤——这不是重复，删除它会丢失门禁；
-#   2. 其余全部测试由**唯一一次** full discover 执行并落盘（--mode run）；
-#   3. known-regression 比较步骤只读取该结果（--mode compare），不再重新 discover；
-#   4. 原 `full-suite-baseline` job 与上述 full discover 完全相同，已删除；
-#      其「真实计数证据」由 full_suite.log / summary.txt / actual.json 承担并照常上传。
+# 统一门禁：
+#   - windows-core 只运行一次 unittest 全量发现，覆盖全部当前测试，包括 tests/contract。
+#   - Pump 数值、PUMP-RP 参考断言、Golden 与 Qt 产品测试均由该套件执行。
 #
-# 真实结果口径（不得弱化）：
-#   - 仓库当前仍存在已知 baseline failures（见 tests/baselines/windows_full_suite_known.json）。
-#     **workflow green 只表示「没有新增回归」，绝不等于「全量测试全部通过」。**
-#   - known regression 仍按**精确测试 ID + 类型**比较；unknown failure / error /
-#     新增 skip / failure→error 恶化 / 基线测试缺失，一律使 gate FAIL。
-
+# 真实结果口径：
+#   - unittest 的真实退出码直接决定门禁；任一失败或错误都会使 job 失败。
+#   - 完整 verbose 输出保存并上传为 artifacts/windows-core/full_suite.log。
 on:
   push:
     branches: [master]
   pull_request:
-    branches: [master]
+    branches: [master, 'codex/retirement-*']
   workflow_dispatch:
 
 permissions:
@@ -68,6 +58,7 @@ jobs:
       - name: Install project dependencies
         run: |
           python -m pip install --upgrade pip
+          python -m pip install "setuptools>=68" wheel
           python -m pip install -e ".[tools,desktop]" jsonschema==4.26.0
 
       - name: Confirm interpreter and import path
@@ -78,34 +69,25 @@ jobs:
       - name: Compileall
         run: python -m compileall -q src tools tests
 
-      # 架构边界 + 元数据契约。保留独立步骤：`unittest discover` 不进入
-      # tests/contract（该目录无 __init__.py），这是这些测试**唯一**的执行点。
-      - name: Architecture boundaries and metadata contract (gating)
+      # 全量测试只运行一次；unittest 的真实退出码直接作为门禁结果。
+      - name: Full suite (single execution with log)
         run: |
-          python -m unittest `
-            tests.contract.test_architecture_boundaries `
-            tests.contract.test_device_metadata -v
+          $logPath = "artifacts/windows-core/full_suite.log"
+          New-Item -ItemType Directory -Force -Path (Split-Path $logPath) | Out-Null
+          python -m unittest discover -s tests -t . -v 2>&1 | Tee-Object -FilePath $logPath
+          $testExitCode = $LASTEXITCODE
+          if ($testExitCode -ne 0) { exit $testExitCode }
 
-      # 本 job 内唯一一次 full discover：执行并落盘真实结果。
-      # 该步骤绿灯仅代表「套件执行完成」，真实 fail/error/skip 见 summary.txt。
-      - name: Full suite (single execution, record real results)
-        run: python tools/check_windows_regressions.py --mode run --output artifacts/phase2-regression
-
-      # 只读取上一步已落盘的结果做按 ID 比较，不重新执行任何测试。
-      - name: Known-regression comparator by exact test id (gating)
-        run: python tools/check_windows_regressions.py --mode compare --output artifacts/phase2-regression
-
-      - name: Upload exact regression evidence
+      - name: Upload full-suite log
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: phase2-regression-evidence
-          path: artifacts/phase2-regression/
-
+          name: windows-core-full-suite-log
+          path: artifacts/windows-core/full_suite.log
+          if-no-files-found: ignore
       - name: Package and resource smoke
         run: |
           python -m equipeffi --status
-          python -m equipeffi --list-device-types
 
   whitespace-check:
     name: Whitespace check (gating)

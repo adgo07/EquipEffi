@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from pathlib import Path
 import sys
 from typing import Sequence
 
@@ -96,17 +97,31 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--qt", action="store_true", help="启动 PySide6 Qt 桌面程序")
     parser.add_argument("--gui", action="store_true", help="启动 PySide6 Qt 桌面程序（--qt 别名）")
     parser.add_argument("--status", action="store_true", help="无界面检查 Qt、V6 模板和泵标准包可用性")
+    parser.add_argument(
+        "--status-file",
+        type=Path,
+        help="将 --status 的 JSON 写入 UTF-8 文件（适用于无控制台启动）",
+    )
     args = parser.parse_args(argv)
 
+    if args.status_file is not None and not args.status:
+        parser.error("--status-file 只能与 --status 同时使用")
+
     if args.qt or args.gui:
-        if args.status:
+        if args.status or args.status_file is not None:
             parser.error("--qt/--gui 不能与 --status 同时使用")
         from .composition import launch_qt
 
         return launch_qt()
     if args.status:
         status = _runtime_status()
-        print(json.dumps(status, ensure_ascii=False, indent=2))
+        payload = json.dumps(status, ensure_ascii=False, indent=2)
+        if args.status_file is not None:
+            status_file = args.status_file.expanduser()
+            status_file.parent.mkdir(parents=True, exist_ok=True)
+            status_file.write_text(payload + "\n", encoding="utf-8")
+        if sys.stdout is not None:
+            print(payload)
         return 0 if status["ready"] else 1
     if not argv:
         from .composition import launch_qt
