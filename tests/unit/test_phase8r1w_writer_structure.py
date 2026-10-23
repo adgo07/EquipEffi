@@ -87,6 +87,12 @@ class WriterStructureTests(unittest.TestCase):
         workbook.close()
         return path
 
+    @staticmethod
+    def pump_outcome(result, index: int = 0):
+        outcomes = [entry["outcome"] for entry in result.outcomes
+                    if entry["sheet_name"] == PUMP_SHEET]
+        return outcomes[index]
+
     def sheet_xml(self, path: Path) -> str:
         with zipfile.ZipFile(path) as archive:
             workbook = archive.read("xl/workbook.xml").decode("utf-8")
@@ -149,7 +155,7 @@ class WriterStructureTests(unittest.TestCase):
         #   必须对照"该行列本应写什么"。）
         from equipeffi.infrastructure.excel.pump_result_writer import cell_payloads
 
-        payloads = cell_payloads(result.outcomes[0])
+        payloads = cell_payloads(self.pump_outcome(result))
         written_any = False
         for column in RESULT_COLUMNS:
             reference = f"{column}{FIRST_DATA_ROW}"
@@ -179,9 +185,10 @@ class WriterStructureTests(unittest.TestCase):
             moved, destination=self.root / "row_attr2_out.xlsx", as_of=AS_OF,
             persist=False)
 
-        self.assertEqual(reordered.outcomes[0].conclusion,
-                         baseline.outcomes[0].conclusion)
-        self.assertEqual(reordered.outcomes[0].grade, baseline.outcomes[0].grade)
+        self.assertEqual(self.pump_outcome(reordered).conclusion,
+                         self.pump_outcome(baseline).conclusion)
+        self.assertEqual(self.pump_outcome(reordered).grade,
+                         self.pump_outcome(baseline).grade)
         baseline_sheet = openpyxl.load_workbook(
             baseline.result_workbook)[PUMP_SHEET]
         reordered_sheet = openpyxl.load_workbook(

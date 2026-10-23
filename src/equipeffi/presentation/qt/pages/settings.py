@@ -11,12 +11,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QEvent, QTimer, Qt
 from PySide6.QtWidgets import (
     QComboBox,
     QGroupBox,
     QLabel,
+    QLayout,
     QPushButton,
+    QScrollArea,
+    QSizePolicy,
     QVBoxLayout,
     QWidget,
 )
@@ -59,17 +62,27 @@ class SettingsPage(QWidget):
 
     def __init__(self, settings, service=None, *, app_version: str = "",
                  data_location: Path | None = None, navigator=None,
-                 parent: QWidget | None = None):
+                 transformer=None, parent: QWidget | None = None):
         super().__init__(parent)
         self.settings = settings
         self.service = service
+        self.transformer_service = transformer
         self.app_version = app_version
         self.data_location = data_location
         self.navigator = navigator
 
-        layout = QVBoxLayout(self)
+        page_layout = QVBoxLayout(self)
+        page_layout.setContentsMargins(0, 0, 0, 0)
+        page_layout.setSpacing(0)
+
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setObjectName("settingsContentScrollArea")
+        self.scroll_area.setWidgetResizable(True)
+        content = QWidget()
+        layout = QVBoxLayout(content)
         layout.setContentsMargins(*(TOKENS.page_margin,) * 4)
         layout.setSpacing(TOKENS.section_gap)
+        layout.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
 
         heading = QLabel("设置")
         font = heading.font()
@@ -99,9 +112,11 @@ class SettingsPage(QWidget):
         self.notice = QLabel("")
         self.notice.setWordWrap(True)
         preferences_layout.addWidget(self.notice)
-        preferences_layout.addWidget(QLabel(
+        settings_note = QLabel(
             "数值精度、规则集、计算器与标准版本等由版本化证据固定，"
-            "不作为用户设置项。"))
+            "不作为用户设置项。")
+        settings_note.setWordWrap(True)
+        preferences_layout.addWidget(settings_note)
         layout.addWidget(preferences)
 
         about = QGroupBox("关于")
@@ -124,33 +139,79 @@ class SettingsPage(QWidget):
         layout.addWidget(runtime)
 
         layout.addStretch()
+        self.scroll_area.setWidget(content)
+        page_layout.addWidget(self.scroll_area)
+        self._wrapped_labels = (
+            self.last_directory, self.notice, settings_note, self.about, self.runtime)
+        for label in self._wrapped_labels:
+            # 标签按视口宽度换行，避免长路径把内容区撑出水平滚动范围。
+            label.setSizePolicy(
+                QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
+        self._label_height_timer = QTimer(self)
+        self._label_height_timer.setSingleShot(True)
+        self._label_height_timer.timeout.connect(self._adjust_wrapped_label_heights)
+        self.scroll_area.viewport().installEventFilter(self)
         self.refresh()
+
+    def eventFilter(self, watched, event):
+        if (watched is self.scroll_area.viewport()
+                and event.type() == QEvent.Type.Resize):
+            # 等滚动布局分配新宽度后再测量换行高度；定时器随页面一起销毁。
+            self._label_height_timer.start(0)
+        return super().eventFilter(watched, event)
+
+    def _adjust_wrapped_label_heights(self) -> None:
+        for label in self._wrapped_labels:
+            if label.width() <= 0:
+                continue
+            required_height = label.heightForWidth(label.width())
+            if required_height >= 0:
+                label.setMinimumHeight(required_height)
 
     # -- 数据 ---------------------------------------------------------------
 
     def refresh(self) -> None:
         overview = self.service.standard_overview() if self.service is not None else None
-        standard_line = (f"当前正式标准：{overview['standard_code']}"
-                         f"《{overview['standard_name']}》"
-                         if overview else "当前正式标准：—")
-
-        self.about.setText("\n".join([
-            f"应用版本：{self.app_version or '—'}",
-            standard_line,
-            "适用产品：GB 19762—2025 离心泵（清水泵与石油化工泵使用同一分析流程）",
-        ]))
+        lines = [f"应用版本：{self.app_version or '—'}"]
+        if overview is None:
+            lines.append("当前正式标准：—")
+        elif self.transformer_service is None:
+            # 兼容未装配变压器服务的既有调用方。
+            lines.extend((
+                f"当前正式标准：{overview['standard_code']}《{overview['standard_name']}》",
+                "适用产品：GB 19762—2025 离心泵（清水泵与石油化工泵使用同一分析流程）",
+            ))
+        else:
+            transformer = self.transformer_service.standard_overview()
+            transformer_name = transformer.get(
+                "name", "电力变压器能效限定值及能效等级")
+            lines.extend((
+                "当前接入标准与设备：",
+                f"离心泵：{overview['standard_code']}《{overview['standard_name']}》",
+                f"电力变压器：{transformer['standard_code']}《{transformer_name}》",
+            ))
+            support_status = transformer.get("support_status")
+            if support_status == "IMPLEMENTED":
+                status_text = "已接入，尚待正式支持验收"
+            elif support_status == "SUPPORTED":
+                status_text = "本版本已正式支持"
+            else:
+                status_text = "当前状态以软件记录为准"
+            lines.append(f"电力变压器软件状态：{status_text}")
+        self.about.setText("\n".join(lines))
 
         # 普通用户不得看到内部机器键名（last.directory / window.geometry /
         # window.state / log.level 等）。只展示业务中文名称与真实路径。
         location = str(self.data_location) if self.data_location else "（未能确定，请检查安装）"
         self.runtime.setText("\n".join([
             f"数据存储位置：{location}",
-            "记录与草稿存放于该目录下的 records.sqlite；运行日志存放于 logs 子目录。",
+            "历史记录存放于该目录下的 records.sqlite；运行日志存放于 logs 子目录。",
         ]))
 
         last = self.settings.get("last.directory", "")
         self.last_directory.setText(
             f"上次使用的目录：{last}" if last else "上次使用的目录：（尚未使用）")
+        self._adjust_wrapped_label_heights()
 
     # -- 动作 ---------------------------------------------------------------
 

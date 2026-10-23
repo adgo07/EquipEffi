@@ -20,7 +20,7 @@ on:
   push:
     branches: [master]
   pull_request:
-    branches: [master, 'codex/retirement-*']
+    branches: [master, 'codex/retirement-*', 'codex/transformer-*']
   workflow_dispatch:
 
 permissions:

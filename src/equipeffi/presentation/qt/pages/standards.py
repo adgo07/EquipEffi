@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
+    QComboBox,
     QGroupBox,
     QHBoxLayout,
     QLabel,
@@ -38,9 +39,11 @@ _SUPPORT_STATUS_HINT = {
 class StandardsPage(QWidget):
     """展示当前正式标准并允许基于该标准开始分析。"""
 
-    def __init__(self, service, navigator=None, parent: QWidget | None = None):
+    def __init__(self, service, navigator=None, parent: QWidget | None = None,
+                 *, transformer=None):
         super().__init__(parent)
         self.service = service
+        self.transformer_service = transformer
         self.navigator = navigator
         self.standard_code: str | None = None
 
@@ -59,6 +62,21 @@ class StandardsPage(QWidget):
         self.intro.setWordWrap(True)
         self.intro.setTextFormat(Qt.TextFormat.PlainText)
         layout.addWidget(self.intro)
+
+        self.standard_selector = None
+        if transformer is not None:
+            self.standard_selector = QComboBox()
+            self.standard_selector.setObjectName("standardSelector")
+            pump_overview = service.standard_overview()
+            transformer_overview = transformer.standard_overview()
+            self.standard_selector.addItem(
+                f"{pump_overview['standard_code']} · {pump_overview['standard_name']}",
+                pump_overview["standard_code"])
+            self.standard_selector.addItem(
+                f"{transformer_overview['standard_code']} · {transformer_overview['name']}",
+                transformer_overview["standard_code"])
+            self.standard_selector.currentIndexChanged.connect(self.refresh)
+            layout.addWidget(self.standard_selector)
 
         facts_group = QGroupBox("标准信息")
         self.facts = QLabel()
@@ -83,6 +101,11 @@ class StandardsPage(QWidget):
         source_layout = QVBoxLayout(source_group)
         source_layout.addWidget(self.source)
         layout.addWidget(source_group)
+        self.source_group = source_group
+        if transformer is not None:
+            # This read model has no user-facing source/document view; keep the
+            # older pump presentation intact while the new standard is selected.
+            source_group.setVisible(False)
 
         actions = QHBoxLayout()
         self.start_button = QPushButton("基于该标准开始分析")
@@ -97,7 +120,18 @@ class StandardsPage(QWidget):
     # -- 数据 ---------------------------------------------------------------
 
     def refresh(self) -> None:
+        selected_code = (self.standard_selector.currentData()
+                         if self.standard_selector is not None else None)
+        if (self.transformer_service is not None
+                and selected_code == self.transformer_service.standard_overview()["standard_code"]):
+            self._render_transformer(self.transformer_service.standard_overview())
+            return
+
         overview = self.service.standard_overview()
+        self.source_group.setVisible(True)
+        self._render_pump(overview)
+
+    def _render_pump(self, overview) -> None:
         self.standard_code = overview["standard_code"]
 
         self.intro.setText(
@@ -135,8 +169,31 @@ class StandardsPage(QWidget):
             lines.append(f"提示：{overview['lifecycle_warning']}（仅提示，不阻止计算）")
         self.source.setText("\n".join(lines))
 
+    def _render_transformer(self, overview) -> None:
+        self.standard_code = overview["standard_code"]
+        self.source_group.setVisible(False)
+        self.intro.setText(
+            "本标准已接入当前软件实现；软件支持状态与标准正式发布状态分别管理。")
+        self.facts.setText("\n".join((
+            f"标准号：{overview['standard_code']}",
+            f"标准名称：{overview['name']}",
+            f"版本：{overview['edition']}",
+            f"实施日期：{overview.get('effective_date') or '—'}",
+        )))
+        status = overview.get("support_status")
+        status_text = ("已接入，尚待正式支持验收"
+                       if status == "IMPLEMENTED" else "当前状态以软件记录为准")
+        lines = [f"软件状态：{status_text}"]
+        scope = str(overview.get("scope_text") or "").strip()
+        if scope:
+            lines.append(f"适用范围：{scope}")
+        notes = str(overview.get("notes") or "").strip()
+        if notes:
+            lines.append(f"说明：{notes}")
+        self.scopes.setText("\n".join(lines))
+
     # -- 动作 ---------------------------------------------------------------
 
     def _start_analysis(self) -> None:
         if self.navigator is not None:
-            self.navigator.open_analysis()
+            self.navigator.open_analysis(standard_code=self.standard_code)

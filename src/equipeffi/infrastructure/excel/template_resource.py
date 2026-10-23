@@ -32,9 +32,11 @@ def _read_manifest() -> dict[str, Any]:
 
 
 TEMPLATE_MANIFEST = _read_manifest()
+LEGACY_V6_TEMPLATE_VERSION = "V6-20261005"
 V6_TEMPLATE_ENTRY: dict[str, Any] = next(
     entry for entry in TEMPLATE_MANIFEST["templates"]
     if entry.get("template_id") == TEMPLATE_MANIFEST["formal_windows_v1_template"]
+    and entry.get("template_version") == LEGACY_V6_TEMPLATE_VERSION
     and entry.get("status") == "FORMAL"
 )
 V6_TEMPLATE_IDENTITY: dict[str, str] = {
@@ -54,6 +56,30 @@ DEFAULT_V6_TEMPLATE = V6_TEMPLATE_IDENTITY["filename"]
 REQUIRED_V6_SHEETS: tuple[str, ...] = tuple(
     sheet["sheet_name"] for sheet in V6_TEMPLATE_ENTRY["sheets"]
 )
+
+# V6.1 is an explicitly selected candidate template. Keep the legacy V6 default
+# stable until the product integration and acceptance work is complete.
+V61_TEMPLATE_ENTRY: dict[str, Any] = next(
+    entry for entry in TEMPLATE_MANIFEST["templates"]
+    if entry.get("template_id") == V6_TEMPLATE_IDENTITY["template_id"]
+    and entry.get("template_version") == "V6.1"
+)
+V61_TEMPLATE_IDENTITY: dict[str, str] = {
+    "template_id": str(V61_TEMPLATE_ENTRY["template_id"]),
+    "template_version": str(V61_TEMPLATE_ENTRY["template_version"]),
+    "template_kind": str(V61_TEMPLATE_ENTRY.get("template_kind", "")),
+    "template_contract_revision": str(
+        V61_TEMPLATE_ENTRY.get("template_contract_revision", "")),
+    "filename": str(V61_TEMPLATE_ENTRY.get("filename", "")),
+    "asset_sha256": str(V61_TEMPLATE_ENTRY.get("asset_sha256", "")),
+    "source_filename": str(V61_TEMPLATE_ENTRY.get("source_filename", "")),
+    "source_sha256": str(V61_TEMPLATE_ENTRY.get("source_sha256", "")),
+    "source_provenance": str(V61_TEMPLATE_ENTRY.get("source_provenance", "")),
+}
+DEFAULT_V61_TEMPLATE = V61_TEMPLATE_IDENTITY["filename"]
+REQUIRED_V61_SHEETS: tuple[str, ...] = tuple(
+    sheet["sheet_name"] for sheet in V61_TEMPLATE_ENTRY["sheets"]
+)
 PUMP_SHEET_CONTRACT: dict[str, Any] = next(
     sheet for sheet in V6_TEMPLATE_ENTRY["sheets"]
     if sheet.get("sheet_id") == "centrifugal_pump"
@@ -65,6 +91,9 @@ CONFIG_SHEET = next(
 )
 CONFIGURATION_CONTRACT: dict[str, Any] = V6_TEMPLATE_ENTRY["configuration_contract"]
 CONFIG_TABLE = CONFIGURATION_CONTRACT["field_dictionary_table"]
+TRANSFORMER_SHEET_CONTRACT: dict[str, Any] = next(
+    sheet for sheet in V61_TEMPLATE_ENTRY["sheets"]
+    if sheet.get("sheet_id") == "transformer")
 
 
 def input_field_columns(contract: dict[str, Any] | None = None) -> tuple[tuple[str, str], ...]:
@@ -89,17 +118,18 @@ def _cell_position(reference: str) -> tuple[int, int] | None:
     return _column_index(match.group(1)), int(match.group(2))
 
 
-def pump_data_layout_issues(
+def sheet_data_layout_issues(
         merged_ranges: tuple[str, ...] | list[str],
-        contract: dict[str, Any] | None = None) -> tuple[str, ...]:
-    """Reject data-area merges that obscure pump input or result cells.
+        contract: dict[str, Any]) -> tuple[str, ...]:
+    """Reject data-area merges that obscure a connected sheet's I/O cells.
 
     The data area is intentionally unbounded: Table size is not a Reader capacity
     limit, and a missing Table alone does not make an otherwise compatible sheet
     invalid.
     """
 
-    selected = contract or PUMP_SHEET_CONTRACT
+    selected = contract
+    sheet_name = str(selected.get("sheet_name") or "工作表")
     first_data_row = int(selected["header_row"]) + 1
     fields = [field for field in selected["fields"]
               if field.get("role") in {"input", "result"}]
@@ -111,12 +141,12 @@ def pump_data_layout_issues(
     for reference in merged_ranges:
         parts = str(reference).split(":")
         if len(parts) != 2:
-            issues.append(f"离心泵数据区合并范围格式无效：{reference!r}")
+            issues.append(f"{sheet_name}数据区合并范围格式无效：{reference!r}")
             continue
         start = _cell_position(parts[0])
         end = _cell_position(parts[1])
         if start is None or end is None:
-            issues.append(f"离心泵数据区合并范围格式无效：{reference!r}")
+            issues.append(f"{sheet_name}数据区合并范围格式无效：{reference!r}")
             continue
         min_column, max_column = sorted((start[0], end[0]))
         max_row = max(start[1], end[1])
@@ -128,9 +158,17 @@ def pump_data_layout_issues(
         ]
         if covered_columns:
             issues.append(
-                f"离心泵数据区合并范围 {reference} 覆盖输入/结果列 "
+                f"{sheet_name}数据区合并范围 {reference} 覆盖输入/结果列 "
                 f"{'、'.join(covered_columns)}（第 {first_data_row} 行起不允许合并）")
     return tuple(issues)
+
+
+def pump_data_layout_issues(
+        merged_ranges: tuple[str, ...] | list[str],
+        contract: dict[str, Any] | None = None) -> tuple[str, ...]:
+    """Compatibility entry point for the established pump reader and checks."""
+
+    return sheet_data_layout_issues(merged_ranges, contract or PUMP_SHEET_CONTRACT)
 
 
 def _header_parts(value: Any) -> tuple[str, str, tuple[str, ...]]:
@@ -447,3 +485,64 @@ class V6TemplateResource:
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
         return target
+
+
+class V61TransformerTemplateResource(V6TemplateResource):
+    """显式提供 V6.1 候选模板；不改变 V6 资源的默认选择。"""
+
+    def __init__(self, resource_dir: Path | None = None,
+                 *, template_name: str = DEFAULT_V61_TEMPLATE):
+        super().__init__(resource_dir, template_name=template_name)
+
+    @property
+    def identity(self) -> dict[str, str]:
+        return dict(V61_TEMPLATE_IDENTITY)
+
+    def validate(self, path: Path | None = None, *,
+                 check_pump_sheet: bool = True) -> TemplateValidationResult:
+        base = super().validate(path, check_pump_sheet=check_pump_sheet)
+        # A caller may use this resource to validate an older source workbook.
+        # Its transformer Sheet remains explicitly unprocessed.
+        if not base.is_valid or base.identity.get("template_version") != "V6.1":
+            return base
+
+        contract = TRANSFORMER_SHEET_CONTRACT
+        candidate = Path(path) if path is not None else self.template_path
+        issues = list(base.issues)
+        try:
+            with OOXMLWorkbook(candidate) as workbook:
+                grid = workbook.rows(str(contract["sheet_name"]))
+                merged_ranges = workbook.merged_ranges(str(contract["sheet_name"]))
+            issues.extend(sheet_data_layout_issues(merged_ranges, contract))
+            header_row = int(contract["header_row"]) - 1
+            if header_row < 0 or header_row >= len(grid):
+                issues.append("「变压器」Sheet 缺少正式表头行")
+            else:
+                header = grid[header_row]
+                for field in contract["fields"]:
+                    column = str(field["column"])
+                    index = _column_index(column)
+                    value = header[index] if index < len(header) else ""
+                    label, unit, extra = _header_parts(value)
+                    expected_label = str(field.get("label") or "")
+                    expected_unit = str(field.get("unit") or "")
+                    if (label != expected_label or unit != expected_unit or extra):
+                        expected = expected_label + (
+                            f" ({expected_unit})" if expected_unit else "")
+                        actual = label + (f" ({unit})" if unit else "")
+                        issues.append(
+                            f"变压器 {column} 列期望「{expected}」，实际为「{actual}」")
+        except (OOXMLReadError, KeyError, TypeError, ValueError) as exc:
+            issues.append(f"无法验证变压器 Sheet 契约：{exc}")
+
+        is_valid = not issues and not base.missing_sheets
+        message = ("V6.1模板结构检查通过" if is_valid else
+                   "V6.1模板不兼容：" + "；".join(issues or ["模板结构无效"]))
+        return TemplateValidationResult(
+            path=base.path, sha256=base.sha256, sheet_names=base.sheet_names,
+            missing_sheets=base.missing_sheets, is_valid=is_valid,
+            message=message, identity=base.identity,
+            sheet_contracts=base.sheet_contracts,
+            identity_source=base.identity_source,
+            pump_sheet_contract=base.pump_sheet_contract,
+            issues=tuple(issues))

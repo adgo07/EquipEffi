@@ -21,6 +21,7 @@ class BatchSourceRow:
 
     row_number: int
     values: dict[str, Any]
+    input_errors: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)

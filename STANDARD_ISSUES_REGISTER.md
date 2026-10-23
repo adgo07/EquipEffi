@@ -169,17 +169,19 @@ EQP-STD-GB19762-001
 |问题说明|表2 630kVA名义阻抗分组|
 |支持证据|上传PDF 表2，PDF物理页8/印刷4；`docs/standards/gb20052_v21/GB20052_DECISIONS_NEEDED.md` D-02；PR #20|
 |当前技术判断|Owner提出4.2%可归4.0%、5.8%可归6～8%的±10%相对容差实例；是否可用实测值直接选标准物理损耗分支须核对设计/试验基准。|
-|软件当前处理方式|【PROVISIONAL工程建议】先验证设计额定/实测及实际适用GB/T1094.1短路阻抗偏差条件；候选4.0%可按3.6～4.4%、6～8%按5.4～8.8%辅助人工识别。无唯一组或证据不充分仍无法判定；并未修改生产代码。|
+|软件当前处理方式|表2在630kVA使用额定阻抗按Owner批准的±10%软件默认选组；非630kVA只按容量唯一损耗分支评价，已填写阻抗保留在输入记录中，不参与选组、范围筛选或判级。该实现不把±10%说成GB20052/GB/T1094.1统一法定允差。|
 
-> **最新软件决策（优先于上面的历史处理方式）**：【Owner新决定2026-10-12｜软件默认，不是国家标准统一允差】表2单值4.0%对应[3.6%,4.4%]、范围6.0%～8.0%对应[5.4%,8.8%]，允许边界等号。阻抗属于可用唯一组即可进行能效判定，全部不命中→UNABLE_TO_JUDGE/IMPEDANCE_NO_MATCH；不同限值组同时命中且不能唯一选路→UNABLE_TO_JUDGE/BRANCH_AMBIGUOUS。**不得因GB/T1094.1正式允差条款尚未查完阻断正常判级**。旧PROVISIONAL建议由本决定取代；未修改Calculator。
+> **Owner软件决定（2026-10-12）**：【软件默认，不是国家标准统一允差】表2单值4.0%对应[3.6%,4.4%]、范围6.0%～8.0%对应[5.4%,8.8%]，允许边界等号。630kVA阻抗属于可用唯一组即可进行能效判定，全部不命中→UNABLE_TO_JUDGE/IMPEDANCE_NO_MATCH；不同限值组同时命中且不能唯一选路→UNABLE_TO_JUDGE/BRANCH_AMBIGUOUS。**不得因GB/T1094.1正式允差条款尚未查完阻断正常判级**。
+>
+> **补充Owner软件决定（2026-10-23）**：表2非630kVA没有不同损耗阈值组；额定阻抗仅作为输入记录留存，不论缺失或已填写都不参与分支选取、范围筛选或等级判定。630kVA才按前述±10%默认选择阻抗组。此为软件实现决定，不是标准原文。已实现为 `TransformerCalculator` 的唯一表2运行路径，定向回归覆盖500、565、715、800kVA的阻抗缺失、4.0%和7.0%输入不变性。
 
 |确认程度|Owner2026-10-11提供±10%工程实例；尚无对该产品/分接/绕组对的正式逐条核验。GB20052没有一律±10%的明文。|
 |业务影响|高：误释可能影响表路由/阈值/实际等级或标准数字发布。|
-|关联 Rule / Calculator|文档候选standard_scope / product_table_route / threshold_branch / threshold_row；未来Transformer Calculator。未实施、未修改。|
-|关联测试 / Golden Case|`docs/standards/gb20052_v21/GB20052_V21_ACCEPTANCE.md`文档候选案例；无新批准Golden，无生产测试变更。|
+|关联 Rule / Calculator|`domain/devices/transformer/calculator.py::_select_t02_rows`；630kVA按阻抗选组，其他容量只按容量分支。|
+|关联测试 / Golden Case|`tests/unit/test_transformer_calculator.py::test_table2_non630_ignores_provided_impedance_for_branch_and_grade`及630kVA阻抗分支测试；不修改Approved Golden。|
 |状态|`RESOLVED`（已批准软件默认±10%选组；非国标明文）|
 |首次发现日期|2026-10-11（首次正式登记，历史映射讨论可能更早）|
-|最后更新日期|2026-10-12（Owner软件默认/延期决定）|
+|最后更新日期|2026-10-23（Owner明确非630kVA阻抗只留痕）|
 
 ### EQP-STD-GB20052-003 — 表列阻抗与允许偏差对应关系
 

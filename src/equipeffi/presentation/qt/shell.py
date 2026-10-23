@@ -25,12 +25,13 @@ from .pages.home import HomePage
 from .pages.records import RecordsPage
 from .pages.settings import SettingsPage
 from .pages.standards import StandardsPage
+from .pages.transformer_analysis import DeviceAnalysisPage, TransformerAnalysisPage
 from .tokens import TOKENS
 
 
 class MainWindow(QMainWindow):
     def __init__(self, settings: SettingsService, analysis=None, *,
-                 batch=None, workspace_id: str | None = None, app_version: str = "",
+                 batch=None, transformer=None, workspace_id: str | None = None, app_version: str = "",
                  data_location=None, external_launch_context=None):
         super().__init__()
         self.settings = settings
@@ -38,7 +39,10 @@ class MainWindow(QMainWindow):
         # 用户在批量任务进行中请求关闭时，先拒绝销毁 QThread 所属页面；
         # 待线程真正 finished 后自动重试关闭。
         self._close_pending = False
-        self.setWindowTitle("设备能效分析工具 · GB 19762—2025 离心泵能效分析")
+        self.setWindowTitle(
+            "设备能效分析工具 · 离心泵与电力变压器能效分析"
+            if transformer is not None
+            else "设备能效分析工具 · GB 19762—2025 离心泵能效分析")
         self.resize(1000, 700)
         # 允许用户把窗口缩小；页面内容由各自的滚动区域承载，
         # 不得让内容的最小宽度把窗口锁在大尺寸上。
@@ -56,10 +60,18 @@ class MainWindow(QMainWindow):
         self.pages = QStackedWidget()
 
         # 所有页面都真实构建；analysis 为 None 时仍构建（用于仅设置/关于场景）。
-        self.home_page = HomePage(analysis, self) if analysis is not None else None
-        self.standards_page = StandardsPage(analysis, self) if analysis is not None else None
+        self.home_page = (HomePage(analysis, self, transformer=transformer)
+                          if analysis is not None else None)
+        self.standards_page = (StandardsPage(analysis, self, transformer=transformer)
+                               if analysis is not None else None)
         # Phase 7：普通流程没有草稿概念，分析页不接收 workspace_id。
         self.analysis_page = AnalysisPage(analysis, navigator=self) if analysis is not None else None
+        self.transformer_analysis_page = (
+            TransformerAnalysisPage(transformer) if transformer is not None else None)
+        self.device_analysis_page = (
+            DeviceAnalysisPage(self.analysis_page, self.transformer_analysis_page)
+            if self.analysis_page is not None and self.transformer_analysis_page is not None
+            else None)
         # Phase 8：批量评价页只在装配了批量服务时构建（Excel 仍是 adapter 表面）。
         self.batch_page = (
             BatchPage(
@@ -70,15 +82,17 @@ class MainWindow(QMainWindow):
         if self.batch_page is not None:
             self.batch_page.background_idle.connect(self._finish_deferred_close)
         self.records_page = (
-            RecordsPage(analysis, navigator=self, batch=batch)
+            RecordsPage(analysis, navigator=self, batch=batch,
+                        transformer=transformer)
             if analysis is not None else None)
         self.settings_page = SettingsPage(settings, analysis, app_version=self.app_version,
-                                         data_location=data_location, navigator=self)
+                                         data_location=data_location, navigator=self,
+                                         transformer=transformer)
 
         self._page_widgets = {
             "首页": self.home_page,
             "标准库": self.standards_page,
-            "新建分析": self.analysis_page,
+            "新建分析": self.device_analysis_page or self.analysis_page,
             "Excel导入": self.batch_page,
             "分析记录": self.records_page,
             "设置": self.settings_page,
@@ -118,7 +132,8 @@ class MainWindow(QMainWindow):
     def open_standards(self, standard_code: str | None = None) -> None:
         self._show_page("标准库")
 
-    def open_analysis(self, workspace_id: str | None = None) -> None:
+    def open_analysis(self, workspace_id: str | None = None, *,
+                      standard_code: str | None = None) -> None:
         """切到「新建分析」页。
 
         Phase 7：普通产品流程已取消草稿概念，因此这里只切页，不再载入草稿。
@@ -127,6 +142,8 @@ class MainWindow(QMainWindow):
 
         if self.analysis_page is None:
             return
+        if self.device_analysis_page is not None:
+            self.device_analysis_page.select_standard(standard_code)
         self._show_page("新建分析")
 
     def open_records(self, record_id: str | None = None) -> None:

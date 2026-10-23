@@ -5,15 +5,17 @@
 - 路线：EquipEffi V2.3；默认分支：`master`。
 - Phase 0 为不可变基线；Phase 1–7 已独立验收（PR #10–#15）。Phase 8（GB 19762 Excel 批量评价）已合并 PR [#16](https://github.com/adgo07/EquipEffi/pull/16)，merge SHA `64b656ee4924fbf09f3fd87596ef1a1a779d1f09`；当前为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`。不得自行声明 `PHASE_8_PASS`，不得开始 Phase 9。
 
-## 当前工作：变压器接入实施（2026-10-23）
+## 当前工作：变压器接入最终复核（2026-10-23）
 
-Owner已明确下一版本纳入GB 20052—2024变压器，已确认25列方案并授权完善设计后实施。按“接入设计 → 变压器内核 → 产品接通与验收”执行，不自动改变当前软件支持能力、Phase状态或正式发布状态。
+Owner已批准下一版本纳入GB 20052—2024、25列方案并授权实施、验收后顺序合并。设计PR [#29](https://github.com/adgo07/EquipEffi/pull/29)已合并于`4ae97dac2397756094e56565eb79062bcc3e6a51`；内核PR [#30](https://github.com/adgo07/EquipEffi/pull/30)及产品PR [#31](https://github.com/adgo07/EquipEffi/pull/31)按已授权顺序在最终CI成功后依次合并；实际合并状态以对应PR为准。
 
-- 设计检查基线：`master@dd27baba07cf0a41f58c0ab4838cd786a40e05ff`，即PR #28合并后。
-- 统一设计：[变压器接入设计与统一Excel兼容方案](docs/standards/gb20052_2024/INTEGRATION_DESIGN.md)。25列：A—U保留位置，I单值额定阻抗，V/W高低电压，X/Y高低及中低阻抗；损耗统一W；类别明确适用型式，其他/不确定分别显示不在范围/无法判定。无拼接数字、适用确认列、单位列或全局试验确认门禁。
-- 必须保持：**冻结二件套不改；当前正式V6的泵Sheet及共享依赖不改；变压器Sheet设计已确认、成品待验收**。
-- 实施工作树分支：`codex/transformer-implementation-20261023`，从PR #29 `20517fe582a76118a77fd33e12d347bb565e7452`起步。根负责集成与验收，子任务分工数据派生、领域内核、模板适配。QA-TR-001已登记。
-- 当前实施中：单向派生数据、同核应用接入、版本化新模板及批次兼容；不修改冻结资产、数据库迁移、Pump Golden或中央锁。UI美化延后，未验收不得声明SUPPORTED或正式发布。
+- 权威设计：[变压器接入及Excel兼容方案](docs/standards/gb20052_2024/INTEGRATION_DESIGN.md)。冻结V2.1映射二件套、原V6泵Sheet及共享依赖保持不变；变压器25列、W统一损耗单位，非630kVA阻抗仅留记录的决定不变。
+- Qt单台、统一Excel V6.1、混合工作簿单条批次记录已接通；没有数据库迁移或中央锁升级。保持`IMPLEMENTED`，不自动声明`SUPPORTED`、Phase PASS或正式发布。
+- QA-TR-002六项审查修复及QA-TR-003命名空间Sheet定位已关闭；此前完整Windows CI通过。Owner已确认WPS类别/条件下拉、第104行追加、保存重开正常；普通下载目录解压的745111b9原生包本轮回复“可以了”。构建目录EXE的Low完整性造成的验收环境问题及处理证据保留在[修复记录](docs/standards/gb20052_2024/PR31_REVIEW_FIXES.md)，不得再次提供构建目录EXE作为用户入口。
+- 本轮补充105组电压/阻抗边界输入、12行真实Excel跨入口核对，未发现新的业务失败；首页及设置/关于只呈现泵属于接入遗漏（QA-TR-004），已增加两类标准和明确设备入口，并去除设置运行信息中的草稿旧文案。主会话集成定向102项通过，失败/错误/跳过均为0；首页修复包`ed25ef27`的启动、资源和正常解压验证通过；追加设置页修复后将重新按固定代码构建。最终包身份、完整CI及合并结果以PR #31验证栏/检查为准，未成功不得合并。
+- 没有干净Windows/Sandbox，按Owner决定保留限制。本轮不改冻结件、Golden或标准解释；UI全面美化继续延后。
+
+详细实施历史见[实施记录](docs/standards/gb20052_2024/IMPLEMENTATION_REPORT.md)及[最终复核记录](docs/standards/gb20052_2024/PR31_REVIEW_FIXES.md)。当前分支为`codex/transformer-implementation-20261023`，主工作区的用户修改不动。
 
 ## 已收口的简化工作
 

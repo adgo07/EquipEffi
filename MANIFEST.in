@@ -9,6 +9,7 @@ include src/equipeffi/resources/elimination_catalog_batches_1_4.json
 include src/equipeffi/resources/elimination_catalog_industry_2024.json
 recursive-include src/equipeffi/resources/standards *.json
 include src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx
+include src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_1.xlsx
 
 # Standard originals and working evidence are developer inputs, not app distribution assets.
 prune 标准原文

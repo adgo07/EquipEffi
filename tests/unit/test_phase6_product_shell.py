@@ -27,7 +27,7 @@ from unittest.mock import patch
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-from PySide6.QtCore import QCoreApplication, QEvent
+from PySide6.QtCore import QCoreApplication, QEvent, QPoint, QRect
 from PySide6.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton
 
 from equipeffi.composition import create_settings_runtime
@@ -333,10 +333,47 @@ class HomePageTests(ProductShellTestCase):
         window = self.window()
         home = window.home_page
         self.assertIn("开始新的离心泵分析", home.new_analysis_button.text())
-        self.assertIn("查看当前正式标准", home.open_standard_button.text())
+        self.assertIn("查看标准库", home.open_standard_button.text())
+        self.assertTrue(home.new_transformer_analysis_button.isHidden())
         overview = self.service.standard_overview()
         self.assertIn(overview["standard_code"], home.standard_label.text())
         self.assertIn(overview["standard_name"], home.standard_label.text())
+
+    def test_home_shows_both_device_standards_and_routes_each_shortcut(self):
+        """首页依赖真实服务 read model，并给每个入口传入明确标准号。"""
+
+        from equipeffi.composition import create_transformer_analysis_service
+
+        transformer = create_transformer_analysis_service(
+            paths=self.paths, with_persistence=True)
+        window = self.window(transformer=transformer)
+        home = window.home_page
+        text = home.standard_label.text()
+        pump_overview = self.service.standard_overview()
+        transformer_overview = transformer.standard_overview()
+
+        self.assertIn(pump_overview["standard_code"], text)
+        self.assertIn(pump_overview["standard_name"], text)
+        self.assertIn(transformer_overview["standard_code"], text)
+        self.assertIn(transformer_overview["name"], text)
+        self.assertIn("已接入，尚待正式支持验收", text)
+        self.assertEqual(text.count("尚待正式支持验收"), 1)
+        self.assertNotIn("本版本已正式支持", text)
+        self.assertNotIn("IMPLEMENTED", text)
+        self.assertFalse(home.new_transformer_analysis_button.isHidden())
+        self.assertIn("查看标准库", home.open_standard_button.text())
+
+        home.new_analysis_button.click()
+        self.assertEqual(window.device_analysis_page.device_selector.currentData(),
+                         "centrifugal_pump")
+        window.open_home()
+        home.new_transformer_analysis_button.click()
+        self.assertEqual(window.device_analysis_page.device_selector.currentData(),
+                         "transformer")
+        window.open_home()
+        home.new_analysis_button.click()
+        self.assertEqual(window.device_analysis_page.device_selector.currentData(),
+                         "centrifugal_pump")
 
     def test_home_lists_recent_records_from_existing_capabilities(self):
         home = self.window().home_page
@@ -664,6 +701,76 @@ class SettingsPageTests(ProductShellTestCase):
         page = self.window().settings_page
         overview = self.service.standard_overview()
         self.assertIn(overview["standard_code"], page.about.text())
+
+    def test_settings_shows_both_standards_and_transformer_status_from_real_services(self):
+        from equipeffi.composition import create_transformer_analysis_service
+
+        transformer = create_transformer_analysis_service(
+            paths=self.paths, with_persistence=True)
+        page = self.window(transformer=transformer).settings_page
+        pump = self.service.standard_overview()
+        transformer_overview = transformer.standard_overview()
+        about = page.about.text()
+
+        self.assertIn(pump["standard_code"], about)
+        self.assertIn(pump["standard_name"], about)
+        self.assertIn(transformer_overview["standard_code"], about)
+        self.assertIn(transformer_overview["name"], about)
+        self.assertEqual(transformer_overview["support_status"], "IMPLEMENTED")
+        self.assertIn("已接入，尚待正式支持验收", about)
+        self.assertNotIn("IMPLEMENTED", about)
+        self.assertNotIn("本版本已正式支持", about)
+        self.assertNotIn("草稿", page.runtime.text())
+
+    def test_settings_content_is_reachable_in_a_small_window(self):
+        from equipeffi.composition import create_transformer_analysis_service
+
+        transformer = create_transformer_analysis_service(
+            paths=self.paths, with_persistence=True)
+        window = self.window(transformer=transformer)
+        window.resize(640, 480)
+        window.show()
+        window.open_settings()
+        self.app.processEvents()
+
+        page = window.settings_page
+        scroll = page.scroll_area
+        bar = scroll.verticalScrollBar()
+        viewport = scroll.viewport()
+        content = scroll.widget()
+        self.assertGreater(bar.maximum(), 0, "小窗口必须提供可滚动范围")
+        self.assertEqual(
+            scroll.horizontalScrollBar().maximum(), 0,
+            "小窗口应换行显示内容，不应依赖水平滚动来读完整文本",
+        )
+        self.assertIn("尚待正式支持验收", page.about.text())
+        self.assertIn("运行日志存放于 logs 子目录", page.runtime.text())
+
+        long_directory = self.paths.root.joinpath(*(["nested"] * 8))
+        self.settings.set("last.directory", str(long_directory))
+        page.refresh()
+        self.app.processEvents()
+        last_directory_height = page.last_directory.heightForWidth(
+            page.last_directory.width())
+        self.assertGreaterEqual(
+            page.last_directory.height(), last_directory_height,
+            "刷新长目录后，标签高度应覆盖自动换行所需高度",
+        )
+
+        for label in (page.about, page.runtime):
+            with self.subTest(label=label.objectName() or label.text()[:12]):
+                required_height = label.heightForWidth(label.width())
+                if required_height >= 0:
+                    self.assertGreaterEqual(label.height(), required_height)
+                content_y = label.mapTo(content, QPoint(0, 0)).y()
+                value = max(0, content_y + label.height() - viewport.height())
+                bar.setValue(min(value, bar.maximum()))
+                self.app.processEvents()
+                visible = QRect(label.mapTo(viewport, QPoint(0, 0)), label.size())
+                self.assertTrue(
+                    viewport.rect().contains(visible),
+                    "滚动后每个信息标签应能完整进入可视区域",
+                )
 
     def test_log_level_is_a_real_persisted_preference(self):
         page = self.window().settings_page

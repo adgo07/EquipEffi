@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from decimal import Decimal, InvalidOperation
+from dataclasses import dataclass
 from pathlib import Path
 import posixpath
 import re
@@ -62,6 +63,35 @@ def _parse_number(value: str) -> Any:
 
 def _inline_text(node: ElementTree.Element) -> str:
     return "".join(element.text or "" for element in node.iter(_tag(_MAIN_NS, "t")))
+
+
+@dataclass(frozen=True)
+class OOXMLCellMetadata:
+    """Input-cell type details that a cached-value read cannot preserve."""
+
+    cell_type: str
+    style_index: int | None
+    has_formula: bool
+    raw_value: str
+    is_date: bool
+
+
+_BUILTIN_DATE_FORMAT_IDS = frozenset({
+    *range(14, 23), 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+    45, 46, 47, *range(50, 59),
+})
+
+
+def _is_date_format_code(format_code: str) -> bool:
+    """Recognize Excel date/time format tokens without interpreting cell values."""
+
+    text = re.sub(r'"(?:[^"]|"")*"', "", format_code.lower())
+    text = re.sub(r"\\.", "", text)
+    bracket_tokens = re.findall(r"\[([^\]]*)\]", text)
+    if any(re.fullmatch(r"\s*[hms]+\s*", token) for token in bracket_tokens):
+        return True
+    text = re.sub(r"\[[^\]]*\]", "", text)
+    return bool(re.search(r"[ydhs]", text) or re.search(r"(?<![a-z])m{1,4}(?![a-z])", text))
 
 
 class OOXMLWorkbook:
@@ -129,6 +159,73 @@ class OOXMLWorkbook:
         if sheet_name not in self._sheets:
             raise OOXMLReadError(f"工作簿中不存在sheet: {sheet_name}")
         return self._merged_ranges.get(sheet_name, ())
+
+    def _date_style_indexes(self) -> frozenset[int]:
+        try:
+            root = ElementTree.fromstring(self.archive.read("xl/styles.xml"))
+        except KeyError:
+            return frozenset()
+        except ElementTree.ParseError as exc:
+            raise OOXMLReadError(f"工作簿样式结构无效: {exc}") from exc
+
+        formats = {
+            int(node.attrib["numFmtId"]): node.attrib.get("formatCode", "")
+            for node in root.findall(f"{_tag(_MAIN_NS, 'numFmts')}/{_tag(_MAIN_NS, 'numFmt')}")
+            if node.attrib.get("numFmtId", "").isdigit()
+        }
+        cell_formats = root.find(_tag(_MAIN_NS, "cellXfs"))
+        if cell_formats is None:
+            return frozenset()
+        date_indexes: set[int] = set()
+        for index, cell_format in enumerate(cell_formats.findall(_tag(_MAIN_NS, "xf"))):
+            raw_id = cell_format.attrib.get("numFmtId", "0")
+            if not raw_id.isdigit():
+                continue
+            format_id = int(raw_id)
+            if (format_id in _BUILTIN_DATE_FORMAT_IDS
+                    or _is_date_format_code(formats.get(format_id, ""))):
+                date_indexes.add(index)
+        return frozenset(date_indexes)
+
+    def cell_metadata(self, sheet_name: str, *, columns: set[str] | None = None
+                      ) -> dict[str, OOXMLCellMetadata]:
+        """Expose formula, error, and date-style markers beside parsed cell values.
+
+        `rows()` intentionally returns formula cached values for compatibility with
+        its established callers. Adapters that cannot accept cached calculations
+        can use this parallel metadata view to reject formula inputs explicitly.
+        """
+
+        target = self._sheets.get(sheet_name)
+        if not target:
+            raise OOXMLReadError(f"工作簿中不存在sheet: {sheet_name}")
+        try:
+            root = ElementTree.fromstring(self.archive.read(target))
+        except (KeyError, ElementTree.ParseError) as exc:
+            raise OOXMLReadError(f"sheet结构无效({sheet_name}): {exc}") from exc
+
+        date_styles = self._date_style_indexes()
+        result: dict[str, OOXMLCellMetadata] = {}
+        for cell in root.findall(f"{{{_MAIN_NS}}}sheetData/{{{_MAIN_NS}}}row/{{{_MAIN_NS}}}c"):
+            reference = cell.attrib.get("r", "")
+            match = re.fullmatch(r"([A-Z]+)[1-9][0-9]*", reference)
+            if not match:
+                continue
+            if columns is not None and match.group(1) not in columns:
+                continue
+            raw_style = cell.attrib.get("s", "")
+            style_index = int(raw_style) if raw_style.isdigit() else None
+            raw_value = cell.find(_tag(_MAIN_NS, "v"))
+            cell_type = cell.attrib.get("t", "")
+            result[reference] = OOXMLCellMetadata(
+                cell_type=cell_type,
+                style_index=style_index,
+                has_formula=cell.find(_tag(_MAIN_NS, "f")) is not None,
+                raw_value=(raw_value.text or "") if raw_value is not None else "",
+                is_date=(cell_type == "d" or
+                         (style_index is not None and style_index in date_styles)),
+            )
+        return result
 
     def rows(self, sheet_name: str) -> list[list[Any]]:
         target = self._sheets.get(sheet_name)

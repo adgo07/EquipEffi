@@ -385,47 +385,35 @@ class R4TestCase(unittest.TestCase):
     def test_D04_disk_failure_leaves_no_partial_file(self):
         """落盘中途失败：目标不存在、无临时残留、无成功 batch_record。"""
 
-        import equipeffi.infrastructure.excel.pump_result_writer as writer_module
+        import equipeffi.infrastructure.excel.unified_result_writer as writer_module
+        from unittest.mock import patch
 
-        original = writer_module.PumpResultWorkbookWriter._commit
         destination = self.root / "d04_out.xlsx"
+        original_writestr = writer_module.ZipFile.writestr
+        writes_to_temporary = 0
 
-        def failing_commit(self, destination, entries, patched):
-            # 复用真实实现，但让第 2 个部件的写入抛磁盘错误
-            from zipfile import ZIP_DEFLATED, ZipFile
+        def fail_while_writing_result(archive, item, data, compress_type=None,
+                                      compresslevel=None):
+            nonlocal writes_to_temporary
+            archive_path = Path(archive.filename)
+            if (archive.mode == "w"
+                    and archive_path.parent == destination.parent
+                    and archive_path.name.startswith(f".{destination.name}.")
+                    and archive_path.name.endswith(writer_module._TEMP_SUFFIX)):
+                writes_to_temporary += 1
+                if writes_to_temporary == 2:
+                    raise OSError(28, "No space left on device")
+            return original_writestr(archive, item, data, compress_type,
+                                     compresslevel)
 
-            temporary = destination.with_name(
-                f".{destination.name}.{uuid.uuid4().hex}"
-                f"{writer_module._TEMP_SUFFIX}")
-            try:
-                with ZipFile(temporary, "w", ZIP_DEFLATED) as target:
-                    for index, ((info, _original), data) in enumerate(
-                            zip(entries, patched)):
-                        if index == 1:
-                            raise OSError(28, "No space left on device")
-                        target.writestr(info, data)
-                import os
-
-                os.replace(temporary, destination)
-            except BaseException:
-                try:
-                    if temporary.exists():
-                        temporary.unlink()
-                except OSError:
-                    pass
-                raise
-
-        import uuid
-
-        writer_module.PumpResultWorkbookWriter._commit = failing_commit
-        try:
+        with patch.object(writer_module.ZipFile, "writestr",
+                          new=fail_while_writing_result):
             with self.assertRaises(OSError):
                 self.batch.evaluate_workbook(
                     self.source, destination=destination, as_of=AS_OF,
                     persist=True)
-        finally:
-            writer_module.PumpResultWorkbookWriter._commit = original
 
+        self.assertEqual(writes_to_temporary, 2, "应在实际结果 ZIP 写入时触发故障")
         self.assertFalse(destination.exists(), "不得留下残缺结果文件")
         leftovers = [p.name for p in self.root.iterdir()
                      if p.name.startswith(".")]

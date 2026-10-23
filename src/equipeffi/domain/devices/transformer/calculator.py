@@ -20,7 +20,7 @@ from .model import TransformerEvaluation
 
 
 DECIMAL_PROFILE_ID = "EQUIPEFFI_TRANSFORMER_GB20052_DECIMAL50_V1"
-CALCULATOR_VERSION = "transformer-gb20052-v2.1.1"
+CALCULATOR_VERSION = "transformer-gb20052-v2.1.3"
 _DECIMAL_CONTEXT = Context(prec=50, rounding=ROUND_HALF_EVEN)
 _PACK_ID = "GB20052-2024-TRANSFORMER-V2.1"
 _SCHEMA_VERSION = "equipeffi.transformer-standard-pack.v1"
@@ -149,12 +149,26 @@ class TransformerCalculator:
                 reason_codes=("INPUT_INVALID",),
             )
 
+        scope_result = self._check_category_physical_facts(normalized, table_no, numbers)
+        if scope_result is not None:
+            return scope_result
+
         required_numeric = ["capacity_kva"]
         if table_no in {8, 14, 15}:
             required_numeric.append("lv_rated_voltage_kv")
         if table_no in _RENEWABLE_RANGES:
             required_numeric.extend(("hv_rated_voltage_kv", "lv_rated_voltage_kv"))
         missing_numeric = tuple(field for field in required_numeric if numbers.get(field) is None)
+        missing_conditions = tuple(
+            field for field in _CONDITION_FIELDS_BY_TABLE.get(table_no, ())
+            if normalized.get(field) in (None, "")
+        )
+        capacity = numbers.get("capacity_kva")
+        if capacity is not None:
+            scope_result = self._check_overall_capacity_scope(table, table_no, capacity)
+            if scope_result is not None:
+                return scope_result
+
         if missing_numeric:
             return self._result(
                 "INSUFFICIENT_DATA", None, "无法判定",
@@ -162,10 +176,6 @@ class TransformerCalculator:
                 missing_fields=missing_numeric, reason_codes=("MISSING_FIELD",),
             )
 
-        missing_conditions = tuple(
-            field for field in _CONDITION_FIELDS_BY_TABLE.get(table_no, ())
-            if normalized.get(field) in (None, "")
-        )
         if missing_conditions:
             return self._result(
                 "INSUFFICIENT_DATA", None, "无法判定",
@@ -173,10 +183,6 @@ class TransformerCalculator:
                 missing_fields=missing_conditions,
                 reason_codes=("MISSING_FIELD",),
             )
-
-        scope_result = self._check_category_physical_facts(normalized, table_no, numbers)
-        if scope_result is not None:
-            return scope_result
 
         if table_no == 15 and numbers.get("lv_rated_voltage_kv") is None:
             return self._result(
@@ -330,15 +336,40 @@ class TransformerCalculator:
                 )
         if table_no in _RENEWABLE_RANGES:
             hv = numbers.get("hv_rated_voltage_kv")
-            assert hv is not None and lv is not None
             hv_min, hv_max, lv_min, lv_max = _RENEWABLE_RANGES[table_no]
-            if not (hv_min <= hv <= hv_max and lv_min <= lv <= lv_max):
+            outside_ranges = []
+            if hv is not None and not (hv_min <= hv <= hv_max):
+                outside_ranges.append(f"高压{hv}kV（要求{hv_min}～{hv_max}kV）")
+            if lv is not None and not (lv_min <= lv <= lv_max):
+                outside_ranges.append(f"低压{lv}kV（要求{lv_min}～{lv_max}kV）")
+            if outside_ranges:
                 return self._result(
                     "OUT_OF_STANDARD_SCOPE", None, "不在范围",
-                    f"实际绕组电压不在所选新能源类别范围内：高压{hv_min}～{hv_max}kV，低压{lv_min}～{lv_max}kV。",
+                    "已提供的绕组额定电压超出所选新能源类别范围：" + "、".join(outside_ranges) + "。",
                     reason_codes=("OUTSIDE_VOLTAGE_RANGE",),
                 )
         return None
+
+    def _check_overall_capacity_scope(
+        self, table: Mapping[str, Any], table_no: int, capacity: Decimal
+    ) -> TransformerEvaluation | None:
+        """Reject only capacities outside every row's outer envelope.
+
+        This early check never selects a branch. If the capacity falls inside
+        the table-wide envelope, normal selector and branch-specific lookup
+        still determine whether that branch supports it.
+        """
+        rows = table["rows"]
+        capacities = [self._pack_decimal(row.get("capacity_kva"), "capacity_kva") for row in rows]
+        minimum = min(capacities)
+        maximum = max(capacities)
+        if minimum <= capacity <= maximum:
+            return None
+        return self._result(
+            "OUT_OF_STANDARD_SCOPE", None, "不在范围",
+            f"额定容量{capacity}kVA超出表{table_no:02d}所选类别各分支的容量范围（{minimum}～{maximum}kVA）。",
+            reason_codes=("OUTSIDE_TABLE_CAPACITY_RANGE",),
+        )
 
     def _select_rows(
         self,
@@ -396,9 +427,20 @@ class TransformerCalculator:
             if capacity < min(all_caps) or capacity > max(all_caps):
                 return [], self._capacity_scope_result(capacity, min(all_caps), max(all_caps), 2)
             return [], self._result(
-                "INSUFFICIENT_DATA", None, "无法判定", "表02在所选阻抗分支中没有可用插值端点。",
+                "INSUFFICIENT_DATA", None, "无法判定", "表02在该容量处没有可用插值端点。",
                 reason_codes=("NO_INTERPOLATION_BRACKET",),
             )
+
+        # The frozen table has a loss-threshold impedance split only at 630 kVA.
+        # Outside that duplicated-capacity point, rated impedance is recorded by
+        # the caller but does not select, filter, or gate the loss branch.
+        if capacity != Decimal("630"):
+            if len(capacity_groups) != 1:
+                return [], self._result(
+                    "INSUFFICIENT_DATA", None, "无法判定", "表02该非630kVA容量未能唯一确定损耗分支。",
+                    reason_codes=("BRANCH_AMBIGUOUS",),
+                )
+            return [capacity_groups[0][1]], None
 
         if impedance is None:
             if len(capacity_groups) > 1:

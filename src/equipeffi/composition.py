@@ -89,18 +89,29 @@ def create_pump_analysis_service(*, paths=None, with_persistence: bool = True):
     )
 
 
+def create_transformer_analysis_service(*, paths=None, with_persistence: bool = True):
+    """下一版本GB20052同核入口；只读取派生包，不依赖标准原件。"""
+    from . import __version__
+    from .application.services.transformer_analysis_service import TransformerAnalysisService
+    from .domain.devices.transformer.calculator import TransformerCalculator
+    from .infrastructure.standards.transformer_repository import load_transformer_pack
+
+    pack, digest = load_transformer_pack()
+    records = create_records_runtime(paths=paths)[1] if with_persistence else None
+    return TransformerAnalysisService(pack, TransformerCalculator(), records=records,
+                                      pack_sha256=digest, app_version=__version__)
+
+
 def create_batch_evaluation_service(*, paths=None):
     """创建正式 Excel 批量评价服务，与单台分析复用同一个分析服务。"""
 
-    from .application.services.pump_batch_evaluation_service import (
-        PumpBatchEvaluationService,
-    )
+    from .application.services.workbook_evaluation_service import WorkbookEvaluationService
     from . import __version__
-    from .infrastructure.excel.pump_result_writer import PumpResultWorkbookWriter
-    from .infrastructure.excel.pump_workbook_reader import V6PumpWorkbookReader
+    from .infrastructure.excel.unified_result_writer import UnifiedResultWorkbookWriter
+    from .infrastructure.excel.unified_workbook_reader import UnifiedWorkbookReader
     from .infrastructure.excel.template_resource import (
-        V6_TEMPLATE_IDENTITY,
-        V6TemplateResource,
+        V61_TEMPLATE_IDENTITY,
+        V61TransformerTemplateResource,
     )
     from .infrastructure.persistence.app_data_paths import AppDataPaths
     from .infrastructure.persistence.sqlite_batch_record_repository import (
@@ -110,13 +121,14 @@ def create_batch_evaluation_service(*, paths=None):
     paths = paths if paths is not None else AppDataPaths.default()
     analysis = create_pump_analysis_service(paths=paths)
     # 载体端口在装配层注入：Application 只认识 Protocol，不认识 Excel。
-    return PumpBatchEvaluationService(
+    return WorkbookEvaluationService(
         analysis,
-        reader=V6PumpWorkbookReader(),
-        writer=PumpResultWorkbookWriter(),
+        create_transformer_analysis_service(with_persistence=False),
+        reader=UnifiedWorkbookReader(),
+        writer=UnifiedResultWorkbookWriter(),
         batch_repository=SqliteBatchRecordRepository(paths.records_db),
-        template_identity=V6_TEMPLATE_IDENTITY,
-        template_resource=V6TemplateResource(),
+        template_identity=V61_TEMPLATE_IDENTITY,
+        template_resource=V61TransformerTemplateResource(),
         app_version=__version__)
 
 
@@ -132,11 +144,13 @@ def launch_qt(*, paths=None) -> int:
     resolved = paths if paths is not None else AppDataPaths.default()
     service, logger = create_settings_runtime(paths=resolved)
     analysis = create_pump_analysis_service(paths=resolved)
+    transformer = create_transformer_analysis_service(paths=resolved)
     # 批量评价复用同一个正式分析服务。
     batch = create_batch_evaluation_service(paths=resolved)
     previous = install_exception_hook(logger)
     try:
         return run(service, logger, analysis, batch=batch,
+                   transformer=transformer,
                    data_location=resolved.root,
                    external_launch_context=external_launch_environment)
     finally:

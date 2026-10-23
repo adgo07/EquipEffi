@@ -9,7 +9,7 @@ from typing import Sequence
 
 
 def _runtime_status() -> dict[str, object]:
-    """检查正式 Qt、V6 模板和两个正式泵 Profile，不创建窗口或用户数据库。"""
+    """检查Qt、统一模板和设备实现，不创建窗口或用户数据库。"""
 
     desktop: dict[str, object] = {"surface": "PySide6 Qt", "available": False}
     try:
@@ -29,13 +29,13 @@ def _runtime_status() -> dict[str, object]:
     }
     try:
         from .infrastructure.excel.template_resource import (
-            V6_TEMPLATE_IDENTITY,
-            V6TemplateResource,
+            V61_TEMPLATE_IDENTITY,
+            V61TransformerTemplateResource,
         )
 
-        template["template_id"] = V6_TEMPLATE_IDENTITY["template_id"]
-        template["template_version"] = V6_TEMPLATE_IDENTITY["template_version"]
-        validation = V6TemplateResource().validate()
+        template["template_id"] = V61_TEMPLATE_IDENTITY["template_id"]
+        template["template_version"] = V61_TEMPLATE_IDENTITY["template_version"]
+        validation = V61TransformerTemplateResource().validate()
         template["available"] = validation.is_valid
         template["issues"] = list(validation.issues)
         if validation.missing_sheets:
@@ -76,27 +76,38 @@ def _runtime_status() -> dict[str, object]:
         for profile in profiles.values():
             profile["error"] = f"{type(exc).__name__}: {exc}"
 
+    transformer = {"available": False, "support_status": "IMPLEMENTED"}
+    try:
+        from .composition import create_transformer_analysis_service
+        service = create_transformer_analysis_service(with_persistence=False)
+        transformer.update(service.standard_overview())
+        transformer["available"] = bool(service.input_contract.categories)
+    except Exception as exc:
+        transformer["error"] = f"{type(exc).__name__}: {exc}"
+
     ready = (
         bool(desktop["available"])
         and bool(template["available"])
         and all(bool(profile["available"]) for profile in profiles.values())
+        and bool(transformer["available"])
     )
     return {
         "ready": ready,
         "desktop": desktop,
         "template": template,
         "pump_profiles": profiles,
+        "transformer": transformer,
     }
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     argv = list(sys.argv[1:]) if argv is None else list(argv)
     parser = argparse.ArgumentParser(
-        description="EquipEffi V6 离心泵能效分析桌面程序"
+        description="EquipEffi 设备能效分析桌面程序"
     )
     parser.add_argument("--qt", action="store_true", help="启动 PySide6 Qt 桌面程序")
     parser.add_argument("--gui", action="store_true", help="启动 PySide6 Qt 桌面程序（--qt 别名）")
-    parser.add_argument("--status", action="store_true", help="无界面检查 Qt、V6 模板和泵标准包可用性")
+    parser.add_argument("--status", action="store_true", help="无界面检查 Qt、统一模板和设备标准包可用性")
     parser.add_argument(
         "--status-file",
         type=Path,
