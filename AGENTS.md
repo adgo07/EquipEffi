@@ -8,6 +8,7 @@
 - 开工前核对工作树根、`origin`、分支、HEAD、工作区状态，并同步远端；`origin` 不符时停止。路径只表示本机环境，不代表仓库身份。
 - 当前 Phase 状态见 [`TASK_STATE.md`](TASK_STATE.md)；Windows V1 Profile 范围唯一权威为 [`V1_SCOPE.md`](V1_SCOPE.md)；QA 唯一状态源为 [`QA_BACKLOG.md`](QA_BACKLOG.md)。旧任务卡、HANDOFF 和报告无自动调度权。
 - Phase 1–7 已通过独立验收；Phase 8 已执行并合并 PR #16（`64b656ee`），仅为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`。不得自行声明 `PHASE_8_PASS` 或进入 Phase 9。
+- Owner 于2026-10-23明确下一版本纳入变压器，当前先做接入设计。该授权按 [`V1_SCOPE.md`](V1_SCOPE.md) 的下一版本范围执行，不因旧“暂缓新标准”说明停止设计，也不自动升级当前软件支持状态。
 
 ## Owner 决策边界
 
@@ -17,6 +18,7 @@
 
 ## 本仓业务约束
 
+- 标准/模板资产状态必须分开：**变压器V2.1主映射与35表校对工作簿已成套冻结；当前正式V6的离心泵Sheet及其共享配置依赖已确定、不修改；统一输入工作簿中的变压器Sheet尚待确认**。35表校对工作簿不是用户输入模板。唯一资产入口及当前设计见 [`gb20052_2024/README.md`](docs/standards/gb20052_2024/README.md)，不得因映射已批准而猜测输入Sheet也已批准。
 - Pump Numeric Profile 为 `EQUIPEFFI_PUMP_DECIMAL50_V2`：Decimal、精度 50、`ROUND_HALF_EVEN`、全值比较及 `PUMP-RP-0.1` 参考过程。容差仅用于 Conformance；不得把此配置推为平台默认。
 - Windows V1 正式桌面表面为 PySide6 Qt。评价日期不是业务门禁；Qt 新评价自动取本机日期，标准生命周期仅作简短非阻断提示。合法终态分析自动追加不可变 Record；资料不足可形成 Record，系统执行失败不得形成业务结果。普通用户没有“草稿”概念或技术详情；派生数值通常显示2位小数，标准限值沿用其精度，展示舍入不改变比较、精确快照或Golden。不删除内部trace/provenance证据，不增加 Reproduce/Attempt/通用 Audit 框架。
 - 默认不改 `records.sqlite`；若明确需求确需 schema 迁移，先停止并交 Owner 决定。既有 Record 不追溯改写，不补造 provenance。
