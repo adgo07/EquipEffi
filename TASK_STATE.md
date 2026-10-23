@@ -7,12 +7,12 @@
 
 ## 当前工作：变压器接入最终复核（2026-10-23）
 
-Owner已批准下一版本纳入GB 20052—2024、25列方案并授权实施、验收后顺序合并。设计PR [#29](https://github.com/adgo07/EquipEffi/pull/29)已合并于`4ae97dac2397756094e56565eb79062bcc3e6a51`；内核PR [#30](https://github.com/adgo07/EquipEffi/pull/30)及产品PR [#31](https://github.com/adgo07/EquipEffi/pull/31)待本轮完整CI及新包收口后依次合并。
+Owner已批准下一版本纳入GB 20052—2024、25列方案并授权实施、验收后顺序合并。设计PR [#29](https://github.com/adgo07/EquipEffi/pull/29)已合并于`4ae97dac2397756094e56565eb79062bcc3e6a51`；内核PR [#30](https://github.com/adgo07/EquipEffi/pull/30)及产品PR [#31](https://github.com/adgo07/EquipEffi/pull/31)按已授权顺序在最终CI成功后依次合并；实际合并状态以对应PR为准。
 
 - 权威设计：[变压器接入及Excel兼容方案](docs/standards/gb20052_2024/INTEGRATION_DESIGN.md)。冻结V2.1映射二件套、原V6泵Sheet及共享依赖保持不变；变压器25列、W统一损耗单位，非630kVA阻抗仅留记录的决定不变。
 - Qt单台、统一Excel V6.1、混合工作簿单条批次记录已接通；没有数据库迁移或中央锁升级。保持`IMPLEMENTED`，不自动声明`SUPPORTED`、Phase PASS或正式发布。
 - QA-TR-002六项审查修复及QA-TR-003命名空间Sheet定位已关闭；此前完整Windows CI通过。Owner已确认WPS类别/条件下拉、第104行追加、保存重开正常；普通下载目录解压的745111b9原生包本轮回复“可以了”。构建目录EXE的Low完整性造成的验收环境问题及处理证据保留在[修复记录](docs/standards/gb20052_2024/PR31_REVIEW_FIXES.md)，不得再次提供构建目录EXE作为用户入口。
-- 本轮补充105组电压/阻抗边界输入、12行真实Excel跨入口核对，未发现新的业务失败；首页只呈现泵属于接入遗漏（QA-TR-004），已增加两类标准和明确设备入口。主会话集成定向102项通过，失败/错误/跳过均为0；完整CI和包含首页修复的新原生包随后按固定提交核验。
+- 本轮补充105组电压/阻抗边界输入、12行真实Excel跨入口核对，未发现新的业务失败；首页只呈现泵属于接入遗漏（QA-TR-004），已增加两类标准和明确设备入口。主会话集成定向102项通过，失败/错误/跳过均为0；包含首页修复的新内部包按固定代码`ed25ef27`构建，独立启动、ZIP资源审计及普通下载目录解压复验通过；最终完整CI结果以PR #31检查为准，未成功不得合并。
 - 没有干净Windows/Sandbox，按Owner决定保留限制。本轮不改冻结件、Golden或标准解释；UI全面美化继续延后。
 
 详细实施历史见[实施记录](docs/standards/gb20052_2024/IMPLEMENTATION_REPORT.md)及[最终复核记录](docs/standards/gb20052_2024/PR31_REVIEW_FIXES.md)。当前分支为`codex/transformer-implementation-20261023`，主工作区的用户修改不动。
