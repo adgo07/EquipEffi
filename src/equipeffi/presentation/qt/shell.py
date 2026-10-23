@@ -60,7 +60,8 @@ class MainWindow(QMainWindow):
         self.pages = QStackedWidget()
 
         # 所有页面都真实构建；analysis 为 None 时仍构建（用于仅设置/关于场景）。
-        self.home_page = HomePage(analysis, self) if analysis is not None else None
+        self.home_page = (HomePage(analysis, self, transformer=transformer)
+                          if analysis is not None else None)
         self.standards_page = (StandardsPage(analysis, self, transformer=transformer)
                                if analysis is not None else None)
         # Phase 7：普通流程没有草稿概念，分析页不接收 workspace_id。

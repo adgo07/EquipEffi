@@ -24,15 +24,17 @@ from ..tokens import TOKENS
 
 
 class HomePage(QWidget):
-    """开始新分析 / 打开最近历史记录 / 查看当前正式标准。
+    """开始新分析 / 打开最近历史记录 / 查看适用标准信息。
 
 Phase 7：普通用户界面没有「分析草稿」概念，因此本页不提供草稿入口；
 每次「分析」都会自动形成一条历史记录，本页直接列出最近记录。
 """
 
-    def __init__(self, service, navigator=None, parent: QWidget | None = None):
+    def __init__(self, service, navigator=None, parent: QWidget | None = None,
+                 *, transformer=None):
         super().__init__(parent)
         self.service = service
+        self.transformer_service = transformer
         self.navigator = navigator
         self._record_ids: list[str] = []
 
@@ -56,7 +58,12 @@ Phase 7：普通用户界面没有「分析草稿」概念，因此本页不提�
         self.new_analysis_button = QPushButton("开始新的离心泵分析")
         self.new_analysis_button.clicked.connect(self._start_new_analysis)
         primary.addWidget(self.new_analysis_button)
-        self.open_standard_button = QPushButton("查看当前正式标准")
+        self.new_transformer_analysis_button = QPushButton("开始新的变压器分析")
+        self.new_transformer_analysis_button.clicked.connect(
+            self._start_new_transformer_analysis)
+        self.new_transformer_analysis_button.setVisible(transformer is not None)
+        primary.addWidget(self.new_transformer_analysis_button)
+        self.open_standard_button = QPushButton("查看标准库")
         self.open_standard_button.clicked.connect(self._open_standard)
         primary.addWidget(self.open_standard_button)
         primary.addStretch()
@@ -80,11 +87,30 @@ Phase 7：普通用户界面没有「分析草稿」概念，因此本页不提�
     def refresh(self) -> None:
         """刷新标准信息与最近历史记录。"""
 
-        overview = self.service.standard_overview()
-        self.standard_label.setText(
-            f"当前正式标准：{overview['standard_code']}《{overview['standard_name']}》\n"
-            f"实施日期：{overview['effective_date'] or '—'}"
-        )
+        pump = self.service.standard_overview()
+        lines = [
+            "离心泵",
+            f"标准号：{pump['standard_code']}",
+            f"标准名称：{pump['standard_name']}",
+            f"实施日期：{pump['effective_date'] or '—'}",
+        ]
+        if self.transformer_service is not None:
+            transformer = self.transformer_service.standard_overview()
+            transformer_name = transformer.get(
+                "name", "电力变压器能效限定值及能效等级")
+            lines.extend((
+                "",
+                "电力变压器",
+                f"标准号：{transformer['standard_code']}",
+                f"标准名称：{transformer_name}",
+                f"实施日期：{transformer.get('effective_date') or '—'}",
+            ))
+            support_status = transformer.get("support_status")
+            if support_status == "IMPLEMENTED":
+                lines.append("软件状态：已接入，尚待正式支持验收")
+            else:
+                lines.append("软件状态：当前状态以软件记录为准")
+        self.standard_label.setText("\n".join(lines))
 
         self._record_ids = []
         self.records.clear()
@@ -108,7 +134,13 @@ Phase 7：普通用户界面没有「分析草稿」概念，因此本页不提�
 
     def _start_new_analysis(self) -> None:
         if self.navigator is not None:
-            self.navigator.open_analysis()
+            self.navigator.open_analysis(
+                standard_code=self.service.standard_overview()["standard_code"])
+
+    def _start_new_transformer_analysis(self) -> None:
+        if self.navigator is not None and self.transformer_service is not None:
+            self.navigator.open_analysis(
+                standard_code=self.transformer_service.standard_overview()["standard_code"])
 
     def _open_standard(self) -> None:
         if self.navigator is not None:

@@ -333,10 +333,47 @@ class HomePageTests(ProductShellTestCase):
         window = self.window()
         home = window.home_page
         self.assertIn("开始新的离心泵分析", home.new_analysis_button.text())
-        self.assertIn("查看当前正式标准", home.open_standard_button.text())
+        self.assertIn("查看标准库", home.open_standard_button.text())
+        self.assertTrue(home.new_transformer_analysis_button.isHidden())
         overview = self.service.standard_overview()
         self.assertIn(overview["standard_code"], home.standard_label.text())
         self.assertIn(overview["standard_name"], home.standard_label.text())
+
+    def test_home_shows_both_device_standards_and_routes_each_shortcut(self):
+        """首页依赖真实服务 read model，并给每个入口传入明确标准号。"""
+
+        from equipeffi.composition import create_transformer_analysis_service
+
+        transformer = create_transformer_analysis_service(
+            paths=self.paths, with_persistence=True)
+        window = self.window(transformer=transformer)
+        home = window.home_page
+        text = home.standard_label.text()
+        pump_overview = self.service.standard_overview()
+        transformer_overview = transformer.standard_overview()
+
+        self.assertIn(pump_overview["standard_code"], text)
+        self.assertIn(pump_overview["standard_name"], text)
+        self.assertIn(transformer_overview["standard_code"], text)
+        self.assertIn(transformer_overview["name"], text)
+        self.assertIn("已接入，尚待正式支持验收", text)
+        self.assertEqual(text.count("尚待正式支持验收"), 1)
+        self.assertNotIn("本版本已正式支持", text)
+        self.assertNotIn("IMPLEMENTED", text)
+        self.assertFalse(home.new_transformer_analysis_button.isHidden())
+        self.assertIn("查看标准库", home.open_standard_button.text())
+
+        home.new_analysis_button.click()
+        self.assertEqual(window.device_analysis_page.device_selector.currentData(),
+                         "centrifugal_pump")
+        window.open_home()
+        home.new_transformer_analysis_button.click()
+        self.assertEqual(window.device_analysis_page.device_selector.currentData(),
+                         "transformer")
+        window.open_home()
+        home.new_analysis_button.click()
+        self.assertEqual(window.device_analysis_page.device_selector.currentData(),
+                         "centrifugal_pump")
 
     def test_home_lists_recent_records_from_existing_capabilities(self):
         home = self.window().home_page

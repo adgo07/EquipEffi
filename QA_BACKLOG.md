@@ -10,6 +10,12 @@ OPEN / VERIFY / REGISTERED_DEVIATION 都按原状态保留，不自动授权代�
 
 ## 当前风险与偏差
 
+### QA-TR-004：首页仍只呈现离心泵入口（CLOSED，2026-10-23）
+
+Owner在普通目录验收成功后指出首页仅展示泵标准和“开始新的离心泵分析”。核实HomePage只接收泵服务，未接通变压器概览；新建分析页已按设备分别装配服务。修复限首页入口、标准概览和确定设备的导航，复用现有共享历史记录，不重构业务壳、不改变标准解释、支持状态或数据库。补主页到泵/变压器实际表单的切换回归及双标准显示核验。
+
+已从两个真实服务显示标准概览，增加变压器入口；两个按钮显式携带自己的标准号，避免沿用上次选择的设备。真实MainWindow的泵→变压器→泵回归及双标准显示通过，Qt/产品壳相关73项通过。1000×720、640×480离屏检查无文字或按钮截断；离屏检查不冒充原生包人工操作。
+
 ### QA-TR-003：合法命名空间前缀工作簿的结果 Sheet 定位（CLOSED，2026-10-23）
 
 PR31 最终验收发现，artifact-tool 导出的合法 XLSX 可被 `UnifiedWorkbookReader` 读取，但 `UnifiedResultWorkbookWriter` 写回时报告找不到目标 Sheet。根因为 `xl/workbook.xml` 使用带 `x:` 前缀的 SpreadsheetML 元素（如 `<x:sheet>`），公共 `_sheet_target` 原正则仅识别无前缀标签。现改为按标准 QName 解析 SpreadsheetML `sheet`、Office Document Relationships `r:id` 与 Package Relationships `Relationship`，同名扩展标签不会抢先命中。`test_pr31_output_integrity.py` 定向回归 8/8 通过，覆盖前缀 XML、同名扩展、泵与变压器同次写回及非目标 ZIP 部件逐字节保持；真实 artifact-tool 验收工作簿通过 Reader 和 Writer，59 个非目标 ZIP 部件保持字节一致；完整批量服务复验为2行、5台（1级3台、不在范围2台），历史错误为空。范围仅为 OOXML 目标部件定位，不改变标准业务、模板、数据库或输入内容。
