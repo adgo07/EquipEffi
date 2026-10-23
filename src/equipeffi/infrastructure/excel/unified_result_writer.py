@@ -12,6 +12,7 @@ from .pump_result_writer import (
     ResultWorkbookExistsError,
     ResultWorkbookWriteError,
     _as_number,
+    _patch_prefix,
     _row_edits,
     _sheet_target,
     _normalise_main_namespace,
@@ -28,13 +29,20 @@ from .result_invariants import (
     assert_non_main_elements_preserved,
     assert_result_payloads,
 )
+from .ooxml_reader import OOXMLWorkbook
 from .template_resource import (
     PUMP_SHEET,
+    PUMP_SHEET_CONTRACT,
     TEMPLATE_MANIFEST,
     TRANSFORMER_SHEET_CONTRACT,
     V61TransformerTemplateResource,
 )
-from .worksheet_patch import SheetStructureError, WorksheetPatch
+from .worksheet_patch import (
+    SheetStructureError,
+    WorksheetPatch,
+    cell_xml,
+    outer_attributes,
+)
 
 
 TRANSFORMER_SHEET = str(TRANSFORMER_SHEET_CONTRACT["sheet_name"])
@@ -56,6 +64,125 @@ if (len(_TRANSFORMER_THRESHOLD_FIELDS) != 6
         or set(_TRANSFORMER_RESULT_BY_KEY) != {"conclusion", "messages"}):
     raise RuntimeError("变压器模板清单的结果字段契约不完整")
 _TEMP_SUFFIX = ".equipeffi-tmp"
+_MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+
+
+def _result_columns(contract: dict) -> tuple[str, ...]:
+    return tuple(str(field["column"]) for field in contract["fields"]
+                 if field.get("role") == "result")
+
+
+def _input_column_indexes(contract: dict) -> tuple[int, ...]:
+    indexes: list[int] = []
+    for field in contract["fields"]:
+        if field.get("role") != "input":
+            continue
+        value = 0
+        for char in str(field["column"]).upper():
+            value = value * 26 + ord(char) - ord("A") + 1
+        indexes.append(value - 1)
+    return tuple(indexes)
+
+
+def _blank_input_rows(source: Path, sheet_name: str, contract: dict,
+                      *, excluded_rows: set[int]) -> set[int]:
+    """Find rows the Reader skips using only declared input values.
+
+    Worksheet style, output formulas, row metadata, and cells outside the input
+    contract do not enable a data row. Output rows returned by the Reader are
+    explicitly excluded so formula/input errors still retain their diagnostics.
+    """
+
+    header_row = int(contract["header_row"])
+    input_indexes = _input_column_indexes(contract)
+    with OOXMLWorkbook(source) as workbook:
+        grid = workbook.rows(sheet_name)
+    result: set[int] = set()
+    for row_number, values in enumerate(grid[header_row:], start=header_row + 1):
+        if row_number in excluded_rows:
+            continue
+        if not any(index < len(values) and values[index] not in (None, "")
+                   for index in input_indexes):
+            result.add(row_number)
+    return result
+
+
+def _cell_has_payload(cell) -> bool:
+    return any(child.ns_uri == _MAIN_NS and child.local in {"f", "v", "is"}
+               for child in cell.element.children)
+
+
+def _clear_blank_result_cells(
+        xml: str, row_numbers: set[int], result_columns: tuple[str, ...]
+        ) -> tuple[str, tuple[str, ...]]:
+    """Clear existing software outputs on blank rows without inserting cells."""
+
+    try:
+        patch = WorksheetPatch(xml)
+    except SheetStructureError as error:
+        raise ResultWorkbookWriteError(
+            f"空白行结果清理结构校验失败：{error}；拒绝产出结果工作簿") from error
+    duplicates = patch.duplicate_references()
+    if duplicates:
+        raise ResultWorkbookWriteError(
+            "输入工作表存在重复单元格坐标："
+            f"{sorted(duplicates)[:10]}；拒绝清理结果")
+
+    plan = plan_namespace(xml)
+    edits: list[tuple[int, int, str]] = []
+    cleared: list[str] = []
+    for row_number in sorted(row_numbers):
+        row = patch.rows.get(row_number)
+        if row is None:
+            continue
+        by_reference = {cell.reference: cell for cell in row.cells if cell.reference}
+        for column in result_columns:
+            reference = f"{column}{row_number}"
+            cell = by_reference.get(reference)
+            if cell is None or not _cell_has_payload(cell):
+                continue
+            prefix = _patch_prefix(plan, cell.element.prefix, cell.element.ns_uri)
+            edits.append((
+                cell.start,
+                cell.end,
+                cell_xml(reference, cell.style, ("s", ""), prefix,
+                         extra=outer_attributes(cell.element)),
+            ))
+            cleared.append(reference)
+
+    if not edits:
+        return xml, ()
+    edits.sort(key=lambda item: (item[0], item[1]))
+    previous_end = -1
+    for start, end, _fragment in edits:
+        if start < previous_end:
+            raise ResultWorkbookWriteError("空白行结果清理补丁重叠，拒绝写回")
+        previous_end = max(previous_end, end)
+    result = _normalise_main_namespace(patch.apply(edits))
+    try:
+        assert_non_main_elements_preserved(xml, result)
+        assert_unique_references(result)
+        assert_main_namespace_semantics(result)
+    except InvariantViolation as error:
+        raise ResultWorkbookWriteError(
+            f"空白行结果清理独立校验失败：{error}") from error
+    return result, tuple(cleared)
+
+
+def _assert_result_cells_cleared(xml: str, references: tuple[str, ...]) -> None:
+    if not references:
+        return
+    try:
+        patch = WorksheetPatch(xml)
+    except SheetStructureError as error:
+        raise InvariantViolation(f"结果工作表结构无效：{error}") from error
+    for reference in references:
+        row_number = int("".join(char for char in reference if char.isdigit()))
+        row = patch.rows.get(row_number)
+        cell = (next((item for item in row.cells
+                      if item.reference == reference), None) if row else None)
+        if cell is not None and _cell_has_payload(cell):
+            raise InvariantViolation(f"空白输入行的旧结果仍存在：{reference}")
 
 
 def _transformer_cell_payloads(
@@ -189,13 +316,20 @@ class UnifiedResultWorkbookWriter:
         selected: dict[str, dict[int, BatchRowOutcome]] = {}
         for name, outcomes in outcomes_by_sheet.items():
             contract = sheet_contracts[name]
-            if outcomes and contract.get("status") != "CONNECTED":
-                raise ResultWorkbookWriteError(f"工作表「{name}」尚未接通，不能写入结果")
-            if outcomes and contract.get("sheet_id") not in {
-                    "centrifugal_pump", "transformer"}:
-                raise ResultWorkbookWriteError(f"工作表「{name}」没有结果写入适配器")
-            if outcomes:
-                selected[name] = outcomes
+            if contract.get("status") != "CONNECTED":
+                if outcomes:
+                    raise ResultWorkbookWriteError(
+                        f"工作表「{name}」尚未接通，不能写入结果")
+                continue
+            if contract.get("sheet_id") not in {"centrifugal_pump", "transformer"}:
+                if outcomes:
+                    raise ResultWorkbookWriteError(
+                        f"工作表「{name}」没有结果写入适配器")
+                continue
+            # Empty outcome maps are meaningful: the application passes each
+            # connected sheet, including an entirely blank one, so stale output
+            # values can be removed from the new workbook.
+            selected[name] = outcomes
 
         destination.parent.mkdir(parents=True, exist_ok=True)
         with ZipFile(source) as archive:
@@ -212,16 +346,17 @@ class UnifiedResultWorkbookWriter:
 
         by_part = {info.filename: data for info, data in entries}
         expected_by_part: dict[str, dict[str, str | None]] = {}
+        expected_cleared_by_part: dict[str, tuple[str, ...]] = {}
         for name, outcomes in selected.items():
             part = targets[name]
             source_xml = by_part[part].decode("utf-8")
+            contract = sheet_contracts[name]
+            outcome_rows = {int(number) for number in outcomes}
+            blank_rows = _blank_input_rows(
+                source, name, contract, excluded_rows=outcome_rows)
             if name == PUMP_SHEET:
                 result_xml = patch_pump_sheet_xml(source_xml, outcomes)
-                result_columns = tuple(
-                    field["column"] for field in next(
-                        sheet for sheet in entry["sheets"]
-                        if sheet.get("sheet_id") == "centrifugal_pump")["fields"]
-                    if field.get("role") == "result")
+                result_columns = _result_columns(contract)
                 expected: dict[str, str | None] = {}
                 for row_number, outcome in outcomes.items():
                     for column, payload in pump_cell_payloads(outcome).items():
@@ -237,23 +372,29 @@ class UnifiedResultWorkbookWriter:
                 }
             else:
                 raise ResultWorkbookWriteError(f"没有工作表「{name}」的结果写入适配器")
+            result_xml, cleared_references = _clear_blank_result_cells(
+                result_xml, blank_rows, result_columns)
             try:
                 assert_input_preserved(
                     source_xml, result_xml,
                     result_columns=result_columns,
-                    row_numbers={int(number) for number in outcomes})
+                    row_numbers=outcome_rows | blank_rows)
                 assert_result_payloads(result_xml, expected)
+                _assert_result_cells_cleared(result_xml, cleared_references)
             except InvariantViolation as error:
                 raise ResultWorkbookWriteError(
                     f"「{name}」结果写回独立校验失败：{error}") from error
             by_part[part] = result_xml.encode("utf-8")
             expected_by_part[part] = expected
+            expected_cleared_by_part[part] = cleared_references
 
-        self._commit(destination, entries, by_part, expected_by_part)
+        self._commit(destination, entries, by_part, expected_by_part,
+                     expected_cleared_by_part)
         return destination
 
     def _commit(self, destination: Path, entries, by_part: dict[str, bytes],
-                expected_by_part: dict[str, dict[str, str | None]]) -> None:
+                expected_by_part: dict[str, dict[str, str | None]],
+                expected_cleared_by_part: dict[str, tuple[str, ...]]) -> None:
         temporary = destination.with_name(
             f".{destination.name}.{uuid.uuid4().hex}{_TEMP_SUFFIX}")
         original_by_name = {info.filename: data for info, data in entries}
@@ -274,6 +415,8 @@ class UnifiedResultWorkbookWriter:
                     xml = archive.read(part).decode("utf-8")
                     assert_unique_references(xml)
                     assert_result_payloads(xml, expected)
+                    _assert_result_cells_cleared(
+                        xml, expected_cleared_by_part.get(part, ()))
             os.replace(temporary, destination)
         except BaseException:
             try:

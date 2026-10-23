@@ -14,6 +14,7 @@ from .pump_batch_evaluation_service import (
     PumpBatchEvaluationService, _BatchProvenance, _sha256_of, parse_quantity,
 )
 from .transformer_analysis_service import TransformerAnalysisRequest, snapshot_value
+from .transformer_basis_formatter import format_transformer_basis_lines
 
 
 @dataclass
@@ -153,9 +154,12 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         summary.conclusion_quantities[conclusion] = summary.conclusion_quantities.get(conclusion, 0) + quantity
         if result.trace and result.references not in references:
             references.append(result.references)
+        messages = tuple(message for message in (
+            result.explanation, *format_transformer_basis_lines(result.trace))
+            if message)
         return BatchRowOutcome(
             row.row_number, bool(status), conclusion, status, result.grade,
-            messages=(result.explanation,) if result.explanation else (),
+            messages=messages,
             thresholds=result.thresholds, quantity=quantity)
 
     def _persist_workbook(self, result, identity):

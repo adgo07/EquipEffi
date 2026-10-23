@@ -35,6 +35,9 @@ from ....application.services.centrifugal_pump_analysis_service import (
     RecordQuery,
     user_conclusion_from_snapshot,
 )
+from ....application.services.transformer_analysis_service import (
+    format_transformer_basis_lines,
+)
 from ..labels import format_metric, support_status_text, user_grade_text
 from ..widgets.collapsible import CollapsibleSection
 
@@ -634,6 +637,7 @@ class RecordsPage(QWidget):
         explanation = str(result.get("explanation") or "").strip()
         if explanation:
             lines.append(f"判定说明：{explanation}")
+        lines.extend(format_transformer_basis_lines(result.get("trace")))
         thresholds = result.get("thresholds") or {}
         threshold_labels = (
             ("no_load_loss_1", "空载损耗限值（1级）"),

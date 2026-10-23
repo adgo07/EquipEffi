@@ -23,6 +23,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from equipeffi.domain.devices.transformer.input_contract import (  # noqa: E402
     TRANSFORMER_CATEGORIES,
+    TRANSFORMER_SCOPE_HINT,
     condition_options,
 )
 from equipeffi.infrastructure.excel.template_resource import (  # noqa: E402
@@ -230,7 +231,7 @@ def _row_from_template(template: ET.Element, number: int,
     return row
 
 
-def _patch_transformer_sheet(xml: bytes) -> bytes:
+def _patch_transformer_sheet(xml: bytes, loss_style: str) -> bytes:
     root = _parse_xml(xml)
     dimension = root.find(_tag("dimension"))
     if dimension is not None:
@@ -285,6 +286,7 @@ def _patch_transformer_sheet(xml: bytes) -> bytes:
     for column in "VWXY":
         cell_styles[column] = numeric_style.attrib.get("s") if numeric_style is not None else None
     cell_styles["U"] = result_style.attrib.get("s") if result_style is not None else None
+    cell_styles.update(J=loss_style, K=loss_style)
 
     for number in range(FIRST_DATA_ROW, LAST_DATA_ROW + 1):
         row = rows.get(number)
@@ -293,6 +295,16 @@ def _patch_transformer_sheet(xml: bytes) -> bytes:
             rows[number] = row
             continue
         cells = _cell_map(row)
+        # The original ten-row table has a sparse following row. Reusing that
+        # row must still supply unlocked input styles for every declared column.
+        for column, style in cell_styles.items():
+            if column not in cells and _column_number(column) <= 25:
+                cell = _blank_cell(f"{column}{number}", style)
+                row.append(cell)
+                cells[column] = cell
+        for column in ("J", "K"):
+            if column in cells:
+                cells[column].set("s", loss_style)
         formula = f'IF(COUNTA(B{number}:K{number},S{number}:T{number},V{number}:Y{number})>0,ROW()-3,"")'
         existing_index = list(row).index(cells["A"]) if "A" in cells else 0
         if "A" in cells:
@@ -527,6 +539,49 @@ def _patch_table(xml: bytes) -> bytes:
     return _xml_bytes(root)
 
 
+def _loss_input_style(styles_xml: bytes, sheet_xml: bytes) -> tuple[bytes, str]:
+    """Append a transformer-only decimal style; existing shared styles stay intact."""
+    root = _parse_xml(styles_xml)
+    formats = root.find(_tag("numFmts"))
+    if formats is None:
+        formats = ET.Element(_tag("numFmts"), {"count": "0"})
+        root.insert(0, formats)
+    format_id = max([163] + [int(x.attrib["numFmtId"]) for x in formats]) + 1
+    ET.SubElement(formats, _tag("numFmt"), {
+        "numFmtId": str(format_id), "formatCode": "0.###############"})
+    formats.set("count", str(len(formats)))
+    styles = root.find(_tag("cellXfs"))
+    if styles is None:
+        raise ValueError("模板缺少单元格样式")
+    cell = _parse_xml(sheet_xml).find(f".//{_tag('c')}[@r='J4']")
+    if cell is None:
+        raise ValueError("模板缺少J4输入样式")
+    style = deepcopy(styles[int(cell.attrib.get("s", "0"))])
+    style.set("numFmtId", str(format_id))
+    style.set("applyNumberFormat", "1")
+    index = str(len(styles))
+    styles.append(style)
+    styles.set("count", str(len(styles)))
+    return _xml_bytes(root), index
+
+
+def _patch_transformer_instructions(xml: bytes) -> bytes:
+    root = _parse_xml(xml)
+    cell = root.find(f".//{_tag('c')}[@r='B13']")
+    if cell is None:
+        raise ValueError("模板说明缺少变压器说明B13")
+    _set_inline(cell,
+        "设备类别确定适用型式；标准条件选择铁心、热等级、联结组及新能源用途。"
+        "表2仅630 kVA按I列额定阻抗选组，其他容量的阻抗只留记录；"
+        "表27/28按I、X、Y三项额定阻抗选组，无需手选损耗组。"
+        "损耗统一按W填写，保留小数。" + TRANSFORMER_SCOPE_HINT)
+    row = root.find(f".//{_tag('row')}[@r='13']")
+    if row is not None:
+        row.set("ht", "108")
+        row.set("customHeight", "1")
+    return _xml_bytes(root)
+
+
 def _patch_archive(source: Path, output: Path) -> None:
     categories = tuple(TRANSFORMER_CATEGORIES)
     if len(categories) != 37:
@@ -541,10 +596,15 @@ def _patch_archive(source: Path, output: Path) -> None:
         transformer_path = _sheet_target(archive, TRANSFORMER_SHEET)
         config_path = _sheet_target(archive, CONFIG_SHEET)
         table_path = _sheet_table_target(archive, transformer_path, "TblTransformer")
+        instructions_path = _sheet_target(archive, "模板说明")
+        transformer_xml = archive.read(transformer_path)
+        styles_xml, loss_style = _loss_input_style(archive.read("xl/styles.xml"), transformer_xml)
 
     replacements = {
-        transformer_path: _patch_transformer_sheet(
-            next(data for info, data in entries if info.filename == transformer_path)),
+        transformer_path: _patch_transformer_sheet(transformer_xml, loss_style),
+        "xl/styles.xml": styles_xml,
+        instructions_path: _patch_transformer_instructions(
+            next(data for info, data in entries if info.filename == instructions_path)),
         config_path: _patch_configuration(
             next(data for info, data in entries if info.filename == config_path), categories),
         "xl/workbook.xml": _patch_workbook(

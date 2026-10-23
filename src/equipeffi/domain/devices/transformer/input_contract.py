@@ -13,6 +13,11 @@ from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Any, Mapping
 
+TRANSFORMER_SCOPE_HINT = (
+    "适用类别限额定频率50 Hz；非50 Hz或其他不适用型式请选择“其他类别”，"
+    "型式不明确请选择“不确定类别”。"
+)
+
 
 class TransformerInputError(ValueError):
     """The transformer input uses an unknown or contradictory contract value."""
@@ -95,6 +100,7 @@ def _facts(table_no: int) -> Mapping[str, Any]:
     on_load = table_no in {4, 6, 10, 11, 15, 16, 17, 21, 22, 24, 28}
     is_auto = table_no in {17, 20, 21, 22, 23, 24, 27, 28}
     facts: dict[str, Any] = {
+        "rated_frequency_hz": "50",
         "application_group": "renewable" if renewable else "ordinary",
         "voltage_class_kv": voltage,
         "medium_type": "dry_type" if dry else "oil_immersed",

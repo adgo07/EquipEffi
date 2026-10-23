@@ -135,7 +135,9 @@ class QtShellTests(unittest.TestCase):
         for mode in ("write", "restore", "entry"):
             result = subprocess.run([sys.executable, str(root / "tools/qt_offscreen_smoke.py"),
                                      "--data-root", str(self.paths.root / "process"), "--mode", mode],
-                                    cwd=root, env=environment, capture_output=True, text=True, encoding="utf-8", timeout=30)
+                                    # Cold Qt imports contend with workbook/package tests on Windows.
+                                    # Keep a bounded wait and all exit/state assertions, without retries.
+                                    cwd=root, env=environment, capture_output=True, text=True, encoding="utf-8", timeout=90)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertIn('"exit": 0', result.stdout)
 

@@ -118,17 +118,18 @@ def _cell_position(reference: str) -> tuple[int, int] | None:
     return _column_index(match.group(1)), int(match.group(2))
 
 
-def pump_data_layout_issues(
+def sheet_data_layout_issues(
         merged_ranges: tuple[str, ...] | list[str],
-        contract: dict[str, Any] | None = None) -> tuple[str, ...]:
-    """Reject data-area merges that obscure pump input or result cells.
+        contract: dict[str, Any]) -> tuple[str, ...]:
+    """Reject data-area merges that obscure a connected sheet's I/O cells.
 
     The data area is intentionally unbounded: Table size is not a Reader capacity
     limit, and a missing Table alone does not make an otherwise compatible sheet
     invalid.
     """
 
-    selected = contract or PUMP_SHEET_CONTRACT
+    selected = contract
+    sheet_name = str(selected.get("sheet_name") or "工作表")
     first_data_row = int(selected["header_row"]) + 1
     fields = [field for field in selected["fields"]
               if field.get("role") in {"input", "result"}]
@@ -140,12 +141,12 @@ def pump_data_layout_issues(
     for reference in merged_ranges:
         parts = str(reference).split(":")
         if len(parts) != 2:
-            issues.append(f"离心泵数据区合并范围格式无效：{reference!r}")
+            issues.append(f"{sheet_name}数据区合并范围格式无效：{reference!r}")
             continue
         start = _cell_position(parts[0])
         end = _cell_position(parts[1])
         if start is None or end is None:
-            issues.append(f"离心泵数据区合并范围格式无效：{reference!r}")
+            issues.append(f"{sheet_name}数据区合并范围格式无效：{reference!r}")
             continue
         min_column, max_column = sorted((start[0], end[0]))
         max_row = max(start[1], end[1])
@@ -157,9 +158,17 @@ def pump_data_layout_issues(
         ]
         if covered_columns:
             issues.append(
-                f"离心泵数据区合并范围 {reference} 覆盖输入/结果列 "
+                f"{sheet_name}数据区合并范围 {reference} 覆盖输入/结果列 "
                 f"{'、'.join(covered_columns)}（第 {first_data_row} 行起不允许合并）")
     return tuple(issues)
+
+
+def pump_data_layout_issues(
+        merged_ranges: tuple[str, ...] | list[str],
+        contract: dict[str, Any] | None = None) -> tuple[str, ...]:
+    """Compatibility entry point for the established pump reader and checks."""
+
+    return sheet_data_layout_issues(merged_ranges, contract or PUMP_SHEET_CONTRACT)
 
 
 def _header_parts(value: Any) -> tuple[str, str, tuple[str, ...]]:
@@ -503,6 +512,8 @@ class V61TransformerTemplateResource(V6TemplateResource):
         try:
             with OOXMLWorkbook(candidate) as workbook:
                 grid = workbook.rows(str(contract["sheet_name"]))
+                merged_ranges = workbook.merged_ranges(str(contract["sheet_name"]))
+            issues.extend(sheet_data_layout_issues(merged_ranges, contract))
             header_row = int(contract["header_row"]) - 1
             if header_row < 0 or header_row >= len(grid):
                 issues.append("「变压器」Sheet 缺少正式表头行")

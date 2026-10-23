@@ -21,6 +21,8 @@ from PySide6.QtWidgets import (
 
 from ....application.services.transformer_analysis_service import (
     TransformerAnalysisRequest,
+    TRANSFORMER_SCOPE_HINT,
+    format_transformer_basis_lines,
 )
 from ..labels import format_metric, user_grade_text
 from ..tokens import TOKENS
@@ -96,7 +98,7 @@ class TransformerAnalysisPage(QWidget):
         for option in self.category_options:
             self.category.addItem(option.label, option.category_id)
         category_layout.addWidget(self.category)
-        self.category_help = QLabel("请选择与设备铭牌和适用型式相符的类别。")
+        self.category_help = QLabel(TRANSFORMER_SCOPE_HINT)
         self.category_help.setWordWrap(True)
         category_layout.addWidget(self.category_help)
         layout.addWidget(category_box)
@@ -147,12 +149,9 @@ class TransformerAnalysisPage(QWidget):
         self.field_inputs.clear()
         category_id = self.category.currentData()
         if not category_id:
-            self.category_help.setText("请选择与设备铭牌和适用型式相符的类别。")
             return
 
-        category = self._category_by_id[category_id]
         options = tuple(self.contract.condition_options(category_id))
-        self.category_help.setText("设备参数字段已根据所选类别显示。")
         fields = tuple(self.contract.visible_fields(category_id))
         for field in fields:
             marker = "（必填）" if field.required else (
@@ -263,7 +262,10 @@ class TransformerAnalysisPage(QWidget):
                 threshold_lines.append(f"{label}：{format_metric(value, name=key)} W")
         self.thresholds_label.setText("\n".join(threshold_lines))
         explanation = str(result.explanation or "").strip()
-        self.explanation.setText(f"判定说明：{explanation}" if explanation else "")
+        explanation_lines = ([f"判定说明：{explanation}"] if explanation else [])
+        explanation_lines.extend(format_transformer_basis_lines(
+            getattr(result, "trace", ())))
+        self.explanation.setText("\n".join(explanation_lines))
 
     def _missing_field_labels(self, result) -> list[str]:
         category = (self._category_by_id.get(result.product_category)

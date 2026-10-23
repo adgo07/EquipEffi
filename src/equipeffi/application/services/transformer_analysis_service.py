@@ -9,7 +9,9 @@ from decimal import Decimal
 from typing import Any
 from uuid import uuid4
 
+from ...domain.devices.transformer.input_contract import TRANSFORMER_SCOPE_HINT
 from ..lifecycle import RecordSnapshot, stable_fingerprint
+from .transformer_basis_formatter import format_transformer_basis_lines
 
 
 STANDARD_CODE = "GB 20052-2024"

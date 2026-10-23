@@ -2,6 +2,8 @@
 
 日期：2026-10-23。对应设计：[`INTEGRATION_DESIGN.md`](INTEGRATION_DESIGN.md)。本记录是实施及工程自验，不是Stage D正式支持批准、Phase 8 PASS或正式发布。
 
+后续独立审查修复另见[PR31意见核实与修复](PR31_REVIEW_FIXES.md)。下文哈希、测试和原生包对应此前提交，不应当作后续修复的验收证据。
+
 ## 平台预检查
 
 - 业务基线：`master@dd27baba07cf0a41f58c0ab4838cd786a40e05ff`；设计起点PR #29 `20517fe582a76118a77fd33e12d347bb565e7452`，25列收口提交`50b7e3e`、`2722595e`。
