@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -17,6 +18,8 @@ class ZipappTests(unittest.TestCase):
     def test_zipapp_contains_package_resources_and_runs_status(self):
         with tempfile.TemporaryDirectory() as tmp:
             output = build_zipapp(ROOT, Path(tmp) / "equipeffi.pyz")
+            env = dict(os.environ)
+            env["PYTHONIOENCODING"] = "utf-8"
             with zipfile.ZipFile(output) as archive:
                 self.assertIn("__main__.py", archive.namelist())
                 self.assertIn("equipeffi/standard_manifest.json", archive.namelist())
@@ -28,8 +31,10 @@ class ZipappTests(unittest.TestCase):
             completed = subprocess.run(
                 [sys.executable, str(output), "--status"],
                 cwd=tmp,
+                env=env,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
                 check=False,
             )
             payload = __import__("json").loads(completed.stdout)

@@ -607,6 +607,7 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
     env = dict(os.environ)
     env.pop("PYTHONPATH", None)
     env["PYTHONPATH"] = str(wheel.resolve())
+    env["PYTHONIOENCODING"] = "utf-8"
     headless_code = """
 from datetime import date
 from equipeffi.application.services.centrifugal_pump_analysis_service import PumpAnalysisRequest
@@ -648,6 +649,7 @@ print('headless-pumps-v6.1-transformer-v2.1-ok')
             check=False,
             capture_output=True,
             text=True,
+            encoding="utf-8",
             timeout=45,
         )
     except (OSError, subprocess.SubprocessError) as exc:
@@ -665,6 +667,7 @@ print('headless-pumps-v6.1-transformer-v2.1-ok')
             check=False,
             capture_output=True,
             text=True,
+            encoding="utf-8",
             timeout=45,
         )
         status_payload = json.loads(status.stdout)
