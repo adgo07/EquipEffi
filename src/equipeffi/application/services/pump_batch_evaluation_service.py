@@ -149,10 +149,14 @@ class BatchRowIssue:
     kind: str          # INPUT_ERROR / EXECUTION_ERROR / UNEVALUATED
     reason: str
     quantity: int | None = None
+    sheet_name: str = ""
 
     def as_dict(self) -> dict:
-        return {"row": self.row_number, "kind": self.kind,
-                "reason": self.reason, "quantity": self.quantity}
+        result = {"row": self.row_number, "kind": self.kind,
+                  "reason": self.reason, "quantity": self.quantity}
+        if self.sheet_name:
+            result["sheet_name"] = self.sheet_name
+        return result
 
 
 @dataclass

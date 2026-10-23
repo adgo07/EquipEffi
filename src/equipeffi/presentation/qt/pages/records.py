@@ -53,13 +53,39 @@ PAGE_SIZE = 100
 BATCH_RECORD_PAGE_SIZE = 50
 
 
+def _batch_standard_label(standard_code: str | None, summary) -> str:
+    """把混合批次内部标记投影成可读标准号。"""
+
+    if standard_code != "MULTI":
+        return standard_code or "未记录"
+    sheets = summary.get("sheets", ()) if isinstance(summary, dict) else ()
+    codes = list(dict.fromkeys(str(item.get("standard_code") or "")
+                               for item in sheets if item.get("standard_code")))
+    return "、".join(codes) if codes else "多个标准"
+
+
+def _batch_sheet_label(sheet_name: str | None, sheets) -> str:
+    if sheet_name != "MULTI":
+        return sheet_name or "未记录"
+    names = list(dict.fromkeys(str(item.get("sheet_name"))
+                               for item in sheets if item.get("sheet_name")))
+    return "、".join(names) if names else "多个工作表"
+
+
 class RecordsPage(QWidget):
     """正式记录历史页。"""
 
     def __init__(self, service: CentrifugalPumpAnalysisService, navigator=None, *,
-                 batch=None):
+                 batch=None, transformer=None):
         super().__init__()
         self.service = service
+        self.transformer_service = transformer
+        self.transformer_contract = (transformer.input_contract
+                                     if transformer is not None else None)
+        self._transformer_categories = {
+            item.category_id: item.label
+            for item in getattr(self.transformer_contract, "categories", ())
+        }
         self.navigator = navigator
         self.batch_service = batch
         #: 当前已加载的**投影**（跨页累积，用于列表显示）
@@ -107,7 +133,8 @@ class RecordsPage(QWidget):
         self.search.textChanged.connect(self._apply_filters)
         filters.addWidget(self.search, 2)
 
-        filters.addWidget(QLabel("泵型"))
+        filters.addWidget(QLabel(
+            "设备类别" if self.transformer_service is not None else "泵型"))
         self.category_filter = QComboBox()
         self.category_filter.currentIndexChanged.connect(self._apply_filters)
         filters.addWidget(self.category_filter, 1)
@@ -253,9 +280,10 @@ class RecordsPage(QWidget):
             date_text = record.evaluation_date or record.created_at_utc[:10]
             saved_at = record.created_at_utc.replace("T", " ")
             source_name = record.source_file_name or "未记录文件名"
+            standard_text = _batch_standard_label(record.standard_code, record.summary)
             self.batch_list.addItem(QListWidgetItem(
                 f"{date_text} | {saved_at} UTC | {source_name} | "
-                f"{record.standard_code} | {record.data_row_count} 行 | "
+                f"{standard_text} | {record.data_row_count} 行 | "
                 f"{record.total_quantity} 台"))
         self.batch_list.blockSignals(False)
 
@@ -302,8 +330,8 @@ class RecordsPage(QWidget):
         source_name = snapshot.source_file_name or "未记录"
         result_name = snapshot.output_file_name or "未生成"
         lines = [
-            f"采用标准：{snapshot.standard_code or '未记录'}",
-            f"工作表：{snapshot.sheet_name or '未记录'}",
+            f"采用标准：{_batch_standard_label(snapshot.standard_code, summary)}",
+            f"工作表：{_batch_sheet_label(snapshot.sheet_name, summary.get('sheets', ())) }",
             f"评价日期：{snapshot.evaluation_date or '未记录'}",
             f"输入工作簿：{source_name}",
             f"结果工作簿：{result_name}",
@@ -313,6 +341,14 @@ class RecordsPage(QWidget):
             f"完成正式评价数量：{snapshot.evaluated_quantity} 台",
             f"未形成正式结论行数：{snapshot.unevaluated_count} 行",
         ]
+        for sheet in summary.get("sheets", ()):
+            name = str(sheet.get("sheet_name") or "工作表")
+            lines.append(
+                f"{name}：{sheet.get('data_row_count', 0)} 行，"
+                f"完成评价 {sheet.get('evaluated_quantity', 0)} 台")
+        unprocessed = summary.get("unprocessed_sheets") or ()
+        if unprocessed:
+            lines.append("未处理工作表：" + "、".join(str(name) for name in unprocessed))
         if "input_error_rows" in summary or "execution_error_rows" in summary:
             lines.extend((
                 f"输入错误行数：{summary.get('input_error_rows', 0)} 行",
@@ -335,7 +371,7 @@ class RecordsPage(QWidget):
     def _sync_category_filter(self) -> None:
         """泵型筛选项来自数据库里**真实出现过**的类别，不引入第二份泵型目录。"""
 
-        current = self.category_filter.currentText()
+        current = self.category_filter.currentData()
         try:
             categories = list(self.service.record_categories())
         except Exception:  # noqa: BLE001 - 筛选项不可用不应让整页失效
@@ -345,9 +381,12 @@ class RecordsPage(QWidget):
             categories = []
         self.category_filter.blockSignals(True)
         self.category_filter.clear()
-        self.category_filter.addItem("全部泵型")
-        self.category_filter.addItems(categories)
-        index = self.category_filter.findText(current)
+        all_label = "全部类别" if self.transformer_service is not None else "全部泵型"
+        self.category_filter.addItem(all_label, "")
+        for category in categories:
+            label = self._category_label(category)
+            self.category_filter.addItem(label, category)
+        index = self.category_filter.findData(current)
         self.category_filter.setCurrentIndex(index if index >= 0 else 0)
         self.category_filter.blockSignals(False)
 
@@ -356,10 +395,10 @@ class RecordsPage(QWidget):
 
         conclusion_index = max(self.conclusion_filter.currentIndex(), 0)
         statuses = CONCLUSION_FILTERS[conclusion_index][1]
-        category = self.category_filter.currentText()
+        category = self.category_filter.currentData()
         return RecordQuery(
             keyword=self.search.text().strip(),
-            product_category="" if category in ("", "全部泵型") else category,
+            product_category=category or "",
             statuses=tuple(statuses),
             as_of_prefix=self.date_filter.text().strip(),
             limit=PAGE_SIZE,
@@ -406,7 +445,7 @@ class RecordsPage(QWidget):
                 record.ui_conclusion)
             self.list.addItem(QListWidgetItem(
                 f"{record.as_of} | {record.standard_code} | "
-                f"{record.product_category} | {conclusion}"))
+                f"{self._category_label(record.product_category)} | {conclusion}"))
         self.list.blockSignals(False)
         if not self._visible:
             self.detail.setText("没有符合条件的记录。" if self._total or self.search.text()
@@ -457,6 +496,9 @@ class RecordsPage(QWidget):
         snapshot = self.service.open_record(record_id)
         result = snapshot.result_snapshot
         input_snapshot = snapshot.input_snapshot
+
+        if getattr(snapshot, "device_type", "") == "transformer":
+            return self._show_transformer_record(snapshot, result, input_snapshot)
 
         # 业务详情：面向用户，不出现内部 rule / data id / profile 名。
         # 全部取自**不可变快照**，因此天然是"当时"的事实，不重算、不改写。
@@ -543,6 +585,87 @@ class RecordsPage(QWidget):
         self.detail.setText(text)
         self._render_technical(snapshot, result)
         return text
+
+    def _category_label(self, value: str) -> str:
+        return self._transformer_categories.get(value, value)
+
+    def _show_transformer_record(self, snapshot, result, input_snapshot) -> str:
+        """展示变压器记录的冻结快照，不调用计算服务。"""
+
+        category_id = input_snapshot.get("category_id") or snapshot.product_category
+        category_label = (self._transformer_categories.get(category_id)
+                          or input_snapshot.get("category_label")
+                          or self._category_label(snapshot.product_category)
+                          or "变压器")
+        lines = [
+            f"采用标准：{snapshot.standard_code}",
+            f"设备类别：{category_label}",
+            f"评价日期：{snapshot.as_of}",
+            f"评价结论：{user_conclusion_from_snapshot(result, snapshot.ui_conclusion)}",
+        ]
+        grade = user_grade_text(snapshot.grade)
+        if grade:
+            lines.append(f"能效等级：{grade}")
+        values = input_snapshot
+        category = next((item for item in getattr(self.transformer_contract, "categories", ())
+                         if item.category_id == category_id), None)
+        fields = (self.transformer_contract.visible_fields(category_id)
+                  if category is not None else ())
+        field_labels = {field.field_id: field for field in fields}
+        for field_id, field in field_labels.items():
+            value = values.get(field_id)
+            if value in (None, "", {}):
+                continue
+            if field_id == "standard_conditions":
+                value = self._condition_label(category_id, value)
+            elif isinstance(value, dict):
+                continue
+            unit = f"（{field.unit}）" if field.unit else ""
+            lines.append(f"{field.label}{unit}：{value}")
+        if values.get("project_name"):
+            lines.append(f"企业/项目名称：{values['project_name']}")
+        if values.get("equipment_no"):
+            lines.append(f"设备编号：{values['equipment_no']}")
+
+        missing = [field_labels[key].label for key in result.get("missing_fields", ())
+                   if key in field_labels]
+        if missing:
+            lines.append("缺失信息：" + "、".join(missing))
+        explanation = str(result.get("explanation") or "").strip()
+        if explanation:
+            lines.append(f"判定说明：{explanation}")
+        thresholds = result.get("thresholds") or {}
+        threshold_labels = (
+            ("no_load_loss_1", "空载损耗限值（1级）"),
+            ("load_loss_1", "负载损耗限值（1级）"),
+            ("no_load_loss_2", "空载损耗限值（2级）"),
+            ("load_loss_2", "负载损耗限值（2级）"),
+            ("no_load_loss_3", "空载损耗限值（3级）"),
+            ("load_loss_3", "负载损耗限值（3级）"),
+        )
+        threshold_lines = [f"{label}：{format_metric(thresholds[key], name=key)} W"
+                           for key, label in threshold_labels
+                           if thresholds.get(key) is not None]
+        if threshold_lines:
+            lines.extend(threshold_lines)
+        if result.get("support_status") == "IMPLEMENTED":
+            lines.append("软件状态：已接入，尚待正式支持验收。")
+        if snapshot.finalized_at_utc:
+            lines.append(f"保存时间：{snapshot.finalized_at_utc}")
+        text = "\n".join(lines)
+        self.detail.setText(text)
+        return text
+
+    def _condition_label(self, category_id: str, value) -> str:
+        options = self.transformer_contract.condition_options(category_id)
+        if isinstance(value, str):
+            option = next((item for item in options if item.condition_id == value), None)
+            return option.label if option else "已记录"
+        if isinstance(value, dict):
+            option = next((item for item in options
+                           if dict(item.values) == value), None)
+            return option.label if option else "已记录"
+        return "已记录"
 
     @staticmethod
     def _basis_lines(snapshot, result) -> list[str]:

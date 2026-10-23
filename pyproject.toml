@@ -34,6 +34,7 @@ equipeffi = [
     "resources/elimination_catalog_industry_2024.json",
     "resources/standards/*.json",
     "resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
+    "resources/templates/设备能效分析空白模板_重构版V6_1.xlsx",
 ]
 
 [tool.pytest.ini_options]

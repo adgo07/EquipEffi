@@ -122,7 +122,7 @@ class BatchPage(QWidget):
         title.setObjectName("pageTitle")
         layout.addWidget(title)
 
-        subtitle = QLabel(f"{PUMP_DEVICE_TYPE}（Excel）批量输入 / 输出")
+        subtitle = QLabel("设备（Excel）批量输入 / 输出")
         layout.addWidget(subtitle)
 
         hint = QLabel(
@@ -339,10 +339,21 @@ class BatchPage(QWidget):
                 "请确认选择的是软件输出的空白模板。")
             return None
         self.last_check = workbook
+        sheets = getattr(workbook, "sheets", None)
+        if sheets is not None:
+            row_count = sum(len(sheet.rows) for sheet in sheets.values())
+            skipped = sum(sheet.skipped_blank_rows for sheet in sheets.values())
+            details = "；".join(f"{name} {len(sheet.rows)} 行" for name, sheet in sheets.items())
+            unprocessed = tuple(getattr(workbook, "unprocessed_sheets", ()))
+            if unprocessed:
+                details += "。以下工作表原样保留、不参与评价：" + "、".join(unprocessed)
+        else:
+            row_count, skipped = len(workbook.rows), workbook.skipped_blank_rows
+            details = ""
         self.check_label.setText(
-            f"检查通过：发现 {len(workbook.rows)} 行需要评价的数据"
-            f"（另有 {workbook.skipped_blank_rows} 行完全空白，已跳过）。"
-            "可以直接点「批量评价」。")
+            f"检查通过：发现 {row_count} 行需要评价的数据"
+            f"（另有 {skipped} 行完全空白，已跳过）。"
+            "可以直接点「批量评价」。" + details)
         return workbook
 
     # -- 完成后快捷操作 ----------------------------------------------------
@@ -554,6 +565,16 @@ class BatchPage(QWidget):
             f"未形成正式结论 {summary.unevaluated_rows} 行。",
             f"结果工作簿：{result.result_workbook or '（未输出）'}",
         ]
+        for sheet in getattr(summary, "sheets", ()) or ():
+            if not isinstance(sheet, dict):
+                continue
+            name = str(sheet.get("sheet_name") or "工作表")
+            lines.append(
+                f"{name}：{sheet.get('data_row_count', 0)} 行，"
+                f"完成评价 {sheet.get('evaluated_quantity', 0)} 台。")
+        unprocessed = getattr(summary, "unprocessed_sheets", ()) or ()
+        if unprocessed:
+            lines.append("未处理工作表：" + "、".join(str(name) for name in unprocessed))
         if result.batch_record_saved:
             lines.append(f"已保存批次总结记录：{result.batch_record_id}")
         else:
@@ -570,8 +591,13 @@ class BatchPage(QWidget):
                           if quantities else "无"))
         if summary.issues:
             # 界面只出现中文类别；内部 kind（INPUT_ERROR 等）不展示给普通用户。
-            lines = [f"第 {issue.row_number} 行 · {user_facing_issue_kind(issue.kind)}："
-                     f"{issue.reason}" for issue in summary.issues[:10]]
+            lines = []
+            for issue in summary.issues[:10]:
+                sheet_name = getattr(issue, "sheet_name", None)
+                location = f"{sheet_name} · " if sheet_name else ""
+                lines.append(
+                    f"{location}第 {issue.row_number} 行 · "
+                    f"{user_facing_issue_kind(issue.kind)}：{issue.reason}")
             more = "" if len(summary.issues) <= 10 else (
                 f"\n…共 {len(summary.issues)} 行需要关注。")
             self.issue_label.setText("需要关注的行：\n" + "\n".join(lines) + more)

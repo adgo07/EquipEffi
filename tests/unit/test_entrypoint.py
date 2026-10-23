@@ -43,6 +43,9 @@ class EntrypointTests(unittest.TestCase):
         self.assertTrue(status["template"]["template_id"])
         self.assertTrue(status["template"]["template_version"])
         self.assertTrue(status["template"]["available"], status["template"]["issues"])
+        self.assertEqual(status["template"]["template_version"], "V6.1")
+        self.assertTrue(status["transformer"]["available"])
+        self.assertEqual(status["transformer"]["support_status"], "IMPLEMENTED")
         for name in ("pump_water", "pump_chemical"):
             with self.subTest(profile=name):
                 profile = status["pump_profiles"][name]
