@@ -56,4 +56,8 @@ Owner授权继续验收、修复后依次合并。设计PR #29经核对25列最�
 
 已改为标准QName解析，定向回归8项通过；真实混合文件复验2行5台（1级3台、不在范围2台），历史保存错误为空，59个非目标ZIP部件字节保持。compileall与diff-check通过。本轮源代码新增修复后，c303060e内部包已不能代表最新代码，须重新构建；干净Windows与真实GUI操作边界不变。
 
+最终代码提交为`745111b9d9d8ab18888cb43294a9f5392c537116`。从Git归档重新构建的内部ZIP为`artifacts/EquipEffi_最终验收_745111b9.zip`，186个成员，SHA256为`ad8571047f2817ea01458efee5b8f213f8e0ecc1ad4e96997dd49a00d4f0ae94`。构建脚本初次自检45秒超时，原报告保留；独立状态文件、移除进程PYTHONPATH的非沙箱复验退出0、ready=true。不能仅凭该对照确定超时的唯一原因。EXE SHA256为`29770ea2f75bb9780ad74917e66dd957ad40486132c7d3b73be8769b1e5af87f`，PE Subsystem=2；ZIP资源审计通过。验证报告保存在`artifacts/pr31-final-native-745111b9-verified-report.json`。
+
+该代码的全量CI为[run 39947278026](https://github.com/adgo07/EquipEffi/actions/runs/39947278026)，本次记录时仍运行，不能记为通过。已给Owner最新EXE和混合测试输入路径，请核验单台自动历史、混合批次历史及结果/文件夹外部打开；尚未收到操作结果。#30/#31保持未合并，#29合并事实不变。
+
 Knowledge capture：无新增条目。
