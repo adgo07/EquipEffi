@@ -9,13 +9,15 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import ntpath
 import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import zipfile
-from typing import Sequence
+from typing import Mapping, Sequence
 
 try:
     from .build_lock import build_lock
@@ -140,6 +142,47 @@ def build_native_command(
     return command, executable
 
 
+def _build_subprocess_environment(
+    *,
+    python_path: str | None = None,
+    environ: Mapping[str, str] | None = None,
+    platform_name: str | None = None,
+) -> dict[str, str]:
+    """为PyInstaller构建子进程构造环境，Windows下隔离PATH中的外部DLL目录。"""
+
+    environment = dict(os.environ if environ is None else environ)
+    if (platform_name or os.name) != "nt":
+        return environment
+
+    windows_root = environment.get("WINDIR") or environment.get("SystemRoot")
+    if not windows_root:
+        raise RuntimeError("Windows原生构建需要WINDIR或SystemRoot环境变量")
+
+    selected_python = python_path or sys.executable
+    python_directory = ntpath.dirname(ntpath.abspath(selected_python))
+    candidates = (
+        python_directory,
+        ntpath.join(windows_root, "System32"),
+        windows_root,
+    )
+    path_entries: list[str] = []
+    seen: set[str] = set()
+    for candidate in candidates:
+        normalized = ntpath.normpath(candidate)
+        key = ntpath.normcase(normalized)
+        if normalized and key not in seen:
+            seen.add(key)
+            path_entries.append(normalized)
+
+    # 仅收窄PATH；PYTHONPATH、代理、编码等其他构建环境仍原样传递。
+    # 避免PyInstaller从Poppler/Git等外部native工具目录误收集DLL并覆盖系统依赖。
+    for key in tuple(environment):
+        if key.upper() == "PATH" and key != "PATH":
+            del environment[key]
+    environment["PATH"] = ";".join(path_entries)
+    return environment
+
+
 def build_native(
     root: Path = ROOT,
     output_dir: Path | None = None,
@@ -159,7 +202,13 @@ def build_native(
         raise FileNotFoundError("未找到PyInstaller；请在目标平台安装PyInstaller后重试")
     command, executable = build_native_command(root, output_dir, tool=selected_tool, name=name)
     with build_lock(Path(root).resolve(), operation="原生构建"):
-        subprocess.run(command, cwd=str(Path(root).resolve()), check=True, timeout=timeout)
+        subprocess.run(
+            command,
+            cwd=str(Path(root).resolve()),
+            check=True,
+            timeout=timeout,
+            env=_build_subprocess_environment(python_path=python_path),
+        )
     if not executable.exists():
         raise RuntimeError(f"PyInstaller命令成功但未找到预期启动文件：{executable}")
     asset_audit = audit_artifact(executable.parent, root=Path(root))

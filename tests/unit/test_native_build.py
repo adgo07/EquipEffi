@@ -10,7 +10,13 @@ import zipfile
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from tools.build_native import build_native, build_native_command, main, package_native
+from tools.build_native import (
+    _build_subprocess_environment,
+    build_native,
+    build_native_command,
+    main,
+    package_native,
+)
 from tools.check_distribution_assets import runtime_asset_paths
 
 
@@ -18,6 +24,50 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class NativeBuildTests(unittest.TestCase):
+    def test_windows_build_environment_drops_inherited_native_tool_paths(self):
+        inherited = {
+            "Path": (
+                r"C:\Users\builder\poppler\Library\bin;"
+                r"C:\Program Files\Git\cmd;"
+                r"C:\BuildTools\other-native-bin"
+            ),
+            "WINDIR": r"C:\Windows",
+            "PYTHONPATH": r"C:\build-env\Lib\site-packages",
+            "CUSTOM_BUILD_FLAG": "preserved",
+        }
+        original_path = inherited["Path"]
+
+        result = _build_subprocess_environment(
+            python_path=r"C:\selected-python\python.exe",
+            environ=inherited,
+            platform_name="nt",
+        )
+
+        self.assertEqual(
+            result["PATH"],
+            r"C:\selected-python;C:\Windows\System32;C:\Windows",
+        )
+        self.assertNotIn("Path", result)
+        self.assertEqual(result["PYTHONPATH"], inherited["PYTHONPATH"])
+        self.assertEqual(result["CUSTOM_BUILD_FLAG"], "preserved")
+        self.assertEqual(inherited["Path"], original_path)
+        for blocked_entry in ("poppler", "git", "other-native-bin"):
+            self.assertNotIn(blocked_entry, result["PATH"].lower())
+
+    def test_non_windows_build_environment_preserves_existing_path(self):
+        inherited = {
+            "PATH": "/opt/build/bin:/opt/poppler/bin:/usr/bin",
+            "PYTHONPATH": "/opt/build/site-packages",
+        }
+
+        result = _build_subprocess_environment(
+            python_path="/opt/python/bin/python",
+            environ=inherited,
+            platform_name="posix",
+        )
+
+        self.assertEqual(result, inherited)
+
     def test_native_status_smoke_uses_utf8_for_child_and_json_decode(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -31,6 +81,7 @@ class NativeBuildTests(unittest.TestCase):
 
             def fake_run(command, **kwargs):
                 if command == ["fake-pyinstaller"]:
+                    self.assertEqual(kwargs["env"], {"PATH": "controlled"})
                     executable.parent.mkdir(parents=True)
                     executable.write_bytes(b"native executable")
                     return SimpleNamespace(returncode=0)
@@ -50,11 +101,16 @@ class NativeBuildTests(unittest.TestCase):
 
             with (
                 patch("tools.build_native.build_native_command", return_value=(["fake-pyinstaller"], executable)),
+                patch(
+                    "tools.build_native._build_subprocess_environment",
+                    return_value={"PATH": "controlled"},
+                ) as environment_mock,
                 patch("tools.build_native.build_lock", return_value=nullcontext()),
                 patch("tools.build_native.audit_artifact", return_value=SimpleNamespace(is_valid=True, errors=[])),
                 patch("tools.build_native.subprocess.run", side_effect=fake_run),
             ):
                 result = build_native(root, tool="fake-pyinstaller")
+                environment_mock.assert_called_once_with(python_path=None)
 
         self.assertTrue(result["status_ready"])
         self.assertTrue(result["qt_environment"]["template_available"])
