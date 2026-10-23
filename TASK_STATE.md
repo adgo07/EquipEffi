@@ -20,6 +20,8 @@ Owner已明确下一版本纳入GB 20052—2024变压器，已确认25列方案�
 
 - QA-TR-002工程修复已关闭，六项问题与四项处理决定见[审查修复记录](docs/standards/gb20052_2024/PR31_REVIEW_FIXES.md)。新c303060e内部包通过隔离启动/资源自检；旧331b357包不包含本轮修复。实际窗口全流程仍待验收。
 
+- 最终续检：Owner授权验收后依次合并；设计PR #29已合并于`4ae97dac2397756094e56565eb79062bcc3e6a51`，#30已改以master为基准，#30/#31尚未合并。c9ae5c4e的Windows CI再次通过。新增QA-TR-003定位合法`x:sheet`前缀导致结果写回漏查Sheet；修复后真实混合工作簿已完成2行5台、1级3台/不在范围2台且历史保存无错误，仍需定向回归和更新原生包。实际GUI控制受工具截图/坐标限制，已请Owner补交互确认；不将程序启动或可访问性读取当成全流程通过。
+
 ## 已收口的简化工作
 
 本轮依据 [`docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md`](docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md) 完成三步简化：

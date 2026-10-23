@@ -4,10 +4,12 @@ from __future__ import annotations
 from copy import copy
 from contextlib import closing
 from decimal import Decimal
+from io import BytesIO
 from pathlib import Path
 import sqlite3
 import tempfile
 import unittest
+from xml.etree import ElementTree as ET
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from openpyxl import load_workbook
@@ -38,6 +40,9 @@ from equipeffi.infrastructure.excel.worksheet_patch import WorksheetPatch
 
 ROOT = Path(__file__).resolve().parents[2]
 TEMPLATE_DIR = ROOT / "src" / "equipeffi" / "resources" / "templates"
+MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+DOCUMENT_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 
 
 def _column_index(column: str) -> int:
@@ -84,6 +89,19 @@ class PR31OutputIntegrityTests(unittest.TestCase):
         source.write_bytes((TEMPLATE_DIR / template).read_bytes())
         return source
 
+    def _write_prefixed_workbook(self, source: Path, destination: Path) -> None:
+        ET.register_namespace("x", MAIN_NS)
+        ET.register_namespace("r", DOCUMENT_REL_NS)
+        with ZipFile(source) as original, ZipFile(
+                destination, "w", ZIP_DEFLATED) as target:
+            for info in original.infolist():
+                data = original.read(info.filename)
+                if info.filename == "xl/workbook.xml":
+                    root = ET.fromstring(data)
+                    data = ET.tostring(root, encoding="utf-8",
+                                       xml_declaration=True)
+                target.writestr(info, data)
+
     def _add_stale_results(self, source: Path, row_number: int = 5) -> None:
         workbook = load_workbook(source)
         for sheet_name, contract in (("离心泵", PUMP_SHEET_CONTRACT),
@@ -105,6 +123,66 @@ class PR31OutputIntegrityTests(unittest.TestCase):
                 "load_loss_2": Decimal("210.5"),
                 "load_loss_3": Decimal("220.75"),
             })
+
+    def test_sheet_target_matches_ooxml_qnames_and_ignores_extension_sheet(self):
+        workbook_xml = f'''<?xml version="1.0" encoding="UTF-8"?>
+<x:workbook xmlns:x="{MAIN_NS}" xmlns:r="{DOCUMENT_REL_NS}"
+            xmlns:e="urn:example:extension">
+  <x:sheets><x:sheet name="变压器" sheetId="1" e:id="rId2"
+                     r:id="rId1" /></x:sheets>
+  <x:extLst><x:ext uri="urn:example:extension">
+    <e:sheet name="变压器" r:id="rId2" />
+  </x:ext></x:extLst>
+</x:workbook>'''.encode("utf-8")
+        relationships_xml = f'''<?xml version="1.0" encoding="UTF-8"?>
+<p:Relationships xmlns:p="{PACKAGE_REL_NS}">
+  <p:Relationship Id="rId1" Type="{DOCUMENT_REL_NS}/worksheet"
+                  Target="/xl/worksheets/sheet1.xml" />
+  <p:Relationship Id="rId2" Type="{DOCUMENT_REL_NS}/worksheet"
+                  Target="/xl/worksheets/extension-sheet.xml" />
+</p:Relationships>'''.encode("utf-8")
+        stream = BytesIO()
+        with ZipFile(stream, "w", ZIP_DEFLATED) as archive:
+            archive.writestr("xl/workbook.xml", workbook_xml)
+            archive.writestr("xl/_rels/workbook.xml.rels", relationships_xml)
+        stream.seek(0)
+
+        with ZipFile(stream) as archive:
+            self.assertEqual(
+                _sheet_target(archive, "变压器"),
+                "xl/worksheets/sheet1.xml")
+
+    def test_prefixed_workbook_writes_pump_and_transformer_sheets(self):
+        template = self._copy_template("source.xlsx")
+        source = self.temp_dir / "prefixed-workbook.xlsx"
+        self._write_prefixed_workbook(template, source)
+        self.assertTrue(V61TransformerTemplateResource().validate(source).is_valid)
+        read_result = UnifiedWorkbookReader().read(source)
+        self.assertEqual(set(read_result.sheets), {"离心泵", "变压器"})
+
+        destination = self.temp_dir / "prefixed-workbook-result.xlsx"
+        outcome = self._make_outcome(4)
+        UnifiedResultWorkbookWriter().write(
+            source,
+            {"离心泵": {4: outcome}, "变压器": {4: outcome}},
+            destination)
+
+        with OOXMLWorkbook(destination) as output:
+            pump_rows = output.rows("离心泵")
+            transformer_rows = output.rows("变压器")
+        self.assertEqual(pump_rows[3][_column_index("X")], "1级")
+        self.assertEqual(transformer_rows[3][_column_index("R")], "1级")
+        self.assertEqual(transformer_rows[3][_column_index("U")], "本次软件结果")
+
+        with ZipFile(source) as before, ZipFile(destination) as after:
+            target_parts = {
+                _worksheet_part(before, "离心泵"),
+                _worksheet_part(before, "变压器"),
+            }
+            self.assertEqual(before.namelist(), after.namelist())
+            for name in before.namelist():
+                if name not in target_parts:
+                    self.assertEqual(before.read(name), after.read(name), name)
 
     def test_writer_clears_stale_results_for_reader_skipped_rows(self):
         source = self._copy_template("mixed.xlsx")

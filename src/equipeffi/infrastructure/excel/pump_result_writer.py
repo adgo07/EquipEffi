@@ -41,6 +41,7 @@ from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
+from xml.etree import ElementTree as ET
 
 from ...application.ports.batch_workbook import BatchRowOutcome
 from ...application.result_projection import PUMP_METRIC_IDS
@@ -598,20 +599,58 @@ def patch_sheet_xml(xml: str, outcomes: dict[int, BatchRowOutcome]) -> str:
 # ---------------------------------------------------------------------------
 
 def _sheet_target(archive: ZipFile, sheet_name: str) -> str | None:
-    workbook = archive.read("xl/workbook.xml").decode("utf-8")
-    relationships = archive.read("xl/_rels/workbook.xml.rels").decode("utf-8")
+    try:
+        workbook = ET.fromstring(archive.read("xl/workbook.xml"))
+        relationships = ET.fromstring(
+            archive.read("xl/_rels/workbook.xml.rels"))
+    except ET.ParseError:
+        return None
+
+    def namespace(name: str) -> str:
+        return name[1:].split("}", 1)[0] if name.startswith("{") else ""
+
+    def qualified_name(namespace_uri: str, local: str) -> str:
+        return f"{{{namespace_uri}}}{local}" if namespace_uri else local
+
+    workbook_namespace = namespace(workbook.tag)
+    if (workbook.tag != qualified_name(MAIN_NS, "workbook")
+            and workbook.tag != "workbook"):
+        return None
+    relationship_namespace = namespace(relationships.tag)
+    package_relationship_namespace = (
+        "http://schemas.openxmlformats.org/package/2006/relationships")
+    if (relationships.tag != qualified_name(
+            package_relationship_namespace, "Relationships")
+            and relationships.tag != "Relationships"):
+        return None
+
+    # Restrict lookup to the standard container and exact SpreadsheetML QName;
+    # extension markup may legally reuse local names such as `sheet`.
+    sheets = workbook.find(qualified_name(workbook_namespace, "sheets"))
+    if sheets is None:
+        return None
+
     relation_map: dict[str, str] = {}
-    for element in re.findall(r"<Relationship\b[^>]*>", relationships):
-        rid = re.search(r'Id="([^"]*)"', element)
-        target = re.search(r'Target="([^"]*)"', element)
-        if rid and target:
-            relation_map[rid.group(1)] = target.group(1)
-    for element in re.findall(r"<sheet\b[^>]*>", workbook):
-        name = re.search(r'name="([^"]*)"', element)
-        rid = re.search(r'[A-Za-z0-9]+:id="([^"]*)"', element)
-        if not name or not rid or name.group(1) != sheet_name:
+    relationship_tag = qualified_name(
+        relationship_namespace, "Relationship")
+    for element in relationships:
+        if element.tag != relationship_tag:
             continue
-        target = relation_map.get(rid.group(1))
+        rid = element.attrib.get("Id")
+        target = element.attrib.get("Target")
+        if rid and target:
+            relation_map[rid] = target
+    sheet_tag = qualified_name(workbook_namespace, "sheet")
+    office_relationship_id = (
+        "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id")
+    for element in sheets:
+        if element.tag != sheet_tag:
+            continue
+        name = element.attrib.get("name")
+        rid = element.attrib.get(office_relationship_id)
+        if name != sheet_name or not rid:
+            continue
+        target = relation_map.get(rid)
         if not target:
             return None
         target = target.lstrip("/")

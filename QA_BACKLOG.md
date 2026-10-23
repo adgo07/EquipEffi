@@ -10,6 +10,10 @@ OPEN / VERIFY / REGISTERED_DEVIATION 都按原状态保留，不自动授权代�
 
 ## 当前风险与偏差
 
+### QA-TR-003：合法命名空间前缀工作簿的结果 Sheet 定位（CLOSED，2026-10-23）
+
+PR31 最终验收发现，artifact-tool 导出的合法 XLSX 可被 `UnifiedWorkbookReader` 读取，但 `UnifiedResultWorkbookWriter` 写回时报告找不到目标 Sheet。根因为 `xl/workbook.xml` 使用带 `x:` 前缀的 SpreadsheetML 元素（如 `<x:sheet>`），公共 `_sheet_target` 原正则仅识别无前缀标签。现改为按标准 QName 解析 SpreadsheetML `sheet`、Office Document Relationships `r:id` 与 Package Relationships `Relationship`，同名扩展标签不会抢先命中。`test_pr31_output_integrity.py` 定向回归 8/8 通过，覆盖前缀 XML、同名扩展、泵与变压器同次写回及非目标 ZIP 部件逐字节保持；真实 artifact-tool 验收工作簿通过 Reader 和 Writer，59 个非目标 ZIP 部件保持字节一致；完整批量服务复验为2行、5台（1级3台、不在范围2台），历史错误为空。范围仅为 OOXML 目标部件定位，不改变标准业务、模板、数据库或输入内容。
+
 ### QA-TR-002：PR31 独立审查修复（CLOSED，2026-10-23）
 
 以58ba70e4为复现基线：核实明确范围排除被缺项遮蔽、逐行查表依据投影缺失、模板阻抗说明及损耗小数格式、清空输入残留旧结果、50Hz适用提示、变压器合并单元格检查。修复限既有冻结规则与25列契约，不修改冻结件/Golden/数据库；先确认足够排除的证据再调整判断顺序，表15等仍按真实分支约束。共同清空行缺陷同时覆盖泵输出，不改泵业务算法/正式模板。旧历史不追溯改写。六项修复及预置第14行样式补齐已完成；固定c303060e的Windows CI 1130项全通过，原生包独立目录启动自检与资源审计通过。证据与四项处理决定见[PR31修复记录](docs/standards/gb20052_2024/PR31_REVIEW_FIXES.md)。本条按工程缺陷修复关闭，不代替QA-TR-001正式支持与真实窗口验收。
