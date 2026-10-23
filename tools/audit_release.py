@@ -1,4 +1,4 @@
-"""只读核验当前 Qt/V6、正式泵服务及已声明的发布资源。
+"""只读核验当前 Qt/V6.1、正式泵服务、变压器实现及发布资源。
 
 用法（在仓库根目录）：
     python tools/audit_release.py
@@ -29,14 +29,22 @@ from datetime import date
 from equipeffi.application.services.centrifugal_pump_analysis_service import (
     PumpAnalysisRequest,
 )
+from equipeffi.application.services.transformer_analysis_service import (
+    TransformerAnalysisRequest,
+)
 from equipeffi.domain.evaluation.elimination import EliminationMatcher
 from equipeffi.infrastructure.excel.pump_workbook_reader import V6PumpWorkbookReader
+from equipeffi.infrastructure.excel.unified_workbook_reader import UnifiedWorkbookReader
 from equipeffi.infrastructure.excel.template_resource import (
     DEFAULT_V6_TEMPLATE,
+    DEFAULT_V61_TEMPLATE,
     V6_TEMPLATE_IDENTITY,
+    V61_TEMPLATE_IDENTITY,
     V6TemplateResource,
+    V61TransformerTemplateResource,
 )
 from equipeffi.infrastructure.standards.json_repository import JsonStandardRepository
+from equipeffi.infrastructure.standards.transformer_repository import load_transformer_pack
 
 try:
     from .check_distribution_assets import audit_artifact
@@ -405,27 +413,125 @@ def _audit_workbooks(
     checks: dict[str, Any],
     template: Path,
 ) -> None:
-    """校验正式 V6 模板身份、工作表结构和空白泵输入区。"""
+    """核验当前 V6.1 产品模板，同时确认旧 V6 泵模板仍可读取。"""
 
     if not template.is_file():
-        errors.append(f"正式V6模板不存在: {template}")
+        errors.append(f"当前V6.1模板不存在: {template}")
         return
+    identity_keys = (
+        "template_id", "template_version", "template_kind",
+        "template_contract_revision", "filename", "asset_sha256",
+    )
     try:
-        result = V6TemplateResource().validate(template)
+        result = V61TransformerTemplateResource().validate(template)
         checks["template"] = asdict(result)
-        checks["template_identity"] = V6_TEMPLATE_IDENTITY
+        checks["template_identity"] = V61_TEMPLATE_IDENTITY
         if not result.is_valid:
-            errors.append("正式V6模板身份或契约校验失败")
-        workbook = V6PumpWorkbookReader().read(template)
-        checks["template_empty_pump_rows"] = len(workbook.rows)
-        if workbook.rows:
-            errors.append("正式V6空白模板的离心泵输入区不应预载数据行")
+            errors.append("当前V6.1模板身份或泵/变压器契约校验失败")
+        if any(result.identity.get(key) != V61_TEMPLATE_IDENTITY.get(key)
+               for key in identity_keys):
+            errors.append("当前模板身份不是清单登记的V6.1产品版本")
+
+        unified = UnifiedWorkbookReader().read(template)
+        checks["template_unified_sheets"] = sorted(unified.sheets)
+        if not {"离心泵", "变压器"}.issubset(unified.sheets):
+            errors.append("V6.1统一Reader未识别离心泵与变压器工作表")
+        pump_workbook = V6PumpWorkbookReader().read(template)
+        checks["template_empty_pump_rows"] = len(pump_workbook.rows)
+        if pump_workbook.rows:
+            errors.append("V6.1空白模板的离心泵输入区不应预载数据行")
     except Exception as exc:
-        errors.append(f"正式V6模板检查异常: {type(exc).__name__}: {exc}")
+        errors.append(f"当前V6.1模板检查异常: {type(exc).__name__}: {exc}")
+
+    # The previously published pump-only workbook remains a readable input.
+    # Keep this check separate from the current mixed-device template contract.
+    try:
+        legacy_resource = V6TemplateResource()
+        legacy_result = legacy_resource.validate()
+        legacy_workbook = V6PumpWorkbookReader().read(legacy_resource.template_path)
+        checks["legacy_v6_pump_template"] = {
+            "identity": legacy_result.identity,
+            "is_valid": legacy_result.is_valid,
+            "empty_pump_rows": len(legacy_workbook.rows),
+        }
+        if (
+            not legacy_result.is_valid
+            or any(legacy_result.identity.get(key) != V6_TEMPLATE_IDENTITY.get(key)
+                   for key in identity_keys)
+        ):
+            errors.append("旧V6泵模板身份或原有契约校验失败")
+        if legacy_workbook.rows:
+            errors.append("旧V6空白泵模板的输入区不应预载数据行")
+    except Exception as exc:
+        errors.append(f"旧V6泵模板兼容检查异常: {type(exc).__name__}: {exc}")
+
+
+def _audit_transformer_pack(errors: list[str], checks: dict[str, Any]) -> None:
+    """验证已派生GB20052包、运行时服务和一个可追溯计算样例。"""
+
+    try:
+        pack, digest = load_transformer_pack()
+        tables = pack.get("tables", [])
+        threshold_rows = [row for table in tables for row in table.get("rows", [])]
+        threshold_values = sum(
+            1
+            for row in threshold_rows
+            for grade in (row.get("thresholds_w") or {}).values()
+            for value in grade.values()
+            if value is not None
+        )
+        counts = {
+            "tables": len(tables),
+            "threshold_rows": len(threshold_rows),
+            "threshold_values": threshold_values,
+        }
+        checks["transformer_pack"] = {
+            "pack_id": pack.get("pack_id"),
+            "standard_code": pack.get("standard_code"),
+            "mapping_revision": pack.get("mapping_revision"),
+            "counts": counts,
+            "sha256": digest,
+        }
+        if (
+            pack.get("pack_id") != "GB20052-2024-TRANSFORMER-V2.1"
+            or pack.get("standard_code") != "GB 20052-2024"
+            or pack.get("mapping_revision") != "V2.1"
+            or counts != {"tables": 35, "threshold_rows": 589, "threshold_values": 3534}
+            or pack.get("counts") != counts
+        ):
+            errors.append("GB20052变压器标准包身份、V2.1版本或35表阈值计数不匹配")
+
+        from equipeffi.composition import create_transformer_analysis_service
+
+        service = create_transformer_analysis_service(with_persistence=False)
+        overview = service.standard_overview()
+        category_id = "GB20052-T03"
+        result = service.evaluate(TransformerAnalysisRequest({
+            "category_id": category_id,
+            "capacity_kva": "3150",
+            "no_load_loss_w": "1700",
+            "load_loss_w": "20700",
+        }))
+        checks["transformer_implementation"] = {
+            "support_status": overview.get("support_status"),
+            "evaluation_status": result.evaluation_status,
+            "ui_conclusion": result.ui_conclusion,
+            "pack_sha256_matches": result.references.get("canonical_package_hash") == digest,
+        }
+        if (
+            overview.get("support_status") != "IMPLEMENTED"
+            or result.support_status != "IMPLEMENTED"
+            or result.evaluation_status != "SUCCESS"
+            or not result.references.get("calculator_version")
+            or result.references.get("canonical_package_hash") != digest
+        ):
+            errors.append("GB20052变压器服务未以IMPLEMENTED状态完成V2.1可追溯计算")
+    except Exception as exc:
+        errors.append(f"GB20052变压器标准包/服务烟测异常: {type(exc).__name__}: {exc}")
 
 
 def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any], wheel: Path | None, root: Path) -> None:
-    """核验 wheel 具备 Qt/V6 正式产品链和不依赖 UI 的正式泵服务。"""
+    """核验wheel含Qt/V6.1与V2.1运行资源，并保留旧V6泵输入兼容。"""
 
     if wheel is None:
         return
@@ -442,9 +548,15 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
         "equipeffi/application/services/centrifugal_pump_analysis_service.py",
         "equipeffi/infrastructure/excel/template_resource.py",
         "equipeffi/infrastructure/excel/pump_workbook_reader.py",
+        "equipeffi/infrastructure/excel/unified_workbook_reader.py",
+        "equipeffi/application/services/transformer_analysis_service.py",
+        "equipeffi/domain/devices/transformer/calculator.py",
+        "equipeffi/infrastructure/standards/transformer_repository.py",
         "equipeffi/standard_manifest.json",
+        f"equipeffi/resources/templates/{DEFAULT_V61_TEMPLATE}",
         f"equipeffi/resources/templates/{DEFAULT_V6_TEMPLATE}",
         "equipeffi/resources/standards/pump.json",
+        "equipeffi/resources/standards/gb20052_2024_v21.json",
         "equipeffi/resources/TEMPLATE_MANIFEST.json",
     }
     try:
@@ -454,7 +566,7 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
             checks["wheel_member_count"] = len(names)
             checks["wheel_missing_members"] = missing
             if missing:
-                errors.append("wheel缺少当前Qt/V6运行文件: " + ", ".join(missing))
+                errors.append("wheel缺少当前Qt/V6.1、变压器V2.1或旧V6泵运行文件: " + ", ".join(missing))
             if any(name.endswith(".xlsx") and "V4" in name for name in names):
                 errors.append("wheel包含已退役的V4模板")
             metadata_members = sorted(
@@ -498,19 +610,35 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
     headless_code = """
 from datetime import date
 from equipeffi.application.services.centrifugal_pump_analysis_service import PumpAnalysisRequest
+from equipeffi.application.services.transformer_analysis_service import TransformerAnalysisRequest
 from equipeffi.composition import create_pump_analysis_service
+from equipeffi.composition import create_transformer_analysis_service
 from equipeffi.infrastructure.excel.pump_workbook_reader import V6PumpWorkbookReader
-from equipeffi.infrastructure.excel.template_resource import V6TemplateResource
+from equipeffi.infrastructure.excel.template_resource import V6TemplateResource, V61TransformerTemplateResource
+from equipeffi.infrastructure.excel.unified_workbook_reader import UnifiedWorkbookReader
+from equipeffi.infrastructure.standards.transformer_repository import load_transformer_pack
 service = create_pump_analysis_service(with_persistence=False)
 scopes = {item['rule_profile']: item for item in service.standard_overview()['scopes']}
 assert set(scopes) == {'pump_water', 'pump_chemical'}
 assert all(item['support_status'] == 'SUPPORTED' and item['pack_id'] for item in scopes.values())
 result = service.evaluate(PumpAnalysisRequest('单级单吸清水离心泵', date.today(), QBEP='100', HBEP='50', speed='2900', efficiency='90', suction='单吸', stages='1'))
 assert result.evaluation_status == 'SUCCESS' and result.rule_profile == 'pump_water'
-resource = V6TemplateResource()
-assert resource.validate().is_valid
-assert not V6PumpWorkbookReader().read(resource.template_path).rows
-print('headless-pump-v6-ok')
+current = V61TransformerTemplateResource()
+assert current.validate().is_valid and current.identity['template_version'] == 'V6.1'
+unified = UnifiedWorkbookReader().read(current.template_path)
+assert {'离心泵', '变压器'} <= set(unified.sheets)
+assert not V6PumpWorkbookReader().read(current.template_path).rows
+legacy = V6TemplateResource()
+assert legacy.validate().is_valid and legacy.identity['template_version'] == 'V6-20261005'
+assert not V6PumpWorkbookReader().read(legacy.template_path).rows
+pack, digest = load_transformer_pack()
+assert pack['pack_id'] == 'GB20052-2024-TRANSFORMER-V2.1'
+assert pack['mapping_revision'] == 'V2.1' and len(pack['tables']) == 35
+transformer = create_transformer_analysis_service(with_persistence=False)
+result = transformer.evaluate(TransformerAnalysisRequest({'category_id': 'GB20052-T03', 'capacity_kva': '3150', 'no_load_loss_w': '1700', 'load_loss_w': '20700'}))
+assert result.support_status == 'IMPLEMENTED' and result.evaluation_status == 'SUCCESS'
+assert result.references['canonical_package_hash'] == digest
+print('headless-pumps-v6.1-transformer-v2.1-ok')
 """
     try:
         runtime = subprocess.run(
@@ -526,8 +654,8 @@ print('headless-pump-v6-ok')
         errors.append(f"wheel headless运行时烟测无法启动: {exc}")
     else:
         checks["wheel_headless_stdout"] = runtime.stdout.strip()
-        if runtime.returncode != 0 or runtime.stdout.strip() != "headless-pump-v6-ok":
-            errors.append(f"wheel headless泵/V6烟测失败: {runtime.stderr.strip() or runtime.stdout.strip()}")
+        if runtime.returncode != 0 or runtime.stdout.strip() != "headless-pumps-v6.1-transformer-v2.1-ok":
+            errors.append(f"wheel headless泵/V6.1/变压器烟测失败: {runtime.stderr.strip() or runtime.stdout.strip()}")
 
     try:
         status = subprocess.run(
@@ -542,12 +670,12 @@ print('headless-pump-v6-ok')
         status_payload = json.loads(status.stdout)
         checks["wheel_status"] = status_payload
         valid_status = (
-            set(status_payload) == {"ready", "desktop", "template", "pump_profiles"}
+            set(status_payload) == {"ready", "desktop", "template", "pump_profiles", "transformer"}
             and status_payload.get("desktop", {}).get("surface") == "PySide6 Qt"
             and status_payload.get("desktop", {}).get("available") is True
             and status_payload.get("template", {}).get("available") is True
-            and status_payload.get("template", {}).get("template_id") == V6_TEMPLATE_IDENTITY["template_id"]
-            and status_payload.get("template", {}).get("template_version") == V6_TEMPLATE_IDENTITY["template_version"]
+            and status_payload.get("template", {}).get("template_id") == V61_TEMPLATE_IDENTITY["template_id"]
+            and status_payload.get("template", {}).get("template_version") == V61_TEMPLATE_IDENTITY["template_version"]
             and set(status_payload.get("pump_profiles", {})) == {"pump_water", "pump_chemical"}
             and all(
                 item.get("available") is True
@@ -555,12 +683,15 @@ print('headless-pump-v6-ok')
                 and item.get("pack_id")
                 for item in status_payload["pump_profiles"].values()
             )
+            and status_payload.get("transformer", {}).get("available") is True
+            and status_payload.get("transformer", {}).get("support_status") == "IMPLEMENTED"
+            and status_payload.get("transformer", {}).get("standard_code") == "GB 20052-2024"
             and status_payload.get("ready") is True
             and status.returncode == 0
         )
         if not valid_status:
             errors.append(
-                "wheel --status未验证当前Qt/V6/正式泵profile: "
+                "wheel --status未验证当前Qt/V6.1/变压器IMPLEMENTED/正式泵profile: "
                 + (status.stderr.strip() or json.dumps(status_payload, ensure_ascii=False))
             )
     except (OSError, subprocess.SubprocessError, json.JSONDecodeError) as exc:
@@ -619,7 +750,7 @@ def _audit_native_report(
     if not report.get("qt_capable") or mode != "pyside6_qt":
         errors.append("原生桌面包未证明PySide6 Qt可用")
     if not report.get("status_ready"):
-        errors.append("原生桌面包--status未验证Qt/V6/正式泵服务")
+        errors.append("原生桌面包--status未验证Qt/V6.1/变压器实现/正式泵服务")
     executable = Path(str(report.get("executable", "")))
     if not executable.is_file():
         errors.append(f"原生构建报告指向的可执行文件不存在: {executable}")
@@ -716,9 +847,10 @@ def audit_project(
     template_path = (
         Path(template)
         if template
-        else source_root / "equipeffi" / "resources" / "templates" / DEFAULT_V6_TEMPLATE
+        else source_root / "equipeffi" / "resources" / "templates" / DEFAULT_V61_TEMPLATE
     )
     _audit_workbooks(errors, warnings, checks, template_path)
+    _audit_transformer_pack(errors, checks)
     _audit_wheel(errors, warnings, checks, Path(wheel) if wheel else None, root)
     _audit_sdist(Path(sdist) if sdist else None, root, errors, warnings, checks)
     if elimination_source_dir is not None:

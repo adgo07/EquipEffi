@@ -224,6 +224,12 @@ class PrefixedWriterTestCase(unittest.TestCase):
         assert_prefixed(xml, prefix, "U4")
         return path
 
+    @staticmethod
+    def pump_outcome(result, index: int = 0):
+        outcomes = [entry["outcome"] for entry in result.outcomes
+                    if entry["sheet_name"] == PUMP_SHEET]
+        return outcomes[index]
+
     # -- 机械断言 ----------------------------------------------------------
 
     def u4_occurrences(self, path: Path) -> int:
@@ -282,7 +288,7 @@ class PrefixAgnosticCellTests(PrefixedWriterTestCase):
         result = self.batch.evaluate_workbook(
             source, destination=self.root / "b_out.xlsx", as_of=AS_OF,
             persist=False)
-        outcome = result.outcomes[0]
+        outcome = self.pump_outcome(result)
 
         self.assertEqual(self.u4_occurrences(result.result_workbook), 1,
                          "前缀化 U4 必须被就地更新，不得再插入第二个坐标")
@@ -694,7 +700,7 @@ class PrefixedEndToEndTests(PrefixedWriterTestCase):
         sheet = openpyxl.load_workbook(out)[PUMP_SHEET]
         self.assertIsNotNone(sheet["U4"].value, "U4 必须已写入正式限值")
         self.assertEqual(float(sheet["U4"].value), formal_threshold)
-        self.assertEqual(float(result.outcomes[0].thresholds[
+        self.assertEqual(float(self.pump_outcome(result).thresholds[
             "1级能效效率限值（%）"]), formal_threshold,
             "批量结果必须来自同一个正式 Application 契约")
 
@@ -744,8 +750,8 @@ class PrefixedEndToEndTests(PrefixedWriterTestCase):
             prefixed, destination=self.root / "cmp_prefixed_out.xlsx",
             as_of=AS_OF, persist=False)
 
-        plain_outcome = plain_result.outcomes[0]
-        prefixed_outcome = prefixed_result.outcomes[0]
+        plain_outcome = self.pump_outcome(plain_result)
+        prefixed_outcome = self.pump_outcome(prefixed_result)
         self.assertEqual(prefixed_outcome.conclusion, plain_outcome.conclusion)
         self.assertEqual(prefixed_outcome.evaluation_status,
                          plain_outcome.evaluation_status)

@@ -191,6 +191,37 @@ class TransformerCalculatorTests(unittest.TestCase):
         self.assertNotIn("uk_rated_percent", unique_branch.missing_fields)
         self.assertTrue(unique_branch.thresholds)
 
+    def test_table2_non630_ignores_provided_impedance_for_branch_and_grade(self) -> None:
+        condition = self.condition_id(2, core_material="electrical_steel", thermal_class="B")
+        expected_groups = {
+            "500": "uk_4_0",
+            "565": "uk_4_0",
+            "715": "uk_6_0_to_8_0",
+            "800": "uk_6_0_to_8_0",
+        }
+        for capacity, expected_group in expected_groups.items():
+            results = []
+            for impedance in (None, "4.0", "7.0"):
+                values = {
+                    "category_id": "GB20052-T02",
+                    "capacity_kva": capacity,
+                    "standard_conditions": condition,
+                    "no_load_loss_w": "1",
+                    "load_loss_w": "1",
+                }
+                if impedance is not None:
+                    values["uk_rated_percent"] = impedance
+                result = self.calculator.evaluate(values, self.pack)
+                results.append(result)
+                self.assertEqual(result.evaluation_status, "SUCCESS")
+                self.assertEqual(result.grade, "1")
+                self.assertIn(f"uk_group={expected_group}", result.trace[0]["branch_id"])
+
+            self.assertEqual(results[0].thresholds, results[1].thresholds)
+            self.assertEqual(results[0].thresholds, results[2].thresholds)
+            self.assertEqual(results[0].trace, results[1].trace)
+            self.assertEqual(results[0].trace, results[2].trace)
+
     def test_table15_uses_low_voltage_group_before_capacity(self) -> None:
         base = {
             "category_id": "GB20052-T15", "capacity_kva": "120000",

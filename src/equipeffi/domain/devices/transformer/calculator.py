@@ -20,7 +20,7 @@ from .model import TransformerEvaluation
 
 
 DECIMAL_PROFILE_ID = "EQUIPEFFI_TRANSFORMER_GB20052_DECIMAL50_V1"
-CALCULATOR_VERSION = "transformer-gb20052-v2.1.1"
+CALCULATOR_VERSION = "transformer-gb20052-v2.1.2"
 _DECIMAL_CONTEXT = Context(prec=50, rounding=ROUND_HALF_EVEN)
 _PACK_ID = "GB20052-2024-TRANSFORMER-V2.1"
 _SCHEMA_VERSION = "equipeffi.transformer-standard-pack.v1"
@@ -396,9 +396,20 @@ class TransformerCalculator:
             if capacity < min(all_caps) or capacity > max(all_caps):
                 return [], self._capacity_scope_result(capacity, min(all_caps), max(all_caps), 2)
             return [], self._result(
-                "INSUFFICIENT_DATA", None, "无法判定", "表02在所选阻抗分支中没有可用插值端点。",
+                "INSUFFICIENT_DATA", None, "无法判定", "表02在该容量处没有可用插值端点。",
                 reason_codes=("NO_INTERPOLATION_BRACKET",),
             )
+
+        # The frozen table has a loss-threshold impedance split only at 630 kVA.
+        # Outside that duplicated-capacity point, rated impedance is recorded by
+        # the caller but does not select, filter, or gate the loss branch.
+        if capacity != Decimal("630"):
+            if len(capacity_groups) != 1:
+                return [], self._result(
+                    "INSUFFICIENT_DATA", None, "无法判定", "表02该非630kVA容量未能唯一确定损耗分支。",
+                    reason_codes=("BRANCH_AMBIGUOUS",),
+                )
+            return [capacity_groups[0][1]], None
 
         if impedance is None:
             if len(capacity_groups) > 1:

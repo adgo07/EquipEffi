@@ -98,6 +98,14 @@ class R1TestCase(unittest.TestCase):
             as_of=AS_OF, **kwargs)
 
     @staticmethod
+    def pump_outcomes(result):
+        return [entry["outcome"] for entry in result.outcomes
+                if entry["sheet_name"] == PUMP_SHEET]
+
+    def pump_outcome(self, result, index: int = 0):
+        return self.pump_outcomes(result)[index]
+
+    @staticmethod
     def water(**overrides) -> dict:
         row = dict(B="水泵", C="M-001", D=1, E="1号车间", F="单级单吸清水离心泵",
                    G=100, H=50, I=2900, J=45, K="单吸", L=1, M=78)
@@ -119,7 +127,7 @@ class R1TestCase(unittest.TestCase):
 class B1ThresholdWritebackTests(R1TestCase):
     def test_water_thresholds_are_written_to_u_v_w(self):
         result = self.run_batch([self.water()], "b1_water", persist=False)
-        outcome = result.outcomes[0]
+        outcome = self.pump_outcome(result)
         self.assertTrue(outcome.thresholds, "正式 Result 必须提供 thresholds")
 
         sheet = openpyxl.load_workbook(result.result_workbook)[PUMP_SHEET]
@@ -131,7 +139,7 @@ class B1ThresholdWritebackTests(R1TestCase):
 
     def test_chemical_thresholds_are_written_to_u_v_w(self):
         result = self.run_batch([self.chemical()], "b1_chem", persist=False)
-        outcome = result.outcomes[0]
+        outcome = self.pump_outcome(result)
         self.assertTrue(outcome.thresholds)
 
         sheet = openpyxl.load_workbook(result.result_workbook)[PUMP_SHEET]
@@ -166,7 +174,7 @@ class B1ThresholdWritebackTests(R1TestCase):
             self.water(B="未定", C="M-2", F="不确定类别"),
         ], "b1_none", persist=False)
 
-        for outcome in result.outcomes:
+        for outcome in self.pump_outcomes(result):
             with self.subTest(row=outcome.row_number, status=outcome.evaluation_status):
                 self.assertEqual(outcome.thresholds, {},
                                  "这些状态没有正式阈值")
@@ -197,7 +205,7 @@ class B2InvalidInputTests(R1TestCase):
         """独立验收实测场景：负流量 + 数量=7。"""
 
         result = self.run_batch([self.water(D=7, G=-1)], "b2_neg")
-        summary, outcome = result.summary, result.outcomes[0]
+        summary, outcome = result.summary, self.pump_outcome(result)
 
         self.assertEqual(outcome.evaluation_status, "INVALID_INPUT")
         self.assertTrue(outcome.is_input_error, "INVALID_INPUT 必须判为输入错误")
@@ -225,7 +233,7 @@ class B2InvalidInputTests(R1TestCase):
 
         result = self.run_batch(
             [self.water(D=7, L=3)], "b2_stage_conflict")
-        summary, outcome = result.summary, result.outcomes[0]
+        summary, outcome = result.summary, self.pump_outcome(result)
         self.assertEqual(outcome.evaluation_status, "INVALID_INPUT")
         self.assertTrue(outcome.is_input_error)
         self.assertEqual(summary.evaluated_quantity, 0)
@@ -244,14 +252,14 @@ class B2InvalidInputTests(R1TestCase):
                 self.assertEqual(summary.evaluated_quantity, 0)
                 self.assertEqual(summary.conclusion_quantities, {})
                 self.assertEqual(summary.input_error_rows, 1)
-                self.assertTrue(result.outcomes[0].is_input_error)
+                self.assertTrue(self.pump_outcome(result).is_input_error)
 
     def test_uncertain_category_with_quantity_is_a_formal_conclusion(self):
         """「不确定类别」不是 INVALID_INPUT：形成正式结论「无法判定」并按数量计。"""
 
         result = self.run_batch(
             [self.water(B="未定", F="不确定类别", D=4)], "b2_uncertain")
-        summary, outcome = result.summary, result.outcomes[0]
+        summary, outcome = result.summary, self.pump_outcome(result)
         self.assertFalse(outcome.is_input_error)
         self.assertEqual(outcome.conclusion, "无法判定")
         self.assertEqual(summary.input_error_rows, 0)
@@ -316,7 +324,7 @@ class B2InvalidInputTests(R1TestCase):
         with patch.object(self.batch.analysis, "evaluate",
                           side_effect=RuntimeError("模拟内部错误")):
             result = self.run_batch([self.water(D=3)], "b2_exec")
-        summary, outcome = result.summary, result.outcomes[0]
+        summary, outcome = result.summary, self.pump_outcome(result)
         self.assertTrue(outcome.is_execution_error)
         self.assertEqual(outcome.conclusion, "执行失败")
         self.assertEqual(summary.execution_error_rows, 1)
