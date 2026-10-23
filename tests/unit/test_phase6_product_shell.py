@@ -27,7 +27,7 @@ from unittest.mock import patch
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-from PySide6.QtCore import QCoreApplication, QEvent
+from PySide6.QtCore import QCoreApplication, QEvent, QPoint, QRect
 from PySide6.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton
 
 from equipeffi.composition import create_settings_runtime
@@ -721,6 +721,56 @@ class SettingsPageTests(ProductShellTestCase):
         self.assertNotIn("IMPLEMENTED", about)
         self.assertNotIn("本版本已正式支持", about)
         self.assertNotIn("草稿", page.runtime.text())
+
+    def test_settings_content_is_reachable_in_a_small_window(self):
+        from equipeffi.composition import create_transformer_analysis_service
+
+        transformer = create_transformer_analysis_service(
+            paths=self.paths, with_persistence=True)
+        window = self.window(transformer=transformer)
+        window.resize(640, 480)
+        window.show()
+        window.open_settings()
+        self.app.processEvents()
+
+        page = window.settings_page
+        scroll = page.scroll_area
+        bar = scroll.verticalScrollBar()
+        viewport = scroll.viewport()
+        content = scroll.widget()
+        self.assertGreater(bar.maximum(), 0, "小窗口必须提供可滚动范围")
+        self.assertEqual(
+            scroll.horizontalScrollBar().maximum(), 0,
+            "小窗口应换行显示内容，不应依赖水平滚动来读完整文本",
+        )
+        self.assertIn("尚待正式支持验收", page.about.text())
+        self.assertIn("运行日志存放于 logs 子目录", page.runtime.text())
+
+        long_directory = self.paths.root.joinpath(*(["nested"] * 8))
+        self.settings.set("last.directory", str(long_directory))
+        page.refresh()
+        self.app.processEvents()
+        last_directory_height = page.last_directory.heightForWidth(
+            page.last_directory.width())
+        self.assertGreaterEqual(
+            page.last_directory.height(), last_directory_height,
+            "刷新长目录后，标签高度应覆盖自动换行所需高度",
+        )
+
+        for label in (page.about, page.runtime):
+            with self.subTest(label=label.objectName() or label.text()[:12]):
+                required_height = label.heightForWidth(label.width())
+                if required_height >= 0:
+                    self.assertGreaterEqual(label.height(), required_height)
+                content_y = label.mapTo(content, QPoint(0, 0)).y()
+                value = max(0, content_y + label.height() - viewport.height())
+                bar.setValue(min(value, bar.maximum()))
+                self.app.processEvents()
+                visible = QRect(label.mapTo(viewport, QPoint(0, 0)), label.size())
+                self.assertTrue(
+                    viewport.rect().contains(visible),
+                    "滚动后每个信息标签应能完整进入可视区域",
+                )
 
     def test_log_level_is_a_real_persisted_preference(self):
         page = self.window().settings_page

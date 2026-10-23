@@ -11,12 +11,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QEvent, QTimer, Qt
 from PySide6.QtWidgets import (
     QComboBox,
     QGroupBox,
     QLabel,
+    QLayout,
     QPushButton,
+    QScrollArea,
+    QSizePolicy,
     QVBoxLayout,
     QWidget,
 )
@@ -68,9 +71,18 @@ class SettingsPage(QWidget):
         self.data_location = data_location
         self.navigator = navigator
 
-        layout = QVBoxLayout(self)
+        page_layout = QVBoxLayout(self)
+        page_layout.setContentsMargins(0, 0, 0, 0)
+        page_layout.setSpacing(0)
+
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setObjectName("settingsContentScrollArea")
+        self.scroll_area.setWidgetResizable(True)
+        content = QWidget()
+        layout = QVBoxLayout(content)
         layout.setContentsMargins(*(TOKENS.page_margin,) * 4)
         layout.setSpacing(TOKENS.section_gap)
+        layout.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
 
         heading = QLabel("设置")
         font = heading.font()
@@ -100,9 +112,11 @@ class SettingsPage(QWidget):
         self.notice = QLabel("")
         self.notice.setWordWrap(True)
         preferences_layout.addWidget(self.notice)
-        preferences_layout.addWidget(QLabel(
+        settings_note = QLabel(
             "数值精度、规则集、计算器与标准版本等由版本化证据固定，"
-            "不作为用户设置项。"))
+            "不作为用户设置项。")
+        settings_note.setWordWrap(True)
+        preferences_layout.addWidget(settings_note)
         layout.addWidget(preferences)
 
         about = QGroupBox("关于")
@@ -125,7 +139,34 @@ class SettingsPage(QWidget):
         layout.addWidget(runtime)
 
         layout.addStretch()
+        self.scroll_area.setWidget(content)
+        page_layout.addWidget(self.scroll_area)
+        self._wrapped_labels = (
+            self.last_directory, self.notice, settings_note, self.about, self.runtime)
+        for label in self._wrapped_labels:
+            # 标签按视口宽度换行，避免长路径把内容区撑出水平滚动范围。
+            label.setSizePolicy(
+                QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
+        self._label_height_timer = QTimer(self)
+        self._label_height_timer.setSingleShot(True)
+        self._label_height_timer.timeout.connect(self._adjust_wrapped_label_heights)
+        self.scroll_area.viewport().installEventFilter(self)
         self.refresh()
+
+    def eventFilter(self, watched, event):
+        if (watched is self.scroll_area.viewport()
+                and event.type() == QEvent.Type.Resize):
+            # 等滚动布局分配新宽度后再测量换行高度；定时器随页面一起销毁。
+            self._label_height_timer.start(0)
+        return super().eventFilter(watched, event)
+
+    def _adjust_wrapped_label_heights(self) -> None:
+        for label in self._wrapped_labels:
+            if label.width() <= 0:
+                continue
+            required_height = label.heightForWidth(label.width())
+            if required_height >= 0:
+                label.setMinimumHeight(required_height)
 
     # -- 数据 ---------------------------------------------------------------
 
@@ -170,6 +211,7 @@ class SettingsPage(QWidget):
         last = self.settings.get("last.directory", "")
         self.last_directory.setText(
             f"上次使用的目录：{last}" if last else "上次使用的目录：（尚未使用）")
+        self._adjust_wrapped_label_heights()
 
     # -- 动作 ---------------------------------------------------------------
 
