@@ -36,7 +36,7 @@ class DomainEvaluationCandidateTests(unittest.TestCase):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 linear_interpolate(value, 0, 0, 1, 1)
 
-    def test_motor_percentage_and_transformer_and_loss_candidate_results(self):
+    def test_motor_percentage_candidate_results(self):
         draft = DeviceDraft(record_id="LV-98", device_type="motor_lv", raw_values={
             "category": "三相异步电动机（一般用途）", "rated_power_kw": 7.5,
             "poles": 4, "rated_efficiency": 98,
@@ -47,18 +47,6 @@ class DomainEvaluationCandidateTests(unittest.TestCase):
         invalid = DeviceDraft(record_id="LV-098", device_type="motor_lv",
                               raw_values=dict(draft.raw_values, rated_efficiency=0.98))
         self.assertEqual(self.evaluate_candidate(invalid).conclusion, Conclusion.UNABLE_TO_JUDGE)
-
-        transformer = self.evaluate_candidate(DeviceDraft(record_id="TR-1", device_type="transformer", raw_values={
-            "category": "10kV油浸式三相双绕组无励磁调压配电变压器", "capacity_kva": 100,
-            "core_material": "电工钢带", "connection": "Dyn11/Yzn11",
-            "no_load_loss_w": 200, "load_loss_w": 1500,
-        }))
-        self.assertEqual(transformer.conclusion, Conclusion.NOT_COMPLIANT)
-        self.assertEqual(len(transformer.lookups), 1)
-        self.assertTrue(any(item.get("rule") == "空载损耗AND负载损耗" for item in transformer.comparisons))
-        comparison = next(item for item in transformer.comparisons if item.get("level") == "1级")
-        self.assertIn("no_load_threshold", comparison)
-        self.assertIn("load_threshold", comparison)
 
     def test_pmsm_uses_pdf_verified_pack_and_keeps_explicit_no_data_cells(self):
         pack = self.repo.get_pack("motor_pmsm")

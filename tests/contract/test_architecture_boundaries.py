@@ -64,6 +64,7 @@ class ArchitectureBoundaryTests(unittest.TestCase):
             "equipeffi.application.services.settings_service",
             "equipeffi.application.services.centrifugal_pump_analysis_service",
             "equipeffi.application.services.pump_batch_evaluation_service",
+            "equipeffi.application.services.transformer_analysis_service",
         )
         directory = self.ROOT / "src/equipeffi/presentation/qt"
         for path in directory.rglob("*.py"):
@@ -89,9 +90,11 @@ class ArchitectureBoundaryTests(unittest.TestCase):
                          tuple(PUBLIC_DEVICE_NAMES.values()))
 
     def test_registry_contains_exact_internal_profiles(self):
-        self.assertEqual(len(EVALUATOR_FACTORIES), 17)
+        # Transformer evaluation has its own Application/Calculator path and is
+        # intentionally absent from the retired generic compatibility registry.
+        self.assertEqual(len(EVALUATOR_FACTORIES), 16)
         self.assertEqual(set(EVALUATOR_FACTORIES), {
-            "transformer", "motor_lv", "motor_hv", "motor_pmsm", "compressor",
+            "motor_lv", "motor_hv", "motor_pmsm", "compressor",
             "pump_water", "pump_chemical", "fan", "blower", "submersible",
             "boiler", "heat_treatment", "heat_pump_chiller",
             "heat_pump_water_heater", "duct_ac", "unitary_ac", "multi_split_ac",

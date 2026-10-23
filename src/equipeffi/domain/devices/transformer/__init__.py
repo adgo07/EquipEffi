@@ -1,4 +1,36 @@
-"""变压器领域模块。
+"""GB 20052—2024 transformer Domain contracts and calculator."""
 
-第一阶段只建立契约和目录，旧判定实现已删除，后续在这里重新编写。
-"""
+from .calculator import CALCULATOR_VERSION, DECIMAL_PROFILE_ID, TransformerCalculator, TransformerPackError
+from .input_contract import (
+    TRANSFORMER_CATEGORIES,
+    TRANSFORMER_INPUT_CONTRACT,
+    TransformerCategoryOption,
+    TransformerConditionOption,
+    TransformerInputContract,
+    TransformerInputError,
+    TransformerInputField,
+    category_fields,
+    condition_options,
+    normalize_transformer_input,
+    visible_fields,
+)
+from .model import TransformerEvaluation
+
+__all__ = [
+    "CALCULATOR_VERSION",
+    "DECIMAL_PROFILE_ID",
+    "TRANSFORMER_CATEGORIES",
+    "TRANSFORMER_INPUT_CONTRACT",
+    "TransformerCalculator",
+    "TransformerCategoryOption",
+    "TransformerConditionOption",
+    "TransformerEvaluation",
+    "TransformerInputContract",
+    "TransformerInputError",
+    "TransformerInputField",
+    "TransformerPackError",
+    "category_fields",
+    "condition_options",
+    "normalize_transformer_input",
+    "visible_fields",
+]

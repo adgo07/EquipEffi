@@ -1,0 +1,2 @@
+# 派生包的文件SHA跨Windows/Linux保持一致，不改变既有标准资产。
+src/equipeffi/resources/standards/gb20052_2024_v21.json text eol=lf
