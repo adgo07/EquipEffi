@@ -1,7 +1,8 @@
-"""运行中的17个内部评价器注册表。
+"""旧兼容评价服务中其余设备的内部评价器注册表。
 
-公开接口仍由``device_types``负责15类到17个内部profile的路由；本模块只
-负责将内部profile绑定到评价器，避免把工厂注册和共享辅助函数混在一起。
+公开接口与内部profile路由仍由``device_types``定义；本模块只负责将仍由
+旧兼容服务承载的内部profile绑定到评价器。变压器正式评价走
+``domain.devices.transformer.TransformerCalculator``及其Application服务。
 """
 
 from __future__ import annotations
@@ -17,11 +18,9 @@ from .evaluators.hvac import HvacEvaluator
 from .evaluators.motor import MotorEvaluator, PmsmEvaluator
 from .evaluators.pump import ChemicalPumpEvaluator, WaterPumpEvaluator
 from .evaluators.submersible import SubmersibleEvaluator
-from .evaluators.transformer import TransformerEvaluator
 
 
 EVALUATOR_FACTORIES: dict[str, Callable[[], Any]] = {
-    "transformer": TransformerEvaluator,
     "motor_lv": lambda: MotorEvaluator("motor_lv"),
     "motor_hv": lambda: MotorEvaluator("motor_hv"),
     "motor_pmsm": lambda: PmsmEvaluator("motor_pmsm"),

@@ -48,7 +48,6 @@ from .evaluators.hvac import HvacEvaluator
 from .evaluators.motor import MotorEvaluator, PmsmEvaluator
 from .evaluators.pump import ChemicalPumpEvaluator, WaterPumpEvaluator
 from .evaluators.submersible import SubmersibleEvaluator
-from .evaluators.transformer import TransformerEvaluator
 
 
 def _specific_speed(values: dict[str, Any], chemical: bool = False) -> tuple[Decimal, dict[str, Any]]:

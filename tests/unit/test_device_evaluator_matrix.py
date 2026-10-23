@@ -32,9 +32,8 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         return EVALUATOR_FACTORIES[device_type]().evaluate(
             inputs, self.standards.get_pack(device_type))
 
-    def test_all_17_examples_return_structured_result(self):
+    def test_all_registered_examples_return_structured_result(self):
         expected = {
-            "transformer": Conclusion.LEVEL_1,
             "motor_lv": Conclusion.LEVEL_1,
             "motor_hv": Conclusion.LEVEL_1,
             "motor_pmsm": Conclusion.LEVEL_1,
@@ -54,18 +53,23 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
             "unitary_ac": Conclusion.LEVEL_1,
             "multi_split_ac": Conclusion.LEVEL_3,
         }
+        # The 17th specs entry is a legacy transformer fixture; the V2.1
+        # Calculator tests use the derived 35-table pack as their source of truth.
         self.assertEqual(len(self.specs), 17)
-        for device_type, spec in self.specs.items():
+        self.assertEqual(set(expected), set(EVALUATOR_FACTORIES))
+        for device_type, conclusion in expected.items():
+            spec = self.specs[device_type]
             with self.subTest(device_type=device_type):
                 result = self.evaluate(device_type, spec["example"])
-                self.assertEqual(result.conclusion, expected[device_type])
+                self.assertEqual(result.conclusion, conclusion)
                 self.assertTrue(result.standard_reference.get("standard_code") or result.standard_reference.get("pack_id"))
                 self.assertTrue(result.trace)
 
     def test_successful_lookup_results_expose_stable_standard_data_ids(self):
         """每个已启用示例都能把实际使用的标准记录传给跨端消费者。"""
         all_ids = []
-        for device_type, spec in self.specs.items():
+        for device_type in EVALUATOR_FACTORIES:
+            spec = self.specs[device_type]
             with self.subTest(device_type=device_type):
                 result = self.evaluate(device_type, spec["example"])
                 if result.conclusion == Conclusion.UNABLE_TO_JUDGE:
@@ -107,101 +111,12 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         lookup = result.lookups[0]
         self.assertEqual(lookup["match_status"], "命中")
 
-    def test_transformer_lookup_preserves_standard_pack_data_id(self):
-        """变压器精确查表优先返回标准包记录ID。"""
-        result = self.evaluate("transformer", dict(self.specs["transformer"]["example"]))
-        self.assertEqual(result.lookups[0]["data_id"], "GB20052-R000017")
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["data_ids"], ["GB20052-R000017"])
 
-    def test_transformer_exact_lookup_preserves_matching_context(self):
-        """变压器精确查表应保留分类轴、查询条件和标准条款。"""
-        result = self.evaluate("transformer", dict(self.specs["transformer"]["example"]))
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["matching"], "类别+铁芯材质+绝缘耐热等级+连接组标号+额定容量")
-        self.assertEqual(lookup["query_conditions"], {
-            "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
-            "core_material": "电工钢带",
-            "insulation": "",
-            "connection": "Dyn11/Yzn11",
-            "capacity_kva": "100",
-        })
-        self.assertEqual(lookup["source_clause"], "表1")
 
-    def test_transformer_exact_lookup_preserves_standard_source_page(self):
-        """变压器精确查表应保留标准包记录的PDF来源页。"""
-        result = self.evaluate("transformer", dict(self.specs["transformer"]["example"]))
-        self.assertEqual(result.lookups[0]["source_page"], 7)
 
-    def test_transformer_exact_lookup_marks_standard_row_as_matched(self):
-        """变压器正常精确标准行查表应显式标记命中状态。"""
-        result = self.evaluate("transformer", dict(self.specs["transformer"]["example"]))
-        self.assertEqual(result.lookups[0]["match_status"], "命中")
 
-    def test_transformer_normal_result_preserves_standard_table_clause(self):
-        """变压器正常结果和轨迹都应保留命中的标准表号。"""
-        result = self.evaluate("transformer", dict(self.specs["transformer"]["example"]))
-        self.assertEqual(result.standard_reference["clause"], result.standard_reference["table"])
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["clause"], result.standard_reference["table"])
 
-    def test_transformer_missing_no_load_loss_retains_lookup_limits_and_load_loss(self):
-        """缺少空载损耗时仍保留已填负载损耗、三级阈值和查表追溯。"""
-        values = dict(self.specs["transformer"]["example"])
-        values.pop("no_load_loss_w", None)
-        result = self.evaluate("transformer", values)
-        self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
-        self.assertIn("空载损耗", result.explanation)
-        self.assertEqual(result.missing_fields, ["空载损耗"])
-        self.assertNotIn("空载损耗_W", result.actual_metrics)
-        self.assertEqual(result.actual_metrics["负载损耗_W"], Decimal("1140"))
-        self.assertEqual(result.limits, {
-            "空载损耗-1级_W": Decimal("120"),
-            "空载损耗-2级_W": Decimal("135"),
-            "空载损耗-3级_W": Decimal("150"),
-            "负载损耗-1级_W": Decimal("1140"),
-            "负载损耗-2级_W": Decimal("1265"),
-            "负载损耗-3级_W": Decimal("1580"),
-        })
-        self.assertEqual(result.comparisons, [])
-        self.assertEqual(len(result.lookups), 1)
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["table"], "表1")
-        self.assertEqual(lookup["match_status"], "命中")
-        self.assertEqual(lookup["data_id"], "GB20052-R000017")
-        self.assertEqual(lookup["source_page"], 7)
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["data_ids"], ["GB20052-R000017"])
 
-    def test_transformer_filter_miss_keeps_category_candidates(self):
-        """类别命中但分类参数组合未命中时仍保留候选行和来源。"""
-        result = self.evaluate("transformer", {
-            "category": "10kV油浸式三相双绕组无励磁调压配电变压器",
-            "capacity_kva": 100,
-            "core_material": "未知铁芯",
-            "insulation": "",
-            "connection": "Dyn11/Yzn11",
-            "no_load_loss_w": 120,
-            "load_loss_w": 1140,
-        })
-        self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
-        self.assertIn("分类参数组合", result.explanation)
-        self.assertEqual(result.actual_metrics["空载损耗_W"], Decimal("120"))
-        self.assertEqual(result.actual_metrics["负载损耗_W"], Decimal("1140"))
-        self.assertEqual(len(result.lookups), 1)
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["match_status"], "分类条件组合未命中")
-        self.assertEqual(lookup["query_conditions"]["category"], "10kV油浸式三相双绕组无励磁调压配电变压器")
-        self.assertEqual(lookup["query_conditions"]["core_material"], "未知铁芯")
-        self.assertEqual(lookup["candidate_count"], 62)
-        self.assertEqual(lookup["candidate_rows"][0]["data_id"], "GB20052-R000001")
-        self.assertEqual(lookup["candidate_rows"][-1]["data_id"], "GB20052-R000062")
-        self.assertIn("电工钢带", lookup["available_core_materials"])
-        self.assertIn("非晶合金", lookup["available_core_materials"])
-        self.assertEqual(lookup["source_pages"], ["7"])
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertIn("GB20052-R000001", standard_step["data_ids"])
-        self.assertIn("GB20052-R000062", standard_step["data_ids"])
 
     def test_chemical_pump_lookup_preserves_standard_pack_data_id(self):
         """石油化工离心泵表2规则行优先返回标准包记录ID。"""
@@ -609,8 +524,10 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
         self.assertEqual(standard_step["clause"], result.standard_reference["clause"])
 
-    def test_all_17_empty_inputs_return_unable_instead_of_raising(self):
-        for device_type in self.specs:
+    def test_all_registered_empty_inputs_return_unable_instead_of_raising(self):
+        # The retired flat-pack transformer evaluator is excluded; missing
+        # transformer input semantics are covered by the standalone Calculator.
+        for device_type in EVALUATOR_FACTORIES:
             with self.subTest(device_type=device_type):
                 self.assertEqual(self.evaluate(device_type, {}).conclusion, Conclusion.UNABLE_TO_JUDGE)
 
@@ -823,90 +740,9 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(result.lookups[0]["no_data_levels"], ["1级", "2级", "3级"])
         self.assertEqual(result.lookups[0]["data_ids"], ["GB30254-R000031"])
 
-    def test_transformer_range_miss_retains_reported_losses(self):
-        result = self.evaluate("transformer", {
-            **self.specs["transformer"]["example"],
-            "capacity_kva": 999999,
-        })
-        self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
-        self.assertEqual(result.actual_metrics["空载损耗_W"], Decimal("120"))
-        self.assertEqual(result.actual_metrics["负载损耗_W"], Decimal("1140"))
 
-    def test_transformer_forbidden_capacity_extrapolation_retains_candidate_rows(self):
-        """允许插值的变压器表在容量外推时仍保留端点候选和来源证据。"""
-        result = self.evaluate("transformer", {
-            "category": "6kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
-            "capacity_kva": 400,
-            "core_material": "",
-            "insulation": "",
-            "connection": "",
-            "no_load_loss_w": 300,
-            "load_loss_w": 3000,
-        })
-        self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
-        self.assertEqual(result.actual_metrics["空载损耗_W"], Decimal("300"))
-        self.assertEqual(result.actual_metrics["负载损耗_W"], Decimal("3000"))
-        self.assertTrue(result.lookups)
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["step_type"], "线性插值")
-        self.assertEqual(lookup["match_status"], "容量插值端点未命中")
-        self.assertEqual(lookup["query_conditions"]["capacity_kva"], "400")
-        self.assertEqual(lookup["candidate_count"], 7)
-        self.assertEqual(lookup["available_capacity_kva"], ["500.0", "630.0", "800.0", "1000.0", "1250.0", "1600.0", "2000.0"])
-        self.assertEqual(lookup["data_ids"], [
-            "GB20052-R000419", "GB20052-R000420", "GB20052-R000421",
-            "GB20052-R000422", "GB20052-R000423", "GB20052-R000424",
-            "GB20052-R000425",
-        ])
-        self.assertEqual(lookup["source_pages"], ["20"])
-        self.assertIn("禁止外推", lookup["standard_rule"])
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["data_ids"], lookup["data_ids"])
 
-    def test_transformer_table29_capacity_interpolation_keeps_endpoints_and_factor(self):
-        """GB 20052表29允许在500/630 kVA端点之间插值并保留证据。"""
-        result = self.evaluate("transformer", {
-            "category": "6kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
-            "capacity_kva": 565,
-            "core_material": "",
-            "insulation": "",
-            "connection": "",
-            "no_load_loss_w": 400,
-            "load_loss_w": 4000,
-        })
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
-        self.assertEqual(result.actual_metrics["空载损耗_W"], Decimal("400"))
-        self.assertEqual(result.actual_metrics["负载损耗_W"], Decimal("4000"))
-        self.assertEqual(result.limits["空载损耗-1级_W"], Decimal("422.5"))
-        self.assertEqual(result.limits["负载损耗-1级_W"], Decimal("4180"))
-        self.assertTrue(any(
-            item["level"] == "1级" and item["passed"]
-            and item["no_load_passed"] and item["load_passed"]
-            for item in result.comparisons
-        ))
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["step_type"], "线性插值")
-        self.assertEqual(lookup["table"], "表29")
-        self.assertEqual(lookup["endpoints"], [500.0, 630.0])
-        self.assertEqual(lookup["factor"], "0.5")
-        self.assertEqual(lookup["data_ids"], ["GB20052-R000419", "GB20052-R000420"])
-        self.assertEqual(lookup["source_pages"], ["20"])
-        self.assertIn("仅标准明确允许", lookup["standard_rule"])
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["data_ids"], lookup["data_ids"])
 
-    def test_transformer_interpolation_marks_standard_rows_as_matched(self):
-        """变压器允许容量插值成功后应显式标记端点查表命中。"""
-        result = self.evaluate("transformer", {
-            "category": "6kV油浸式三相双绕组无励磁调压新能源发电侧光伏用、风电用、储能用变压器（6kV~7.2kV/0.4kV~1.14kV）",
-            "capacity_kva": 565,
-            "core_material": "",
-            "insulation": "",
-            "connection": "",
-            "no_load_loss_w": 400,
-            "load_loss_w": 4000,
-        })
-        self.assertEqual(result.lookups[0]["match_status"], "命中")
 
     def test_motor_range_miss_retains_reported_efficiency(self):
         result = self.evaluate("motor_lv", {
@@ -2197,12 +2033,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(fan_lookup["data_id"], "GB19761-R000016")
         self.assertTrue(fan_lookup["machine_interval"])
 
-        transformer = self.evaluate("transformer", self.specs["transformer"]["example"])
-        self.assertIn("空载损耗-1级_W", transformer.limits)
-        self.assertIn("负载损耗-3级_W", transformer.limits)
-        self.assertTrue(transformer.lookups)
-        standard_step = next(step for step in transformer.trace if step.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["output"]["空载损耗-1级_W"], transformer.limits["空载损耗-1级_W"])
         # 各设备即使标准资源行尚未内置显式data_id，也应在有ID的查表链
         # 中把它们汇总到标准结果步骤，供后续Excel/移动端回溯。
         self.assertIn("data_ids", next(step for step in fan.trace if step.get("step_type") == "标准查询结果"))
