@@ -10,9 +10,18 @@ Windows V1 目标是完整支持 `GB 19762—2025《离心泵能效限定值及�
 |---|---|---|---|---|
 | `pump_water` | `IN_V1` | `SUPPORTED` | `SUPPORTED` | 已批准的 18 条 Golden 与正式产品闭环 |
 | `pump_chemical` | `IN_V1` | `SUPPORTED` | `SUPPORTED` | Phase 5 Stage D 独立验收，PR [#13](https://github.com/adgo07/EquipEffi/pull/13)；Stage D 证据见下方 |
-| `transformer` | `POST_V1` | `NOT_IN_RELEASE_SCOPE` | 未进入本轮标准开发 | 保留代码、标准资料与历史资产；不得因暂缓而删除冻结资料 |
+| `transformer` | `POST_V1` | `NOT_IN_RELEASE_SCOPE` | Stage A双文件已冻结；25列设计已确认，下一版本实施中 | 当前发布能力不变；Owner已授权下一版本实施，验收前不提升SUPPORTED |
 
 `pump_chemical` Stage D 证据：[`docs/phase5_stage_d_evidence_matrix.md`](docs/phase5_stage_d_evidence_matrix.md) 与 [`specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json`](specs/equipment_efficiency/evidence/phase5_chemical_stage_d_e2e.json)。其 11 条 Golden 已获 Owner 具名批准。该批准只记录既有事实，不替代未来范围或真值变更所需的授权。
+
+## 下一版本已授权范围（2026-10-23）
+
+Owner已明确下一版本加入 `GB 20052—2024 transformer`，现有 `pump_water / pump_chemical` 保持稳定。实施按“接入设计 → 变压器内核 → 产品接通与验收”推进，25列设计已确认并已授权实施；UI美化、多端客户端、自动温度换算不在本轮范围。
+
+- 接入依据为已冻结V2.1主映射与35表工作簿，二者不修改；不重新开启Stage A。
+- 所有设备仍共用一个工作簿、各自Sheet；当前正式V6的离心泵Sheet已确定不修改，变压器25列输入方案已获Owner确认，成品待实施验收。
+- [接入设计与Excel兼容方案](docs/standards/gb20052_2024/INTEGRATION_DESIGN.md)给出已确认字段、25列布局、旧新模板矩阵、数值及测试设计。设计批准不等于软件已实现或支持状态已提升。
+- 上表与现有 `scope_status` 枚举继续描述当前Windows V1，不以未来范围改写当前发布能力。变压器正式实现及验收完成后，再按Owner决定更新当前产品状态。
 
 ### 其他已登记 Profile
 

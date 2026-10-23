@@ -5,7 +5,17 @@
 - 路线：EquipEffi V2.3；默认分支：`master`。
 - Phase 0 为不可变基线；Phase 1–7 已独立验收（PR #10–#15）。Phase 8（GB 19762 Excel 批量评价）已合并 PR [#16](https://github.com/adgo07/EquipEffi/pull/16)，merge SHA `64b656ee4924fbf09f3fd87596ef1a1a779d1f09`；当前为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`。不得自行声明 `PHASE_8_PASS`，不得开始 Phase 9。
 
-## 当前工作收口
+## 当前工作：变压器接入实施（2026-10-23）
+
+Owner已明确下一版本纳入GB 20052—2024变压器，已确认25列方案并授权完善设计后实施。按“接入设计 → 变压器内核 → 产品接通与验收”执行，不自动改变当前软件支持能力、Phase状态或正式发布状态。
+
+- 设计检查基线：`master@dd27baba07cf0a41f58c0ab4838cd786a40e05ff`，即PR #28合并后。
+- 统一设计：[变压器接入设计与统一Excel兼容方案](docs/standards/gb20052_2024/INTEGRATION_DESIGN.md)。25列：A—U保留位置，I单值额定阻抗，V/W高低电压，X/Y高低及中低阻抗；损耗统一W；类别明确适用型式，其他/不确定分别显示不在范围/无法判定。无拼接数字、适用确认列、单位列或全局试验确认门禁。
+- 必须保持：**冻结二件套不改；当前正式V6的泵Sheet及共享依赖不改；变压器Sheet设计已确认、成品待验收**。
+- 实施工作树分支：`codex/transformer-implementation-20261023`，从PR #29 `20517fe582a76118a77fd33e12d347bb565e7452`起步。根负责集成与验收，子任务分工数据派生、领域内核、模板适配。QA-TR-001已登记。
+- 当前实施中：单向派生数据、同核应用接入、版本化新模板及批次兼容；不修改冻结资产、数据库迁移、Pump Golden或中央锁。UI美化延后，未验收不得声明SUPPORTED或正式发布。
+
+## 已收口的简化工作
 
 本轮依据 [`docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md`](docs/governance/SIMPLIFICATION_NEXT_STEPS_20261021.md) 完成三步简化：
 
@@ -17,7 +27,7 @@ Owner 已确认 ZIP 正常解压后批量评价、记录和外部打开正常，
 
 无控制台验收起于代码提交 `ee64e131`；最终复核另修复既有线程收尾重入问题，37项相关检查通过。最终交付包的代码提交与审计结果记于 PR #28。原生包 PE Subsystem=2，实际 Qt 首页启动、19项定向测试与资源审计通过。交付使用 ZIP 在普通用户目录正常解压；受限构建目录中 EXE 的 Low 完整性不能作为正常安装环境验收依据，不更改系统权限或用户数据。
 
-当前机器没有干净 Windows / Sandbox；本机隔离及交互验证不等于干净机器验收，也不构成正式发布或 Phase 8 独立 PASS。下一轮须单独确认范围，不自动进入新标准实施或 Phase 9。
+上一轮没有干净 Windows / Sandbox；本机隔离及交互验证不等于干净机器验收，也不构成正式发布或 Phase 8 独立 PASS。后续Windows/WPS验收按本次设计第三步安排如实补齐，不把历史缺口冒称已完成。
 
 ## 当前权威入口
 
