@@ -11,9 +11,12 @@ Owner已明确下一版本纳入GB 20052—2024变压器，已确认25列方案�
 
 - 设计检查基线：`master@dd27baba07cf0a41f58c0ab4838cd786a40e05ff`，即PR #28合并后。
 - 统一设计：[变压器接入设计与统一Excel兼容方案](docs/standards/gb20052_2024/INTEGRATION_DESIGN.md)。25列：A—U保留位置，I单值额定阻抗，V/W高低电压，X/Y高低及中低阻抗；损耗统一W；类别明确适用型式，其他/不确定分别显示不在范围/无法判定。无拼接数字、适用确认列、单位列或全局试验确认门禁。
-- 必须保持：**冻结二件套不改；当前正式V6的泵Sheet及共享依赖不改；变压器Sheet设计已确认、成品待验收**。
+- 必须保持：**冻结二件套不改；当前正式V6的泵Sheet及共享依赖不改；变压器Sheet设计已确认、WPS交互经Owner确认正常，原生包流程待验收**。
 - 实施工作树分支：`codex/transformer-implementation-20261023`，从PR #29 `20517fe582a76118a77fd33e12d347bb565e7452`起步。根负责集成与验收，子任务分工数据派生、领域内核、模板适配。QA-TR-001已登记。
-- 当前实施中：单向派生数据、同核应用接入、版本化新模板及批次兼容；不修改冻结资产、数据库迁移、Pump Golden或中央锁。UI美化延后，未验收不得声明SUPPORTED或正式发布。
+- 代码已形成设计PR [#29](https://github.com/adgo07/EquipEffi/pull/29)、内核草案PR [#30](https://github.com/adgo07/EquipEffi/pull/30)、产品集成草案PR [#31](https://github.com/adgo07/EquipEffi/pull/31)，按此顺序依赖；PR #31的`04ee50a7`落实Owner表2非630kVA阻抗只留痕决定及全量发现问题的定向修复。未合并，正在最终回归与包验证。
+- 已接通单向派生数据、同核Qt/Excel、V6.1统一模板和单条混合批次记录。不修改冻结资产、数据库迁移、Pump Golden或中央锁。UI美化延后，未验收不得声明SUPPORTED或正式发布。详细证据及待办见[实施记录](docs/standards/gb20052_2024/IMPLEMENTATION_REPORT.md)。
+
+- 收口证据（2026-10-23）：代码提交`dfb2c10d`的Windows CI [run 39932000834](https://github.com/adgo07/EquipEffi/actions/runs/39932000834)全量1103项及编译、包/资源、空白检查通过。Owner确认WPS类别/条件下拉、第104行追加与保存重开正常。隔离包启动自检通过；原生窗口操作及干净机器验收尚未完成，不提升正式支持或发布状态。
 
 ## 已收口的简化工作
 
