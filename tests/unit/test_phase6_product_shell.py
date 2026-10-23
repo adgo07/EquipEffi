@@ -702,6 +702,26 @@ class SettingsPageTests(ProductShellTestCase):
         overview = self.service.standard_overview()
         self.assertIn(overview["standard_code"], page.about.text())
 
+    def test_settings_shows_both_standards_and_transformer_status_from_real_services(self):
+        from equipeffi.composition import create_transformer_analysis_service
+
+        transformer = create_transformer_analysis_service(
+            paths=self.paths, with_persistence=True)
+        page = self.window(transformer=transformer).settings_page
+        pump = self.service.standard_overview()
+        transformer_overview = transformer.standard_overview()
+        about = page.about.text()
+
+        self.assertIn(pump["standard_code"], about)
+        self.assertIn(pump["standard_name"], about)
+        self.assertIn(transformer_overview["standard_code"], about)
+        self.assertIn(transformer_overview["name"], about)
+        self.assertEqual(transformer_overview["support_status"], "IMPLEMENTED")
+        self.assertIn("已接入，尚待正式支持验收", about)
+        self.assertNotIn("IMPLEMENTED", about)
+        self.assertNotIn("本版本已正式支持", about)
+        self.assertNotIn("草稿", page.runtime.text())
+
     def test_log_level_is_a_real_persisted_preference(self):
         page = self.window().settings_page
         # Owner Phase 8 R1 / UI04：界面显示中文，内部仍保存正式枚举值。

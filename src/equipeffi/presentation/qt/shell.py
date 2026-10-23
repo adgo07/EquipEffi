@@ -86,7 +86,8 @@ class MainWindow(QMainWindow):
                         transformer=transformer)
             if analysis is not None else None)
         self.settings_page = SettingsPage(settings, analysis, app_version=self.app_version,
-                                         data_location=data_location, navigator=self)
+                                         data_location=data_location, navigator=self,
+                                         transformer=transformer)
 
         self._page_widgets = {
             "首页": self.home_page,

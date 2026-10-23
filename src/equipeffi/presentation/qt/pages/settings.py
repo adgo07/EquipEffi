@@ -59,10 +59,11 @@ class SettingsPage(QWidget):
 
     def __init__(self, settings, service=None, *, app_version: str = "",
                  data_location: Path | None = None, navigator=None,
-                 parent: QWidget | None = None):
+                 transformer=None, parent: QWidget | None = None):
         super().__init__(parent)
         self.settings = settings
         self.service = service
+        self.transformer_service = transformer
         self.app_version = app_version
         self.data_location = data_location
         self.navigator = navigator
@@ -130,22 +131,40 @@ class SettingsPage(QWidget):
 
     def refresh(self) -> None:
         overview = self.service.standard_overview() if self.service is not None else None
-        standard_line = (f"当前正式标准：{overview['standard_code']}"
-                         f"《{overview['standard_name']}》"
-                         if overview else "当前正式标准：—")
-
-        self.about.setText("\n".join([
-            f"应用版本：{self.app_version or '—'}",
-            standard_line,
-            "适用产品：GB 19762—2025 离心泵（清水泵与石油化工泵使用同一分析流程）",
-        ]))
+        lines = [f"应用版本：{self.app_version or '—'}"]
+        if overview is None:
+            lines.append("当前正式标准：—")
+        elif self.transformer_service is None:
+            # 兼容未装配变压器服务的既有调用方。
+            lines.extend((
+                f"当前正式标准：{overview['standard_code']}《{overview['standard_name']}》",
+                "适用产品：GB 19762—2025 离心泵（清水泵与石油化工泵使用同一分析流程）",
+            ))
+        else:
+            transformer = self.transformer_service.standard_overview()
+            transformer_name = transformer.get(
+                "name", "电力变压器能效限定值及能效等级")
+            lines.extend((
+                "当前接入标准与设备：",
+                f"离心泵：{overview['standard_code']}《{overview['standard_name']}》",
+                f"电力变压器：{transformer['standard_code']}《{transformer_name}》",
+            ))
+            support_status = transformer.get("support_status")
+            if support_status == "IMPLEMENTED":
+                status_text = "已接入，尚待正式支持验收"
+            elif support_status == "SUPPORTED":
+                status_text = "本版本已正式支持"
+            else:
+                status_text = "当前状态以软件记录为准"
+            lines.append(f"电力变压器软件状态：{status_text}")
+        self.about.setText("\n".join(lines))
 
         # 普通用户不得看到内部机器键名（last.directory / window.geometry /
         # window.state / log.level 等）。只展示业务中文名称与真实路径。
         location = str(self.data_location) if self.data_location else "（未能确定，请检查安装）"
         self.runtime.setText("\n".join([
             f"数据存储位置：{location}",
-            "记录与草稿存放于该目录下的 records.sqlite；运行日志存放于 logs 子目录。",
+            "历史记录存放于该目录下的 records.sqlite；运行日志存放于 logs 子目录。",
         ]))
 
         last = self.settings.get("last.directory", "")
