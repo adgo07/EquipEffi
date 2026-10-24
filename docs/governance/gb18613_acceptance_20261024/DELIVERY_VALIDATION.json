@@ -1,12 +1,15 @@
 {
-  "date": "2026-10-24",
-  "review": "A2_REVIEW.md",
-  "verified_payload_tree_before_receipt": "3ed0a8f7033e7375d3c2c21f76d74cf65ef4a1a4",
+  "status": "PASS",
   "local_links": 58,
   "candidate_groups": 26,
   "archived_cell_records": 1290,
-  "status": "PASS",
-  "scope": "Document links, archive and hashes in clean Git export; no production or PDF audit rerun",
-  "git_blob_hashes": "PASS",
-  "clean_export_hashes": "PASS"
+  "source_hashes": "PASS",
+  "retired_files_absent": true,
+  "scope": "Clean Git tree document and archive integrity, not production tests",
+  "date": "2026-10-24",
+  "executor": "/root",
+  "review": "A2_REVIEW.md",
+  "review_git_identity": "A2_GIT_REVIEW.md",
+  "verification_base_head": "d4c811a06c2f0a4ae20eccfc0e135c56d3dffc60",
+  "identity_note": "HEAD is the pre-edit snapshot; final pushed head and merge outcome are recorded in PR #32. Historical review bytes are preserved."
 }

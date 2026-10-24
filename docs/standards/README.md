@@ -55,7 +55,7 @@
 |GB 19762—2025 离心泵（保护原状）|[既有入口](gb19762_2025/README.md)|既有文件原位保留|
 |GB 20052—2024 变压器（冻结）|[既有入口](gb20052_2024/README.md)|V2.1映射＋35表工作簿原位保留|
 
-本表只列已建档材料，不代表已完成验收或软件支持。问题状态只查[根台账](../../STANDARD_ISSUES_REGISTER.md)；Profile状态只查[V1_SCOPE](../../V1_SCOPE.md)／[ROADMAP](../../V1_SCOPE.md)。
+本表只列已建档材料，不代表已完成验收或软件支持。问题状态只查[根台账](../../STANDARD_ISSUES_REGISTER.md)；Profile状态只查[V1_SCOPE](../../V1_SCOPE.md)。
 
 ## 目录规则
 
@@ -93,7 +93,7 @@
 - 文档映射、标准校对与解释证据放本目录；原PDF按合法来源及证据注册定位，不要求上传GitHub，也不写机器固定路径。
 - Golden、Schema、证据注册留在`specs/equipment_efficiency/`；运行时Canonical留在`src/equipeffi/resources/standards/`；知识留在`src/equipeffi/resources/knowledge/`。本目录整理不迁移这些资源，也不使Markdown/校对Excel成为运行时算法。
 - 新标准按中央[Standard Development Guide](https://github.com/adgo07/Qingzhou-contracts/blob/main/docs/governance/STANDARD_DEVELOPMENT_GUIDE_V0.1.md)的Stage A→B→C→D推进，映射定稿不等于软件SUPPORTED。
-- 归档变更检查入口与相对链接、正文单一位置、原文保留与冻结哈希；历史报告中的链接更新到归档落点，旧路径对照保存在集中归档清单。关键资源记录到BASELINE和HANDOFF，不改写历史验收事实。
+- 归档变更检查入口与相对链接、正文单一位置、原文保留与冻结哈希；历史报告中的链接更新到归档落点，旧路径对照保存在集中归档清单。关键资源身份记录在对应交付哈希清单和验收记录，当前任务摘要见TASK_STATE.md；不恢复退役的BASELINE/HANDOFF，不改写历史验收事实。
 
 ## 已冻结标准：变压器双文件
 
