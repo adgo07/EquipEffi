@@ -32,3 +32,6 @@ docs/governance/device_full_acceptance_20261013/** -whitespace
 docs/governance/device_round3_review_20261013/** -whitespace
 docs/governance/owner_response_20261023/** -whitespace
 docs/governance/standard_archive_20261024/** -whitespace
+
+# Stable byte identity for the current standard issues register across checkouts.
+STANDARD_ISSUES_REGISTER.md text eol=lf

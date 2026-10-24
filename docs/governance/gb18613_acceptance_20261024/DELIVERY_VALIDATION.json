@@ -1,10 +1,12 @@
 {
   "date": "2026-10-24",
   "review": "A2_REVIEW.md",
-  "verified_payload_tree_before_receipt": "4adbecd054524674eca8bd4697c9b7ad08c59800",
-  "local_links": 51,
+  "verified_payload_tree_before_receipt": "3ed0a8f7033e7375d3c2c21f76d74cf65ef4a1a4",
+  "local_links": 58,
   "candidate_groups": 26,
   "archived_cell_records": 1290,
   "status": "PASS",
-  "scope": "Document links, archive and hashes in clean Git export; no production or PDF audit rerun"
+  "scope": "Document links, archive and hashes in clean Git export; no production or PDF audit rerun",
+  "git_blob_hashes": "PASS",
+  "clean_export_hashes": "PASS"
 }

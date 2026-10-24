@@ -17,3 +17,5 @@ python replay.py --pdf <原PDF路径> --workbook <A1工作簿路径> --output <�
 包装器只替换原脚本三个路径变量，原核验算法不变。重放须自行具备依赖；归档不代表本轮执行了该算法或软件生产测试。
 
 [verify_delivery.py](verify_delivery.py)可对提交树的干净检出执行文档、链接、哈希及归档CSV完整性检查，参数为检出根路径。原历史报告的Markdown双空格换行按原字节保留，仅两份原报告豁免尾空白风格检查；当前映射和新文档仍检查。
+
+根台账最终Git／检出身份以[Git字节身份补充复核](A2_GIT_REVIEW.md)和DELIVERY_HASHES.json为准；原差异复核中的CRLF磁盘哈希属于当时快照，内容一致性结论保留。

@@ -24,3 +24,9 @@
 ## 交付检查结果
 
 独立复核者`/root/gb18613_final_review`已对最终固定SHA给出文档差异PASS，原记录按字节归档。执行者`/root`从实际Git暂存树导出完整ZIP至全新目录后检查：51个本地链接可达、26组候选齐全、归档七件原文件哈希一致、1290条历史CSV记录均PASS、四项当前文件哈希一致、退役ROADMAP／HANDOFF／BASELINE均不存在。`git diff --cached --check`通过；生产及冻结目录与起点无差异。检查可用本目录`verify_delivery.py <干净检出根目录>`重放。原PDF不随PR交付，重放原文审计仍需合法取得同SHA PDF及依赖。
+
+## Git字节身份补充
+
+首次提交`506f4e1378c964c1240476328a91ff1f6c575a9d`后，Git blob复核发现根台账在旧Windows工作树为CRLF，而Git存储为LF。两者文本等价，但字节SHA不同。现将根台账显式固定`text eol=lf`；Git与后续检出均使用SHA `cb14ae9161bcd73fc731b3e0c1bd879c04ce82d594b5dde2dd73b9898d76dcc6`，取代旧磁盘SHA `1e8514c228407859ebe9b830dd0c7bebbc68eb305cb81d7efa05768a03397b13`作为交付身份；映射及工作簿SHA不变。原差异复核保留，纯换行等价与当前身份见[Git身份补充复核](A2_GIT_REVIEW.md)。最终检查同时覆盖Git blob和新干净导出，不只核对工作树。
+
+最终补充验证：LF属性与补充复核入树后，重新从全新目录验证58个本地链接、全部清单哈希、26组候选和历史1290条CSV；同时直接读取Git blob验证四项当前资源哈希，均PASS。正文与原表值未改。
