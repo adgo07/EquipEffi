@@ -1,0 +1,74 @@
+[
+  {
+    "original": "_acceptance_20261013/round3/evidence_snapshots/gb18613_2020__GB18613_2020_表1-6校对数据_A1.txt",
+    "archive": "docs/governance/device_round3_review_20261013/third_party_snapshot_archive/gb18613_2020__GB18613_2020_表1-6校对数据_A1.txt",
+    "sha256": "50c26df289d2376b53096df019cf3c511d4876db92220128c1606a771d17a296",
+    "copy_matches": true
+  },
+  {
+    "original": "_acceptance_20261013/round3/evidence_snapshots/gb19576_2019__GB19576_2019_TABLE1.txt",
+    "archive": "docs/governance/device_round3_review_20261013/third_party_snapshot_archive/gb19576_2019__GB19576_2019_TABLE1.txt",
+    "sha256": "3df705a72f2ffcd6de83944175870d214e00237848bddab86da0f2147baf0276",
+    "copy_matches": true
+  },
+  {
+    "original": "_acceptance_20261013/round3/evidence_snapshots/gb19577_2024__GB19577_2024_TABLE_VALUES.txt",
+    "archive": "docs/governance/device_round3_review_20261013/third_party_snapshot_archive/gb19577_2024__GB19577_2024_TABLE_VALUES.txt",
+    "sha256": "4498c5ca4f6bc2ca779066112d368d5f40b8cf0eaf3dc350486686d3149c18af",
+    "copy_matches": true
+  },
+  {
+    "original": "_acceptance_20261013/round3/evidence_snapshots/gb19761_2020__GB19761_2020_表1-4核对工作簿.txt",
+    "archive": "docs/governance/device_round3_review_20261013/third_party_snapshot_archive/gb19761_2020__GB19761_2020_表1-4核对工作簿.txt",
+    "sha256": "c7e7123f54461dc45c81f894aa8caead81dabaee50a2f28f6effaf6907c91da8",
+    "copy_matches": true
+  },
+  {
+    "original": "_acceptance_20261013/round3/evidence_snapshots/gb21454_2021__GB21454_2021_标准表值.txt",
+    "archive": "docs/governance/device_round3_review_20261013/third_party_snapshot_archive/gb21454_2021__GB21454_2021_标准表值.txt",
+    "sha256": "7e99d686aa658985c23335b3ad2537bfe06e4e045886a632e2b69d191c843bd1",
+    "copy_matches": true
+  },
+  {
+    "original": "_acceptance_20261013/round3/evidence_snapshots/gb28381_2012__GB28381_2012_TABLES.txt",
+    "archive": "docs/governance/device_round3_review_20261013/third_party_snapshot_archive/gb28381_2012__GB28381_2012_TABLES.txt",
+    "sha256": "2dd4acd00649446db2de175b56810c69105c472adcb413113f4406316e525d1b",
+    "copy_matches": true
+  },
+  {
+    "original": "_acceptance_20261013/round3/evidence_snapshots/gb28381_2026__GB28381_2026_TABLE_VALUES.txt",
+    "archive": "docs/governance/device_round3_review_20261013/third_party_snapshot_archive/gb28381_2026__GB28381_2026_TABLE_VALUES.txt",
+    "sha256": "9ff5d6057d57cac703d1d18cf8eaf7ce197d84d6102120b5273553d616065727",
+    "copy_matches": true
+  },
+  {
+    "original": "_acceptance_20261013/round3/evidence_snapshots/gb30253_2024__GB30253_2024_TABLE_VALUES.txt",
+    "archive": "docs/governance/device_round3_review_20261013/third_party_snapshot_archive/gb30253_2024__GB30253_2024_TABLE_VALUES.txt",
+    "sha256": "73ccb7c26167f25cc6b3a3356feea11b064c28b851f0b68062322ad3daa21527",
+    "copy_matches": true
+  },
+  {
+    "original": "_acceptance_20261013/round3/evidence_snapshots/gb30254_2024__GB30254_2024_标准表值.txt",
+    "archive": "docs/governance/device_round3_review_20261013/third_party_snapshot_archive/gb30254_2024__GB30254_2024_标准表值.txt",
+    "sha256": "3bac640eba694d989300e674bcc80e27ea4061ab91f0a3d31430baa003019cfe",
+    "copy_matches": true
+  },
+  {
+    "original": "_acceptance_20261013/round3/evidence_snapshots/gb32030_2022__GB32030_2022_表值映射.txt",
+    "archive": "docs/governance/device_round3_review_20261013/third_party_snapshot_archive/gb32030_2022__GB32030_2022_表值映射.txt",
+    "sha256": "119904529a34f001e9b5f66697a0e9b46d491261cb1125ad0ccff20729d715cd",
+    "copy_matches": true
+  },
+  {
+    "original": "_acceptance_20261013/round3/evidence_snapshots/gb37479_2019__GB37479_2019_TABLE_VALUES.txt",
+    "archive": "docs/governance/device_round3_review_20261013/third_party_snapshot_archive/gb37479_2019__GB37479_2019_TABLE_VALUES.txt",
+    "sha256": "4f17cefe232e559afe423347f81bfda581d6f8d2fa386e1ee3af6430a6b9aa9c",
+    "copy_matches": true
+  },
+  {
+    "original": "_acceptance_20261013/round3/evidence_snapshots/gbt36561_2018__GBT36561_2018_TABLE_VALUES.txt",
+    "archive": "docs/governance/device_round3_review_20261013/third_party_snapshot_archive/gbt36561_2018__GBT36561_2018_TABLE_VALUES.txt",
+    "sha256": "a691c0353d1beace76ff74757fca7b29943e2157c8d75d2f0d1e95335b3e13b1",
+    "copy_matches": true
+  }
+]

@@ -1,0 +1,1056 @@
+{
+  "claims": [
+    {
+      "original_id": "HVAC-R3-B1",
+      "standard": "all",
+      "original_opinion": "| B1 | **BLOCKER** | **\"通过\"口径不成立**：报告在\"没有发现需修改表值、公式或映射事实的新差异\"\"前述类型维护待办现已完成\"的表述下给出 PASS，但上一轮对本组的 MAJOR 中有 15 条**既未修复也未登记**，且报告未如实披露 | §0、§2 表；`FINAL_HVAC_REPORT.md:5,27,62,65` | 把结论改为\"**MAPPING_FACTS_PASS（仅限：转录数值未变、既有登记未被误关、49 项编号/回链/OPEN）**\"，并在报告内单列\"上一轮本组发现的处置状态表\"，逐条标\"已修复/已登记未修复/仍悬空\"；不得以\"类型字段维护完成\"覆盖 MAJOR 未处置 |",
+      "classification": "映射错漏",
+      "conclusion": "部分成立",
+      "impact_and_priority_reason": "P1：新报告收窄完整映射结论；824值一致仍成立，37479漏6.2及21454单位口径确需补；不因OPEN判失败",
+      "source_location": "旧报告§结论/规则及本轮M2/M4；第三方§2有24行历史意见",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+          "sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\ACCEPTANCE_REPORT.md",
+          "sha256": "9e1d9216afb8f72c19aaf3b8733c1e21d561f1c4323937d2ae30838ff4bb2c7f"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\comparison_summary.json",
+          "sha256": "4230980e1f46833c43038edf5cfcf5d6277e2737d8c875f0cf6ecd9354c022fd"
+        }
+      ],
+      "registration": "无新增标准ID；报告勘误",
+      "sol_conclusion_and_comparison": "Sol A5部分成立，一致；原字串零命中不是有效语义检索",
+      "source_opinion_ids": [
+        "HVAC-R3-B1",
+        "ROUND3-A5",
+        "ROUND3-H1"
+      ],
+      "verified_fact_summary": "旧PASS未覆盖外部前轮全部发现；15条全部悬空及全部MAJOR不准确",
+      "original_source_row": "| B1 | **BLOCKER** | **\"通过\"口径不成立**：报告在\"没有发现需修改表值、公式或映射事实的新差异\"\"前述类型维护待办现已完成\"的表述下给出 PASS，但上一轮对本组的 MAJOR 中有 15 条**既未修复也未登记**，且报告未如实披露 | §0、§2 表；`FINAL_HVAC_REPORT.md:5,27,62,65` | 把结论改为\"**MAPPING_FACTS_PASS（仅限：转录数值未变、既有登记未被误关、49 项编号/回链/OPEN）**\"，并在报告内单列\"上一轮本组发现的处置状态表\"，逐条标\"已修复/已登记未修复/仍悬空\"；不得以\"类型字段维护完成\"覆盖 MAJOR 未处置 |",
+      "source_line": 137,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-B2",
+      "standard": "all",
+      "original_opinion": "| B2 | **BLOCKER** | **\"主映射 SHA 未变\"与\"相关缺陷已处理\"自相矛盾**：`baseline_comparison.json` 的 `first_sha256` 对三份主映射等于**当前值**，故\"未变\"只对本轮成立；而 `gb21454:62`（负荷率比值口径）、`gb37479:58`（§5.1 表引用）、`gb19577:69`（I/J 列名）三处缺陷**就写在这批\"未变字节\"里** | `baseline_comparison.json`；`gb21454\\STANDARD_MAPPING.md:62`；`gb37479\\STANDARD_MAPPING.md:58`；`gb19577\\STANDARD_MAPPING.md:69`；`tmp\\cmp2.py` | 在报告中明确\"基线 = 本轮开始时的当前状态\"，并把\"相对上一轮 round-1 基线已变更的 3 份主映射\"列出（`a531b8de→9e58abd1`、`e8bc1379→c63430b5`、`b5068fd7→01345396`）；不得用\"字节未变\"暗示缺陷不存在 |",
+      "classification": "第三方误解或证据不足",
+      "conclusion": "部分成立",
+      "impact_and_priority_reason": "P2：named_baselines.json明确12项旧快照与HVAC54清单；三映射前者变、后者未变；29541不在12范围",
+      "source_location": "12项accepted_revision_manifest；HVAC source_manifest；核心15件SHA",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+          "sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\ACCEPTANCE_REPORT.md",
+          "sha256": "9e1d9216afb8f72c19aaf3b8733c1e21d561f1c4323937d2ae30838ff4bb2c7f"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\comparison_summary.json",
+          "sha256": "4230980e1f46833c43038edf5cfcf5d6277e2737d8c875f0cf6ecd9354c022fd"
+        }
+      ],
+      "registration": "无需标准Issue；报告具名基线",
+      "sol_conclusion_and_comparison": "Sol B2成立；本组同意须具名，但未变断言在限定基线内为真",
+      "source_opinion_ids": [
+        "HVAC-R3-B2",
+        "ROUND3-B2",
+        "ROUND3-H2"
+      ],
+      "verified_fact_summary": "两种首轮基线确不同；不等于哈希自相矛盾",
+      "original_source_row": "| B2 | **BLOCKER** | **\"主映射 SHA 未变\"与\"相关缺陷已处理\"自相矛盾**：`baseline_comparison.json` 的 `first_sha256` 对三份主映射等于**当前值**，故\"未变\"只对本轮成立；而 `gb21454:62`（负荷率比值口径）、`gb37479:58`（§5.1 表引用）、`gb19577:69`（I/J 列名）三处缺陷**就写在这批\"未变字节\"里** | `baseline_comparison.json`；`gb21454\\STANDARD_MAPPING.md:62`；`gb37479\\STANDARD_MAPPING.md:58`；`gb19577\\STANDARD_MAPPING.md:69`；`tmp\\cmp2.py` | 在报告中明确\"基线 = 本轮开始时的当前状态\"，并把\"相对上一轮 round-1 基线已变更的 3 份主映射\"列出（`a531b8de→9e58abd1`、`e8bc1379→c63430b5`、`b5068fd7→01345396`）；不得用\"字节未变\"暗示缺陷不存在 |",
+      "source_line": 138,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-M1",
+      "standard": "19577",
+      "original_opinion": "| M1 | MAJOR | **19577 `COPc` 列名与 `007` 未处置**：工作簿仍把表1/表2 独立 `COPc` 列写作\"附加指标1/3级值\"；映射只留一句\"表2 H列不是COPc\"；`EQP-STD-GB19577-007` 未登记 | `表1!I5/J5`、`表1!J6:J17`、`表2!J6:J10`（实读）；`gb19577_p09.png`；根台账 448–542 行 | 登记 `EQP-STD-GB19577-007`（`OPEN`，注明\"原文该列未声明等级归属\"）；工作簿 `I5/J5` 改为\"独立COPc列/等级归属待007\"，或在映射 §4 明确 `I/J` 对表1 表2 的含义差异（表2 `COPc` 占1级与2级两列） |",
+      "classification": "第三方误解或证据不足",
+      "conclusion": "核心不成立；可读性建议可采纳",
+      "impact_and_priority_reason": "P2：不可改成无等级归属；I6=COPc、J6=4.2等逐行绑定保留语义；可另增多级表头示意，不必重存XLSX",
+      "source_location": "PDF9；表1/2 I5/J5/I6/J6；本目录两张表头放大图",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+          "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+          "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+          "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+        }
+      ],
+      "registration": "既有002仍OPEN；不机械新开007",
+      "sol_conclusion_and_comparison": "Sol A2否定无等级归属，一致；Sol称扁平化必须修转录，本组收窄为可读性建议，无证据证明指标/级别丢失",
+      "source_opinion_ids": [
+        "HVAC-R3-M1",
+        "ROUND3-A2",
+        "ROUND3-H3",
+        "OLD19577-F01"
+      ],
+      "verified_fact_summary": "PDF9表1/2三级表头横跨主季节指标和COPc，J5三级值归属正确",
+      "original_source_row": "| M1 | MAJOR | **19577 `COPc` 列名与 `007` 未处置**：工作簿仍把表1/表2 独立 `COPc` 列写作\"附加指标1/3级值\"；映射只留一句\"表2 H列不是COPc\"；`EQP-STD-GB19577-007` 未登记 | `表1!I5/J5`、`表1!J6:J17`、`表2!J6:J10`（实读）；`gb19577_p09.png`；根台账 448–542 行 | 登记 `EQP-STD-GB19577-007`（`OPEN`，注明\"原文该列未声明等级归属\"）；工作簿 `I5/J5` 改为\"独立COPc列/等级归属待007\"，或在映射 §4 明确 `I/J` 对表1 表2 的含义差异（表2 `COPc` 占1级与2级两列） |",
+      "source_line": 139,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-M2",
+      "standard": "21454",
+      "original_opinion": "| M2 | MAJOR | **21454 负荷率口径未修且未登记**：`STANDARD_MAPPING.md:62` 仍写\"B列是数值百分比\"，工作簿实存比值（`number_format='0%'` 显示 130%）；同文件 `:98` 的 `LF=(LD/100)×…；LD为百分数的数值` 与该行冲突，直接改变 A.9 的 LD 取值。映射 SHA 相对 round-1 已变（说明改过文档）却**恰好漏掉这一格** | 映射 `:62,:98`；`表A.1!B6:B10`=1.3/1/0.81/0.48/0.3；`gb21454_p09.png` | 把 `:62` 改为\"原文为 130%/100%/81%/48%/30%；工作簿以**比值**存储、以 `0%` 显示\"；在 `:98` 同步声明 LD 取\"百分数或其比值\"的**唯一**口径；登记一条（建议 `EQP-STD-GB21454-005`）以免 Stage B 重复除 100 |",
+      "classification": "映射错漏",
+      "conclusion": "成立（单位说明缺口）",
+      "impact_and_priority_reason": "P1：补ratio和percent-number换算契约；原表/公式/XLSX值均不改；此为适配说明错漏而非标准错误",
+      "source_location": "PDF9表A.1/2；PDF14 A.9；表A.1 B6:B10、A.2 B6:B10；映射62/98",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+          "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+          "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+          "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+        }
+      ],
+      "registration": "新增候选LOCAL-HVAC-N01；旧005/007只是建议不抢号",
+      "sol_conclusion_and_comparison": "Sol A3成立，一致",
+      "source_opinion_ids": [
+        "HVAC-R3-M2",
+        "ROUND3-A3",
+        "ROUND3-H4",
+        "OLD21454-8"
+      ],
+      "verified_fact_summary": "B6存1.3、显示130%，公式LD/100要130；映射“数值百分比”易重复除100",
+      "original_source_row": "| M2 | MAJOR | **21454 负荷率口径未修且未登记**：`STANDARD_MAPPING.md:62` 仍写\"B列是数值百分比\"，工作簿实存比值（`number_format='0%'` 显示 130%）；同文件 `:98` 的 `LF=(LD/100)×…；LD为百分数的数值` 与该行冲突，直接改变 A.9 的 LD 取值。映射 SHA 相对 round-1 已变（说明改过文档）却**恰好漏掉这一格** | 映射 `:62,:98`；`表A.1!B6:B10`=1.3/1/0.81/0.48/0.3；`gb21454_p09.png` | 把 `:62` 改为\"原文为 130%/100%/81%/48%/30%；工作簿以**比值**存储、以 `0%` 显示\"；在 `:98` 同步声明 LD 取\"百分数或其比值\"的**唯一**口径；登记一条（建议 `EQP-STD-GB21454-005`）以免 Stage B 重复除 100 |",
+      "source_line": 140,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-M3",
+      "standard": "37479",
+      "original_opinion": "| M3 | MAJOR | **37479 §5.1 表引用缺陷未修且未登记**：映射已如实标为【需确认，请求A】（留痕合格），但根台账 `-001` 只记录\"疑似漏引表2\"，报告未说明该 MAJOR 仍未定案 | 映射 `:56-58`；`gb37479_p04.png`（§5.1 原文亲读）；根台账 878–891 行 | 报告中把 `-001` 列为\"已登记未修复/待 Owner 决定\"，不得并入\"登记闭环通过\"；在 Stage B 前置条件里写明\"全新风机组限定值引用未定前不得用表2 的3级\" |",
+      "classification": "标准原文疑错歧义",
+      "conclusion": "原文疑点成立；未登记断言不成立",
+      "impact_and_priority_reason": "P1：保留Owner，不要求审计者修标准；登记通过可与解释OPEN并存；旧报告已明确说明该限制",
+      "source_location": "PDF4 §5.1及两表题；根001；映射§5",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+          "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+          "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+          "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+        }
+      ],
+      "registration": "EQP-STD-GB37479-001 OPEN 已完整登记",
+      "sol_conclusion_and_comparison": "Sol延伸未定；本组原页确认，否定“未登记”和必须先修正原文才能StageA",
+      "source_opinion_ids": [
+        "HVAC-R3-M3",
+        "ROUND3-H5"
+      ],
+      "verified_fact_summary": "PDF4 §5.1只引表1且涵盖两类；根001及映射已有明确保留",
+      "original_source_row": "| M3 | MAJOR | **37479 §5.1 表引用缺陷未修且未登记**：映射已如实标为【需确认，请求A】（留痕合格），但根台账 `-001` 只记录\"疑似漏引表2\"，报告未说明该 MAJOR 仍未定案 | 映射 `:56-58`；`gb37479_p04.png`（§5.1 原文亲读）；根台账 878–891 行 | 报告中把 `-001` 列为\"已登记未修复/待 Owner 决定\"，不得并入\"登记闭环通过\"；在 Stage B 前置条件里写明\"全新风机组限定值引用未定前不得用表2 的3级\" |",
+      "source_line": 141,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-M4",
+      "standard": "37479",
+      "original_opinion": "| M4 | MAJOR | **37479 §5 遗漏 6.2**：`6.2`（电辅热按 GB 21455）在原文中、也出现在 `evidence\\SOURCE_AND_VERIFICATION.md:37` 的页内清单里，但主映射 §5 未收录 | 映射 §5 全文；`SOURCE_AND_VERIFICATION.md:37` | 在 §5 补\"【标准，6.2/PDF5】采用电辅助加热的产品按 GB 21455 进行试验\"；与 5.2/5.3 分开留痕 |",
+      "classification": "映射错漏",
+      "conclusion": "成立",
+      "impact_and_priority_reason": "P2：补原句/路由；它影响完整符合性证据，不改变66等级阈值；旧本组§规则误称已保留须纠正",
+      "source_location": "PDF5 §6.2；映射§5；SOURCE_AND_VERIFICATION页内清单",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+          "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+          "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+          "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+        }
+      ],
+      "registration": "既有003涵盖外部21455但缺显式路由；N02建议补子项",
+      "sol_conclusion_and_comparison": "Sol延伸待核；现以原页核实",
+      "source_opinion_ids": [
+        "HVAC-R3-M4",
+        "ROUND3-H5"
+      ],
+      "verified_fact_summary": "主映射遗漏原§6.2辅热测试→GB21455",
+      "original_source_row": "| M4 | MAJOR | **37479 §5 遗漏 6.2**：`6.2`（电辅热按 GB 21455）在原文中、也出现在 `evidence\\SOURCE_AND_VERIFICATION.md:37` 的页内清单里，但主映射 §5 未收录 | 映射 §5 全文；`SOURCE_AND_VERIFICATION.md:37` | 在 §5 补\"【标准，6.2/PDF5】采用电辅助加热的产品按 GB 21455 进行试验\"；与 5.2/5.3 分开留痕 |",
+      "source_line": 142,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-M5",
+      "standard": "19577",
+      "original_opinion": "| M5 | MAJOR | **19577 `002` 措辞不准确且未按建议拆分**：台账 `002` 仍称\"表1/2/3/7/8附加指标只在3级表头下\"，与原文（表1 `COPc` 为独立第4列；表2 `COPc` 占1级与2级两列）不符；`002`/`005` 均未拆 | 根台账 464–478、512–526 行；`gb19577_p09.png` | 修正 `002` 措辞或拆为 002-a/b/c；`005` 拆为 005-a/b/c；拆分须保留原请求回链与 `OPEN` |",
+      "classification": "第三方误解或证据不足",
+      "conclusion": "核心不成立；拆分仅管理建议",
+      "impact_and_priority_reason": "P2：002多指标底线/通道/数据中心三个子问题及005外部子问题均已保留；不必换号拆三条",
+      "source_location": "PDF9表1/2；根002/005；工作簿E/F/G与I/J",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+          "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+          "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+          "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+        }
+      ],
+      "registration": "002/005 OPEN；本轮Owner清单分项问题",
+      "sol_conclusion_and_comparison": "Sol A2同意原表三级归属；分拆未定；本组不把拆分当实质缺陷",
+      "source_opinion_ids": [
+        "HVAC-R3-M5"
+      ],
+      "verified_fact_summary": "“附加指标只在三级表头下”指附加列，不是所有COPc列；表2一级二级主COPc不反证",
+      "original_source_row": "| M5 | MAJOR | **19577 `002` 措辞不准确且未按建议拆分**：台账 `002` 仍称\"表1/2/3/7/8附加指标只在3级表头下\"，与原文（表1 `COPc` 为独立第4列；表2 `COPc` 占1级与2级两列）不符；`002`/`005` 均未拆 | 根台账 464–478、512–526 行；`gb19577_p09.png` | 修正 `002` 措辞或拆为 002-a/b/c；`005` 拆为 005-a/b/c；拆分须保留原请求回链与 `OPEN` |",
+      "source_line": 143,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-M6",
+      "standard": "19576",
+      "original_opinion": "| M6 | MAJOR | **19576 来源完整性未处置**：实测提供 PDF 仅 **4 页**，而上一轮记录官方两渠道登记出版 **8 页**；目录内 `SOURCE_EVIDENCE.md:13` 只写\"物理结构 4页\"，**无任何差异登记**；报告也未在\"未核验\"中点出该标准 | `tmp\\render.py`（页数实测 4）；`SOURCE_EVIDENCE.md:13`；上一轮 `reviews\\gb19576_2019_ACCEPTANCE_REVIEW.md` | 在 `SOURCE_EVIDENCE.md` 补一行差异登记（\"官方登记 8 页 vs 本件 4 页；本件逐页清点仅 1 张逻辑表，倾向正文完整，但**官方全文同一性未证实**\"），并登记一条（如 `EQP-STD-GB19576-003`）；不得声称\"来源完整性已核实\" |",
+      "classification": "第三方误解或证据不足",
+      "conclusion": "差异留痕成立；缺页未证",
+      "impact_and_priority_reason": "P2：具体登记8/4证据差异，取官方全文；不宣称官方完整性已确认，也不撤销本PDF39值一致",
+      "source_location": "PDF1～4尤其PDF4结束线/印刷2；旧F-01外部链接",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+          "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+          "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+          "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+        }
+      ],
+      "registration": "N03待来源问题登记，非日期001已充分承载",
+      "sol_conclusion_and_comparison": "Sol延伸待核；本组确认本地4页，8页原站本轮未认证",
+      "source_opinion_ids": [
+        "HVAC-R3-M6",
+        "ROUND3-H6"
+      ],
+      "verified_fact_summary": "本地4页有结束线；旧审计8页来自外部出版目录，不能推出多4页正文",
+      "original_source_row": "| M6 | MAJOR | **19576 来源完整性未处置**：实测提供 PDF 仅 **4 页**，而上一轮记录官方两渠道登记出版 **8 页**；目录内 `SOURCE_EVIDENCE.md:13` 只写\"物理结构 4页\"，**无任何差异登记**；报告也未在\"未核验\"中点出该标准 | `tmp\\render.py`（页数实测 4）；`SOURCE_EVIDENCE.md:13`；上一轮 `reviews\\gb19576_2019_ACCEPTANCE_REVIEW.md` | 在 `SOURCE_EVIDENCE.md` 补一行差异登记（\"官方登记 8 页 vs 本件 4 页；本件逐页清点仅 1 张逻辑表，倾向正文完整，但**官方全文同一性未证实**\"），并登记一条（如 `EQP-STD-GB19576-003`）；不得声称\"来源完整性已核实\" |",
+      "source_line": 144,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-M7",
+      "standard": "19576,37479,21454,19577",
+      "original_opinion": "| M7 | MAJOR | **跨标准边界项全部未登记且报告未提**：`G1`（静压=0 风管机两标准皆不适用）、`O1/O2`（19576 与 37479 同名 SEER/APF 档位阈值不同）、`O4/H6`（19576 机房 AEER vs 19577 EER/ACCOP）、`H5`（静压在不同标准中语义不同）。上一轮明确指出\"根台账完全未登记\"，本轮报告通篇未提 | 边界审计 `:130,149-150,152,168-169`；`reg_audit.py`（\"静压/跨标准/屋顶式/1140\"零命中）；两映射 `:11/:15` | 由总协调统一编号登记（建议联合条目）；至少在 `gb19576`/`gb37479` 两份映射 §2 互相交叉引用并注明\"静压=0 时二者皆不适用，须返回无适用标准业务终态\" |",
+      "classification": "软件解释待Owner",
+      "conclusion": "部分成立",
+      "impact_and_priority_reason": "P1：N06～N10区分无两标准匹配/同名不同设备/静压用途；不能宣布全体系无标准或自建无适用终态",
+      "source_location": "19576 PDF3/4；37479 PDF3/4；21454 PDF3/4/5/11；19577 PDF8/9",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+          "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+          "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+          "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+          "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+          "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+          "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+          "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+          "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+          "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+          "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+          "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+          "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+        }
+      ],
+      "registration": "联合候选未正式登记；既有引用问题不能替代路由决定",
+      "sol_conclusion_and_comparison": "Sol B7证据不足；本组进一步看本组原页，局部事实确认，仍不接受全体系10/6/7总数",
+      "source_opinion_ids": [
+        "HVAC-R3-M7",
+        "ROUND3-B7",
+        "ROUND3-H7"
+      ],
+      "verified_fact_summary": "G1/O1/O2/O4/H5/H6跨标准风险未专门登记，但不是一律标准冲突",
+      "original_source_row": "| M7 | MAJOR | **跨标准边界项全部未登记且报告未提**：`G1`（静压=0 风管机两标准皆不适用）、`O1/O2`（19576 与 37479 同名 SEER/APF 档位阈值不同）、`O4/H6`（19576 机房 AEER vs 19577 EER/ACCOP）、`H5`（静压在不同标准中语义不同）。上一轮明确指出\"根台账完全未登记\"，本轮报告通篇未提 | 边界审计 `:130,149-150,152,168-169`；`reg_audit.py`（\"静压/跨标准/屋顶式/1140\"零命中）；两映射 `:11/:15` | 由总协调统一编号登记（建议联合条目）；至少在 `gb19576`/`gb37479` 两份映射 §2 互相交叉引用并注明\"静压=0 时二者皆不适用，须返回无适用标准业务终态\" |",
+      "source_line": 145,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-M8",
+      "standard": "19576,37479",
+      "original_opinion": "| M8 | MAJOR | **19576 与 37479 的适用范围判据互相矛盾**（我的独立发现）：19576 §1 明示\"室内机静压**为 0 Pa**（表压力）的单元式空气调节机\"，37479 §1 要求\"室内机静压**大于 0 Pa**\"；而 19576 §2 只写\"专用类型的静压适用口径若实际出现非 0 Pa 设备，应结合引用产品标准补证\"。同一\"风管送风式+静压0\"机型被 19576 的适用范围**文字包含**、又被其 §2 排除项**明文排除**（两处并存） | `gb19576\\STANDARD_MAPPING.md:13,15`；`gb19576_p03.png`（原文两句亲读）；边界审计 R30/R32 | 在映射 §2 显式写出\"静压=0 的**风管送风式**机组被同页排除项排除，不得因 §1 的'静压为0'语句而纳入\"；与 `G1` 一并登记 |",
+      "classification": "第三方误解或证据不足",
+      "conclusion": "矛盾定性不成立",
+      "impact_and_priority_reason": "P2：确认G1边界需身份判定；不得因为0Pa包含字样忽视明确排除；无必要制造新的标准笔误",
+      "source_location": "19576 PDF3 §1完整两段；37479 PDF3 §1",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+          "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+          "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+          "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+          "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+          "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+          "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+        }
+      ],
+      "registration": "与N06同候选，不重复开问题",
+      "sol_conclusion_and_comparison": "Sol延伸待核；本组原页否定“互相矛盾”",
+      "source_opinion_ids": [
+        "HVAC-R3-M8",
+        "ROUND3-H8"
+      ],
+      "verified_fact_summary": "静压0一般范围句加风管明确排除是正常包含/排除关系，不是同一规则自相矛盾",
+      "original_source_row": "| M8 | MAJOR | **19576 与 37479 的适用范围判据互相矛盾**（我的独立发现）：19576 §1 明示\"室内机静压**为 0 Pa**（表压力）的单元式空气调节机\"，37479 §1 要求\"室内机静压**大于 0 Pa**\"；而 19576 §2 只写\"专用类型的静压适用口径若实际出现非 0 Pa 设备，应结合引用产品标准补证\"。同一\"风管送风式+静压0\"机型被 19576 的适用范围**文字包含**、又被其 §2 排除项**明文排除**（两处并存） | `gb19576\\STANDARD_MAPPING.md:13,15`；`gb19576_p03.png`（原文两句亲读）；边界审计 R30/R32 | 在映射 §2 显式写出\"静压=0 的**风管送风式**机组被同页排除项排除，不得因 §1 的'静压为0'语句而纳入\"；与 `G1` 一并登记 |",
+      "source_line": 146,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-m1",
+      "standard": "19576,37479",
+      "original_opinion": "| m1 | MINOR | **类型字段残留污染未被 8 处维护覆盖**：`GB19576-001/002` 的\"问题类型\"含\"GB 19576—2019；\"前缀与\"（元数据差异）\"；`GB37479-001/003` 含\"（由协调确定正式类别）\"。`REGISTER_TYPE_FIX_REQUEST.md` 只处理了 8 处 | §3 表；根台账 854,869,884,914 行 | 追加一轮同类维护（仅改类型字段，保留定位信息到\"标准原文事实/定位\"），并在报告中说明\"8 处\"只是第一轮批量 |",
+      "classification": "映射错漏",
+      "conclusion": "成立",
+      "impact_and_priority_reason": "P2：清理类型字段即可，不影响20编号/OPEN，不升级业务门禁",
+      "source_location": "根001/002(19576)、001/003(37479)",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+          "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+          "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+          "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+          "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+          "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+          "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+        }
+      ],
+      "registration": "原ID不变；非标准解释",
+      "sol_conclusion_and_comparison": "Sol B5成立，一致",
+      "source_opinion_ids": [
+        "HVAC-R3-m1",
+        "ROUND3-B5"
+      ],
+      "verified_fact_summary": "四类型字段混描述元数据",
+      "original_source_row": "| m1 | MINOR | **类型字段残留污染未被 8 处维护覆盖**：`GB19576-001/002` 的\"问题类型\"含\"GB 19576—2019；\"前缀与\"（元数据差异）\"；`GB37479-001/003` 含\"（由协调确定正式类别）\"。`REGISTER_TYPE_FIX_REQUEST.md` 只处理了 8 处 | §3 表；根台账 854,869,884,914 行 | 追加一轮同类维护（仅改类型字段，保留定位信息到\"标准原文事实/定位\"），并在报告中说明\"8 处\"只是第一轮批量 |",
+      "source_line": 147,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-m2",
+      "standard": "all",
+      "original_opinion": "| m2 | MINOR | **同一报告出现两个\"末次根 SHA\"**：§稳定性写 `4989190f…`（修复前），末段写 `670f9644…`（修复后）；`root_scope_stability.json.end_sha256` 也是 `4989190f…` | `FINAL_HVAC_REPORT.md:39,65`；`root_scope_stability.json:4` | 把两个 SHA 分别标注\"类型维护**前**快照 SHA / 类型维护**后**终值 SHA\"，避免读者误以为根台账在末次复验后又变 |",
+      "classification": "映射错漏",
+      "conclusion": "成立（时点标识建议）",
+      "impact_and_priority_reason": "P2：明确4989190f为补type前，670f9644为补type后；旧快照有效不应覆盖",
+      "source_location": "FINAL_HVAC_REPORT稳定性段/末尾；root_scope_stability",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+          "sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\ACCEPTANCE_REPORT.md",
+          "sha256": "9e1d9216afb8f72c19aaf3b8733c1e21d561f1c4323937d2ae30838ff4bb2c7f"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\comparison_summary.json",
+          "sha256": "4230980e1f46833c43038edf5cfcf5d6277e2737d8c875f0cf6ecd9354c022fd"
+        }
+      ],
+      "registration": "无需Issue；文档时点澄清",
+      "sol_conclusion_and_comparison": "Sol B2相关，一致",
+      "source_opinion_ids": [
+        "HVAC-R3-m2"
+      ],
+      "verified_fact_summary": "旧报告两处末次根SHA对应维护前后",
+      "original_source_row": "| m2 | MINOR | **同一报告出现两个\"末次根 SHA\"**：§稳定性写 `4989190f…`（修复前），末段写 `670f9644…`（修复后）；`root_scope_stability.json.end_sha256` 也是 `4989190f…` | `FINAL_HVAC_REPORT.md:39,65`；`root_scope_stability.json:4` | 把两个 SHA 分别标注\"类型维护**前**快照 SHA / 类型维护**后**终值 SHA\"，避免读者误以为根台账在末次复验后又变 |",
+      "source_line": 148,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-m3",
+      "standard": "19577",
+      "original_opinion": "| m3 | MINOR | **`issue_links_check.json` 中 `EQP-STD-GB19577-006` 的块 SHA 不可复现**：我按标题边界抽取+首尾换行归一并 SHA-256，`001~005` 5 条与文件值**逐位相符**，但 `006` 得 `4a4f30deb2a7…`、文件记 `0d96c083ba59…`（current 与 prior 两值同）。**结论（该块未变）仍成立**——我另行逐字比对 current 与 `STANDARD_ISSUES_REGISTER_snapshot.txt`，该块完全相同 | `issue_links_check.json`；`tmp\\final_hvac\\block_sha2.py`；`brute2.py` | 统一块抽取算法（如\"到下一个 `### ` 或 `## ` 为止 + `strip('\\n')`\"）并重算 006；或直接以\"逐字比对相同\"替代表述 |",
+      "classification": "第三方误解或证据不足",
+      "conclusion": "不成立",
+      "impact_and_priority_reason": "P2：本轮复算006得到0d96c083ba59f18d2ec9fbc2013a5bbd74c5cc32c45ab618f75c7973ef55e9b8，与原相同；第三方算法吸收后续##",
+      "source_location": "本目录collect.py/root_blocks.json；旧diff_and_links.py",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+          "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+          "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+          "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+        }
+      ],
+      "registration": "不改Issue，补算法说明即可",
+      "sol_conclusion_and_comparison": "Sol未逐项核；本组可机械反证",
+      "source_opinion_ids": [
+        "HVAC-R3-m3"
+      ],
+      "verified_fact_summary": "正确块终止条件到下一个1～3级标题；006后接##章节不是###",
+      "original_source_row": "| m3 | MINOR | **`issue_links_check.json` 中 `EQP-STD-GB19577-006` 的块 SHA 不可复现**：我按标题边界抽取+首尾换行归一并 SHA-256，`001~005` 5 条与文件值**逐位相符**，但 `006` 得 `4a4f30deb2a7…`、文件记 `0d96c083ba59…`（current 与 prior 两值同）。**结论（该块未变）仍成立**——我另行逐字比对 current 与 `STANDARD_ISSUES_REGISTER_snapshot.txt`，该块完全相同 | `issue_links_check.json`；`tmp\\final_hvac\\block_sha2.py`；`brute2.py` | 统一块抽取算法（如\"到下一个 `### ` 或 `## ` 为止 + `strip('\\n')`\"）并重算 006；或直接以\"逐字比对相同\"替代表述 |",
+      "source_line": 149,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-m4",
+      "standard": "21454",
+      "original_opinion": "| m4 | MINOR | **`442` 与源格 `376` 的口径仍未区分**：`gb21454\\evidence\\VERIFICATION.md:68` 仍写\"共440个数据区域格（含条件、源位文字）加2个总计，442/442 MATCH\"，映射 §7 也未区分 | `VERIFICATION.md:68,77`；映射 `:134` | 在 `VERIFICATION.md` 与映射 §7 各加一句\"442 = 含非源列的工作簿回读格数；原表源格 = 376，两者不可互替\" |",
+      "classification": "第三方误解或证据不足",
+      "conclusion": "部分成立",
+      "impact_and_priority_reason": "P2：建议明确并列计数，不能说442数值造假；本组336是另一个指定坐标集合，均不互加",
+      "source_location": "VERIFICATION原句“440个数据区域格（含条件、源位文字）加2个总计”；comparison_summary",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+          "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+          "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+          "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+        }
+      ],
+      "registration": "无需标准Issue；报告覆盖说明",
+      "sol_conclusion_and_comparison": "Sol延伸待核；本组认可透明计数建议，否定未经说明的全数错误",
+      "source_opinion_ids": [
+        "HVAC-R3-m4"
+      ],
+      "verified_fact_summary": "442回读格与376源格不是同一集合；原VERIFICATION已明写含条件/源位文字",
+      "original_source_row": "| m4 | MINOR | **`442` 与源格 `376` 的口径仍未区分**：`gb21454\\evidence\\VERIFICATION.md:68` 仍写\"共440个数据区域格（含条件、源位文字）加2个总计，442/442 MATCH\"，映射 §7 也未区分 | `VERIFICATION.md:68,77`；映射 `:134` | 在 `VERIFICATION.md` 与映射 §7 各加一句\"442 = 含非源列的工作簿回读格数；原表源格 = 376，两者不可互替\" |",
+      "source_line": 150,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-m5",
+      "standard": "21454",
+      "original_opinion": "| m5 | MINOR | **PDF13/14 印刷页口径未统一**：映射 `:91-98` 公式表仍写\"印刷11/PDF13\"（只有 A.9 行写\"末页无印刷页码/PDF14\"），而 `VERIFICATION.md:45` 已澄清\"未见印刷页码，顺序对应11、严格定位用PDF13\" | 映射 `:91,:98`；`VERIFICATION.md:45` | 统一为\"PDF13（未印页码，顺序第11页）/PDF14（末页无页码）\" |",
+      "classification": "映射错漏",
+      "conclusion": "成立",
+      "impact_and_priority_reason": "P2：统一物理页13（顺序第11页、未印）；公式转写不受影响",
+      "source_location": "本轮重看PDF13/14整页；映射§3/§5.2；VERIFICATION已写顺序",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+          "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+          "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+          "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+        }
+      ],
+      "registration": "新定位维护候选；不需Owner判公式",
+      "sol_conclusion_and_comparison": "Sol延伸待核，本组确认",
+      "source_opinion_ids": [
+        "HVAC-R3-m5"
+      ],
+      "verified_fact_summary": "PDF13/14无可见印刷页码，映射PDF13写印刷11",
+      "original_source_row": "| m5 | MINOR | **PDF13/14 印刷页口径未统一**：映射 `:91-98` 公式表仍写\"印刷11/PDF13\"（只有 A.9 行写\"末页无印刷页码/PDF14\"），而 `VERIFICATION.md:45` 已澄清\"未见印刷页码，顺序对应11、严格定位用PDF13\" | 映射 `:91,:98`；`VERIFICATION.md:45` | 统一为\"PDF13（未印页码，顺序第11页）/PDF14（末页无页码）\" |",
+      "source_line": 151,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-m6",
+      "standard": "21454",
+      "original_opinion": "| m6 | MINOR | **21454 表注与实物不符未修**：`表A.1!A13`/`表A.2!A13` 仍写\"项目类别…此处展开保留关联\"，而\"项目\"列未保留；`表4!G` 类别列来源仍未在 `表4` 表注或映射 §4 登记 | `tmp\\wb_totals.py`（实读 A13、G5）；映射 `:61` | 二选一：补一列\"项目\"或改表注为\"项目列未保留\"；在 `表4` 表注补\"G 列来源=表4 表注第2行\" |",
+      "classification": "映射错漏",
+      "conclusion": "部分成立",
+      "impact_and_priority_reason": "P2：应修说明准确性并标G为表注派生；不是漏掉户用/工商业整个分支，不强制添加重复列",
+      "source_location": "PDF9表A.1/2；XLSX A2/A13、表4 G5:G7/A10；PDF5表4注",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+          "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+          "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+          "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+        }
+      ],
+      "registration": "文档表示维护候选；无新标准疑问",
+      "sol_conclusion_and_comparison": "Sol延伸待核；本组实读确认部分",
+      "source_opinion_ids": [
+        "HVAC-R3-m6"
+      ],
+      "verified_fact_summary": "项目列未展开到数据区，A13称展开；但类别在A2表题和映射已保留；G列来源是PDF5表注",
+      "original_source_row": "| m6 | MINOR | **21454 表注与实物不符未修**：`表A.1!A13`/`表A.2!A13` 仍写\"项目类别…此处展开保留关联\"，而\"项目\"列未保留；`表4!G` 类别列来源仍未在 `表4` 表注或映射 §4 登记 | `tmp\\wb_totals.py`（实读 A13、G5）；映射 `:61` | 二选一：补一列\"项目\"或改表注为\"项目列未保留\"；在 `表4` 表注补\"G 列来源=表4 表注第2行\" |",
+      "source_line": 152,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-m7",
+      "standard": "21454,19576",
+      "original_opinion": "| m7 | MINOR | **受验目录改写仍标 `A.1`**：`gb21454\\STANDARD_MAPPING.md:3` 写\"修订 A.1\"，但该文件相对 round-1 基线已变更（`b5068fd7→01345396`）；`gb37479`（`A.2`）已按上一轮建议另起修订号，21454/19576 未起 | 映射 `:3`；`tmp\\cmp2.py`；上一轮 `gb21454_2021_ACCEPTANCE_REVIEW.md:269` | 对已产生独立验收证据的整理稿，再改文本时另起修订号（A.1→A.2）并在 `ACCEPTANCE_RESPONSE.md` 记录变更点 |",
+      "classification": "映射错漏",
+      "conclusion": "成立（版本标记建议）",
+      "impact_and_priority_reason": "P2：建议后续升修订号，不能说现SHA无法识别或数字已变",
+      "source_location": "named_baselines.json；各ACCEPTANCE_RESPONSE/修订字段",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+          "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+          "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+          "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+          "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+          "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+          "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+        }
+      ],
+      "registration": "无需标准Issue；历史不覆盖",
+      "sol_conclusion_and_comparison": "Sol B2相关一致",
+      "source_opinion_ids": [
+        "HVAC-R3-m7"
+      ],
+      "verified_fact_summary": "三映射相对12项快照改变；21454仍A.1，响应另有SHA留痕",
+      "original_source_row": "| m7 | MINOR | **受验目录改写仍标 `A.1`**：`gb21454\\STANDARD_MAPPING.md:3` 写\"修订 A.1\"，但该文件相对 round-1 基线已变更（`b5068fd7→01345396`）；`gb37479`（`A.2`）已按上一轮建议另起修订号，21454/19576 未起 | 映射 `:3`；`tmp\\cmp2.py`；上一轮 `gb21454_2021_ACCEPTANCE_REVIEW.md:269` | 对已产生独立验收证据的整理稿，再改文本时另起修订号（A.1→A.2）并在 `ACCEPTANCE_RESPONSE.md` 记录变更点 |",
+      "source_line": 153,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-m8",
+      "standard": "19576",
+      "original_opinion": "| m8 | MINOR | **19576 §2 仍用自造简称\"普通\"**：`:17` 已删去用于水冷的\"普通\"，但 `:19` 仍写\"普通风冷/水冷单元机\"；原文只有\"风冷式单元式空调机/水冷式单元式空调机\" | 映射 `:17,:19`；`gb19576_p03/p04.png` | 统一去掉\"普通\"二字，或明确标注为整理用语而非标准用语 |",
+      "classification": "映射错漏",
+      "conclusion": "成立（整理用语标记）",
+      "impact_and_priority_reason": "P2：标整理用语即可，不影响阈值；R3自称某处已删普通但当前仍含，应以当前全文为准",
+      "source_location": "PDF3/4表1；映射§2第17/19行",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+          "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+          "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+          "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+        }
+      ],
+      "registration": "文档维护不新批范围",
+      "sol_conclusion_and_comparison": "Sol未逐项核",
+      "source_opinion_ids": [
+        "HVAC-R3-m8"
+      ],
+      "verified_fact_summary": "原文无普通二字；当前映射§2作为区分专用分支的简称",
+      "original_source_row": "| m8 | MINOR | **19576 §2 仍用自造简称\"普通\"**：`:17` 已删去用于水冷的\"普通\"，但 `:19` 仍写\"普通风冷/水冷单元机\"；原文只有\"风冷式单元式空调机/水冷式单元式空调机\" | 映射 `:17,:19`；`gb19576_p03/p04.png` | 统一去掉\"普通\"二字，或明确标注为整理用语而非标准用语 |",
+      "source_line": 154,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-m9",
+      "standard": "29541",
+      "original_opinion": "| m9 | MINOR | **本组报告未交代 29541 不在上一轮 12 项内的证据归属**：上一轮的 `accepted_revision_manifest.json`（round-1 基线）与 `hvac\\source_manifest.json` 均**不含 29541**；边界审计标题为\"12 项\"，其正文对 29541 零命中。故上一轮对 29541 的\"独立证据\"来源需单独说明 | `accepted_revision_manifest.json`（无 29541 键）；`CROSS_STANDARD_BOUNDARY_AUDIT.md`（`29541` 0 命中）；`hvac\\source_manifest.json` 含 29541 但那是执行方自建清单 | 在报告\"证据复用\"段写明 29541 的 47/23/24/824 证据来自哪个会话与哪份清单，避免\"复用首轮证据\"被读成\"来自上一轮 12 项验收\" |",
+      "classification": "第三方误解或证据不足",
+      "conclusion": "部分成立（来源说明）；排除HVAC清单断言不成立",
+      "impact_and_priority_reason": "P2：本组独立full验47页/23表包括29541，另有专项原审计；不是冒用12项证据。R3一行自称不含又承认含矛盾",
+      "source_location": "本组source_manifest、ACCEPTANCE_REPORT、independent_compare.py；29541专项报告",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+          "sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\STANDARD_MAPPING.md",
+          "sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\data\\GB29541_2013_标准表值.xlsx",
+          "sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54"
+        }
+      ],
+      "registration": "既有001～005不变；说明不同审计归属",
+      "sol_conclusion_and_comparison": "Sol未逐项核；本组直接机器清单反证",
+      "source_opinion_ids": [
+        "HVAC-R3-m9"
+      ],
+      "verified_fact_summary": "12项确未包括29541；HVAC54清单明确含其PDF/映射/XLSX",
+      "original_source_row": "| m9 | MINOR | **本组报告未交代 29541 不在上一轮 12 项内的证据归属**：上一轮的 `accepted_revision_manifest.json`（round-1 基线）与 `hvac\\source_manifest.json` 均**不含 29541**；边界审计标题为\"12 项\"，其正文对 29541 零命中。故上一轮对 29541 的\"独立证据\"来源需单独说明 | `accepted_revision_manifest.json`（无 29541 键）；`CROSS_STANDARD_BOUNDARY_AUDIT.md`（`29541` 0 命中）；`hvac\\source_manifest.json` 含 29541 但那是执行方自建清单 | 在报告\"证据复用\"段写明 29541 的 47/23/24/824 证据来自哪个会话与哪份清单，避免\"复用首轮证据\"被读成\"来自上一轮 12 项验收\" |",
+      "source_line": 155,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-i1",
+      "standard": "all",
+      "original_opinion": "| i1 | INFO | 824 位置 = `hvac\\comparison_summary.json` 各分项求和（56+39+75+376+288 = 824），**我独立求和一致**；但该数**未拆分为本组 5 项各自子计数** | `hvac\\comparison_summary.json`；`FINAL_HVAC_REPORT.md:9` | 报告可附一句拆分（29541 56 / 19576 39 / 37479 75 / 21454 376 / 19577 278 及其分表） |",
+      "classification": "第三方误解或证据不足",
+      "conclusion": "第三方拆分错误",
+      "impact_and_priority_reason": "P2：总数824正确；本组旧报告已明确21454=336/19577=318；以CSV/summary真实坐标计数",
+      "source_location": "comparison_summary.json及independent_cell_comparison.csv",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+          "sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\ACCEPTANCE_REPORT.md",
+          "sha256": "9e1d9216afb8f72c19aaf3b8733c1e21d561f1c4323937d2ae30838ff4bb2c7f"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\comparison_summary.json",
+          "sha256": "4230980e1f46833c43038edf5cfcf5d6277e2737d8c875f0cf6ecd9354c022fd"
+        }
+      ],
+      "registration": "无需Issue；第三方计数勘误",
+      "sol_conclusion_and_comparison": "Sol未逐项核",
+      "source_opinion_ids": [
+        "HVAC-R3-i1"
+      ],
+      "verified_fact_summary": "实际56+39+75+336+318=824；R3正文56+39+75+376+288=834，建议278也不是实际集合",
+      "original_source_row": "| i1 | INFO | 824 位置 = `hvac\\comparison_summary.json` 各分项求和（56+39+75+376+288 = 824），**我独立求和一致**；但该数**未拆分为本组 5 项各自子计数** | `hvac\\comparison_summary.json`；`FINAL_HVAC_REPORT.md:9` | 报告可附一句拆分（29541 56 / 19576 39 / 37479 75 / 21454 376 / 19577 278 及其分表） |",
+      "source_line": 156,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-i2",
+      "standard": "all",
+      "original_opinion": "| i2 | INFO | 台账\"49 项\"以外的历史条目数：报告/汇总写\"历史 13 条\"（6+6+1）已过时——现为 **24**（含 `GB28381-007~012`、`GB19762-002`、`GB20052-009`） | `reg_audit.py`；`ROUND3_PROBLEM_LIST.md:92-96`（兄弟文档口径） | 统一以\"当前 73 个稳定编号\"表述，并说明 28381-001~006 已属 2026 版 |",
+      "classification": "第三方误解或证据不足",
+      "conclusion": "部分成立；第三方集合列错",
+      "impact_and_priority_reason": "P2：另24为19577六、28381-001～006六、32030一、19762二、20052九；15标准既有其他项13不含泵变压器",
+      "source_location": "根73标题与issue_registration_audit.csv49集合差",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+          "sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\ACCEPTANCE_REPORT.md",
+          "sha256": "9e1d9216afb8f72c19aaf3b8733c1e21d561f1c4323937d2ae30838ff4bb2c7f"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\comparison_summary.json",
+          "sha256": "4230980e1f46833c43038edf5cfcf5d6277e2737d8c875f0cf6ecd9354c022fd"
+        }
+      ],
+      "registration": "无需Issue；集合精确说明",
+      "sol_conclusion_and_comparison": "Sol B3接受73/49/24，一致；本组纠正第三方所列历史名单",
+      "source_opinion_ids": [
+        "HVAC-R3-i2",
+        "ROUND3-B3"
+      ],
+      "verified_fact_summary": "总73=49+24正确，但其历史名单含28381-007～012与本轮49重叠，列表相加30",
+      "original_source_row": "| i2 | INFO | 台账\"49 项\"以外的历史条目数：报告/汇总写\"历史 13 条\"（6+6+1）已过时——现为 **24**（含 `GB28381-007~012`、`GB19762-002`、`GB20052-009`） | `reg_audit.py`；`ROUND3_PROBLEM_LIST.md:92-96`（兄弟文档口径） | 统一以\"当前 73 个稳定编号\"表述，并说明 28381-001~006 已属 2026 版 |",
+      "source_line": 157,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-i3",
+      "standard": "all",
+      "original_opinion": "| i3 | INFO | `final_stability.json` 含 **56** 条（54 受验 + 根台账 + `platform-lock.json`），其中根台账条目 `stable=false`（预期行为）；报告 §稳定性写\"54受验文件及锁文件稳定\"，未点明该条 `false` | `final_stability.json`；`FINAL_HVAC_REPORT.md:39` | 补一句\"根台账条目按设计记为 `stable=false`，其余 55 条稳定\" |",
+      "classification": "第三方误解或证据不足",
+      "conclusion": "既有报告已披露；可更清楚",
+      "impact_and_priority_reason": "P2：旧报告明确说根因并发变化未声称全程稳定；本轮再列时点即可",
+      "source_location": "旧final_stability.json 56项；旧报告§当前环境",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+          "sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\ACCEPTANCE_REPORT.md",
+          "sha256": "9e1d9216afb8f72c19aaf3b8733c1e21d561f1c4323937d2ae30838ff4bb2c7f"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\comparison_summary.json",
+          "sha256": "4230980e1f46833c43038edf5cfcf5d6277e2737d8c875f0cf6ecd9354c022fd"
+        }
+      ],
+      "registration": "无需Issue",
+      "sol_conclusion_and_comparison": "Sol未逐项核",
+      "source_opinion_ids": [
+        "HVAC-R3-i3"
+      ],
+      "verified_fact_summary": "root false因并发修改；54源和锁稳定",
+      "original_source_row": "| i3 | INFO | `final_stability.json` 含 **56** 条（54 受验 + 根台账 + `platform-lock.json`），其中根台账条目 `stable=false`（预期行为）；报告 §稳定性写\"54受验文件及锁文件稳定\"，未点明该条 `false` | `final_stability.json`；`FINAL_HVAC_REPORT.md:39` | 补一句\"根台账条目按设计记为 `stable=false`，其余 55 条稳定\" |",
+      "source_line": 158,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-i4",
+      "standard": "19577",
+      "original_opinion": "| i4 | INFO | 建议把\"19577 `002` 措辞\"与\"19577 `007`\"合并到同一次登记批次处理，避免 Stage B 再次按\"附加指标只在3级\"实现组合判级 | §5 M1/M5 | 同批登记 + 修正 `002` 措辞 |",
+      "classification": "第三方误解或证据不足",
+      "conclusion": "不采纳错误前提",
+      "impact_and_priority_reason": "P2：保留002，可增加表头示意；不新增无等级归属007",
+      "source_location": "PDF9两表头",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+          "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+          "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+          "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+        }
+      ],
+      "registration": "002 OPEN",
+      "sol_conclusion_and_comparison": "Sol A2同意不机械新开007",
+      "source_opinion_ids": [
+        "HVAC-R3-i4"
+      ],
+      "verified_fact_summary": "建议合并M1/M5维护建立在无等级归属误读",
+      "original_source_row": "| i4 | INFO | 建议把\"19577 `002` 措辞\"与\"19577 `007`\"合并到同一次登记批次处理，避免 Stage B 再次按\"附加指标只在3级\"实现组合判级 | §5 M1/M5 | 同批登记 + 修正 `002` 措辞 |",
+      "source_line": 159,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    },
+    {
+      "original_id": "HVAC-R3-i5",
+      "standard": "19576",
+      "original_opinion": "| i5 | INFO | 19576 原表 `（APF，Wh/Wh））` 的**多余右括号**我仅确认 p03 的 APF 行；p04 的 `(IPLV,W/W)`、`(AEER,W/W)` 目读为单括号。上一轮\"2 处\"的计数需复核 | `gb19576_p03.png`、`gb19576_p04.png` | 若确为 1 处，应在台账/映射中改写为\"1 处\"；若为 2 处，请给出第二处的放大图 |",
+      "classification": "标准原文疑错歧义",
+      "conclusion": "两处均成立",
+      "impact_and_priority_reason": "P2：本轮4倍渲染AEER确认，R3仅一处疑虑解除；两处疑似排版错误提交Owner，不自关",
+      "source_location": "19576_AEER_parenthesis.png；原PDF3/4",
+      "current_artifacts": [
+        {
+          "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+          "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+          "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+        },
+        {
+          "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+          "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+        }
+      ],
+      "registration": "LOCAL-HVAC-N04待登记",
+      "sol_conclusion_and_comparison": "Sol延伸未核，本组补原页放大证据",
+      "source_opinion_ids": [
+        "HVAC-R3-i5"
+      ],
+      "verified_fact_summary": "PDF3 APF与PDF4机房AEER各双右括号",
+      "original_source_row": "| i5 | INFO | 19576 原表 `（APF，Wh/Wh））` 的**多余右括号**我仅确认 p03 的 APF 行；p04 的 `(IPLV,W/W)`、`(AEER,W/W)` 目读为单括号。上一轮\"2 处\"的计数需复核 | `gb19576_p03.png`、`gb19576_p04.png` | 若确为 1 处，应在台账/映射中改写为\"1 处\"；若为 2 处，请给出第二处的放大图 |",
+      "source_line": 160,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+      "source_sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+    }
+  ],
+  "history_crosswalk": [
+    {
+      "original_id": "HVAC-R3-H01",
+      "verbatim_opinion_row": "| 1 | **gb19577 表1/表2 独立第4列 `COPc` 被放进 `I='附加指标1'`+`J='3级值'`**，原文该列未声明等级归属；建议 `EQP-STD-GB19577-007` | MAJOR | **仍悬空**：工作簿 `表1!I5='附加指标1'/J5='3级值'`、`表1!J6:J17`、`表2!J6:J10` 原样；`STANDARD_MAPPING.md:69` 只写\"**表2 H列不是COPc**\"；根台账无 007 | 实读 xlsx（`tmp\\wb19577.py`）；根台账 448–542 行 |",
+      "review_reference": "M1",
+      "source_line": 55,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H02",
+      "verbatim_opinion_row": "| 2 | gb19577 新增 `008`（表1 D17 与表4 D6:D8 两类 `—` 语义未区分）、`009`（表A.2 合计 `1 007` 千分空格）、`010`（表4 无独立表题行） | MINOR | **仍悬空**（三条均零登记） | `reg_audit.py`；工作簿 `表1!D17='—'`、`表4!D6:D8='—'`、`表A.2!C21=1007`、`表4` 无表题行（`tmp\\wb_totals.py`）。注：`1 007` 的原文千分空格我**未复现**（未渲染 PDF14），采信上一轮 |",
+      "review_reference": "EX19577",
+      "source_line": 56,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H03",
+      "verbatim_opinion_row": "| 3 | gb19577 `002` 措辞不准确、`002`/`005` 建议各拆 3 条；`001` 补记表5 表头合并格、`006` 待官方登记 | MINOR | **已登记未修复**：`EQP-STD-GB19577-002` 文字未改、未拆分；台账 `002` 仍称\"附加指标只在3级表头下\" | 根台账 464–478 行；`gb19577_p09.png`（表1/表2 列结构原页目读） |",
+      "review_reference": "M5",
+      "source_line": 57,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H04",
+      "verbatim_opinion_row": "| 4 | **gb37479 §5.1 只写\"表1 中能效等级的 3 级\"，而表1 标题只含风管送风式空调（热泵）**⇒ 全新风机组无可唯一确定的限定值 | MAJOR | **已登记未修复**：映射 `:58` 改为【需确认，请求A】并明确\"不得直接称表2的3级已被5.1正确引用\"（留痕到位）；`EQP-STD-GB37479-001` `OPEN`；**原缺陷仍在**（我渲染 PDF4 亲读\"表 1 中能效等级的 3 级所对应的指标值\"） | `gb37479_p04.png`；映射 `:56-58`；根台账 878–891 行 |",
+      "review_reference": "M3",
+      "source_line": 58,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H05",
+      "verbatim_opinion_row": "| 5 | gb37479 映射 §5 **遗漏 6.2**（电辅热按 GB 21455） | MINOR | **仍悬空**：现行 §5 仅覆盖 5.4a、5.4b/d、6.1a、6.1b、6.1/6.3、无编号公式与判级；`6.2` 在 `95:57` 号段内但未单列 | 映射全文；`ISSUE_REGISTRATION_REQUEST.md` 请求 B 未含 6.2 |",
+      "review_reference": "M4",
+      "source_line": 59,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H06",
+      "verbatim_opinion_row": "| 6 | gb37479 请求 A/B/C 未登记 | MAJOR | **已修复**：`EQP-STD-GB37479-001/002/003` = 请求A/请求C/请求B，全 `OPEN`，本地回链表一致 | `ISSUE_REGISTRATION_REQUEST.md:59-63`；根台账 `882,897,912` 行 |",
+      "review_reference": "REGISTER37479",
+      "source_line": 60,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H07",
+      "verbatim_opinion_row": "| 7 | **gb19576 出版登记 8 页 vs 提供 PDF 仅 4 页**（来源完整性未证实） | MAJOR | **仍悬空**：实测 PDF 页数 = **4**；`SOURCE_EVIDENCE.md:13` 只写\"物理结构 4页\"，**未记录**与官方登记的 8 页差异；映射/`VERIFICATION.md`/`ACCEPTANCE_RESPONSE.md` 均无该差异的登记 | `tmp\\render.py`（页数实测 4）；`SOURCE_EVIDENCE.md:13` |",
+      "review_reference": "M6",
+      "source_line": 61,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H08",
+      "verbatim_opinion_row": "| 8 | gb19576 原表 2 处多余右括号（`（APF，Wh/Wh））`、`（AEER，W/W））`） | MINOR | **仍悬空**（未登记、未在映射留痕） | `gb19576_p03.png`（原页可见 APF 行双右括号）。注：p04 的 `(IPLV,W/W)`/`(AEER,W/W)` 目读为单括号，与上一轮\"2 处\"的表述不完全一致，我按\"p03 至少 1 处确认\"处理 |",
+      "review_reference": "i5",
+      "source_line": 62,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H09",
+      "verbatim_opinion_row": "| 9 | gb19576 §2 自造简称\"普通风冷/水冷单元机\" | MINOR | **部分修复**：`:17` 现写\"普通风冷单元机…普通水冷单元机\"，去掉了用于水冷的\"普通\"误述；但项目符号 `:19` 仍写\"普通风冷/水冷\"。**未登记** | 映射 `:17,:19` |",
+      "review_reference": "m8",
+      "source_line": 63,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H10",
+      "verbatim_opinion_row": "| 10 | gb19576 `R01`/`R02` 未登记 | MAJOR | **已修复**：`EQP-STD-GB19576-001/002`，全 `OPEN`，回链一致 | `ISSUE_REGISTRATION_REQUEST.md:33-40` |",
+      "review_reference": "REGISTER19576",
+      "source_line": 64,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H11",
+      "verbatim_opinion_row": "| 11 | **gb21454 `STANDARD_MAPPING.md:62` 把负荷率写成\"数值百分比\"，实存比值** ⇒ 影响 A.9 的 LD 取值 | MAJOR | **仍悬空**：该行逐字未改（现行文件第 62 行）；`:98` 的 `LF=(LD/100)×…；LD为建筑负荷率百分数的数值` 与该行**互相矛盾**；工作簿 `表A.1!B6:B10`=1.3/1/0.81/0.48/0.3、`表A.2!B6:B10`=1.32/1/0.8/0.44/0.24，`number_format='0%'`；原文 PDF9/印刷7 为 130%/100%/81%/48%/30%（我亲读原页） | `gb21454_p09.png`；`tmp\\wb_totals.py`（实读 xlsx） |",
+      "review_reference": "M2",
+      "source_line": 65,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H12",
+      "verbatim_opinion_row": "| 12 | gb21454 §3.1 末句\"单冷只考核 SEER\"与表1 表注冲突（不得静默择一） | MAJOR | **已登记未修复**：`EQP-STD-GB21454-001`（`CONFLICT / IMPLEMENTATION`，`OPEN`），映射 `:23` 已如实保留并指向 R1 | 根台账 923–936 行；映射 `:23` |",
+      "review_reference": "REGISTER21454-001",
+      "source_line": 66,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H13",
+      "verbatim_opinion_row": "| 13 | gb21454 `R1~R4` 未登记 | MAJOR | **已修复**：`EQP-STD-GB21454-001~004`，全 `OPEN`，回链一致 | `ISSUE_REGISTRATION_REQUEST.md:20-25` |",
+      "review_reference": "REGISTER21454",
+      "source_line": 67,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H14",
+      "verbatim_opinion_row": "| 14 | gb21454 表A.1/A.2 \"项目\"列未保留，但表注称\"已展开保留\" | MINOR | **仍悬空**：`表A.1!A13`/`表A.2!A13` 仍写\"项目类别及使用侧干/湿球原格跨A～E五行合并；**此处展开保留关联**\"，而\"项目\"列未以任何列保留；`STANDARD_MAPPING.md` 未留痕 | `tmp\\wb_totals.py`（A13 原文）；映射 `:62` |",
+      "review_reference": "m6",
+      "source_line": 68,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H15",
+      "verbatim_opinion_row": "| 15 | gb21454 `表4!G` 类别列非原表列且来源未登记；`check_results.json` 的 442 计入非源格（源格 376） | MINOR | **仍悬空**：`表4!G5='类别'` 仍在线；`VERIFICATION.md:68` 仍写\"442/442 MATCH\"，映射 `:134` 未区分 442 与 376 口径 | `tmp\\wb_totals.py`；`VERIFICATION.md:68`；映射 `:134` |",
+      "review_reference": "m4/m6",
+      "source_line": 69,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H16",
+      "verbatim_opinion_row": "| 16 | gb21454 PDF13/14 无可见印刷页码，映射仍记\"印刷 11\" | MINOR | **仍悬空**：映射 `:91-98` 公式表仍写\"印刷11/PDF13\"，只有 A.9 行写\"末页无印刷页码\"；`VERIFICATION.md:45` 已用\"顺序对应11\"澄清，两处口径未统一 | 映射 `:91,:98`；`VERIFICATION.md:45` |",
+      "review_reference": "m5",
+      "source_line": 70,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H17",
+      "verbatim_opinion_row": "| 17 | gb21454 受验目录改写未另起修订号（仍标 A.1） | MINOR | **仍悬空**：映射 `:3` 仍写\"修订 A.1\"，而该文件相对 round-1 基线已变更（`b5068fd7→01345396`） | 映射 `:3`；`tmp\\cmp2.py` |",
+      "review_reference": "m7",
+      "source_line": 71,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H18",
+      "verbatim_opinion_row": "| 18 | **跨标准 G1**：静压=0 Pa 的风管送风式（热泵）机组，GB19576 明文排除 + GB37479 要求静压>0 ⇒ **两标准均不适用**；建议 19576/37479 联合登记 | MAJOR（边界） | **仍悬空**：根台账无该条；`gb19576\\STANDARD_MAPPING.md:15` 只列排除项、`gb37479\\STANDARD_MAPPING.md:11` 只写\"静压>0\"，两目录**互不交叉引用** | 边界审计 `:130`；两映射 `:11/:15`；`reg_audit.py`（\"静压/跨标准\"零命中） |",
+      "review_reference": "M7/M8",
+      "source_line": 72,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H19",
+      "verbatim_opinion_row": "| 19 | **跨标准 O1/O2**：GB19576 与 GB37479 同名 SEER/APF/IPLV 容量档与阈值不同（19576 首档下界 7000 W vs 37479 上界 7100 W 等），须先定设备身份 | MAJOR（边界） | **仍悬空**（零登记；报告 §未提及） | 边界审计 `:149-150`；`reg_audit.py` |",
+      "review_reference": "M7",
+      "source_line": 73,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H20",
+      "verbatim_opinion_row": "| 20 | **跨标准 O4/H6**：GB19576 表1 机房 5 分支用 AEER vs GB19577 §3.6 机房用 EER / 数据中心用 ACCOP | MAJOR（边界） | **仍悬空**（零登记） | 边界审计 `:152,169` |",
+      "review_reference": "M7",
+      "source_line": 74,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H21",
+      "verbatim_opinion_row": "| 21 | **跨标准 H5**：静压在 19576/37479 是适用范围判据、在 21454 是能效修正条件 | INFO（边界） | **仍悬空**（零登记） | 边界审计 `:168` |",
+      "review_reference": "M7",
+      "source_line": 75,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H22",
+      "verbatim_opinion_row": "| 22 | gb21454 §2 未登记与 GB19576（明文排除多联机）/GB37479（静压>0 风管机）的交界面（上轮问题 10） | MINOR | **仍悬空**：映射 `:21` 只写\"本文件未列独立的排除清单，不能自行增加其他标准的容量/用途边界\"；台账 `EQP-STD-GB21454-001` 只覆盖 3.1 与表1 表注，不含跨标准路由 | 映射 `:21`；根台账 930 行 |",
+      "review_reference": "M7",
+      "source_line": 76,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H23",
+      "verbatim_opinion_row": "| 23 | gb29541 静态 10 kW 严格边界缺口、低温型静态指标、两位小数修约、外部试验依赖、制热量选组 | — | **已登记未修复**：`EQP-STD-GB29541-001~005`，类型字段已按原请求规范化，全 `OPEN` | 根台账 773–846 行；`ISSUE_REGISTRATION_REQUEST.md:11-58` |",
+      "review_reference": "REGISTER29541",
+      "source_line": 77,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    },
+    {
+      "original_id": "HVAC-R3-H24",
+      "verbatim_opinion_row": "| 24 | gb19577 既有 `001~006` 六条 | — | **已登记未修复（复核结论：真实存在、OPEN 恰当）** | 根台账 448–542 行 |",
+      "review_reference": "REGISTER19577",
+      "source_line": 78,
+      "source_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md"
+    }
+  ]
+}

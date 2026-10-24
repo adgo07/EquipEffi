@@ -1,0 +1,1584 @@
+{
+  "standard": "GB 19577—2024",
+  "revision": "Stage A r1",
+  "source_sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9",
+  "pdf_pages": 19,
+  "tables": {
+    "1": [
+      {
+        "source_row": 1,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/水冷式",
+        "capacity": "CC≤300",
+        "metric": "IPLV",
+        "values": [
+          "6.00",
+          "5.60",
+          "5.20"
+        ],
+        "aux": "COPc",
+        "aux_value": "4.20",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表1",
+        "excel_row": 6
+      },
+      {
+        "source_row": 2,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/水冷式",
+        "capacity": "300<CC≤528",
+        "metric": "IPLV",
+        "values": [
+          "7.80",
+          "7.20",
+          "5.70"
+        ],
+        "aux": "COPc",
+        "aux_value": "5.00",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表1",
+        "excel_row": 7
+      },
+      {
+        "source_row": 3,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/水冷式",
+        "capacity": "528<CC≤1163",
+        "metric": "IPLV",
+        "values": [
+          "8.10",
+          "7.50",
+          "6.20"
+        ],
+        "aux": "COPc",
+        "aux_value": "5.40",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表1",
+        "excel_row": 8
+      },
+      {
+        "source_row": 4,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/水冷式",
+        "capacity": "CC>1163",
+        "metric": "IPLV",
+        "values": [
+          "8.50",
+          "8.10",
+          "6.30"
+        ],
+        "aux": "COPc",
+        "aux_value": "5.60",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表1",
+        "excel_row": 9
+      },
+      {
+        "source_row": 5,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/风冷式",
+        "capacity": "CC≤50",
+        "metric": "CSPF",
+        "values": [
+          "4.50",
+          "4.0",
+          "3.50"
+        ],
+        "aux": "COPc",
+        "aux_value": "2.70",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表1",
+        "excel_row": 10
+      },
+      {
+        "source_row": 6,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/风冷式",
+        "capacity": "CC>50",
+        "metric": "CSPF",
+        "values": [
+          "4.30",
+          "3.85",
+          "3.30"
+        ],
+        "aux": "COPc",
+        "aux_value": "2.80",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表1",
+        "excel_row": 11
+      },
+      {
+        "source_row": 7,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/蒸发冷却式",
+        "capacity": "CC≤300",
+        "metric": "IPLV",
+        "values": [
+          "5.40",
+          "5.00",
+          "4.40"
+        ],
+        "aux": "COPc",
+        "aux_value": "4.00",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表1",
+        "excel_row": 12
+      },
+      {
+        "source_row": 8,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/蒸发冷却式",
+        "capacity": "CC>300",
+        "metric": "IPLV",
+        "values": [
+          "5.80",
+          "5.40",
+          "5.10"
+        ],
+        "aux": "COPc",
+        "aux_value": "4.60",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表1",
+        "excel_row": 13
+      },
+      {
+        "source_row": 9,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "数据中心专用型/水冷式",
+        "capacity": "CC≤528",
+        "metric": "ACCOP",
+        "values": [
+          "8.20",
+          "7.50",
+          "6.80"
+        ],
+        "aux": "COPc",
+        "aux_value": "6.00",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "COPc原表有值；与§3.1注的关系见EQP-STD-GB19577-002",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表1",
+        "excel_row": 14
+      },
+      {
+        "source_row": 10,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "数据中心专用型/水冷式",
+        "capacity": "528<CC≤1163",
+        "metric": "ACCOP",
+        "values": [
+          "10.00",
+          "8.00",
+          "7.40"
+        ],
+        "aux": "COPc",
+        "aux_value": "6.50",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "COPc原表有值；与§3.1注的关系见EQP-STD-GB19577-002",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表1",
+        "excel_row": 15
+      },
+      {
+        "source_row": 11,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "数据中心专用型/水冷式",
+        "capacity": "CC>1163",
+        "metric": "ACCOP",
+        "values": [
+          "12.00",
+          "10.00",
+          "8.00"
+        ],
+        "aux": "COPc",
+        "aux_value": "7.00",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "COPc原表有值；与§3.1注的关系见EQP-STD-GB19577-002",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表1",
+        "excel_row": 16
+      },
+      {
+        "source_row": 12,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "数据中心专用型/风冷式",
+        "capacity": "—",
+        "metric": "ACCOP",
+        "values": [
+          "6.80",
+          "5.80",
+          "4.80"
+        ],
+        "aux": "COPc",
+        "aux_value": "3.00",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "容量原格为横线，不是0；COPc关系待确认",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表1",
+        "excel_row": 17
+      }
+    ],
+    "2": [
+      {
+        "source_row": 1,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/水冷式",
+        "capacity": "CC≤300",
+        "metric": "1/2级COPc；3级IPLV",
+        "values": [
+          "5.30",
+          "5.10",
+          "5.20"
+        ],
+        "aux": "COPc",
+        "aux_value": "4.20",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "不得将3级IPLV当作COPc；组合口径待确认",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表2",
+        "excel_row": 6
+      },
+      {
+        "source_row": 2,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/水冷式",
+        "capacity": "300<CC≤528",
+        "metric": "1/2级COPc；3级IPLV",
+        "values": [
+          "5.80",
+          "5.60",
+          "5.70"
+        ],
+        "aux": "COPc",
+        "aux_value": "5.00",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "不得将3级IPLV当作COPc；组合口径待确认",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表2",
+        "excel_row": 7
+      },
+      {
+        "source_row": 3,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/水冷式",
+        "capacity": "528<CC≤1163",
+        "metric": "1/2级COPc；3级IPLV",
+        "values": [
+          "6.20",
+          "6.00",
+          "6.20"
+        ],
+        "aux": "COPc",
+        "aux_value": "5.40",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "不得将3级IPLV当作COPc；组合口径待确认",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表2",
+        "excel_row": 8
+      },
+      {
+        "source_row": 4,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/水冷式",
+        "capacity": "CC>1163",
+        "metric": "1/2级COPc；3级IPLV",
+        "values": [
+          "6.40",
+          "6.20",
+          "6.30"
+        ],
+        "aux": "COPc",
+        "aux_value": "5.60",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "不得将3级IPLV当作COPc；组合口径待确认",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表2",
+        "excel_row": 9
+      },
+      {
+        "source_row": 5,
+        "standard": "GB/T18430.1、GB/T18430.2",
+        "branch": "舒适型/风冷式",
+        "capacity": "CC>50",
+        "metric": "1/2级COPc；3级CSPF",
+        "values": [
+          "3.40",
+          "3.20",
+          "3.30"
+        ],
+        "aux": "COPc",
+        "aux_value": "2.80",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "无CC≤50表2分支",
+        "pdf_page": 9,
+        "printed_page": 3,
+        "sheet": "表2",
+        "excel_row": 10
+      }
+    ],
+    "3": [
+      {
+        "source_row": 1,
+        "standard": "GB/T25127.2",
+        "branch": "地板采暖型",
+        "capacity": "≤35",
+        "metric": "HSPF",
+        "values": [
+          "3.60",
+          "3.20",
+          "2.80"
+        ],
+        "aux": "COPdh",
+        "aux_value": "2.00",
+        "aux2": "COPh",
+        "aux2_value": "2.30",
+        "note": "容量为名义制热量kW，原容量格各合并3行",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表3",
+        "excel_row": 6
+      },
+      {
+        "source_row": 2,
+        "standard": "GB/T25127.2",
+        "branch": "风机盘管型",
+        "capacity": "≤35",
+        "metric": "APF",
+        "values": [
+          "3.05",
+          "2.85",
+          "2.65"
+        ],
+        "aux": "COPdh",
+        "aux_value": "1.80",
+        "aux2": "COPh",
+        "aux2_value": "2.10",
+        "note": "容量为名义制热量kW，原容量格各合并3行",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表3",
+        "excel_row": 7
+      },
+      {
+        "source_row": 3,
+        "standard": "GB/T25127.2",
+        "branch": "散热器型",
+        "capacity": "≤35",
+        "metric": "HSPF",
+        "values": [
+          "2.60",
+          "2.40",
+          "2.30"
+        ],
+        "aux": "COPdh",
+        "aux_value": "1.50",
+        "aux2": "COPh",
+        "aux2_value": "1.70",
+        "note": "容量为名义制热量kW，原容量格各合并3行",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表3",
+        "excel_row": 8
+      },
+      {
+        "source_row": 4,
+        "standard": "GB/T25127.1",
+        "branch": "地板采暖型",
+        "capacity": ">35",
+        "metric": "HSPF",
+        "values": [
+          "3.40",
+          "3.20",
+          "3.00"
+        ],
+        "aux": "COPdh",
+        "aux_value": "2.10",
+        "aux2": "COPh",
+        "aux2_value": "2.50",
+        "note": "容量为名义制热量kW，原容量格各合并3行",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表3",
+        "excel_row": 9
+      },
+      {
+        "source_row": 5,
+        "standard": "GB/T25127.1",
+        "branch": "风机盘管型",
+        "capacity": ">35",
+        "metric": "APF",
+        "values": [
+          "3.30",
+          "3.10",
+          "3.00"
+        ],
+        "aux": "COPdh",
+        "aux_value": "1.80",
+        "aux2": "COPh",
+        "aux2_value": "2.30",
+        "note": "容量为名义制热量kW，原容量格各合并3行",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表3",
+        "excel_row": 10
+      },
+      {
+        "source_row": 6,
+        "standard": "GB/T25127.1",
+        "branch": "散热器型",
+        "capacity": ">35",
+        "metric": "HSPF",
+        "values": [
+          "2.60",
+          "2.40",
+          "2.30"
+        ],
+        "aux": "COPdh",
+        "aux_value": "1.50",
+        "aux2": "COPh",
+        "aux2_value": "1.80",
+        "note": "容量为名义制热量kW，原容量格各合并3行",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表3",
+        "excel_row": 11
+      }
+    ],
+    "4": [
+      {
+        "source_row": 1,
+        "standard": "GB/T19409",
+        "branch": "冷热风型/热泵型/水环式",
+        "capacity": "—",
+        "metric": "ACOP",
+        "values": [
+          "4.60",
+          "4.10",
+          "3.70"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "容量横线原格覆盖源行1～3；并列型式共用值，不删除物理分支",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 6
+      },
+      {
+        "source_row": 2,
+        "standard": "GB/T19409",
+        "branch": "冷热风型/热泵型/地下水式",
+        "capacity": "—",
+        "metric": "ACOP",
+        "values": [
+          "5.10",
+          "4.60",
+          "4.00"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "容量横线原格覆盖源行1～3；并列型式共用值，不删除物理分支",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 7
+      },
+      {
+        "source_row": 3,
+        "standard": "GB/T19409",
+        "branch": "冷热风型/热泵型/地埋管式、地表水式",
+        "capacity": "—",
+        "metric": "ACOP",
+        "values": [
+          "4.40",
+          "4.00",
+          "3.80"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "容量横线原格覆盖源行1～3；并列型式共用值，不删除物理分支",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 8
+      },
+      {
+        "source_row": 4,
+        "standard": "GB/T19409",
+        "branch": "冷热水型/单热型/水环式",
+        "capacity": "≤260",
+        "metric": "COP",
+        "values": [
+          "5.60",
+          "5.00",
+          "4.60"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "单热型按名义制热量，热泵型按名义制冷量；并列型式保持",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 9
+      },
+      {
+        "source_row": 5,
+        "standard": "GB/T19409",
+        "branch": "冷热水型/单热型/水环式",
+        "capacity": ">260",
+        "metric": "COP",
+        "values": [
+          "5.80",
+          "5.40",
+          "4.40"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "单热型按名义制热量，热泵型按名义制冷量；并列型式保持",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 10
+      },
+      {
+        "source_row": 6,
+        "standard": "GB/T19409",
+        "branch": "冷热水型/单热型/地下水式",
+        "capacity": "≤260",
+        "metric": "COP",
+        "values": [
+          "4.90",
+          "4.50",
+          "4.00"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "单热型按名义制热量，热泵型按名义制冷量；并列型式保持",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 11
+      },
+      {
+        "source_row": 7,
+        "standard": "GB/T19409",
+        "branch": "冷热水型/单热型/地下水式",
+        "capacity": ">260",
+        "metric": "COP",
+        "values": [
+          "5.10",
+          "4.70",
+          "4.40"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "单热型按名义制热量，热泵型按名义制冷量；并列型式保持",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 12
+      },
+      {
+        "source_row": 8,
+        "standard": "GB/T19409",
+        "branch": "冷热水型/单热型/地埋管式、地表水式",
+        "capacity": "≤260",
+        "metric": "COP",
+        "values": [
+          "4.70",
+          "4.30",
+          "4.20"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "单热型按名义制热量，热泵型按名义制冷量；并列型式保持",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 13
+      },
+      {
+        "source_row": 9,
+        "standard": "GB/T19409",
+        "branch": "冷热水型/单热型/地埋管式、地表水式",
+        "capacity": ">260",
+        "metric": "COP",
+        "values": [
+          "4.90",
+          "4.50",
+          "4.20"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "单热型按名义制热量，热泵型按名义制冷量；并列型式保持",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 14
+      },
+      {
+        "source_row": 10,
+        "standard": "GB/T19409",
+        "branch": "冷热水型/热泵型/水环式",
+        "capacity": "≤260",
+        "metric": "ACOP",
+        "values": [
+          "5.10",
+          "4.70",
+          "4.00"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "单热型按名义制热量，热泵型按名义制冷量；并列型式保持",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 15
+      },
+      {
+        "source_row": 11,
+        "standard": "GB/T19409",
+        "branch": "冷热水型/热泵型/水环式",
+        "capacity": ">260",
+        "metric": "ACOP",
+        "values": [
+          "5.80",
+          "5.20",
+          "4.30"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "单热型按名义制热量，热泵型按名义制冷量；并列型式保持",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 16
+      },
+      {
+        "source_row": 12,
+        "standard": "GB/T19409",
+        "branch": "冷热水型/热泵型/地下水式",
+        "capacity": "≤260",
+        "metric": "ACOP",
+        "values": [
+          "5.70",
+          "5.50",
+          "5.30"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "单热型按名义制热量，热泵型按名义制冷量；并列型式保持",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 17
+      },
+      {
+        "source_row": 13,
+        "standard": "GB/T19409",
+        "branch": "冷热水型/热泵型/地下水式",
+        "capacity": ">260",
+        "metric": "ACOP",
+        "values": [
+          "6.20",
+          "5.80",
+          "5.40"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "单热型按名义制热量，热泵型按名义制冷量；并列型式保持",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 18
+      },
+      {
+        "source_row": 14,
+        "standard": "GB/T19409",
+        "branch": "冷热水型/热泵型/地埋管式、地表水式",
+        "capacity": "≤260",
+        "metric": "ACOP",
+        "values": [
+          "5.10",
+          "4.70",
+          "4.20"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "单热型按名义制热量，热泵型按名义制冷量；并列型式保持",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 19
+      },
+      {
+        "source_row": 15,
+        "standard": "GB/T19409",
+        "branch": "冷热水型/热泵型/地埋管式、地表水式",
+        "capacity": ">260",
+        "metric": "ACOP",
+        "values": [
+          "5.60",
+          "5.10",
+          "4.40"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "单热型按名义制热量，热泵型按名义制冷量；并列型式保持",
+        "pdf_page": 10,
+        "printed_page": 4,
+        "sheet": "表4",
+        "excel_row": 20
+      }
+    ],
+    "5": [
+      {
+        "source_row": 1,
+        "standard": "GB/T18431",
+        "branch": "饱和蒸汽压力0.4 MPa",
+        "capacity": "不按容量分档",
+        "metric": "单位制冷量加热源耗量",
+        "values": [
+          "1.05",
+          "1.10",
+          "1.19"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "方向≤为待确认技术判断；单位原表未标，见EQP-STD-GB19577-001/005",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表5",
+        "excel_row": 6
+      },
+      {
+        "source_row": 2,
+        "standard": "GB/T18431",
+        "branch": "饱和蒸汽压力0.6 MPa",
+        "capacity": "不按容量分档",
+        "metric": "单位制冷量加热源耗量",
+        "values": [
+          "1.02",
+          "1.05",
+          "1.11"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "方向≤为待确认技术判断；单位原表未标，见EQP-STD-GB19577-001/005",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表5",
+        "excel_row": 7
+      },
+      {
+        "source_row": 3,
+        "standard": "GB/T18431",
+        "branch": "饱和蒸汽压力0.8 MPa",
+        "capacity": "不按容量分档",
+        "metric": "单位制冷量加热源耗量",
+        "values": [
+          "1.00",
+          "1.02",
+          "1.09"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "方向≤为待确认技术判断；单位原表未标，见EQP-STD-GB19577-001/005",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表5",
+        "excel_row": 8
+      },
+      {
+        "source_row": 4,
+        "standard": "GB/T18362",
+        "branch": "直燃型机组",
+        "capacity": "不按容量分档",
+        "metric": "COP",
+        "values": [
+          "1.46",
+          "1.40",
+          "1.30"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表5",
+        "excel_row": 9
+      }
+    ],
+    "6": [
+      {
+        "source_row": 1,
+        "standard": "GB/T25861",
+        "branch": "H1a",
+        "capacity": "见产品标准名义工况",
+        "metric": "COPH",
+        "values": [
+          "4.00",
+          "3.80",
+          "3.60"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "工况代码不替换成猜测温度；超出名义工况范围不以表6考核",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表6",
+        "excel_row": 6
+      },
+      {
+        "source_row": 2,
+        "standard": "GB/T25861",
+        "branch": "H2a",
+        "capacity": "见产品标准名义工况",
+        "metric": "COPH",
+        "values": [
+          "4.40",
+          "4.20",
+          "4.00"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "工况代码不替换成猜测温度；超出名义工况范围不以表6考核",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表6",
+        "excel_row": 7
+      },
+      {
+        "source_row": 3,
+        "standard": "GB/T25861",
+        "branch": "H3a",
+        "capacity": "见产品标准名义工况",
+        "metric": "COPH",
+        "values": [
+          "4.10",
+          "3.90",
+          "3.70"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "工况代码不替换成猜测温度；超出名义工况范围不以表6考核",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表6",
+        "excel_row": 8
+      },
+      {
+        "source_row": 4,
+        "standard": "GB/T25861",
+        "branch": "H4a",
+        "capacity": "见产品标准名义工况",
+        "metric": "COPH",
+        "values": [
+          "3.70",
+          "3.50",
+          "3.30"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "工况代码不替换成猜测温度；超出名义工况范围不以表6考核",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表6",
+        "excel_row": 9
+      },
+      {
+        "source_row": 5,
+        "standard": "GB/T25861",
+        "branch": "H5a",
+        "capacity": "见产品标准名义工况",
+        "metric": "COPH",
+        "values": [
+          "3.40",
+          "3.20",
+          "3.00"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "工况代码不替换成猜测温度；超出名义工况范围不以表6考核",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表6",
+        "excel_row": 10
+      },
+      {
+        "source_row": 6,
+        "standard": "GB/T25861",
+        "branch": "H1b",
+        "capacity": "见产品标准名义工况",
+        "metric": "COPH",
+        "values": [
+          "4.50",
+          "4.20",
+          "4.00"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "工况代码不替换成猜测温度；超出名义工况范围不以表6考核",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表6",
+        "excel_row": 11
+      },
+      {
+        "source_row": 7,
+        "standard": "GB/T25861",
+        "branch": "H2b",
+        "capacity": "见产品标准名义工况",
+        "metric": "COPH",
+        "values": [
+          "4.80",
+          "4.50",
+          "4.30"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "工况代码不替换成猜测温度；超出名义工况范围不以表6考核",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表6",
+        "excel_row": 12
+      },
+      {
+        "source_row": 8,
+        "standard": "GB/T25861",
+        "branch": "H3b",
+        "capacity": "见产品标准名义工况",
+        "metric": "COPH",
+        "values": [
+          "4.50",
+          "4.10",
+          "3.90"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "工况代码不替换成猜测温度；超出名义工况范围不以表6考核",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表6",
+        "excel_row": 13
+      },
+      {
+        "source_row": 9,
+        "standard": "GB/T25861",
+        "branch": "H4b",
+        "capacity": "见产品标准名义工况",
+        "metric": "COPH",
+        "values": [
+          "4.00",
+          "3.70",
+          "3.50"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "工况代码不替换成猜测温度；超出名义工况范围不以表6考核",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表6",
+        "excel_row": 14
+      },
+      {
+        "source_row": 10,
+        "standard": "GB/T25861",
+        "branch": "H5b",
+        "capacity": "见产品标准名义工况",
+        "metric": "COPH",
+        "values": [
+          "3.60",
+          "3.30",
+          "3.20"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "工况代码不替换成猜测温度；超出名义工况范围不以表6考核",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表6",
+        "excel_row": 15
+      },
+      {
+        "source_row": 11,
+        "standard": "JB/T12840",
+        "branch": "循环供水式热泵高温热水机组",
+        "capacity": "不按容量分档",
+        "metric": "COP",
+        "values": [
+          "4.10",
+          "3.70",
+          "3.40"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "表6注原文保留；边界依据产品标准补证",
+        "pdf_page": 11,
+        "printed_page": 5,
+        "sheet": "表6",
+        "excel_row": 16
+      }
+    ],
+    "7": [
+      {
+        "source_row": 1,
+        "standard": "JB/T14642",
+        "branch": "数据中心等类似场所用/标准机型",
+        "capacity": "CC≤100",
+        "metric": "AEER",
+        "values": [
+          "17.0",
+          "14.0",
+          "10.0"
+        ],
+        "aux": "EER",
+        "aux_value": "9.0",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "AEER试验计算采用寒冷地区(参照北京市)条件，§6.6",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表7",
+        "excel_row": 6
+      },
+      {
+        "source_row": 2,
+        "standard": "JB/T14642",
+        "branch": "数据中心等类似场所用/标准机型",
+        "capacity": "CC>100",
+        "metric": "AEER",
+        "values": [
+          "22.0",
+          "19.0",
+          "15.0"
+        ],
+        "aux": "EER",
+        "aux_value": "13.0",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "AEER试验计算采用寒冷地区(参照北京市)条件，§6.6",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表7",
+        "excel_row": 7
+      },
+      {
+        "source_row": 3,
+        "standard": "JB/T14642",
+        "branch": "数据中心等类似场所用/大温差型",
+        "capacity": "CC≤100",
+        "metric": "AEER",
+        "values": [
+          "21.0",
+          "18.0",
+          "14.0"
+        ],
+        "aux": "EER",
+        "aux_value": "12.0",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "AEER试验计算采用寒冷地区(参照北京市)条件，§6.6",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表7",
+        "excel_row": 8
+      },
+      {
+        "source_row": 4,
+        "standard": "JB/T14642",
+        "branch": "数据中心等类似场所用/大温差型",
+        "capacity": "CC>100",
+        "metric": "AEER",
+        "values": [
+          "25.0",
+          "22.0",
+          "18.0"
+        ],
+        "aux": "EER",
+        "aux_value": "16.0",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "AEER试验计算采用寒冷地区(参照北京市)条件，§6.6",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表7",
+        "excel_row": 9
+      },
+      {
+        "source_row": 5,
+        "standard": "JB/T14640",
+        "branch": "外冷式",
+        "capacity": "CC≤100",
+        "metric": "EER",
+        "values": [
+          "16.0",
+          "14.0",
+          "10.0"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "原最右EER附加列源行5～10为一个合并空白格；不填0、不继承16.0",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表7",
+        "excel_row": 10
+      },
+      {
+        "source_row": 6,
+        "standard": "JB/T14640",
+        "branch": "外冷式",
+        "capacity": "CC>100",
+        "metric": "EER",
+        "values": [
+          "20.0",
+          "17.0",
+          "14.0"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "原最右EER附加列源行5～10为一个合并空白格；不填0、不继承16.0",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表7",
+        "excel_row": 11
+      },
+      {
+        "source_row": 7,
+        "standard": "JB/T14640",
+        "branch": "内冷式",
+        "capacity": "CC≤100",
+        "metric": "EER",
+        "values": [
+          "15.0",
+          "11.0",
+          "9.0"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "原最右EER附加列源行5～10为一个合并空白格；不填0、不继承16.0",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表7",
+        "excel_row": 12
+      },
+      {
+        "source_row": 8,
+        "standard": "JB/T14640",
+        "branch": "内冷式",
+        "capacity": "CC>100",
+        "metric": "EER",
+        "values": [
+          "20.0",
+          "14.0",
+          "13.0"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "原最右EER附加列源行5～10为一个合并空白格；不填0、不继承16.0",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表7",
+        "excel_row": 13
+      },
+      {
+        "source_row": 9,
+        "standard": "JB/T14640",
+        "branch": "内外冷串联式",
+        "capacity": "CC≤100",
+        "metric": "EER",
+        "values": [
+          "21.0",
+          "15.0",
+          "12.0"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "原最右EER附加列源行5～10为一个合并空白格；不填0、不继承16.0",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表7",
+        "excel_row": 14
+      },
+      {
+        "source_row": 10,
+        "standard": "JB/T14640",
+        "branch": "内外冷串联式",
+        "capacity": "CC>100",
+        "metric": "EER",
+        "values": [
+          "22.0",
+          "15.0",
+          "14.0"
+        ],
+        "aux": "",
+        "aux_value": null,
+        "aux2": "",
+        "aux2_value": null,
+        "note": "原最右EER附加列源行5～10为一个合并空白格；不填0、不继承16.0",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表7",
+        "excel_row": 15
+      }
+    ],
+    "8": [
+      {
+        "source_row": 1,
+        "standard": "JB/T12839",
+        "branch": "蒸发冷却式、冷却塔式",
+        "capacity": "CC≤300",
+        "metric": "IPLVI",
+        "values": [
+          "5.40",
+          "5.00",
+          "4.40"
+        ],
+        "aux": "COPI",
+        "aux_value": "4.00",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "两个物理型式共用同一源格，不把冷却塔式删除",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表8",
+        "excel_row": 6
+      },
+      {
+        "source_row": 2,
+        "standard": "JB/T12839",
+        "branch": "蒸发冷却式、冷却塔式",
+        "capacity": "300<CC≤528",
+        "metric": "IPLVI",
+        "values": [
+          "5.60",
+          "5.00",
+          "4.80"
+        ],
+        "aux": "COPI",
+        "aux_value": "4.40",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "两个物理型式共用同一源格，不把冷却塔式删除",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表8",
+        "excel_row": 7
+      },
+      {
+        "source_row": 3,
+        "standard": "JB/T12839",
+        "branch": "蒸发冷却式、冷却塔式",
+        "capacity": "528<CC≤1163",
+        "metric": "IPLVI",
+        "values": [
+          "5.80",
+          "5.40",
+          "5.10"
+        ],
+        "aux": "COPI",
+        "aux_value": "4.60",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "两个物理型式共用同一源格，不把冷却塔式删除",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表8",
+        "excel_row": 8
+      },
+      {
+        "source_row": 4,
+        "standard": "JB/T12839",
+        "branch": "蒸发冷却式、冷却塔式",
+        "capacity": "CC>1163",
+        "metric": "IPLVI",
+        "values": [
+          "6.00",
+          "5.60",
+          "5.20"
+        ],
+        "aux": "COPI",
+        "aux_value": "4.80",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "两个物理型式共用同一源格，不把冷却塔式删除",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表8",
+        "excel_row": 9
+      },
+      {
+        "source_row": 5,
+        "standard": "JB/T12839",
+        "branch": "风冷式",
+        "capacity": "CC≤50",
+        "metric": "IPLVI",
+        "values": [
+          "4.40",
+          "3.90",
+          "3.40"
+        ],
+        "aux": "COPI",
+        "aux_value": "2.70",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表8",
+        "excel_row": 10
+      },
+      {
+        "source_row": 6,
+        "standard": "JB/T12839",
+        "branch": "风冷式",
+        "capacity": "CC>50",
+        "metric": "IPLVI",
+        "values": [
+          "4.20",
+          "3.75",
+          "3.20"
+        ],
+        "aux": "COPI",
+        "aux_value": "2.70",
+        "aux2": "",
+        "aux2_value": null,
+        "note": "",
+        "pdf_page": 12,
+        "printed_page": 6,
+        "sheet": "表8",
+        "excel_row": 11
+      }
+    ]
+  },
+  "a1": [
+    {
+      "point": "A",
+      "load": "100",
+      "outlet": "7",
+      "flow": "0.172",
+      "dry": "35",
+      "wet": "—"
+    },
+    {
+      "point": "B",
+      "load": "75",
+      "outlet": "7",
+      "flow": "0.172",
+      "dry": "32.25",
+      "wet": "—"
+    },
+    {
+      "point": "C",
+      "load": "50",
+      "outlet": "9",
+      "flow": "0.172",
+      "dry": "29.5",
+      "wet": "—"
+    },
+    {
+      "point": "D",
+      "load": "25",
+      "outlet": "11",
+      "flow": "0.172",
+      "dry": "26.8",
+      "wet": "—"
+    }
+  ],
+  "a2": [
+    {
+      "j": 1,
+      "temp": 25,
+      "hours": 277
+    },
+    {
+      "j": 2,
+      "temp": 26,
+      "hours": 205
+    },
+    {
+      "j": 3,
+      "temp": 27,
+      "hours": 180
+    },
+    {
+      "j": 4,
+      "temp": 28,
+      "hours": 110
+    },
+    {
+      "j": 5,
+      "temp": 29,
+      "hours": 94
+    },
+    {
+      "j": 6,
+      "temp": 30,
+      "hours": 61
+    },
+    {
+      "j": 7,
+      "temp": 31,
+      "hours": 25
+    },
+    {
+      "j": 8,
+      "temp": 32,
+      "hours": 20
+    },
+    {
+      "j": 9,
+      "temp": 33,
+      "hours": 20
+    },
+    {
+      "j": 10,
+      "temp": 34,
+      "hours": 11
+    },
+    {
+      "j": 11,
+      "temp": 35,
+      "hours": 4
+    },
+    {
+      "j": 12,
+      "temp": 36,
+      "hours": 0
+    },
+    {
+      "j": 13,
+      "temp": 37,
+      "hours": 0
+    },
+    {
+      "j": 14,
+      "temp": 38,
+      "hours": 0
+    },
+    {
+      "j": 15,
+      "temp": 39,
+      "hours": 0
+    }
+  ]
+}

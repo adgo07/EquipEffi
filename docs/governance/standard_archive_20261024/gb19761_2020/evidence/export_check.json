@@ -1,0 +1,12 @@
+{
+  "xlsx_sha256": "2a290e6e19c19fa2e5fd729e52da9551dbc87998ca4a7e33083d292c12f1442d",
+  "sheet_count": 4,
+  "export_cell_matches": 1350,
+  "numeric_cells": 402,
+  "dash_cells": 3,
+  "business_formulas": 0,
+  "fail": 0,
+  "error": 0,
+  "independent_source_review": "NOT_RUN",
+  "native_excel_open": "NOT_RUN"
+}

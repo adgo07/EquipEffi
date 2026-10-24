@@ -1,0 +1,37 @@
+[
+  {
+    "pdf": "标准原文/13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+    "pdf_sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9",
+    "physical_page": 8,
+    "image": "docs/governance/device_round3_review_20261013/cross_standard/evidence/gb19577_2024_physical_8.png",
+    "image_sha256": "a5b288e3e8963b40bb23535b7fbe7374fde2edde8eaeb91cacc8b4c5c717561f"
+  },
+  {
+    "pdf": "标准原文/13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+    "pdf_sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9",
+    "physical_page": 9,
+    "image": "docs/governance/device_round3_review_20261013/cross_standard/evidence/gb19577_2024_physical_9.png",
+    "image_sha256": "4e38bd53dad8ec3e22a7f121b9ab73d9c1041d7162f400fba690966fbec84d3b"
+  },
+  {
+    "pdf": "标准原文/9. GB+28381-2026 鼓风机能效限定值及能效等级.pdf",
+    "pdf_sha256": "64a8ef7934933eff49874c5f121db5a1f32f69ff1a16295cd1abe4d740b80d35",
+    "physical_page": 20,
+    "image": "docs/governance/device_round3_review_20261013/cross_standard/evidence/gb28381_2026_physical_20.png",
+    "image_sha256": "f83dff6e83dbdfcb7c42ca8d8ed6ce3219476159024c7d86f69950ed808503fb"
+  },
+  {
+    "pdf": "标准原文/9. GB 28381-2012 离心鼓风机能效限定值及节能评价值.pdf",
+    "pdf_sha256": "07410053c5b190193169686f54b5f86fb243a9a069c3f6c3e0f085637c9b1a75",
+    "physical_page": 4,
+    "image": "docs/governance/device_round3_review_20261013/cross_standard/evidence/gb28381_2012_physical_4.png",
+    "image_sha256": "4c12f794c19c1f8f94568a04dd794437cf62f7dee784eedb115bec0b9e7e6b76"
+  },
+  {
+    "pdf": "标准原文/17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+    "pdf_sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+    "physical_page": 4,
+    "image": "docs/governance/device_round3_review_20261013/cross_standard/evidence/gb21454_2021_physical_4.png",
+    "image_sha256": "7e7c06d723c10def104a818b952420ba4a243792d4a766d92fabe2c7bc18e345"
+  }
+]

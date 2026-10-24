@@ -1,0 +1,257 @@
+{
+  "read_utc": "2026-10-13T15:42:54.188492+00:00",
+  "files": [
+    {
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\accepted_revision_manifest.json",
+      "sha256": "aa4d6423ab3ccdac6f9c95449a6ed05d50490587c32066e1c899c02ebbaaf609",
+      "bytes": 120981,
+      "mtime_utc": "2026-10-13T04:02:14.254279+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\CROSS_STANDARD_ACCEPTANCE_SUMMARY.md",
+      "sha256": "2078dd11ea2683db1c3bc7d28d887b69b5075935e8b20fc7f0fdff7837694ca9",
+      "bytes": 53342,
+      "mtime_utc": "2026-10-13T04:22:11.513868+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\CROSS_STANDARD_BOUNDARY_AUDIT.md",
+      "sha256": "d638070bf03ac1787332f67ac0977b9e897102acefbf946b2d2066b87cf45d75",
+      "bytes": 38491,
+      "mtime_utc": "2026-10-13T04:16:36.367256+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb18613_2020_ACCEPTANCE_REVIEW.md",
+      "sha256": "8922fb188abab304561ffaeb2286479f4509c3d7da4c07e6063ae3f86e4744e1",
+      "bytes": 45519,
+      "mtime_utc": "2026-10-13T03:55:47.609486+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb30253_2024_ACCEPTANCE_REVIEW.md",
+      "sha256": "884ed872370c345694d1c8afcf0d095b825dcd445787f2f571c61a2879d1f690",
+      "bytes": 31162,
+      "mtime_utc": "2026-10-13T04:19:06.063863+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb30254_2024_ACCEPTANCE_REVIEW.md",
+      "sha256": "2bfde42e677c1ce5c00a9506d84cbd96dbb210203625bc3823abeca6f574f7ed",
+      "bytes": 35878,
+      "mtime_utc": "2026-10-13T04:11:12.549845+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb18613_2020__GB18613_2020_表1-6校对数据_A1.txt",
+      "sha256": "50c26df289d2376b53096df019cf3c511d4876db92220128c1606a771d17a296",
+      "bytes": 22378,
+      "mtime_utc": "2026-10-13T04:12:47.838430+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb30253_2024__GB30253_2024_TABLE_VALUES.txt",
+      "sha256": "73ccb7c26167f25cc6b3a3356feea11b064c28b851f0b68062322ad3daa21527",
+      "bytes": 180357,
+      "mtime_utc": "2026-10-13T04:12:48.289085+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb30254_2024__GB30254_2024_标准表值.txt",
+      "sha256": "3bac640eba694d989300e674bcc80e27ea4061ab91f0a3d31430baa003019cfe",
+      "bytes": 50270,
+      "mtime_utc": "2026-10-13T04:12:47.929006+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_motors_AUDIT.md",
+      "sha256": "72f9ab70d9a51abcd25ddbb0ecb9e21a6364b0c938e4ff3562ab032df830b970",
+      "bytes": 24471,
+      "mtime_utc": "2026-10-13T15:21:45.113081+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\ROUND3_PROBLEM_LIST.md",
+      "sha256": "4ce9ec7d085d2221c2e3a1cee81f9faf7c05bf93e9c41d6c8ac8860403c413cd",
+      "bytes": 36989,
+      "mtime_utc": "2026-10-13T15:22:56.930702+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\AGENTS.md",
+      "sha256": "a170e004c9feb89f8d1b8c60a0a994534194fb3545da28dd68467a3bb70db4f9",
+      "bytes": 28540,
+      "mtime_utc": "2026-10-13T02:04:22.728274+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\BOUNDARY_CANDIDATES.md",
+      "sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0",
+      "bytes": 4442,
+      "mtime_utc": "2026-10-13T03:01:41.644617+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\data\\GB18613_2020_表1-6校对数据_A1.xlsx",
+      "sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+      "bytes": 21122,
+      "mtime_utc": "2026-10-13T02:59:56.225221+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\ACCEPTANCE_RESPONSE_R1.md",
+      "sha256": "6f5b9d2e66b937184048d6245fd5aa4ebf681ad9c398237e6726de00bba04180",
+      "bytes": 3776,
+      "mtime_utc": "2026-10-13T04:00:47.183176+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\VERIFICATION.md",
+      "sha256": "88259227dd6d221f0294252881345e2f8872ca5c4a3fc80d15a5ff747f4b2fb9",
+      "bytes": 7616,
+      "mtime_utc": "2026-10-13T04:01:43.682720+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\HANDOFF.md",
+      "sha256": "52c6efc2af552f2f397bb808b7d490adaa39a4d03bf657cb38e0aef3657e552a",
+      "bytes": 3452,
+      "mtime_utc": "2026-10-13T04:01:46.762443+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "d70de8354f92af36f9d4ad7cedc936ac636290f319f557950029170bb931f30f",
+      "bytes": 5551,
+      "mtime_utc": "2026-10-13T14:38:31.062239+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\README.md",
+      "sha256": "4f94b395ada998b70988df3b4ca0bc9f1639792091c919192783f5d6cbed4909",
+      "bytes": 2359,
+      "mtime_utc": "2026-10-13T04:01:36.215071+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\STANDARD_MAPPING.md",
+      "sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d",
+      "bytes": 12469,
+      "mtime_utc": "2026-10-13T04:01:38.842360+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\BOUNDARY_CANDIDATES.md",
+      "sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b",
+      "bytes": 3516,
+      "mtime_utc": "2026-10-13T03:06:56.263924+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\data\\GB30253_2024_TABLE_VALUES.xlsx",
+      "sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+      "bytes": 118459,
+      "mtime_utc": "2026-10-13T03:07:08.853897+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\ACCEPTANCE_RESPONSE_20261013.md",
+      "sha256": "40a99114ca9a54ed9b7bc37db17264c42ca2642330952c150635dec3a57bbafb",
+      "bytes": 3976,
+      "mtime_utc": "2026-10-13T04:02:17.354357+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\VERIFICATION.md",
+      "sha256": "7ae93e04104eae1db61281b027c724d4acdca4297eaca06b2bc3d2cdfa891cb0",
+      "bytes": 6424,
+      "mtime_utc": "2026-10-13T04:02:08.186392+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\HANDOFF.md",
+      "sha256": "72904632bc23cc5d0cd1eb6232ce03855b2dffc268c9984fd4fdceb75f81b1f7",
+      "bytes": 2928,
+      "mtime_utc": "2026-10-13T04:02:58.780994+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "06b9054bd70a8905ad7694b2f4413b4c618647dd016369a1ec272b8e68ba82e4",
+      "bytes": 4781,
+      "mtime_utc": "2026-10-13T14:38:31.184104+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\README.md",
+      "sha256": "973147fc2c06462a50f3d114306de69a479dd31264ef32a77d4e4af34cb34e61",
+      "bytes": 2824,
+      "mtime_utc": "2026-10-13T04:01:59.465638+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\STANDARD_MAPPING.md",
+      "sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13",
+      "bytes": 13635,
+      "mtime_utc": "2026-10-13T04:02:03.845721+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\BOUNDARY_CASES.md",
+      "sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403",
+      "bytes": 3731,
+      "mtime_utc": "2026-10-13T03:06:54.495163+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\data\\GB30254_2024_标准表值.xlsx",
+      "sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+      "bytes": 31633,
+      "mtime_utc": "2026-10-13T02:59:14.760766+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\ACCEPTANCE_RESPONSE_20261013.md",
+      "sha256": "bc0e1d482aa2910b2167db370d1eabd57f0ec4905f74b2f056309d2691cd3bb8",
+      "bytes": 6386,
+      "mtime_utc": "2026-10-13T04:02:23.956976+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\SOURCE_AND_VERIFICATION.md",
+      "sha256": "27d47826181258b27b44306bdef95529778e8071d8ddf351d16916bedd5c5152",
+      "bytes": 8316,
+      "mtime_utc": "2026-10-13T04:05:14.205537+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\HANDOFF.md",
+      "sha256": "fe95aa32223f294c6a5046eae2ed4166080de9cd8b572e3204056abcc9a7d59d",
+      "bytes": 4017,
+      "mtime_utc": "2026-10-13T04:05:14.322966+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "9b6c9a2c8d9a99b2d69435dfad14afe57cc6d37a0d9a02587eebf1d1983249bc",
+      "bytes": 4478,
+      "mtime_utc": "2026-10-13T14:38:31.125155+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\README.md",
+      "sha256": "d3489184029b293a47ab9baff922792b1aab00579249145efa26eb77a441b61e",
+      "bytes": 2866,
+      "mtime_utc": "2026-10-13T04:05:13.966392+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\STANDARD_MAPPING.md",
+      "sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba",
+      "bytes": 11577,
+      "mtime_utc": "2026-10-13T04:05:14.039728+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\platform-lock.json",
+      "sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53",
+      "bytes": 2075,
+      "mtime_utc": "2026-10-01T15:10:00.665413+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\src\\equipeffi\\resources\\standards\\gb30253_2024_pdf_verified_v1.json",
+      "sha256": "f69c052b46ccd9610896b1e0a58df0558c9f3ad43a4a04909ef154b4fcbb9250",
+      "bytes": 742369,
+      "mtime_utc": "2026-09-19T16:59:20.432586+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+      "sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908",
+      "bytes": 113342,
+      "mtime_utc": "2026-10-13T14:54:19.358202+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\2. GB+18613-2020 电动机能效限定值及能效等级.pdf",
+      "sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+      "bytes": 359642,
+      "mtime_utc": "2026-08-16T12:46:55.205595+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\3. GB 30254-2024 高压三相笼型异步电动机能效限定值及能效等级.pdf",
+      "sha256": "53a6d2e8098fea9f81adf6a12fe3298707bf6b22cc8c972110aacdcd8a168135",
+      "bytes": 1939219,
+      "mtime_utc": "2026-04-22T08:31:14+00:00"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\4. GB 30253-2024 永磁同步电动机能效限定值及能效等级.pdf",
+      "sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053",
+      "bytes": 6678347,
+      "mtime_utc": "2026-04-22T09:40:18+00:00"
+    }
+  ]
+}

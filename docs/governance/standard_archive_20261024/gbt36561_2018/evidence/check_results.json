@@ -1,0 +1,31 @@
+{
+  "source_sha256": "f1a6b29aa25d13b69f16006dd822e4ad2641830468bd6c395056e6751095ba37",
+  "table_count": 29,
+  "record_count": 468,
+  "numeric_records": 456,
+  "symbol_or_dash_records": 12,
+  "xlsx_coordinate_value_checks": {
+    "pass": 468,
+    "fail": 0,
+    "error": 0,
+    "skip": 0
+  },
+  "numeric_source_sample": {
+    "match": 42,
+    "mismatch": 0,
+    "tables": 29,
+    "not_second_checked_numeric_records": 414,
+    "independent_review": "NOT_RUN"
+  },
+  "table16_unique_scoring_cells_sum": 100,
+  "formula_cells": 0,
+  "software_unittest": "NOT_RUN - documentation-only",
+  "compileall": "NOT_RUN - no production changes",
+  "smoke": "NOT_RUN - no production changes",
+  "performance": "NOT_RUN - no production changes",
+  "local_markdown_file_links": {
+    "pass": 38,
+    "fail": 0,
+    "note": "file targets checked; heading anchors not parsed"
+  }
+}

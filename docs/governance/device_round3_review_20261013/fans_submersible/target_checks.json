@@ -1,0 +1,38 @@
+{
+  "fan": {
+    "表1": {
+      "worksheet_filter": null,
+      "table_filters": [
+        null
+      ],
+      "merged_ranges": []
+    },
+    "表2": {
+      "worksheet_filter": null,
+      "table_filters": [
+        null
+      ],
+      "merged_ranges": []
+    },
+    "表3": {
+      "worksheet_filter": null,
+      "table_filters": [
+        null
+      ],
+      "merged_ranges": []
+    },
+    "表4": {
+      "worksheet_filter": null,
+      "table_filters": [
+        null
+      ],
+      "merged_ranges": []
+    }
+  },
+  "dash_note": "小机号为同一横向合并破折号源格；非零值，不跨组补齐",
+  "ns_cells": [
+    "10≤ns<20",
+    "20≤ns<30"
+  ],
+  "sol_sha256": "c11548f42179057d71d27fd2b333e21060c93906681e143a81143c5c16f48a4a"
+}

@@ -1,0 +1,1396 @@
+[
+  {
+    "sheet": "表1",
+    "xml": "xl/worksheets/sheet1.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A2": {
+        "value": "GB 19576—2019 表1能效等级指标值",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "来源：本地原PDF，SHA及身份见 SOURCE_EVIDENCE.md；自核，未经独立逐格验收。CC单位W。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "源行",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "B5": {
+        "value": "设备类型",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "C5": {
+        "value": "物理分支",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "D5": {
+        "value": "名义制冷量CC（W）",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "E5": {
+        "value": "指标",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "F5": {
+        "value": "单位",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "G5": {
+        "value": "1级",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "H5": {
+        "value": "2级",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "I5": {
+        "value": "3级",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "J5": {
+        "value": "PDF物理页",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "K5": {
+        "value": "印刷页",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "A6": {
+        "value": "1",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B6": {
+        "value": "风冷式单元式空调机",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C6": {
+        "value": "单冷型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D6": {
+        "value": "7000≤CC≤14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E6": {
+        "value": "SEER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F6": {
+        "value": "Wh/Wh",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G6": {
+        "value": "4.5",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H6": {
+        "value": "3.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I6": {
+        "value": "2.9",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J6": {
+        "value": "3",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K6": {
+        "value": "1",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A7": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B7": {
+        "value": "风冷式单元式空调机",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C7": {
+        "value": "单冷型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D7": {
+        "value": "CC>14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E7": {
+        "value": "SEER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F7": {
+        "value": "Wh/Wh",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G7": {
+        "value": "3.6",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H7": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I7": {
+        "value": "2.7",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J7": {
+        "value": "3",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K7": {
+        "value": "1",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A8": {
+        "value": "3",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B8": {
+        "value": "风冷式单元式空调机",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C8": {
+        "value": "热泵型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D8": {
+        "value": "7000≤CC≤14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E8": {
+        "value": "APF",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F8": {
+        "value": "Wh/Wh",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G8": {
+        "value": "3.5",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H8": {
+        "value": "3.1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I8": {
+        "value": "2.7",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J8": {
+        "value": "3",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K8": {
+        "value": "1",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A9": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B9": {
+        "value": "风冷式单元式空调机",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C9": {
+        "value": "热泵型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D9": {
+        "value": "CC>14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E9": {
+        "value": "APF",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F9": {
+        "value": "Wh/Wh",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G9": {
+        "value": "3.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H9": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I9": {
+        "value": "2.6",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J9": {
+        "value": "3",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K9": {
+        "value": "1",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A10": {
+        "value": "5",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B10": {
+        "value": "水冷式单元式空调机",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C10": {
+        "value": "原表未细分冷热型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D10": {
+        "value": "CC>14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E10": {
+        "value": "IPLV",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F10": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G10": {
+        "value": "4.5",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H10": {
+        "value": "4.3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I10": {
+        "value": "3.7",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J10": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K10": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A11": {
+        "value": "6",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B11": {
+        "value": "水冷式单元式空调机",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C11": {
+        "value": "原表未细分冷热型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D11": {
+        "value": "7000≤CC≤14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E11": {
+        "value": "IPLV",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F11": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G11": {
+        "value": "4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H11": {
+        "value": "3.7",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I11": {
+        "value": "3.3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J11": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K11": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A12": {
+        "value": "7",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B12": {
+        "value": "计算机和数据处理机房用",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C12": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D12": {
+        "value": "原表未列容量分档",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E12": {
+        "value": "AEER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F12": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G12": {
+        "value": "4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H12": {
+        "value": "3.6",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I12": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J12": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K12": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A13": {
+        "value": "8",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B13": {
+        "value": "计算机和数据处理机房用",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C13": {
+        "value": "水冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D13": {
+        "value": "原表未列容量分档",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E13": {
+        "value": "AEER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F13": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G13": {
+        "value": "4.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H13": {
+        "value": "4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I13": {
+        "value": "3.5",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J13": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K13": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A14": {
+        "value": "9",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B14": {
+        "value": "计算机和数据处理机房用",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C14": {
+        "value": "乙二醇经济冷却式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D14": {
+        "value": "原表未列容量分档",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E14": {
+        "value": "AEER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F14": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G14": {
+        "value": "3.9",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H14": {
+        "value": "3.7",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I14": {
+        "value": "3.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J14": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K14": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A15": {
+        "value": "10",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B15": {
+        "value": "计算机和数据处理机房用",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C15": {
+        "value": "风冷双冷源式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D15": {
+        "value": "原表未列容量分档",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E15": {
+        "value": "AEER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F15": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G15": {
+        "value": "3.6",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H15": {
+        "value": "3.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I15": {
+        "value": "2.9",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J15": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K15": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A16": {
+        "value": "11",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B16": {
+        "value": "计算机和数据处理机房用",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C16": {
+        "value": "水冷双冷源式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D16": {
+        "value": "原表未列容量分档",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E16": {
+        "value": "AEER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F16": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G16": {
+        "value": "4.1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H16": {
+        "value": "3.9",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I16": {
+        "value": "3.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J16": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K16": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A17": {
+        "value": "12",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B17": {
+        "value": "通讯基站用单元式空气调节机",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C17": {
+        "value": "原表未细分",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D17": {
+        "value": "原表未列容量分档",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E17": {
+        "value": "COP",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F17": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G17": {
+        "value": "3.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H17": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I17": {
+        "value": "2.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J17": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K17": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A18": {
+        "value": "13",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B18": {
+        "value": "恒温恒湿型单元式空气调节机",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C18": {
+        "value": "原表未细分",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D18": {
+        "value": "原表未列容量分档",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E18": {
+        "value": "AEER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F18": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G18": {
+        "value": "4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H18": {
+        "value": "3.7",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I18": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J18": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K18": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A20": {
+        "value": "表1跨页为同一张表；第5、6源行保持水冷式原始倒序。所有39个等级数值源格均非空。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A21": {
+        "value": "合并类别展开为逐行条件；合并范围见STANDARD_MAPPING；字面小数及坐标见evidence/cell_audit.csv。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A22": {
+        "value": "仅标准表值资料，不含评价算法；95%与110%是第5.4条允差，不能用于降低表1限值。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  }
+]

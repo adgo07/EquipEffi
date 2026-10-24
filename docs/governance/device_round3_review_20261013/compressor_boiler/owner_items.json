@@ -1,0 +1,662 @@
+[
+  {
+    "local_id": "C01",
+    "existing_issue_id": "EQP-STD-GB19153-001",
+    "standard": "GB19153",
+    "source_location": "PDF3/4/16 §1、4.3、6.1d；表1～6",
+    "source_excerpt": "连续范围与离散表点；无插值规定",
+    "impact": "非表列功率/压力如何输出；表中破折号不可变成0",
+    "alternatives": "保留缺数据；另行引入有据选档或插值（需解释批准）",
+    "recommendation": "建议先仅支持明列表点，不静默插值",
+    "evidence_strength": "强：原文；弱：任何插值扩展",
+    "approval_status": "OPEN，未见Owner批准解释",
+    "owner_question": "非表列点允许何种正式处理？",
+    "priority": "P1",
+    "id": "EQP-STD-GB19153-001",
+    "ambiguity": "非表列功率/压力如何输出；表中破折号不可变成0",
+    "options": "保留缺数据；另行引入有据选档或插值（需解释批准）",
+    "source_opinion_ids": [
+      "R01"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "3952456cddde101fc67f04a251b9f8fc68b0086de4cff31cc53a80a547344543"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf",
+        "sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "ee226013619e54eb6f74ff87e22ebae48f06178d37abad5fe1b1849c6e9af9f6"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "a21a1b3c770f714b2c7c1ef70317470e9b7f348169d74849d071dcfae1870634"
+      }
+    ]
+  },
+  {
+    "local_id": "C02",
+    "existing_issue_id": "EQP-STD-GB19153-002",
+    "standard": "GB19153",
+    "source_location": "PDF4 §4.3a；PDF7/10表末",
+    "source_excerpt": "额定功率大一挡",
+    "impact": "表末和电机完整档序列不明，功率符合性受影响",
+    "alternatives": "采用经核引用电机档序列；缺序列时不判该条件",
+    "recommendation": "先取得档序列证据，不能把下一表行等同下一档",
+    "evidence_strength": "强：文字；缺：外部档序列",
+    "approval_status": "OPEN，未见Owner批准解释",
+    "owner_question": "大一挡采用哪份经核档序列，表末如何处理？",
+    "priority": "P1",
+    "id": "EQP-STD-GB19153-002",
+    "ambiguity": "表末和电机完整档序列不明，功率符合性受影响",
+    "options": "采用经核引用电机档序列；缺序列时不判该条件",
+    "source_opinion_ids": [
+      "R02"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "3952456cddde101fc67f04a251b9f8fc68b0086de4cff31cc53a80a547344543"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf",
+        "sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "ee226013619e54eb6f74ff87e22ebae48f06178d37abad5fe1b1849c6e9af9f6"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "a21a1b3c770f714b2c7c1ef70317470e9b7f348169d74849d071dcfae1870634"
+      }
+    ]
+  },
+  {
+    "local_id": "C03",
+    "existing_issue_id": "EQP-STD-GB19153-003",
+    "standard": "GB19153",
+    "source_location": "PDF16/17 §6.3.3、6.5.2 式3/4；表7",
+    "source_excerpt": "加权eVC与PC=eVC×qV,corr",
+    "impact": "配对不同流量可改变功率符合性",
+    "alternatives": "加权eVC配满负荷q；分别工况eVC与q成对",
+    "recommendation": "需试验引用与解释证据，不把两种口径混用",
+    "evidence_strength": "强：公式；中：配对歧义",
+    "approval_status": "OPEN，未见Owner批准解释",
+    "owner_question": "变转速PC中eVC与q应配哪个工况？",
+    "priority": "P1",
+    "id": "EQP-STD-GB19153-003",
+    "ambiguity": "配对不同流量可改变功率符合性",
+    "options": "加权eVC配满负荷q；分别工况eVC与q成对",
+    "source_opinion_ids": [
+      "R03"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "3952456cddde101fc67f04a251b9f8fc68b0086de4cff31cc53a80a547344543"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf",
+        "sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "ee226013619e54eb6f74ff87e22ebae48f06178d37abad5fe1b1849c6e9af9f6"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "a21a1b3c770f714b2c7c1ef70317470e9b7f348169d74849d071dcfae1870634"
+      }
+    ]
+  },
+  {
+    "local_id": "C04",
+    "existing_issue_id": "EQP-STD-GB19153-004",
+    "standard": "GB19153",
+    "source_location": "PDF17 表7后段；A5:B7",
+    "source_excerpt": "偏差应不大于±5%",
+    "impact": "分母取满负荷还是各目标流量影响70/40%点有效性",
+    "alternatives": "满负荷流量分母；目标点流量分母",
+    "recommendation": "保留原句和两种算例，未批准前不硬编码",
+    "evidence_strength": "强：原句；中：分母不明",
+    "approval_status": "OPEN，未见Owner批准解释",
+    "owner_question": "70/40%偏差的分母按哪个量？",
+    "priority": "P1",
+    "id": "EQP-STD-GB19153-004",
+    "ambiguity": "分母取满负荷还是各目标流量影响70/40%点有效性",
+    "options": "满负荷流量分母；目标点流量分母",
+    "source_opinion_ids": [
+      "R04"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "3952456cddde101fc67f04a251b9f8fc68b0086de4cff31cc53a80a547344543"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf",
+        "sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "ee226013619e54eb6f74ff87e22ebae48f06178d37abad5fe1b1849c6e9af9f6"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "a21a1b3c770f714b2c7c1ef70317470e9b7f348169d74849d071dcfae1870634"
+      }
+    ]
+  },
+  {
+    "local_id": "B01",
+    "existing_issue_id": "EQP-STD-GB24500-001",
+    "standard": "GB24500",
+    "source_location": "PDF5表3后段、PDF6 §5.1",
+    "source_excerpt": "低热值生物质限定值不低于设计；其他等级仍表3",
+    "impact": "设计限定值与表三级不同及特殊条件交叉时，合格/等级可能分离",
+    "alternatives": "并列输出等级与特殊限定值；按一项覆盖另一项",
+    "recommendation": "建议分别保存，交叉优先级需Owner解释",
+    "evidence_strength": "强：两条原文；中：组合未规定",
+    "approval_status": "OPEN，未见Owner批准解释",
+    "owner_question": "设计限定值与等级冲突或特殊条件交叉时正式组合结论是什么？",
+    "priority": "P1",
+    "id": "EQP-STD-GB24500-001",
+    "ambiguity": "设计限定值与表三级不同及特殊条件交叉时，合格/等级可能分离",
+    "options": "并列输出等级与特殊限定值；按一项覆盖另一项",
+    "source_opinion_ids": [
+      "请求A"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+        "sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "4054908813b63ab988cc7c2244640a5694e61581b0fc27316053cdc637e26fcc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "2de132740507249c410b51e54e1eb1fb7b3afa7b805b196abc865b84dfa8f84f"
+      }
+    ]
+  },
+  {
+    "local_id": "B02",
+    "existing_issue_id": "EQP-STD-GB24500-002",
+    "standard": "GB24500",
+    "source_location": "PDF3第4章",
+    "source_excerpt": "以满足初始排放浓度要求为前提",
+    "impact": "缺排放证据不能自动声明已满足",
+    "alternatives": "要求适用报告；接受明确责任声明；缺证据保留待证前提",
+    "recommendation": "先确定可接受证据与适用标准，不自造排放限值",
+    "evidence_strength": "强：前提；缺：适用排放全文",
+    "approval_status": "OPEN，未见Owner批准解释",
+    "owner_question": "何种排放证据足够，缺证据的正式结论如何表达？",
+    "priority": "P1",
+    "id": "EQP-STD-GB24500-002",
+    "ambiguity": "缺排放证据不能自动声明已满足",
+    "options": "要求适用报告；接受明确责任声明；缺证据保留待证前提",
+    "source_opinion_ids": [
+      "请求B"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+        "sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "4054908813b63ab988cc7c2244640a5694e61581b0fc27316053cdc637e26fcc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "2de132740507249c410b51e54e1eb1fb7b3afa7b805b196abc865b84dfa8f84f"
+      }
+    ]
+  },
+  {
+    "local_id": "N01",
+    "existing_issue_id": null,
+    "standard": "GB19153",
+    "source_location": "PDF13表4；runtime_discrepancies.json",
+    "source_excerpt": "18.5/.7三级7.3[6.7]、7.8[7.1]、8.8[7.4]",
+    "impact": "旧JSON30组合null且漏表5/6；新表正确",
+    "alternatives": "按QA范围未来修旧包；保持POST_V1并明确风险记录",
+    "recommendation": "事实纠错先登记QA，不需要Owner批准错误值成为标准",
+    "evidence_strength": "强：原图/XLSX/JSON三方；未测正式产品调用",
+    "approval_status": "未登记候选/StageB设计待办，不构成已批准解释",
+    "owner_question": "无需批准标准数值；需安排资产纠错任务及实际调用影响核查",
+    "priority": "P1",
+    "id": "LOCAL-CB-N01",
+    "ambiguity": "旧JSON30组合null且漏表5/6；新表正确",
+    "options": "按QA范围未来修旧包；保持POST_V1并明确风险记录",
+    "source_opinion_ids": [
+      "earlier compressor R-01"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "3952456cddde101fc67f04a251b9f8fc68b0086de4cff31cc53a80a547344543"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf",
+        "sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "ee226013619e54eb6f74ff87e22ebae48f06178d37abad5fe1b1849c6e9af9f6"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "a21a1b3c770f714b2c7c1ef70317470e9b7f348169d74849d071dcfae1870634"
+      }
+    ]
+  },
+  {
+    "local_id": "N02",
+    "existing_issue_id": null,
+    "standard": "GB24500",
+    "source_location": "PDF6表4；工作簿表4 室燃!F6:F14",
+    "source_excerpt": "左栏96/94/92；右栏103a(93b)/101a(91b)/98a(88b)",
+    "impact": "左栏映射为非冷凝属推断；关系可影响路由",
+    "alternatives": "左栏专属非冷凝；左栏一般要求且冷凝加专门要求",
+    "recommendation": "建议标推断并取得解释依据；高低位脚注事实保留",
+    "evidence_strength": "强：原表；中：左栏专属性解释",
+    "approval_status": "未登记候选/StageB设计待办，不构成已批准解释",
+    "owner_question": "左天然气栏是否仅用于非冷凝，与右栏是否互斥？",
+    "priority": "P1",
+    "id": "LOCAL-CB-N02",
+    "ambiguity": "左栏映射为非冷凝属推断；关系可影响路由",
+    "options": "左栏专属非冷凝；左栏一般要求且冷凝加专门要求",
+    "source_opinion_ids": [
+      "earlier boiler P3/P4"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+        "sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "4054908813b63ab988cc7c2244640a5694e61581b0fc27316053cdc637e26fcc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "2de132740507249c410b51e54e1eb1fb7b3afa7b805b196abc865b84dfa8f84f"
+      }
+    ]
+  },
+  {
+    "local_id": "N03",
+    "existing_issue_id": null,
+    "standard": "GB24500",
+    "source_location": "PDF6 §5.2；限定值与来源",
+    "source_excerpt": "电加热锅炉不低于97%",
+    "impact": "原文没有电锅炉三级值，不能虚构等级",
+    "alternatives": "只输出限定值符合性及等级未规定；不支持等级计算",
+    "recommendation": "建议按明文仅判断97%，呈现契约普通StageB设计",
+    "evidence_strength": "强：原文完整；无标准冲突",
+    "approval_status": "未登记候选/StageB设计待办，不构成已批准解释",
+    "owner_question": "若产品要求每次给等级，是否接受电锅炉只给限定值结果？",
+    "priority": "P2",
+    "id": "LOCAL-CB-N03",
+    "ambiguity": "原文没有电锅炉三级值，不能虚构等级",
+    "options": "只输出限定值符合性及等级未规定；不支持等级计算",
+    "source_opinion_ids": [
+      "本轮映射/候选全量整理"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+        "sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "4054908813b63ab988cc7c2244640a5694e61581b0fc27316053cdc637e26fcc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "2de132740507249c410b51e54e1eb1fb7b3afa7b805b196abc865b84dfa8f84f"
+      }
+    ]
+  },
+  {
+    "local_id": "N04",
+    "existing_issue_id": null,
+    "standard": "GB24500",
+    "source_location": "PDF4表1/PDF5表2 燃料品种与特性",
+    "source_excerpt": "烟煤II与褐煤数值特征可能交叠",
+    "impact": "已知煤种不冲突；缺煤种时不能仅数值推分类",
+    "alternatives": "要求煤种；允许有据外部煤分类",
+    "recommendation": "建议保留煤种输入，矛盾数据返回资料问题",
+    "evidence_strength": "强：表头同时有品种；不支持全局重叠缺陷",
+    "approval_status": "未登记候选/StageB设计待办，不构成已批准解释",
+    "owner_question": "仅在拟允许自动识煤种时需决定证据与冲突处理；普通输入校验无需反复批准",
+    "priority": "P2",
+    "id": "LOCAL-CB-N04",
+    "ambiguity": "已知煤种不冲突；缺煤种时不能仅数值推分类",
+    "options": "要求煤种；允许有据外部煤分类",
+    "source_opinion_ids": [
+      "本轮映射/候选全量整理"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+        "sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "4054908813b63ab988cc7c2244640a5694e61581b0fc27316053cdc637e26fcc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "2de132740507249c410b51e54e1eb1fb7b3afa7b805b196abc865b84dfa8f84f"
+      }
+    ]
+  },
+  {
+    "local_id": "N05",
+    "existing_issue_id": null,
+    "standard": "GB24500",
+    "source_location": "PDF4表1、PDF5表3 D或Q",
+    "source_excerpt": "D≤20或Q≤14；D≤10或Q≤7",
+    "impact": "D/Q不是通用换算公式；双输入矛盾可误路由",
+    "alternatives": "按设备对应物理量；缺身份不选档",
+    "recommendation": "建议按蒸汽/热水对应量，不由边界比值换算",
+    "evidence_strength": "强：原表；缺：矛盾输入产品需求",
+    "approval_status": "未登记候选/StageB设计待办，不构成已批准解释",
+    "owner_question": "若支持同时输入D/Q，矛盾数据如何处理属StageB契约，不默认任选低档",
+    "priority": "P2",
+    "id": "LOCAL-CB-N05",
+    "ambiguity": "D/Q不是通用换算公式；双输入矛盾可误路由",
+    "options": "按设备对应物理量；缺身份不选档",
+    "source_opinion_ids": [
+      "本轮映射/候选全量整理"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+        "sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "4054908813b63ab988cc7c2244640a5694e61581b0fc27316053cdc637e26fcc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "2de132740507249c410b51e54e1eb1fb7b3afa7b805b196abc865b84dfa8f84f"
+      }
+    ]
+  },
+  {
+    "local_id": "N06",
+    "existing_issue_id": null,
+    "standard": "GB19153",
+    "source_location": "PDF16 式1/2 §6.3；映射输入",
+    "source_excerpt": "eVC=K14 Pcorr/qcorr，温度校正",
+    "impact": "已校正比功率与原始测量混用可重复校正",
+    "alternatives": "直接导入已验证校正量；原始量经试验流程计算",
+    "recommendation": "建议明确输入来源与校正阶段，未经核验不重建测试链",
+    "evidence_strength": "强：公式；缺：外部试验流程",
+    "approval_status": "未登记候选/StageB设计待办，不构成已批准解释",
+    "owner_question": "若接收两类输入，需明确何类量已含K14；正常字段设计不属于新的标准解释批准",
+    "priority": "P2",
+    "id": "LOCAL-CB-N06",
+    "ambiguity": "已校正比功率与原始测量混用可重复校正",
+    "options": "直接导入已验证校正量；原始量经试验流程计算",
+    "source_opinion_ids": [
+      "本轮映射/候选全量整理"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "3952456cddde101fc67f04a251b9f8fc68b0086de4cff31cc53a80a547344543"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf",
+        "sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "ee226013619e54eb6f74ff87e22ebae48f06178d37abad5fe1b1849c6e9af9f6"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "a21a1b3c770f714b2c7c1ef70317470e9b7f348169d74849d071dcfae1870634"
+      }
+    ]
+  },
+  {
+    "local_id": "N07",
+    "existing_issue_id": null,
+    "standard": "GB19153",
+    "source_location": "PDF3规范性引用；PDF4 §4.3b；PDF16/18测试/附录",
+    "source_excerpt": "外部测试、传动效率、绝压及校正依据",
+    "impact": "外部全文未核，不能宣称完整测试输入到等级闭环",
+    "alternatives": "先限定认证试验输入；补齐引用全文再设计测试计算",
+    "recommendation": "建议获取对应版本，不把附录估算替代测试真值",
+    "evidence_strength": "强：引用存在；弱：外部具体条款未核",
+    "approval_status": "未登记候选/StageB设计待办，不构成已批准解释",
+    "owner_question": "若扩展到原始测试数据或附录估算判级，先确定范围及依据；当前无该授权",
+    "priority": "P2",
+    "id": "LOCAL-CB-N07",
+    "ambiguity": "外部全文未核，不能宣称完整测试输入到等级闭环",
+    "options": "先限定认证试验输入；补齐引用全文再设计测试计算",
+    "source_opinion_ids": [
+      "本轮映射/候选全量整理"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "3952456cddde101fc67f04a251b9f8fc68b0086de4cff31cc53a80a547344543"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf",
+        "sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "ee226013619e54eb6f74ff87e22ebae48f06178d37abad5fe1b1849c6e9af9f6"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+        "sha256": "a21a1b3c770f714b2c7c1ef70317470e9b7f348169d74849d071dcfae1870634"
+      }
+    ]
+  },
+  {
+    "local_id": "N08",
+    "existing_issue_id": null,
+    "standard": "GB24500",
+    "source_location": "PDF3规范性引用、第6章；SOURCE_AND_VERIFICATION",
+    "source_excerpt": "GB/T10180、NB/T47066；GB/T2900.48术语",
+    "impact": "测试算法与术语外部全文未核，主映射引用清单漏2900.48",
+    "alternatives": "限定已测效率输入；取得全文后实现测试计算",
+    "recommendation": "建议补全引用定位，不能用任意热值比例换效率",
+    "evidence_strength": "强：引用事实；缺：全文",
+    "approval_status": "未登记候选/StageB设计待办，不构成已批准解释",
+    "owner_question": "扩展测试计算前需哪些版本证据；普通补录引用无需Owner决定",
+    "priority": "P2",
+    "id": "LOCAL-CB-N08",
+    "ambiguity": "测试算法与术语外部全文未核，主映射引用清单漏2900.48",
+    "options": "限定已测效率输入；取得全文后实现测试计算",
+    "source_opinion_ids": [
+      "本轮映射/候选全量整理"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+        "sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "4054908813b63ab988cc7c2244640a5694e61581b0fc27316053cdc637e26fcc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "2de132740507249c410b51e54e1eb1fb7b3afa7b805b196abc865b84dfa8f84f"
+      }
+    ]
+  },
+  {
+    "local_id": "N09",
+    "existing_issue_id": null,
+    "standard": "GB19153/GB24500",
+    "source_location": "两映射Numeric/边界候选章节",
+    "source_excerpt": "未指定软件精度、修约时点、容差",
+    "impact": "提前修约/epsilon可能越限；锅炉103不能截断100",
+    "alternatives": "保留精确输入比较；经标准依据另立Numeric Profile",
+    "recommendation": "建议先声明计算链，不套用Pump Decimal50为标准强制",
+    "evidence_strength": "强：本标准未给规则；缺：外部测试修约",
+    "approval_status": "未登记候选/StageB设计待办，不构成已批准解释",
+    "owner_question": "只有影响正式比较的额外修约/容差需要解释批准，不需逐字段确认",
+    "priority": "P2",
+    "id": "LOCAL-CB-N09",
+    "ambiguity": "提前修约/epsilon可能越限；锅炉103不能截断100",
+    "options": "保留精确输入比较；经标准依据另立Numeric Profile",
+    "source_opinion_ids": [
+      "本轮映射/候选全量整理"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf",
+        "sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+        "sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285"
+      }
+    ]
+  },
+  {
+    "local_id": "N10",
+    "existing_issue_id": null,
+    "standard": "GB24500",
+    "source_location": "边界候选BC22、PDF5/6设计效率条款",
+    "source_excerpt": "设计效率缺失与0不同",
+    "impact": "没有依据把0当缺失或合法设计；高位/低位必须一致",
+    "alternatives": "验证报告中的设计效率；数值异常转资料核实",
+    "recommendation": "建议不默认替换表三级、不机械接受0；属数据证据要求",
+    "evidence_strength": "强：设计值要求；中：零值合法性未规定",
+    "approval_status": "未登记候选/StageB设计待办，不构成已批准解释",
+    "owner_question": "若拟自动裁定0设计效率合法性，需依据；当前不新增标准硬门禁",
+    "priority": "P2",
+    "id": "LOCAL-CB-N10",
+    "ambiguity": "没有依据把0当缺失或合法设计；高位/低位必须一致",
+    "options": "验证报告中的设计效率；数值异常转资料核实",
+    "source_opinion_ids": [
+      "本轮映射/候选全量整理"
+    ],
+    "source_evidence": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+        "sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "4054908813b63ab988cc7c2244640a5694e61581b0fc27316053cdc637e26fcc"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\standard_mapping_acceptance_20261013\\snapshot\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+        "sha256": "2de132740507249c410b51e54e1eb1fb7b3afa7b805b196abc865b84dfa8f84f"
+      }
+    ]
+  }
+]

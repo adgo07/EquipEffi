@@ -1,0 +1,45 @@
+{
+  "unlinked_junctions": [
+    {
+      "target": "C:\\Users\\WANGWEI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\node_modules"
+    },
+    {
+      "target": "C:\\Users\\WANGWEI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\node_modules"
+    },
+    {
+      "target": "C:\\Users\\WANGWEI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\node_modules"
+    },
+    {
+      "target": "C:\\Users\\WANGWEI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\node_modules"
+    },
+    {
+      "target": "C:\\Users\\WANGWEI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\node_modules"
+    },
+    {
+      "target": "C:\\Users\\WANGWEI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\node_modules"
+    },
+    {
+      "target": "C:\\Users\\WANGWEI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\node_modules"
+    },
+    {
+      "target": "C:\\Users\\WANGWEI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\node_modules"
+    },
+    {
+      "target": "C:\\Users\\WANGWEI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\node_modules"
+    },
+    {
+      "target": "C:\\Users\\WANGWEI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\node_modules"
+    }
+  ],
+  "removed_original_files": 850
+}

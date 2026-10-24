@@ -1,0 +1,20 @@
+{
+  ".gitignore": "b0ac94269f3f6d4297fc775dadeea363e676d401c6f2d2265817e77323aaf436",
+  "BOUNDARY_CANDIDATES.md": "7091b691a00f99e2459ed81691d2cccb29d18aabe8d234df387f53680cba1fca",
+  "build_data.py": "13fddc46795f0656668c90f0b5e506fe884502a0214bab6db3e993db708f2da2",
+  "build_workbook.mjs": "edfd1216d7927a47ceb4639446517de06ae66a2b2033ec9fd63cef2c89245186",
+  "data/GBT36561_2018_TABLE_VALUES.xlsx": "284ceebe8b76f2b20cbbfe3ebb144e2abd4e85a6f598d6d389510e13f410af0a",
+  "data/table_values.csv": "f3daad132955707b3153e2592134c57d3d62b53df2dfc5d506658fcba47a2fe9",
+  "data/table_values.json": "01048799230ae5316d7d3ebae78cefd640961778f61404e3e72821ab1e1d9031",
+  "evidence/check_results.json": "59f995657eeaf352739015be9021225937b75826cd313d700f5a0e4af6d56c43",
+  "evidence/numeric_review.csv": "8deaf3319798f84f2655a69abfb0844dd1840ad6d9fb87b65db39339e6c30e16",
+  "evidence/TABLE_LOCATIONS.md": "2e4a91fe27ba081d0a1eb4c5e676e910836dec86c149af77a6bc57b85a5c06f3",
+  "evidence/workbook_coordinates.json": "a27018fa98b85306f1af4e2f9e1c474b688ea2bcee7a33026a913c18b3fbc1f7",
+  "HANDOFF.md": "ae67a4200897f5dc1a5d117bcc6b220ec2dbd0548ee302492522e6a030cb4c2c",
+  "ISSUE_REGISTRATION_REQUEST.md": "206f05eb51521f710ecc66d5e7bbe2dcb7ac5ce8ef26bf5e8070ca465ec1f987",
+  "README.md": "d9698c99e631d5959cc9154f902e103ed41fe9695361e706bab23acad3a81704",
+  "render_source.py": "191c0b749c4d6600e85389866b7c495e3b823b506e46249ba3962f61827b8a59",
+  "SOURCE_AND_CHECKS.md": "fbed1609cdcb4f762b93122ea6182ffde752f4d941917783511ccc52fd60779a",
+  "STANDARD_MAPPING.md": "dc59a8573a1467443afb3e8d4ecd0e073edb0f50713ffa742e4bd0d0ec062cde",
+  "verify_assets.py": "b451655b1bf1b46edb5be0315d8e45effbe1dfd30e3a555c9f7a48dc3b1d8c58"
+}

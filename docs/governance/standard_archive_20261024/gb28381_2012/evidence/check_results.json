@@ -1,0 +1,10 @@
+{
+  "table_sheets": 8,
+  "expected_table_sheets": 8,
+  "threshold_pass": 480,
+  "threshold_fail": 0,
+  "formula_count": 0,
+  "blank_threshold_cells": 0,
+  "source_sha256": "07410053c5b190193169686f54b5f86fb243a9a069c3f6c3e0f085637c9b1a75",
+  "workbook_sha256": "217ff4171917de79dc4174f328f0293b045a2e57a18f330b41b210d32bd343bc"
+}

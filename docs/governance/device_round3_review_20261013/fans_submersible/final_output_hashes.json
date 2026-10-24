@@ -1,0 +1,30 @@
+{
+  "utc": "2026-10-13T16:01:33.875895+00:00",
+  "input_changes": [],
+  "files": [
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\fans_submersible\\REPORT.md",
+      "sha256": "ce8c78905188b829c05ed9beb9a505b175e5a512085a4589b0429bd85ac97091"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\fans_submersible\\owner_items.json",
+      "sha256": "bb31c1ce7559ae2a289ac89222c7f817b35453775c78fd219abd308a275e6e58"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\fans_submersible\\OWNER_QUESTIONS.md",
+      "sha256": "e8734858bb1f49590be134f6708ff6ebbfadb497f483343c0749d0126c6d83d4"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\fans_submersible\\round3_findings.json",
+      "sha256": "2c54b936033ddfea2c8840f756661ef36138b958c49411353ac37365cd863d5f"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\fans_submersible\\read_coverage.json",
+      "sha256": "970d513dff768e03d842f697d82d055db3c2e31124f1f34c677c8b8359876e1f"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\fans_submersible\\A4_original_p04.png",
+      "sha256": "e9923a77d3427d3a795fda240929a190947cd99a07d0d09b313d48c725a55918"
+    }
+  ]
+}

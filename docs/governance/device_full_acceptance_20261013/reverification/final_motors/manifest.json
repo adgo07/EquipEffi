@@ -1,0 +1,324 @@
+{
+  "head": "d9f711068bde583138a7f3dded6f64dcaa339761",
+  "locked_central": "ee5feb0cc34dbd99790500fadd0c4c932e202a20",
+  "scope": "三项电机Stage A资料独立复验；非软件支持验收",
+  "conclusion": "MAPPING_FACTS_PASS",
+  "sources": [
+    {
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\2. GB+18613-2020 电动机能效限定值及能效等级.pdf",
+      "first_sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+      "before_sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+      "unchanged_from_first": true,
+      "after_sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\data\\GB18613_2020_表1-6校对数据_A1.xlsx",
+      "first_sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+      "before_sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+      "unchanged_from_first": true,
+      "after_sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\STANDARD_MAPPING.md",
+      "first_sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d",
+      "before_sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d",
+      "unchanged_from_first": true,
+      "after_sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\ISSUE_REGISTRATION_REQUEST.md",
+      "first_sha256": "fc8b21269b7968e33201ec46bbb6b0ede1dc66508d56d8a40919b7bf16806735",
+      "before_sha256": "d70de8354f92af36f9d4ad7cedc936ac636290f319f557950029170bb931f30f",
+      "unchanged_from_first": false,
+      "semantic_change": "仅追加正式编号回链；移除追加段并还原换行后精确恢复首轮SHA",
+      "original_newline_reconstruction": [
+        "'\\n'"
+      ],
+      "appended_text": "## 正式编号回链（2026-10-13）\n\n本目录的请求键已在[根台账](../../../STANDARD_ISSUES_REGISTER.md)分配稳定编号。**状态与后续软件决定只以根台账为准**；本地旧文中“尚未登记”的句子描述登记前历史时点。登记不批准建议解释，也不关闭问题。\n\n|本地请求键|稳定编号|\n|---|---|\n|`R01`|`EQP-STD-GB18613-001`|\n|`R02`|`EQP-STD-GB18613-002`|\n|`R03`|`EQP-STD-GB18613-003`|\n|`R04`|`EQP-STD-GB18613-004`|\n",
+      "after_sha256": "d70de8354f92af36f9d4ad7cedc936ac636290f319f557950029170bb931f30f",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\3. GB 30254-2024 高压三相笼型异步电动机能效限定值及能效等级.pdf",
+      "first_sha256": "53a6d2e8098fea9f81adf6a12fe3298707bf6b22cc8c972110aacdcd8a168135",
+      "before_sha256": "53a6d2e8098fea9f81adf6a12fe3298707bf6b22cc8c972110aacdcd8a168135",
+      "unchanged_from_first": true,
+      "after_sha256": "53a6d2e8098fea9f81adf6a12fe3298707bf6b22cc8c972110aacdcd8a168135",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\data\\GB30254_2024_标准表值.xlsx",
+      "first_sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+      "before_sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+      "unchanged_from_first": true,
+      "after_sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\STANDARD_MAPPING.md",
+      "first_sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba",
+      "before_sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba",
+      "unchanged_from_first": true,
+      "after_sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\ISSUE_REGISTRATION_REQUEST.md",
+      "first_sha256": "af630a305f1339bf70ef52602fa9fc2c06ebf3a7eb1ac96982c2067a1e1caa45",
+      "before_sha256": "9b6c9a2c8d9a99b2d69435dfad14afe57cc6d37a0d9a02587eebf1d1983249bc",
+      "unchanged_from_first": false,
+      "semantic_change": "仅追加正式编号回链；移除追加段并还原换行后精确恢复首轮SHA",
+      "original_newline_reconstruction": [
+        "'\\r\\n'"
+      ],
+      "appended_text": "## 正式编号回链（2026-10-13）\n\n本目录的请求键已在[根台账](../../../STANDARD_ISSUES_REGISTER.md)分配稳定编号。**状态与后续软件决定只以根台账为准**；本地旧文中“尚未登记”的句子描述登记前历史时点。登记不批准建议解释，也不关闭问题。\n\n|本地请求键|稳定编号|\n|---|---|\n|`请求1`|`EQP-STD-GB30254-001`|\n|`请求2`|`EQP-STD-GB30254-002`|\n",
+      "after_sha256": "9b6c9a2c8d9a99b2d69435dfad14afe57cc6d37a0d9a02587eebf1d1983249bc",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\4. GB 30253-2024 永磁同步电动机能效限定值及能效等级.pdf",
+      "first_sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053",
+      "before_sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053",
+      "unchanged_from_first": true,
+      "after_sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\data\\GB30253_2024_TABLE_VALUES.xlsx",
+      "first_sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+      "before_sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+      "unchanged_from_first": true,
+      "after_sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\STANDARD_MAPPING.md",
+      "first_sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13",
+      "before_sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13",
+      "unchanged_from_first": true,
+      "after_sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\ISSUE_REGISTRATION_REQUEST.md",
+      "first_sha256": "83be22eb35f9f9d2eaf55e2af6f0c468ad71069e9425c5ea1b64072c713585ec",
+      "before_sha256": "06b9054bd70a8905ad7694b2f4413b4c618647dd016369a1ec272b8e68ba82e4",
+      "unchanged_from_first": false,
+      "semantic_change": "仅追加正式编号回链；移除追加段并还原换行后精确恢复首轮SHA",
+      "original_newline_reconstruction": [
+        "'\\n'"
+      ],
+      "appended_text": "## 正式编号回链（2026-10-13）\n\n本目录的请求键已在[根台账](../../../STANDARD_ISSUES_REGISTER.md)分配稳定编号。**状态与后续软件决定只以根台账为准**；本地旧文中“尚未登记”的句子描述登记前历史时点。登记不批准建议解释，也不关闭问题。\n\n|本地请求键|稳定编号|\n|---|---|\n|`R1`|`EQP-STD-GB30253-001`|\n|`R2`|`EQP-STD-GB30253-002`|\n|`R3`|`EQP-STD-GB30253-003`|\n",
+      "after_sha256": "06b9054bd70a8905ad7694b2f4413b4c618647dd016369a1ec272b8e68ba82e4",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+      "first_sha256": "f60879e271dcb9a3ae939711add9a63b9d906bc10e0c9a1a6d39c05221caf89e",
+      "before_sha256": "4989190f141d482dbb00c3fedb5c0ac2b52d8560e24ec4c66ccf02c36f1bc79e",
+      "unchanged_from_first": false,
+      "semantic_change": "根台账新增登记；本组九条逐项审查，其他标准变化不属于本组结论",
+      "after_sha256": "4989190f141d482dbb00c3fedb5c0ac2b52d8560e24ec4c66ccf02c36f1bc79e",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\platform-lock.json",
+      "first_sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53",
+      "before_sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53",
+      "unchanged_from_first": true,
+      "after_sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\README.md",
+      "first_sha256": "4f94b395ada998b70988df3b4ca0bc9f1639792091c919192783f5d6cbed4909",
+      "before_sha256": "4f94b395ada998b70988df3b4ca0bc9f1639792091c919192783f5d6cbed4909",
+      "unchanged_from_first": true,
+      "after_sha256": "4f94b395ada998b70988df3b4ca0bc9f1639792091c919192783f5d6cbed4909",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\BOUNDARY_CANDIDATES.md",
+      "first_sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0",
+      "before_sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0",
+      "unchanged_from_first": true,
+      "after_sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\README.md",
+      "first_sha256": "d3489184029b293a47ab9baff922792b1aab00579249145efa26eb77a441b61e",
+      "before_sha256": "d3489184029b293a47ab9baff922792b1aab00579249145efa26eb77a441b61e",
+      "unchanged_from_first": true,
+      "after_sha256": "d3489184029b293a47ab9baff922792b1aab00579249145efa26eb77a441b61e",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\BOUNDARY_CASES.md",
+      "first_sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403",
+      "before_sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403",
+      "unchanged_from_first": true,
+      "after_sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\README.md",
+      "first_sha256": "973147fc2c06462a50f3d114306de69a479dd31264ef32a77d4e4af34cb34e61",
+      "before_sha256": "973147fc2c06462a50f3d114306de69a479dd31264ef32a77d4e4af34cb34e61",
+      "unchanged_from_first": true,
+      "after_sha256": "973147fc2c06462a50f3d114306de69a479dd31264ef32a77d4e4af34cb34e61",
+      "stable_during_reverification": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\BOUNDARY_CANDIDATES.md",
+      "first_sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b",
+      "before_sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b",
+      "unchanged_from_first": true,
+      "after_sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b",
+      "stable_during_reverification": true
+    }
+  ],
+  "reused_first_evidence": [
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\motors\\source_manifest.json",
+      "sha256": "7fe74871f9e8252ff4d7083e66ec5d42fde88868763b850bab8d645cd52e2d54"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\motors\\final_checks.json",
+      "sha256": "4cd16c1d8918756fa90a24435d30515b118b2653ac5d2f734ec5848dfdf51a33"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\motors\\table_coverage.csv",
+      "sha256": "0f104e15811277ec1c9897463c2e9a8c702d9375d8657ed80796ac56b8757cc1"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\motors\\independent_cell_comparison.csv",
+      "sha256": "ff75680524d458cd282a284d410aee706fcaf1dee8d89eca02371fdc8391fad5"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\motors\\mechanical_summary.json",
+      "sha256": "925f11e03ccba15ea99de131df4c7fddc06b1ef0f8011ba3fa31dc57c1efbed0"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\motors\\GB18613_2020_ACCEPTANCE.md",
+      "sha256": "6823c80666bd5bca60ca7c68052ddd404e382d4cdc48f23bb8d8a7f63428440d"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\motors\\GB30254_2024_ACCEPTANCE.md",
+      "sha256": "556b90c7d57c4d6e778c25f8a965c3d3e54432c92bb5ec1e1910066118893279"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\motors\\GB30253_2024_ACCEPTANCE.md",
+      "sha256": "651f4550d77cc1fd77192e9e4455a23c1e39eafa1db9055572e839eb5cba7be8"
+    }
+  ],
+  "issues": [
+    {
+      "local_key": "R01",
+      "stable_id": "EQP-STD-GB18613-001",
+      "status": "OPEN",
+      "root_backlink": "docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md",
+      "local_backlink": "../../../STANDARD_ISSUES_REGISTER.md",
+      "no_approval": true,
+      "registry_block": "\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB18613-001` / `R01`|\n|标准编号及版本|GB 18613—2020|\n|问题类型|MISSING / IMPLEMENTATION。|\n|标准原文事实/定位|表3，印刷第3页／PDF物理第5页，2200 W行，1级2极=85.9%，1级4极为空白，1级6极为横杠；2级、3级4极均为横杠。PDF原页图像与矢量网格确认4极空白格具有独立边界，并非与2极合并。|\n|当前技术判断|空白不能视为85.9、零、横杠或上行值；原文未说明该空白的含义。不能据相邻表补值，也不能由1500 W外推。|\n|软件当前处理方式/待决建议|保留原始空白类型，对需要此源格的查表/插值返回明确无法确定阈值的原因；正式处理须Owner确认或获得发布机构依据。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R01`](docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n"
+    },
+    {
+      "local_key": "R02",
+      "stable_id": "EQP-STD-GB18613-002",
+      "status": "OPEN",
+      "root_backlink": "docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md",
+      "local_backlink": "../../../STANDARD_ISSUES_REGISTER.md",
+      "no_approval": true,
+      "registry_block": "\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB18613-002` / `R02`|\n|标准编号及版本|GB 18613—2020|\n|问题类型|AMBIGUITY / IMPLEMENTATION。|\n|标准原文事实/定位|表6表头（印刷5～6页／PDF7～8页）依次为≤500、500～700、700～1000、1000～1300、>1300 r/min，区间波浪线未给出开闭端点；第6章要求空调器风扇用电机取铭牌标称最高转速。|\n|当前技术判断|500、700、1000的共用端点可能使分支不唯一；1300受到>1300的明确排除约束。不能由连续性推断端点，因为相邻列值不同。|\n|软件当前处理方式/待决建议|可考虑(500,700]、(700,1000]、(1000,1300]的连续划分，但这只能是待Owner确认的软件约定，不写成标准明文；未确认前保留原区间标签。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R02`](docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n"
+    },
+    {
+      "local_key": "R03",
+      "stable_id": "EQP-STD-GB18613-003",
+      "status": "OPEN",
+      "root_backlink": "docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md",
+      "local_backlink": "../../../STANDARD_ISSUES_REGISTER.md",
+      "no_approval": true,
+      "registry_block": "\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB18613-003` / `R03`|\n|标准编号及版本|GB 18613—2020|\n|问题类型|REFERENCE / IMPLEMENTATION。|\n|标准原文事实/定位|第4章（印刷1页／PDF3页）规定额定输出功率下实测效率不低于表1～6，并规定实测效率容差符合GB/T 755—2019表21、GB/T 5171.1—2014表18及相应产品标准。第5.2条（印刷6页／PDF8页）给出3级最低效率。|\n|当前技术判断|只取得本PDF，不能完整确定各产品容差口径；不能任意将容差当作降低等级阈值的业务epsilon，也不能无视该引用。|\n|软件当前处理方式/待决建议|Stage A给出未经容差调整的表值比较候选，Stage B前补齐适用引用标准、产品标准及容差适用关系，再决定正式判级处理。不得套用Pump Numeric Profile或工程记忆补规则。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R03`](docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n"
+    },
+    {
+      "local_key": "R04",
+      "stable_id": "EQP-STD-GB18613-004",
+      "status": "OPEN",
+      "root_backlink": "docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md",
+      "local_backlink": "../../../STANDARD_ISSUES_REGISTER.md",
+      "no_approval": true,
+      "registry_block": "\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB18613-004` / `R04`|\n|标准编号及版本|GB 18613—2020|\n|问题类型|TYPO（疑似，未认定）/ IMPLEMENTATION。|\n|标准原文事实/定位|表6印刷5页／PDF7页，75 W行，1000～1300 r/min的3级值为72.8%，>1300 r/min的3级值为72.0%。同一行两分支的1级与2级分别同为78.8%、75.8%。已查看原图，72.0并非OCR错读。|\n|当前技术判断|该处与两列在邻近功率行的相同值模式不同，但模式差异不能证明标准错误，也不能据此改成72.8%。|\n|软件当前处理方式/待决建议|资料严格保留72.0%；如后续提出改值，须有正式勘误或Owner明确软件决定并保留原文。可选择原文照录作为后续软件口径，但本整理不代Owner批准。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R04`](docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n"
+    },
+    {
+      "local_key": "请求1",
+      "stable_id": "EQP-STD-GB30254-001",
+      "status": "OPEN",
+      "root_backlink": "docs/standards/gb30254_2024/ISSUE_REGISTRATION_REQUEST.md",
+      "local_backlink": "../../../STANDARD_ISSUES_REGISTER.md",
+      "no_approval": true,
+      "registry_block": "\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB30254-001` / `请求 1`|\n|标准编号及版本|GB 30254—2024|\n|问题类型|REFERENCE / IMPLEMENTATION。|\n|标准原文事实/定位|第4章（PDF物理页5 / 印刷页1）规定额定输出功率下实测效率不低于表1～6，容差符合 GB/T 755；第5章（PDF6 / 印刷2）规定实测效率不低于对应表3级。第2章中 GB/T 755 为不注日期引用。未在本标准给出容差数值或如何改变等级阈值的算式。|\n|当前技术判断|“表值”与“允许容差后的符合性界限”须区分。不能从旧版代码或常见效率允差公式直接推定新版本适用规则，更不能自行给3级下调阈值。|\n|软件当前处理方式/待决建议|保存表格原值；没有取得适用GB/T 755条款、额定/保证效率与实测效率关系证据之前，不新增容差扣减算法。主映射可说明名义阈值比较，但完整含容差结论仍需确认。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`请求 1`](docs/standards/gb30254_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n"
+    },
+    {
+      "local_key": "请求2",
+      "stable_id": "EQP-STD-GB30254-002",
+      "status": "OPEN",
+      "root_backlink": "docs/standards/gb30254_2024/ISSUE_REGISTRATION_REQUEST.md",
+      "local_backlink": "../../../STANDARD_ISSUES_REGISTER.md",
+      "no_approval": true,
+      "registry_block": "\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB30254-002` / `请求 2`|\n|标准编号及版本|GB 30254—2024|\n|问题类型|MISSING / IMPLEMENTATION。|\n|标准原文事实/定位|第1章规定极数2～12及六类总功率范围（PDF5 / 印刷1）；表1～3部分大功率极数分支有明确“—”，表5～6仅列2/4/6/8极，没有10/12极列。第4章允许规定范围内“表中未列出额定功率值”的电动机线性插值。|\n|当前技术判断|无上端点的缺值与相邻有效点之间的未列功率不同；不同极数不能混用。第1章总范围不能直接提供缺失分支的阈值，插值不能自动变成外推。|\n|软件当前处理方式/待决建议|对应分支没有合法表值/相邻有效端点时不给等级，不补0、不跨极数、跨冷却方式或跨电压借值，不外推；最终采用“不适用”还是“无法评价”需Owner/Stage B确定，不能冒充标准官方排除范围。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`请求 2`](docs/standards/gb30254_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n"
+    },
+    {
+      "local_key": "R1",
+      "stable_id": "EQP-STD-GB30253-001",
+      "status": "OPEN",
+      "root_backlink": "docs/standards/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md",
+      "local_backlink": "../../../STANDARD_ISSUES_REGISTER.md",
+      "no_approval": true,
+      "registry_block": "\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB30253-001` / `R1`|\n|标准编号及版本|GB 30253—2024|\n|问题类型|待确认|\n|标准原文事实/定位|印刷页3 / PDF物理页7，表1，55 kW行、2级12极列清楚印为 **0.0**。同一行1级和3级12极为短横线；45 kW该列为94.1。已看原页图像，不是OCR推测。|\n|当前技术判断|0.0与相邻效率及其他等级的表结构不协调，疑似笔误，但没有证据可替换为某个值或短横线。|\n|软件当前处理方式/待决建议|尚无Owner决定。本次工作簿如实保留数字0.0，单独标注待确认；不得将其自动用于正式判级。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R1`](docs/standards/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n"
+    },
+    {
+      "local_key": "R2",
+      "stable_id": "EQP-STD-GB30253-002",
+      "status": "OPEN",
+      "root_backlink": "docs/standards/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md",
+      "local_backlink": "../../../STANDARD_ISSUES_REGISTER.md",
+      "no_approval": true,
+      "registry_block": "\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB30253-002` / `R2`|\n|标准编号及版本|GB 30253—2024|\n|问题类型|REFERENCE / IMPLEMENTATION。|\n|标准原文事实/定位|第4章，印刷页2 / PDF物理页6：实测效率不应低于表1～29；同时规定实测效率容差符合GB/T 755。第2章对该引用不注日期，适用最新版本及修改单。|\n|当前技术判断|不能仅凭本PDF决定容差公式、适用方式及其与等级/限定值比较的关系；也不能把标准容差当作任意计算epsilon。|\n|软件当前处理方式/待决建议|尚无。保留表列下限与比较方向，正式容差处理留待有源解释。当前资料中未纳入GB/T755原文，也未核对其现行版本。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R2`](docs/standards/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n"
+    },
+    {
+      "local_key": "R3",
+      "stable_id": "EQP-STD-GB30253-003",
+      "status": "OPEN",
+      "root_backlink": "docs/standards/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md",
+      "local_backlink": "../../../STANDARD_ISSUES_REGISTER.md",
+      "no_approval": true,
+      "registry_block": "\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB30253-003` / `R3`|\n|标准编号及版本|GB 30253—2024|\n|问题类型|AMBIGUITY / IMPLEMENTATION。|\n|标准原文事实/定位|第4章规定范围内未列额定功率/额定转速用线性插值。表8～10（PDF15～20，印刷11～16）列为45、60…500 r/min点，以及“>600～900”“>900～1200”“>1200～1800”“>1800～6000”区间。没有600 r/min独立点。表29使用速度区间（如≤100、>100～140），没有给区间插值锚点。|\n|当前技术判断|明确落在区间内可查该列；但500<n≤600时，不能无说明将“>600～900”当成600端点。跨区间插值也不能把整列任意改为中心点。|\n|软件当前处理方式/待决建议|尚无。当前映射保留区间原貌。区间内部直接选列；缺失锚点与跨边界插值解释保持需确认。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R3`](docs/standards/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n"
+    }
+  ],
+  "duplicate_registry_heading_ids": [],
+  "coverage": {
+    "tables": 41,
+    "power_rows": 1019,
+    "source_cells": 16382,
+    "mismatches": 0,
+    "first_visual_pdf_pages": 78
+  },
+  "not_run": [
+    "重复全量PDF渲染/逐格提取（源字节未变，复用首轮）",
+    "生产代码测试/compileall/smoke/性能",
+    "外部引用全文适用性验收",
+    "软件Stage D验收"
+  ],
+  "type_mismatches": [
+    {
+      "stable_id": "EQP-STD-GB30253-001",
+      "actual": "待确认",
+      "expected": "TYPO / CONFLICT"
+    }
+  ],
+  "type_field_note": "8 fields resolved by final short reverification; all other root content unchanged",
+  "final_register_sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908"
+}

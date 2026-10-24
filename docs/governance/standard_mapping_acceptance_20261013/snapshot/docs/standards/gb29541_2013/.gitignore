@@ -1,0 +1,10 @@
+# 原PDF页渲染、预览和提取中间件只用于本机核验。
+tmp/*
+!tmp/build.mjs
+!tmp/verify.py
+!tmp/transcribed_rows.json
+node_modules/
+__pycache__/
+*.pyc
+data/*.inspect.ndjson
+~$*

@@ -1,0 +1,2652 @@
+[
+  {
+    "sheet": "表1 层状燃煤",
+    "xml": "xl/worksheets/sheet1.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": "GB 24500—2020 表1 层状燃煤",
+        "type": "str",
+        "style": "6",
+        "formula": null
+      },
+      "A2": {
+        "value": "来源：原PDF物理页4，正文页2；额定工况；全部效率值按百分数数值保存，例如85表示85%。",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A3": {
+        "value": "本表为Stage A原文整理。合并标签向各等级展开；具体规则、特例及未决项见主映射。",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A5": {
+        "value": "源分支",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "B5": {
+        "value": "燃料品种",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "C5": {
+        "value": "Qnet条件（kJ/kg）",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "D5": {
+        "value": "Vdaf条件（%）",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "E5": {
+        "value": "等级",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "F5": {
+        "value": "D≤20 t/h或Q≤14 MW（%）",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "G5": {
+        "value": "D>20 t/h或Q>14 MW（%）",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "A6": {
+        "value": "T1-B1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B6": {
+        "value": "烟煤Ⅱ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C6": {
+        "value": "17700≤Qnet,v,ar≤21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D6": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E6": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F6": {
+        "value": "85",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G6": {
+        "value": "86",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A7": {
+        "value": "T1-B1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B7": {
+        "value": "烟煤Ⅱ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C7": {
+        "value": "17700≤Qnet,v,ar≤21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D7": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E7": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F7": {
+        "value": "82",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G7": {
+        "value": "83",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A8": {
+        "value": "T1-B1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B8": {
+        "value": "烟煤Ⅱ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C8": {
+        "value": "17700≤Qnet,v,ar≤21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D8": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E8": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F8": {
+        "value": "80",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G8": {
+        "value": "81",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A9": {
+        "value": "T1-B2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B9": {
+        "value": "烟煤Ⅲ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C9": {
+        "value": "Qnet,v,ar>21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D9": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E9": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F9": {
+        "value": "87",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G9": {
+        "value": "89",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A10": {
+        "value": "T1-B2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B10": {
+        "value": "烟煤Ⅲ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C10": {
+        "value": "Qnet,v,ar>21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D10": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E10": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F10": {
+        "value": "84",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G10": {
+        "value": "86",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A11": {
+        "value": "T1-B2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B11": {
+        "value": "烟煤Ⅲ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C11": {
+        "value": "Qnet,v,ar>21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D11": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E11": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F11": {
+        "value": "82",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G11": {
+        "value": "84",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A12": {
+        "value": "T1-B3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B12": {
+        "value": "贫煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C12": {
+        "value": "Qnet,v,ar≥17700",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D12": {
+        "value": "10<Vdaf≤20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E12": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F12": {
+        "value": "85",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G12": {
+        "value": "86",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A13": {
+        "value": "T1-B3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B13": {
+        "value": "贫煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C13": {
+        "value": "Qnet,v,ar≥17700",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D13": {
+        "value": "10<Vdaf≤20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E13": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F13": {
+        "value": "82",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G13": {
+        "value": "83",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A14": {
+        "value": "T1-B3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B14": {
+        "value": "贫煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C14": {
+        "value": "Qnet,v,ar≥17700",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D14": {
+        "value": "10<Vdaf≤20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E14": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F14": {
+        "value": "80",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G14": {
+        "value": "81",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A15": {
+        "value": "T1-B4",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B15": {
+        "value": "无烟煤Ⅱ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C15": {
+        "value": "Qnet,v,ar≥21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D15": {
+        "value": "Vdaf<6.5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E15": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F15": {
+        "value": "85",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G15": {
+        "value": "86",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A16": {
+        "value": "T1-B4",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B16": {
+        "value": "无烟煤Ⅱ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C16": {
+        "value": "Qnet,v,ar≥21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D16": {
+        "value": "Vdaf<6.5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E16": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F16": {
+        "value": "82",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G16": {
+        "value": "83",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A17": {
+        "value": "T1-B4",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B17": {
+        "value": "无烟煤Ⅱ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C17": {
+        "value": "Qnet,v,ar≥21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D17": {
+        "value": "Vdaf<6.5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E17": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F17": {
+        "value": "80",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G17": {
+        "value": "81",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A18": {
+        "value": "T1-B5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B18": {
+        "value": "无烟煤Ⅲ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C18": {
+        "value": "Qnet,v,ar≥21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D18": {
+        "value": "6.5≤Vdaf≤10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E18": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F18": {
+        "value": "85",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G18": {
+        "value": "86",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A19": {
+        "value": "T1-B5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B19": {
+        "value": "无烟煤Ⅲ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C19": {
+        "value": "Qnet,v,ar≥21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D19": {
+        "value": "6.5≤Vdaf≤10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E19": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F19": {
+        "value": "82",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G19": {
+        "value": "83",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A20": {
+        "value": "T1-B5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B20": {
+        "value": "无烟煤Ⅲ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C20": {
+        "value": "Qnet,v,ar≥21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D20": {
+        "value": "6.5≤Vdaf≤10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E20": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F20": {
+        "value": "80",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G20": {
+        "value": "81",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A21": {
+        "value": "T1-B6",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B21": {
+        "value": "褐煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C21": {
+        "value": "Qnet,v,ar≥11500",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D21": {
+        "value": "Vdaf>37",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E21": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F21": {
+        "value": "85",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G21": {
+        "value": "87",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A22": {
+        "value": "T1-B6",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B22": {
+        "value": "褐煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C22": {
+        "value": "Qnet,v,ar≥11500",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D22": {
+        "value": "Vdaf>37",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E22": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F22": {
+        "value": "82",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G22": {
+        "value": "84",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A23": {
+        "value": "T1-B6",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B23": {
+        "value": "褐煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C23": {
+        "value": "Qnet,v,ar≥11500",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D23": {
+        "value": "Vdaf>37",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E23": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F23": {
+        "value": "80",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G23": {
+        "value": "82",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "xml": "xl/worksheets/sheet2.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": "GB 24500—2020 表2 流化床燃煤",
+        "type": "str",
+        "style": "6",
+        "formula": null
+      },
+      "A2": {
+        "value": "来源：原PDF物理页5，正文页3（页码未显示）；额定工况；全部效率值按百分数数值保存，例如85表示85%。",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A3": {
+        "value": "本表为Stage A原文整理。合并标签向各等级展开；具体规则、特例及未决项见主映射。",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A5": {
+        "value": "源分支",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "B5": {
+        "value": "燃料品种",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "C5": {
+        "value": "Qnet条件（kJ/kg）",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "D5": {
+        "value": "Vdaf条件（%）",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "E5": {
+        "value": "等级",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "F5": {
+        "value": "热效率（%）",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "A6": {
+        "value": "T2-B1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B6": {
+        "value": "烟煤Ⅰ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C6": {
+        "value": "14400≤Qnet,v,ar<17700",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D6": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E6": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F6": {
+        "value": "89",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A7": {
+        "value": "T2-B1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B7": {
+        "value": "烟煤Ⅰ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C7": {
+        "value": "14400≤Qnet,v,ar<17700",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D7": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E7": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F7": {
+        "value": "85",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A8": {
+        "value": "T2-B1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B8": {
+        "value": "烟煤Ⅰ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C8": {
+        "value": "14400≤Qnet,v,ar<17700",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D8": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E8": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F8": {
+        "value": "82",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A9": {
+        "value": "T2-B2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B9": {
+        "value": "烟煤Ⅱ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C9": {
+        "value": "17700≤Qnet,v,ar≤21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D9": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E9": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F9": {
+        "value": "90",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A10": {
+        "value": "T2-B2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B10": {
+        "value": "烟煤Ⅱ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C10": {
+        "value": "17700≤Qnet,v,ar≤21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D10": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E10": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F10": {
+        "value": "89",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A11": {
+        "value": "T2-B2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B11": {
+        "value": "烟煤Ⅱ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C11": {
+        "value": "17700≤Qnet,v,ar≤21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D11": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E11": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F11": {
+        "value": "86",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A12": {
+        "value": "T2-B3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B12": {
+        "value": "烟煤Ⅲ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C12": {
+        "value": "Qnet,v,ar>21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D12": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E12": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F12": {
+        "value": "91",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A13": {
+        "value": "T2-B3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B13": {
+        "value": "烟煤Ⅲ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C13": {
+        "value": "Qnet,v,ar>21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D13": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E13": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F13": {
+        "value": "90",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A14": {
+        "value": "T2-B3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B14": {
+        "value": "烟煤Ⅲ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C14": {
+        "value": "Qnet,v,ar>21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D14": {
+        "value": "Vdaf>20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E14": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F14": {
+        "value": "88",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A15": {
+        "value": "T2-B4",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B15": {
+        "value": "贫煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C15": {
+        "value": "Qnet,v,ar≥17700",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D15": {
+        "value": "10<Vdaf≤20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E15": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F15": {
+        "value": "90",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A16": {
+        "value": "T2-B4",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B16": {
+        "value": "贫煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C16": {
+        "value": "Qnet,v,ar≥17700",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D16": {
+        "value": "10<Vdaf≤20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E16": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F16": {
+        "value": "88",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A17": {
+        "value": "T2-B4",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B17": {
+        "value": "贫煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C17": {
+        "value": "Qnet,v,ar≥17700",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D17": {
+        "value": "10<Vdaf≤20",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E17": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F17": {
+        "value": "86",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A18": {
+        "value": "T2-B5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B18": {
+        "value": "无烟煤Ⅱ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C18": {
+        "value": "Qnet,v,ar≥21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D18": {
+        "value": "Vdaf<6.5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E18": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F18": {
+        "value": "89",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A19": {
+        "value": "T2-B5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B19": {
+        "value": "无烟煤Ⅱ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C19": {
+        "value": "Qnet,v,ar≥21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D19": {
+        "value": "Vdaf<6.5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E19": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F19": {
+        "value": "88",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A20": {
+        "value": "T2-B5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B20": {
+        "value": "无烟煤Ⅱ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C20": {
+        "value": "Qnet,v,ar≥21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D20": {
+        "value": "Vdaf<6.5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E20": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F20": {
+        "value": "86",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A21": {
+        "value": "T2-B6",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B21": {
+        "value": "无烟煤Ⅲ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C21": {
+        "value": "Qnet,v,ar≥21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D21": {
+        "value": "6.5≤Vdaf≤10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E21": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F21": {
+        "value": "90",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A22": {
+        "value": "T2-B6",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B22": {
+        "value": "无烟煤Ⅲ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C22": {
+        "value": "Qnet,v,ar≥21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D22": {
+        "value": "6.5≤Vdaf≤10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E22": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F22": {
+        "value": "88",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A23": {
+        "value": "T2-B6",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B23": {
+        "value": "无烟煤Ⅲ类",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C23": {
+        "value": "Qnet,v,ar≥21000",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D23": {
+        "value": "6.5≤Vdaf≤10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E23": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F23": {
+        "value": "86",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A24": {
+        "value": "T2-B7",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B24": {
+        "value": "褐煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C24": {
+        "value": "Qnet,v,ar≥11500",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D24": {
+        "value": "Vdaf>37",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E24": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F24": {
+        "value": "91",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A25": {
+        "value": "T2-B7",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B25": {
+        "value": "褐煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C25": {
+        "value": "Qnet,v,ar≥11500",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D25": {
+        "value": "Vdaf>37",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E25": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F25": {
+        "value": "89",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A26": {
+        "value": "T2-B7",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B26": {
+        "value": "褐煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C26": {
+        "value": "Qnet,v,ar≥11500",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D26": {
+        "value": "Vdaf>37",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E26": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F26": {
+        "value": "86",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表3 生物质",
+    "xml": "xl/worksheets/sheet3.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": "GB 24500—2020 表3 生物质",
+        "type": "str",
+        "style": "6",
+        "formula": null
+      },
+      "A2": {
+        "value": "来源：原PDF物理页5，正文页3（页码未显示）；额定工况；全部效率值按百分数数值保存，例如85表示85%。",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A3": {
+        "value": "本表为Stage A原文整理。合并标签向各等级展开；具体规则、特例及未决项见主映射。",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A5": {
+        "value": "源分支",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "B5": {
+        "value": "燃料品种",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "C5": {
+        "value": "Qnet条件（kJ/kg）",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "D5": {
+        "value": "限定值特例",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "E5": {
+        "value": "等级",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "F5": {
+        "value": "D≤10 t/h或Q≤7 MW（%）",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "G5": {
+        "value": "D>10 t/h或Q>7 MW（%）",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "A6": {
+        "value": "T3-B1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B6": {
+        "value": "生物质",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C6": {
+        "value": "按燃料实际化验值",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D6": {
+        "value": "Qnet<8374时限定值用设计效率",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E6": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F6": {
+        "value": "88",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G6": {
+        "value": "91",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A7": {
+        "value": "T3-B1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B7": {
+        "value": "生物质",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C7": {
+        "value": "按燃料实际化验值",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D7": {
+        "value": "Qnet<8374时限定值用设计效率",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E7": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F7": {
+        "value": "84",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G7": {
+        "value": "88",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A8": {
+        "value": "T3-B1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B8": {
+        "value": "生物质",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C8": {
+        "value": "按燃料实际化验值",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D8": {
+        "value": "Qnet<8374时限定值用设计效率",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E8": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F8": {
+        "value": "80",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G8": {
+        "value": "86",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表4 室燃",
+    "xml": "xl/worksheets/sheet4.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": "GB 24500—2020 表4 室燃",
+        "type": "str",
+        "style": "6",
+        "formula": null
+      },
+      "A2": {
+        "value": "来源：原PDF物理页6，正文页4（页码未显示）；额定工况；全部效率值按百分数数值保存，例如85表示85%。",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A3": {
+        "value": "本表为Stage A原文整理。合并标签向各等级展开；具体规则、特例及未决项见主映射。",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A5": {
+        "value": "源分支",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "B5": {
+        "value": "燃料及分支",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "C5": {
+        "value": "发热量化验口径",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "D5": {
+        "value": "源表位置",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "E5": {
+        "value": "等级",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "F5": {
+        "value": "热效率（%）",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "A6": {
+        "value": "T4-B1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B6": {
+        "value": "天然气非冷凝",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C6": {
+        "value": "按实际化验值；低位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D6": {
+        "value": "天然气左栏",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E6": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F6": {
+        "value": "96",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A7": {
+        "value": "T4-B1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B7": {
+        "value": "天然气非冷凝",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C7": {
+        "value": "按实际化验值；低位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D7": {
+        "value": "天然气左栏",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E7": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F7": {
+        "value": "94",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A8": {
+        "value": "T4-B1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B8": {
+        "value": "天然气非冷凝",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C8": {
+        "value": "按实际化验值；低位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D8": {
+        "value": "天然气左栏",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E8": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F8": {
+        "value": "92",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A9": {
+        "value": "T4-B2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B9": {
+        "value": "天然气冷凝",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C9": {
+        "value": "按实际化验值；低位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D9": {
+        "value": "天然气右栏脚注a",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E9": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F9": {
+        "value": "103",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A10": {
+        "value": "T4-B2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B10": {
+        "value": "天然气冷凝",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C10": {
+        "value": "按实际化验值；低位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D10": {
+        "value": "天然气右栏脚注a",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E10": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F10": {
+        "value": "101",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A11": {
+        "value": "T4-B2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B11": {
+        "value": "天然气冷凝",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C11": {
+        "value": "按实际化验值；低位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D11": {
+        "value": "天然气右栏脚注a",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E11": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F11": {
+        "value": "98",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A12": {
+        "value": "T4-B3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B12": {
+        "value": "天然气冷凝",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C12": {
+        "value": "按实际化验值；高位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D12": {
+        "value": "天然气右栏括号脚注b",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E12": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F12": {
+        "value": "93",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A13": {
+        "value": "T4-B3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B13": {
+        "value": "天然气冷凝",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C13": {
+        "value": "按实际化验值；高位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D13": {
+        "value": "天然气右栏括号脚注b",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E13": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F13": {
+        "value": "91",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A14": {
+        "value": "T4-B3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B14": {
+        "value": "天然气冷凝",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C14": {
+        "value": "按实际化验值；高位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D14": {
+        "value": "天然气右栏括号脚注b",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E14": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F14": {
+        "value": "88",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A15": {
+        "value": "T4-B4",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B15": {
+        "value": "燃油",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C15": {
+        "value": "按实际化验值；低位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D15": {
+        "value": "燃油效率横向合并格",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E15": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F15": {
+        "value": "95",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A16": {
+        "value": "T4-B4",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B16": {
+        "value": "燃油",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C16": {
+        "value": "按实际化验值；低位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D16": {
+        "value": "燃油效率横向合并格",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E16": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F16": {
+        "value": "93",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A17": {
+        "value": "T4-B4",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B17": {
+        "value": "燃油",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C17": {
+        "value": "按实际化验值；低位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D17": {
+        "value": "燃油效率横向合并格",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E17": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F17": {
+        "value": "90",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A18": {
+        "value": "T4-B5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B18": {
+        "value": "煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C18": {
+        "value": "按实际化验值；低位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D18": {
+        "value": "煤效率横向合并格",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E18": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F18": {
+        "value": "92",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A19": {
+        "value": "T4-B5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B19": {
+        "value": "煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C19": {
+        "value": "按实际化验值；低位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D19": {
+        "value": "煤效率横向合并格",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E19": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F19": {
+        "value": "90",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A20": {
+        "value": "T4-B5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B20": {
+        "value": "煤",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C20": {
+        "value": "按实际化验值；低位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D20": {
+        "value": "煤效率横向合并格",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E20": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F20": {
+        "value": "88",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "限定值与来源",
+    "xml": "xl/worksheets/sheet5.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": "项目",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "B1": {
+        "value": "标准事实/定位",
+        "type": "str",
+        "style": "4",
+        "formula": null
+      },
+      "A2": {
+        "value": "修订",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B2": {
+        "value": "V0.1；2026-10-13；执行者整理，未独立验收、未冻结",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A3": {
+        "value": "原文相对仓库路径",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B3": {
+        "value": "标准原文/11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A4": {
+        "value": "原文SHA256",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B4": {
+        "value": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A5": {
+        "value": "5.2 电加热锅炉最低热效率（%）",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B5": {
+        "value": "97",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A6": {
+        "value": "5.1 水介质/余热回收有机热载体",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B6": {
+        "value": "额定工况下不低于表1～4三级",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A7": {
+        "value": "5.1 仅有机热载体换热",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B7": {
+        "value": "不低于设计值；与等级组合输出需确认",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A8": {
+        "value": "表3后段 低热值生物质",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B8": {
+        "value": "Qnet,v,ar<8374 kJ/kg：限定值不低于设计热效率，其他等级按表3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A9": {
+        "value": "表4脚注a",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B9": {
+        "value": "燃气冷凝锅炉额定工况各等级效率",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A10": {
+        "value": "表4脚注b",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B10": {
+        "value": "括号内为收到基高位发热量计算的效率；不是另一个能效等级",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A11": {
+        "value": "第4章前提",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B11": {
+        "value": "满足工业锅炉初始排放浓度要求；本标准未给排放限值",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A12": {
+        "value": "第6章试验",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B12": {
+        "value": "GB/T 10180；燃气冷凝锅炉可按NB/T 47066",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A13": {
+        "value": "数值复核",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B13": {
+        "value": "4表78个热效率数值均与PDF坐标提取及原页视觉检查核对；详见evidence/cell_verification.csv",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A14": {
+        "value": "限定值数值复核",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B14": {
+        "value": "5.2的97%与PDF6原图/文本核对；阈值/范围条件见证据文档",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A15": {
+        "value": "未覆盖",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B15": {
+        "value": "独立验收；引用试验标准全文；最终软件解释；实际Excel桌面打开验证",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A16": {
+        "value": "权威",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B16": {
+        "value": "本工作簿不是计算引擎；与STANDARD_MAPPING.md配套，原PDF最高",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A17": {
+        "value": "官方题录",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B17": {
+        "value": "https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=B31C8D212ACEEC023E752DF6260B63B7",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      }
+    }
+  }
+]

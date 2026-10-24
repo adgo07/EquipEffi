@@ -1,2 +1,34 @@
 # 派生包的文件SHA跨Windows/Linux保持一致，不改变既有标准资产。
 src/equipeffi/resources/standards/gb20052_2024_v21.json text eol=lf
+
+# Standard evidence hashes require byte-preserving checkout.
+docs/standards/gb18613_2020/** -text whitespace=cr-at-eol
+docs/standards/gb19153_2019/** -text whitespace=cr-at-eol
+docs/standards/gb19576_2019/** -text whitespace=cr-at-eol
+docs/standards/gb19577_2024/** -text whitespace=cr-at-eol
+docs/standards/gb19761_2020/** -text whitespace=cr-at-eol
+docs/standards/gb21454_2021/** -text whitespace=cr-at-eol
+docs/standards/gb24500_2020/** -text whitespace=cr-at-eol
+docs/standards/gb28381_2012/** -text whitespace=cr-at-eol
+docs/standards/gb28381_2026/** -text whitespace=cr-at-eol
+docs/standards/gb29541_2013/** -text whitespace=cr-at-eol
+docs/standards/gb30253_2024/** -text whitespace=cr-at-eol
+docs/standards/gb30254_2024/** -text whitespace=cr-at-eol
+docs/standards/gb32030_2022/** -text whitespace=cr-at-eol
+docs/standards/gb37479_2019/** -text whitespace=cr-at-eol
+docs/standards/gbt36561_2018/** -text whitespace=cr-at-eol
+docs/governance/standard_mapping_acceptance_20261013/** -text whitespace=cr-at-eol
+docs/governance/device_full_acceptance_20261013/** -text whitespace=cr-at-eol
+docs/governance/device_round3_review_20261013/** -text whitespace=cr-at-eol
+docs/governance/owner_response_20261023/** -text whitespace=cr-at-eol
+docs/governance/standard_archive_20261024/** -text whitespace=cr-at-eol
+docs/standards/README.md text eol=lf
+docs/standards/_STANDARD_MAPPING_TEMPLATE.md text eol=lf
+docs/standards/_STANDARD_INTERPRETATIONS_TEMPLATE.md text eol=lf
+
+# Historical evidence retains intentional extraction/layout whitespace; active mappings remain checked.
+docs/governance/standard_mapping_acceptance_20261013/** -whitespace
+docs/governance/device_full_acceptance_20261013/** -whitespace
+docs/governance/device_round3_review_20261013/** -whitespace
+docs/governance/owner_response_20261023/** -whitespace
+docs/governance/standard_archive_20261024/** -whitespace

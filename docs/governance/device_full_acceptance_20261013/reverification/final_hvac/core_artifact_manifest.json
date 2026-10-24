@@ -1,0 +1,92 @@
+[
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+    "first_sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df",
+    "current_sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\STANDARD_MAPPING.md",
+    "first_sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f",
+    "current_sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\data\\GB29541_2013_标准表值.xlsx",
+    "first_sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54",
+    "current_sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+    "first_sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9",
+    "current_sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "first_sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83",
+    "current_sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+    "first_sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e",
+    "current_sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+    "first_sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde",
+    "current_sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+    "first_sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf",
+    "current_sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+    "first_sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4",
+    "current_sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+    "first_sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026",
+    "current_sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+    "first_sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63",
+    "current_sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+    "first_sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+    "current_sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+    "first_sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+    "current_sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+    "first_sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105",
+    "current_sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+    "first_sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+    "current_sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+    "unchanged": true
+  }
+]

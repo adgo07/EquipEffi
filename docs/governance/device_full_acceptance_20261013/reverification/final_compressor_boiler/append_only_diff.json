@@ -1,0 +1,16 @@
+[
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+    "original_content_unchanged_after_newline_normalization": true,
+    "reconstructed_original_sha256": "e63171d461fe6d08ff655c98726fc378fda354ee4348de0ff46b789e26da0ffa",
+    "change": "line-ending normalization plus appended formal-ID backlink section; no original semantic edit",
+    "added_text": "## 正式编号回链（2026-10-13）\n\n本目录的请求键已在[根台账](../../../STANDARD_ISSUES_REGISTER.md)分配稳定编号。**状态与后续软件决定只以根台账为准**；本地旧文中“尚未登记”的句子描述登记前历史时点。登记不批准建议解释，也不关闭问题。\n\n|本地请求键|稳定编号|\n|---|---|\n|`R01`|`EQP-STD-GB19153-001`|\n|`R02`|`EQP-STD-GB19153-002`|\n|`R03`|`EQP-STD-GB19153-003`|\n|`R04`|`EQP-STD-GB19153-004`|\n"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+    "original_content_unchanged_after_newline_normalization": true,
+    "reconstructed_original_sha256": "fbeef4ae280bd738476d421a0841eefb7aa5b7dc41af9be1263bffc3f633beb4",
+    "change": "line-ending normalization plus appended formal-ID backlink section; no original semantic edit",
+    "added_text": "## 正式编号回链（2026-10-13）\n\n本目录的请求键已在[根台账](../../../STANDARD_ISSUES_REGISTER.md)分配稳定编号。**状态与后续软件决定只以根台账为准**；本地旧文中“尚未登记”的句子描述登记前历史时点。登记不批准建议解释，也不关闭问题。\n\n|本地请求键|稳定编号|\n|---|---|\n|`请求A`|`EQP-STD-GB24500-001`|\n|`请求B`|`EQP-STD-GB24500-002`|\n"
+  }
+]

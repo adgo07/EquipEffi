@@ -1,0 +1,2719 @@
+{
+  "captured_utc": "2026-10-13T14:49:06.938238+00:00",
+  "scope": "15 formal standards; excludes pump/transformer and dependency caches/rendered images",
+  "files": [
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+      "relative_path": "STANDARD_ISSUES_REGISTER.md",
+      "sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908",
+      "bytes": 113342,
+      "standard": "shared-register",
+      "start_sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\BOUNDARY_CANDIDATES.md",
+      "relative_path": "docs/standards/gb18613_2020/BOUNDARY_CANDIDATES.md",
+      "sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0",
+      "bytes": 4442,
+      "standard": "gb18613_2020",
+      "start_sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\HANDOFF.md",
+      "relative_path": "docs/standards/gb18613_2020/HANDOFF.md",
+      "sha256": "52c6efc2af552f2f397bb808b7d490adaa39a4d03bf657cb38e0aef3657e552a",
+      "bytes": 3452,
+      "standard": "gb18613_2020",
+      "start_sha256": "52c6efc2af552f2f397bb808b7d490adaa39a4d03bf657cb38e0aef3657e552a",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "d70de8354f92af36f9d4ad7cedc936ac636290f319f557950029170bb931f30f",
+      "bytes": 5551,
+      "standard": "gb18613_2020",
+      "start_sha256": "d70de8354f92af36f9d4ad7cedc936ac636290f319f557950029170bb931f30f",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\README.md",
+      "relative_path": "docs/standards/gb18613_2020/README.md",
+      "sha256": "4f94b395ada998b70988df3b4ca0bc9f1639792091c919192783f5d6cbed4909",
+      "bytes": 2359,
+      "standard": "gb18613_2020",
+      "start_sha256": "4f94b395ada998b70988df3b4ca0bc9f1639792091c919192783f5d6cbed4909",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb18613_2020/STANDARD_MAPPING.md",
+      "sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d",
+      "bytes": 12469,
+      "standard": "gb18613_2020",
+      "start_sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\data\\GB18613_2020_表1-6校对数据_A1.xlsx",
+      "relative_path": "docs/standards/gb18613_2020/data/GB18613_2020_表1-6校对数据_A1.xlsx",
+      "sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+      "bytes": 21122,
+      "standard": "gb18613_2020",
+      "start_sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\ACCEPTANCE_RESPONSE_R1.md",
+      "relative_path": "docs/standards/gb18613_2020/evidence/ACCEPTANCE_RESPONSE_R1.md",
+      "sha256": "6f5b9d2e66b937184048d6245fd5aa4ebf681ad9c398237e6726de00bba04180",
+      "bytes": 3776,
+      "standard": "gb18613_2020",
+      "start_sha256": "6f5b9d2e66b937184048d6245fd5aa4ebf681ad9c398237e6726de00bba04180",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\VERIFICATION.md",
+      "relative_path": "docs/standards/gb18613_2020/evidence/VERIFICATION.md",
+      "sha256": "88259227dd6d221f0294252881345e2f8872ca5c4a3fc80d15a5ff747f4b2fb9",
+      "bytes": 7616,
+      "standard": "gb18613_2020",
+      "start_sha256": "88259227dd6d221f0294252881345e2f8872ca5c4a3fc80d15a5ff747f4b2fb9",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\build_workbook.mjs",
+      "relative_path": "docs/standards/gb18613_2020/evidence/build_workbook.mjs",
+      "sha256": "5e9e7cac4935dd03706b9a0b5a1c1b70e8b6b4cfd66b9451f18a4bbc337098a1",
+      "bytes": 7546,
+      "standard": "gb18613_2020",
+      "start_sha256": "5e9e7cac4935dd03706b9a0b5a1c1b70e8b6b4cfd66b9451f18a4bbc337098a1",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\check_delivery.py",
+      "relative_path": "docs/standards/gb18613_2020/evidence/check_delivery.py",
+      "sha256": "8612c488dc7c9557a1d0a0ffd2c8fa50d6ee7d07867f34782d1dcdcdab2635c4",
+      "bytes": 1332,
+      "standard": "gb18613_2020",
+      "start_sha256": "8612c488dc7c9557a1d0a0ffd2c8fa50d6ee7d07867f34782d1dcdcdab2635c4",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\delivery_manifest.json",
+      "relative_path": "docs/standards/gb18613_2020/evidence/delivery_manifest.json",
+      "sha256": "786fd8185635c663de4855ee4aa39b57bf0d6a7438d409ecde7f5ff4e54258e5",
+      "bytes": 3198,
+      "standard": "gb18613_2020",
+      "start_sha256": "786fd8185635c663de4855ee4aa39b57bf0d6a7438d409ecde7f5ff4e54258e5",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\extract_and_verify.py",
+      "relative_path": "docs/standards/gb18613_2020/evidence/extract_and_verify.py",
+      "sha256": "28cb69d8a90dc81e774011ef0e52f6a209580b0af91e21abda7d79901edd1beb",
+      "bytes": 5340,
+      "standard": "gb18613_2020",
+      "start_sha256": "28cb69d8a90dc81e774011ef0e52f6a209580b0af91e21abda7d79901edd1beb",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\header_geometry.csv",
+      "relative_path": "docs/standards/gb18613_2020/evidence/header_geometry.csv",
+      "sha256": "aa95e572c1415a57066f9f9cc82eb621e2316ec6c544bf74e6fb20789566718c",
+      "bytes": 17931,
+      "standard": "gb18613_2020",
+      "start_sha256": "aa95e572c1415a57066f9f9cc82eb621e2316ec6c544bf74e6fb20789566718c",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\source_cell_audit.csv",
+      "relative_path": "docs/standards/gb18613_2020/evidence/source_cell_audit.csv",
+      "sha256": "f57807a9d5d2aeeb499b77b8be1e2f8ee1f094d07329ad661be238d12cad3729",
+      "bytes": 255674,
+      "standard": "gb18613_2020",
+      "start_sha256": "f57807a9d5d2aeeb499b77b8be1e2f8ee1f094d07329ad661be238d12cad3729",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\structure_check.json",
+      "relative_path": "docs/standards/gb18613_2020/evidence/structure_check.json",
+      "sha256": "7969713efb8b91ead21c5f90221a59a310bfb7b04eeec08c44fa2ada6ebe7b68",
+      "bytes": 2822,
+      "standard": "gb18613_2020",
+      "start_sha256": "7969713efb8b91ead21c5f90221a59a310bfb7b04eeec08c44fa2ada6ebe7b68",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\verify_workbook.py",
+      "relative_path": "docs/standards/gb18613_2020/evidence/verify_workbook.py",
+      "sha256": "1b811fd6a6d01bf768d0a2e9c07ff0d76dcc0e680c17a828aeb72bba6d0989a6",
+      "bytes": 2554,
+      "standard": "gb18613_2020",
+      "start_sha256": "1b811fd6a6d01bf768d0a2e9c07ff0d76dcc0e680c17a828aeb72bba6d0989a6",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\workbook_cell_check.csv",
+      "relative_path": "docs/standards/gb18613_2020/evidence/workbook_cell_check.csv",
+      "sha256": "c62d064b184509a0a40afebaa74fcd4496d7c362b63b8b6c8a71d436560b4603",
+      "bytes": 142656,
+      "standard": "gb18613_2020",
+      "start_sha256": "c62d064b184509a0a40afebaa74fcd4496d7c362b63b8b6c8a71d436560b4603",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\workbook_check.json",
+      "relative_path": "docs/standards/gb18613_2020/evidence/workbook_check.json",
+      "sha256": "0f259f690622d0c7ac8d92fd51cd7285f9c43de48ff31252339c8ff4d8b1828d",
+      "bytes": 811,
+      "standard": "gb18613_2020",
+      "start_sha256": "0f259f690622d0c7ac8d92fd51cd7285f9c43de48ff31252339c8ff4d8b1828d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\HANDOFF.md",
+      "relative_path": "docs/standards/gb19153_2019/HANDOFF.md",
+      "sha256": "2c989a4a038abb57ce9604c608da368f31216ec08fcf42396f5a086d5b911044",
+      "bytes": 3563,
+      "standard": "gb19153_2019",
+      "start_sha256": "2c989a4a038abb57ce9604c608da368f31216ec08fcf42396f5a086d5b911044",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb19153_2019/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "3952456cddde101fc67f04a251b9f8fc68b0086de4cff31cc53a80a547344543",
+      "bytes": 4062,
+      "standard": "gb19153_2019",
+      "start_sha256": "3952456cddde101fc67f04a251b9f8fc68b0086de4cff31cc53a80a547344543",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\README.md",
+      "relative_path": "docs/standards/gb19153_2019/README.md",
+      "sha256": "9b75c6a9ba98afa70c568e17ab29b220a7b96a87f6bc39411ce0a4ba57da77f0",
+      "bytes": 2519,
+      "standard": "gb19153_2019",
+      "start_sha256": "9b75c6a9ba98afa70c568e17ab29b220a7b96a87f6bc39411ce0a4ba57da77f0",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb19153_2019/STANDARD_MAPPING.md",
+      "sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9",
+      "bytes": 13486,
+      "standard": "gb19153_2019",
+      "start_sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\data\\GB19153_2019_标准表值.xlsx",
+      "relative_path": "docs/standards/gb19153_2019/data/GB19153_2019_标准表值.xlsx",
+      "sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+      "bytes": 199735,
+      "standard": "gb19153_2019",
+      "start_sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\BOUNDARY_CANDIDATES.md",
+      "relative_path": "docs/standards/gb19153_2019/evidence/BOUNDARY_CANDIDATES.md",
+      "sha256": "eb2c191b99b28142288d31e53de97887f0022ab9777c609b9fbe7e102127b6e6",
+      "bytes": 3798,
+      "standard": "gb19153_2019",
+      "start_sha256": "eb2c191b99b28142288d31e53de97887f0022ab9777c609b9fbe7e102127b6e6",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\REVIEW_20261013_third_engine_check.py",
+      "relative_path": "docs/standards/gb19153_2019/evidence/REVIEW_20261013_third_engine_check.py",
+      "sha256": "6ff66043559f3e51797faf605990b49ed2cd1acbf4af414e94f11f3e9d27de63",
+      "bytes": 9360,
+      "standard": "gb19153_2019",
+      "start_sha256": "6ff66043559f3e51797faf605990b49ed2cd1acbf4af414e94f11f3e9d27de63",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\REVIEW_20261013_verification_review.md",
+      "relative_path": "docs/standards/gb19153_2019/evidence/REVIEW_20261013_verification_review.md",
+      "sha256": "e9d7d74642109a4acb0be10ec081dc102a6fba7a3e23c8918df50fb87c7cda8d",
+      "bytes": 18904,
+      "standard": "gb19153_2019",
+      "start_sha256": "e9d7d74642109a4acb0be10ec081dc102a6fba7a3e23c8918df50fb87c7cda8d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\VERIFICATION.md",
+      "relative_path": "docs/standards/gb19153_2019/evidence/VERIFICATION.md",
+      "sha256": "bec4407c6a2b6ed93c5adaca73269569813e743f4bd8924916823705ae5c701f",
+      "bytes": 9545,
+      "standard": "gb19153_2019",
+      "start_sha256": "bec4407c6a2b6ed93c5adaca73269569813e743f4bd8924916823705ae5c701f",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\build_workbook.mjs",
+      "relative_path": "docs/standards/gb19153_2019/evidence/build_workbook.mjs",
+      "sha256": "a65a9d53a7aa0000299ba9c3ff4d8028a0b209a6fbd93619711352612948132d",
+      "bytes": 6424,
+      "standard": "gb19153_2019",
+      "start_sha256": "a65a9d53a7aa0000299ba9c3ff4d8028a0b209a6fbd93619711352612948132d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\extract_tables.py",
+      "relative_path": "docs/standards/gb19153_2019/evidence/extract_tables.py",
+      "sha256": "58cdd8f0df34384ce79f46fcb5d2fd60e0e19d3c213a686b6e953ca7c287f79d",
+      "bytes": 4239,
+      "standard": "gb19153_2019",
+      "start_sha256": "58cdd8f0df34384ce79f46fcb5d2fd60e0e19d3c213a686b6e953ca7c287f79d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\numeric_crosscheck.csv",
+      "relative_path": "docs/standards/gb19153_2019/evidence/numeric_crosscheck.csv",
+      "sha256": "e5ccffeb6954cc7a53c446a186f796e5a990616cb2e67f5c47136d957fdfd100",
+      "bytes": 445209,
+      "standard": "gb19153_2019",
+      "start_sha256": "e5ccffeb6954cc7a53c446a186f796e5a990616cb2e67f5c47136d957fdfd100",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\source_cells.csv",
+      "relative_path": "docs/standards/gb19153_2019/evidence/source_cells.csv",
+      "sha256": "f2d1277df7b7c9814c909cecffe517d46d34c526b1d0fb0ad17d90432df52de4",
+      "bytes": 308136,
+      "standard": "gb19153_2019",
+      "start_sha256": "f2d1277df7b7c9814c909cecffe517d46d34c526b1d0fb0ad17d90432df52de4",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\verify_source.py",
+      "relative_path": "docs/standards/gb19153_2019/evidence/verify_source.py",
+      "sha256": "5474488ae52d7f06079b424033fd132fb6d0a0a6141260d4ee9d6ea2257af30d",
+      "bytes": 1833,
+      "standard": "gb19153_2019",
+      "start_sha256": "5474488ae52d7f06079b424033fd132fb6d0a0a6141260d4ee9d6ea2257af30d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\verify_workbook.py",
+      "relative_path": "docs/standards/gb19153_2019/evidence/verify_workbook.py",
+      "sha256": "3e55cf979def99e590578435fa16846350c602f49a4b4c3826507d2863d6a96a",
+      "bytes": 2718,
+      "standard": "gb19153_2019",
+      "start_sha256": "3e55cf979def99e590578435fa16846350c602f49a4b4c3826507d2863d6a96a",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\workbook_verification.json",
+      "relative_path": "docs/standards/gb19153_2019/evidence/workbook_verification.json",
+      "sha256": "cb5a702b7166928c5498ca9e15f111864a48a3b99337375c45a108b3c1b8de24",
+      "bytes": 1782,
+      "standard": "gb19153_2019",
+      "start_sha256": "cb5a702b7166928c5498ca9e15f111864a48a3b99337375c45a108b3c1b8de24",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\ACCEPTANCE_RESPONSE.md",
+      "relative_path": "docs/standards/gb19576_2019/ACCEPTANCE_RESPONSE.md",
+      "sha256": "82438a74db9da7efac1bd372fed0da606495654c6305c4d9c6488dd743275ea1",
+      "bytes": 2929,
+      "standard": "gb19576_2019",
+      "start_sha256": "82438a74db9da7efac1bd372fed0da606495654c6305c4d9c6488dd743275ea1",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\BOUNDARY_CANDIDATES.md",
+      "relative_path": "docs/standards/gb19576_2019/BOUNDARY_CANDIDATES.md",
+      "sha256": "9a599d7df6a7160ebc962fa28c269a9e16d291a57e2ccae719533bad2c8b0e87",
+      "bytes": 3105,
+      "standard": "gb19576_2019",
+      "start_sha256": "9a599d7df6a7160ebc962fa28c269a9e16d291a57e2ccae719533bad2c8b0e87",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\HANDOFF.md",
+      "relative_path": "docs/standards/gb19576_2019/HANDOFF.md",
+      "sha256": "ffabeef049f20bc94e3e7c794788dee035e4ab1e2bd587c1e3816d044072e0d6",
+      "bytes": 2810,
+      "standard": "gb19576_2019",
+      "start_sha256": "ffabeef049f20bc94e3e7c794788dee035e4ab1e2bd587c1e3816d044072e0d6",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb19576_2019/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "25646797b88240bfdaef905295af420b17b6f2dd0cb27525967ce42638af8f69",
+      "bytes": 3375,
+      "standard": "gb19576_2019",
+      "start_sha256": "25646797b88240bfdaef905295af420b17b6f2dd0cb27525967ce42638af8f69",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\README.md",
+      "relative_path": "docs/standards/gb19576_2019/README.md",
+      "sha256": "78d296522ab23f01136bd8987241e4102104cd8bf537ba9aa92fa478f6987a0b",
+      "bytes": 1414,
+      "standard": "gb19576_2019",
+      "start_sha256": "78d296522ab23f01136bd8987241e4102104cd8bf537ba9aa92fa478f6987a0b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\SOURCE_EVIDENCE.md",
+      "relative_path": "docs/standards/gb19576_2019/SOURCE_EVIDENCE.md",
+      "sha256": "9b2ca2080904914755407ee5bfeb22e254a0ad7a3b0f2d3c9800126b2116a105",
+      "bytes": 4206,
+      "standard": "gb19576_2019",
+      "start_sha256": "9b2ca2080904914755407ee5bfeb22e254a0ad7a3b0f2d3c9800126b2116a105",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb19576_2019/STANDARD_MAPPING.md",
+      "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63",
+      "bytes": 11603,
+      "standard": "gb19576_2019",
+      "start_sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\VERIFICATION.md",
+      "relative_path": "docs/standards/gb19576_2019/VERIFICATION.md",
+      "sha256": "44be94412c2512a3e6fb29fe7aebbc8643f36c71fa230f1331356cb13ae82537",
+      "bytes": 4205,
+      "standard": "gb19576_2019",
+      "start_sha256": "44be94412c2512a3e6fb29fe7aebbc8643f36c71fa230f1331356cb13ae82537",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\build_workbook.mjs",
+      "relative_path": "docs/standards/gb19576_2019/build_workbook.mjs",
+      "sha256": "521032288df51c815d1fc1565f9eb8f0c2a9c5633e604c4473f39ce3600ea866",
+      "bytes": 4360,
+      "standard": "gb19576_2019",
+      "start_sha256": "521032288df51c815d1fc1565f9eb8f0c2a9c5633e604c4473f39ce3600ea866",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+      "relative_path": "docs/standards/gb19576_2019/data/GB19576_2019_TABLE1.xlsx",
+      "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+      "bytes": 5528,
+      "standard": "gb19576_2019",
+      "start_sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\evidence\\cell_audit.csv",
+      "relative_path": "docs/standards/gb19576_2019/evidence/cell_audit.csv",
+      "sha256": "945ee11d0178e8cbb34c25d4d6294f9acb65714f2a972bda5c89047dd5a8af79",
+      "bytes": 5160,
+      "standard": "gb19576_2019",
+      "start_sha256": "945ee11d0178e8cbb34c25d4d6294f9acb65714f2a972bda5c89047dd5a8af79",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\evidence\\verification_results.json",
+      "relative_path": "docs/standards/gb19576_2019/evidence/verification_results.json",
+      "sha256": "86f24854851d21eb1036b1221f2a1bb45951c85a4d45a5480e0d207d8884a4d2",
+      "bytes": 6383,
+      "standard": "gb19576_2019",
+      "start_sha256": "86f24854851d21eb1036b1221f2a1bb45951c85a4d45a5480e0d207d8884a4d2",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\verify_workbook.py",
+      "relative_path": "docs/standards/gb19576_2019/verify_workbook.py",
+      "sha256": "cb5cc63cf19dfc62353603168aa8032045c23e14266ca7be979436e5722cda59",
+      "bytes": 2623,
+      "standard": "gb19576_2019",
+      "start_sha256": "cb5cc63cf19dfc62353603168aa8032045c23e14266ca7be979436e5722cda59",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\BOUNDARY_CANDIDATES.md",
+      "relative_path": "docs/standards/gb19577_2024/BOUNDARY_CANDIDATES.md",
+      "sha256": "b7bdbd3978361ac8b76ac86017e0d179bcda8d8e63c171abdf8b918328b41af8",
+      "bytes": 5383,
+      "standard": "gb19577_2024",
+      "start_sha256": "b7bdbd3978361ac8b76ac86017e0d179bcda8d8e63c171abdf8b918328b41af8",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\HANDOFF.md",
+      "relative_path": "docs/standards/gb19577_2024/HANDOFF.md",
+      "sha256": "35475efb07cf76b3366e8fd840d436cf23c2effc4ad004e3bde00a17e9730207",
+      "bytes": 2729,
+      "standard": "gb19577_2024",
+      "start_sha256": "35475efb07cf76b3366e8fd840d436cf23c2effc4ad004e3bde00a17e9730207",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb19577_2024/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "d15986ba11eba549fd0a0484545d6fb871987ff9fd491acae1871f36c980705e",
+      "bytes": 4191,
+      "standard": "gb19577_2024",
+      "start_sha256": "d15986ba11eba549fd0a0484545d6fb871987ff9fd491acae1871f36c980705e",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\README.md",
+      "relative_path": "docs/standards/gb19577_2024/README.md",
+      "sha256": "6359aa5804402dc4d515bc3e6608573b9fc3ab51ebea63255f554c0668d55942",
+      "bytes": 1592,
+      "standard": "gb19577_2024",
+      "start_sha256": "6359aa5804402dc4d515bc3e6608573b9fc3ab51ebea63255f554c0668d55942",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb19577_2024/STANDARD_MAPPING.md",
+      "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83",
+      "bytes": 19019,
+      "standard": "gb19577_2024",
+      "start_sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\build_data.py",
+      "relative_path": "docs/standards/gb19577_2024/build_data.py",
+      "sha256": "d14283737eeee72d9d37724653386d501c0aa8a45d378e7c83f75ea2208454b4",
+      "bytes": 9723,
+      "standard": "gb19577_2024",
+      "start_sha256": "d14283737eeee72d9d37724653386d501c0aa8a45d378e7c83f75ea2208454b4",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\build_workbook.mjs",
+      "relative_path": "docs/standards/gb19577_2024/build_workbook.mjs",
+      "sha256": "f5744be6d6d9313da81df2138c2dac932f2e6c57a1e42a693467eb320873ce2f",
+      "bytes": 5394,
+      "standard": "gb19577_2024",
+      "start_sha256": "f5744be6d6d9313da81df2138c2dac932f2e6c57a1e42a693467eb320873ce2f",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+      "relative_path": "docs/standards/gb19577_2024/data/GB19577_2024_TABLE_VALUES.xlsx",
+      "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e",
+      "bytes": 28559,
+      "standard": "gb19577_2024",
+      "start_sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\table_values.json",
+      "relative_path": "docs/standards/gb19577_2024/data/table_values.json",
+      "sha256": "967f0737957a57d1ad8ef762f0fb1755704008e2f6d45c4c27e3de4bd957536e",
+      "bytes": 41160,
+      "standard": "gb19577_2024",
+      "start_sha256": "967f0737957a57d1ad8ef762f0fb1755704008e2f6d45c4c27e3de4bd957536e",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\evidence\\FILE_MANIFEST.json",
+      "relative_path": "docs/standards/gb19577_2024/evidence/FILE_MANIFEST.json",
+      "sha256": "e32ceb1d21b638bb49ef1d8c927e651fb0c44302eadb01a17a1665dd6f21a805",
+      "bytes": 2868,
+      "standard": "gb19577_2024",
+      "start_sha256": "e32ceb1d21b638bb49ef1d8c927e651fb0c44302eadb01a17a1665dd6f21a805",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\evidence\\VERIFICATION.md",
+      "relative_path": "docs/standards/gb19577_2024/evidence/VERIFICATION.md",
+      "sha256": "1363ae99b3a5bee03e8ccf5908a89624d9203cd78a43412f149ae497727a3efc",
+      "bytes": 7268,
+      "standard": "gb19577_2024",
+      "start_sha256": "1363ae99b3a5bee03e8ccf5908a89624d9203cd78a43412f149ae497727a3efc",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\evidence\\cell_audit.csv",
+      "relative_path": "docs/standards/gb19577_2024/evidence/cell_audit.csv",
+      "sha256": "e254d684d52d2819d447c2a5f4fa4aca53ff8dafb0e7f864ea5754876dd90f8d",
+      "bytes": 43292,
+      "standard": "gb19577_2024",
+      "start_sha256": "e254d684d52d2819d447c2a5f4fa4aca53ff8dafb0e7f864ea5754876dd90f8d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\evidence\\cell_audit.json",
+      "relative_path": "docs/standards/gb19577_2024/evidence/cell_audit.json",
+      "sha256": "7f4224edf1eb03b69bebdccdb14e184859a7908be411f01b505343f834cb2545",
+      "bytes": 133103,
+      "standard": "gb19577_2024",
+      "start_sha256": "7f4224edf1eb03b69bebdccdb14e184859a7908be411f01b505343f834cb2545",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\evidence\\source_tables.json",
+      "relative_path": "docs/standards/gb19577_2024/evidence/source_tables.json",
+      "sha256": "9dd266b7941efc0a65e115b899f463bf98e841f0128287088eaf21b64c348b76",
+      "bytes": 20501,
+      "standard": "gb19577_2024",
+      "start_sha256": "9dd266b7941efc0a65e115b899f463bf98e841f0128287088eaf21b64c348b76",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\evidence\\workbook_checks.json",
+      "relative_path": "docs/standards/gb19577_2024/evidence/workbook_checks.json",
+      "sha256": "268e1516f475c9ecbffd9c3885c00e127169dc5ff04fb41ee268007a0c638b7c",
+      "bytes": 181470,
+      "standard": "gb19577_2024",
+      "start_sha256": "268e1516f475c9ecbffd9c3885c00e127169dc5ff04fb41ee268007a0c638b7c",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\verify_workbook.py",
+      "relative_path": "docs/standards/gb19577_2024/verify_workbook.py",
+      "sha256": "9d34865f320175f875f9ada45e664c3461c61d4beab22fb49728ff5caceb7ad3",
+      "bytes": 3365,
+      "standard": "gb19577_2024",
+      "start_sha256": "9d34865f320175f875f9ada45e664c3461c61d4beab22fb49728ff5caceb7ad3",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\BOUNDARY_CANDIDATES.md",
+      "relative_path": "docs/standards/gb19761_2020/BOUNDARY_CANDIDATES.md",
+      "sha256": "526a26bb04a5ac59eb47c3e659b4e497af5c56a27c5e7f82df63a6b9908762b0",
+      "bytes": 3095,
+      "standard": "gb19761_2020",
+      "start_sha256": "526a26bb04a5ac59eb47c3e659b4e497af5c56a27c5e7f82df63a6b9908762b0",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\HANDOFF.md",
+      "relative_path": "docs/standards/gb19761_2020/HANDOFF.md",
+      "sha256": "fa84719240e2ddfc962b9d4066419cbd0ab8ce2e0bc083775938403d7eef729f",
+      "bytes": 3586,
+      "standard": "gb19761_2020",
+      "start_sha256": "fa84719240e2ddfc962b9d4066419cbd0ab8ce2e0bc083775938403d7eef729f",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb19761_2020/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "c9c8edd7fce9a4a31113eca386c1f07406cad7a8331bb1ba803d0afa9ad58d80",
+      "bytes": 3123,
+      "standard": "gb19761_2020",
+      "start_sha256": "c9c8edd7fce9a4a31113eca386c1f07406cad7a8331bb1ba803d0afa9ad58d80",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\README.md",
+      "relative_path": "docs/standards/gb19761_2020/README.md",
+      "sha256": "c854dd5105fd5a723bad9de61ef40939a68bac2c35f69ff854f6e24bdc25982d",
+      "bytes": 1225,
+      "standard": "gb19761_2020",
+      "start_sha256": "c854dd5105fd5a723bad9de61ef40939a68bac2c35f69ff854f6e24bdc25982d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb19761_2020/STANDARD_MAPPING.md",
+      "sha256": "4b40e07a248ff416308a32556df7a86e0f61887697b36d418fd83dcd3103e1db",
+      "bytes": 15142,
+      "standard": "gb19761_2020",
+      "start_sha256": "4b40e07a248ff416308a32556df7a86e0f61887697b36d418fd83dcd3103e1db",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\build_data.py",
+      "relative_path": "docs/standards/gb19761_2020/build_data.py",
+      "sha256": "5c861314a542304d83a79beb1f6b2f964c400e1f50cc6d3f8408e58be1322505",
+      "bytes": 7119,
+      "standard": "gb19761_2020",
+      "start_sha256": "5c861314a542304d83a79beb1f6b2f964c400e1f50cc6d3f8408e58be1322505",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\build_workbook.mjs",
+      "relative_path": "docs/standards/gb19761_2020/build_workbook.mjs",
+      "sha256": "c9be5610788c53085d0818b6b34b11fb2a11e461cd96b9d748bd89b49d79f35f",
+      "bytes": 3065,
+      "standard": "gb19761_2020",
+      "start_sha256": "c9be5610788c53085d0818b6b34b11fb2a11e461cd96b9d748bd89b49d79f35f",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\data\\GB19761_2020_表1-4核对工作簿.xlsx",
+      "relative_path": "docs/standards/gb19761_2020/data/GB19761_2020_表1-4核对工作簿.xlsx",
+      "sha256": "2a290e6e19c19fa2e5fd729e52da9551dbc87998ca4a7e33083d292c12f1442d",
+      "bytes": 18826,
+      "standard": "gb19761_2020",
+      "start_sha256": "2a290e6e19c19fa2e5fd729e52da9551dbc87998ca4a7e33083d292c12f1442d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\data\\table_values.csv",
+      "relative_path": "docs/standards/gb19761_2020/data/table_values.csv",
+      "sha256": "046106e36673d6e4d537e841f64d0b337a66622474ac0b431d550a0106811fea",
+      "bytes": 22862,
+      "standard": "gb19761_2020",
+      "start_sha256": "046106e36673d6e4d537e841f64d0b337a66622474ac0b431d550a0106811fea",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\data\\table_values.json",
+      "relative_path": "docs/standards/gb19761_2020/data/table_values.json",
+      "sha256": "84b5fe596b598270521af454549a1938ed79ad490ee336669a7d8d9057096b43",
+      "bytes": 56801,
+      "standard": "gb19761_2020",
+      "start_sha256": "84b5fe596b598270521af454549a1938ed79ad490ee336669a7d8d9057096b43",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\evidence\\SOURCE.md",
+      "relative_path": "docs/standards/gb19761_2020/evidence/SOURCE.md",
+      "sha256": "e6ac9a347b022344540d286e79b6fbe7aa51a8b7b75d08a1a2131d43b5353685",
+      "bytes": 2071,
+      "standard": "gb19761_2020",
+      "start_sha256": "e6ac9a347b022344540d286e79b6fbe7aa51a8b7b75d08a1a2131d43b5353685",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\evidence\\VERIFICATION.md",
+      "relative_path": "docs/standards/gb19761_2020/evidence/VERIFICATION.md",
+      "sha256": "7f283fbe8934cd071c5eff71e7d6c78ddd33b6226c5b7a86dad451600b82dd38",
+      "bytes": 4125,
+      "standard": "gb19761_2020",
+      "start_sha256": "7f283fbe8934cd071c5eff71e7d6c78ddd33b6226c5b7a86dad451600b82dd38",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\evidence\\artifact_hashes.json",
+      "relative_path": "docs/standards/gb19761_2020/evidence/artifact_hashes.json",
+      "sha256": "1d9c8ab1cee59dd1f048d5a3e313fcf8e29d754997dbf6e638b67be7226fbbe3",
+      "bytes": 1637,
+      "standard": "gb19761_2020",
+      "start_sha256": "1d9c8ab1cee59dd1f048d5a3e313fcf8e29d754997dbf6e638b67be7226fbbe3",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\evidence\\check_summary.json",
+      "relative_path": "docs/standards/gb19761_2020/evidence/check_summary.json",
+      "sha256": "b9eb20f82cb1d919c046c0a22dd51bab5aa56bf16104f6ca4fe5d71774644c05",
+      "bytes": 398,
+      "standard": "gb19761_2020",
+      "start_sha256": "b9eb20f82cb1d919c046c0a22dd51bab5aa56bf16104f6ca4fe5d71774644c05",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\evidence\\export_check.json",
+      "relative_path": "docs/standards/gb19761_2020/evidence/export_check.json",
+      "sha256": "36a56f9190ece2e1989c257546ccb185df3501c04759f9907ecd8870e9efc7e9",
+      "bytes": 321,
+      "standard": "gb19761_2020",
+      "start_sha256": "36a56f9190ece2e1989c257546ccb185df3501c04759f9907ecd8870e9efc7e9",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\evidence\\numeric_self_check.csv",
+      "relative_path": "docs/standards/gb19761_2020/evidence/numeric_self_check.csv",
+      "sha256": "cf1b6c37fd7f91085d23fba099c36e1fa9c0564b8cf3ad7a24bc2277cb25f0d5",
+      "bytes": 57332,
+      "standard": "gb19761_2020",
+      "start_sha256": "cf1b6c37fd7f91085d23fba099c36e1fa9c0564b8cf3ad7a24bc2277cb25f0d5",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\verify_export.py",
+      "relative_path": "docs/standards/gb19761_2020/verify_export.py",
+      "sha256": "6ffe83ddb8e5b061b4d2718f83a2934e87306e04a9b3a2ba981fbfe61a3f1c53",
+      "bytes": 1702,
+      "standard": "gb19761_2020",
+      "start_sha256": "6ffe83ddb8e5b061b4d2718f83a2934e87306e04a9b3a2ba981fbfe61a3f1c53",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\BOUNDARY_CANDIDATES.md",
+      "relative_path": "docs/standards/gb21454_2021/BOUNDARY_CANDIDATES.md",
+      "sha256": "33fa4d962f8bfca5f17bf675399c996ad957292942ebc87ff7b836306bcf7533",
+      "bytes": 4451,
+      "standard": "gb21454_2021",
+      "start_sha256": "33fa4d962f8bfca5f17bf675399c996ad957292942ebc87ff7b836306bcf7533",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\HANDOFF.md",
+      "relative_path": "docs/standards/gb21454_2021/HANDOFF.md",
+      "sha256": "e818a01cce50a8800b969fded39c5ef5e83936649016c4d19c3bb04bd4882fd2",
+      "bytes": 3274,
+      "standard": "gb21454_2021",
+      "start_sha256": "e818a01cce50a8800b969fded39c5ef5e83936649016c4d19c3bb04bd4882fd2",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb21454_2021/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "9d31d959f223bc9369d7b2f0d91226a2248b86b71ad47ecf7f2f9c1ec57e6778",
+      "bytes": 3802,
+      "standard": "gb21454_2021",
+      "start_sha256": "9d31d959f223bc9369d7b2f0d91226a2248b86b71ad47ecf7f2f9c1ec57e6778",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\README.md",
+      "relative_path": "docs/standards/gb21454_2021/README.md",
+      "sha256": "81ebd89e4381223b79e9cda56b789cc763efaeaa83e89cb558c3943ae273b5f0",
+      "bytes": 2185,
+      "standard": "gb21454_2021",
+      "start_sha256": "81ebd89e4381223b79e9cda56b789cc763efaeaa83e89cb558c3943ae273b5f0",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb21454_2021/STANDARD_MAPPING.md",
+      "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105",
+      "bytes": 16207,
+      "standard": "gb21454_2021",
+      "start_sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\build_data.py",
+      "relative_path": "docs/standards/gb21454_2021/build_data.py",
+      "sha256": "915bc85e640132cc88691b4d9ebcf63b25c36bbb35a4cc5c4c1f0536779b843c",
+      "bytes": 5594,
+      "standard": "gb21454_2021",
+      "start_sha256": "915bc85e640132cc88691b4d9ebcf63b25c36bbb35a4cc5c4c1f0536779b843c",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\build_workbook.mjs",
+      "relative_path": "docs/standards/gb21454_2021/build_workbook.mjs",
+      "sha256": "13716a8b9fe2f71d5a66a9ba87cd2c3ffa8272990174e29d9710240e4159cef9",
+      "bytes": 3530,
+      "standard": "gb21454_2021",
+      "start_sha256": "13716a8b9fe2f71d5a66a9ba87cd2c3ffa8272990174e29d9710240e4159cef9",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+      "relative_path": "docs/standards/gb21454_2021/data/GB21454_2021_标准表值.xlsx",
+      "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+      "bytes": 18075,
+      "standard": "gb21454_2021",
+      "start_sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\table_values.json",
+      "relative_path": "docs/standards/gb21454_2021/data/table_values.json",
+      "sha256": "6fa78843cac88ff4f3a583f3b2b2c596f786aabf69ad3b447fb2912363617427",
+      "bytes": 18300,
+      "standard": "gb21454_2021",
+      "start_sha256": "6fa78843cac88ff4f3a583f3b2b2c596f786aabf69ad3b447fb2912363617427",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\evidence\\ACCEPTANCE_RESPONSE.md",
+      "relative_path": "docs/standards/gb21454_2021/evidence/ACCEPTANCE_RESPONSE.md",
+      "sha256": "01c590be9f57d603aaa9477a940af6d26b1d78e975d864934dbad31ed361a641",
+      "bytes": 4041,
+      "standard": "gb21454_2021",
+      "start_sha256": "01c590be9f57d603aaa9477a940af6d26b1d78e975d864934dbad31ed361a641",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\evidence\\VERIFICATION.md",
+      "relative_path": "docs/standards/gb21454_2021/evidence/VERIFICATION.md",
+      "sha256": "02b96d954377372bf9dc04d33239b69041f3f1dafb4202d47a7c4d18efc3f901",
+      "bytes": 8801,
+      "standard": "gb21454_2021",
+      "start_sha256": "02b96d954377372bf9dc04d33239b69041f3f1dafb4202d47a7c4d18efc3f901",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\evidence\\acceptance_reconciliation.json",
+      "relative_path": "docs/standards/gb21454_2021/evidence/acceptance_reconciliation.json",
+      "sha256": "d34bfc5f8b3a3d9d6ff86611e7cfc8038e43673f9c38b6f9ce29ce2e2667a973",
+      "bytes": 668,
+      "standard": "gb21454_2021",
+      "start_sha256": "d34bfc5f8b3a3d9d6ff86611e7cfc8038e43673f9c38b6f9ce29ce2e2667a973",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\evidence\\cell_audit.csv",
+      "relative_path": "docs/standards/gb21454_2021/evidence/cell_audit.csv",
+      "sha256": "3e47e0ab6dd5072b537fc818465e553dea8224fd661cff8b68933da811624fe1",
+      "bytes": 90968,
+      "standard": "gb21454_2021",
+      "start_sha256": "3e47e0ab6dd5072b537fc818465e553dea8224fd661cff8b68933da811624fe1",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\evidence\\check_results.json",
+      "relative_path": "docs/standards/gb21454_2021/evidence/check_results.json",
+      "sha256": "243df4d143714c3ebc7a4507863c87669ea5d5e34b75365aabdfea8ec38d5171",
+      "bytes": 1633,
+      "standard": "gb21454_2021",
+      "start_sha256": "243df4d143714c3ebc7a4507863c87669ea5d5e34b75365aabdfea8ec38d5171",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\extract_source.py",
+      "relative_path": "docs/standards/gb21454_2021/extract_source.py",
+      "sha256": "013af7175af7428893a6257bdda8ea43afbf1bf13a303065e4e4bd5bbf5b7401",
+      "bytes": 827,
+      "standard": "gb21454_2021",
+      "start_sha256": "013af7175af7428893a6257bdda8ea43afbf1bf13a303065e4e4bd5bbf5b7401",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\verify_workbook.py",
+      "relative_path": "docs/standards/gb21454_2021/verify_workbook.py",
+      "sha256": "512ff06d63409d3c26c54742b88c931e9107d11405bccad16eb74ee3a57850f9",
+      "bytes": 3387,
+      "standard": "gb21454_2021",
+      "start_sha256": "512ff06d63409d3c26c54742b88c931e9107d11405bccad16eb74ee3a57850f9",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ACCEPTANCE_RESPONSE.md",
+      "relative_path": "docs/standards/gb24500_2020/ACCEPTANCE_RESPONSE.md",
+      "sha256": "360827b90ef0bb3137f687405d24a541fefc58449c6a42775bb6e08172a8a0e1",
+      "bytes": 2521,
+      "standard": "gb24500_2020",
+      "start_sha256": "360827b90ef0bb3137f687405d24a541fefc58449c6a42775bb6e08172a8a0e1",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\BOUNDARY_CANDIDATES.md",
+      "relative_path": "docs/standards/gb24500_2020/BOUNDARY_CANDIDATES.md",
+      "sha256": "b31886bbb467bfe9d82df653fc8106f05cf02e42108bef41d74e7204b91455c5",
+      "bytes": 3829,
+      "standard": "gb24500_2020",
+      "start_sha256": "b31886bbb467bfe9d82df653fc8106f05cf02e42108bef41d74e7204b91455c5",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\HANDOFF.md",
+      "relative_path": "docs/standards/gb24500_2020/HANDOFF.md",
+      "sha256": "c491cbee70b816d7a6d00c470996b9139fe2079759b4a43c85ea35e6d9ed6e3f",
+      "bytes": 2329,
+      "standard": "gb24500_2020",
+      "start_sha256": "c491cbee70b816d7a6d00c470996b9139fe2079759b4a43c85ea35e6d9ed6e3f",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb24500_2020/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8",
+      "bytes": 5222,
+      "standard": "gb24500_2020",
+      "start_sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\README.md",
+      "relative_path": "docs/standards/gb24500_2020/README.md",
+      "sha256": "59014f44bd65458faf6df56688390d28ae3b1a9775ce67a109981209543a1e77",
+      "bytes": 1852,
+      "standard": "gb24500_2020",
+      "start_sha256": "59014f44bd65458faf6df56688390d28ae3b1a9775ce67a109981209543a1e77",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\SOURCE_AND_VERIFICATION.md",
+      "relative_path": "docs/standards/gb24500_2020/SOURCE_AND_VERIFICATION.md",
+      "sha256": "c427b78a904b701e2e883e441d626f1d2664f6f07a234680983bdb163fa967a3",
+      "bytes": 6839,
+      "standard": "gb24500_2020",
+      "start_sha256": "c427b78a904b701e2e883e441d626f1d2664f6f07a234680983bdb163fa967a3",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb24500_2020/STANDARD_MAPPING.md",
+      "sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a",
+      "bytes": 9240,
+      "standard": "gb24500_2020",
+      "start_sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\data\\GB24500_2020_TABLE_VALUES.xlsx",
+      "relative_path": "docs/standards/gb24500_2020/data/GB24500_2020_TABLE_VALUES.xlsx",
+      "sha256": "9f8e243b96ea45cd0c1f1a33dc1c0a7b62eaa8a5f2f9095234c427463a68de1a",
+      "bytes": 11232,
+      "standard": "gb24500_2020",
+      "start_sha256": "9f8e243b96ea45cd0c1f1a33dc1c0a7b62eaa8a5f2f9095234c427463a68de1a",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\evidence\\REVIEW_20261013_verification_review.md",
+      "relative_path": "docs/standards/gb24500_2020/evidence/REVIEW_20261013_verification_review.md",
+      "sha256": "ba841cc2ecda7dc21323e20a5b8ab8a034962cfa61d33dd947f9f2356817543d",
+      "bytes": 15996,
+      "standard": "gb24500_2020",
+      "start_sha256": "ba841cc2ecda7dc21323e20a5b8ab8a034962cfa61d33dd947f9f2356817543d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\evidence\\cell_verification.csv",
+      "relative_path": "docs/standards/gb24500_2020/evidence/cell_verification.csv",
+      "sha256": "676f81ba39f3322ac7ad509f10d1eec937a8ef95001ccea3a868788f724b6bce",
+      "bytes": 9524,
+      "standard": "gb24500_2020",
+      "start_sha256": "676f81ba39f3322ac7ad509f10d1eec937a8ef95001ccea3a868788f724b6bce",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\evidence\\verification_summary.json",
+      "relative_path": "docs/standards/gb24500_2020/evidence/verification_summary.json",
+      "sha256": "32d691a6efd796097e41bd56bc1c98e031e194fb3f72ec4af98c2f80afc1e160",
+      "bytes": 604,
+      "standard": "gb24500_2020",
+      "start_sha256": "32d691a6efd796097e41bd56bc1c98e031e194fb3f72ec4af98c2f80afc1e160",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\evidence\\verify_independent_review.py",
+      "relative_path": "docs/standards/gb24500_2020/evidence/verify_independent_review.py",
+      "sha256": "c4d477c3a88c0470694a96b7356f5f8639c87f635659da4de0c2065dc188379e",
+      "bytes": 7448,
+      "standard": "gb24500_2020",
+      "start_sha256": "c4d477c3a88c0470694a96b7356f5f8639c87f635659da4de0c2065dc188379e",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\BOUNDARY_CASES.md",
+      "relative_path": "docs/standards/gb28381_2012/BOUNDARY_CASES.md",
+      "sha256": "335c69b99e543b7dd697e92dac1da6f29f1f7cbaa423818a067f1df407e2a28e",
+      "bytes": 2454,
+      "standard": "gb28381_2012",
+      "start_sha256": "335c69b99e543b7dd697e92dac1da6f29f1f7cbaa423818a067f1df407e2a28e",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\HANDOFF.md",
+      "relative_path": "docs/standards/gb28381_2012/HANDOFF.md",
+      "sha256": "5c1e64407f9b2f57eccaf7751e635ff758ce0eaa8ed5dda09f67a711eab07d0b",
+      "bytes": 3060,
+      "standard": "gb28381_2012",
+      "start_sha256": "5c1e64407f9b2f57eccaf7751e635ff758ce0eaa8ed5dda09f67a711eab07d0b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb28381_2012/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "bea065462dcba38e40d63477b73e1ee9c1bc3ec4c1ed3018bdecc1ff29e0422c",
+      "bytes": 4131,
+      "standard": "gb28381_2012",
+      "start_sha256": "bea065462dcba38e40d63477b73e1ee9c1bc3ec4c1ed3018bdecc1ff29e0422c",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\README.md",
+      "relative_path": "docs/standards/gb28381_2012/README.md",
+      "sha256": "c5dfb76081e1c07913c238069026eab851bf80785265f40051edf0a0884269bd",
+      "bytes": 2079,
+      "standard": "gb28381_2012",
+      "start_sha256": "c5dfb76081e1c07913c238069026eab851bf80785265f40051edf0a0884269bd",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb28381_2012/STANDARD_MAPPING.md",
+      "sha256": "a2f629fcc1551201e2a597c5f3ee28dadfa62a5bf649b0e9f7ff6cd9caa0514e",
+      "bytes": 12233,
+      "standard": "gb28381_2012",
+      "start_sha256": "a2f629fcc1551201e2a597c5f3ee28dadfa62a5bf649b0e9f7ff6cd9caa0514e",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\build_workbook.mjs",
+      "relative_path": "docs/standards/gb28381_2012/build_workbook.mjs",
+      "sha256": "eb775f4721bc644e58850fb70d7605db8f26869d8d9bb7fc0d0d6e91155f1787",
+      "bytes": 3061,
+      "standard": "gb28381_2012",
+      "start_sha256": "eb775f4721bc644e58850fb70d7605db8f26869d8d9bb7fc0d0d6e91155f1787",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\check_delivery.py",
+      "relative_path": "docs/standards/gb28381_2012/check_delivery.py",
+      "sha256": "a8360ddc61fbb28c982042028e1254cc11cecae53338a4fa2d8a907aec6bc7f3",
+      "bytes": 1754,
+      "standard": "gb28381_2012",
+      "start_sha256": "a8360ddc61fbb28c982042028e1254cc11cecae53338a4fa2d8a907aec6bc7f3",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\data\\GB28381_2012_TABLES.xlsx",
+      "relative_path": "docs/standards/gb28381_2012/data/GB28381_2012_TABLES.xlsx",
+      "sha256": "217ff4171917de79dc4174f328f0293b045a2e57a18f330b41b210d32bd343bc",
+      "bytes": 20226,
+      "standard": "gb28381_2012",
+      "start_sha256": "217ff4171917de79dc4174f328f0293b045a2e57a18f330b41b210d32bd343bc",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\data\\tables.json",
+      "relative_path": "docs/standards/gb28381_2012/data/tables.json",
+      "sha256": "fc3a908bbdc134c27f1d25d7a1418c2fae682b4e9cbbeb7d86f3d142fced0666",
+      "bytes": 30929,
+      "standard": "gb28381_2012",
+      "start_sha256": "fc3a908bbdc134c27f1d25d7a1418c2fae682b4e9cbbeb7d86f3d142fced0666",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\evidence\\ACCEPTANCE_RESPONSE.md",
+      "relative_path": "docs/standards/gb28381_2012/evidence/ACCEPTANCE_RESPONSE.md",
+      "sha256": "2f17ff01d3e4245ebfc9546eb81215caed898ef7093475f4845b3b44fd28f4d0",
+      "bytes": 3854,
+      "standard": "gb28381_2012",
+      "start_sha256": "2f17ff01d3e4245ebfc9546eb81215caed898ef7093475f4845b3b44fd28f4d0",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\evidence\\AUDIT.md",
+      "relative_path": "docs/standards/gb28381_2012/evidence/AUDIT.md",
+      "sha256": "003a9278cba009e64f257d5a37c896197ce5e81642fc890753fe3a1c54c7b94b",
+      "bytes": 5544,
+      "standard": "gb28381_2012",
+      "start_sha256": "003a9278cba009e64f257d5a37c896197ce5e81642fc890753fe3a1c54c7b94b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\evidence\\acceptance_evidence_check.json",
+      "relative_path": "docs/standards/gb28381_2012/evidence/acceptance_evidence_check.json",
+      "sha256": "3c8d9b704873ba50cb74aabc417c1d871d989a9a5116e77184317e6498e14bc9",
+      "bytes": 766,
+      "standard": "gb28381_2012",
+      "start_sha256": "3c8d9b704873ba50cb74aabc417c1d871d989a9a5116e77184317e6498e14bc9",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\evidence\\check_results.json",
+      "relative_path": "docs/standards/gb28381_2012/evidence/check_results.json",
+      "sha256": "fd06949b145453914b0f9c09d91de1e8ec9d3512530a1c024b2e6c5a10d95714",
+      "bytes": 340,
+      "standard": "gb28381_2012",
+      "start_sha256": "fd06949b145453914b0f9c09d91de1e8ec9d3512530a1c024b2e6c5a10d95714",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\evidence\\delivery_checks.json",
+      "relative_path": "docs/standards/gb28381_2012/evidence/delivery_checks.json",
+      "sha256": "3d013e2ec60b21bfa0d7b01721ed54d09f3ff78ae2887d87e2f6d7c4ddc6395a",
+      "bytes": 222,
+      "standard": "gb28381_2012",
+      "start_sha256": "3d013e2ec60b21bfa0d7b01721ed54d09f3ff78ae2887d87e2f6d7c4ddc6395a",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\evidence\\file_hashes.json",
+      "relative_path": "docs/standards/gb28381_2012/evidence/file_hashes.json",
+      "sha256": "fb2091fcf0ac4e06c3a5eb8760bb5ec310fa889bf9bc4e8cb3bfd4c23eb48d49",
+      "bytes": 1947,
+      "standard": "gb28381_2012",
+      "start_sha256": "fb2091fcf0ac4e06c3a5eb8760bb5ec310fa889bf9bc4e8cb3bfd4c23eb48d49",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\evidence\\source_cells.csv",
+      "relative_path": "docs/standards/gb28381_2012/evidence/source_cells.csv",
+      "sha256": "6fa5a54fff85d7ee7293e768d1c344f7ac346486047654b57f75aeefff6584be",
+      "bytes": 72877,
+      "standard": "gb28381_2012",
+      "start_sha256": "6fa5a54fff85d7ee7293e768d1c344f7ac346486047654b57f75aeefff6584be",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\evidence\\visual_spot_checks.csv",
+      "relative_path": "docs/standards/gb28381_2012/evidence/visual_spot_checks.csv",
+      "sha256": "5e483cd62ae3a3109d2d9227f716f486af2f3c9706e8b7738112112dd29698e8",
+      "bytes": 8650,
+      "standard": "gb28381_2012",
+      "start_sha256": "5e483cd62ae3a3109d2d9227f716f486af2f3c9706e8b7738112112dd29698e8",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\evidence\\xlsx_cell_check.csv",
+      "relative_path": "docs/standards/gb28381_2012/evidence/xlsx_cell_check.csv",
+      "sha256": "eed47720b405232580bbb2310d4d471496b2f489f45c696fe0e52d33816039ff",
+      "bytes": 116576,
+      "standard": "gb28381_2012",
+      "start_sha256": "eed47720b405232580bbb2310d4d471496b2f489f45c696fe0e52d33816039ff",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\extract_verify.py",
+      "relative_path": "docs/standards/gb28381_2012/extract_verify.py",
+      "sha256": "539900d14ffc2b22a3e6b3c8d44fea0f4ba6f88d250fbbfb78ce1c38768ba0fb",
+      "bytes": 4059,
+      "standard": "gb28381_2012",
+      "start_sha256": "539900d14ffc2b22a3e6b3c8d44fea0f4ba6f88d250fbbfb78ce1c38768ba0fb",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\verify_visual_samples.py",
+      "relative_path": "docs/standards/gb28381_2012/verify_visual_samples.py",
+      "sha256": "a879b8d5b425b6f20fdb9116b8329591de78b972afa834e8e423f52f015069cb",
+      "bytes": 1797,
+      "standard": "gb28381_2012",
+      "start_sha256": "a879b8d5b425b6f20fdb9116b8329591de78b972afa834e8e423f52f015069cb",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\BOUNDARY_CASES.md",
+      "relative_path": "docs/standards/gb28381_2026/BOUNDARY_CASES.md",
+      "sha256": "a675c7b0e5d3c6922c3d9359afa00b33598638d8afe671914b1aa32d2bf8edd8",
+      "bytes": 4004,
+      "standard": "gb28381_2026",
+      "start_sha256": "a675c7b0e5d3c6922c3d9359afa00b33598638d8afe671914b1aa32d2bf8edd8",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\CANDIDATE_CHECKS.json",
+      "relative_path": "docs/standards/gb28381_2026/CANDIDATE_CHECKS.json",
+      "sha256": "50ac8a0ab08a50fdc305d7725a420c396049bdf75a7baa5c760839a37c8b64f1",
+      "bytes": 559,
+      "standard": "gb28381_2026",
+      "start_sha256": "50ac8a0ab08a50fdc305d7725a420c396049bdf75a7baa5c760839a37c8b64f1",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\CELL_AUDIT.csv",
+      "relative_path": "docs/standards/gb28381_2026/CELL_AUDIT.csv",
+      "sha256": "5b3ea33568cb6c92cd8186a15dc45a744de1eaa031e14943469effe84a3c036b",
+      "bytes": 252789,
+      "standard": "gb28381_2026",
+      "start_sha256": "5b3ea33568cb6c92cd8186a15dc45a744de1eaa031e14943469effe84a3c036b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\CHECK_RESULTS.json",
+      "relative_path": "docs/standards/gb28381_2026/CHECK_RESULTS.json",
+      "sha256": "90a7c35a7592749c3c9a46a47eea1832d33748b66a04506c44a5ca324d8c7ea1",
+      "bytes": 490,
+      "standard": "gb28381_2026",
+      "start_sha256": "90a7c35a7592749c3c9a46a47eea1832d33748b66a04506c44a5ca324d8c7ea1",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\DELIVERY_SHA256.json",
+      "relative_path": "docs/standards/gb28381_2026/DELIVERY_SHA256.json",
+      "sha256": "3d76c454d79aa84e8fbf634618587b4a97ecf9371a8700793fb50a089809d42b",
+      "bytes": 1674,
+      "standard": "gb28381_2026",
+      "start_sha256": "3d76c454d79aa84e8fbf634618587b4a97ecf9371a8700793fb50a089809d42b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\GB28381_2026_TABLE_VALUES.xlsx",
+      "relative_path": "docs/standards/gb28381_2026/GB28381_2026_TABLE_VALUES.xlsx",
+      "sha256": "ab8621f06f9ebcc5bc1a062e2dab6a39f76512983025d42af279acd2e0e351d7",
+      "bytes": 33594,
+      "standard": "gb28381_2026",
+      "start_sha256": "ab8621f06f9ebcc5bc1a062e2dab6a39f76512983025d42af279acd2e0e351d7",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\HANDOFF.md",
+      "relative_path": "docs/standards/gb28381_2026/HANDOFF.md",
+      "sha256": "9d8c74d1e53a907f83b1b450359ab42493718177d9d27fafd38acbe7bdc1ff0b",
+      "bytes": 1944,
+      "standard": "gb28381_2026",
+      "start_sha256": "9d8c74d1e53a907f83b1b450359ab42493718177d9d27fafd38acbe7bdc1ff0b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb28381_2026/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "c3398ebecd79bb1187ae302e0729fce9ac73f83a349f0cc55cff679fd73a7cec",
+      "bytes": 2930,
+      "standard": "gb28381_2026",
+      "start_sha256": "c3398ebecd79bb1187ae302e0729fce9ac73f83a349f0cc55cff679fd73a7cec",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\README.md",
+      "relative_path": "docs/standards/gb28381_2026/README.md",
+      "sha256": "15bdfa8117411ae10e6ea937df2b51557654d80050b821f5b02cc9852d5fe63b",
+      "bytes": 1721,
+      "standard": "gb28381_2026",
+      "start_sha256": "15bdfa8117411ae10e6ea937df2b51557654d80050b821f5b02cc9852d5fe63b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\SOURCE_EVIDENCE.md",
+      "relative_path": "docs/standards/gb28381_2026/SOURCE_EVIDENCE.md",
+      "sha256": "09fe0fba6dfc94d54be58b16e53c1052efc5414aab3065d505bd6fe133449da8",
+      "bytes": 4280,
+      "standard": "gb28381_2026",
+      "start_sha256": "09fe0fba6dfc94d54be58b16e53c1052efc5414aab3065d505bd6fe133449da8",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb28381_2026/STANDARD_MAPPING.md",
+      "sha256": "d709e556ec497bf790a769826bf79815c61232fab72e2e7841704f6799a55941",
+      "bytes": 13357,
+      "standard": "gb28381_2026",
+      "start_sha256": "d709e556ec497bf790a769826bf79815c61232fab72e2e7841704f6799a55941",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\VERIFICATION.md",
+      "relative_path": "docs/standards/gb28381_2026/VERIFICATION.md",
+      "sha256": "994fdeca1501ec36a71a5a7dcba7309a429755e3aebb3d4fb02568eb59872c19",
+      "bytes": 4962,
+      "standard": "gb28381_2026",
+      "start_sha256": "994fdeca1501ec36a71a5a7dcba7309a429755e3aebb3d4fb02568eb59872c19",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\VISUAL_SPOTCHECK.csv",
+      "relative_path": "docs/standards/gb28381_2026/VISUAL_SPOTCHECK.csv",
+      "sha256": "7b76ecb8df1f5ea19127512c9639747b8303f3c1ed3e8a8010327477dc15c9cb",
+      "bytes": 2947,
+      "standard": "gb28381_2026",
+      "start_sha256": "7b76ecb8df1f5ea19127512c9639747b8303f3c1ed3e8a8010327477dc15c9cb",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\build_workbook.mjs",
+      "relative_path": "docs/standards/gb28381_2026/build_workbook.mjs",
+      "sha256": "83b183e87647addfd2b52c6036c5a41a001d23eb604c2a7f3060c94533749480",
+      "bytes": 3839,
+      "standard": "gb28381_2026",
+      "start_sha256": "83b183e87647addfd2b52c6036c5a41a001d23eb604c2a7f3060c94533749480",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\check_candidates.py",
+      "relative_path": "docs/standards/gb28381_2026/check_candidates.py",
+      "sha256": "e508f60a79f300bc31faf9efa7a93aaabed4ecdd23f39bcf7538b7ff62943957",
+      "bytes": 1120,
+      "standard": "gb28381_2026",
+      "start_sha256": "e508f60a79f300bc31faf9efa7a93aaabed4ecdd23f39bcf7538b7ff62943957",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\extract_verify.py",
+      "relative_path": "docs/standards/gb28381_2026/extract_verify.py",
+      "sha256": "4610442f05276688bb38df10354821e515e47b18bf8e1d747d70daa84933e6b4",
+      "bytes": 5468,
+      "standard": "gb28381_2026",
+      "start_sha256": "4610442f05276688bb38df10354821e515e47b18bf8e1d747d70daa84933e6b4",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\table_values.json",
+      "relative_path": "docs/standards/gb28381_2026/table_values.json",
+      "sha256": "cefbe5c6d09481b646ce3cf8ff013d5d71f70cd362331756c7328c95efd3ac12",
+      "bytes": 130247,
+      "standard": "gb28381_2026",
+      "start_sha256": "cefbe5c6d09481b646ce3cf8ff013d5d71f70cd362331756c7328c95efd3ac12",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\verify_workbook.py",
+      "relative_path": "docs/standards/gb28381_2026/verify_workbook.py",
+      "sha256": "2b58dda81ee35151b328ad6eb933ff22508ab0aa32a086a481f92bba2107b977",
+      "bytes": 4204,
+      "standard": "gb28381_2026",
+      "start_sha256": "2b58dda81ee35151b328ad6eb933ff22508ab0aa32a086a481f92bba2107b977",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\CHANGELOG.md",
+      "relative_path": "docs/standards/gb29541_2013/CHANGELOG.md",
+      "sha256": "6419dcbf37077fc96b95ef47247470ffd20f5bdcebe387968e46d9187fb1187b",
+      "bytes": 1398,
+      "standard": "gb29541_2013",
+      "start_sha256": "6419dcbf37077fc96b95ef47247470ffd20f5bdcebe387968e46d9187fb1187b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\HANDOFF.md",
+      "relative_path": "docs/standards/gb29541_2013/HANDOFF.md",
+      "sha256": "43cd6a15aeba6654920a656291b6c0908b0343efc0abad7a2396adfef16cfb8d",
+      "bytes": 3625,
+      "standard": "gb29541_2013",
+      "start_sha256": "43cd6a15aeba6654920a656291b6c0908b0343efc0abad7a2396adfef16cfb8d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb29541_2013/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "1713dda307c1222f72dd8debbead91365248e09672126387d1bc649894d457bc",
+      "bytes": 8074,
+      "standard": "gb29541_2013",
+      "start_sha256": "1713dda307c1222f72dd8debbead91365248e09672126387d1bc649894d457bc",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\README.md",
+      "relative_path": "docs/standards/gb29541_2013/README.md",
+      "sha256": "052430cf8fd88bebcb97ba9bba77d3e3811fc4a8c167725e72e9adab779971fa",
+      "bytes": 2514,
+      "standard": "gb29541_2013",
+      "start_sha256": "052430cf8fd88bebcb97ba9bba77d3e3811fc4a8c167725e72e9adab779971fa",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb29541_2013/STANDARD_MAPPING.md",
+      "sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f",
+      "bytes": 13233,
+      "standard": "gb29541_2013",
+      "start_sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\data\\GB29541_2013_标准表值.xlsx",
+      "relative_path": "docs/standards/gb29541_2013/data/GB29541_2013_标准表值.xlsx",
+      "sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54",
+      "bytes": 7852,
+      "standard": "gb29541_2013",
+      "start_sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\ACCEPTANCE_RESPONSE.md",
+      "relative_path": "docs/standards/gb29541_2013/evidence/ACCEPTANCE_RESPONSE.md",
+      "sha256": "ed803bd56bc643c30a289dc5b82cb7c2a30ae8d8a23d80456401f6ea58cdb0e8",
+      "bytes": 4834,
+      "standard": "gb29541_2013",
+      "start_sha256": "ed803bd56bc643c30a289dc5b82cb7c2a30ae8d8a23d80456401f6ea58cdb0e8",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\BOUNDARY_CANDIDATES.md",
+      "relative_path": "docs/standards/gb29541_2013/evidence/BOUNDARY_CANDIDATES.md",
+      "sha256": "3010ebece4e634e9419dbd97e48b567a2ad7d6e4a6f2b5d3c847271fcb50662f",
+      "bytes": 3499,
+      "standard": "gb29541_2013",
+      "start_sha256": "3010ebece4e634e9419dbd97e48b567a2ad7d6e4a6f2b5d3c847271fcb50662f",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\REVIEW_20261013_independent_review.md",
+      "relative_path": "docs/standards/gb29541_2013/evidence/REVIEW_20261013_independent_review.md",
+      "sha256": "14c9cd2c7adc2960e3946bc453e7e71afb20056b5620a5b088c55c789454e3b2",
+      "bytes": 14980,
+      "standard": "gb29541_2013",
+      "start_sha256": "14c9cd2c7adc2960e3946bc453e7e71afb20056b5620a5b088c55c789454e3b2",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\SOURCE_REGISTER.md",
+      "relative_path": "docs/standards/gb29541_2013/evidence/SOURCE_REGISTER.md",
+      "sha256": "9ea6978502f79f9b7e64262021901440cd9101b18c7499ee4952dfa7cd7edd8c",
+      "bytes": 3724,
+      "standard": "gb29541_2013",
+      "start_sha256": "9ea6978502f79f9b7e64262021901440cd9101b18c7499ee4952dfa7cd7edd8c",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\VERIFICATION.md",
+      "relative_path": "docs/standards/gb29541_2013/evidence/VERIFICATION.md",
+      "sha256": "fc1f8a58b457684c726a4417943776aaa77f1511e438dd0369eb7d714cb996e6",
+      "bytes": 4102,
+      "standard": "gb29541_2013",
+      "start_sha256": "fc1f8a58b457684c726a4417943776aaa77f1511e438dd0369eb7d714cb996e6",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\build.mjs",
+      "relative_path": "docs/standards/gb29541_2013/evidence/build.mjs",
+      "sha256": "4aff3da945bd6f4131efc3b56877232ac07d5e580ed9b229ffaaaa98e49eab71",
+      "bytes": 6613,
+      "standard": "gb29541_2013",
+      "start_sha256": "4aff3da945bd6f4131efc3b56877232ac07d5e580ed9b229ffaaaa98e49eab71",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\cell_verification.csv",
+      "relative_path": "docs/standards/gb29541_2013/evidence/cell_verification.csv",
+      "sha256": "7f4d7455e98cb28c342a293e82bc1256c8338b462fa49fe68e45ec1b2be9297a",
+      "bytes": 12393,
+      "standard": "gb29541_2013",
+      "start_sha256": "7f4d7455e98cb28c342a293e82bc1256c8338b462fa49fe68e45ec1b2be9297a",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\verification_results.json",
+      "relative_path": "docs/standards/gb29541_2013/evidence/verification_results.json",
+      "sha256": "9536912e7bdbbc3ba48c38e4d35925d9ef27666d734364127cf8493b99000642",
+      "bytes": 760,
+      "standard": "gb29541_2013",
+      "start_sha256": "9536912e7bdbbc3ba48c38e4d35925d9ef27666d734364127cf8493b99000642",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\verify.py",
+      "relative_path": "docs/standards/gb29541_2013/evidence/verify.py",
+      "sha256": "bb4cf0e6c0f3241f91f15f79d79af503c88d9b6fc92afaa82f299c75ad552024",
+      "bytes": 3723,
+      "standard": "gb29541_2013",
+      "start_sha256": "bb4cf0e6c0f3241f91f15f79d79af503c88d9b6fc92afaa82f299c75ad552024",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\BOUNDARY_CANDIDATES.md",
+      "relative_path": "docs/standards/gb30253_2024/BOUNDARY_CANDIDATES.md",
+      "sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b",
+      "bytes": 3516,
+      "standard": "gb30253_2024",
+      "start_sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\HANDOFF.md",
+      "relative_path": "docs/standards/gb30253_2024/HANDOFF.md",
+      "sha256": "72904632bc23cc5d0cd1eb6232ce03855b2dffc268c9984fd4fdceb75f81b1f7",
+      "bytes": 2928,
+      "standard": "gb30253_2024",
+      "start_sha256": "72904632bc23cc5d0cd1eb6232ce03855b2dffc268c9984fd4fdceb75f81b1f7",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "06b9054bd70a8905ad7694b2f4413b4c618647dd016369a1ec272b8e68ba82e4",
+      "bytes": 4781,
+      "standard": "gb30253_2024",
+      "start_sha256": "06b9054bd70a8905ad7694b2f4413b4c618647dd016369a1ec272b8e68ba82e4",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\README.md",
+      "relative_path": "docs/standards/gb30253_2024/README.md",
+      "sha256": "973147fc2c06462a50f3d114306de69a479dd31264ef32a77d4e4af34cb34e61",
+      "bytes": 2824,
+      "standard": "gb30253_2024",
+      "start_sha256": "973147fc2c06462a50f3d114306de69a479dd31264ef32a77d4e4af34cb34e61",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb30253_2024/STANDARD_MAPPING.md",
+      "sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13",
+      "bytes": 13635,
+      "standard": "gb30253_2024",
+      "start_sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\data\\GB30253_2024_TABLE_VALUES.xlsx",
+      "relative_path": "docs/standards/gb30253_2024/data/GB30253_2024_TABLE_VALUES.xlsx",
+      "sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+      "bytes": 118459,
+      "standard": "gb30253_2024",
+      "start_sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\data\\table_values.csv",
+      "relative_path": "docs/standards/gb30253_2024/data/table_values.csv",
+      "sha256": "972ea5b2de0111579fd338cb27f5e524814920dc2bfcfa837b512dfbdb5d4858",
+      "bytes": 1047913,
+      "standard": "gb30253_2024",
+      "start_sha256": "972ea5b2de0111579fd338cb27f5e524814920dc2bfcfa837b512dfbdb5d4858",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\ACCEPTANCE_RESPONSE_20261013.md",
+      "relative_path": "docs/standards/gb30253_2024/evidence/ACCEPTANCE_RESPONSE_20261013.md",
+      "sha256": "40a99114ca9a54ed9b7bc37db17264c42ca2642330952c150635dec3a57bbafb",
+      "bytes": 3976,
+      "standard": "gb30253_2024",
+      "start_sha256": "40a99114ca9a54ed9b7bc37db17264c42ca2642330952c150635dec3a57bbafb",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\VERIFICATION.md",
+      "relative_path": "docs/standards/gb30253_2024/evidence/VERIFICATION.md",
+      "sha256": "7ae93e04104eae1db61281b027c724d4acdca4297eaca06b2bc3d2cdfa891cb0",
+      "bytes": 6424,
+      "standard": "gb30253_2024",
+      "start_sha256": "7ae93e04104eae1db61281b027c724d4acdca4297eaca06b2bc3d2cdfa891cb0",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\cell_audit.csv",
+      "relative_path": "docs/standards/gb30253_2024/evidence/cell_audit.csv",
+      "sha256": "23937b2786b9da7dab7e231d698bce3929a603cb0cfd94976c5320f499eff12c",
+      "bytes": 993617,
+      "standard": "gb30253_2024",
+      "start_sha256": "23937b2786b9da7dab7e231d698bce3929a603cb0cfd94976c5320f499eff12c",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\row_audit.csv",
+      "relative_path": "docs/standards/gb30253_2024/evidence/row_audit.csv",
+      "sha256": "6656587d97ea473bcb98f5646ac5a475167b62bfbf75e2b4b34f327e9f04cd03",
+      "bytes": 24435,
+      "standard": "gb30253_2024",
+      "start_sha256": "6656587d97ea473bcb98f5646ac5a475167b62bfbf75e2b4b34f327e9f04cd03",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\scripts\\build_workbook.mjs",
+      "relative_path": "docs/standards/gb30253_2024/evidence/scripts/build_workbook.mjs",
+      "sha256": "2624e6f03c3883e1c115d4eb91a3ba44198ea7e6a691ba7ce3aa33d8041304ca",
+      "bytes": 5658,
+      "standard": "gb30253_2024",
+      "start_sha256": "2624e6f03c3883e1c115d4eb91a3ba44198ea7e6a691ba7ce3aa33d8041304ca",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\scripts\\extract.py",
+      "relative_path": "docs/standards/gb30253_2024/evidence/scripts/extract.py",
+      "sha256": "67afad3a6a2f8f9ebd4c32a1550377052cfa1afc1dd8a1de84cc3afa6eb1e342",
+      "bytes": 3341,
+      "standard": "gb30253_2024",
+      "start_sha256": "67afad3a6a2f8f9ebd4c32a1550377052cfa1afc1dd8a1de84cc3afa6eb1e342",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\scripts\\prepare_data.py",
+      "relative_path": "docs/standards/gb30253_2024/evidence/scripts/prepare_data.py",
+      "sha256": "b284d3c31741c54abf259805c8a44022d892f16c51b9db74dfd857fd44ec19d3",
+      "bytes": 5733,
+      "standard": "gb30253_2024",
+      "start_sha256": "b284d3c31741c54abf259805c8a44022d892f16c51b9db74dfd857fd44ec19d3",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\scripts\\verify.py",
+      "relative_path": "docs/standards/gb30253_2024/evidence/scripts/verify.py",
+      "sha256": "93181152fe1eff094e32708393862e76302d4eb4cb46ab75a3271ff54834aa76",
+      "bytes": 3170,
+      "standard": "gb30253_2024",
+      "start_sha256": "93181152fe1eff094e32708393862e76302d4eb4cb46ab75a3271ff54834aa76",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\verification_result.json",
+      "relative_path": "docs/standards/gb30253_2024/evidence/verification_result.json",
+      "sha256": "72bb4c4616b5d86619dc204abd74fc6c7a0dd51278be813f5102b2eb98fd22d0",
+      "bytes": 2255,
+      "standard": "gb30253_2024",
+      "start_sha256": "72bb4c4616b5d86619dc204abd74fc6c7a0dd51278be813f5102b2eb98fd22d0",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\BOUNDARY_CASES.md",
+      "relative_path": "docs/standards/gb30254_2024/BOUNDARY_CASES.md",
+      "sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403",
+      "bytes": 3731,
+      "standard": "gb30254_2024",
+      "start_sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\HANDOFF.md",
+      "relative_path": "docs/standards/gb30254_2024/HANDOFF.md",
+      "sha256": "fe95aa32223f294c6a5046eae2ed4166080de9cd8b572e3204056abcc9a7d59d",
+      "bytes": 4017,
+      "standard": "gb30254_2024",
+      "start_sha256": "fe95aa32223f294c6a5046eae2ed4166080de9cd8b572e3204056abcc9a7d59d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb30254_2024/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "9b6c9a2c8d9a99b2d69435dfad14afe57cc6d37a0d9a02587eebf1d1983249bc",
+      "bytes": 4478,
+      "standard": "gb30254_2024",
+      "start_sha256": "9b6c9a2c8d9a99b2d69435dfad14afe57cc6d37a0d9a02587eebf1d1983249bc",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\README.md",
+      "relative_path": "docs/standards/gb30254_2024/README.md",
+      "sha256": "d3489184029b293a47ab9baff922792b1aab00579249145efa26eb77a441b61e",
+      "bytes": 2866,
+      "standard": "gb30254_2024",
+      "start_sha256": "d3489184029b293a47ab9baff922792b1aab00579249145efa26eb77a441b61e",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb30254_2024/STANDARD_MAPPING.md",
+      "sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba",
+      "bytes": 11577,
+      "standard": "gb30254_2024",
+      "start_sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\data\\GB30254_2024_标准表值.xlsx",
+      "relative_path": "docs/standards/gb30254_2024/data/GB30254_2024_标准表值.xlsx",
+      "sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+      "bytes": 31633,
+      "standard": "gb30254_2024",
+      "start_sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\ACCEPTANCE_RESPONSE_20261013.md",
+      "relative_path": "docs/standards/gb30254_2024/evidence/ACCEPTANCE_RESPONSE_20261013.md",
+      "sha256": "bc0e1d482aa2910b2167db370d1eabd57f0ec4905f74b2f056309d2691cd3bb8",
+      "bytes": 6386,
+      "standard": "gb30254_2024",
+      "start_sha256": "bc0e1d482aa2910b2167db370d1eabd57f0ec4905f74b2f056309d2691cd3bb8",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\SHA256SUMS.txt",
+      "relative_path": "docs/standards/gb30254_2024/evidence/SHA256SUMS.txt",
+      "sha256": "7486879ac9eb53ba124bc20f29d223e1fea9709f2b0db92a846777fc396b0160",
+      "bytes": 1491,
+      "standard": "gb30254_2024",
+      "start_sha256": "7486879ac9eb53ba124bc20f29d223e1fea9709f2b0db92a846777fc396b0160",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\SOURCE_AND_VERIFICATION.md",
+      "relative_path": "docs/standards/gb30254_2024/evidence/SOURCE_AND_VERIFICATION.md",
+      "sha256": "27d47826181258b27b44306bdef95529778e8071d8ddf351d16916bedd5c5152",
+      "bytes": 8316,
+      "standard": "gb30254_2024",
+      "start_sha256": "27d47826181258b27b44306bdef95529778e8071d8ddf351d16916bedd5c5152",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\branch_coverage.csv",
+      "relative_path": "docs/standards/gb30254_2024/evidence/branch_coverage.csv",
+      "sha256": "2d3410186653659161c65c11d2398c9cab16dba8cafec83cadce5ff63935cf2f",
+      "bytes": 4692,
+      "standard": "gb30254_2024",
+      "start_sha256": "2d3410186653659161c65c11d2398c9cab16dba8cafec83cadce5ff63935cf2f",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\build_workbook.mjs",
+      "relative_path": "docs/standards/gb30254_2024/evidence/build_workbook.mjs",
+      "sha256": "7e4661a12e715860ee7fb509d061cf388a040ccbccc379bc7792afa5a8029d09",
+      "bytes": 4098,
+      "standard": "gb30254_2024",
+      "start_sha256": "7e4661a12e715860ee7fb509d061cf388a040ccbccc379bc7792afa5a8029d09",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\cell_verification.csv",
+      "relative_path": "docs/standards/gb30254_2024/evidence/cell_verification.csv",
+      "sha256": "7c4a64b44ab432d45e91ba6557a90a3fab973efba6fc18a6af39eaf0c9e228a0",
+      "bytes": 728806,
+      "standard": "gb30254_2024",
+      "start_sha256": "7c4a64b44ab432d45e91ba6557a90a3fab973efba6fc18a6af39eaf0c9e228a0",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\extract_tables.py",
+      "relative_path": "docs/standards/gb30254_2024/evidence/extract_tables.py",
+      "sha256": "5cdfee2171ba211341e10df1eaef35cb167626342ee5361f6f444afff91ea24e",
+      "bytes": 5676,
+      "standard": "gb30254_2024",
+      "start_sha256": "5cdfee2171ba211341e10df1eaef35cb167626342ee5361f6f444afff91ea24e",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\glyph_anchors.json",
+      "relative_path": "docs/standards/gb30254_2024/evidence/glyph_anchors.json",
+      "sha256": "a74287ceaf323ccbf1fe55291fa7bafa486a275ac807a15b0e25269aba4df659",
+      "bytes": 5197,
+      "standard": "gb30254_2024",
+      "start_sha256": "a74287ceaf323ccbf1fe55291fa7bafa486a275ac807a15b0e25269aba4df659",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\verification_summary.json",
+      "relative_path": "docs/standards/gb30254_2024/evidence/verification_summary.json",
+      "sha256": "8c281595692b0af5cdfd10ec61b9d30af77988bf5b5560a4fec521033ba8ca16",
+      "bytes": 1493,
+      "standard": "gb30254_2024",
+      "start_sha256": "8c281595692b0af5cdfd10ec61b9d30af77988bf5b5560a4fec521033ba8ca16",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\verify_workbook.py",
+      "relative_path": "docs/standards/gb30254_2024/evidence/verify_workbook.py",
+      "sha256": "a21a62d00502ae430cf877e50a0cd8eb2ccd7c8d7187cb9f9cd3e4d836aa6969",
+      "bytes": 4564,
+      "standard": "gb30254_2024",
+      "start_sha256": "a21a62d00502ae430cf877e50a0cd8eb2ccd7c8d7187cb9f9cd3e4d836aa6969",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\BOUNDARY_CANDIDATES.md",
+      "relative_path": "docs/standards/gb32030_2022/BOUNDARY_CANDIDATES.md",
+      "sha256": "579624b3ce6f8ccfb5db7c322bf00513a876663567b210527af0c52b6c5b1f24",
+      "bytes": 3582,
+      "standard": "gb32030_2022",
+      "start_sha256": "579624b3ce6f8ccfb5db7c322bf00513a876663567b210527af0c52b6c5b1f24",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\HANDOFF.md",
+      "relative_path": "docs/standards/gb32030_2022/HANDOFF.md",
+      "sha256": "b041f408dfc151cacd93343dc00ca00d3b6be8b5c40c0e0e6dbf12e27378106d",
+      "bytes": 3100,
+      "standard": "gb32030_2022",
+      "start_sha256": "b041f408dfc151cacd93343dc00ca00d3b6be8b5c40c0e0e6dbf12e27378106d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb32030_2022/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "fc6be101f122b8ba5b41d16231af1be1c61ea63321bdc0a0318337568f1cc448",
+      "bytes": 2931,
+      "standard": "gb32030_2022",
+      "start_sha256": "fc6be101f122b8ba5b41d16231af1be1c61ea63321bdc0a0318337568f1cc448",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\README.md",
+      "relative_path": "docs/standards/gb32030_2022/README.md",
+      "sha256": "294611296fd1e190e2397f4ce0f2652c757db84e1ccb38aae161db0e52447d34",
+      "bytes": 2243,
+      "standard": "gb32030_2022",
+      "start_sha256": "294611296fd1e190e2397f4ce0f2652c757db84e1ccb38aae161db0e52447d34",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\SOURCE_AUTHENTICITY.md",
+      "relative_path": "docs/standards/gb32030_2022/SOURCE_AUTHENTICITY.md",
+      "sha256": "4f94fbe75274ab083d9919a9ff70d32eb6f16dbe3e119d0d60da9f29e1873ef8",
+      "bytes": 9342,
+      "standard": "gb32030_2022",
+      "start_sha256": "4f94fbe75274ab083d9919a9ff70d32eb6f16dbe3e119d0d60da9f29e1873ef8",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb32030_2022/STANDARD_MAPPING.md",
+      "sha256": "87c73aa84810b21c08dedfd3d6f0eb0d24a3fc6755d3d68a81a8bafba3ee4448",
+      "bytes": 15449,
+      "standard": "gb32030_2022",
+      "start_sha256": "87c73aa84810b21c08dedfd3d6f0eb0d24a3fc6755d3d68a81a8bafba3ee4448",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\build_data.py",
+      "relative_path": "docs/standards/gb32030_2022/build_data.py",
+      "sha256": "90f564e20e4637665e27e5575d6443016cc8fa12c1ba69e359c8afe3aca1c3be",
+      "bytes": 5191,
+      "standard": "gb32030_2022",
+      "start_sha256": "90f564e20e4637665e27e5575d6443016cc8fa12c1ba69e359c8afe3aca1c3be",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\build_workbook.mjs",
+      "relative_path": "docs/standards/gb32030_2022/build_workbook.mjs",
+      "sha256": "20237ef0dc7da6f338e7780180e4dab38c21e92d377e1648cd77078072d22581",
+      "bytes": 4113,
+      "standard": "gb32030_2022",
+      "start_sha256": "20237ef0dc7da6f338e7780180e4dab38c21e92d377e1648cd77078072d22581",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\data\\GB32030_2022_表值映射.xlsx",
+      "relative_path": "docs/standards/gb32030_2022/data/GB32030_2022_表值映射.xlsx",
+      "sha256": "5e86007b5a3cc6e9f80ccb8233b83cba9fe721df3bd6f36e3bbdaf446e889433",
+      "bytes": 14530,
+      "standard": "gb32030_2022",
+      "start_sha256": "5e86007b5a3cc6e9f80ccb8233b83cba9fe721df3bd6f36e3bbdaf446e889433",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\data\\tables.json",
+      "relative_path": "docs/standards/gb32030_2022/data/tables.json",
+      "sha256": "50ca22744198e5bf923c72a9f8fafcef3095b43cdc9fb3c79e470eea282ee65b",
+      "bytes": 15337,
+      "standard": "gb32030_2022",
+      "start_sha256": "50ca22744198e5bf923c72a9f8fafcef3095b43cdc9fb3c79e470eea282ee65b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\evidence\\VERIFICATION.md",
+      "relative_path": "docs/standards/gb32030_2022/evidence/VERIFICATION.md",
+      "sha256": "7df52a5d6f61936b55298703ec04ca23bc2d510b2d1f1026842f2bc9d7a18e31",
+      "bytes": 2748,
+      "standard": "gb32030_2022",
+      "start_sha256": "7df52a5d6f61936b55298703ec04ca23bc2d510b2d1f1026842f2bc9d7a18e31",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\evidence\\cell_trace.csv",
+      "relative_path": "docs/standards/gb32030_2022/evidence/cell_trace.csv",
+      "sha256": "2443cdfa06f655fcefcc3b871fdc3cb5b48bb3a4d9063670a8a6ce947892fd5b",
+      "bytes": 36950,
+      "standard": "gb32030_2022",
+      "start_sha256": "2443cdfa06f655fcefcc3b871fdc3cb5b48bb3a4d9063670a8a6ce947892fd5b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\evidence\\delivery_manifest.json",
+      "relative_path": "docs/standards/gb32030_2022/evidence/delivery_manifest.json",
+      "sha256": "cbc9463ca449703115890fd53ec8085a6cabc40a0db948df5c7bf873c6d5d6d0",
+      "bytes": 3586,
+      "standard": "gb32030_2022",
+      "start_sha256": "cbc9463ca449703115890fd53ec8085a6cabc40a0db948df5c7bf873c6d5d6d0",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\evidence\\numeric_spot_check.csv",
+      "relative_path": "docs/standards/gb32030_2022/evidence/numeric_spot_check.csv",
+      "sha256": "c371f87f817d43ce8f0f13f40c0695ce883da525f44acf3cd1c20fcbf6491d70",
+      "bytes": 2128,
+      "standard": "gb32030_2022",
+      "start_sha256": "c371f87f817d43ce8f0f13f40c0695ce883da525f44acf3cd1c20fcbf6491d70",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\evidence\\source_inventory.json",
+      "relative_path": "docs/standards/gb32030_2022/evidence/source_inventory.json",
+      "sha256": "0c828beb81274127ccd11461b0442fe18e3b22cab8b6cd2cf43e0139141a3102",
+      "bytes": 4740,
+      "standard": "gb32030_2022",
+      "start_sha256": "0c828beb81274127ccd11461b0442fe18e3b22cab8b6cd2cf43e0139141a3102",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\evidence\\structure_counts.json",
+      "relative_path": "docs/standards/gb32030_2022/evidence/structure_counts.json",
+      "sha256": "682f86445e757b3dcbe22265a9c1dc8791f44b438d67a99e35ff2b436b0012db",
+      "bytes": 582,
+      "standard": "gb32030_2022",
+      "start_sha256": "682f86445e757b3dcbe22265a9c1dc8791f44b438d67a99e35ff2b436b0012db",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\evidence\\verification_results.json",
+      "relative_path": "docs/standards/gb32030_2022/evidence/verification_results.json",
+      "sha256": "f9ebe79c67775780d3bfa55de5dd34e12e7eeefb71f5828b11f3f56f92983222",
+      "bytes": 446,
+      "standard": "gb32030_2022",
+      "start_sha256": "f9ebe79c67775780d3bfa55de5dd34e12e7eeefb71f5828b11f3f56f92983222",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\extract_sources.py",
+      "relative_path": "docs/standards/gb32030_2022/extract_sources.py",
+      "sha256": "5fef6ce5cab106b1a942212f57404ac28d7bc7dd55d8bab9e239cae8dffaf3a7",
+      "bytes": 1264,
+      "standard": "gb32030_2022",
+      "start_sha256": "5fef6ce5cab106b1a942212f57404ac28d7bc7dd55d8bab9e239cae8dffaf3a7",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\finalize_delivery.py",
+      "relative_path": "docs/standards/gb32030_2022/finalize_delivery.py",
+      "sha256": "3e53300ec99e8c70eda82aaef91bf52a44d3a5bd234614bd3343040644540c98",
+      "bytes": 1965,
+      "standard": "gb32030_2022",
+      "start_sha256": "3e53300ec99e8c70eda82aaef91bf52a44d3a5bd234614bd3343040644540c98",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\inspect_reference_pages.py",
+      "relative_path": "docs/standards/gb32030_2022/inspect_reference_pages.py",
+      "sha256": "b5059d58fc11e345edd28b2c1358ba8644bdf8255b6321167ca8359e7f28e653",
+      "bytes": 690,
+      "standard": "gb32030_2022",
+      "start_sha256": "b5059d58fc11e345edd28b2c1358ba8644bdf8255b6321167ca8359e7f28e653",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\verify_delivery.py",
+      "relative_path": "docs/standards/gb32030_2022/verify_delivery.py",
+      "sha256": "6fd089835d743f18b23a76193b0315d8ed1ff99523ae54e6f3d4fb7f8731d062",
+      "bytes": 3884,
+      "standard": "gb32030_2022",
+      "start_sha256": "6fd089835d743f18b23a76193b0315d8ed1ff99523ae54e6f3d4fb7f8731d062",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\BOUNDARY_CANDIDATES.md",
+      "relative_path": "docs/standards/gb37479_2019/BOUNDARY_CANDIDATES.md",
+      "sha256": "470b57f4fb6b2b6bc76c39bf55bc93fc69f35cbac2207f3975d758c6a034758e",
+      "bytes": 3337,
+      "standard": "gb37479_2019",
+      "start_sha256": "470b57f4fb6b2b6bc76c39bf55bc93fc69f35cbac2207f3975d758c6a034758e",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\HANDOFF.md",
+      "relative_path": "docs/standards/gb37479_2019/HANDOFF.md",
+      "sha256": "2df7e37cf6100139fb04a6a0eeb394f8feda391da5166b3e900804305015264e",
+      "bytes": 2770,
+      "standard": "gb37479_2019",
+      "start_sha256": "2df7e37cf6100139fb04a6a0eeb394f8feda391da5166b3e900804305015264e",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gb37479_2019/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "d6cbb939c5a97fd1d15f44856d00864206c9400e2c3464b025ade4c9a376497b",
+      "bytes": 5034,
+      "standard": "gb37479_2019",
+      "start_sha256": "d6cbb939c5a97fd1d15f44856d00864206c9400e2c3464b025ade4c9a376497b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\README.md",
+      "relative_path": "docs/standards/gb37479_2019/README.md",
+      "sha256": "ab195f0c93b31dbc809ac15472a614cc030a79fc3cec4ecc55a345480a2fc3df",
+      "bytes": 1705,
+      "standard": "gb37479_2019",
+      "start_sha256": "ab195f0c93b31dbc809ac15472a614cc030a79fc3cec4ecc55a345480a2fc3df",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gb37479_2019/STANDARD_MAPPING.md",
+      "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf",
+      "bytes": 9866,
+      "standard": "gb37479_2019",
+      "start_sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\build_workbook.mjs",
+      "relative_path": "docs/standards/gb37479_2019/build_workbook.mjs",
+      "sha256": "84b4db297c8cb47c74a69e27073b23e707cf24e6bb508c98afd03012c0b8c90b",
+      "bytes": 6215,
+      "standard": "gb37479_2019",
+      "start_sha256": "84b4db297c8cb47c74a69e27073b23e707cf24e6bb508c98afd03012c0b8c90b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+      "relative_path": "docs/standards/gb37479_2019/data/GB37479_2019_TABLE_VALUES.xlsx",
+      "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4",
+      "bytes": 8528,
+      "standard": "gb37479_2019",
+      "start_sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\table_rows.json",
+      "relative_path": "docs/standards/gb37479_2019/data/table_rows.json",
+      "sha256": "fc3f7688457629e663080dfa77d28e73d39c3d515ef219d2bf045f622ad19432",
+      "bytes": 7265,
+      "standard": "gb37479_2019",
+      "start_sha256": "fc3f7688457629e663080dfa77d28e73d39c3d515ef219d2bf045f622ad19432",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\evidence\\ACCEPTANCE_RESPONSE_20261013.md",
+      "relative_path": "docs/standards/gb37479_2019/evidence/ACCEPTANCE_RESPONSE_20261013.md",
+      "sha256": "e1f3cafbf4f9bfa1cbef33b21ecfb9133e6b61731642bcb330688f8518d03109",
+      "bytes": 3826,
+      "standard": "gb37479_2019",
+      "start_sha256": "e1f3cafbf4f9bfa1cbef33b21ecfb9133e6b61731642bcb330688f8518d03109",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\evidence\\SOURCE_AND_VERIFICATION.md",
+      "relative_path": "docs/standards/gb37479_2019/evidence/SOURCE_AND_VERIFICATION.md",
+      "sha256": "47246bc9da8518d131ffeac50756532dd77110af4dc375d78f954f67f00ced97",
+      "bytes": 6671,
+      "standard": "gb37479_2019",
+      "start_sha256": "47246bc9da8518d131ffeac50756532dd77110af4dc375d78f954f67f00ced97",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\evidence\\check_results.json",
+      "relative_path": "docs/standards/gb37479_2019/evidence/check_results.json",
+      "sha256": "6f3e2a972b4cd0f303c36c26eaf525f8126d3daf39fd20d2256290c6a855b306",
+      "bytes": 736,
+      "standard": "gb37479_2019",
+      "start_sha256": "6f3e2a972b4cd0f303c36c26eaf525f8126d3daf39fd20d2256290c6a855b306",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\evidence\\clause_numeric_audit.csv",
+      "relative_path": "docs/standards/gb37479_2019/evidence/clause_numeric_audit.csv",
+      "sha256": "b6a9c72c6b4f674c5235f0b899c490c77a4a2fc38505b93f04c7f8415821d71e",
+      "bytes": 1561,
+      "standard": "gb37479_2019",
+      "start_sha256": "b6a9c72c6b4f674c5235f0b899c490c77a4a2fc38505b93f04c7f8415821d71e",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\evidence\\numeric_audit.csv",
+      "relative_path": "docs/standards/gb37479_2019/evidence/numeric_audit.csv",
+      "sha256": "9e6191b7a735fde2b163ddd01e844066b1013d3998a2cf1edf114281ae5e2a9d",
+      "bytes": 11673,
+      "standard": "gb37479_2019",
+      "start_sha256": "9e6191b7a735fde2b163ddd01e844066b1013d3998a2cf1edf114281ae5e2a9d",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\verify.py",
+      "relative_path": "docs/standards/gb37479_2019/verify.py",
+      "sha256": "3c36e7eb0d047a335aacc7c3c6420a8cb0e7f587e000ad81251c2abc5996c254",
+      "bytes": 4211,
+      "standard": "gb37479_2019",
+      "start_sha256": "3c36e7eb0d047a335aacc7c3c6420a8cb0e7f587e000ad81251c2abc5996c254",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\BOUNDARY_CANDIDATES.md",
+      "relative_path": "docs/standards/gbt36561_2018/BOUNDARY_CANDIDATES.md",
+      "sha256": "7091b691a00f99e2459ed81691d2cccb29d18aabe8d234df387f53680cba1fca",
+      "bytes": 4824,
+      "standard": "gbt36561_2018",
+      "start_sha256": "7091b691a00f99e2459ed81691d2cccb29d18aabe8d234df387f53680cba1fca",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\HANDOFF.md",
+      "relative_path": "docs/standards/gbt36561_2018/HANDOFF.md",
+      "sha256": "29e7abdb5c93493feb1f1b55d5e755f9fccdf8410d74e91cb09b601a9382546b",
+      "bytes": 3459,
+      "standard": "gbt36561_2018",
+      "start_sha256": "29e7abdb5c93493feb1f1b55d5e755f9fccdf8410d74e91cb09b601a9382546b",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\ISSUE_REGISTRATION_REQUEST.md",
+      "relative_path": "docs/standards/gbt36561_2018/ISSUE_REGISTRATION_REQUEST.md",
+      "sha256": "272f5348f8d73d41f82757e50749d28cd2d19b880d93aa9373584468e4414852",
+      "bytes": 5435,
+      "standard": "gbt36561_2018",
+      "start_sha256": "272f5348f8d73d41f82757e50749d28cd2d19b880d93aa9373584468e4414852",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\README.md",
+      "relative_path": "docs/standards/gbt36561_2018/README.md",
+      "sha256": "37efdb50af6c35e44497399e0824b6ecc427d57504a2d4d9a4025a1273609bef",
+      "bytes": 1807,
+      "standard": "gbt36561_2018",
+      "start_sha256": "37efdb50af6c35e44497399e0824b6ecc427d57504a2d4d9a4025a1273609bef",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\REPAIR_REPORT_20261013.md",
+      "relative_path": "docs/standards/gbt36561_2018/REPAIR_REPORT_20261013.md",
+      "sha256": "0d6133361e960ebab577eb099660d11b62b671d54f09678bbf48ccf2c10b67b0",
+      "bytes": 3680,
+      "standard": "gbt36561_2018",
+      "start_sha256": "0d6133361e960ebab577eb099660d11b62b671d54f09678bbf48ccf2c10b67b0",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\SOURCE_AND_CHECKS.md",
+      "relative_path": "docs/standards/gbt36561_2018/SOURCE_AND_CHECKS.md",
+      "sha256": "fbed1609cdcb4f762b93122ea6182ffde752f4d941917783511ccc52fd60779a",
+      "bytes": 7004,
+      "standard": "gbt36561_2018",
+      "start_sha256": "fbed1609cdcb4f762b93122ea6182ffde752f4d941917783511ccc52fd60779a",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+      "relative_path": "docs/standards/gbt36561_2018/STANDARD_MAPPING.md",
+      "sha256": "dc59a8573a1467443afb3e8d4ecd0e073edb0f50713ffa742e4bd0d0ec062cde",
+      "bytes": 19504,
+      "standard": "gbt36561_2018",
+      "start_sha256": "dc59a8573a1467443afb3e8d4ecd0e073edb0f50713ffa742e4bd0d0ec062cde",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\build_data.py",
+      "relative_path": "docs/standards/gbt36561_2018/build_data.py",
+      "sha256": "eea27e16a4d78640f5c420ac119dafac126cf4787040f799b610fd8aa267e147",
+      "bytes": 16817,
+      "standard": "gbt36561_2018",
+      "start_sha256": "eea27e16a4d78640f5c420ac119dafac126cf4787040f799b610fd8aa267e147",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\build_workbook.mjs",
+      "relative_path": "docs/standards/gbt36561_2018/build_workbook.mjs",
+      "sha256": "edfd1216d7927a47ceb4639446517de06ae66a2b2033ec9fd63cef2c89245186",
+      "bytes": 4774,
+      "standard": "gbt36561_2018",
+      "start_sha256": "edfd1216d7927a47ceb4639446517de06ae66a2b2033ec9fd63cef2c89245186",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\data\\GBT36561_2018_TABLE_VALUES.xlsx",
+      "relative_path": "docs/standards/gbt36561_2018/data/GBT36561_2018_TABLE_VALUES.xlsx",
+      "sha256": "8178e66e9a40aaf1cddfd38c33344dce28dff0c73d5e1ed07a386c8700ff40d7",
+      "bytes": 34888,
+      "standard": "gbt36561_2018",
+      "start_sha256": "8178e66e9a40aaf1cddfd38c33344dce28dff0c73d5e1ed07a386c8700ff40d7",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\data\\table_values.csv",
+      "relative_path": "docs/standards/gbt36561_2018/data/table_values.csv",
+      "sha256": "666be11ae0de0fb1886b735f1e765f9e2038a26a938ce6e89f398f9188c14677",
+      "bytes": 83574,
+      "standard": "gbt36561_2018",
+      "start_sha256": "666be11ae0de0fb1886b735f1e765f9e2038a26a938ce6e89f398f9188c14677",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\data\\table_values.json",
+      "relative_path": "docs/standards/gbt36561_2018/data/table_values.json",
+      "sha256": "83e614c64558436eacd6bf0aaeea5d042b865276bff2fc03ee0171dc258d7af6",
+      "bytes": 200017,
+      "standard": "gbt36561_2018",
+      "start_sha256": "83e614c64558436eacd6bf0aaeea5d042b865276bff2fc03ee0171dc258d7af6",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\evidence\\SHA256SUMS.json",
+      "relative_path": "docs/standards/gbt36561_2018/evidence/SHA256SUMS.json",
+      "sha256": "3f4a47ea2b213bfa60bb1684ab610a11c1afd205fa57e9a67ba094f85e5f7333",
+      "bytes": 1831,
+      "standard": "gbt36561_2018",
+      "start_sha256": "3f4a47ea2b213bfa60bb1684ab610a11c1afd205fa57e9a67ba094f85e5f7333",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\evidence\\TABLE_LOCATIONS.md",
+      "relative_path": "docs/standards/gbt36561_2018/evidence/TABLE_LOCATIONS.md",
+      "sha256": "2e4a91fe27ba081d0a1eb4c5e676e910836dec86c149af77a6bc57b85a5c06f3",
+      "bytes": 2062,
+      "standard": "gbt36561_2018",
+      "start_sha256": "2e4a91fe27ba081d0a1eb4c5e676e910836dec86c149af77a6bc57b85a5c06f3",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\evidence\\check_results.json",
+      "relative_path": "docs/standards/gbt36561_2018/evidence/check_results.json",
+      "sha256": "7b3dcfa49e5502cece5049de78c2f09dd6c711de15bfb49d60aef67b3996b125",
+      "bytes": 898,
+      "standard": "gbt36561_2018",
+      "start_sha256": "7b3dcfa49e5502cece5049de78c2f09dd6c711de15bfb49d60aef67b3996b125",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\evidence\\numeric_review.csv",
+      "relative_path": "docs/standards/gbt36561_2018/evidence/numeric_review.csv",
+      "sha256": "8deaf3319798f84f2655a69abfb0844dd1840ad6d9fb87b65db39339e6c30e16",
+      "bytes": 9377,
+      "standard": "gbt36561_2018",
+      "start_sha256": "8deaf3319798f84f2655a69abfb0844dd1840ad6d9fb87b65db39339e6c30e16",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\evidence\\workbook_coordinates.json",
+      "relative_path": "docs/standards/gbt36561_2018/evidence/workbook_coordinates.json",
+      "sha256": "55bb7ca7867e1025c18f74f55b9c8eaceb9e2766a639075d16fb2e48aa5d8006",
+      "bytes": 232564,
+      "standard": "gbt36561_2018",
+      "start_sha256": "55bb7ca7867e1025c18f74f55b9c8eaceb9e2766a639075d16fb2e48aa5d8006",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\render_source.py",
+      "relative_path": "docs/standards/gbt36561_2018/render_source.py",
+      "sha256": "191c0b749c4d6600e85389866b7c495e3b823b506e46249ba3962f61827b8a59",
+      "bytes": 944,
+      "standard": "gbt36561_2018",
+      "start_sha256": "191c0b749c4d6600e85389866b7c495e3b823b506e46249ba3962f61827b8a59",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\verify_assets.py",
+      "relative_path": "docs/standards/gbt36561_2018/verify_assets.py",
+      "sha256": "5f29cb5a90a771c255d05b9602696dd2eb6410b3a5fb5cf5503b51b8a1285623",
+      "bytes": 8827,
+      "standard": "gbt36561_2018",
+      "start_sha256": "5f29cb5a90a771c255d05b9602696dd2eb6410b3a5fb5cf5503b51b8a1285623",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\10. GB 32030-2022_潜水电泵能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/10. GB 32030-2022_潜水电泵能效限定值及能效等级.pdf",
+      "sha256": "1cdd52a9e0dacb998829e6852453146b5252deb371b804c35b99f9dd8b3b06d4",
+      "bytes": 439036,
+      "standard": "gb32030_2022",
+      "start_sha256": "1cdd52a9e0dacb998829e6852453146b5252deb371b804c35b99f9dd8b3b06d4",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+      "sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285",
+      "bytes": 321459,
+      "standard": "gb24500_2020",
+      "start_sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\12. GBT+36561-2018 清洁节能热处理装备技术要求及评价体系.pdf",
+      "relative_path": "标准原文/12. GBT+36561-2018 清洁节能热处理装备技术要求及评价体系.pdf",
+      "sha256": "f1a6b29aa25d13b69f16006dd822e4ad2641830468bd6c395056e6751095ba37",
+      "bytes": 1736043,
+      "standard": "gbt36561_2018",
+      "start_sha256": "f1a6b29aa25d13b69f16006dd822e4ad2641830468bd6c395056e6751095ba37",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+      "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9",
+      "bytes": 439018,
+      "standard": "gb19577_2024",
+      "start_sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+      "sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df",
+      "bytes": 314172,
+      "standard": "gb29541_2013",
+      "start_sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+      "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde",
+      "bytes": 315134,
+      "standard": "gb37479_2019",
+      "start_sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+      "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026",
+      "bytes": 302110,
+      "standard": "gb19576_2019",
+      "start_sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+      "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+      "bytes": 1009080,
+      "standard": "gb21454_2021",
+      "start_sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\2. GB+18613-2020 电动机能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/2. GB+18613-2020 电动机能效限定值及能效等级.pdf",
+      "sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+      "bytes": 359642,
+      "standard": "gb18613_2020",
+      "start_sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\3. GB 30254-2024 高压三相笼型异步电动机能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/3. GB 30254-2024 高压三相笼型异步电动机能效限定值及能效等级.pdf",
+      "sha256": "53a6d2e8098fea9f81adf6a12fe3298707bf6b22cc8c972110aacdcd8a168135",
+      "bytes": 1939219,
+      "standard": "gb30254_2024",
+      "start_sha256": "53a6d2e8098fea9f81adf6a12fe3298707bf6b22cc8c972110aacdcd8a168135",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\4. GB 30253-2024 永磁同步电动机能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/4. GB 30253-2024 永磁同步电动机能效限定值及能效等级.pdf",
+      "sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053",
+      "bytes": 6678347,
+      "standard": "gb30253_2024",
+      "start_sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf",
+      "sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc",
+      "bytes": 823433,
+      "standard": "gb19153_2019",
+      "start_sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\8. GB+19761-2020 通风机能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/8. GB+19761-2020 通风机能效限定值及能效等级.pdf",
+      "sha256": "4ff8e7dd5b7adb86e33bcce49b60879e8c037f7178bb8f9091f1b5294d40f301",
+      "bytes": 428534,
+      "standard": "gb19761_2020",
+      "start_sha256": "4ff8e7dd5b7adb86e33bcce49b60879e8c037f7178bb8f9091f1b5294d40f301",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\9. GB 28381-2012 离心鼓风机能效限定值及节能评价值.pdf",
+      "relative_path": "标准原文/9. GB 28381-2012 离心鼓风机能效限定值及节能评价值.pdf",
+      "sha256": "07410053c5b190193169686f54b5f86fb243a9a069c3f6c3e0f085637c9b1a75",
+      "bytes": 330512,
+      "standard": "gb28381_2012",
+      "start_sha256": "07410053c5b190193169686f54b5f86fb243a9a069c3f6c3e0f085637c9b1a75",
+      "unchanged_during_window": true
+    },
+    {
+      "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\9. GB+28381-2026 鼓风机能效限定值及能效等级.pdf",
+      "relative_path": "标准原文/9. GB+28381-2026 鼓风机能效限定值及能效等级.pdf",
+      "sha256": "64a8ef7934933eff49874c5f121db5a1f32f69ff1a16295cd1abe4d740b80d35",
+      "bytes": 507234,
+      "standard": "gb28381_2026",
+      "start_sha256": "64a8ef7934933eff49874c5f121db5a1f32f69ff1a16295cd1abe4d740b80d35",
+      "unchanged_during_window": true
+    }
+  ],
+  "groups": [
+    {
+      "standard": "gb18613_2020",
+      "files": [
+        "docs/standards/gb18613_2020/BOUNDARY_CANDIDATES.md",
+        "docs/standards/gb18613_2020/HANDOFF.md",
+        "docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb18613_2020/README.md",
+        "docs/standards/gb18613_2020/STANDARD_MAPPING.md",
+        "docs/standards/gb18613_2020/data/GB18613_2020_表1-6校对数据_A1.xlsx",
+        "docs/standards/gb18613_2020/evidence/ACCEPTANCE_RESPONSE_R1.md",
+        "docs/standards/gb18613_2020/evidence/VERIFICATION.md",
+        "docs/standards/gb18613_2020/evidence/build_workbook.mjs",
+        "docs/standards/gb18613_2020/evidence/check_delivery.py",
+        "docs/standards/gb18613_2020/evidence/delivery_manifest.json",
+        "docs/standards/gb18613_2020/evidence/extract_and_verify.py",
+        "docs/standards/gb18613_2020/evidence/header_geometry.csv",
+        "docs/standards/gb18613_2020/evidence/source_cell_audit.csv",
+        "docs/standards/gb18613_2020/evidence/structure_check.json",
+        "docs/standards/gb18613_2020/evidence/verify_workbook.py",
+        "docs/standards/gb18613_2020/evidence/workbook_cell_check.csv",
+        "docs/standards/gb18613_2020/evidence/workbook_check.json",
+        "标准原文/2. GB+18613-2020 电动机能效限定值及能效等级.pdf"
+      ]
+    },
+    {
+      "standard": "gb30254_2024",
+      "files": [
+        "docs/standards/gb30254_2024/BOUNDARY_CASES.md",
+        "docs/standards/gb30254_2024/HANDOFF.md",
+        "docs/standards/gb30254_2024/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb30254_2024/README.md",
+        "docs/standards/gb30254_2024/STANDARD_MAPPING.md",
+        "docs/standards/gb30254_2024/data/GB30254_2024_标准表值.xlsx",
+        "docs/standards/gb30254_2024/evidence/ACCEPTANCE_RESPONSE_20261013.md",
+        "docs/standards/gb30254_2024/evidence/SHA256SUMS.txt",
+        "docs/standards/gb30254_2024/evidence/SOURCE_AND_VERIFICATION.md",
+        "docs/standards/gb30254_2024/evidence/branch_coverage.csv",
+        "docs/standards/gb30254_2024/evidence/build_workbook.mjs",
+        "docs/standards/gb30254_2024/evidence/cell_verification.csv",
+        "docs/standards/gb30254_2024/evidence/extract_tables.py",
+        "docs/standards/gb30254_2024/evidence/glyph_anchors.json",
+        "docs/standards/gb30254_2024/evidence/verification_summary.json",
+        "docs/standards/gb30254_2024/evidence/verify_workbook.py",
+        "标准原文/3. GB 30254-2024 高压三相笼型异步电动机能效限定值及能效等级.pdf"
+      ]
+    },
+    {
+      "standard": "gb30253_2024",
+      "files": [
+        "docs/standards/gb30253_2024/BOUNDARY_CANDIDATES.md",
+        "docs/standards/gb30253_2024/HANDOFF.md",
+        "docs/standards/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb30253_2024/README.md",
+        "docs/standards/gb30253_2024/STANDARD_MAPPING.md",
+        "docs/standards/gb30253_2024/data/GB30253_2024_TABLE_VALUES.xlsx",
+        "docs/standards/gb30253_2024/data/table_values.csv",
+        "docs/standards/gb30253_2024/evidence/ACCEPTANCE_RESPONSE_20261013.md",
+        "docs/standards/gb30253_2024/evidence/VERIFICATION.md",
+        "docs/standards/gb30253_2024/evidence/cell_audit.csv",
+        "docs/standards/gb30253_2024/evidence/row_audit.csv",
+        "docs/standards/gb30253_2024/evidence/scripts/build_workbook.mjs",
+        "docs/standards/gb30253_2024/evidence/scripts/extract.py",
+        "docs/standards/gb30253_2024/evidence/scripts/prepare_data.py",
+        "docs/standards/gb30253_2024/evidence/scripts/verify.py",
+        "docs/standards/gb30253_2024/evidence/verification_result.json",
+        "标准原文/4. GB 30253-2024 永磁同步电动机能效限定值及能效等级.pdf"
+      ]
+    },
+    {
+      "standard": "gb19153_2019",
+      "files": [
+        "docs/standards/gb19153_2019/HANDOFF.md",
+        "docs/standards/gb19153_2019/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb19153_2019/README.md",
+        "docs/standards/gb19153_2019/STANDARD_MAPPING.md",
+        "docs/standards/gb19153_2019/data/GB19153_2019_标准表值.xlsx",
+        "docs/standards/gb19153_2019/evidence/BOUNDARY_CANDIDATES.md",
+        "docs/standards/gb19153_2019/evidence/REVIEW_20261013_third_engine_check.py",
+        "docs/standards/gb19153_2019/evidence/REVIEW_20261013_verification_review.md",
+        "docs/standards/gb19153_2019/evidence/VERIFICATION.md",
+        "docs/standards/gb19153_2019/evidence/build_workbook.mjs",
+        "docs/standards/gb19153_2019/evidence/extract_tables.py",
+        "docs/standards/gb19153_2019/evidence/numeric_crosscheck.csv",
+        "docs/standards/gb19153_2019/evidence/source_cells.csv",
+        "docs/standards/gb19153_2019/evidence/verify_source.py",
+        "docs/standards/gb19153_2019/evidence/verify_workbook.py",
+        "docs/standards/gb19153_2019/evidence/workbook_verification.json",
+        "标准原文/5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf"
+      ]
+    },
+    {
+      "standard": "gb24500_2020",
+      "files": [
+        "docs/standards/gb24500_2020/ACCEPTANCE_RESPONSE.md",
+        "docs/standards/gb24500_2020/BOUNDARY_CANDIDATES.md",
+        "docs/standards/gb24500_2020/HANDOFF.md",
+        "docs/standards/gb24500_2020/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb24500_2020/README.md",
+        "docs/standards/gb24500_2020/SOURCE_AND_VERIFICATION.md",
+        "docs/standards/gb24500_2020/STANDARD_MAPPING.md",
+        "docs/standards/gb24500_2020/data/GB24500_2020_TABLE_VALUES.xlsx",
+        "docs/standards/gb24500_2020/evidence/REVIEW_20261013_verification_review.md",
+        "docs/standards/gb24500_2020/evidence/cell_verification.csv",
+        "docs/standards/gb24500_2020/evidence/verification_summary.json",
+        "docs/standards/gb24500_2020/evidence/verify_independent_review.py",
+        "标准原文/11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf"
+      ]
+    },
+    {
+      "standard": "gb29541_2013",
+      "files": [
+        "docs/standards/gb29541_2013/CHANGELOG.md",
+        "docs/standards/gb29541_2013/HANDOFF.md",
+        "docs/standards/gb29541_2013/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb29541_2013/README.md",
+        "docs/standards/gb29541_2013/STANDARD_MAPPING.md",
+        "docs/standards/gb29541_2013/data/GB29541_2013_标准表值.xlsx",
+        "docs/standards/gb29541_2013/evidence/ACCEPTANCE_RESPONSE.md",
+        "docs/standards/gb29541_2013/evidence/BOUNDARY_CANDIDATES.md",
+        "docs/standards/gb29541_2013/evidence/REVIEW_20261013_independent_review.md",
+        "docs/standards/gb29541_2013/evidence/SOURCE_REGISTER.md",
+        "docs/standards/gb29541_2013/evidence/VERIFICATION.md",
+        "docs/standards/gb29541_2013/evidence/build.mjs",
+        "docs/standards/gb29541_2013/evidence/cell_verification.csv",
+        "docs/standards/gb29541_2013/evidence/verification_results.json",
+        "docs/standards/gb29541_2013/evidence/verify.py",
+        "标准原文/14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf"
+      ]
+    },
+    {
+      "standard": "gb19761_2020",
+      "files": [
+        "docs/standards/gb19761_2020/BOUNDARY_CANDIDATES.md",
+        "docs/standards/gb19761_2020/HANDOFF.md",
+        "docs/standards/gb19761_2020/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb19761_2020/README.md",
+        "docs/standards/gb19761_2020/STANDARD_MAPPING.md",
+        "docs/standards/gb19761_2020/build_data.py",
+        "docs/standards/gb19761_2020/build_workbook.mjs",
+        "docs/standards/gb19761_2020/data/GB19761_2020_表1-4核对工作簿.xlsx",
+        "docs/standards/gb19761_2020/data/table_values.csv",
+        "docs/standards/gb19761_2020/data/table_values.json",
+        "docs/standards/gb19761_2020/evidence/SOURCE.md",
+        "docs/standards/gb19761_2020/evidence/VERIFICATION.md",
+        "docs/standards/gb19761_2020/evidence/artifact_hashes.json",
+        "docs/standards/gb19761_2020/evidence/check_summary.json",
+        "docs/standards/gb19761_2020/evidence/export_check.json",
+        "docs/standards/gb19761_2020/evidence/numeric_self_check.csv",
+        "docs/standards/gb19761_2020/verify_export.py",
+        "标准原文/8. GB+19761-2020 通风机能效限定值及能效等级.pdf"
+      ]
+    },
+    {
+      "standard": "gb28381_2012",
+      "files": [
+        "docs/standards/gb28381_2012/BOUNDARY_CASES.md",
+        "docs/standards/gb28381_2012/HANDOFF.md",
+        "docs/standards/gb28381_2012/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb28381_2012/README.md",
+        "docs/standards/gb28381_2012/STANDARD_MAPPING.md",
+        "docs/standards/gb28381_2012/build_workbook.mjs",
+        "docs/standards/gb28381_2012/check_delivery.py",
+        "docs/standards/gb28381_2012/data/GB28381_2012_TABLES.xlsx",
+        "docs/standards/gb28381_2012/data/tables.json",
+        "docs/standards/gb28381_2012/evidence/ACCEPTANCE_RESPONSE.md",
+        "docs/standards/gb28381_2012/evidence/AUDIT.md",
+        "docs/standards/gb28381_2012/evidence/acceptance_evidence_check.json",
+        "docs/standards/gb28381_2012/evidence/check_results.json",
+        "docs/standards/gb28381_2012/evidence/delivery_checks.json",
+        "docs/standards/gb28381_2012/evidence/file_hashes.json",
+        "docs/standards/gb28381_2012/evidence/source_cells.csv",
+        "docs/standards/gb28381_2012/evidence/visual_spot_checks.csv",
+        "docs/standards/gb28381_2012/evidence/xlsx_cell_check.csv",
+        "docs/standards/gb28381_2012/extract_verify.py",
+        "docs/standards/gb28381_2012/verify_visual_samples.py",
+        "标准原文/9. GB 28381-2012 离心鼓风机能效限定值及节能评价值.pdf"
+      ]
+    },
+    {
+      "standard": "gb28381_2026",
+      "files": [
+        "docs/standards/gb28381_2026/BOUNDARY_CASES.md",
+        "docs/standards/gb28381_2026/CANDIDATE_CHECKS.json",
+        "docs/standards/gb28381_2026/CELL_AUDIT.csv",
+        "docs/standards/gb28381_2026/CHECK_RESULTS.json",
+        "docs/standards/gb28381_2026/DELIVERY_SHA256.json",
+        "docs/standards/gb28381_2026/GB28381_2026_TABLE_VALUES.xlsx",
+        "docs/standards/gb28381_2026/HANDOFF.md",
+        "docs/standards/gb28381_2026/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb28381_2026/README.md",
+        "docs/standards/gb28381_2026/SOURCE_EVIDENCE.md",
+        "docs/standards/gb28381_2026/STANDARD_MAPPING.md",
+        "docs/standards/gb28381_2026/VERIFICATION.md",
+        "docs/standards/gb28381_2026/VISUAL_SPOTCHECK.csv",
+        "docs/standards/gb28381_2026/build_workbook.mjs",
+        "docs/standards/gb28381_2026/check_candidates.py",
+        "docs/standards/gb28381_2026/extract_verify.py",
+        "docs/standards/gb28381_2026/table_values.json",
+        "docs/standards/gb28381_2026/verify_workbook.py",
+        "标准原文/9. GB+28381-2026 鼓风机能效限定值及能效等级.pdf"
+      ]
+    },
+    {
+      "standard": "gb32030_2022",
+      "files": [
+        "docs/standards/gb32030_2022/BOUNDARY_CANDIDATES.md",
+        "docs/standards/gb32030_2022/HANDOFF.md",
+        "docs/standards/gb32030_2022/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb32030_2022/README.md",
+        "docs/standards/gb32030_2022/SOURCE_AUTHENTICITY.md",
+        "docs/standards/gb32030_2022/STANDARD_MAPPING.md",
+        "docs/standards/gb32030_2022/build_data.py",
+        "docs/standards/gb32030_2022/build_workbook.mjs",
+        "docs/standards/gb32030_2022/data/GB32030_2022_表值映射.xlsx",
+        "docs/standards/gb32030_2022/data/tables.json",
+        "docs/standards/gb32030_2022/evidence/VERIFICATION.md",
+        "docs/standards/gb32030_2022/evidence/cell_trace.csv",
+        "docs/standards/gb32030_2022/evidence/delivery_manifest.json",
+        "docs/standards/gb32030_2022/evidence/numeric_spot_check.csv",
+        "docs/standards/gb32030_2022/evidence/source_inventory.json",
+        "docs/standards/gb32030_2022/evidence/structure_counts.json",
+        "docs/standards/gb32030_2022/evidence/verification_results.json",
+        "docs/standards/gb32030_2022/extract_sources.py",
+        "docs/standards/gb32030_2022/finalize_delivery.py",
+        "docs/standards/gb32030_2022/inspect_reference_pages.py",
+        "docs/standards/gb32030_2022/verify_delivery.py",
+        "标准原文/10. GB 32030-2022_潜水电泵能效限定值及能效等级.pdf"
+      ]
+    },
+    {
+      "standard": "gbt36561_2018",
+      "files": [
+        "docs/standards/gbt36561_2018/BOUNDARY_CANDIDATES.md",
+        "docs/standards/gbt36561_2018/HANDOFF.md",
+        "docs/standards/gbt36561_2018/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gbt36561_2018/README.md",
+        "docs/standards/gbt36561_2018/REPAIR_REPORT_20261013.md",
+        "docs/standards/gbt36561_2018/SOURCE_AND_CHECKS.md",
+        "docs/standards/gbt36561_2018/STANDARD_MAPPING.md",
+        "docs/standards/gbt36561_2018/build_data.py",
+        "docs/standards/gbt36561_2018/build_workbook.mjs",
+        "docs/standards/gbt36561_2018/data/GBT36561_2018_TABLE_VALUES.xlsx",
+        "docs/standards/gbt36561_2018/data/table_values.csv",
+        "docs/standards/gbt36561_2018/data/table_values.json",
+        "docs/standards/gbt36561_2018/evidence/SHA256SUMS.json",
+        "docs/standards/gbt36561_2018/evidence/TABLE_LOCATIONS.md",
+        "docs/standards/gbt36561_2018/evidence/check_results.json",
+        "docs/standards/gbt36561_2018/evidence/numeric_review.csv",
+        "docs/standards/gbt36561_2018/evidence/workbook_coordinates.json",
+        "docs/standards/gbt36561_2018/render_source.py",
+        "docs/standards/gbt36561_2018/verify_assets.py",
+        "标准原文/12. GBT+36561-2018 清洁节能热处理装备技术要求及评价体系.pdf"
+      ]
+    },
+    {
+      "standard": "gb19577_2024",
+      "files": [
+        "docs/standards/gb19577_2024/BOUNDARY_CANDIDATES.md",
+        "docs/standards/gb19577_2024/HANDOFF.md",
+        "docs/standards/gb19577_2024/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb19577_2024/README.md",
+        "docs/standards/gb19577_2024/STANDARD_MAPPING.md",
+        "docs/standards/gb19577_2024/build_data.py",
+        "docs/standards/gb19577_2024/build_workbook.mjs",
+        "docs/standards/gb19577_2024/data/GB19577_2024_TABLE_VALUES.xlsx",
+        "docs/standards/gb19577_2024/data/table_values.json",
+        "docs/standards/gb19577_2024/evidence/FILE_MANIFEST.json",
+        "docs/standards/gb19577_2024/evidence/VERIFICATION.md",
+        "docs/standards/gb19577_2024/evidence/cell_audit.csv",
+        "docs/standards/gb19577_2024/evidence/cell_audit.json",
+        "docs/standards/gb19577_2024/evidence/source_tables.json",
+        "docs/standards/gb19577_2024/evidence/workbook_checks.json",
+        "docs/standards/gb19577_2024/verify_workbook.py",
+        "标准原文/13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf"
+      ]
+    },
+    {
+      "standard": "gb37479_2019",
+      "files": [
+        "docs/standards/gb37479_2019/BOUNDARY_CANDIDATES.md",
+        "docs/standards/gb37479_2019/HANDOFF.md",
+        "docs/standards/gb37479_2019/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb37479_2019/README.md",
+        "docs/standards/gb37479_2019/STANDARD_MAPPING.md",
+        "docs/standards/gb37479_2019/build_workbook.mjs",
+        "docs/standards/gb37479_2019/data/GB37479_2019_TABLE_VALUES.xlsx",
+        "docs/standards/gb37479_2019/data/table_rows.json",
+        "docs/standards/gb37479_2019/evidence/ACCEPTANCE_RESPONSE_20261013.md",
+        "docs/standards/gb37479_2019/evidence/SOURCE_AND_VERIFICATION.md",
+        "docs/standards/gb37479_2019/evidence/check_results.json",
+        "docs/standards/gb37479_2019/evidence/clause_numeric_audit.csv",
+        "docs/standards/gb37479_2019/evidence/numeric_audit.csv",
+        "docs/standards/gb37479_2019/verify.py",
+        "标准原文/15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf"
+      ]
+    },
+    {
+      "standard": "gb19576_2019",
+      "files": [
+        "docs/standards/gb19576_2019/ACCEPTANCE_RESPONSE.md",
+        "docs/standards/gb19576_2019/BOUNDARY_CANDIDATES.md",
+        "docs/standards/gb19576_2019/HANDOFF.md",
+        "docs/standards/gb19576_2019/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb19576_2019/README.md",
+        "docs/standards/gb19576_2019/SOURCE_EVIDENCE.md",
+        "docs/standards/gb19576_2019/STANDARD_MAPPING.md",
+        "docs/standards/gb19576_2019/VERIFICATION.md",
+        "docs/standards/gb19576_2019/build_workbook.mjs",
+        "docs/standards/gb19576_2019/data/GB19576_2019_TABLE1.xlsx",
+        "docs/standards/gb19576_2019/evidence/cell_audit.csv",
+        "docs/standards/gb19576_2019/evidence/verification_results.json",
+        "docs/standards/gb19576_2019/verify_workbook.py",
+        "标准原文/16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf"
+      ]
+    },
+    {
+      "standard": "gb21454_2021",
+      "files": [
+        "docs/standards/gb21454_2021/BOUNDARY_CANDIDATES.md",
+        "docs/standards/gb21454_2021/HANDOFF.md",
+        "docs/standards/gb21454_2021/ISSUE_REGISTRATION_REQUEST.md",
+        "docs/standards/gb21454_2021/README.md",
+        "docs/standards/gb21454_2021/STANDARD_MAPPING.md",
+        "docs/standards/gb21454_2021/build_data.py",
+        "docs/standards/gb21454_2021/build_workbook.mjs",
+        "docs/standards/gb21454_2021/data/GB21454_2021_标准表值.xlsx",
+        "docs/standards/gb21454_2021/data/table_values.json",
+        "docs/standards/gb21454_2021/evidence/ACCEPTANCE_RESPONSE.md",
+        "docs/standards/gb21454_2021/evidence/VERIFICATION.md",
+        "docs/standards/gb21454_2021/evidence/acceptance_reconciliation.json",
+        "docs/standards/gb21454_2021/evidence/cell_audit.csv",
+        "docs/standards/gb21454_2021/evidence/check_results.json",
+        "docs/standards/gb21454_2021/extract_source.py",
+        "docs/standards/gb21454_2021/verify_workbook.py",
+        "标准原文/17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf"
+      ]
+    }
+  ],
+  "end_utc": "2026-10-13T14:52:03.783741+00:00",
+  "changed_files": [],
+  "register_final_short_reverification": "register_type_final_check.json",
+  "register_previous_sha256": "4989190f141d482dbb00c3fedb5c0ac2b52d8560e24ec4c66ccf02c36f1bc79e",
+  "final_register_sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908",
+  "final_register_update_utc": "2026-10-13T15:01:41.809086+00:00",
+  "remaining_262_files_final_stability": "Confirmed by parent final delivery check; no repeat table verification"
+}

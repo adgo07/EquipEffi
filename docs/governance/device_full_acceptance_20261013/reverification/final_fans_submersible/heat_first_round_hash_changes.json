@@ -1,0 +1,32 @@
+[
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\data\\GBT36561_2018_TABLE_VALUES.xlsx",
+    "sha256": "284ceebe8b76f2b20cbbfe3ebb144e2abd4e85a6f598d6d389510e13f410af0a",
+    "current_sha256": "8178e66e9a40aaf1cddfd38c33344dce28dff0c73d5e1ed07a386c8700ff40d7"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\data\\table_values.csv",
+    "sha256": "f3daad132955707b3153e2592134c57d3d62b53df2dfc5d506658fcba47a2fe9",
+    "current_sha256": "666be11ae0de0fb1886b735f1e765f9e2038a26a938ce6e89f398f9188c14677"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\data\\table_values.json",
+    "sha256": "01048799230ae5316d7d3ebae78cefd640961778f61404e3e72821ab1e1d9031",
+    "current_sha256": "83e614c64558436eacd6bf0aaeea5d042b865276bff2fc03ee0171dc258d7af6"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\evidence\\workbook_coordinates.json",
+    "sha256": "a27018fa98b85306f1af4e2f9e1c474b688ea2bcee7a33026a913c18b3fbc1f7",
+    "current_sha256": "55bb7ca7867e1025c18f74f55b9c8eaceb9e2766a639075d16fb2e48aa5d8006"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\build_data.py",
+    "sha256": "13fddc46795f0656668c90f0b5e506fe884502a0214bab6db3e993db708f2da2",
+    "current_sha256": "eea27e16a4d78640f5c420ac119dafac126cf4787040f799b610fd8aa267e147"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "sha256": "dc59a8573a1467443afb3e8d4ecd0e073edb0f50713ffa742e4bd0d0ec062cde",
+    "current_sha256": "dc59a8573a1467443afb3e8d4ecd0e073edb0f50713ffa742e4bd0d0ec062cde"
+  }
+]

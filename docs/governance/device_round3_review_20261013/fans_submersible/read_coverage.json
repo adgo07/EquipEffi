@@ -1,0 +1,51 @@
+{
+  "completed_utc": "2026-10-13T16:01:33.806880+00:00",
+  "files": [
+    {
+      "standard": "gb19761_2020",
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb19761_2020_ACCEPTANCE_REVIEW.md",
+      "sha256": "bedb0a667be830e8a3e114b6e6f3566aeaccddef5da6696d32214dabcc7dc2a3",
+      "lines": 314,
+      "complete_text_read": true,
+      "including_errata_appendices_and_limitations": true,
+      "numeric_full_replay_this_round": false
+    },
+    {
+      "standard": "gb28381_2012",
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb28381_2012_ACCEPTANCE_REVIEW.md",
+      "sha256": "57c4a3d576e2657afbaf7dc78e8969759fe4beb8601dc49f0631f936ed9ac27a",
+      "lines": 301,
+      "complete_text_read": true,
+      "including_errata_appendices_and_limitations": true,
+      "numeric_full_replay_this_round": false
+    },
+    {
+      "standard": "gb28381_2026",
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb28381_2026_ACCEPTANCE_REVIEW.md",
+      "sha256": "d096f57dc0f7da612178285ffd2fe9eccf99243aee67bf528414bae2638008c3",
+      "lines": 558,
+      "complete_text_read": true,
+      "including_errata_appendices_and_limitations": true,
+      "numeric_full_replay_this_round": false
+    },
+    {
+      "standard": "gb32030_2022",
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb32030_2022_ACCEPTANCE_REVIEW.md",
+      "sha256": "81ef5e51d2b69c347b4a089859db5bc7c13a1b1254495b2c0d078763b71a04c8",
+      "lines": 432,
+      "complete_text_read": true,
+      "including_errata_appendices_and_limitations": true,
+      "numeric_full_replay_this_round": false
+    },
+    {
+      "standard": "gbt36561_2018",
+      "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gbt36561_2018_ACCEPTANCE_REVIEW.md",
+      "sha256": "368e9b881d1b3e6d09811464f19404ccc1d52ea8d3366d1e8e3cc194fcf14615",
+      "lines": 292,
+      "complete_text_read": true,
+      "including_errata_appendices_and_limitations": true,
+      "numeric_full_replay_this_round": false
+    }
+  ],
+  "method": "全文分段读取；不是只摘发现章节，不声称重演旧报告全量数值程序"
+}

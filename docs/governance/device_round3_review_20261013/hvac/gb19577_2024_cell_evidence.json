@@ -1,0 +1,54 @@
+{
+  "表1": {
+    "I5": {
+      "value": "附加指标1",
+      "format": "General"
+    },
+    "J5": {
+      "value": "3级值",
+      "format": "General"
+    },
+    "D17": {
+      "value": "—",
+      "format": "General"
+    }
+  },
+  "表2": {
+    "I5": {
+      "value": "附加指标1",
+      "format": "General"
+    },
+    "J5": {
+      "value": "3级值",
+      "format": "General"
+    }
+  },
+  "表4": {
+    "A1": {
+      "value": null,
+      "format": "General"
+    },
+    "A2": {
+      "value": "表4 能效等级指标",
+      "format": "General"
+    },
+    "D6": {
+      "value": "—",
+      "format": "General"
+    },
+    "D7": {
+      "value": "—",
+      "format": "General"
+    },
+    "D8": {
+      "value": "—",
+      "format": "General"
+    }
+  },
+  "表A.2": {
+    "C21": {
+      "value": 1007,
+      "format": "0"
+    }
+  }
+}

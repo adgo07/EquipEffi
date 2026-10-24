@@ -1,0 +1,32 @@
+[
+  {
+    "id": "EQP-STD-GB29541-001",
+    "expected_original_request_type": "MISSING / AMBIGUITY",
+    "actual_root_type": "待确认",
+    "pass": false
+  },
+  {
+    "id": "EQP-STD-GB29541-002",
+    "expected_original_request_type": "MISSING / AMBIGUITY",
+    "actual_root_type": "待确认",
+    "pass": false
+  },
+  {
+    "id": "EQP-STD-GB29541-003",
+    "expected_original_request_type": "IMPLEMENTATION / REFERENCE",
+    "actual_root_type": "待确认",
+    "pass": false
+  },
+  {
+    "id": "EQP-STD-GB29541-004",
+    "expected_original_request_type": "REFERENCE",
+    "actual_root_type": "待确认",
+    "pass": false
+  },
+  {
+    "id": "EQP-STD-GB29541-005",
+    "expected_original_request_type": "AMBIGUITY",
+    "actual_root_type": "待确认",
+    "pass": false
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "path": "STANDARD_ISSUES_REGISTER.md",
+    "before": {
+      "path": "STANDARD_ISSUES_REGISTER.md",
+      "sha256": "d3ab7f9b7baa6bae807e10a3fe6068ff7b8b3318c6e146c17c0236ceef927932",
+      "bytes": 46892
+    },
+    "after": {
+      "path": "STANDARD_ISSUES_REGISTER.md",
+      "sha256": "f60879e271dcb9a3ae939711add9a63b9d906bc10e0c9a1a6d39c05221caf89e",
+      "bytes": 48452
+    }
+  }
+]

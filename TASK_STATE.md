@@ -40,3 +40,7 @@ Owner 已确认 ZIP 正常解压后批量评价、记录和外部打开正常，
 - Phase 8 执行证据：[基线提交 `332d79c7d999feb4047c920ecb4359655bf9440e` 的 Phase 8 执行报告](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/PHASE8_EXECUTION_REPORT.md)；独立验收前不生成 Phase 8 acceptance record。
 
 已批准阶段的原始验收记录固定链接：[Phase 3](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/docs/phase3_acceptance_record.md)、[Phase 4](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/docs/phase4_acceptance_record.md)、[Phase 5](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/docs/phase5_acceptance_record.md)、[Phase 6](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/docs/phase6_acceptance_record.md)、[Phase 7](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/docs/phase7_acceptance_record.md)。这些链接只承载批准历史，无自动调度权。
+
+## 2026-10-24 标准映射文件收口
+
+当前标准统一从[标准总入口](docs/standards/README.md)直接进入主映射。GB 19576—2019、GB 29541—2013、GB 37479—2019的全部等级限值已在映射中，其余12项保留必要工作簿。核验材料和旧交接集中[归档](docs/governance/standard_archive_20261024/README.md)，不再维护每标准README/HANDOFF/请求单作为当前入口。Owner既有解释和未决事项保留，根台账仍是唯一问题状态权威。离心泵和变压器全部原位保护；不改变Phase、Profile支持状态或软件实现。最终检查见[核验记录](docs/governance/standard_archive_20261024/VALIDATION.json)。

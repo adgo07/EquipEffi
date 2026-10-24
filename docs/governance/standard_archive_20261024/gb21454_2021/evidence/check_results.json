@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-13",
+  "source_sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+  "xlsx_sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+  "tables": {
+    "表1": {
+      "data_rows": 5,
+      "data_cells": 35,
+      "numeric_export_cells": 18,
+      "dash_cells": 12
+    },
+    "表2": {
+      "data_rows": 5,
+      "data_cells": 35,
+      "numeric_export_cells": 18,
+      "dash_cells": 12
+    },
+    "表3": {
+      "data_rows": 4,
+      "data_cells": 24,
+      "numeric_export_cells": 12,
+      "dash_cells": 2
+    },
+    "表4": {
+      "data_rows": 2,
+      "data_cells": 14,
+      "numeric_export_cells": 10,
+      "dash_cells": 0
+    },
+    "表A.1": {
+      "data_rows": 5,
+      "data_cells": 30,
+      "numeric_export_cells": 19,
+      "dash_cells": 1
+    },
+    "表A.2": {
+      "data_rows": 5,
+      "data_cells": 30,
+      "numeric_export_cells": 24,
+      "dash_cells": 1
+    },
+    "表A.3": {
+      "data_rows": 34,
+      "data_cells": 136,
+      "numeric_export_cells": 102,
+      "dash_cells": 0
+    },
+    "表A.4": {
+      "data_rows": 32,
+      "data_cells": 128,
+      "numeric_export_cells": 96,
+      "dash_cells": 0
+    },
+    "表A.5": {
+      "data_rows": 4,
+      "data_cells": 8,
+      "numeric_export_cells": 4,
+      "dash_cells": 0
+    }
+  },
+  "audit_cells_including_two_totals": 442,
+  "export_mismatches": [],
+  "formula_cells": [],
+  "error_cells": [],
+  "independent_source_acceptance": "NOT_RUN",
+  "native_excel_check": "NOT_RUN",
+  "production_tests": "NOT_RUN"
+}

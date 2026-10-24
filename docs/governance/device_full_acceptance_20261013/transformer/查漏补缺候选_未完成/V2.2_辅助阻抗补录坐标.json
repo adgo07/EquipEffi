@@ -1,0 +1,3309 @@
+{
+  "old_xlsx": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb20052_v21\\GB20052_2024_变压器表1-35人工校对数据工作簿_V2.1.xlsx",
+  "new_xlsx": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb20052_v21\\GB20052_2024_变压器表1-35人工校对数据工作簿_V2.2_修订候选.xlsx",
+  "patches": [
+    {
+      "sheet": "表01",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 30,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 30,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 30,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 30,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 50,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 50,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 50,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 50,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 63,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 63,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P14",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 63,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P15",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 63,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P16",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 80,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P17",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 80,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P18",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 80,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P19",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 80,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P20",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 100,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P21",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 100,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P22",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 100,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P23",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 100,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P24",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 125,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P25",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 125,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P26",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 125,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P27",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 125,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P28",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 160,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P29",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 160,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P30",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 160,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P31",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 160,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P32",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 200,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P33",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 200,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P34",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 200,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P35",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 200,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P36",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 250,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P37",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 250,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P38",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 250,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P39",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 250,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P40",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 315,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P41",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 315,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P42",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 315,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P43",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 315,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P44",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 400,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P45",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 400,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P46",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 400,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P47",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 400,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P48",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 500,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P49",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 500,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P50",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 500,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P51",
+      "old": null,
+      "new": "原表短路阻抗：4%",
+      "table": 1,
+      "capacity_kva": 500,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P52",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 630,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P53",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 630,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P54",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 630,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P55",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 630,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P56",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 800,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P57",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 800,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P58",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 800,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P59",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 800,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P60",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 1000,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P61",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 1000,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P62",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 1000,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P63",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 1000,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P64",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 1250,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P65",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 1250,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P66",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 1250,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P67",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 1250,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P68",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 1600,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P69",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 1600,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P70",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 1600,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P71",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：4.5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 1600,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P72",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 2000,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P73",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 2000,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P74",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 2000,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P75",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 2000,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P76",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 2500,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P77",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 2500,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P78",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 2500,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表01",
+      "cell": "P79",
+      "old": "PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "new": "原表短路阻抗：5%；PDF该容量段的联结组负载损耗格为合并单元格，Dyn11/Yzn11与Yyn0共享源格",
+      "table": 1,
+      "capacity_kva": 2500,
+      "source_page": "物理页7 / 印刷页3"
+    },
+    {
+      "sheet": "表03",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：7%",
+      "table": 3,
+      "capacity_kva": 3150,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表03",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：7%",
+      "table": 3,
+      "capacity_kva": 4000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表03",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：7%",
+      "table": 3,
+      "capacity_kva": 5000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表03",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：7%",
+      "table": 3,
+      "capacity_kva": 6300,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表03",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：8%",
+      "table": 3,
+      "capacity_kva": 8000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表03",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：8%",
+      "table": 3,
+      "capacity_kva": 10000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表03",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：8%",
+      "table": 3,
+      "capacity_kva": 12500,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表03",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：8%",
+      "table": 3,
+      "capacity_kva": 16000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表03",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：8%",
+      "table": 3,
+      "capacity_kva": 20000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表03",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：10%",
+      "table": 3,
+      "capacity_kva": 25000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表03",
+      "cell": "P14",
+      "old": null,
+      "new": "原表短路阻抗：10%",
+      "table": 3,
+      "capacity_kva": 31500,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表04",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：7%",
+      "table": 4,
+      "capacity_kva": 3150,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表04",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：7%",
+      "table": 4,
+      "capacity_kva": 4000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表04",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：7%",
+      "table": 4,
+      "capacity_kva": 5000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表04",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：7.5%",
+      "table": 4,
+      "capacity_kva": 6300,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表04",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：7.5%",
+      "table": 4,
+      "capacity_kva": 8000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表04",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：7.5%",
+      "table": 4,
+      "capacity_kva": 10000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表04",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：8%",
+      "table": 4,
+      "capacity_kva": 12500,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表04",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：8%",
+      "table": 4,
+      "capacity_kva": 16000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表04",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：8%",
+      "table": 4,
+      "capacity_kva": 20000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表04",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：10%",
+      "table": 4,
+      "capacity_kva": 25000,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表04",
+      "cell": "P14",
+      "old": null,
+      "new": "原表短路阻抗：10%",
+      "table": 4,
+      "capacity_kva": 31500,
+      "source_page": "物理页9 / 印刷页5"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：8%",
+      "table": 5,
+      "capacity_kva": 3150,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：8%",
+      "table": 5,
+      "capacity_kva": 4000,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：8%",
+      "table": 5,
+      "capacity_kva": 5000,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：9%",
+      "table": 5,
+      "capacity_kva": 6300,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：9%",
+      "table": 5,
+      "capacity_kva": 8000,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：9%",
+      "table": 5,
+      "capacity_kva": 10000,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：9%",
+      "table": 5,
+      "capacity_kva": 12500,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：9%",
+      "table": 5,
+      "capacity_kva": 16000,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：9%",
+      "table": 5,
+      "capacity_kva": 20000,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：9%",
+      "table": 5,
+      "capacity_kva": 25000,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P14",
+      "old": null,
+      "new": "原表短路阻抗：9%",
+      "table": 5,
+      "capacity_kva": 31500,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P15",
+      "old": null,
+      "new": "原表短路阻抗：9%",
+      "table": 5,
+      "capacity_kva": 40000,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P16",
+      "old": null,
+      "new": "原表短路阻抗：9%",
+      "table": 5,
+      "capacity_kva": 50000,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表05",
+      "cell": "P17",
+      "old": null,
+      "new": "原表短路阻抗：9%",
+      "table": 5,
+      "capacity_kva": 63000,
+      "source_page": "物理页10 / 印刷页6"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：10.5%",
+      "table": 7,
+      "capacity_kva": 6300,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：10.5%",
+      "table": 7,
+      "capacity_kva": 8000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：10.5%",
+      "table": 7,
+      "capacity_kva": 10000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：10.5%",
+      "table": 7,
+      "capacity_kva": 12500,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：10.5%",
+      "table": 7,
+      "capacity_kva": 16000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：10.5%",
+      "table": 7,
+      "capacity_kva": 20000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：10.5%",
+      "table": 7,
+      "capacity_kva": 25000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：10.5%",
+      "table": 7,
+      "capacity_kva": 31500,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：10.5%",
+      "table": 7,
+      "capacity_kva": 40000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：10.5%",
+      "table": 7,
+      "capacity_kva": 50000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P14",
+      "old": null,
+      "new": "原表短路阻抗：10.5%",
+      "table": 7,
+      "capacity_kva": 63000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P15",
+      "old": null,
+      "new": "原表短路阻抗：12～14%",
+      "table": 7,
+      "capacity_kva": 75000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P16",
+      "old": null,
+      "new": "原表短路阻抗：12～14%",
+      "table": 7,
+      "capacity_kva": 90000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P17",
+      "old": null,
+      "new": "原表短路阻抗：12～14%",
+      "table": 7,
+      "capacity_kva": 120000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P18",
+      "old": null,
+      "new": "原表短路阻抗：12～14%",
+      "table": 7,
+      "capacity_kva": 150000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表07",
+      "cell": "P19",
+      "old": null,
+      "new": "原表短路阻抗：12～14%",
+      "table": 7,
+      "capacity_kva": 180000,
+      "source_page": "物理页11 / 印刷页7"
+    },
+    {
+      "sheet": "表10",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：10.5–18%",
+      "table": 10,
+      "capacity_kva": 6300,
+      "source_page": "物理页12 / 印刷页8"
+    },
+    {
+      "sheet": "表10",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：10.5–18%",
+      "table": 10,
+      "capacity_kva": 8000,
+      "source_page": "物理页12 / 印刷页8"
+    },
+    {
+      "sheet": "表10",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：10.5–18%",
+      "table": 10,
+      "capacity_kva": 10000,
+      "source_page": "物理页12 / 印刷页8"
+    },
+    {
+      "sheet": "表10",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：10.5–18%",
+      "table": 10,
+      "capacity_kva": 12500,
+      "source_page": "物理页12 / 印刷页8"
+    },
+    {
+      "sheet": "表10",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：10.5–18%",
+      "table": 10,
+      "capacity_kva": 16000,
+      "source_page": "物理页12 / 印刷页8"
+    },
+    {
+      "sheet": "表10",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：10.5–18%",
+      "table": 10,
+      "capacity_kva": 20000,
+      "source_page": "物理页12 / 印刷页8"
+    },
+    {
+      "sheet": "表10",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：10.5–18%",
+      "table": 10,
+      "capacity_kva": 25000,
+      "source_page": "物理页12 / 印刷页8"
+    },
+    {
+      "sheet": "表10",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：10.5–18%",
+      "table": 10,
+      "capacity_kva": 31500,
+      "source_page": "物理页12 / 印刷页8"
+    },
+    {
+      "sheet": "表10",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：10.5–18%",
+      "table": 10,
+      "capacity_kva": 40000,
+      "source_page": "物理页12 / 印刷页8"
+    },
+    {
+      "sheet": "表10",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：10.5–18%",
+      "table": 10,
+      "capacity_kva": 50000,
+      "source_page": "物理页12 / 印刷页8"
+    },
+    {
+      "sheet": "表10",
+      "cell": "P14",
+      "old": null,
+      "new": "原表短路阻抗：10.5–18%",
+      "table": 10,
+      "capacity_kva": 63000,
+      "source_page": "物理页12 / 印刷页8"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 31500,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 40000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 50000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 63000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 75000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 90000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 120000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 150000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 160000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 180000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P14",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 240000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P15",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 300000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P16",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 360000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P17",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 370000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P18",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 400000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表12",
+      "cell": "P19",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 12,
+      "capacity_kva": 420000,
+      "source_page": "物理页13 / 印刷页9"
+    },
+    {
+      "sheet": "表14",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 14,
+      "capacity_kva": 31500,
+      "source_page": "物理页14 / 印刷页10"
+    },
+    {
+      "sheet": "表14",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 14,
+      "capacity_kva": 40000,
+      "source_page": "物理页14 / 印刷页10"
+    },
+    {
+      "sheet": "表14",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 14,
+      "capacity_kva": 50000,
+      "source_page": "物理页14 / 印刷页10"
+    },
+    {
+      "sheet": "表14",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 14,
+      "capacity_kva": 63000,
+      "source_page": "物理页14 / 印刷页10"
+    },
+    {
+      "sheet": "表14",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 14,
+      "capacity_kva": 90000,
+      "source_page": "物理页14 / 印刷页10"
+    },
+    {
+      "sheet": "表14",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 14,
+      "capacity_kva": 120000,
+      "source_page": "物理页14 / 印刷页10"
+    },
+    {
+      "sheet": "表14",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 14,
+      "capacity_kva": 150000,
+      "source_page": "物理页14 / 印刷页10"
+    },
+    {
+      "sheet": "表14",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 14,
+      "capacity_kva": 180000,
+      "source_page": "物理页14 / 印刷页10"
+    },
+    {
+      "sheet": "表14",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：12–14%",
+      "table": 14,
+      "capacity_kva": 240000,
+      "source_page": "物理页14 / 印刷页10"
+    },
+    {
+      "sheet": "表16",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：高—中12～14%；高—低22～24%；中—低7～9%",
+      "table": 16,
+      "capacity_kva": 31500,
+      "source_page": "物理页15 / 印刷页11"
+    },
+    {
+      "sheet": "表16",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：高—中12～14%；高—低22～24%；中—低7～9%",
+      "table": 16,
+      "capacity_kva": 40000,
+      "source_page": "物理页15 / 印刷页11"
+    },
+    {
+      "sheet": "表16",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：高—中12～14%；高—低22～24%；中—低7～9%",
+      "table": 16,
+      "capacity_kva": 50000,
+      "source_page": "物理页15 / 印刷页11"
+    },
+    {
+      "sheet": "表16",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：高—中12～14%；高—低22～24%；中—低7～9%",
+      "table": 16,
+      "capacity_kva": 63000,
+      "source_page": "物理页15 / 印刷页11"
+    },
+    {
+      "sheet": "表16",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：高—中12～14%；高—低22～24%；中—低7～9%",
+      "table": 16,
+      "capacity_kva": 90000,
+      "source_page": "物理页15 / 印刷页11"
+    },
+    {
+      "sheet": "表16",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：高—中12～14%；高—低22～24%；中—低7～9%",
+      "table": 16,
+      "capacity_kva": 120000,
+      "source_page": "物理页15 / 印刷页11"
+    },
+    {
+      "sheet": "表16",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：高—中12～14%；高—低22～24%；中—低7～9%",
+      "table": 16,
+      "capacity_kva": 150000,
+      "source_page": "物理页15 / 印刷页11"
+    },
+    {
+      "sheet": "表16",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：高—中12～14%；高—低22～24%；中—低7～9%",
+      "table": 16,
+      "capacity_kva": 180000,
+      "source_page": "物理页15 / 印刷页11"
+    },
+    {
+      "sheet": "表16",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：高—中12～14%；高—低22～24%；中—低7～9%",
+      "table": 16,
+      "capacity_kva": 240000,
+      "source_page": "物理页15 / 印刷页11"
+    },
+    {
+      "sheet": "表17",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：高—中8～14%；高—低28～64%；中—低18～50%",
+      "table": 17,
+      "capacity_kva": 31500,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表17",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：高—中8～14%；高—低28～64%；中—低18～50%",
+      "table": 17,
+      "capacity_kva": 40000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表17",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：高—中8～14%；高—低28～64%；中—低18～50%",
+      "table": 17,
+      "capacity_kva": 50000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表17",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：高—中8～14%；高—低28～64%；中—低18～50%",
+      "table": 17,
+      "capacity_kva": 63000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表17",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：高—中8～14%；高—低28～64%；中—低18～50%",
+      "table": 17,
+      "capacity_kva": 90000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表17",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：高—中8～14%；高—低28～64%；中—低18～50%",
+      "table": 17,
+      "capacity_kva": 120000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表17",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：高—中8～14%；高—低28～64%；中—低18～50%",
+      "table": 17,
+      "capacity_kva": 150000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表17",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：高—中8～14%；高—低28～64%；中—低18～50%",
+      "table": 17,
+      "capacity_kva": 180000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表17",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：高—中8～14%；高—低28～64%；中—低18～50%",
+      "table": 17,
+      "capacity_kva": 240000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表18",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：14–15%",
+      "table": 18,
+      "capacity_kva": 90000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表18",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：14–15%",
+      "table": 18,
+      "capacity_kva": 120000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表18",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：14–15%",
+      "table": 18,
+      "capacity_kva": 150000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表18",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：14–15%",
+      "table": 18,
+      "capacity_kva": 180000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表18",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：14–15%",
+      "table": 18,
+      "capacity_kva": 240000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表18",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：14–15%",
+      "table": 18,
+      "capacity_kva": 360000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表18",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：14–15%",
+      "table": 18,
+      "capacity_kva": 370000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表18",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：14–15%",
+      "table": 18,
+      "capacity_kva": 400000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表18",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：14–15%",
+      "table": 18,
+      "capacity_kva": 720000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表19",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：高—中24～26%；高—低14～15%；中—低8～9%",
+      "table": 19,
+      "capacity_kva": 90000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表19",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：高—中24～26%；高—低14～15%；中—低8～9%",
+      "table": 19,
+      "capacity_kva": 120000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表19",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：高—中24～26%；高—低14～15%；中—低8～9%",
+      "table": 19,
+      "capacity_kva": 150000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表19",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：高—中24～26%；高—低14～15%；中—低8～9%",
+      "table": 19,
+      "capacity_kva": 180000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表19",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：高—中24～26%；高—低14～15%；中—低8～9%",
+      "table": 19,
+      "capacity_kva": 240000,
+      "source_page": "物理页16 / 印刷页12"
+    },
+    {
+      "sheet": "表20",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低24～26%；中—低12～14%",
+      "table": 20,
+      "capacity_kva": 90000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表20",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低24～26%；中—低12～14%",
+      "table": 20,
+      "capacity_kva": 120000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表20",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低24～26%；中—低12～14%",
+      "table": 20,
+      "capacity_kva": 150000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表20",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低24～26%；中—低12～14%",
+      "table": 20,
+      "capacity_kva": 180000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表20",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低24～26%；中—低12～14%",
+      "table": 20,
+      "capacity_kva": 240000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表20",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低24～26%；中—低12～14%",
+      "table": 20,
+      "capacity_kva": 360000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表21",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低24～26%；中—低12～14%",
+      "table": 21,
+      "capacity_kva": 90000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表21",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低24～26%；中—低12～14%",
+      "table": 21,
+      "capacity_kva": 120000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表21",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低24～26%；中—低12～14%",
+      "table": 21,
+      "capacity_kva": 150000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表21",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低24～26%；中—低12～14%",
+      "table": 21,
+      "capacity_kva": 180000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表21",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低24～26%；中—低12～14%",
+      "table": 21,
+      "capacity_kva": 240000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表21",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低24～26%；中—低12～14%",
+      "table": 21,
+      "capacity_kva": 360000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表22",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低26～28%；中—低16～17%",
+      "table": 22,
+      "capacity_kva": 90000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表22",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低26～28%；中—低16～17%",
+      "table": 22,
+      "capacity_kva": 120000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表22",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低26～28%；中—低16～17%",
+      "table": 22,
+      "capacity_kva": 150000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表22",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低26～28%；中—低16～17%",
+      "table": 22,
+      "capacity_kva": 180000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表22",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低26～28%；中—低16～17%",
+      "table": 22,
+      "capacity_kva": 240000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表22",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：高—中10～11%；高—低26～28%；中—低16～17%",
+      "table": 22,
+      "capacity_kva": 360000,
+      "source_page": "物理页17 / 印刷页13"
+    },
+    {
+      "sheet": "表25",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 25,
+      "capacity_kva": 100000,
+      "source_page": "物理页18 / 印刷页14"
+    },
+    {
+      "sheet": "表25",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 25,
+      "capacity_kva": 120000,
+      "source_page": "物理页18 / 印刷页14"
+    },
+    {
+      "sheet": "表25",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 25,
+      "capacity_kva": 200000,
+      "source_page": "物理页18 / 印刷页14"
+    },
+    {
+      "sheet": "表25",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 25,
+      "capacity_kva": 223000,
+      "source_page": "物理页18 / 印刷页14"
+    },
+    {
+      "sheet": "表25",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 25,
+      "capacity_kva": 240000,
+      "source_page": "物理页18 / 印刷页14"
+    },
+    {
+      "sheet": "表25",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 25,
+      "capacity_kva": 260000,
+      "source_page": "物理页18 / 印刷页14"
+    },
+    {
+      "sheet": "表25",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：16%或18%（离散选项）",
+      "table": 25,
+      "capacity_kva": 380000,
+      "source_page": "物理页18 / 印刷页14"
+    },
+    {
+      "sheet": "表25",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：16%或18%（离散选项）",
+      "table": 25,
+      "capacity_kva": 400000,
+      "source_page": "物理页18 / 印刷页14"
+    },
+    {
+      "sheet": "表25",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：16%或18%（离散选项）",
+      "table": 25,
+      "capacity_kva": 410000,
+      "source_page": "物理页18 / 印刷页14"
+    },
+    {
+      "sheet": "表25",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：16%或18%（离散选项）",
+      "table": 25,
+      "capacity_kva": 484000,
+      "source_page": "物理页18 / 印刷页14"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 26,
+      "capacity_kva": 120000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 26,
+      "capacity_kva": 160000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 26,
+      "capacity_kva": 240000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 26,
+      "capacity_kva": 300000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 26,
+      "capacity_kva": 370000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 26,
+      "capacity_kva": 400000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：14%",
+      "table": 26,
+      "capacity_kva": 420000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：14%或16%（离散选项）",
+      "table": 26,
+      "capacity_kva": 480000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：14%或16%（离散选项）",
+      "table": 26,
+      "capacity_kva": 600000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：14%或16%（离散选项）",
+      "table": 26,
+      "capacity_kva": 720000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P14",
+      "old": null,
+      "new": "原表短路阻抗：14%或16%（离散选项）",
+      "table": 26,
+      "capacity_kva": 750000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P15",
+      "old": null,
+      "new": "原表短路阻抗：16%或18%（离散选项）",
+      "table": 26,
+      "capacity_kva": 780000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P16",
+      "old": null,
+      "new": "原表短路阻抗：16%或18%（离散选项）",
+      "table": 26,
+      "capacity_kva": 860000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P17",
+      "old": null,
+      "new": "原表短路阻抗：16%或18%（离散选项）",
+      "table": 26,
+      "capacity_kva": 1140000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表26",
+      "cell": "P18",
+      "old": null,
+      "new": "原表短路阻抗：16%或18%（离散选项）",
+      "table": 26,
+      "capacity_kva": 1170000,
+      "source_page": "物理页19 / 印刷页15"
+    },
+    {
+      "sheet": "表29",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 29,
+      "capacity_kva": 500,
+      "source_page": "物理页20 / 印刷页16"
+    },
+    {
+      "sheet": "表29",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 29,
+      "capacity_kva": 630,
+      "source_page": "物理页20 / 印刷页16"
+    },
+    {
+      "sheet": "表29",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 29,
+      "capacity_kva": 800,
+      "source_page": "物理页20 / 印刷页16"
+    },
+    {
+      "sheet": "表29",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 29,
+      "capacity_kva": 1000,
+      "source_page": "物理页20 / 印刷页16"
+    },
+    {
+      "sheet": "表29",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 29,
+      "capacity_kva": 1250,
+      "source_page": "物理页20 / 印刷页16"
+    },
+    {
+      "sheet": "表29",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 29,
+      "capacity_kva": 1600,
+      "source_page": "物理页20 / 印刷页16"
+    },
+    {
+      "sheet": "表29",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 29,
+      "capacity_kva": 2000,
+      "source_page": "物理页20 / 印刷页16"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 500,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 500,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 500,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 630,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 630,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 630,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 800,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 800,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 800,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 1000,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P14",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 1000,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P15",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 1000,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P16",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 1250,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P17",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 1250,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P18",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 1250,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P19",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 1600,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P20",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 1600,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P21",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 1600,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P22",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 2000,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P23",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 2000,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表30",
+      "cell": "P24",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 30,
+      "capacity_kva": 2000,
+      "source_page": "物理页21 / 印刷页17"
+    },
+    {
+      "sheet": "表31",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 31,
+      "capacity_kva": 500,
+      "source_page": "物理页22 / 印刷页18"
+    },
+    {
+      "sheet": "表31",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 31,
+      "capacity_kva": 630,
+      "source_page": "物理页22 / 印刷页18"
+    },
+    {
+      "sheet": "表31",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 31,
+      "capacity_kva": 800,
+      "source_page": "物理页22 / 印刷页18"
+    },
+    {
+      "sheet": "表31",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 31,
+      "capacity_kva": 1000,
+      "source_page": "物理页22 / 印刷页18"
+    },
+    {
+      "sheet": "表31",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 31,
+      "capacity_kva": 1250,
+      "source_page": "物理页22 / 印刷页18"
+    },
+    {
+      "sheet": "表31",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 31,
+      "capacity_kva": 1600,
+      "source_page": "物理页22 / 印刷页18"
+    },
+    {
+      "sheet": "表31",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 31,
+      "capacity_kva": 2000,
+      "source_page": "物理页22 / 印刷页18"
+    },
+    {
+      "sheet": "表31",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 31,
+      "capacity_kva": 2500,
+      "source_page": "物理页22 / 印刷页18"
+    },
+    {
+      "sheet": "表31",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 31,
+      "capacity_kva": 3000,
+      "source_page": "物理页22 / 印刷页18"
+    },
+    {
+      "sheet": "表31",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：4–8%",
+      "table": 31,
+      "capacity_kva": 3150,
+      "source_page": "物理页22 / 印刷页18"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 500,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 500,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 500,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 630,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 630,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 630,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 800,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 800,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 800,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 1000,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P14",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 1000,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P15",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 1000,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P16",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 1250,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P17",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 1250,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P18",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 1250,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P19",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 1600,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P20",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 1600,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P21",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 1600,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P22",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 2000,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P23",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 2000,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P24",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 2000,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P25",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 2500,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P26",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 2500,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P27",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 2500,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P28",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 3150,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P29",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 3150,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表32",
+      "cell": "P30",
+      "old": null,
+      "new": "原表短路阻抗：4–10%",
+      "table": 32,
+      "capacity_kva": 3150,
+      "source_page": "物理页23 / 印刷页19"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 1000,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 1250,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 1600,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 2000,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 2500,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 3000,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 3150,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 4000,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 4500,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 5000,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P14",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 5500,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P15",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 6300,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P16",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 8000,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P17",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 10000,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表33",
+      "cell": "P18",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 33,
+      "capacity_kva": 12500,
+      "source_page": "物理页24 / 印刷页20"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 1000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 1000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 1000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 1250,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 1250,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 1250,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 1600,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 1600,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 1600,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P13",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 2000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P14",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 2000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P15",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 2000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P16",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 2500,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P17",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 2500,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P18",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 2500,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P19",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 3000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P20",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 3000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P21",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 3000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P22",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 3150,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P23",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 3150,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P24",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 3150,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P25",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 4000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P26",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 4000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P27",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 4000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P28",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 4500,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P29",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 4500,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P30",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 4500,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P31",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 5000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P32",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 5000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P33",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 5000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P34",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 6300,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P35",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 6300,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P36",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 6300,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P37",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 8000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P38",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 8000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P39",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 8000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P40",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 10000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P41",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 10000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表34",
+      "cell": "P42",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 34,
+      "capacity_kva": 10000,
+      "source_page": "物理页25 / 印刷页21"
+    },
+    {
+      "sheet": "表35",
+      "cell": "P4",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 35,
+      "capacity_kva": 3150,
+      "source_page": "物理页26 / 印刷页22"
+    },
+    {
+      "sheet": "表35",
+      "cell": "P5",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 35,
+      "capacity_kva": 4000,
+      "source_page": "物理页26 / 印刷页22"
+    },
+    {
+      "sheet": "表35",
+      "cell": "P6",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 35,
+      "capacity_kva": 5000,
+      "source_page": "物理页26 / 印刷页22"
+    },
+    {
+      "sheet": "表35",
+      "cell": "P7",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 35,
+      "capacity_kva": 6300,
+      "source_page": "物理页26 / 印刷页22"
+    },
+    {
+      "sheet": "表35",
+      "cell": "P8",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 35,
+      "capacity_kva": 8000,
+      "source_page": "物理页26 / 印刷页22"
+    },
+    {
+      "sheet": "表35",
+      "cell": "P9",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 35,
+      "capacity_kva": 10000,
+      "source_page": "物理页26 / 印刷页22"
+    },
+    {
+      "sheet": "表35",
+      "cell": "P10",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 35,
+      "capacity_kva": 12500,
+      "source_page": "物理页26 / 印刷页22"
+    },
+    {
+      "sheet": "表35",
+      "cell": "P11",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 35,
+      "capacity_kva": 16000,
+      "source_page": "物理页26 / 印刷页22"
+    },
+    {
+      "sheet": "表35",
+      "cell": "P12",
+      "old": null,
+      "new": "原表短路阻抗：6–14%",
+      "table": 35,
+      "capacity_kva": 20000,
+      "source_page": "物理页26 / 印刷页22"
+    }
+  ]
+}

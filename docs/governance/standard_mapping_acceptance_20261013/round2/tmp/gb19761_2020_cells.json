@@ -1,0 +1,9094 @@
+[
+  {
+    "sheet": "表1",
+    "xml": "xl/worksheets/sheet1.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": "GB 19761—2020 表1 原始限值",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "来源：用户PDF；完整SHA及官方元数据见本目录 evidence/SOURCE.md",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "百分数点值；未施加结构修正；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": "源分支ID",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B4": {
+        "value": "压力系数/轮毂比",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C4": {
+        "value": "比转速",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D4": {
+        "value": "机号",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E4": {
+        "value": "3级 (%)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F4": {
+        "value": "2级 (%)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "G4": {
+        "value": "1级 (%)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "H4": {
+        "value": "指标",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "I4": {
+        "value": "原文定位",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "J4": {
+        "value": "结构与适用说明",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A5": {
+        "value": "T1-P4-R04-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B5": {
+        "value": "1.35≤ψ<1.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C5": {
+        "value": "45<ns≤65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D5": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E5": {
+        "value": "43",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F5": {
+        "value": "58",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G5": {
+        "value": "61",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H5": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I5": {
+        "value": "表1 PDF4/印刷2 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J5": {
+        "value": null,
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A6": {
+        "value": "T1-P4-R04-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B6": {
+        "value": "1.35≤ψ<1.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C6": {
+        "value": "45<ns≤65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D6": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E6": {
+        "value": "46",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F6": {
+        "value": "59",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G6": {
+        "value": "62",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H6": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I6": {
+        "value": "表1 PDF4/印刷2 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J6": {
+        "value": null,
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A7": {
+        "value": "T1-P4-R04-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B7": {
+        "value": "1.35≤ψ<1.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C7": {
+        "value": "45<ns≤65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D7": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E7": {
+        "value": "49",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F7": {
+        "value": "60",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G7": {
+        "value": "63",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H7": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I7": {
+        "value": "表1 PDF4/印刷2 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J7": {
+        "value": null,
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A8": {
+        "value": "T1-P4-R04-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B8": {
+        "value": "1.35≤ψ<1.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C8": {
+        "value": "45<ns≤65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D8": {
+        "value": "4.5<No≤7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E8": {
+        "value": "52",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F8": {
+        "value": "61",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G8": {
+        "value": "64",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H8": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I8": {
+        "value": "表1 PDF4/印刷2 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J8": {
+        "value": null,
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A9": {
+        "value": "T1-P4-R04-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B9": {
+        "value": "1.35≤ψ<1.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C9": {
+        "value": "45<ns≤65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D9": {
+        "value": "7<No≤10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E9": {
+        "value": "56",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F9": {
+        "value": "64",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G9": {
+        "value": "67",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H9": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I9": {
+        "value": "表1 PDF4/印刷2 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J9": {
+        "value": null,
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A10": {
+        "value": "T1-P4-R04-B6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B10": {
+        "value": "1.35≤ψ<1.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C10": {
+        "value": "45<ns≤65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D10": {
+        "value": "No>10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E10": {
+        "value": "59",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F10": {
+        "value": "65",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G10": {
+        "value": "68",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H10": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I10": {
+        "value": "表1 PDF4/印刷2 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J10": {
+        "value": null,
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A11": {
+        "value": "T1-P4-R05-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B11": {
+        "value": "1.05≤ψ<1.35",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C11": {
+        "value": "35<ns≤55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D11": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E11": {
+        "value": "45",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F11": {
+        "value": "62",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G11": {
+        "value": "65",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H11": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I11": {
+        "value": "表1 PDF4/印刷2 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J11": {
+        "value": null,
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A12": {
+        "value": "T1-P4-R05-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B12": {
+        "value": "1.05≤ψ<1.35",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C12": {
+        "value": "35<ns≤55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D12": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E12": {
+        "value": "48",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F12": {
+        "value": "63",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G12": {
+        "value": "66",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H12": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I12": {
+        "value": "表1 PDF4/印刷2 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J12": {
+        "value": null,
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A13": {
+        "value": "T1-P4-R05-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B13": {
+        "value": "1.05≤ψ<1.35",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C13": {
+        "value": "35<ns≤55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D13": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E13": {
+        "value": "51",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F13": {
+        "value": "64",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G13": {
+        "value": "67",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H13": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I13": {
+        "value": "表1 PDF4/印刷2 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J13": {
+        "value": null,
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A14": {
+        "value": "T1-P4-R05-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B14": {
+        "value": "1.05≤ψ<1.35",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C14": {
+        "value": "35<ns≤55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D14": {
+        "value": "4.5<No≤7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E14": {
+        "value": "54",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F14": {
+        "value": "65",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G14": {
+        "value": "68",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H14": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I14": {
+        "value": "表1 PDF4/印刷2 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J14": {
+        "value": null,
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A15": {
+        "value": "T1-P4-R05-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B15": {
+        "value": "1.05≤ψ<1.35",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C15": {
+        "value": "35<ns≤55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D15": {
+        "value": "7<No≤10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E15": {
+        "value": "59",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F15": {
+        "value": "68",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G15": {
+        "value": "71",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H15": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I15": {
+        "value": "表1 PDF4/印刷2 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J15": {
+        "value": null,
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A16": {
+        "value": "T1-P4-R05-B6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B16": {
+        "value": "1.05≤ψ<1.35",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C16": {
+        "value": "35<ns≤55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D16": {
+        "value": "No>10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E16": {
+        "value": "63",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F16": {
+        "value": "69",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G16": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H16": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I16": {
+        "value": "表1 PDF4/印刷2 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J16": {
+        "value": null,
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A17": {
+        "value": "T1-P4-R06-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B17": {
+        "value": "0.95≤ψ<1.05",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C17": {
+        "value": "10≤ns<20",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D17": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E17": {
+        "value": "49",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F17": {
+        "value": "65",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G17": {
+        "value": "70",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H17": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I17": {
+        "value": "表1 PDF4/印刷2 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J17": {
+        "value": "ψ末两行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A18": {
+        "value": "T1-P4-R06-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B18": {
+        "value": "0.95≤ψ<1.05",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C18": {
+        "value": "10≤ns<20",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D18": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E18": {
+        "value": "52",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F18": {
+        "value": "66",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G18": {
+        "value": "71",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H18": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I18": {
+        "value": "表1 PDF4/印刷2 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J18": {
+        "value": "ψ末两行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A19": {
+        "value": "T1-P4-R06-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B19": {
+        "value": "0.95≤ψ<1.05",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C19": {
+        "value": "10≤ns<20",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D19": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E19": {
+        "value": "55",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F19": {
+        "value": "67",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G19": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H19": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I19": {
+        "value": "表1 PDF4/印刷2 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J19": {
+        "value": "ψ末两行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A20": {
+        "value": "T1-P4-R06-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B20": {
+        "value": "0.95≤ψ<1.05",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C20": {
+        "value": "10≤ns<20",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D20": {
+        "value": "4.5<No≤7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E20": {
+        "value": "58",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F20": {
+        "value": "68",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G20": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H20": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I20": {
+        "value": "表1 PDF4/印刷2 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J20": {
+        "value": "ψ末两行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A21": {
+        "value": "T1-P4-R06-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B21": {
+        "value": "0.95≤ψ<1.05",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C21": {
+        "value": "10≤ns<20",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D21": {
+        "value": "7<No≤10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E21": {
+        "value": "62",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F21": {
+        "value": "70",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G21": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H21": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I21": {
+        "value": "表1 PDF4/印刷2 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J21": {
+        "value": "ψ末两行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A22": {
+        "value": "T1-P4-R06-B6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B22": {
+        "value": "0.95≤ψ<1.05",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C22": {
+        "value": "10≤ns<20",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D22": {
+        "value": "No>10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E22": {
+        "value": "65",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F22": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G22": {
+        "value": "78",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H22": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I22": {
+        "value": "表1 PDF4/印刷2 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J22": {
+        "value": "ψ末两行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A23": {
+        "value": "T1-P4-R07-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B23": {
+        "value": "0.95≤ψ<1.05",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C23": {
+        "value": "20≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D23": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E23": {
+        "value": "52",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F23": {
+        "value": "66",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G23": {
+        "value": "71",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H23": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I23": {
+        "value": "表1 PDF4/印刷2 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J23": {
+        "value": "ψ末两行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A24": {
+        "value": "T1-P4-R07-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B24": {
+        "value": "0.95≤ψ<1.05",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C24": {
+        "value": "20≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D24": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E24": {
+        "value": "55",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F24": {
+        "value": "67",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G24": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H24": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I24": {
+        "value": "表1 PDF4/印刷2 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J24": {
+        "value": "ψ末两行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A25": {
+        "value": "T1-P4-R07-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B25": {
+        "value": "0.95≤ψ<1.05",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C25": {
+        "value": "20≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D25": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E25": {
+        "value": "58",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F25": {
+        "value": "68",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G25": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H25": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I25": {
+        "value": "表1 PDF4/印刷2 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J25": {
+        "value": "ψ末两行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A26": {
+        "value": "T1-P4-R07-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B26": {
+        "value": "0.95≤ψ<1.05",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C26": {
+        "value": "20≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D26": {
+        "value": "4.5<No≤7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E26": {
+        "value": "61",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F26": {
+        "value": "69",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G26": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H26": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I26": {
+        "value": "表1 PDF4/印刷2 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J26": {
+        "value": "ψ末两行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A27": {
+        "value": "T1-P4-R07-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B27": {
+        "value": "0.95≤ψ<1.05",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C27": {
+        "value": "20≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D27": {
+        "value": "7<No≤10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E27": {
+        "value": "63",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F27": {
+        "value": "71",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G27": {
+        "value": "76",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H27": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I27": {
+        "value": "表1 PDF4/印刷2 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J27": {
+        "value": "ψ末两行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A28": {
+        "value": "T1-P4-R07-B6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B28": {
+        "value": "0.95≤ψ<1.05",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C28": {
+        "value": "20≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D28": {
+        "value": "No>10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E28": {
+        "value": "66",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F28": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G28": {
+        "value": "80",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H28": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I28": {
+        "value": "表1 PDF4/印刷2 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J28": {
+        "value": "ψ末两行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表2",
+    "xml": "xl/worksheets/sheet2.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": "GB 19761—2020 表2 原始限值",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "来源：用户PDF；完整SHA及官方元数据见本目录 evidence/SOURCE.md",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "百分数点值；未施加结构修正；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": "源分支ID",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B4": {
+        "value": "压力系数/轮毂比",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C4": {
+        "value": "比转速",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D4": {
+        "value": "机号",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E4": {
+        "value": "3级 (%)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F4": {
+        "value": "2级 (%)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "G4": {
+        "value": "1级 (%)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "H4": {
+        "value": "指标",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "I4": {
+        "value": "原文定位",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "J4": {
+        "value": "结构与适用说明",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A5": {
+        "value": "T2-P4-R04-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B5": {
+        "value": "0.85≤ψ<0.95",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C5": {
+        "value": "5≤ns<15",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D5": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E5": {
+        "value": "62",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F5": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G5": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H5": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I5": {
+        "value": "表2 PDF4/印刷2 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J5": {
+        "value": "ψ三行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A6": {
+        "value": "T2-P4-R04-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B6": {
+        "value": "0.85≤ψ<0.95",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C6": {
+        "value": "5≤ns<15",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D6": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E6": {
+        "value": "65",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F6": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G6": {
+        "value": "78",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H6": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I6": {
+        "value": "表2 PDF4/印刷2 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J6": {
+        "value": "ψ三行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A7": {
+        "value": "T2-P4-R04-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B7": {
+        "value": "0.85≤ψ<0.95",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C7": {
+        "value": "5≤ns<15",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D7": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E7": {
+        "value": "69",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F7": {
+        "value": "78",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G7": {
+        "value": "81",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H7": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I7": {
+        "value": "表2 PDF4/印刷2 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J7": {
+        "value": "ψ三行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A8": {
+        "value": "T2-P4-R05-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B8": {
+        "value": "0.85≤ψ<0.95",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C8": {
+        "value": "15≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D8": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E8": {
+        "value": "65",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F8": {
+        "value": "74",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G8": {
+        "value": "77",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H8": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I8": {
+        "value": "表2 PDF4/印刷2 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J8": {
+        "value": "ψ三行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A9": {
+        "value": "T2-P4-R05-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B9": {
+        "value": "0.85≤ψ<0.95",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C9": {
+        "value": "15≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D9": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E9": {
+        "value": "68",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F9": {
+        "value": "77",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G9": {
+        "value": "80",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H9": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I9": {
+        "value": "表2 PDF4/印刷2 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J9": {
+        "value": "ψ三行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A10": {
+        "value": "T2-P4-R05-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B10": {
+        "value": "0.85≤ψ<0.95",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C10": {
+        "value": "15≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D10": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E10": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F10": {
+        "value": "80",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G10": {
+        "value": "83",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H10": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I10": {
+        "value": "表2 PDF4/印刷2 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J10": {
+        "value": "ψ三行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A11": {
+        "value": "T2-P4-R06-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B11": {
+        "value": "0.85≤ψ<0.95",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C11": {
+        "value": "30≤ns<45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D11": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E11": {
+        "value": "68",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F11": {
+        "value": "76",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G11": {
+        "value": "79",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H11": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I11": {
+        "value": "表2 PDF4/印刷2 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J11": {
+        "value": "ψ三行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A12": {
+        "value": "T2-P4-R06-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B12": {
+        "value": "0.85≤ψ<0.95",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C12": {
+        "value": "30≤ns<45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D12": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E12": {
+        "value": "71",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F12": {
+        "value": "79",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G12": {
+        "value": "82",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H12": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I12": {
+        "value": "表2 PDF4/印刷2 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J12": {
+        "value": "ψ三行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A13": {
+        "value": "T2-P4-R06-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B13": {
+        "value": "0.85≤ψ<0.95",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C13": {
+        "value": "30≤ns<45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D13": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E13": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F13": {
+        "value": "82",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G13": {
+        "value": "85",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H13": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I13": {
+        "value": "表2 PDF4/印刷2 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J13": {
+        "value": "ψ三行共用原文纵向合并源格",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A14": {
+        "value": "T2-P5-R04-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B14": {
+        "value": "0.75≤ψ<0.85",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C14": {
+        "value": "5≤ns<15",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D14": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E14": {
+        "value": "62",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F14": {
+        "value": "70",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G14": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H14": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I14": {
+        "value": "表2 PDF5/印刷3 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J14": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A15": {
+        "value": "T2-P5-R04-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B15": {
+        "value": "0.75≤ψ<0.85",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C15": {
+        "value": "5≤ns<15",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D15": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E15": {
+        "value": "65",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F15": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G15": {
+        "value": "78",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H15": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I15": {
+        "value": "表2 PDF5/印刷3 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J15": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A16": {
+        "value": "T2-P5-R04-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B16": {
+        "value": "0.75≤ψ<0.85",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C16": {
+        "value": "5≤ns<15",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D16": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E16": {
+        "value": "68",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F16": {
+        "value": "78",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G16": {
+        "value": "81",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H16": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I16": {
+        "value": "表2 PDF5/印刷3 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J16": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A17": {
+        "value": "T2-P5-R05-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B17": {
+        "value": "0.75≤ψ<0.85",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C17": {
+        "value": "15≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D17": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E17": {
+        "value": "65",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F17": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G17": {
+        "value": "78",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H17": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I17": {
+        "value": "表2 PDF5/印刷3 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J17": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A18": {
+        "value": "T2-P5-R05-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B18": {
+        "value": "0.75≤ψ<0.85",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C18": {
+        "value": "15≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D18": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E18": {
+        "value": "68",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F18": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G18": {
+        "value": "81",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H18": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I18": {
+        "value": "表2 PDF5/印刷3 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J18": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A19": {
+        "value": "T2-P5-R05-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B19": {
+        "value": "0.75≤ψ<0.85",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C19": {
+        "value": "15≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D19": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E19": {
+        "value": "70",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F19": {
+        "value": "78",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G19": {
+        "value": "84",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H19": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I19": {
+        "value": "表2 PDF5/印刷3 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J19": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A20": {
+        "value": "T2-P5-R06-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B20": {
+        "value": "0.75≤ψ<0.85",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C20": {
+        "value": "30≤ns<45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D20": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E20": {
+        "value": "68",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F20": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G20": {
+        "value": "80",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H20": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I20": {
+        "value": "表2 PDF5/印刷3 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J20": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A21": {
+        "value": "T2-P5-R06-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B21": {
+        "value": "0.75≤ψ<0.85",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C21": {
+        "value": "30≤ns<45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D21": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E21": {
+        "value": "71",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F21": {
+        "value": "78",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G21": {
+        "value": "83",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H21": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I21": {
+        "value": "表2 PDF5/印刷3 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J21": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A22": {
+        "value": "T2-P5-R06-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B22": {
+        "value": "0.75≤ψ<0.85",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C22": {
+        "value": "30≤ns<45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D22": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E22": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F22": {
+        "value": "81",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G22": {
+        "value": "85",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H22": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I22": {
+        "value": "表2 PDF5/印刷3 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J22": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A23": {
+        "value": "T2-P5-R07-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B23": {
+        "value": "0.65≤ψ<0.75",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C23": {
+        "value": "10≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D23": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E23": {
+        "value": "62",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F23": {
+        "value": "70",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G23": {
+        "value": "77",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H23": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I23": {
+        "value": "表2 PDF5/印刷3 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J23": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A24": {
+        "value": "T2-P5-R07-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B24": {
+        "value": "0.65≤ψ<0.75",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C24": {
+        "value": "10≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D24": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E24": {
+        "value": "63",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F24": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G24": {
+        "value": "79",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H24": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I24": {
+        "value": "表2 PDF5/印刷3 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J24": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A25": {
+        "value": "T2-P5-R07-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B25": {
+        "value": "0.65≤ψ<0.75",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C25": {
+        "value": "10≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D25": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E25": {
+        "value": "64",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F25": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G25": {
+        "value": "83",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H25": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I25": {
+        "value": "表2 PDF5/印刷3 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J25": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A26": {
+        "value": "T2-P5-R08-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B26": {
+        "value": "0.65≤ψ<0.75",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C26": {
+        "value": "30≤ns<50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D26": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E26": {
+        "value": "65",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F26": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G26": {
+        "value": "82",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H26": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I26": {
+        "value": "表2 PDF5/印刷3 几何行8",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J26": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A27": {
+        "value": "T2-P5-R08-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B27": {
+        "value": "0.65≤ψ<0.75",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C27": {
+        "value": "30≤ns<50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D27": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E27": {
+        "value": "66",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F27": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G27": {
+        "value": "83",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H27": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I27": {
+        "value": "表2 PDF5/印刷3 几何行8",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J27": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A28": {
+        "value": "T2-P5-R08-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B28": {
+        "value": "0.65≤ψ<0.75",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C28": {
+        "value": "30≤ns<50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D28": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E28": {
+        "value": "67",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F28": {
+        "value": "76",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G28": {
+        "value": "84",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H28": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I28": {
+        "value": "表2 PDF5/印刷3 几何行8",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J28": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A29": {
+        "value": "T2-P5-R09-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B29": {
+        "value": "0.55≤ψ<0.65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C29": {
+        "value": "20≤ns<45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D29": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E29": {
+        "value": "64",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F29": {
+        "value": "74",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G29": {
+        "value": "81",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H29": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I29": {
+        "value": "表2 PDF5/印刷3 几何行9",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J29": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A30": {
+        "value": "T2-P5-R09-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B30": {
+        "value": "0.55≤ψ<0.65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C30": {
+        "value": "20≤ns<45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D30": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E30": {
+        "value": "70",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F30": {
+        "value": "76",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G30": {
+        "value": "85",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H30": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I30": {
+        "value": "表2 PDF5/印刷3 几何行9",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J30": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A31": {
+        "value": "T2-P5-R09-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B31": {
+        "value": "0.55≤ψ<0.65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C31": {
+        "value": "20≤ns<45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D31": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E31": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F31": {
+        "value": "80",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G31": {
+        "value": "86",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H31": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I31": {
+        "value": "表2 PDF5/印刷3 几何行9",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J31": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A32": {
+        "value": "T2-P5-R10-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B32": {
+        "value": "0.55≤ψ<0.65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C32": {
+        "value": "45≤ns<70",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D32": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E32": {
+        "value": "69",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F32": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G32": {
+        "value": "82",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H32": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I32": {
+        "value": "表2 PDF5/印刷3 几何行10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J32": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A33": {
+        "value": "T2-P5-R10-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B33": {
+        "value": "0.55≤ψ<0.65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C33": {
+        "value": "45≤ns<70",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D33": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E33": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F33": {
+        "value": "79",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G33": {
+        "value": "86",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H33": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I33": {
+        "value": "表2 PDF5/印刷3 几何行10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J33": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A34": {
+        "value": "T2-P5-R10-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B34": {
+        "value": "0.55≤ψ<0.65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C34": {
+        "value": "45≤ns<70",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D34": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E34": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F34": {
+        "value": "82",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G34": {
+        "value": "87",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H34": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I34": {
+        "value": "表2 PDF5/印刷3 几何行10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J34": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A35": {
+        "value": "T2-P5-R11-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B35": {
+        "value": "0.45≤ψ<0.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C35": {
+        "value": "10≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D35": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E35": {
+        "value": "67",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F35": {
+        "value": "74",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G35": {
+        "value": "79",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H35": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I35": {
+        "value": "表2 PDF5/印刷3 几何行11",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J35": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A36": {
+        "value": "T2-P5-R11-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B36": {
+        "value": "0.45≤ψ<0.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C36": {
+        "value": "10≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D36": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E36": {
+        "value": "69",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F36": {
+        "value": "76",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G36": {
+        "value": "81",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H36": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I36": {
+        "value": "表2 PDF5/印刷3 几何行11",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J36": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A37": {
+        "value": "T2-P5-R11-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B37": {
+        "value": "0.45≤ψ<0.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C37": {
+        "value": "10≤ns<30",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D37": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E37": {
+        "value": "71",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F37": {
+        "value": "79",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G37": {
+        "value": "85",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H37": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I37": {
+        "value": "表2 PDF5/印刷3 几何行11",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J37": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A38": {
+        "value": "T2-P5-R12-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B38": {
+        "value": "0.45≤ψ<0.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C38": {
+        "value": "30≤ns<50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D38": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E38": {
+        "value": "71",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F38": {
+        "value": "77",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G38": {
+        "value": "82",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H38": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I38": {
+        "value": "表2 PDF5/印刷3 几何行12",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J38": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A39": {
+        "value": "T2-P5-R12-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B39": {
+        "value": "0.45≤ψ<0.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C39": {
+        "value": "30≤ns<50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D39": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E39": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F39": {
+        "value": "79",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G39": {
+        "value": "84",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H39": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I39": {
+        "value": "表2 PDF5/印刷3 几何行12",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J39": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A40": {
+        "value": "T2-P5-R12-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B40": {
+        "value": "0.45≤ψ<0.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C40": {
+        "value": "30≤ns<50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D40": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E40": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F40": {
+        "value": "81",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G40": {
+        "value": "86",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H40": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I40": {
+        "value": "表2 PDF5/印刷3 几何行12",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J40": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A41": {
+        "value": "T2-P5-R13-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B41": {
+        "value": "0.45≤ψ<0.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C41": {
+        "value": "50≤ns<70",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D41": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E41": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F41": {
+        "value": "78",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G41": {
+        "value": "83",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H41": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I41": {
+        "value": "表2 PDF5/印刷3 几何行13",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J41": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A42": {
+        "value": "T2-P5-R13-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B42": {
+        "value": "0.45≤ψ<0.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C42": {
+        "value": "50≤ns<70",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D42": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E42": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F42": {
+        "value": "80",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G42": {
+        "value": "85",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H42": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I42": {
+        "value": "表2 PDF5/印刷3 几何行13",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J42": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A43": {
+        "value": "T2-P5-R13-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B43": {
+        "value": "0.45≤ψ<0.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C43": {
+        "value": "50≤ns<70",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D43": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E43": {
+        "value": "77",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F43": {
+        "value": "82",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G43": {
+        "value": "87",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H43": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I43": {
+        "value": "表2 PDF5/印刷3 几何行13",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J43": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A44": {
+        "value": "T2-P5-R14-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B44": {
+        "value": "0.35≤ψ<0.45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C44": {
+        "value": "50≤ns<65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D44": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E44": {
+        "value": "70",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F44": {
+        "value": "79",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G44": {
+        "value": "84",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H44": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I44": {
+        "value": "表2 PDF5/印刷3 几何行14",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J44": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A45": {
+        "value": "T2-P5-R14-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B45": {
+        "value": "0.35≤ψ<0.45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C45": {
+        "value": "50≤ns<65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D45": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E45": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F45": {
+        "value": "81",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G45": {
+        "value": "86",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H45": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I45": {
+        "value": "表2 PDF5/印刷3 几何行14",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J45": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A46": {
+        "value": "T2-P5-R14-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B46": {
+        "value": "0.35≤ψ<0.45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C46": {
+        "value": "50≤ns<65",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D46": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E46": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F46": {
+        "value": "83",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G46": {
+        "value": "88",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H46": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I46": {
+        "value": "表2 PDF5/印刷3 几何行14",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J46": {
+        "value": "ψ依原文合并组；小机号数值格横跨几何子列",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A47": {
+        "value": "T2-P5-R17-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B47": {
+        "value": "0.35≤ψ<0.45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C47": {
+        "value": "65≤ns<80",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D47": {
+        "value": "2≤No<3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E47": {
+        "value": "63",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F47": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G47": {
+        "value": "78",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H47": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I47": {
+        "value": "表2 PDF5/印刷3 几何行17",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J47": {
+        "value": "特殊行：No=2包含；前组拆两分支，后两组不拆",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A48": {
+        "value": "T2-P5-R17-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B48": {
+        "value": "0.35≤ψ<0.45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C48": {
+        "value": "65≤ns<80",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D48": {
+        "value": "3.5≤No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E48": {
+        "value": "66",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F48": {
+        "value": "78",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G48": {
+        "value": "83",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H48": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I48": {
+        "value": "表2 PDF5/印刷3 几何行17",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J48": {
+        "value": "特殊行：No=2包含；前组拆两分支，后两组不拆",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A49": {
+        "value": "T2-P5-R17-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B49": {
+        "value": "0.35≤ψ<0.45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C49": {
+        "value": "65≤ns<80",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D49": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E49": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F49": {
+        "value": "82",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G49": {
+        "value": "87",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H49": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I49": {
+        "value": "表2 PDF5/印刷3 几何行17",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J49": {
+        "value": "特殊行：No=2包含；前组拆两分支，后两组不拆",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A50": {
+        "value": "T2-P5-R17-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B50": {
+        "value": "0.35≤ψ<0.45",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C50": {
+        "value": "65≤ns<80",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D50": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E50": {
+        "value": "76",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F50": {
+        "value": "84",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G50": {
+        "value": "89",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H50": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I50": {
+        "value": "表2 PDF5/印刷3 几何行17",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J50": {
+        "value": "特殊行：No=2包含；前组拆两分支，后两组不拆",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A51": {
+        "value": "T2-P5-R18-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B51": {
+        "value": "0.25≤ψ<0.35",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C51": {
+        "value": "65≤ns<85",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D51": {
+        "value": "2<No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E51": {
+        "value": "—",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "F51": {
+        "value": "—",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "G51": {
+        "value": "—",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "H51": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I51": {
+        "value": "表2 PDF5/印刷3 几何行18",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J51": {
+        "value": "小机号为同一横向合并破折号源格；非零值，不跨组补齐",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A52": {
+        "value": "T2-P5-R18-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B52": {
+        "value": "0.25≤ψ<0.35",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C52": {
+        "value": "65≤ns<85",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D52": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E52": {
+        "value": "70",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F52": {
+        "value": "79",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G52": {
+        "value": "84",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H52": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I52": {
+        "value": "表2 PDF5/印刷3 几何行18",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J52": {
+        "value": "小机号为同一横向合并破折号源格；非零值，不跨组补齐",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A53": {
+        "value": "T2-P5-R18-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B53": {
+        "value": "0.25≤ψ<0.35",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C53": {
+        "value": "65≤ns<85",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D53": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E53": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F53": {
+        "value": "81",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G53": {
+        "value": "86",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H53": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I53": {
+        "value": "表2 PDF5/印刷3 几何行18",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J53": {
+        "value": "小机号为同一横向合并破折号源格；非零值，不跨组补齐",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表3",
+    "xml": "xl/worksheets/sheet3.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": "GB 19761—2020 表3 原始限值",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "来源：用户PDF；完整SHA及官方元数据见本目录 evidence/SOURCE.md",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "百分数点值；未施加结构修正；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": "源分支ID",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B4": {
+        "value": "压力系数/轮毂比",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C4": {
+        "value": "比转速",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D4": {
+        "value": "机号",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E4": {
+        "value": "3级 (%)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F4": {
+        "value": "2级 (%)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "G4": {
+        "value": "1级 (%)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "H4": {
+        "value": "指标",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "I4": {
+        "value": "原文定位",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "J4": {
+        "value": "结构与适用说明",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A5": {
+        "value": "T3-P5-R04-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B5": {
+        "value": "γ<0.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C5": {
+        "value": "不适用",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D5": {
+        "value": "2.5≤No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E5": {
+        "value": "55",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F5": {
+        "value": "66",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G5": {
+        "value": "69",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H5": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I5": {
+        "value": "表3 PDF5/印刷3 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J5": {
+        "value": "子午加速轴流：轮毂比按轮毂出口直径计算",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A6": {
+        "value": "T3-P5-R04-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B6": {
+        "value": "γ<0.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C6": {
+        "value": "不适用",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D6": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E6": {
+        "value": "58",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F6": {
+        "value": "69",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G6": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H6": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I6": {
+        "value": "表3 PDF5/印刷3 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J6": {
+        "value": "子午加速轴流：轮毂比按轮毂出口直径计算",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A7": {
+        "value": "T3-P5-R04-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B7": {
+        "value": "γ<0.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C7": {
+        "value": "不适用",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D7": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E7": {
+        "value": "60",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F7": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G7": {
+        "value": "77",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H7": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I7": {
+        "value": "表3 PDF5/印刷3 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J7": {
+        "value": "子午加速轴流：轮毂比按轮毂出口直径计算",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A8": {
+        "value": "T3-P5-R05-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B8": {
+        "value": "0.3≤γ<0.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C8": {
+        "value": "不适用",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D8": {
+        "value": "2.5≤No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E8": {
+        "value": "59",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F8": {
+        "value": "68",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G8": {
+        "value": "71",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H8": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I8": {
+        "value": "表3 PDF5/印刷3 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J8": {
+        "value": "子午加速轴流：轮毂比按轮毂出口直径计算",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A9": {
+        "value": "T3-P5-R05-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B9": {
+        "value": "0.3≤γ<0.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C9": {
+        "value": "不适用",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D9": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E9": {
+        "value": "61",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F9": {
+        "value": "71",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G9": {
+        "value": "74",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H9": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I9": {
+        "value": "表3 PDF5/印刷3 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J9": {
+        "value": "子午加速轴流：轮毂比按轮毂出口直径计算",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A10": {
+        "value": "T3-P5-R05-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B10": {
+        "value": "0.3≤γ<0.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C10": {
+        "value": "不适用",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D10": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E10": {
+        "value": "63",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F10": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G10": {
+        "value": "79",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H10": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I10": {
+        "value": "表3 PDF5/印刷3 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J10": {
+        "value": "子午加速轴流：轮毂比按轮毂出口直径计算",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A11": {
+        "value": "T3-P5-R06-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B11": {
+        "value": "0.4≤γ<0.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C11": {
+        "value": "不适用",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D11": {
+        "value": "2.5≤No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E11": {
+        "value": "61",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F11": {
+        "value": "70",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G11": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H11": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I11": {
+        "value": "表3 PDF5/印刷3 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J11": {
+        "value": "子午加速轴流：轮毂比按轮毂出口直径计算",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A12": {
+        "value": "T3-P5-R06-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B12": {
+        "value": "0.4≤γ<0.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C12": {
+        "value": "不适用",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D12": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E12": {
+        "value": "64",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F12": {
+        "value": "73",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G12": {
+        "value": "76",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H12": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I12": {
+        "value": "表3 PDF5/印刷3 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J12": {
+        "value": "子午加速轴流：轮毂比按轮毂出口直径计算",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A13": {
+        "value": "T3-P5-R06-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B13": {
+        "value": "0.4≤γ<0.55",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C13": {
+        "value": "不适用",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D13": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E13": {
+        "value": "66",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F13": {
+        "value": "77",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G13": {
+        "value": "81",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H13": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I13": {
+        "value": "表3 PDF5/印刷3 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J13": {
+        "value": "子午加速轴流：轮毂比按轮毂出口直径计算",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A14": {
+        "value": "T3-P5-R07-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B14": {
+        "value": "0.55≤γ<0.75",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C14": {
+        "value": "不适用",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D14": {
+        "value": "2.5≤No<5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E14": {
+        "value": "63",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F14": {
+        "value": "72",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G14": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H14": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I14": {
+        "value": "表3 PDF5/印刷3 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J14": {
+        "value": "子午加速轴流：轮毂比按轮毂出口直径计算",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A15": {
+        "value": "T3-P5-R07-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B15": {
+        "value": "0.55≤γ<0.75",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C15": {
+        "value": "不适用",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D15": {
+        "value": "5≤No<10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E15": {
+        "value": "67",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F15": {
+        "value": "75",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G15": {
+        "value": "78",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H15": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I15": {
+        "value": "表3 PDF5/印刷3 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J15": {
+        "value": "子午加速轴流：轮毂比按轮毂出口直径计算",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A16": {
+        "value": "T3-P5-R07-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B16": {
+        "value": "0.55≤γ<0.75",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C16": {
+        "value": "不适用",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D16": {
+        "value": "No≥10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E16": {
+        "value": "69",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F16": {
+        "value": "79",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G16": {
+        "value": "83",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H16": {
+        "value": "ηr (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I16": {
+        "value": "表3 PDF5/印刷3 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J16": {
+        "value": "子午加速轴流：轮毂比按轮毂出口直径计算",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表4",
+    "xml": "xl/worksheets/sheet4.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": "GB 19761—2020 表4 原始限值",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "来源：用户PDF；完整SHA及官方元数据见本目录 evidence/SOURCE.md",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "百分数点值；未施加结构修正；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": "源分支ID",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B4": {
+        "value": "压力系数/轮毂比",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C4": {
+        "value": "比转速",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D4": {
+        "value": "机号",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E4": {
+        "value": "3级 (%)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F4": {
+        "value": "2级 (%)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "G4": {
+        "value": "1级 (%)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "H4": {
+        "value": "指标",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "I4": {
+        "value": "原文定位",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "J4": {
+        "value": "结构与适用说明",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A5": {
+        "value": "T4-P6-R04-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B5": {
+        "value": "1.0≤ψ<1.1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C5": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D5": {
+        "value": "No≤2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E5": {
+        "value": "36",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F5": {
+        "value": "43",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G5": {
+        "value": "46",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H5": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I5": {
+        "value": "表4 PDF6/印刷4 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J5": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A6": {
+        "value": "T4-P6-R04-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B6": {
+        "value": "1.0≤ψ<1.1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C6": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D6": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E6": {
+        "value": "37",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F6": {
+        "value": "50",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G6": {
+        "value": "54",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H6": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I6": {
+        "value": "表4 PDF6/印刷4 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J6": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A7": {
+        "value": "T4-P6-R04-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B7": {
+        "value": "1.0≤ψ<1.1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C7": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D7": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E7": {
+        "value": "39",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F7": {
+        "value": "50",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G7": {
+        "value": "53",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H7": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I7": {
+        "value": "表4 PDF6/印刷4 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J7": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A8": {
+        "value": "T4-P6-R04-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B8": {
+        "value": "1.0≤ψ<1.1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C8": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D8": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E8": {
+        "value": "43",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F8": {
+        "value": "55",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G8": {
+        "value": "60",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H8": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I8": {
+        "value": "表4 PDF6/印刷4 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J8": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A9": {
+        "value": "T4-P6-R04-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B9": {
+        "value": "1.0≤ψ<1.1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C9": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D9": {
+        "value": "No>4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E9": {
+        "value": "50",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F9": {
+        "value": "60",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G9": {
+        "value": "63",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H9": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I9": {
+        "value": "表4 PDF6/印刷4 几何行4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J9": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A10": {
+        "value": "T4-P6-R05-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B10": {
+        "value": "1.0≤ψ<1.1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C10": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D10": {
+        "value": "No≤2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E10": {
+        "value": "35",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F10": {
+        "value": "42",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G10": {
+        "value": "45",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H10": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I10": {
+        "value": "表4 PDF6/印刷4 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J10": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A11": {
+        "value": "T4-P6-R05-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B11": {
+        "value": "1.0≤ψ<1.1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C11": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D11": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E11": {
+        "value": "35",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F11": {
+        "value": "49",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G11": {
+        "value": "53",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H11": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I11": {
+        "value": "表4 PDF6/印刷4 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J11": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A12": {
+        "value": "T4-P6-R05-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B12": {
+        "value": "1.0≤ψ<1.1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C12": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D12": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E12": {
+        "value": "38",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F12": {
+        "value": "49",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G12": {
+        "value": "52",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H12": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I12": {
+        "value": "表4 PDF6/印刷4 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J12": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A13": {
+        "value": "T4-P6-R05-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B13": {
+        "value": "1.0≤ψ<1.1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C13": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D13": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E13": {
+        "value": "42",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F13": {
+        "value": "54",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G13": {
+        "value": "59",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H13": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I13": {
+        "value": "表4 PDF6/印刷4 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J13": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A14": {
+        "value": "T4-P6-R05-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B14": {
+        "value": "1.0≤ψ<1.1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C14": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D14": {
+        "value": "No>4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E14": {
+        "value": "49",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F14": {
+        "value": "59",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G14": {
+        "value": "62",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H14": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I14": {
+        "value": "表4 PDF6/印刷4 几何行5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J14": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A15": {
+        "value": "T4-P6-R06-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B15": {
+        "value": "1.1≤ψ<1.2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C15": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D15": {
+        "value": "No≤2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E15": {
+        "value": "35",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F15": {
+        "value": "43",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G15": {
+        "value": "46",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H15": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I15": {
+        "value": "表4 PDF6/印刷4 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J15": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A16": {
+        "value": "T4-P6-R06-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B16": {
+        "value": "1.1≤ψ<1.2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C16": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D16": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E16": {
+        "value": "36",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F16": {
+        "value": "49",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G16": {
+        "value": "52",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H16": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I16": {
+        "value": "表4 PDF6/印刷4 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J16": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A17": {
+        "value": "T4-P6-R06-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B17": {
+        "value": "1.1≤ψ<1.2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C17": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D17": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E17": {
+        "value": "38",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F17": {
+        "value": "49",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G17": {
+        "value": "52",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H17": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I17": {
+        "value": "表4 PDF6/印刷4 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J17": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A18": {
+        "value": "T4-P6-R06-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B18": {
+        "value": "1.1≤ψ<1.2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C18": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D18": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E18": {
+        "value": "42",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F18": {
+        "value": "55",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G18": {
+        "value": "59",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H18": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I18": {
+        "value": "表4 PDF6/印刷4 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J18": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A19": {
+        "value": "T4-P6-R06-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B19": {
+        "value": "1.1≤ψ<1.2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C19": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D19": {
+        "value": "No>4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E19": {
+        "value": "49",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F19": {
+        "value": "59",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G19": {
+        "value": "62",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H19": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I19": {
+        "value": "表4 PDF6/印刷4 几何行6",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J19": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A20": {
+        "value": "T4-P6-R07-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B20": {
+        "value": "1.1≤ψ<1.2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C20": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D20": {
+        "value": "No≤2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E20": {
+        "value": "34",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F20": {
+        "value": "42",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G20": {
+        "value": "45",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H20": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I20": {
+        "value": "表4 PDF6/印刷4 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J20": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A21": {
+        "value": "T4-P6-R07-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B21": {
+        "value": "1.1≤ψ<1.2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C21": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D21": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E21": {
+        "value": "35",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F21": {
+        "value": "48",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G21": {
+        "value": "51",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H21": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I21": {
+        "value": "表4 PDF6/印刷4 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J21": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A22": {
+        "value": "T4-P6-R07-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B22": {
+        "value": "1.1≤ψ<1.2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C22": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D22": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E22": {
+        "value": "37",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F22": {
+        "value": "48",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G22": {
+        "value": "51",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H22": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I22": {
+        "value": "表4 PDF6/印刷4 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J22": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A23": {
+        "value": "T4-P6-R07-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B23": {
+        "value": "1.1≤ψ<1.2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C23": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D23": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E23": {
+        "value": "41",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F23": {
+        "value": "54",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G23": {
+        "value": "58",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H23": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I23": {
+        "value": "表4 PDF6/印刷4 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J23": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A24": {
+        "value": "T4-P6-R07-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B24": {
+        "value": "1.1≤ψ<1.2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C24": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D24": {
+        "value": "No>4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E24": {
+        "value": "48",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F24": {
+        "value": "58",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G24": {
+        "value": "61",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H24": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I24": {
+        "value": "表4 PDF6/印刷4 几何行7",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J24": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A25": {
+        "value": "T4-P6-R08-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B25": {
+        "value": "1.2≤ψ<1.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C25": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D25": {
+        "value": "No≤2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E25": {
+        "value": "33",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F25": {
+        "value": "43",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G25": {
+        "value": "46",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H25": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I25": {
+        "value": "表4 PDF6/印刷4 几何行8",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J25": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A26": {
+        "value": "T4-P6-R08-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B26": {
+        "value": "1.2≤ψ<1.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C26": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D26": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E26": {
+        "value": "35",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F26": {
+        "value": "49",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G26": {
+        "value": "52",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H26": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I26": {
+        "value": "表4 PDF6/印刷4 几何行8",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J26": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A27": {
+        "value": "T4-P6-R08-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B27": {
+        "value": "1.2≤ψ<1.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C27": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D27": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E27": {
+        "value": "37",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F27": {
+        "value": "48",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G27": {
+        "value": "51",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H27": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I27": {
+        "value": "表4 PDF6/印刷4 几何行8",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J27": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A28": {
+        "value": "T4-P6-R08-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B28": {
+        "value": "1.2≤ψ<1.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C28": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D28": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E28": {
+        "value": "41",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F28": {
+        "value": "55",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G28": {
+        "value": "58",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H28": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I28": {
+        "value": "表4 PDF6/印刷4 几何行8",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J28": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A29": {
+        "value": "T4-P6-R08-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B29": {
+        "value": "1.2≤ψ<1.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C29": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D29": {
+        "value": "No>4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E29": {
+        "value": "48",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F29": {
+        "value": "58",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G29": {
+        "value": "61",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H29": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I29": {
+        "value": "表4 PDF6/印刷4 几何行8",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J29": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A30": {
+        "value": "T4-P6-R09-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B30": {
+        "value": "1.2≤ψ<1.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C30": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D30": {
+        "value": "No≤2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E30": {
+        "value": "32",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F30": {
+        "value": "42",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G30": {
+        "value": "45",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H30": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I30": {
+        "value": "表4 PDF6/印刷4 几何行9",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J30": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A31": {
+        "value": "T4-P6-R09-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B31": {
+        "value": "1.2≤ψ<1.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C31": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D31": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E31": {
+        "value": "34",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F31": {
+        "value": "48",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G31": {
+        "value": "51",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H31": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I31": {
+        "value": "表4 PDF6/印刷4 几何行9",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J31": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A32": {
+        "value": "T4-P6-R09-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B32": {
+        "value": "1.2≤ψ<1.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C32": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D32": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E32": {
+        "value": "36",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F32": {
+        "value": "47",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G32": {
+        "value": "50",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H32": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I32": {
+        "value": "表4 PDF6/印刷4 几何行9",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J32": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A33": {
+        "value": "T4-P6-R09-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B33": {
+        "value": "1.2≤ψ<1.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C33": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D33": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E33": {
+        "value": "40",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F33": {
+        "value": "54",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G33": {
+        "value": "57",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H33": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I33": {
+        "value": "表4 PDF6/印刷4 几何行9",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J33": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A34": {
+        "value": "T4-P6-R09-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B34": {
+        "value": "1.2≤ψ<1.3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C34": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D34": {
+        "value": "No>4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E34": {
+        "value": "47",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F34": {
+        "value": "57",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G34": {
+        "value": "61",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H34": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I34": {
+        "value": "表4 PDF6/印刷4 几何行9",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J34": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A35": {
+        "value": "T4-P6-R10-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B35": {
+        "value": "1.3≤ψ<1.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C35": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D35": {
+        "value": "No≤2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E35": {
+        "value": "33",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F35": {
+        "value": "42",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G35": {
+        "value": "45",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H35": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I35": {
+        "value": "表4 PDF6/印刷4 几何行10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J35": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A36": {
+        "value": "T4-P6-R10-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B36": {
+        "value": "1.3≤ψ<1.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C36": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D36": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E36": {
+        "value": "35",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F36": {
+        "value": "48",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G36": {
+        "value": "51",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H36": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I36": {
+        "value": "表4 PDF6/印刷4 几何行10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J36": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A37": {
+        "value": "T4-P6-R10-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B37": {
+        "value": "1.3≤ψ<1.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C37": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D37": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E37": {
+        "value": "37",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F37": {
+        "value": "47",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G37": {
+        "value": "51",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H37": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I37": {
+        "value": "表4 PDF6/印刷4 几何行10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J37": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A38": {
+        "value": "T4-P6-R10-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B38": {
+        "value": "1.3≤ψ<1.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C38": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D38": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E38": {
+        "value": "41",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F38": {
+        "value": "54",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G38": {
+        "value": "57",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H38": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I38": {
+        "value": "表4 PDF6/印刷4 几何行10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J38": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A39": {
+        "value": "T4-P6-R10-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B39": {
+        "value": "1.3≤ψ<1.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C39": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D39": {
+        "value": "No>4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E39": {
+        "value": "47",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F39": {
+        "value": "57",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G39": {
+        "value": "61",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H39": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I39": {
+        "value": "表4 PDF6/印刷4 几何行10",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J39": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A40": {
+        "value": "T4-P6-R11-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B40": {
+        "value": "1.3≤ψ<1.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C40": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D40": {
+        "value": "No≤2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E40": {
+        "value": "31",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F40": {
+        "value": "41",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G40": {
+        "value": "44",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H40": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I40": {
+        "value": "表4 PDF6/印刷4 几何行11",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J40": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A41": {
+        "value": "T4-P6-R11-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B41": {
+        "value": "1.3≤ψ<1.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C41": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D41": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E41": {
+        "value": "33",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F41": {
+        "value": "47",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G41": {
+        "value": "50",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H41": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I41": {
+        "value": "表4 PDF6/印刷4 几何行11",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J41": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A42": {
+        "value": "T4-P6-R11-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B42": {
+        "value": "1.3≤ψ<1.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C42": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D42": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E42": {
+        "value": "35",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F42": {
+        "value": "46",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G42": {
+        "value": "50",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H42": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I42": {
+        "value": "表4 PDF6/印刷4 几何行11",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J42": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A43": {
+        "value": "T4-P6-R11-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B43": {
+        "value": "1.3≤ψ<1.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C43": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D43": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E43": {
+        "value": "39",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F43": {
+        "value": "53",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G43": {
+        "value": "56",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H43": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I43": {
+        "value": "表4 PDF6/印刷4 几何行11",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J43": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A44": {
+        "value": "T4-P6-R11-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B44": {
+        "value": "1.3≤ψ<1.4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C44": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D44": {
+        "value": "No>4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E44": {
+        "value": "46",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F44": {
+        "value": "56",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G44": {
+        "value": "60",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H44": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I44": {
+        "value": "表4 PDF6/印刷4 几何行11",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J44": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A45": {
+        "value": "T4-P6-R12-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B45": {
+        "value": "1.4≤ψ",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C45": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D45": {
+        "value": "No≤2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E45": {
+        "value": "32",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F45": {
+        "value": "41",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G45": {
+        "value": "44",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H45": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I45": {
+        "value": "表4 PDF6/印刷4 几何行12",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J45": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A46": {
+        "value": "T4-P6-R12-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B46": {
+        "value": "1.4≤ψ",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C46": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D46": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E46": {
+        "value": "34",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F46": {
+        "value": "47",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G46": {
+        "value": "50",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H46": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I46": {
+        "value": "表4 PDF6/印刷4 几何行12",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J46": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A47": {
+        "value": "T4-P6-R12-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B47": {
+        "value": "1.4≤ψ",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C47": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D47": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E47": {
+        "value": "36",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F47": {
+        "value": "47",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G47": {
+        "value": "51",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H47": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I47": {
+        "value": "表4 PDF6/印刷4 几何行12",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J47": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A48": {
+        "value": "T4-P6-R12-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B48": {
+        "value": "1.4≤ψ",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C48": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D48": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E48": {
+        "value": "40",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F48": {
+        "value": "53",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G48": {
+        "value": "56",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H48": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I48": {
+        "value": "表4 PDF6/印刷4 几何行12",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J48": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A49": {
+        "value": "T4-P6-R12-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B49": {
+        "value": "1.4≤ψ",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C49": {
+        "value": "ns>50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D49": {
+        "value": "No>4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E49": {
+        "value": "46",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F49": {
+        "value": "56",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G49": {
+        "value": "60",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H49": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I49": {
+        "value": "表4 PDF6/印刷4 几何行12",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J49": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A50": {
+        "value": "T4-P6-R13-B1",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B50": {
+        "value": "1.4≤ψ",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C50": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D50": {
+        "value": "No≤2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E50": {
+        "value": "30",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F50": {
+        "value": "40",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G50": {
+        "value": "43",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H50": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I50": {
+        "value": "表4 PDF6/印刷4 几何行13",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J50": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A51": {
+        "value": "T4-P6-R13-B2",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B51": {
+        "value": "1.4≤ψ",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C51": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D51": {
+        "value": "2<No≤2.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E51": {
+        "value": "32",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F51": {
+        "value": "46",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G51": {
+        "value": "49",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H51": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I51": {
+        "value": "表4 PDF6/印刷4 几何行13",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J51": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A52": {
+        "value": "T4-P6-R13-B3",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B52": {
+        "value": "1.4≤ψ",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C52": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D52": {
+        "value": "2.5<No≤3.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E52": {
+        "value": "34",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F52": {
+        "value": "46",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G52": {
+        "value": "50",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H52": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I52": {
+        "value": "表4 PDF6/印刷4 几何行13",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J52": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A53": {
+        "value": "T4-P6-R13-B4",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B53": {
+        "value": "1.4≤ψ",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C53": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D53": {
+        "value": "3.5<No≤4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E53": {
+        "value": "38",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F53": {
+        "value": "52",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G53": {
+        "value": "55",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H53": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I53": {
+        "value": "表4 PDF6/印刷4 几何行13",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J53": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "A54": {
+        "value": "T4-P6-R13-B5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "B54": {
+        "value": "1.4≤ψ",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C54": {
+        "value": "30<ns≤50",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "D54": {
+        "value": "No>4.5",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E54": {
+        "value": "45",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "F54": {
+        "value": "55",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "G54": {
+        "value": "59",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "H54": {
+        "value": "ηe (%)",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "I54": {
+        "value": "表4 PDF6/印刷4 几何行13",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "J54": {
+        "value": "外转子直联前向多翼；排除单相及三相多速式、三相六极及以上",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      }
+    }
+  }
+]

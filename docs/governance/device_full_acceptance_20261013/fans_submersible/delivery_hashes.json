@@ -1,0 +1,82 @@
+[
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\ACCEPTANCE_REPORT.md",
+    "sha256": "a18ce72920aab051bd9d792a19a395275f103a48e9dcf15927f48adfd31ae2a7"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\build_report_evidence.py",
+    "sha256": "9c16b4af5875ee2e3301083bd73252e62a64ed4abee494885c961566a2fa1ccf"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\prepare.py",
+    "sha256": "594bfff993900dd26489dcb1d3b19c3a6d144f1c60962bb731a7ab25b6346ed7"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\source_manifest.json",
+    "sha256": "a90376b86288d9fc0c15e71ae16f0d9eaa786be3c3d0ccf36cf12a75745501d7"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\submersible_reference_hashes.json",
+    "sha256": "7b6bb15129530e0809082544c515f8617c1faadc79d7815dd56648f240ee8d30"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\TABLE_COVERAGE.csv",
+    "sha256": "5b4a6a30fd42103dafedd256c19defac22b3150f5cbaa715438e258b0805b131"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\verify_blower2012.py",
+    "sha256": "8ac5e5e4a0f3a823f8562d7364beeb8e1db6c11fd66c65b5df51787c3badeb2e"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\verify_blower2026.py",
+    "sha256": "d674296ebd86a6ef1ebc29807e0a7cc7b989d83c38c05634bf9e747e8c5760ac"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\verify_fan.py",
+    "sha256": "33bdc36060ceddda05776551928afd7fe0e266d948f15b1ec8405ac73dc7d5e3"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\verify_heat.py",
+    "sha256": "16b54a5cb3d16b077f9ac2ee63f19c2bb13ff5814eaf1249714ce8fb8e674bab"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\verify_submersible.py",
+    "sha256": "829e36c38e413b341844fb7d1c3ae545a44a81d7243e5dea6953d2cdf024c82f"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\write_findings.py",
+    "sha256": "07d34ceff42ba7cf338151b167ed43279400a3aac31ef3966aaa1c3da96ffeba"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\gb19761_2020\\independent_visual_cells.csv",
+    "sha256": "76913b2fa3f4186c1842656d83ecb1f6bbe947e8a558522ac928dd76d3210603"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\gb28381_2012\\independent_visual_cells.csv",
+    "sha256": "5390e7cdbef14ebe671738f447ea6338875ff8e2a2d94ff926cce78f04f3fd8d"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\gb28381_2026\\independent_all_cells.csv",
+    "sha256": "58f5a0da6e55d08ca7857f3fbdb67ae1376271c21d173c1b9ecdcf06ae2a7029"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\gb28381_2026\\source_rows.json",
+    "sha256": "ffc76252b236a7d7c79343f91e884851e1ee5757c82ee0ba60fabedf843a8233"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\gb32030_2022\\independent_visual_cells.csv",
+    "sha256": "fd740f77191f3d2ffe459bb06eba7e470f57df598938d3ff2568e1951572cc1b"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\gbt36561_2018\\CONFIRMED_FINDINGS.md",
+    "sha256": "906354ee952ec27a056e074720a2a07f685bc18824c2832a484ef24493928e81"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\gbt36561_2018\\defect_input_hashes.json",
+    "sha256": "754a6faefc019c1ad9bb031897bd31e984714b44052704fe5f157161077f6130"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\fans_submersible\\gbt36561_2018\\independent_visual_cells.csv",
+    "sha256": "be60d34630c389312c938d3a22e4c3e7357f7408a9665cf2ac2b95a3bc5e5e97"
+  }
+]

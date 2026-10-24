@@ -1,0 +1,822 @@
+[
+  {
+    "file": "docs\\standards\\gb19761_2020\\HANDOFF.md",
+    "target": "README.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\HANDOFF.md",
+    "target": "STANDARD_MAPPING.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\HANDOFF.md",
+    "target": "data/GB19761_2020_表1-4核对工作簿.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\HANDOFF.md",
+    "target": "evidence/SOURCE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\HANDOFF.md",
+    "target": "evidence/VERIFICATION.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\HANDOFF.md",
+    "target": "BOUNDARY_CANDIDATES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\HANDOFF.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\README.md",
+    "target": "STANDARD_MAPPING.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\README.md",
+    "target": "data/GB19761_2020_表1-4核对工作簿.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\README.md",
+    "target": "evidence/SOURCE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\README.md",
+    "target": "evidence/VERIFICATION.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\README.md",
+    "target": "evidence/numeric_self_check.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\README.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\README.md",
+    "target": "../../../STANDARD_ISSUES_REGISTER.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\README.md",
+    "target": "BOUNDARY_CANDIDATES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\README.md",
+    "target": "HANDOFF.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\README.md",
+    "target": "../../../V1_SCOPE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\README.md",
+    "target": "../../../ROADMAP.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\STANDARD_MAPPING.md",
+    "target": "evidence/SOURCE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\STANDARD_MAPPING.md",
+    "target": "data/GB19761_2020_表1-4核对工作簿.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\STANDARD_MAPPING.md",
+    "target": "data/table_values.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\STANDARD_MAPPING.md",
+    "target": "evidence/numeric_self_check.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\STANDARD_MAPPING.md",
+    "target": "../../../V1_SCOPE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\STANDARD_MAPPING.md",
+    "target": "../../../ROADMAP.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\STANDARD_MAPPING.md",
+    "target": "evidence/VERIFICATION.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\STANDARD_MAPPING.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\STANDARD_MAPPING.md",
+    "target": "BOUNDARY_CANDIDATES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19761_2020\\evidence\\VERIFICATION.md",
+    "target": "SOURCE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\BOUNDARY_CASES.md",
+    "target": "CANDIDATE_CHECKS.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\HANDOFF.md",
+    "target": "README.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\HANDOFF.md",
+    "target": "STANDARD_MAPPING.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\HANDOFF.md",
+    "target": "GB28381_2026_TABLE_VALUES.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\ISSUE_REGISTRATION_REQUEST.md",
+    "target": "../../../STANDARD_ISSUES_REGISTER.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "../../../V1_SCOPE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "../../../ROADMAP.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "STANDARD_MAPPING.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "GB28381_2026_TABLE_VALUES.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "table_values.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "CELL_AUDIT.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "SOURCE_EVIDENCE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "VERIFICATION.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "VISUAL_SPOTCHECK.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "BOUNDARY_CASES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "HANDOFF.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\README.md",
+    "target": "../gb28381_2012/README.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\STANDARD_MAPPING.md",
+    "target": "GB28381_2026_TABLE_VALUES.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\STANDARD_MAPPING.md",
+    "target": "SOURCE_EVIDENCE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\STANDARD_MAPPING.md",
+    "target": "../../../V1_SCOPE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\STANDARD_MAPPING.md",
+    "target": "../../../ROADMAP.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\STANDARD_MAPPING.md",
+    "target": "../gb28381_2012/README.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\STANDARD_MAPPING.md",
+    "target": "CELL_AUDIT.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\STANDARD_MAPPING.md",
+    "target": "VERIFICATION.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\STANDARD_MAPPING.md",
+    "target": "../../../STANDARD_ISSUES_REGISTER.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\STANDARD_MAPPING.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\STANDARD_MAPPING.md",
+    "target": "BOUNDARY_CASES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\VERIFICATION.md",
+    "target": "CHECK_RESULTS.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\VERIFICATION.md",
+    "target": "CELL_AUDIT.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb28381_2026\\VERIFICATION.md",
+    "target": "VISUAL_SPOTCHECK.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\HANDOFF.md",
+    "target": "evidence/delivery_manifest.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\HANDOFF.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\ISSUE_REGISTRATION_REQUEST.md",
+    "target": "SOURCE_AUTHENTICITY.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "SOURCE_AUTHENTICITY.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "STANDARD_MAPPING.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "data/GB32030_2022_表值映射.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "evidence/cell_trace.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "data/tables.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "evidence/structure_counts.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "evidence/VERIFICATION.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "evidence/numeric_spot_check.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "evidence/verification_results.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "BOUNDARY_CANDIDATES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "HANDOFF.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "evidence/source_inventory.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\README.md",
+    "target": "evidence/delivery_manifest.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\SOURCE_AUTHENTICITY.md",
+    "target": "evidence/source_inventory.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "SOURCE_AUTHENTICITY.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "data/GB32030_2022_表值映射.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "data/tables.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "evidence/cell_trace.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "../../../V1_SCOPE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "../../../ROADMAP.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "evidence/VERIFICATION.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "evidence/cell_trace.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "evidence/VERIFICATION.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "../../../STANDARD_ISSUES_REGISTER.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "BOUNDARY_CANDIDATES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+    "target": "HANDOFF.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\evidence\\VERIFICATION.md",
+    "target": "numeric_spot_check.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb32030_2022\\evidence\\VERIFICATION.md",
+    "target": "verification_results.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\BOUNDARY_CANDIDATES.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\HANDOFF.md",
+    "target": "README.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\HANDOFF.md",
+    "target": "STANDARD_MAPPING.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\HANDOFF.md",
+    "target": "data/GBT36561_2018_TABLE_VALUES.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\HANDOFF.md",
+    "target": "SOURCE_AND_CHECKS.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\HANDOFF.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\HANDOFF.md",
+    "target": "BOUNDARY_CANDIDATES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\HANDOFF.md",
+    "target": "evidence/SHA256SUMS.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\README.md",
+    "target": "../../../V1_SCOPE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\README.md",
+    "target": "../../../ROADMAP.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\README.md",
+    "target": "STANDARD_MAPPING.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\README.md",
+    "target": "data/GBT36561_2018_TABLE_VALUES.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\README.md",
+    "target": "SOURCE_AND_CHECKS.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\README.md",
+    "target": "evidence/TABLE_LOCATIONS.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\README.md",
+    "target": "evidence/numeric_review.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\README.md",
+    "target": "evidence/check_results.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\README.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\README.md",
+    "target": "../../../STANDARD_ISSUES_REGISTER.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\README.md",
+    "target": "BOUNDARY_CANDIDATES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\README.md",
+    "target": "HANDOFF.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\SOURCE_AND_CHECKS.md",
+    "target": "evidence/numeric_review.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\SOURCE_AND_CHECKS.md",
+    "target": "evidence/check_results.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\SOURCE_AND_CHECKS.md",
+    "target": "evidence/SHA256SUMS.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\SOURCE_AND_CHECKS.md",
+    "target": "STANDARD_MAPPING.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "data/GBT36561_2018_TABLE_VALUES.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "data/table_values.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "evidence/workbook_coordinates.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "evidence/TABLE_LOCATIONS.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "../../../V1_SCOPE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "../../../ROADMAP.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "SOURCE_AND_CHECKS.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "evidence/TABLE_LOCATIONS.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "SOURCE_AND_CHECKS.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "evidence/check_results.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "evidence/numeric_review.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "../../../STANDARD_ISSUES_REGISTER.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "target": "BOUNDARY_CANDIDATES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\HANDOFF.md",
+    "target": "README.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\HANDOFF.md",
+    "target": "STANDARD_MAPPING.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\HANDOFF.md",
+    "target": "data/GB19577_2024_TABLE_VALUES.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\HANDOFF.md",
+    "target": "BOUNDARY_CANDIDATES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\HANDOFF.md",
+    "target": "evidence/FILE_MANIFEST.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\HANDOFF.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\ISSUE_REGISTRATION_REQUEST.md",
+    "target": "../../../STANDARD_ISSUES_REGISTER.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\README.md",
+    "target": "STANDARD_MAPPING.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\README.md",
+    "target": "data/GB19577_2024_TABLE_VALUES.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\README.md",
+    "target": "data/table_values.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\README.md",
+    "target": "evidence/VERIFICATION.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\README.md",
+    "target": "evidence/cell_audit.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\README.md",
+    "target": "evidence/source_tables.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\README.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\README.md",
+    "target": "../../../STANDARD_ISSUES_REGISTER.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\README.md",
+    "target": "BOUNDARY_CANDIDATES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\README.md",
+    "target": "HANDOFF.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\README.md",
+    "target": "../../../V1_SCOPE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\README.md",
+    "target": "../../../ROADMAP.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "target": "data/GB19577_2024_TABLE_VALUES.xlsx",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "target": "data/table_values.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "target": "evidence/VERIFICATION.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "target": "evidence/cell_audit.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "target": "../../../V1_SCOPE.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "target": "../../../ROADMAP.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "target": "ISSUE_REGISTRATION_REQUEST.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "target": "../../../STANDARD_ISSUES_REGISTER.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "target": "evidence/source_tables.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "target": "evidence/VERIFICATION.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "target": "../../../STANDARD_ISSUES_REGISTER.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "target": "BOUNDARY_CANDIDATES.md",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\evidence\\VERIFICATION.md",
+    "target": "cell_audit.csv",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\evidence\\VERIFICATION.md",
+    "target": "cell_audit.json",
+    "exists": true
+  },
+  {
+    "file": "docs\\standards\\gb19577_2024\\evidence\\VERIFICATION.md",
+    "target": "FILE_MANIFEST.json",
+    "exists": true
+  }
+]

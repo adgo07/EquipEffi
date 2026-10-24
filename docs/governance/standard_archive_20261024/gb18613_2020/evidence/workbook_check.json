@@ -1,0 +1,33 @@
+{
+  "workbook_sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+  "source_sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+  "actual_sheets": [
+    "表1",
+    "表2",
+    "表3",
+    "表4",
+    "表5",
+    "表6",
+    "使用说明"
+  ],
+  "checked_cells": 1290,
+  "pass_count": 1290,
+  "fail_count": 0,
+  "error_count": 0,
+  "skip_count": 0,
+  "not_run_count": 0,
+  "formula_count": 0,
+  "error_cells": [],
+  "frozen_headers": {
+    "表1": "A6",
+    "表2": "A6",
+    "表3": "A6",
+    "表4": "A6",
+    "表5": "A6",
+    "表6": "A6",
+    "使用说明": "A2"
+  },
+  "verification": "self-check of exported workbook; not independent acceptance",
+  "independent_acceptance": "NOT_RUN",
+  "native_excel_open": "NOT_RUN"
+}

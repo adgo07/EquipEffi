@@ -1,0 +1,72 @@
+{
+  "executed_on": "2026-10-13",
+  "executor": "Codex",
+  "xlsx_sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+  "pdf_sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc",
+  "tables": [
+    {
+      "table": 1,
+      "rows": 1008,
+      "numeric": 864,
+      "dash": 144,
+      "power_count": 28,
+      "all_14_columns_readback": "PASS",
+      "grade_structure": "PASS"
+    },
+    {
+      "table": 2,
+      "rows": 756,
+      "numeric": 630,
+      "dash": 126,
+      "power_count": 21,
+      "all_14_columns_readback": "PASS",
+      "grade_structure": "PASS"
+    },
+    {
+      "table": 3,
+      "rows": 432,
+      "numeric": 321,
+      "dash": 111,
+      "power_count": 18,
+      "all_14_columns_readback": "PASS",
+      "grade_structure": "PASS"
+    },
+    {
+      "table": 4,
+      "rows": 303,
+      "numeric": 267,
+      "dash": 36,
+      "power_count": 13,
+      "all_14_columns_readback": "PASS",
+      "grade_structure": "PASS"
+    },
+    {
+      "table": 5,
+      "rows": 210,
+      "numeric": 210,
+      "dash": 0,
+      "power_count": 10,
+      "all_14_columns_readback": "PASS",
+      "grade_structure": "PASS"
+    },
+    {
+      "table": 6,
+      "rows": 210,
+      "numeric": 210,
+      "dash": 0,
+      "power_count": 10,
+      "all_14_columns_readback": "PASS",
+      "grade_structure": "PASS"
+    }
+  ],
+  "weight_cells": 6,
+  "weight_readback": "PASS",
+  "production_formula_count": 0,
+  "numeric_readback": 2502,
+  "dash_readback": 417,
+  "all_record_cells_checked": 40866,
+  "fail": 0,
+  "error": 0,
+  "independent_manual_acceptance": "NOT_RUN",
+  "production_unittest_compileall_smoke_performance": "NOT_RUN: Stage A documentation only"
+}

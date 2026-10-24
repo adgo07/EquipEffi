@@ -1,0 +1,5854 @@
+[
+  {
+    "table": "1",
+    "source_row": 1,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      341.679,
+      294.91999999999996,
+      395.82399999999996,
+      312.96799999999996
+    ],
+    "sheet": "表1",
+    "cell": "F6",
+    "expected_lexical": "6.00",
+    "extracted_lexical": "6.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 1,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      395.82399999999996,
+      294.91999999999996,
+      449.96999999999997,
+      312.96799999999996
+    ],
+    "sheet": "表1",
+    "cell": "G6",
+    "expected_lexical": "5.60",
+    "extracted_lexical": "5.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 1,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      449.96999999999997,
+      294.91999999999996,
+      504.115,
+      312.96799999999996
+    ],
+    "sheet": "表1",
+    "cell": "H6",
+    "expected_lexical": "5.20",
+    "extracted_lexical": "5.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 1,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      504.115,
+      294.91999999999996,
+      532.062,
+      312.96799999999996
+    ],
+    "sheet": "表1",
+    "cell": "J6",
+    "expected_lexical": "4.20",
+    "extracted_lexical": "4.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 2,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      341.679,
+      312.96799999999996,
+      395.82399999999996,
+      331.01700000000005
+    ],
+    "sheet": "表1",
+    "cell": "F7",
+    "expected_lexical": "7.80",
+    "extracted_lexical": "7.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 2,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      395.82399999999996,
+      312.96799999999996,
+      449.96999999999997,
+      331.01700000000005
+    ],
+    "sheet": "表1",
+    "cell": "G7",
+    "expected_lexical": "7.20",
+    "extracted_lexical": "7.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 2,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      449.96999999999997,
+      312.96799999999996,
+      504.115,
+      331.01700000000005
+    ],
+    "sheet": "表1",
+    "cell": "H7",
+    "expected_lexical": "5.70",
+    "extracted_lexical": "5.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 2,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      504.115,
+      312.96799999999996,
+      532.062,
+      331.01700000000005
+    ],
+    "sheet": "表1",
+    "cell": "J7",
+    "expected_lexical": "5.00",
+    "extracted_lexical": "5.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 3,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      341.679,
+      331.01700000000005,
+      395.82399999999996,
+      349.06500000000005
+    ],
+    "sheet": "表1",
+    "cell": "F8",
+    "expected_lexical": "8.10",
+    "extracted_lexical": "8.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 3,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      395.82399999999996,
+      331.01700000000005,
+      449.96999999999997,
+      349.06500000000005
+    ],
+    "sheet": "表1",
+    "cell": "G8",
+    "expected_lexical": "7.50",
+    "extracted_lexical": "7.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 3,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      449.96999999999997,
+      331.01700000000005,
+      504.115,
+      349.06500000000005
+    ],
+    "sheet": "表1",
+    "cell": "H8",
+    "expected_lexical": "6.20",
+    "extracted_lexical": "6.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 3,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      504.115,
+      331.01700000000005,
+      532.062,
+      349.06500000000005
+    ],
+    "sheet": "表1",
+    "cell": "J8",
+    "expected_lexical": "5.40",
+    "extracted_lexical": "5.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 4,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      341.679,
+      349.06500000000005,
+      395.82399999999996,
+      367.11400000000003
+    ],
+    "sheet": "表1",
+    "cell": "F9",
+    "expected_lexical": "8.50",
+    "extracted_lexical": "8.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 4,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      395.82399999999996,
+      349.06500000000005,
+      449.96999999999997,
+      367.11400000000003
+    ],
+    "sheet": "表1",
+    "cell": "G9",
+    "expected_lexical": "8.10",
+    "extracted_lexical": "8.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 4,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      449.96999999999997,
+      349.06500000000005,
+      504.115,
+      367.11400000000003
+    ],
+    "sheet": "表1",
+    "cell": "H9",
+    "expected_lexical": "6.30",
+    "extracted_lexical": "6.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 4,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      504.115,
+      349.06500000000005,
+      532.062,
+      367.11400000000003
+    ],
+    "sheet": "表1",
+    "cell": "J9",
+    "expected_lexical": "5.60",
+    "extracted_lexical": "5.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 5,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      341.679,
+      367.11400000000003,
+      395.82399999999996,
+      385.16200000000003
+    ],
+    "sheet": "表1",
+    "cell": "F10",
+    "expected_lexical": "4.50",
+    "extracted_lexical": "4.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 5,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      395.82399999999996,
+      367.11400000000003,
+      449.96999999999997,
+      385.16200000000003
+    ],
+    "sheet": "表1",
+    "cell": "G10",
+    "expected_lexical": "4.0",
+    "extracted_lexical": "4.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 5,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      449.96999999999997,
+      367.11400000000003,
+      504.115,
+      385.16200000000003
+    ],
+    "sheet": "表1",
+    "cell": "H10",
+    "expected_lexical": "3.50",
+    "extracted_lexical": "3.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 5,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      504.115,
+      367.11400000000003,
+      532.062,
+      385.16200000000003
+    ],
+    "sheet": "表1",
+    "cell": "J10",
+    "expected_lexical": "2.70",
+    "extracted_lexical": "2.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 6,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      341.679,
+      385.16200000000003,
+      395.82399999999996,
+      403.211
+    ],
+    "sheet": "表1",
+    "cell": "F11",
+    "expected_lexical": "4.30",
+    "extracted_lexical": "4.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 6,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      395.82399999999996,
+      385.16200000000003,
+      449.96999999999997,
+      403.211
+    ],
+    "sheet": "表1",
+    "cell": "G11",
+    "expected_lexical": "3.85",
+    "extracted_lexical": "3.85",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 6,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      449.96999999999997,
+      385.16200000000003,
+      504.115,
+      403.211
+    ],
+    "sheet": "表1",
+    "cell": "H11",
+    "expected_lexical": "3.30",
+    "extracted_lexical": "3.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 6,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      504.115,
+      385.16200000000003,
+      532.062,
+      403.211
+    ],
+    "sheet": "表1",
+    "cell": "J11",
+    "expected_lexical": "2.80",
+    "extracted_lexical": "2.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 7,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      341.679,
+      403.211,
+      395.82399999999996,
+      421.259
+    ],
+    "sheet": "表1",
+    "cell": "F12",
+    "expected_lexical": "5.40",
+    "extracted_lexical": "5.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 7,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      395.82399999999996,
+      403.211,
+      449.96999999999997,
+      421.259
+    ],
+    "sheet": "表1",
+    "cell": "G12",
+    "expected_lexical": "5.00",
+    "extracted_lexical": "5.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 7,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      449.96999999999997,
+      403.211,
+      504.115,
+      421.259
+    ],
+    "sheet": "表1",
+    "cell": "H12",
+    "expected_lexical": "4.40",
+    "extracted_lexical": "4.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 7,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      504.115,
+      403.211,
+      532.062,
+      421.259
+    ],
+    "sheet": "表1",
+    "cell": "J12",
+    "expected_lexical": "4.00",
+    "extracted_lexical": "4.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 8,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      341.679,
+      421.259,
+      395.82399999999996,
+      439.30800000000005
+    ],
+    "sheet": "表1",
+    "cell": "F13",
+    "expected_lexical": "5.80",
+    "extracted_lexical": "5.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 8,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      395.82399999999996,
+      421.259,
+      449.96999999999997,
+      439.30800000000005
+    ],
+    "sheet": "表1",
+    "cell": "G13",
+    "expected_lexical": "5.40",
+    "extracted_lexical": "5.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 8,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      449.96999999999997,
+      421.259,
+      504.115,
+      439.30800000000005
+    ],
+    "sheet": "表1",
+    "cell": "H13",
+    "expected_lexical": "5.10",
+    "extracted_lexical": "5.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 8,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      504.115,
+      421.259,
+      532.062,
+      439.30800000000005
+    ],
+    "sheet": "表1",
+    "cell": "J13",
+    "expected_lexical": "4.60",
+    "extracted_lexical": "4.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 9,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      341.679,
+      439.30800000000005,
+      395.82399999999996,
+      457.35600000000005
+    ],
+    "sheet": "表1",
+    "cell": "F14",
+    "expected_lexical": "8.20",
+    "extracted_lexical": "8.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 9,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      395.82399999999996,
+      439.30800000000005,
+      449.96999999999997,
+      457.35600000000005
+    ],
+    "sheet": "表1",
+    "cell": "G14",
+    "expected_lexical": "7.50",
+    "extracted_lexical": "7.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 9,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      449.96999999999997,
+      439.30800000000005,
+      504.115,
+      457.35600000000005
+    ],
+    "sheet": "表1",
+    "cell": "H14",
+    "expected_lexical": "6.80",
+    "extracted_lexical": "6.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 9,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      504.115,
+      439.30800000000005,
+      532.062,
+      457.35600000000005
+    ],
+    "sheet": "表1",
+    "cell": "J14",
+    "expected_lexical": "6.00",
+    "extracted_lexical": "6.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 10,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      341.679,
+      457.35600000000005,
+      395.82399999999996,
+      475.40500000000003
+    ],
+    "sheet": "表1",
+    "cell": "F15",
+    "expected_lexical": "10.00",
+    "extracted_lexical": "10.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 10,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      395.82399999999996,
+      457.35600000000005,
+      449.96999999999997,
+      475.40500000000003
+    ],
+    "sheet": "表1",
+    "cell": "G15",
+    "expected_lexical": "8.00",
+    "extracted_lexical": "8.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 10,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      449.96999999999997,
+      457.35600000000005,
+      504.115,
+      475.40500000000003
+    ],
+    "sheet": "表1",
+    "cell": "H15",
+    "expected_lexical": "7.40",
+    "extracted_lexical": "7.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 10,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      504.115,
+      457.35600000000005,
+      532.062,
+      475.40500000000003
+    ],
+    "sheet": "表1",
+    "cell": "J15",
+    "expected_lexical": "6.50",
+    "extracted_lexical": "6.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 11,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      341.679,
+      475.40500000000003,
+      395.82399999999996,
+      493.45300000000003
+    ],
+    "sheet": "表1",
+    "cell": "F16",
+    "expected_lexical": "12.00",
+    "extracted_lexical": "12.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 11,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      395.82399999999996,
+      475.40500000000003,
+      449.96999999999997,
+      493.45300000000003
+    ],
+    "sheet": "表1",
+    "cell": "G16",
+    "expected_lexical": "10.00",
+    "extracted_lexical": "10.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 11,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      449.96999999999997,
+      475.40500000000003,
+      504.115,
+      493.45300000000003
+    ],
+    "sheet": "表1",
+    "cell": "H16",
+    "expected_lexical": "8.00",
+    "extracted_lexical": "8.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 11,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      504.115,
+      475.40500000000003,
+      532.062,
+      493.45300000000003
+    ],
+    "sheet": "表1",
+    "cell": "J16",
+    "expected_lexical": "7.00",
+    "extracted_lexical": "7.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 12,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      341.679,
+      493.45300000000003,
+      395.82399999999996,
+      511.502
+    ],
+    "sheet": "表1",
+    "cell": "F17",
+    "expected_lexical": "6.80",
+    "extracted_lexical": "6.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 12,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      395.82399999999996,
+      493.45300000000003,
+      449.96999999999997,
+      511.502
+    ],
+    "sheet": "表1",
+    "cell": "G17",
+    "expected_lexical": "5.80",
+    "extracted_lexical": "5.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 12,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      449.96999999999997,
+      493.45300000000003,
+      504.115,
+      511.502
+    ],
+    "sheet": "表1",
+    "cell": "H17",
+    "expected_lexical": "4.80",
+    "extracted_lexical": "4.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "1",
+    "source_row": 12,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      504.115,
+      493.45300000000003,
+      532.062,
+      511.502
+    ],
+    "sheet": "表1",
+    "cell": "J17",
+    "expected_lexical": "3.00",
+    "extracted_lexical": "3.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 1,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      332.654,
+      643.567,
+      368.75199999999995,
+      661.615
+    ],
+    "sheet": "表2",
+    "cell": "F6",
+    "expected_lexical": "5.30",
+    "extracted_lexical": "5.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 1,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      368.75199999999995,
+      643.567,
+      404.84900000000005,
+      661.615
+    ],
+    "sheet": "表2",
+    "cell": "G6",
+    "expected_lexical": "5.10",
+    "extracted_lexical": "5.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 1,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      404.84900000000005,
+      643.567,
+      495.09100000000007,
+      661.615
+    ],
+    "sheet": "表2",
+    "cell": "H6",
+    "expected_lexical": "5.20",
+    "extracted_lexical": "5.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 1,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      495.09100000000007,
+      643.567,
+      532.062,
+      661.615
+    ],
+    "sheet": "表2",
+    "cell": "J6",
+    "expected_lexical": "4.20",
+    "extracted_lexical": "4.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 2,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      332.654,
+      661.615,
+      368.75199999999995,
+      679.664
+    ],
+    "sheet": "表2",
+    "cell": "F7",
+    "expected_lexical": "5.80",
+    "extracted_lexical": "5.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 2,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      368.75199999999995,
+      661.615,
+      404.84900000000005,
+      679.664
+    ],
+    "sheet": "表2",
+    "cell": "G7",
+    "expected_lexical": "5.60",
+    "extracted_lexical": "5.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 2,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      404.84900000000005,
+      661.615,
+      495.09100000000007,
+      679.664
+    ],
+    "sheet": "表2",
+    "cell": "H7",
+    "expected_lexical": "5.70",
+    "extracted_lexical": "5.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 2,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      495.09100000000007,
+      661.615,
+      532.062,
+      679.664
+    ],
+    "sheet": "表2",
+    "cell": "J7",
+    "expected_lexical": "5.00",
+    "extracted_lexical": "5.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 3,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      332.654,
+      679.664,
+      368.75199999999995,
+      697.712
+    ],
+    "sheet": "表2",
+    "cell": "F8",
+    "expected_lexical": "6.20",
+    "extracted_lexical": "6.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 3,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      368.75199999999995,
+      679.664,
+      404.84900000000005,
+      697.712
+    ],
+    "sheet": "表2",
+    "cell": "G8",
+    "expected_lexical": "6.00",
+    "extracted_lexical": "6.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 3,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      404.84900000000005,
+      679.664,
+      495.09100000000007,
+      697.712
+    ],
+    "sheet": "表2",
+    "cell": "H8",
+    "expected_lexical": "6.20",
+    "extracted_lexical": "6.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 3,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      495.09100000000007,
+      679.664,
+      532.062,
+      697.712
+    ],
+    "sheet": "表2",
+    "cell": "J8",
+    "expected_lexical": "5.40",
+    "extracted_lexical": "5.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 4,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      332.654,
+      697.712,
+      368.75199999999995,
+      715.7610000000001
+    ],
+    "sheet": "表2",
+    "cell": "F9",
+    "expected_lexical": "6.40",
+    "extracted_lexical": "6.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 4,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      368.75199999999995,
+      697.712,
+      404.84900000000005,
+      715.7610000000001
+    ],
+    "sheet": "表2",
+    "cell": "G9",
+    "expected_lexical": "6.20",
+    "extracted_lexical": "6.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 4,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      404.84900000000005,
+      697.712,
+      495.09100000000007,
+      715.7610000000001
+    ],
+    "sheet": "表2",
+    "cell": "H9",
+    "expected_lexical": "6.30",
+    "extracted_lexical": "6.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 4,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      495.09100000000007,
+      697.712,
+      532.062,
+      715.7610000000001
+    ],
+    "sheet": "表2",
+    "cell": "J9",
+    "expected_lexical": "5.60",
+    "extracted_lexical": "5.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 5,
+    "source_column": 5,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      332.654,
+      715.7610000000001,
+      368.75199999999995,
+      733.8089999999999
+    ],
+    "sheet": "表2",
+    "cell": "F10",
+    "expected_lexical": "3.40",
+    "extracted_lexical": "3.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 5,
+    "source_column": 6,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      368.75199999999995,
+      715.7610000000001,
+      404.84900000000005,
+      733.8089999999999
+    ],
+    "sheet": "表2",
+    "cell": "G10",
+    "expected_lexical": "3.20",
+    "extracted_lexical": "3.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 5,
+    "source_column": 7,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      404.84900000000005,
+      715.7610000000001,
+      495.09100000000007,
+      733.8089999999999
+    ],
+    "sheet": "表2",
+    "cell": "H10",
+    "expected_lexical": "3.30",
+    "extracted_lexical": "3.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "2",
+    "source_row": 5,
+    "source_column": 8,
+    "pdf_page": 9,
+    "printed_page": 3,
+    "source_bbox_pt": [
+      495.09100000000007,
+      715.7610000000001,
+      532.062,
+      733.8089999999999
+    ],
+    "sheet": "表2",
+    "cell": "J10",
+    "expected_lexical": "2.80",
+    "extracted_lexical": "2.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 1,
+    "source_column": 4,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      252.581,
+      184.88200000000006,
+      315.751,
+      202.93000000000006
+    ],
+    "sheet": "表3",
+    "cell": "F6",
+    "expected_lexical": "3.60",
+    "extracted_lexical": "3.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 1,
+    "source_column": 5,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      315.751,
+      184.88200000000006,
+      378.921,
+      202.93000000000006
+    ],
+    "sheet": "表3",
+    "cell": "G6",
+    "expected_lexical": "3.20",
+    "extracted_lexical": "3.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 1,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      378.921,
+      184.88200000000006,
+      442.091,
+      202.93000000000006
+    ],
+    "sheet": "表3",
+    "cell": "H6",
+    "expected_lexical": "2.80",
+    "extracted_lexical": "2.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 1,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      442.091,
+      184.88200000000006,
+      482.652,
+      202.93000000000006
+    ],
+    "sheet": "表3",
+    "cell": "J6",
+    "expected_lexical": "2.00",
+    "extracted_lexical": "2.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 1,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      482.652,
+      184.88200000000006,
+      524.183,
+      202.93000000000006
+    ],
+    "sheet": "表3",
+    "cell": "L6",
+    "expected_lexical": "2.30",
+    "extracted_lexical": "2.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 2,
+    "source_column": 4,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      252.581,
+      202.93000000000006,
+      315.751,
+      220.97900000000004
+    ],
+    "sheet": "表3",
+    "cell": "F7",
+    "expected_lexical": "3.05",
+    "extracted_lexical": "3.05",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 2,
+    "source_column": 5,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      315.751,
+      202.93000000000006,
+      378.921,
+      220.97900000000004
+    ],
+    "sheet": "表3",
+    "cell": "G7",
+    "expected_lexical": "2.85",
+    "extracted_lexical": "2.85",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 2,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      378.921,
+      202.93000000000006,
+      442.091,
+      220.97900000000004
+    ],
+    "sheet": "表3",
+    "cell": "H7",
+    "expected_lexical": "2.65",
+    "extracted_lexical": "2.65",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 2,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      442.091,
+      202.93000000000006,
+      482.652,
+      220.97900000000004
+    ],
+    "sheet": "表3",
+    "cell": "J7",
+    "expected_lexical": "1.80",
+    "extracted_lexical": "1.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 2,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      482.652,
+      202.93000000000006,
+      524.183,
+      220.97900000000004
+    ],
+    "sheet": "表3",
+    "cell": "L7",
+    "expected_lexical": "2.10",
+    "extracted_lexical": "2.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 3,
+    "source_column": 4,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      252.581,
+      220.97900000000004,
+      315.751,
+      239.02700000000004
+    ],
+    "sheet": "表3",
+    "cell": "F8",
+    "expected_lexical": "2.60",
+    "extracted_lexical": "2.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 3,
+    "source_column": 5,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      315.751,
+      220.97900000000004,
+      378.921,
+      239.02700000000004
+    ],
+    "sheet": "表3",
+    "cell": "G8",
+    "expected_lexical": "2.40",
+    "extracted_lexical": "2.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 3,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      378.921,
+      220.97900000000004,
+      442.091,
+      239.02700000000004
+    ],
+    "sheet": "表3",
+    "cell": "H8",
+    "expected_lexical": "2.30",
+    "extracted_lexical": "2.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 3,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      442.091,
+      220.97900000000004,
+      482.652,
+      239.02700000000004
+    ],
+    "sheet": "表3",
+    "cell": "J8",
+    "expected_lexical": "1.50",
+    "extracted_lexical": "1.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 3,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      482.652,
+      220.97900000000004,
+      524.183,
+      239.02700000000004
+    ],
+    "sheet": "表3",
+    "cell": "L8",
+    "expected_lexical": "1.70",
+    "extracted_lexical": "1.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 4,
+    "source_column": 4,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      252.581,
+      239.02700000000004,
+      315.751,
+      257.076
+    ],
+    "sheet": "表3",
+    "cell": "F9",
+    "expected_lexical": "3.40",
+    "extracted_lexical": "3.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 4,
+    "source_column": 5,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      315.751,
+      239.02700000000004,
+      378.921,
+      257.076
+    ],
+    "sheet": "表3",
+    "cell": "G9",
+    "expected_lexical": "3.20",
+    "extracted_lexical": "3.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 4,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      378.921,
+      239.02700000000004,
+      442.091,
+      257.076
+    ],
+    "sheet": "表3",
+    "cell": "H9",
+    "expected_lexical": "3.00",
+    "extracted_lexical": "3.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 4,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      442.091,
+      239.02700000000004,
+      482.652,
+      257.076
+    ],
+    "sheet": "表3",
+    "cell": "J9",
+    "expected_lexical": "2.10",
+    "extracted_lexical": "2.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 4,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      482.652,
+      239.02700000000004,
+      524.183,
+      257.076
+    ],
+    "sheet": "表3",
+    "cell": "L9",
+    "expected_lexical": "2.50",
+    "extracted_lexical": "2.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 5,
+    "source_column": 4,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      252.581,
+      257.076,
+      315.751,
+      275.124
+    ],
+    "sheet": "表3",
+    "cell": "F10",
+    "expected_lexical": "3.30",
+    "extracted_lexical": "3.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 5,
+    "source_column": 5,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      315.751,
+      257.076,
+      378.921,
+      275.124
+    ],
+    "sheet": "表3",
+    "cell": "G10",
+    "expected_lexical": "3.10",
+    "extracted_lexical": "3.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 5,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      378.921,
+      257.076,
+      442.091,
+      275.124
+    ],
+    "sheet": "表3",
+    "cell": "H10",
+    "expected_lexical": "3.00",
+    "extracted_lexical": "3.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 5,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      442.091,
+      257.076,
+      482.652,
+      275.124
+    ],
+    "sheet": "表3",
+    "cell": "J10",
+    "expected_lexical": "1.80",
+    "extracted_lexical": "1.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 5,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      482.652,
+      257.076,
+      524.183,
+      275.124
+    ],
+    "sheet": "表3",
+    "cell": "L10",
+    "expected_lexical": "2.30",
+    "extracted_lexical": "2.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 6,
+    "source_column": 4,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      252.581,
+      275.124,
+      315.751,
+      293.173
+    ],
+    "sheet": "表3",
+    "cell": "F11",
+    "expected_lexical": "2.60",
+    "extracted_lexical": "2.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 6,
+    "source_column": 5,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      315.751,
+      275.124,
+      378.921,
+      293.173
+    ],
+    "sheet": "表3",
+    "cell": "G11",
+    "expected_lexical": "2.40",
+    "extracted_lexical": "2.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 6,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      378.921,
+      275.124,
+      442.091,
+      293.173
+    ],
+    "sheet": "表3",
+    "cell": "H11",
+    "expected_lexical": "2.30",
+    "extracted_lexical": "2.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 6,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      442.091,
+      275.124,
+      482.652,
+      293.173
+    ],
+    "sheet": "表3",
+    "cell": "J11",
+    "expected_lexical": "1.50",
+    "extracted_lexical": "1.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "3",
+    "source_row": 6,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      482.652,
+      275.124,
+      524.183,
+      293.173
+    ],
+    "sheet": "表3",
+    "cell": "L11",
+    "expected_lexical": "1.80",
+    "extracted_lexical": "1.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 1,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      411.071,
+      396.97,
+      429.119
+    ],
+    "sheet": "表4",
+    "cell": "F6",
+    "expected_lexical": "4.60",
+    "extracted_lexical": "4.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 1,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      411.071,
+      460.139,
+      429.119
+    ],
+    "sheet": "表4",
+    "cell": "G6",
+    "expected_lexical": "4.10",
+    "extracted_lexical": "4.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 1,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      411.071,
+      524.183,
+      429.119
+    ],
+    "sheet": "表4",
+    "cell": "H6",
+    "expected_lexical": "3.70",
+    "extracted_lexical": "3.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 2,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      429.119,
+      396.97,
+      447.168
+    ],
+    "sheet": "表4",
+    "cell": "F7",
+    "expected_lexical": "5.10",
+    "extracted_lexical": "5.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 2,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      429.119,
+      460.139,
+      447.168
+    ],
+    "sheet": "表4",
+    "cell": "G7",
+    "expected_lexical": "4.60",
+    "extracted_lexical": "4.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 2,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      429.119,
+      524.183,
+      447.168
+    ],
+    "sheet": "表4",
+    "cell": "H7",
+    "expected_lexical": "4.00",
+    "extracted_lexical": "4.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 3,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      447.168,
+      396.97,
+      483.26500000000004
+    ],
+    "sheet": "表4",
+    "cell": "F8",
+    "expected_lexical": "4.40",
+    "extracted_lexical": "4.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 3,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      447.168,
+      460.139,
+      483.26500000000004
+    ],
+    "sheet": "表4",
+    "cell": "G8",
+    "expected_lexical": "4.00",
+    "extracted_lexical": "4.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 3,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      447.168,
+      524.183,
+      483.26500000000004
+    ],
+    "sheet": "表4",
+    "cell": "H8",
+    "expected_lexical": "3.80",
+    "extracted_lexical": "3.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 4,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      483.26500000000004,
+      396.97,
+      501.31300000000005
+    ],
+    "sheet": "表4",
+    "cell": "F9",
+    "expected_lexical": "5.60",
+    "extracted_lexical": "5.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 4,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      483.26500000000004,
+      460.139,
+      501.31300000000005
+    ],
+    "sheet": "表4",
+    "cell": "G9",
+    "expected_lexical": "5.00",
+    "extracted_lexical": "5.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 4,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      483.26500000000004,
+      524.183,
+      501.31300000000005
+    ],
+    "sheet": "表4",
+    "cell": "H9",
+    "expected_lexical": "4.60",
+    "extracted_lexical": "4.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 5,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      501.31300000000005,
+      396.97,
+      519.3620000000001
+    ],
+    "sheet": "表4",
+    "cell": "F10",
+    "expected_lexical": "5.80",
+    "extracted_lexical": "5.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 5,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      501.31300000000005,
+      460.139,
+      519.3620000000001
+    ],
+    "sheet": "表4",
+    "cell": "G10",
+    "expected_lexical": "5.40",
+    "extracted_lexical": "5.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 5,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      501.31300000000005,
+      524.183,
+      519.3620000000001
+    ],
+    "sheet": "表4",
+    "cell": "H10",
+    "expected_lexical": "4.40",
+    "extracted_lexical": "4.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 6,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      519.3620000000001,
+      396.97,
+      537.4100000000001
+    ],
+    "sheet": "表4",
+    "cell": "F11",
+    "expected_lexical": "4.90",
+    "extracted_lexical": "4.90",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 6,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      519.3620000000001,
+      460.139,
+      537.4100000000001
+    ],
+    "sheet": "表4",
+    "cell": "G11",
+    "expected_lexical": "4.50",
+    "extracted_lexical": "4.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 6,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      519.3620000000001,
+      524.183,
+      537.4100000000001
+    ],
+    "sheet": "表4",
+    "cell": "H11",
+    "expected_lexical": "4.00",
+    "extracted_lexical": "4.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 7,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      537.4100000000001,
+      396.97,
+      555.4590000000001
+    ],
+    "sheet": "表4",
+    "cell": "F12",
+    "expected_lexical": "5.10",
+    "extracted_lexical": "5.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 7,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      537.4100000000001,
+      460.139,
+      555.4590000000001
+    ],
+    "sheet": "表4",
+    "cell": "G12",
+    "expected_lexical": "4.70",
+    "extracted_lexical": "4.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 7,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      537.4100000000001,
+      524.183,
+      555.4590000000001
+    ],
+    "sheet": "表4",
+    "cell": "H12",
+    "expected_lexical": "4.40",
+    "extracted_lexical": "4.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 8,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      555.4590000000001,
+      396.97,
+      573.5070000000001
+    ],
+    "sheet": "表4",
+    "cell": "F13",
+    "expected_lexical": "4.70",
+    "extracted_lexical": "4.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 8,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      555.4590000000001,
+      460.139,
+      573.5070000000001
+    ],
+    "sheet": "表4",
+    "cell": "G13",
+    "expected_lexical": "4.30",
+    "extracted_lexical": "4.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 8,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      555.4590000000001,
+      524.183,
+      573.5070000000001
+    ],
+    "sheet": "表4",
+    "cell": "H13",
+    "expected_lexical": "4.20",
+    "extracted_lexical": "4.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 9,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      573.5070000000001,
+      396.97,
+      591.556
+    ],
+    "sheet": "表4",
+    "cell": "F14",
+    "expected_lexical": "4.90",
+    "extracted_lexical": "4.90",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 9,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      573.5070000000001,
+      460.139,
+      591.556
+    ],
+    "sheet": "表4",
+    "cell": "G14",
+    "expected_lexical": "4.50",
+    "extracted_lexical": "4.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 9,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      573.5070000000001,
+      524.183,
+      591.556
+    ],
+    "sheet": "表4",
+    "cell": "H14",
+    "expected_lexical": "4.20",
+    "extracted_lexical": "4.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 10,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      591.556,
+      396.97,
+      609.604
+    ],
+    "sheet": "表4",
+    "cell": "F15",
+    "expected_lexical": "5.10",
+    "extracted_lexical": "5.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 10,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      591.556,
+      460.139,
+      609.604
+    ],
+    "sheet": "表4",
+    "cell": "G15",
+    "expected_lexical": "4.70",
+    "extracted_lexical": "4.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 10,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      591.556,
+      524.183,
+      609.604
+    ],
+    "sheet": "表4",
+    "cell": "H15",
+    "expected_lexical": "4.00",
+    "extracted_lexical": "4.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 11,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      609.604,
+      396.97,
+      627.653
+    ],
+    "sheet": "表4",
+    "cell": "F16",
+    "expected_lexical": "5.80",
+    "extracted_lexical": "5.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 11,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      609.604,
+      460.139,
+      627.653
+    ],
+    "sheet": "表4",
+    "cell": "G16",
+    "expected_lexical": "5.20",
+    "extracted_lexical": "5.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 11,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      609.604,
+      524.183,
+      627.653
+    ],
+    "sheet": "表4",
+    "cell": "H16",
+    "expected_lexical": "4.30",
+    "extracted_lexical": "4.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 12,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      627.653,
+      396.97,
+      645.701
+    ],
+    "sheet": "表4",
+    "cell": "F17",
+    "expected_lexical": "5.70",
+    "extracted_lexical": "5.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 12,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      627.653,
+      460.139,
+      645.701
+    ],
+    "sheet": "表4",
+    "cell": "G17",
+    "expected_lexical": "5.50",
+    "extracted_lexical": "5.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 12,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      627.653,
+      524.183,
+      645.701
+    ],
+    "sheet": "表4",
+    "cell": "H17",
+    "expected_lexical": "5.30",
+    "extracted_lexical": "5.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 13,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      645.701,
+      396.97,
+      663.75
+    ],
+    "sheet": "表4",
+    "cell": "F18",
+    "expected_lexical": "6.20",
+    "extracted_lexical": "6.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 13,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      645.701,
+      460.139,
+      663.75
+    ],
+    "sheet": "表4",
+    "cell": "G18",
+    "expected_lexical": "5.80",
+    "extracted_lexical": "5.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 13,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      645.701,
+      524.183,
+      663.75
+    ],
+    "sheet": "表4",
+    "cell": "H18",
+    "expected_lexical": "5.40",
+    "extracted_lexical": "5.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 14,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      663.75,
+      396.97,
+      681.798
+    ],
+    "sheet": "表4",
+    "cell": "F19",
+    "expected_lexical": "5.10",
+    "extracted_lexical": "5.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 14,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      663.75,
+      460.139,
+      681.798
+    ],
+    "sheet": "表4",
+    "cell": "G19",
+    "expected_lexical": "4.70",
+    "extracted_lexical": "4.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 14,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      663.75,
+      524.183,
+      681.798
+    ],
+    "sheet": "表4",
+    "cell": "H19",
+    "expected_lexical": "4.20",
+    "extracted_lexical": "4.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 15,
+    "source_column": 6,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      333.8,
+      681.798,
+      396.97,
+      699.8470000000001
+    ],
+    "sheet": "表4",
+    "cell": "F20",
+    "expected_lexical": "5.60",
+    "extracted_lexical": "5.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 15,
+    "source_column": 7,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      396.97,
+      681.798,
+      460.139,
+      699.8470000000001
+    ],
+    "sheet": "表4",
+    "cell": "G20",
+    "expected_lexical": "5.10",
+    "extracted_lexical": "5.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "4",
+    "source_row": 15,
+    "source_column": 8,
+    "pdf_page": 10,
+    "printed_page": 4,
+    "source_bbox_pt": [
+      460.139,
+      681.798,
+      524.183,
+      699.8470000000001
+    ],
+    "sheet": "表4",
+    "cell": "H20",
+    "expected_lexical": "4.40",
+    "extracted_lexical": "4.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "5",
+    "source_row": 1,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      260.46,
+      202.93000000000006,
+      350.703,
+      223.98699999999997
+    ],
+    "sheet": "表5",
+    "cell": "F6",
+    "expected_lexical": "1.05",
+    "extracted_lexical": "1.05",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "5",
+    "source_row": 1,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      350.703,
+      202.93000000000006,
+      440.9460000000001,
+      223.98699999999997
+    ],
+    "sheet": "表5",
+    "cell": "G6",
+    "expected_lexical": "1.10",
+    "extracted_lexical": "1.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "5",
+    "source_row": 1,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      440.9460000000001,
+      202.93000000000006,
+      532.062,
+      223.98699999999997
+    ],
+    "sheet": "表5",
+    "cell": "H6",
+    "expected_lexical": "1.19",
+    "extracted_lexical": "1.19",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "5",
+    "source_row": 2,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      260.46,
+      223.98699999999997,
+      350.703,
+      245.04399999999998
+    ],
+    "sheet": "表5",
+    "cell": "F7",
+    "expected_lexical": "1.02",
+    "extracted_lexical": "1.02",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "5",
+    "source_row": 2,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      350.703,
+      223.98699999999997,
+      440.9460000000001,
+      245.04399999999998
+    ],
+    "sheet": "表5",
+    "cell": "G7",
+    "expected_lexical": "1.05",
+    "extracted_lexical": "1.05",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "5",
+    "source_row": 2,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      440.9460000000001,
+      223.98699999999997,
+      532.062,
+      245.04399999999998
+    ],
+    "sheet": "表5",
+    "cell": "H7",
+    "expected_lexical": "1.11",
+    "extracted_lexical": "1.11",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "5",
+    "source_row": 3,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      260.46,
+      245.04399999999998,
+      350.703,
+      266.1
+    ],
+    "sheet": "表5",
+    "cell": "F8",
+    "expected_lexical": "1.00",
+    "extracted_lexical": "1.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "5",
+    "source_row": 3,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      350.703,
+      245.04399999999998,
+      440.9460000000001,
+      266.1
+    ],
+    "sheet": "表5",
+    "cell": "G8",
+    "expected_lexical": "1.02",
+    "extracted_lexical": "1.02",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "5",
+    "source_row": 3,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      440.9460000000001,
+      245.04399999999998,
+      532.062,
+      266.1
+    ],
+    "sheet": "表5",
+    "cell": "H8",
+    "expected_lexical": "1.09",
+    "extracted_lexical": "1.09",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "5",
+    "source_row": 4,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      260.46,
+      266.1,
+      350.703,
+      287.15700000000004
+    ],
+    "sheet": "表5",
+    "cell": "F9",
+    "expected_lexical": "1.46",
+    "extracted_lexical": "1.46",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "5",
+    "source_row": 4,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      350.703,
+      266.1,
+      440.9460000000001,
+      287.15700000000004
+    ],
+    "sheet": "表5",
+    "cell": "G9",
+    "expected_lexical": "1.40",
+    "extracted_lexical": "1.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "5",
+    "source_row": 4,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      440.9460000000001,
+      266.1,
+      532.062,
+      287.15700000000004
+    ],
+    "sheet": "表5",
+    "cell": "H9",
+    "expected_lexical": "1.30",
+    "extracted_lexical": "1.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 1,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      233.388,
+      405.05400000000003,
+      332.65400000000005,
+      426.11100000000005
+    ],
+    "sheet": "表6",
+    "cell": "F6",
+    "expected_lexical": "4.00",
+    "extracted_lexical": "4.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 1,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      332.65400000000005,
+      405.05400000000003,
+      431.92100000000005,
+      426.11100000000005
+    ],
+    "sheet": "表6",
+    "cell": "G6",
+    "expected_lexical": "3.80",
+    "extracted_lexical": "3.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 1,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      431.92100000000005,
+      405.05400000000003,
+      532.062,
+      426.11100000000005
+    ],
+    "sheet": "表6",
+    "cell": "H6",
+    "expected_lexical": "3.60",
+    "extracted_lexical": "3.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 2,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      233.388,
+      426.11100000000005,
+      332.65400000000005,
+      447.168
+    ],
+    "sheet": "表6",
+    "cell": "F7",
+    "expected_lexical": "4.40",
+    "extracted_lexical": "4.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 2,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      332.65400000000005,
+      426.11100000000005,
+      431.92100000000005,
+      447.168
+    ],
+    "sheet": "表6",
+    "cell": "G7",
+    "expected_lexical": "4.20",
+    "extracted_lexical": "4.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 2,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      431.92100000000005,
+      426.11100000000005,
+      532.062,
+      447.168
+    ],
+    "sheet": "表6",
+    "cell": "H7",
+    "expected_lexical": "4.00",
+    "extracted_lexical": "4.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 3,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      233.388,
+      447.168,
+      332.65400000000005,
+      468.22400000000005
+    ],
+    "sheet": "表6",
+    "cell": "F8",
+    "expected_lexical": "4.10",
+    "extracted_lexical": "4.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 3,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      332.65400000000005,
+      447.168,
+      431.92100000000005,
+      468.22400000000005
+    ],
+    "sheet": "表6",
+    "cell": "G8",
+    "expected_lexical": "3.90",
+    "extracted_lexical": "3.90",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 3,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      431.92100000000005,
+      447.168,
+      532.062,
+      468.22400000000005
+    ],
+    "sheet": "表6",
+    "cell": "H8",
+    "expected_lexical": "3.70",
+    "extracted_lexical": "3.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 4,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      233.388,
+      468.22400000000005,
+      332.65400000000005,
+      489.281
+    ],
+    "sheet": "表6",
+    "cell": "F9",
+    "expected_lexical": "3.70",
+    "extracted_lexical": "3.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 4,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      332.65400000000005,
+      468.22400000000005,
+      431.92100000000005,
+      489.281
+    ],
+    "sheet": "表6",
+    "cell": "G9",
+    "expected_lexical": "3.50",
+    "extracted_lexical": "3.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 4,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      431.92100000000005,
+      468.22400000000005,
+      532.062,
+      489.281
+    ],
+    "sheet": "表6",
+    "cell": "H9",
+    "expected_lexical": "3.30",
+    "extracted_lexical": "3.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 5,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      233.388,
+      489.281,
+      332.65400000000005,
+      510.33700000000005
+    ],
+    "sheet": "表6",
+    "cell": "F10",
+    "expected_lexical": "3.40",
+    "extracted_lexical": "3.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 5,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      332.65400000000005,
+      489.281,
+      431.92100000000005,
+      510.33700000000005
+    ],
+    "sheet": "表6",
+    "cell": "G10",
+    "expected_lexical": "3.20",
+    "extracted_lexical": "3.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 5,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      431.92100000000005,
+      489.281,
+      532.062,
+      510.33700000000005
+    ],
+    "sheet": "表6",
+    "cell": "H10",
+    "expected_lexical": "3.00",
+    "extracted_lexical": "3.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 6,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      233.388,
+      510.33700000000005,
+      332.65400000000005,
+      531.394
+    ],
+    "sheet": "表6",
+    "cell": "F11",
+    "expected_lexical": "4.50",
+    "extracted_lexical": "4.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 6,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      332.65400000000005,
+      510.33700000000005,
+      431.92100000000005,
+      531.394
+    ],
+    "sheet": "表6",
+    "cell": "G11",
+    "expected_lexical": "4.20",
+    "extracted_lexical": "4.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 6,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      431.92100000000005,
+      510.33700000000005,
+      532.062,
+      531.394
+    ],
+    "sheet": "表6",
+    "cell": "H11",
+    "expected_lexical": "4.00",
+    "extracted_lexical": "4.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 7,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      233.388,
+      531.394,
+      332.65400000000005,
+      552.451
+    ],
+    "sheet": "表6",
+    "cell": "F12",
+    "expected_lexical": "4.80",
+    "extracted_lexical": "4.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 7,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      332.65400000000005,
+      531.394,
+      431.92100000000005,
+      552.451
+    ],
+    "sheet": "表6",
+    "cell": "G12",
+    "expected_lexical": "4.50",
+    "extracted_lexical": "4.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 7,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      431.92100000000005,
+      531.394,
+      532.062,
+      552.451
+    ],
+    "sheet": "表6",
+    "cell": "H12",
+    "expected_lexical": "4.30",
+    "extracted_lexical": "4.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 8,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      233.388,
+      552.451,
+      332.65400000000005,
+      573.5070000000001
+    ],
+    "sheet": "表6",
+    "cell": "F13",
+    "expected_lexical": "4.50",
+    "extracted_lexical": "4.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 8,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      332.65400000000005,
+      552.451,
+      431.92100000000005,
+      573.5070000000001
+    ],
+    "sheet": "表6",
+    "cell": "G13",
+    "expected_lexical": "4.10",
+    "extracted_lexical": "4.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 8,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      431.92100000000005,
+      552.451,
+      532.062,
+      573.5070000000001
+    ],
+    "sheet": "表6",
+    "cell": "H13",
+    "expected_lexical": "3.90",
+    "extracted_lexical": "3.90",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 9,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      233.388,
+      573.5070000000001,
+      332.65400000000005,
+      594.5640000000001
+    ],
+    "sheet": "表6",
+    "cell": "F14",
+    "expected_lexical": "4.00",
+    "extracted_lexical": "4.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 9,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      332.65400000000005,
+      573.5070000000001,
+      431.92100000000005,
+      594.5640000000001
+    ],
+    "sheet": "表6",
+    "cell": "G14",
+    "expected_lexical": "3.70",
+    "extracted_lexical": "3.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 9,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      431.92100000000005,
+      573.5070000000001,
+      532.062,
+      594.5640000000001
+    ],
+    "sheet": "表6",
+    "cell": "H14",
+    "expected_lexical": "3.50",
+    "extracted_lexical": "3.50",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 10,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      233.388,
+      594.5640000000001,
+      332.65400000000005,
+      615.62
+    ],
+    "sheet": "表6",
+    "cell": "F15",
+    "expected_lexical": "3.60",
+    "extracted_lexical": "3.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 10,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      332.65400000000005,
+      594.5640000000001,
+      431.92100000000005,
+      615.62
+    ],
+    "sheet": "表6",
+    "cell": "G15",
+    "expected_lexical": "3.30",
+    "extracted_lexical": "3.30",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 10,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      431.92100000000005,
+      594.5640000000001,
+      532.062,
+      615.62
+    ],
+    "sheet": "表6",
+    "cell": "H15",
+    "expected_lexical": "3.20",
+    "extracted_lexical": "3.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 11,
+    "source_column": 3,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      233.388,
+      615.62,
+      332.65400000000005,
+      651.717
+    ],
+    "sheet": "表6",
+    "cell": "F16",
+    "expected_lexical": "4.10",
+    "extracted_lexical": "4.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 11,
+    "source_column": 4,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      332.65400000000005,
+      615.62,
+      431.92100000000005,
+      651.717
+    ],
+    "sheet": "表6",
+    "cell": "G16",
+    "expected_lexical": "3.70",
+    "extracted_lexical": "3.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "6",
+    "source_row": 11,
+    "source_column": 5,
+    "pdf_page": 11,
+    "printed_page": 5,
+    "source_bbox_pt": [
+      431.92100000000005,
+      615.62,
+      532.062,
+      651.717
+    ],
+    "sheet": "表6",
+    "cell": "H16",
+    "expected_lexical": "3.40",
+    "extracted_lexical": "3.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 1,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      270.63,
+      184.30000000000007,
+      333.8,
+      202.34800000000007
+    ],
+    "sheet": "表7",
+    "cell": "F6",
+    "expected_lexical": "17.0",
+    "extracted_lexical": "17.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 1,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      333.8,
+      184.30000000000007,
+      396.97,
+      202.34800000000007
+    ],
+    "sheet": "表7",
+    "cell": "G6",
+    "expected_lexical": "14.0",
+    "extracted_lexical": "14.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 1,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      396.97,
+      184.30000000000007,
+      460.13899999999995,
+      202.34800000000007
+    ],
+    "sheet": "表7",
+    "cell": "H6",
+    "expected_lexical": "10.0",
+    "extracted_lexical": "10.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 1,
+    "source_column": 8,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      460.13899999999995,
+      184.30000000000007,
+      524.183,
+      202.34800000000007
+    ],
+    "sheet": "表7",
+    "cell": "J6",
+    "expected_lexical": "9.0",
+    "extracted_lexical": "9.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 2,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      270.63,
+      202.34800000000007,
+      333.8,
+      220.39700000000005
+    ],
+    "sheet": "表7",
+    "cell": "F7",
+    "expected_lexical": "22.0",
+    "extracted_lexical": "22.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 2,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      333.8,
+      202.34800000000007,
+      396.97,
+      220.39700000000005
+    ],
+    "sheet": "表7",
+    "cell": "G7",
+    "expected_lexical": "19.0",
+    "extracted_lexical": "19.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 2,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      396.97,
+      202.34800000000007,
+      460.13899999999995,
+      220.39700000000005
+    ],
+    "sheet": "表7",
+    "cell": "H7",
+    "expected_lexical": "15.0",
+    "extracted_lexical": "15.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 2,
+    "source_column": 8,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      460.13899999999995,
+      202.34800000000007,
+      524.183,
+      220.39700000000005
+    ],
+    "sheet": "表7",
+    "cell": "J7",
+    "expected_lexical": "13.0",
+    "extracted_lexical": "13.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 3,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      270.63,
+      220.39700000000005,
+      333.8,
+      238.44500000000005
+    ],
+    "sheet": "表7",
+    "cell": "F8",
+    "expected_lexical": "21.0",
+    "extracted_lexical": "21.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 3,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      333.8,
+      220.39700000000005,
+      396.97,
+      238.44500000000005
+    ],
+    "sheet": "表7",
+    "cell": "G8",
+    "expected_lexical": "18.0",
+    "extracted_lexical": "18.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 3,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      396.97,
+      220.39700000000005,
+      460.13899999999995,
+      238.44500000000005
+    ],
+    "sheet": "表7",
+    "cell": "H8",
+    "expected_lexical": "14.0",
+    "extracted_lexical": "14.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 3,
+    "source_column": 8,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      460.13899999999995,
+      220.39700000000005,
+      524.183,
+      238.44500000000005
+    ],
+    "sheet": "表7",
+    "cell": "J8",
+    "expected_lexical": "12.0",
+    "extracted_lexical": "12.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 4,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      270.63,
+      238.44500000000005,
+      333.8,
+      256.494
+    ],
+    "sheet": "表7",
+    "cell": "F9",
+    "expected_lexical": "25.0",
+    "extracted_lexical": "25.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 4,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      333.8,
+      238.44500000000005,
+      396.97,
+      256.494
+    ],
+    "sheet": "表7",
+    "cell": "G9",
+    "expected_lexical": "22.0",
+    "extracted_lexical": "22.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 4,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      396.97,
+      238.44500000000005,
+      460.13899999999995,
+      256.494
+    ],
+    "sheet": "表7",
+    "cell": "H9",
+    "expected_lexical": "18.0",
+    "extracted_lexical": "18.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 4,
+    "source_column": 8,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      460.13899999999995,
+      238.44500000000005,
+      524.183,
+      256.494
+    ],
+    "sheet": "表7",
+    "cell": "J9",
+    "expected_lexical": "16.0",
+    "extracted_lexical": "16.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 5,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      270.63,
+      256.494,
+      333.8,
+      274.54200000000003
+    ],
+    "sheet": "表7",
+    "cell": "F10",
+    "expected_lexical": "16.0",
+    "extracted_lexical": "16.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 5,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      333.8,
+      256.494,
+      396.97,
+      274.54200000000003
+    ],
+    "sheet": "表7",
+    "cell": "G10",
+    "expected_lexical": "14.0",
+    "extracted_lexical": "14.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 5,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      396.97,
+      256.494,
+      460.13899999999995,
+      274.54200000000003
+    ],
+    "sheet": "表7",
+    "cell": "H10",
+    "expected_lexical": "10.0",
+    "extracted_lexical": "10.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 6,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      270.63,
+      274.54200000000003,
+      333.8,
+      292.591
+    ],
+    "sheet": "表7",
+    "cell": "F11",
+    "expected_lexical": "20.0",
+    "extracted_lexical": "20.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 6,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      333.8,
+      274.54200000000003,
+      396.97,
+      292.591
+    ],
+    "sheet": "表7",
+    "cell": "G11",
+    "expected_lexical": "17.0",
+    "extracted_lexical": "17.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 6,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      396.97,
+      274.54200000000003,
+      460.13899999999995,
+      292.591
+    ],
+    "sheet": "表7",
+    "cell": "H11",
+    "expected_lexical": "14.0",
+    "extracted_lexical": "14.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 7,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      270.63,
+      292.591,
+      333.8,
+      310.639
+    ],
+    "sheet": "表7",
+    "cell": "F12",
+    "expected_lexical": "15.0",
+    "extracted_lexical": "15.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 7,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      333.8,
+      292.591,
+      396.97,
+      310.639
+    ],
+    "sheet": "表7",
+    "cell": "G12",
+    "expected_lexical": "11.0",
+    "extracted_lexical": "11.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 7,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      396.97,
+      292.591,
+      460.13899999999995,
+      310.639
+    ],
+    "sheet": "表7",
+    "cell": "H12",
+    "expected_lexical": "9.0",
+    "extracted_lexical": "9.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 8,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      270.63,
+      310.639,
+      333.8,
+      328.688
+    ],
+    "sheet": "表7",
+    "cell": "F13",
+    "expected_lexical": "20.0",
+    "extracted_lexical": "20.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 8,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      333.8,
+      310.639,
+      396.97,
+      328.688
+    ],
+    "sheet": "表7",
+    "cell": "G13",
+    "expected_lexical": "14.0",
+    "extracted_lexical": "14.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 8,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      396.97,
+      310.639,
+      460.13899999999995,
+      328.688
+    ],
+    "sheet": "表7",
+    "cell": "H13",
+    "expected_lexical": "13.0",
+    "extracted_lexical": "13.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 9,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      270.63,
+      328.688,
+      333.8,
+      346.736
+    ],
+    "sheet": "表7",
+    "cell": "F14",
+    "expected_lexical": "21.0",
+    "extracted_lexical": "21.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 9,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      333.8,
+      328.688,
+      396.97,
+      346.736
+    ],
+    "sheet": "表7",
+    "cell": "G14",
+    "expected_lexical": "15.0",
+    "extracted_lexical": "15.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 9,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      396.97,
+      328.688,
+      460.13899999999995,
+      346.736
+    ],
+    "sheet": "表7",
+    "cell": "H14",
+    "expected_lexical": "12.0",
+    "extracted_lexical": "12.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 10,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      270.63,
+      346.736,
+      333.8,
+      364.785
+    ],
+    "sheet": "表7",
+    "cell": "F15",
+    "expected_lexical": "22.0",
+    "extracted_lexical": "22.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 10,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      333.8,
+      346.736,
+      396.97,
+      364.785
+    ],
+    "sheet": "表7",
+    "cell": "G15",
+    "expected_lexical": "15.0",
+    "extracted_lexical": "15.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "7",
+    "source_row": 10,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      396.97,
+      346.736,
+      460.13899999999995,
+      364.785
+    ],
+    "sheet": "表7",
+    "cell": "H15",
+    "expected_lexical": "14.0",
+    "extracted_lexical": "14.0",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 1,
+    "source_column": 4,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      306.727,
+      481.51800000000003,
+      360.873,
+      499.567
+    ],
+    "sheet": "表8",
+    "cell": "F6",
+    "expected_lexical": "5.40",
+    "extracted_lexical": "5.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 1,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      360.873,
+      481.51800000000003,
+      415.01800000000003,
+      499.567
+    ],
+    "sheet": "表8",
+    "cell": "G6",
+    "expected_lexical": "5.00",
+    "extracted_lexical": "5.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 1,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      415.01800000000003,
+      481.51800000000003,
+      469.16400000000004,
+      499.567
+    ],
+    "sheet": "表8",
+    "cell": "H6",
+    "expected_lexical": "4.40",
+    "extracted_lexical": "4.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 1,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      469.16400000000004,
+      481.51800000000003,
+      524.183,
+      499.567
+    ],
+    "sheet": "表8",
+    "cell": "J6",
+    "expected_lexical": "4.00",
+    "extracted_lexical": "4.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 2,
+    "source_column": 4,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      306.727,
+      499.567,
+      360.873,
+      517.615
+    ],
+    "sheet": "表8",
+    "cell": "F7",
+    "expected_lexical": "5.60",
+    "extracted_lexical": "5.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 2,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      360.873,
+      499.567,
+      415.01800000000003,
+      517.615
+    ],
+    "sheet": "表8",
+    "cell": "G7",
+    "expected_lexical": "5.00",
+    "extracted_lexical": "5.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 2,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      415.01800000000003,
+      499.567,
+      469.16400000000004,
+      517.615
+    ],
+    "sheet": "表8",
+    "cell": "H7",
+    "expected_lexical": "4.80",
+    "extracted_lexical": "4.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 2,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      469.16400000000004,
+      499.567,
+      524.183,
+      517.615
+    ],
+    "sheet": "表8",
+    "cell": "J7",
+    "expected_lexical": "4.40",
+    "extracted_lexical": "4.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 3,
+    "source_column": 4,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      306.727,
+      517.615,
+      360.873,
+      535.664
+    ],
+    "sheet": "表8",
+    "cell": "F8",
+    "expected_lexical": "5.80",
+    "extracted_lexical": "5.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 3,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      360.873,
+      517.615,
+      415.01800000000003,
+      535.664
+    ],
+    "sheet": "表8",
+    "cell": "G8",
+    "expected_lexical": "5.40",
+    "extracted_lexical": "5.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 3,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      415.01800000000003,
+      517.615,
+      469.16400000000004,
+      535.664
+    ],
+    "sheet": "表8",
+    "cell": "H8",
+    "expected_lexical": "5.10",
+    "extracted_lexical": "5.10",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 3,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      469.16400000000004,
+      517.615,
+      524.183,
+      535.664
+    ],
+    "sheet": "表8",
+    "cell": "J8",
+    "expected_lexical": "4.60",
+    "extracted_lexical": "4.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 4,
+    "source_column": 4,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      306.727,
+      535.664,
+      360.873,
+      553.712
+    ],
+    "sheet": "表8",
+    "cell": "F9",
+    "expected_lexical": "6.00",
+    "extracted_lexical": "6.00",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 4,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      360.873,
+      535.664,
+      415.01800000000003,
+      553.712
+    ],
+    "sheet": "表8",
+    "cell": "G9",
+    "expected_lexical": "5.60",
+    "extracted_lexical": "5.60",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 4,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      415.01800000000003,
+      535.664,
+      469.16400000000004,
+      553.712
+    ],
+    "sheet": "表8",
+    "cell": "H9",
+    "expected_lexical": "5.20",
+    "extracted_lexical": "5.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 4,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      469.16400000000004,
+      535.664,
+      524.183,
+      553.712
+    ],
+    "sheet": "表8",
+    "cell": "J9",
+    "expected_lexical": "4.80",
+    "extracted_lexical": "4.80",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 5,
+    "source_column": 4,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      306.727,
+      553.712,
+      360.873,
+      571.761
+    ],
+    "sheet": "表8",
+    "cell": "F10",
+    "expected_lexical": "4.40",
+    "extracted_lexical": "4.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 5,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      360.873,
+      553.712,
+      415.01800000000003,
+      571.761
+    ],
+    "sheet": "表8",
+    "cell": "G10",
+    "expected_lexical": "3.90",
+    "extracted_lexical": "3.90",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 5,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      415.01800000000003,
+      553.712,
+      469.16400000000004,
+      571.761
+    ],
+    "sheet": "表8",
+    "cell": "H10",
+    "expected_lexical": "3.40",
+    "extracted_lexical": "3.40",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 5,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      469.16400000000004,
+      553.712,
+      524.183,
+      571.761
+    ],
+    "sheet": "表8",
+    "cell": "J10",
+    "expected_lexical": "2.70",
+    "extracted_lexical": "2.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 6,
+    "source_column": 4,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      306.727,
+      571.761,
+      360.873,
+      589.809
+    ],
+    "sheet": "表8",
+    "cell": "F11",
+    "expected_lexical": "4.20",
+    "extracted_lexical": "4.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 6,
+    "source_column": 5,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      360.873,
+      571.761,
+      415.01800000000003,
+      589.809
+    ],
+    "sheet": "表8",
+    "cell": "G11",
+    "expected_lexical": "3.75",
+    "extracted_lexical": "3.75",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 6,
+    "source_column": 6,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      415.01800000000003,
+      571.761,
+      469.16400000000004,
+      589.809
+    ],
+    "sheet": "表8",
+    "cell": "H11",
+    "expected_lexical": "3.20",
+    "extracted_lexical": "3.20",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "8",
+    "source_row": 6,
+    "source_column": 7,
+    "pdf_page": 12,
+    "printed_page": 6,
+    "source_bbox_pt": [
+      469.16400000000004,
+      571.761,
+      524.183,
+      589.809
+    ],
+    "sheet": "表8",
+    "cell": "J11",
+    "expected_lexical": "2.70",
+    "extracted_lexical": "2.70",
+    "result": "MATCH",
+    "method": "图像转录+pdfplumber源格文本交叉，自核"
+  },
+  {
+    "table": "A.1",
+    "source_row": 1,
+    "source_column": 2,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      126.242,
+      327.523,
+      189.412,
+      345.572
+    ],
+    "sheet": "表A.1",
+    "cell": "B6",
+    "expected_lexical": "100",
+    "extracted_lexical": "100",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 1,
+    "source_column": 4,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      252.581,
+      327.523,
+      315.751,
+      345.572
+    ],
+    "sheet": "表A.1",
+    "cell": "C6",
+    "expected_lexical": "7",
+    "extracted_lexical": "7",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 1,
+    "source_column": 5,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      315.751,
+      327.523,
+      396.96999999999997,
+      399.71700000000004
+    ],
+    "sheet": "表A.1",
+    "cell": "D6",
+    "expected_lexical": "0.172",
+    "extracted_lexical": "0.172",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 1,
+    "source_column": 6,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      396.96999999999997,
+      327.523,
+      460.139,
+      345.572
+    ],
+    "sheet": "表A.1",
+    "cell": "E6",
+    "expected_lexical": "35",
+    "extracted_lexical": "35",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 2,
+    "source_column": 2,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      126.242,
+      345.572,
+      189.412,
+      363.62
+    ],
+    "sheet": "表A.1",
+    "cell": "B7",
+    "expected_lexical": "75",
+    "extracted_lexical": "75",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 2,
+    "source_column": 4,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      252.581,
+      345.572,
+      315.751,
+      363.62
+    ],
+    "sheet": "表A.1",
+    "cell": "C7",
+    "expected_lexical": "7",
+    "extracted_lexical": "7",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 2,
+    "source_column": 5,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      315.751,
+      327.523,
+      396.96999999999997,
+      399.71700000000004
+    ],
+    "sheet": "表A.1",
+    "cell": "D7",
+    "expected_lexical": "0.172",
+    "extracted_lexical": "0.172",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 2,
+    "source_column": 6,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      396.96999999999997,
+      345.572,
+      460.139,
+      363.62
+    ],
+    "sheet": "表A.1",
+    "cell": "E7",
+    "expected_lexical": "32.25",
+    "extracted_lexical": "32.25",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 3,
+    "source_column": 2,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      126.242,
+      363.62,
+      189.412,
+      381.66900000000004
+    ],
+    "sheet": "表A.1",
+    "cell": "B8",
+    "expected_lexical": "50",
+    "extracted_lexical": "50",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 3,
+    "source_column": 4,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      252.581,
+      363.62,
+      315.751,
+      381.66900000000004
+    ],
+    "sheet": "表A.1",
+    "cell": "C8",
+    "expected_lexical": "9",
+    "extracted_lexical": "9",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 3,
+    "source_column": 5,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      315.751,
+      327.523,
+      396.96999999999997,
+      399.71700000000004
+    ],
+    "sheet": "表A.1",
+    "cell": "D8",
+    "expected_lexical": "0.172",
+    "extracted_lexical": "0.172",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 3,
+    "source_column": 6,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      396.96999999999997,
+      363.62,
+      460.139,
+      381.66900000000004
+    ],
+    "sheet": "表A.1",
+    "cell": "E8",
+    "expected_lexical": "29.5",
+    "extracted_lexical": "29.5",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 4,
+    "source_column": 2,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      126.242,
+      381.66900000000004,
+      189.412,
+      399.71700000000004
+    ],
+    "sheet": "表A.1",
+    "cell": "B9",
+    "expected_lexical": "25",
+    "extracted_lexical": "25",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 4,
+    "source_column": 4,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      252.581,
+      381.66900000000004,
+      315.751,
+      399.71700000000004
+    ],
+    "sheet": "表A.1",
+    "cell": "C9",
+    "expected_lexical": "11",
+    "extracted_lexical": "11",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 4,
+    "source_column": 5,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      315.751,
+      327.523,
+      396.96999999999997,
+      399.71700000000004
+    ],
+    "sheet": "表A.1",
+    "cell": "D9",
+    "expected_lexical": "0.172",
+    "extracted_lexical": "0.172",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.1",
+    "source_row": 4,
+    "source_column": 6,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      396.96999999999997,
+      381.66900000000004,
+      460.139,
+      399.71700000000004
+    ],
+    "sheet": "表A.1",
+    "cell": "E9",
+    "expected_lexical": "26.8",
+    "extracted_lexical": "26.8",
+    "result": "MATCH",
+    "method": "图像转录+源格文本；负荷率Excel以0～1存储"
+  },
+  {
+    "table": "A.2",
+    "source_row": 1,
+    "source_column": 1,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      63.072,
+      553.712,
+      139.73000000000002,
+      571.761
+    ],
+    "sheet": "表A.2",
+    "cell": "A6",
+    "expected_lexical": "1",
+    "extracted_lexical": "1",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 1,
+    "source_column": 2,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      139.73000000000002,
+      553.712,
+      216.484,
+      571.761
+    ],
+    "sheet": "表A.2",
+    "cell": "B6",
+    "expected_lexical": "25",
+    "extracted_lexical": "25",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 1,
+    "source_column": 3,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      216.484,
+      553.712,
+      293.14200000000005,
+      571.761
+    ],
+    "sheet": "表A.2",
+    "cell": "C6",
+    "expected_lexical": "277",
+    "extracted_lexical": "277",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 2,
+    "source_column": 1,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      63.072,
+      571.761,
+      139.73000000000002,
+      589.809
+    ],
+    "sheet": "表A.2",
+    "cell": "A7",
+    "expected_lexical": "2",
+    "extracted_lexical": "2",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 2,
+    "source_column": 2,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      139.73000000000002,
+      571.761,
+      216.484,
+      589.809
+    ],
+    "sheet": "表A.2",
+    "cell": "B7",
+    "expected_lexical": "26",
+    "extracted_lexical": "26",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 2,
+    "source_column": 3,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      216.484,
+      571.761,
+      293.14200000000005,
+      589.809
+    ],
+    "sheet": "表A.2",
+    "cell": "C7",
+    "expected_lexical": "205",
+    "extracted_lexical": "205",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 3,
+    "source_column": 1,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      63.072,
+      589.809,
+      139.73000000000002,
+      607.858
+    ],
+    "sheet": "表A.2",
+    "cell": "A8",
+    "expected_lexical": "3",
+    "extracted_lexical": "3",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 3,
+    "source_column": 2,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      139.73000000000002,
+      589.809,
+      216.484,
+      607.858
+    ],
+    "sheet": "表A.2",
+    "cell": "B8",
+    "expected_lexical": "27",
+    "extracted_lexical": "27",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 3,
+    "source_column": 3,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      216.484,
+      589.809,
+      293.14200000000005,
+      607.858
+    ],
+    "sheet": "表A.2",
+    "cell": "C8",
+    "expected_lexical": "180",
+    "extracted_lexical": "180",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 4,
+    "source_column": 1,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      63.072,
+      607.858,
+      139.73000000000002,
+      625.9060000000001
+    ],
+    "sheet": "表A.2",
+    "cell": "A9",
+    "expected_lexical": "4",
+    "extracted_lexical": "4",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 4,
+    "source_column": 2,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      139.73000000000002,
+      607.858,
+      216.484,
+      625.9060000000001
+    ],
+    "sheet": "表A.2",
+    "cell": "B9",
+    "expected_lexical": "28",
+    "extracted_lexical": "28",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 4,
+    "source_column": 3,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      216.484,
+      607.858,
+      293.14200000000005,
+      625.9060000000001
+    ],
+    "sheet": "表A.2",
+    "cell": "C9",
+    "expected_lexical": "110",
+    "extracted_lexical": "110",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 5,
+    "source_column": 1,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      63.072,
+      625.9060000000001,
+      139.73000000000002,
+      643.955
+    ],
+    "sheet": "表A.2",
+    "cell": "A10",
+    "expected_lexical": "5",
+    "extracted_lexical": "5",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 5,
+    "source_column": 2,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      139.73000000000002,
+      625.9060000000001,
+      216.484,
+      643.955
+    ],
+    "sheet": "表A.2",
+    "cell": "B10",
+    "expected_lexical": "29",
+    "extracted_lexical": "29",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 5,
+    "source_column": 3,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      216.484,
+      625.9060000000001,
+      293.14200000000005,
+      643.955
+    ],
+    "sheet": "表A.2",
+    "cell": "C10",
+    "expected_lexical": "94",
+    "extracted_lexical": "94",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 6,
+    "source_column": 1,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      63.072,
+      643.955,
+      139.73000000000002,
+      662.003
+    ],
+    "sheet": "表A.2",
+    "cell": "A11",
+    "expected_lexical": "6",
+    "extracted_lexical": "6",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 6,
+    "source_column": 2,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      139.73000000000002,
+      643.955,
+      216.484,
+      662.003
+    ],
+    "sheet": "表A.2",
+    "cell": "B11",
+    "expected_lexical": "30",
+    "extracted_lexical": "30",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 6,
+    "source_column": 3,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      216.484,
+      643.955,
+      293.14200000000005,
+      662.003
+    ],
+    "sheet": "表A.2",
+    "cell": "C11",
+    "expected_lexical": "61",
+    "extracted_lexical": "61",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 7,
+    "source_column": 1,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      63.072,
+      662.003,
+      139.73000000000002,
+      680.052
+    ],
+    "sheet": "表A.2",
+    "cell": "A12",
+    "expected_lexical": "7",
+    "extracted_lexical": "7",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 7,
+    "source_column": 2,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      139.73000000000002,
+      662.003,
+      216.484,
+      680.052
+    ],
+    "sheet": "表A.2",
+    "cell": "B12",
+    "expected_lexical": "31",
+    "extracted_lexical": "31",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 7,
+    "source_column": 3,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      216.484,
+      662.003,
+      293.14200000000005,
+      680.052
+    ],
+    "sheet": "表A.2",
+    "cell": "C12",
+    "expected_lexical": "25",
+    "extracted_lexical": "25",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 8,
+    "source_column": 1,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      63.072,
+      680.052,
+      139.73000000000002,
+      698.1
+    ],
+    "sheet": "表A.2",
+    "cell": "A13",
+    "expected_lexical": "8",
+    "extracted_lexical": "8",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 8,
+    "source_column": 2,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      139.73000000000002,
+      680.052,
+      216.484,
+      698.1
+    ],
+    "sheet": "表A.2",
+    "cell": "B13",
+    "expected_lexical": "32",
+    "extracted_lexical": "32",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 8,
+    "source_column": 3,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      216.484,
+      680.052,
+      293.14200000000005,
+      698.1
+    ],
+    "sheet": "表A.2",
+    "cell": "C13",
+    "expected_lexical": "20",
+    "extracted_lexical": "20",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 9,
+    "source_column": 4,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      293.14200000000005,
+      553.712,
+      369.897,
+      571.761
+    ],
+    "sheet": "表A.2",
+    "cell": "A14",
+    "expected_lexical": "9",
+    "extracted_lexical": "9",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 9,
+    "source_column": 5,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      369.897,
+      553.712,
+      446.55400000000003,
+      571.761
+    ],
+    "sheet": "表A.2",
+    "cell": "B14",
+    "expected_lexical": "33",
+    "extracted_lexical": "33",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 9,
+    "source_column": 6,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      446.55400000000003,
+      553.712,
+      524.183,
+      571.761
+    ],
+    "sheet": "表A.2",
+    "cell": "C14",
+    "expected_lexical": "20",
+    "extracted_lexical": "20",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 10,
+    "source_column": 4,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      293.14200000000005,
+      571.761,
+      369.897,
+      589.809
+    ],
+    "sheet": "表A.2",
+    "cell": "A15",
+    "expected_lexical": "10",
+    "extracted_lexical": "10",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 10,
+    "source_column": 5,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      369.897,
+      571.761,
+      446.55400000000003,
+      589.809
+    ],
+    "sheet": "表A.2",
+    "cell": "B15",
+    "expected_lexical": "34",
+    "extracted_lexical": "34",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 10,
+    "source_column": 6,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      446.55400000000003,
+      571.761,
+      524.183,
+      589.809
+    ],
+    "sheet": "表A.2",
+    "cell": "C15",
+    "expected_lexical": "11",
+    "extracted_lexical": "11",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 11,
+    "source_column": 4,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      293.14200000000005,
+      589.809,
+      369.897,
+      607.858
+    ],
+    "sheet": "表A.2",
+    "cell": "A16",
+    "expected_lexical": "11",
+    "extracted_lexical": "11",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 11,
+    "source_column": 5,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      369.897,
+      589.809,
+      446.55400000000003,
+      607.858
+    ],
+    "sheet": "表A.2",
+    "cell": "B16",
+    "expected_lexical": "35",
+    "extracted_lexical": "35",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 11,
+    "source_column": 6,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      446.55400000000003,
+      589.809,
+      524.183,
+      607.858
+    ],
+    "sheet": "表A.2",
+    "cell": "C16",
+    "expected_lexical": "4",
+    "extracted_lexical": "4",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 12,
+    "source_column": 4,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      293.14200000000005,
+      607.858,
+      369.897,
+      625.9060000000001
+    ],
+    "sheet": "表A.2",
+    "cell": "A17",
+    "expected_lexical": "12",
+    "extracted_lexical": "12",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 12,
+    "source_column": 5,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      369.897,
+      607.858,
+      446.55400000000003,
+      625.9060000000001
+    ],
+    "sheet": "表A.2",
+    "cell": "B17",
+    "expected_lexical": "36",
+    "extracted_lexical": "36",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 12,
+    "source_column": 6,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      446.55400000000003,
+      607.858,
+      524.183,
+      625.9060000000001
+    ],
+    "sheet": "表A.2",
+    "cell": "C17",
+    "expected_lexical": "0",
+    "extracted_lexical": "0",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 13,
+    "source_column": 4,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      293.14200000000005,
+      625.9060000000001,
+      369.897,
+      643.955
+    ],
+    "sheet": "表A.2",
+    "cell": "A18",
+    "expected_lexical": "13",
+    "extracted_lexical": "13",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 13,
+    "source_column": 5,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      369.897,
+      625.9060000000001,
+      446.55400000000003,
+      643.955
+    ],
+    "sheet": "表A.2",
+    "cell": "B18",
+    "expected_lexical": "37",
+    "extracted_lexical": "37",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 13,
+    "source_column": 6,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      446.55400000000003,
+      625.9060000000001,
+      524.183,
+      643.955
+    ],
+    "sheet": "表A.2",
+    "cell": "C18",
+    "expected_lexical": "0",
+    "extracted_lexical": "0",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 14,
+    "source_column": 4,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      293.14200000000005,
+      643.955,
+      369.897,
+      662.003
+    ],
+    "sheet": "表A.2",
+    "cell": "A19",
+    "expected_lexical": "14",
+    "extracted_lexical": "14",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 14,
+    "source_column": 5,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      369.897,
+      643.955,
+      446.55400000000003,
+      662.003
+    ],
+    "sheet": "表A.2",
+    "cell": "B19",
+    "expected_lexical": "38",
+    "extracted_lexical": "38",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 14,
+    "source_column": 6,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      446.55400000000003,
+      643.955,
+      524.183,
+      662.003
+    ],
+    "sheet": "表A.2",
+    "cell": "C19",
+    "expected_lexical": "0",
+    "extracted_lexical": "0",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 15,
+    "source_column": 4,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      293.14200000000005,
+      662.003,
+      369.897,
+      680.052
+    ],
+    "sheet": "表A.2",
+    "cell": "A20",
+    "expected_lexical": "15",
+    "extracted_lexical": "15",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 15,
+    "source_column": 5,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      369.897,
+      662.003,
+      446.55400000000003,
+      680.052
+    ],
+    "sheet": "表A.2",
+    "cell": "B20",
+    "expected_lexical": "39",
+    "extracted_lexical": "39",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": 15,
+    "source_column": 6,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      446.55400000000003,
+      662.003,
+      524.183,
+      680.052
+    ],
+    "sheet": "表A.2",
+    "cell": "C20",
+    "expected_lexical": "0",
+    "extracted_lexical": "0",
+    "result": "MATCH",
+    "method": "图像转录+源格文本"
+  },
+  {
+    "table": "A.2",
+    "source_row": "合计",
+    "source_column": 6,
+    "pdf_page": 14,
+    "printed_page": 8,
+    "source_bbox_pt": [
+      446.55400000000003,
+      680.052,
+      524.183,
+      698.1
+    ],
+    "sheet": "表A.2",
+    "cell": "C21",
+    "expected_lexical": "1007",
+    "extracted_lexical": "1007",
+    "result": "MATCH",
+    "method": "原表合计与15项相加交叉"
+  }
+]

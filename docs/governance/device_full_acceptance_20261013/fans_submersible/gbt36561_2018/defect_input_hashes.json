@@ -1,0 +1,26 @@
+[
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\data\\GBT36561_2018_TABLE_VALUES.xlsx",
+    "sha256": "284ceebe8b76f2b20cbbfe3ebb144e2abd4e85a6f598d6d389510e13f410af0a"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\data\\table_values.csv",
+    "sha256": "f3daad132955707b3153e2592134c57d3d62b53df2dfc5d506658fcba47a2fe9"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\data\\table_values.json",
+    "sha256": "01048799230ae5316d7d3ebae78cefd640961778f61404e3e72821ab1e1d9031"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\evidence\\workbook_coordinates.json",
+    "sha256": "a27018fa98b85306f1af4e2f9e1c474b688ea2bcee7a33026a913c18b3fbc1f7"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\build_data.py",
+    "sha256": "13fddc46795f0656668c90f0b5e506fe884502a0214bab6db3e993db708f2da2"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+    "sha256": "dc59a8573a1467443afb3e8d4ecd0e073edb0f50713ffa742e4bd0d0ec062cde"
+  }
+]

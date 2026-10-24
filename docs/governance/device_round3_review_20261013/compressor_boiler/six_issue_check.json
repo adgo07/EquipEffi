@@ -1,0 +1,42 @@
+{
+  "register_path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+  "register_sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908",
+  "checks": [
+    {
+      "id": "EQP-STD-GB19153-001",
+      "heading_count": 1,
+      "open": true,
+      "request_backlink_present": true
+    },
+    {
+      "id": "EQP-STD-GB19153-002",
+      "heading_count": 1,
+      "open": true,
+      "request_backlink_present": true
+    },
+    {
+      "id": "EQP-STD-GB19153-003",
+      "heading_count": 1,
+      "open": true,
+      "request_backlink_present": true
+    },
+    {
+      "id": "EQP-STD-GB19153-004",
+      "heading_count": 1,
+      "open": true,
+      "request_backlink_present": true
+    },
+    {
+      "id": "EQP-STD-GB24500-001",
+      "heading_count": 1,
+      "open": true,
+      "request_backlink_present": true
+    },
+    {
+      "id": "EQP-STD-GB24500-002",
+      "heading_count": 1,
+      "open": true,
+      "request_backlink_present": true
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\STANDARD_MAPPING.md",
+    "current_sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f",
+    "hvac_full_review_sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f",
+    "earlier_12_standard_sha256": null,
+    "comparison": "not_in_12_scope"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\data\\GB29541_2013_标准表值.xlsx",
+    "current_sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54",
+    "hvac_full_review_sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54",
+    "earlier_12_standard_sha256": null,
+    "comparison": "not_in_12_scope"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "current_sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83",
+    "hvac_full_review_sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83",
+    "earlier_12_standard_sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83",
+    "comparison": "unchanged"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+    "current_sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e",
+    "hvac_full_review_sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e",
+    "earlier_12_standard_sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e",
+    "comparison": "unchanged"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+    "current_sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf",
+    "hvac_full_review_sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf",
+    "earlier_12_standard_sha256": "a531b8de946a7577fdc223a89a14ec36ea7a74f77f098495e2de087c703b03f8",
+    "comparison": "changed"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+    "current_sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4",
+    "hvac_full_review_sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4",
+    "earlier_12_standard_sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4",
+    "comparison": "unchanged"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+    "current_sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63",
+    "hvac_full_review_sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63",
+    "earlier_12_standard_sha256": "e8bc13796d1d9a7804c266cd2cc404b347e8f0f6448f1fbb90f286cb27dd8c96",
+    "comparison": "changed"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+    "current_sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+    "hvac_full_review_sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+    "earlier_12_standard_sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+    "comparison": "unchanged"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+    "current_sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105",
+    "hvac_full_review_sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105",
+    "earlier_12_standard_sha256": "b5068fd79fa35584df2e4260c88d8a8986136f65556a59a7de38809b1ccbe9b1",
+    "comparison": "changed"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+    "current_sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+    "hvac_full_review_sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+    "earlier_12_standard_sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+    "comparison": "unchanged"
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "expected_root_ids": 62,
+  "unique_existing_ids": 62,
+  "group_rows": 103,
+  "rows_linking_existing": 64,
+  "unregistered_rows": 39,
+  "missing": [],
+  "extra": [],
+  "group_sources": [
+    {
+      "path": "motors/owner_items.json",
+      "sha256": "cab638d9293eb73b822aabfd267a3ff599851df4161e735bcc8679a73ba66e3d"
+    },
+    {
+      "path": "compressor_boiler/owner_items.json",
+      "sha256": "254d354da5b3a1634a4c0260d4eaebfd14bd6ca2cf476aef1af7abd34813ec2b"
+    },
+    {
+      "path": "hvac/owner_items.json",
+      "sha256": "b44d50ce5ee632591c3bf4bdef0d311a7ef06247bb2534e60d9b44a0c88b71b0"
+    },
+    {
+      "path": "fans_submersible/owner_items.json",
+      "sha256": "bb31c1ce7559ae2a289ac89222c7f817b35453775c78fd219abd308a275e6e58"
+    }
+  ]
+}

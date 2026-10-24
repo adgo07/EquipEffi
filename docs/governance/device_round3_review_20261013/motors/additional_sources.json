@@ -1,0 +1,66 @@
+{
+  "read_utc": "2026-10-13T15:56:47.942695+00:00",
+  "files": [
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\third_party_executor_verification_20261013\\EXECUTOR_VERIFICATION.md",
+      "sha256": "c11548f42179057d71d27fd2b333e21060c93906681e143a81143c5c16f48a4a",
+      "end_sha256": "c11548f42179057d71d27fd2b333e21060c93906681e143a81143c5c16f48a4a",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\src\\equipeffi\\standard_manifest.json",
+      "sha256": "74cf30f3030e27de0eecb206c69180161d4050169cfacf82d12fdbe4646c7fdb",
+      "end_sha256": "74cf30f3030e27de0eecb206c69180161d4050169cfacf82d12fdbe4646c7fdb",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\src\\equipeffi\\domain\\evaluation\\evaluators\\motor.py",
+      "sha256": "97c972aeec21cc82ba090aae5f93fc48bb70916cff549048272a2447ca9d380a",
+      "end_sha256": "97c972aeec21cc82ba090aae5f93fc48bb70916cff549048272a2447ca9d380a",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\src\\equipeffi\\infrastructure\\standards\\json_repository.py",
+      "sha256": "b6f7d1c035e59330411d947a052c871ab8b697a2ed90f201ead78f683768c821",
+      "end_sha256": "b6f7d1c035e59330411d947a052c871ab8b697a2ed90f201ead78f683768c821",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\V1_SCOPE.md",
+      "sha256": "9af485f0b78df5ce23ffd83cb6848bc0098399377172c1fa3ef4097827a3a24d",
+      "end_sha256": "9af485f0b78df5ce23ffd83cb6848bc0098399377172c1fa3ef4097827a3a24d",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\ROADMAP.md",
+      "sha256": "9cf8613da4f8a8c221087083e422edabd642758af532c0991867c2d339f3613d",
+      "end_sha256": "9cf8613da4f8a8c221087083e422edabd642758af532c0991867c2d339f3613d",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\_STANDARD_MAPPING_TEMPLATE.md",
+      "sha256": "d60f101b4ea0c9f9e68b92ed973c573802608fb8557132d77dabe5de1620900f",
+      "end_sha256": "d60f101b4ea0c9f9e68b92ed973c573802608fb8557132d77dabe5de1620900f",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_motors\\REPORT.md",
+      "sha256": "de79d43fdd3f64d7edb5bcd1f30f0ffc43180f733764e1c87ec8255f8ed605bf",
+      "end_sha256": "de79d43fdd3f64d7edb5bcd1f30f0ffc43180f733764e1c87ec8255f8ed605bf",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\motors\\table_coverage.csv",
+      "sha256": "0f104e15811277ec1c9897463c2e9a8c702d9375d8657ed80796ac56b8757cc1",
+      "end_sha256": "0f104e15811277ec1c9897463c2e9a8c702d9375d8657ed80796ac56b8757cc1",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\motors\\independent_cell_comparison.csv",
+      "sha256": "ff75680524d458cd282a284d410aee706fcaf1dee8d89eca02371fdc8391fad5",
+      "end_sha256": "ff75680524d458cd282a284d410aee706fcaf1dee8d89eca02371fdc8391fad5",
+      "stable": true
+    }
+  ],
+  "end_utc": "2026-10-13T15:56:49.894380+00:00"
+}

@@ -1,0 +1,19 @@
+{
+  ".gitignore": "92f229ccffbb3ac0ffafa77ff5e4c3858959aaecb6ad6609573e852e29099f39",
+  "BOUNDARY_CANDIDATES.md": "526a26bb04a5ac59eb47c3e659b4e497af5c56a27c5e7f82df63a6b9908762b0",
+  "build_data.py": "5c861314a542304d83a79beb1f6b2f964c400e1f50cc6d3f8408e58be1322505",
+  "build_workbook.mjs": "c9be5610788c53085d0818b6b34b11fb2a11e461cd96b9d748bd89b49d79f35f",
+  "HANDOFF.md": "fa84719240e2ddfc962b9d4066419cbd0ab8ce2e0bc083775938403d7eef729f",
+  "ISSUE_REGISTRATION_REQUEST.md": "7ca9d804477e1e206299e2d1ebaa963f4979a5b40b8ca2cd3fd9bac2fc36e40a",
+  "README.md": "c854dd5105fd5a723bad9de61ef40939a68bac2c35f69ff854f6e24bdc25982d",
+  "STANDARD_MAPPING.md": "4b40e07a248ff416308a32556df7a86e0f61887697b36d418fd83dcd3103e1db",
+  "verify_export.py": "6ffe83ddb8e5b061b4d2718f83a2934e87306e04a9b3a2ba981fbfe61a3f1c53",
+  "data/GB19761_2020_表1-4核对工作簿.xlsx": "2a290e6e19c19fa2e5fd729e52da9551dbc87998ca4a7e33083d292c12f1442d",
+  "data/table_values.csv": "046106e36673d6e4d537e841f64d0b337a66622474ac0b431d550a0106811fea",
+  "data/table_values.json": "84b5fe596b598270521af454549a1938ed79ad490ee336669a7d8d9057096b43",
+  "evidence/check_summary.json": "b9eb20f82cb1d919c046c0a22dd51bab5aa56bf16104f6ca4fe5d71774644c05",
+  "evidence/export_check.json": "36a56f9190ece2e1989c257546ccb185df3501c04759f9907ecd8870e9efc7e9",
+  "evidence/numeric_self_check.csv": "cf1b6c37fd7f91085d23fba099c36e1fa9c0564b8cf3ad7a24bc2277cb25f0d5",
+  "evidence/SOURCE.md": "e6ac9a347b022344540d286e79b6fbe7aa51a8b7b75d08a1a2131d43b5353685",
+  "evidence/VERIFICATION.md": "7f283fbe8934cd071c5eff71e7d6c78ddd33b6226c5b7a86dad451600b82dd38"
+}

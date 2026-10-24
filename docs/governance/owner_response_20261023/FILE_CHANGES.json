@@ -1,0 +1,345 @@
+{
+  "completed_on": "2026-10-24",
+  "files": [
+    {
+      "path": "docs/governance/owner_response_20261023/OWNER_REPLY_SNAPSHOT.md",
+      "before_sha256": "94e850824b336a41a04ed276de7c341e304e3dca2074e5456a473ff863afe188",
+      "after_sha256": "94e850824b336a41a04ed276de7c341e304e3dca2074e5456a473ff863afe188"
+    },
+    {
+      "path": "docs/governance/owner_response_20261023/DECISION_APPLICATION.json",
+      "before_sha256": null,
+      "after_sha256": "90471ead2e033908b6c1c49f1e59e2da16d68267dfa6a01fd3747adddb4a82d8"
+    },
+    {
+      "path": "STANDARD_ISSUES_REGISTER.md",
+      "before_sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908",
+      "after_sha256": "a036bac91fa0830301ebcb3af7d9f646824cd5a058fa8f17a796d61b8c7474d8"
+    },
+    {
+      "path": "docs/governance/owner_response_20261023/OWNER_FOLLOWUP_20261023.md",
+      "before_sha256": null,
+      "after_sha256": "8a70020f240f2418f3639e3c735f3d726d2a4a00838f043928ed9dd86acbc85b"
+    },
+    {
+      "path": "docs/standards/gb18613_2020/STANDARD_MAPPING.md",
+      "before_sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d",
+      "after_sha256": "96988c963444bef40edf82102cad9443b17cad6dc0acd7abbc43d33591ab1832"
+    },
+    {
+      "path": "docs/standards/gb30254_2024/STANDARD_MAPPING.md",
+      "before_sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba",
+      "after_sha256": "b24ddcadc2f6787ee594ec9d98c9e57fe3caf77f2253f01cc17ab92923b757ce"
+    },
+    {
+      "path": "docs/standards/gb30253_2024/STANDARD_MAPPING.md",
+      "before_sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13",
+      "after_sha256": "aa2c62126935d6070a54d7d352af6e0778fff11fc592691772510b731765841c"
+    },
+    {
+      "path": "docs/standards/gb19153_2019/STANDARD_MAPPING.md",
+      "before_sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9",
+      "after_sha256": "e4e698b0dab82d70577bed0e472b99e822d571bf2dbff7ee62394ba25ab75897"
+    },
+    {
+      "path": "docs/standards/gb24500_2020/STANDARD_MAPPING.md",
+      "before_sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a",
+      "after_sha256": "80a5ea32164aa4c95da130f3655871d131421c730504397a136fa142d4ec6378"
+    },
+    {
+      "path": "docs/standards/gb29541_2013/STANDARD_MAPPING.md",
+      "before_sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f",
+      "after_sha256": "af2e54731150b718a84a8eff1382883a34db8fb3ab4bab9cfd7d139e202b85e3"
+    },
+    {
+      "path": "docs/standards/gb19576_2019/STANDARD_MAPPING.md",
+      "before_sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63",
+      "after_sha256": "d0d38a2451b148856c54ca34f66b9d921125a6f3c342dc3f3356b66edc900533"
+    },
+    {
+      "path": "docs/standards/gb37479_2019/STANDARD_MAPPING.md",
+      "before_sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf",
+      "after_sha256": "99f21600317d58bdb2165d5c34a5e65e51bbb4f9f07579888ea96c73fd0d5130"
+    },
+    {
+      "path": "docs/standards/gb18613_2020/README.md",
+      "before_sha256": "4f94b395ada998b70988df3b4ca0bc9f1639792091c919192783f5d6cbed4909",
+      "after_sha256": "45aa9f7bfeebae4d587de3fcc0e54489d532426b7f71f68d5b40691d7a81dc1b"
+    },
+    {
+      "path": "docs/standards/gb18613_2020/HANDOFF.md",
+      "before_sha256": "52c6efc2af552f2f397bb808b7d490adaa39a4d03bf657cb38e0aef3657e552a",
+      "after_sha256": "057a06f92cbf85561afdd61b280f9da6e2a025cf16543a3eeb68b946bafd7dbf"
+    },
+    {
+      "path": "docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md",
+      "before_sha256": "d70de8354f92af36f9d4ad7cedc936ac636290f319f557950029170bb931f30f",
+      "after_sha256": "20b44a3f737fc5cd433c61be10e7f2b9bb483a51d64984a7179a5b625c342758"
+    },
+    {
+      "path": "docs/standards/gb18613_2020/CHANGELOG.md",
+      "before_sha256": null,
+      "after_sha256": "215452f545616b56a09d8695737939e726bf9d0a59a78e3d3a9813ae4429548e"
+    },
+    {
+      "path": "docs/standards/gb30254_2024/README.md",
+      "before_sha256": "d3489184029b293a47ab9baff922792b1aab00579249145efa26eb77a441b61e",
+      "after_sha256": "ac2c1f71ee3f2c314fc67a4eadfe780feaedf4ca480e555a96cbe12d418c5668"
+    },
+    {
+      "path": "docs/standards/gb30254_2024/HANDOFF.md",
+      "before_sha256": "fe95aa32223f294c6a5046eae2ed4166080de9cd8b572e3204056abcc9a7d59d",
+      "after_sha256": "c378ff340bb42643e3a76e6f640559faa5de5a7b264bcb313877827505f49747"
+    },
+    {
+      "path": "docs/standards/gb30254_2024/ISSUE_REGISTRATION_REQUEST.md",
+      "before_sha256": "9b6c9a2c8d9a99b2d69435dfad14afe57cc6d37a0d9a02587eebf1d1983249bc",
+      "after_sha256": "ec32d92ce5921e10b56ecbef11b8f2975afe13adcb7bff8f2eb905f7982af7b1"
+    },
+    {
+      "path": "docs/standards/gb30254_2024/CHANGELOG.md",
+      "before_sha256": null,
+      "after_sha256": "215452f545616b56a09d8695737939e726bf9d0a59a78e3d3a9813ae4429548e"
+    },
+    {
+      "path": "docs/standards/gb30253_2024/README.md",
+      "before_sha256": "973147fc2c06462a50f3d114306de69a479dd31264ef32a77d4e4af34cb34e61",
+      "after_sha256": "9c0eb0ee9ea9c00c8ae0d6e6c28b21fc606464786d6f0a3c6813b3e41dd69a4f"
+    },
+    {
+      "path": "docs/standards/gb30253_2024/HANDOFF.md",
+      "before_sha256": "72904632bc23cc5d0cd1eb6232ce03855b2dffc268c9984fd4fdceb75f81b1f7",
+      "after_sha256": "640728ff3fc4c5c126f6aafc1c43d4a1554930688fe0c0098b508f835fec0050"
+    },
+    {
+      "path": "docs/standards/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md",
+      "before_sha256": "06b9054bd70a8905ad7694b2f4413b4c618647dd016369a1ec272b8e68ba82e4",
+      "after_sha256": "f929d29d9db72ab740f8c86f25c03d5344812e71251bc8fe6dad5ca6612795d9"
+    },
+    {
+      "path": "docs/standards/gb30253_2024/CHANGELOG.md",
+      "before_sha256": null,
+      "after_sha256": "215452f545616b56a09d8695737939e726bf9d0a59a78e3d3a9813ae4429548e"
+    },
+    {
+      "path": "docs/standards/gb19153_2019/README.md",
+      "before_sha256": "9b75c6a9ba98afa70c568e17ab29b220a7b96a87f6bc39411ce0a4ba57da77f0",
+      "after_sha256": "40df726d6d6244203a341bcea9405fbf9dd6a40bd65fbe69be17d9b2db53f805"
+    },
+    {
+      "path": "docs/standards/gb19153_2019/HANDOFF.md",
+      "before_sha256": "2c989a4a038abb57ce9604c608da368f31216ec08fcf42396f5a086d5b911044",
+      "after_sha256": "5d2b7ffb8eecbc83d9dc70fb73da4358f9fa3a63110c671a3cc1d0370410ddf0"
+    },
+    {
+      "path": "docs/standards/gb19153_2019/ISSUE_REGISTRATION_REQUEST.md",
+      "before_sha256": "3952456cddde101fc67f04a251b9f8fc68b0086de4cff31cc53a80a547344543",
+      "after_sha256": "bb66c234e1b2abc7833232f2dad93bbeec82a24f10595d4d20497f88a2517875"
+    },
+    {
+      "path": "docs/standards/gb19153_2019/CHANGELOG.md",
+      "before_sha256": null,
+      "after_sha256": "215452f545616b56a09d8695737939e726bf9d0a59a78e3d3a9813ae4429548e"
+    },
+    {
+      "path": "docs/standards/gb24500_2020/README.md",
+      "before_sha256": "59014f44bd65458faf6df56688390d28ae3b1a9775ce67a109981209543a1e77",
+      "after_sha256": "ece8dd4d731b06a10ff3c0ac69bd321ca36e0166c93c9122ca8f4571fccde051"
+    },
+    {
+      "path": "docs/standards/gb24500_2020/HANDOFF.md",
+      "before_sha256": "c491cbee70b816d7a6d00c470996b9139fe2079759b4a43c85ea35e6d9ed6e3f",
+      "after_sha256": "9a1f82bb5a598ce267337edfb87d84aaacdc7e9fde88c4497df4596fd942ef9c"
+    },
+    {
+      "path": "docs/standards/gb24500_2020/ISSUE_REGISTRATION_REQUEST.md",
+      "before_sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8",
+      "after_sha256": "126f758a394533485d0e112e8d3dc8cc13ca351231d1de0442c28931d172447b"
+    },
+    {
+      "path": "docs/standards/gb24500_2020/CHANGELOG.md",
+      "before_sha256": null,
+      "after_sha256": "215452f545616b56a09d8695737939e726bf9d0a59a78e3d3a9813ae4429548e"
+    },
+    {
+      "path": "docs/standards/gb29541_2013/README.md",
+      "before_sha256": "052430cf8fd88bebcb97ba9bba77d3e3811fc4a8c167725e72e9adab779971fa",
+      "after_sha256": "0029a7797a931972a425fa8c4fabfd5f7ba58facb3294eca8f37edcbc60a7c39"
+    },
+    {
+      "path": "docs/standards/gb29541_2013/HANDOFF.md",
+      "before_sha256": "43cd6a15aeba6654920a656291b6c0908b0343efc0abad7a2396adfef16cfb8d",
+      "after_sha256": "5b5f11e55105da377f752c6ae9d7519aa0991d1737c597ca163be1982c777815"
+    },
+    {
+      "path": "docs/standards/gb29541_2013/ISSUE_REGISTRATION_REQUEST.md",
+      "before_sha256": "1713dda307c1222f72dd8debbead91365248e09672126387d1bc649894d457bc",
+      "after_sha256": "3a40510f5203d9d6a7e74a6b2ab62601a6fa1ccef79dc2d614327db0725919f8"
+    },
+    {
+      "path": "docs/standards/gb29541_2013/CHANGELOG.md",
+      "before_sha256": "6419dcbf37077fc96b95ef47247470ffd20f5bdcebe387968e46d9187fb1187b",
+      "after_sha256": "68ee80e79b809b367b30071ff7f02af34d5c1ab73d803b6fcf8c933c51f92e28"
+    },
+    {
+      "path": "docs/standards/gb19576_2019/README.md",
+      "before_sha256": "78d296522ab23f01136bd8987241e4102104cd8bf537ba9aa92fa478f6987a0b",
+      "after_sha256": "cf1e45cde9ec957aa361dff4214f39f220ca5fa8f28d27e5a68a8ff50cd99007"
+    },
+    {
+      "path": "docs/standards/gb19576_2019/HANDOFF.md",
+      "before_sha256": "ffabeef049f20bc94e3e7c794788dee035e4ab1e2bd587c1e3816d044072e0d6",
+      "after_sha256": "c2b261ac22fb27e99ff0351d09efe19e44bff75f31454a2afa490de1db9a56a4"
+    },
+    {
+      "path": "docs/standards/gb19576_2019/ISSUE_REGISTRATION_REQUEST.md",
+      "before_sha256": "25646797b88240bfdaef905295af420b17b6f2dd0cb27525967ce42638af8f69",
+      "after_sha256": "7c816e4f3b9db1ae971304f2bacbdde66f062883207fa0f9f109b476e2a4c72a"
+    },
+    {
+      "path": "docs/standards/gb19576_2019/CHANGELOG.md",
+      "before_sha256": null,
+      "after_sha256": "215452f545616b56a09d8695737939e726bf9d0a59a78e3d3a9813ae4429548e"
+    },
+    {
+      "path": "docs/standards/gb37479_2019/README.md",
+      "before_sha256": "ab195f0c93b31dbc809ac15472a614cc030a79fc3cec4ecc55a345480a2fc3df",
+      "after_sha256": "8a57fb77ad937506962582212a697436a180a57cda1bcaf2f79720496a5f0ec0"
+    },
+    {
+      "path": "docs/standards/gb37479_2019/HANDOFF.md",
+      "before_sha256": "2df7e37cf6100139fb04a6a0eeb394f8feda391da5166b3e900804305015264e",
+      "after_sha256": "02e19a62a7c8cea5ec6addae3e51f4a142c92c436e4d0606707798eb8ef8f2b2"
+    },
+    {
+      "path": "docs/standards/gb37479_2019/ISSUE_REGISTRATION_REQUEST.md",
+      "before_sha256": "d6cbb939c5a97fd1d15f44856d00864206c9400e2c3464b025ade4c9a376497b",
+      "after_sha256": "f5071fe685b4565c2069db631ce508433a79c03ec9ddad5b09a04d38f705accb"
+    },
+    {
+      "path": "docs/standards/gb37479_2019/CHANGELOG.md",
+      "before_sha256": null,
+      "after_sha256": "215452f545616b56a09d8695737939e726bf9d0a59a78e3d3a9813ae4429548e"
+    },
+    {
+      "path": "docs/standards/gb18613_2020/BOUNDARY_CANDIDATES.md",
+      "before_sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0",
+      "after_sha256": "4f070f01e83ecccf9d69db42e813dd02d242494020337e24e08a3aa41efa79be"
+    },
+    {
+      "path": "docs/standards/gb30254_2024/BOUNDARY_CASES.md",
+      "before_sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403",
+      "after_sha256": "79f62292458b4efb93c6d38fe92ef8c813fe247f969428e2cfdfe72ec6b9ef6b"
+    },
+    {
+      "path": "docs/standards/gb30253_2024/BOUNDARY_CANDIDATES.md",
+      "before_sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b",
+      "after_sha256": "8db327b25d412d10b321c98ea8274d2694cdf440235317f6f638f4a6ee854d7d"
+    },
+    {
+      "path": "docs/standards/gb19153_2019/evidence/BOUNDARY_CANDIDATES.md",
+      "before_sha256": "eb2c191b99b28142288d31e53de97887f0022ab9777c609b9fbe7e102127b6e6",
+      "after_sha256": "d589122fac97d20223d6dc85fcb7b0ea4515051c00523b568d585f89e41d3018"
+    },
+    {
+      "path": "docs/standards/gb24500_2020/BOUNDARY_CANDIDATES.md",
+      "before_sha256": "b31886bbb467bfe9d82df653fc8106f05cf02e42108bef41d74e7204b91455c5",
+      "after_sha256": "0764d1bc06f41a3144f0663ad7a227fb13c1c340e54b64624d0786aa9b62282d"
+    },
+    {
+      "path": "docs/standards/gb29541_2013/evidence/BOUNDARY_CANDIDATES.md",
+      "before_sha256": "3010ebece4e634e9419dbd97e48b567a2ad7d6e4a6f2b5d3c847271fcb50662f",
+      "after_sha256": "9202d30596a7f25bbb090d4ab8e6060af129685a293113603eaf17bcab496e9b"
+    },
+    {
+      "path": "docs/standards/gb19576_2019/BOUNDARY_CANDIDATES.md",
+      "before_sha256": "9a599d7df6a7160ebc962fa28c269a9e16d291a57e2ccae719533bad2c8b0e87",
+      "after_sha256": "efa49817dc4309932fa884c72a8121b5947ff23465397074812ff3d15e0a0af4"
+    },
+    {
+      "path": "docs/standards/gb37479_2019/BOUNDARY_CANDIDATES.md",
+      "before_sha256": "470b57f4fb6b2b6bc76c39bf55bc93fc69f35cbac2207f3975d758c6a034758e",
+      "after_sha256": "14e024f2509c0c1c8fcd2ff94dc09a571286ace7e6d3c5eae0e931c519af4657"
+    },
+    {
+      "path": "src/equipeffi/resources/knowledge/motor_efficiency_tolerance_owner_20261024.md",
+      "before_sha256": null,
+      "after_sha256": "c40764fb9ae54f5c10b5f680842e0823d9f050249e50bb1e49827572a3a43b8f"
+    },
+    {
+      "path": "docs/standards/README.md",
+      "before_sha256": "fb1d7f7e0d9a8f965a709159197d929012d7a07f974df06cc8193f1dce3b44f7",
+      "after_sha256": "809f17e4d6b03689d0086068795295f2d4cab1583a3e354bdc21f8170c130f42"
+    },
+    {
+      "path": "HANDOFF.md",
+      "before_sha256": "83e8353d01bba1dd7c5c689a6c289c970dd8621b443041b5c028756690421b10",
+      "after_sha256": "96029dcef471aa8a5dec1926f1aa1547312a3548c47d23f21cd7cd13308b998b"
+    },
+    {
+      "path": "TASK_STATE.md",
+      "before_sha256": "94c9b11dbaa3516c5b0cf13db9be720ea9da8362bd59ba77ed8040acb0f1ae70",
+      "after_sha256": "e770f9846d1e4afc8d9ec53f91ce26e1ca62a3a55d698229f03b9890b2a513dc"
+    },
+    {
+      "path": "docs/governance/owner_response_20261023/REPORT.md",
+      "before_sha256": null,
+      "after_sha256": "755954e01bb85e27d56c073ae39039195c9ea719604ad3091740c51e8d17a08a"
+    },
+    {
+      "path": "BASELINE.md",
+      "before_sha256": "978a3d2f6c0e109a21fe5e3ba2ba4f354c007f9cdfa3d4f40697a8eda5ecd1f5",
+      "after_sha256": "e5e50a037b965bca275849a80a89362cecc367f6a1d346e30edceb8c03a70c9a"
+    },
+    {
+      "path": "docs/governance/owner_response_20261023/VALIDATION.json",
+      "before_sha256": null,
+      "after_sha256": "e409f8afc304d2d43111e8c2983817355ee720ec9177d3892ce2458b059205c5"
+    },
+    {
+      "path": "docs/governance/owner_response_20261023/PROTECTED_HASHES.json",
+      "before_sha256": null,
+      "after_sha256": "cfe54de6ecf70b73fb210cdb80d3fa46b1570c1a6832e6de25ac6a5f513aaef2"
+    },
+    {
+      "path": "docs/governance/owner_response_20261023/verify_revision.py",
+      "before_sha256": null,
+      "after_sha256": "d8c94d86191b24f9e3d40aba7eedb43aa9cf2796dfb42f439fa5d9f7fd4366a2"
+    }
+  ],
+  "unchanged_workbooks": [
+    {
+      "path": "docs/standards/gb18613_2020/data/GB18613_2020_表1-6校对数据_A1.xlsx",
+      "sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb"
+    },
+    {
+      "path": "docs/standards/gb30254_2024/data/GB30254_2024_标准表值.xlsx",
+      "sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912"
+    },
+    {
+      "path": "docs/standards/gb30253_2024/data/GB30253_2024_TABLE_VALUES.xlsx",
+      "sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1"
+    },
+    {
+      "path": "docs/standards/gb19153_2019/data/GB19153_2019_标准表值.xlsx",
+      "sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7"
+    },
+    {
+      "path": "docs/standards/gb24500_2020/data/GB24500_2020_TABLE_VALUES.xlsx",
+      "sha256": "9f8e243b96ea45cd0c1f1a33dc1c0a7b62eaa8a5f2f9095234c427463a68de1a"
+    },
+    {
+      "path": "docs/standards/gb29541_2013/data/GB29541_2013_标准表值.xlsx",
+      "sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54"
+    },
+    {
+      "path": "docs/standards/gb19576_2019/data/GB19576_2019_TABLE1.xlsx",
+      "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+    },
+    {
+      "path": "docs/standards/gb37479_2019/data/GB37479_2019_TABLE_VALUES.xlsx",
+      "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+    }
+  ],
+  "note": "Historical delivery manifests remain snapshots; current revision hashes are here. Manifest excludes its own hash."
+}

@@ -1,0 +1,36 @@
+{
+  "logical_cells": 279,
+  "value_kinds": {
+    "BASE_PLUS_INCREMENT": 154,
+    "PRINTED_DASH": 28,
+    "BASE_MINUS_TOLERANCE": 91,
+    "REFERENCE_CLASS": 6
+  },
+  "physical_source_cells": 187,
+  "tables": {
+    "1": {
+      "rows": 9,
+      "branches": 7
+    },
+    "2": {
+      "rows": 12,
+      "branches": 4
+    },
+    "3": {
+      "rows": 18,
+      "branches": 4
+    },
+    "4": {
+      "rows": 15,
+      "branches": 4
+    },
+    "5": {
+      "rows": 6,
+      "branches": 1
+    },
+    "6": {
+      "rows": 15,
+      "branches": 2
+    }
+  }
+}

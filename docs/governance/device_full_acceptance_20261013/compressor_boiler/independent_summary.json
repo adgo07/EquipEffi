@@ -1,0 +1,68 @@
+{
+  "checks": 3004,
+  "counts": {
+    "GB19153-2019/table1": {
+      "pass": 1008,
+      "fail": 0,
+      "dash": 144
+    },
+    "GB19153-2019/table2": {
+      "pass": 756,
+      "fail": 0,
+      "dash": 126
+    },
+    "GB19153-2019/table3": {
+      "pass": 432,
+      "fail": 0,
+      "dash": 111
+    },
+    "GB19153-2019/table4": {
+      "pass": 303,
+      "fail": 0,
+      "dash": 36
+    },
+    "GB19153-2019/table5": {
+      "pass": 210,
+      "fail": 0,
+      "dash": 0
+    },
+    "GB19153-2019/table6": {
+      "pass": 210,
+      "fail": 0,
+      "dash": 0
+    },
+    "GB19153-2019/table7": {
+      "pass": 6,
+      "fail": 0,
+      "dash": 0
+    },
+    "GB24500-2020/table1": {
+      "pass": 36,
+      "fail": 0,
+      "dash": 0
+    },
+    "GB24500-2020/table2": {
+      "pass": 21,
+      "fail": 0,
+      "dash": 0
+    },
+    "GB24500-2020/table3": {
+      "pass": 6,
+      "fail": 0,
+      "dash": 0
+    },
+    "GB24500-2020/table4": {
+      "pass": 15,
+      "fail": 0,
+      "dash": 0
+    },
+    "GB24500-2020/table5.2": {
+      "pass": 1,
+      "fail": 0,
+      "dash": 0
+    }
+  },
+  "failures": [],
+  "formula_cells": 0,
+  "method": "Fresh PDF geometry and header reconstruction for compressor; independent image transcription for boiler; no author evidence CSV/JSON used."
+}
