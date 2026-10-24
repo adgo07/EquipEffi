@@ -1,5 +1,7 @@
 # <标准编号> 专业解释、疑点和软件决定记录模板
 
+> 文件收口约定：本模板各项默认写入同一份STANDARD_MAPPING.md；少量限值直接内嵌，只有复杂、多表标准才配独立工作簿。不要求另建解释、案例、交接或修订文件。
+
 > 复制到`docs/standards/<标准号>_<年份>/STANDARD_INTERPRETATIONS.md`，或在同标准的现有档中新增一个段落。目录规则见[总入口](README.md)。**唯一问题编号/状态维护在根目录`STANDARD_ISSUES_REGISTER.md`**；此文件不复制、替代根台账。
 
 ## <EQP-STD-XXX-NNN> — <具体疑点/解释>

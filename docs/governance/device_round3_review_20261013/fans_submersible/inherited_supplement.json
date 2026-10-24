@@ -1,0 +1,72 @@
+[
+  {
+    "original_id": "OLD-19761-DASH",
+    "conclusion": "19761表2 E51:G51原页单个跨3级横杠展开，J51已明确同源横向合并，主映射也说明非三个独立空白。无Excel合并不等于语义丢失；不要求强制merge。",
+    "priority": "P2",
+    "sol_conclusion": "延伸条目未逐项原页核；无独立结论",
+    "comparison_to_sol": "本报告独立补核，不按人数投票"
+  },
+  {
+    "original_id": "OLD-19761-FILTER",
+    "conclusion": "4个sheet确有Excel Table，但sheet.auto_filter及Table.autoFilter均None；“筛选表”至少未证明筛选控件可用，属于说明/交互待验证，不是限值错。",
+    "priority": "P2",
+    "sol_conclusion": "延伸条目未逐项原页核；无独立结论",
+    "comparison_to_sol": "本报告独立补核，不按人数投票"
+  },
+  {
+    "original_id": "OLD-19761-82",
+    "conclusion": "主映射§5.2明确89.5/87/82且引§5.3b5；§5.3说最低与对应3级一致。因此不是82遗漏，仅可补直接交叉引用。",
+    "priority": "P2",
+    "sol_conclusion": "延伸条目未逐项原页核；无独立结论",
+    "comparison_to_sol": "本报告独立补核，不按人数投票"
+  },
+  {
+    "original_id": "OLD-2012-Z",
+    "conclusion": "单级原表无Z列而工作簿C6起=1，合理派生身份但宜标注技术/规范化字段，非原文新增列。",
+    "priority": "P2",
+    "sol_conclusion": "延伸条目未逐项原页核；无独立结论",
+    "comparison_to_sol": "本报告独立补核，不按人数投票"
+  },
+  {
+    "original_id": "OLD-2012-LABEL",
+    "conclusion": "旧审计指出§3/§5技术判断与标准标签混排及表题括注缩写，需在源/推导之间标清；本轮不据此改范围，范围Owner见F5。",
+    "priority": "P2",
+    "sol_conclusion": "延伸条目未逐项原页核；无独立结论",
+    "comparison_to_sol": "本报告独立补核，不按人数投票"
+  },
+  {
+    "original_id": "OLD-2026-ROW",
+    "conclusion": "源网格行在每续表从表头重计，主映射已有说明，VERIFICATION可同步，不是错坐标。",
+    "priority": "P2",
+    "sol_conclusion": "延伸条目未逐项原页核；无独立结论",
+    "comparison_to_sol": "本报告独立补核，不按人数投票"
+  },
+  {
+    "original_id": "OLD-ENV",
+    "conclusion": "pypdf/artifact-tool复现依赖、node_modules本机junction属执行环境；AGENTS禁止把机器路径当跨机身份，不等于禁止本地临时依赖。提交清洁/重建指引由父统一，不做源删除。",
+    "priority": "P2",
+    "sol_conclusion": "B6部分成立，本机忽略依赖不自动违反仓库身份",
+    "comparison_to_sol": "一致"
+  },
+  {
+    "original_id": "OLD-INDEX/B4",
+    "conclusion": "标准总索引续批入口缺项由父协调，属于发现落点而非根Standard Issue解释；本组不改。",
+    "priority": "P2",
+    "sol_conclusion": "B4总索引遗漏成立",
+    "comparison_to_sol": "由父统一核验处理，本组不改"
+  },
+  {
+    "original_id": "B8",
+    "conclusion": "36561已声明表定位清单为完整坐标权威，外置设计本身不是缺陷；A6仍需补表15冲突入口。",
+    "priority": "P2",
+    "sol_conclusion": "B8建议成立非缺陷",
+    "comparison_to_sol": "一致"
+  },
+  {
+    "original_id": "R3-FS03-EVIDENCE",
+    "conclusion": "第三方FS03表中把井式950原图写[0.5,1,1.5]，实际[1,1,2]，其中心值结论正确但相邻证据误抄。",
+    "priority": "P2",
+    "sol_conclusion": "延伸条目未逐项原页核；无独立结论",
+    "comparison_to_sol": "本报告独立补核，不按人数投票"
+  }
+]

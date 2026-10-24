@@ -1,0 +1,93 @@
+{
+  "checked_utc": "2026-10-13T14:47:26.964063+00:00",
+  "scope": "Excluded from 15-standard acceptance; preservation check only",
+  "files": [
+    {
+      "path": "docs/standards/gb19762_2025/STANDARD_MAPPING.md",
+      "initial_sha256": "154fab292666030bc5ce7674cd04c2724337502eff007049ecf5e5c8e09374fa",
+      "current_sha256": "154fab292666030bc5ce7674cd04c2724337502eff007049ecf5e5c8e09374fa",
+      "identical": true
+    },
+    {
+      "path": "docs/standards/gb19762_2025/profiles/pump_chemical.md",
+      "initial_sha256": "7dfd314574395c3eb59fafc4d2c1e50112b3eb5c44ac205df9388c7b70842991",
+      "current_sha256": "7dfd314574395c3eb59fafc4d2c1e50112b3eb5c44ac205df9388c7b70842991",
+      "identical": true
+    },
+    {
+      "path": "docs/standards/gb19762_2025/profiles/pump_water.md",
+      "initial_sha256": "3c05073853c72a7295c13c97c6b02578e1b27bd69cd020e4a8cd5fe9b378d25b",
+      "current_sha256": "3c05073853c72a7295c13c97c6b02578e1b27bd69cd020e4a8cd5fe9b378d25b",
+      "identical": true
+    },
+    {
+      "path": "docs/standards/gb20052_v21/GB20052_变压器主映射表_V2.1.md",
+      "initial_sha256": "d0b0ccb23605920f6a3f0b9870eb8e333f94316b6623babcb101e1f3d20ce6a0",
+      "current_sha256": "d0b0ccb23605920f6a3f0b9870eb8e333f94316b6623babcb101e1f3d20ce6a0",
+      "identical": true
+    },
+    {
+      "path": "docs/standards/gb20052_v21/GB20052_2024_变压器表1-35人工校对数据工作簿_V2.1.xlsx",
+      "initial_sha256": "35a499bb5406588cdc300c5019bffd0de428d3e08cba21d076ccc8b6f69f2565",
+      "current_sha256": "35a499bb5406588cdc300c5019bffd0de428d3e08cba21d076ccc8b6f69f2565",
+      "identical": true
+    }
+  ],
+  "all_identical": true,
+  "candidate_archives": [
+    {
+      "path": "docs/governance/device_full_acceptance_20261013/pump/查漏补缺候选_20261013",
+      "excluded_from_formal_delivery": true,
+      "files": [
+        {
+          "path": "docs/governance/device_full_acceptance_20261013/pump/查漏补缺候选_20261013/README.md",
+          "sha256": "7901d758381432982e1ba303f46c2fdc0b1749b15f090b9523daacfe83031772"
+        },
+        {
+          "path": "docs/governance/device_full_acceptance_20261013/pump/查漏补缺候选_20261013/SHA256_MANIFEST.json",
+          "sha256": "c5eedf92635f638fb4baadf3bfbca2f7306ed70181f9aeeab77c1ec8f1718373"
+        },
+        {
+          "path": "docs/governance/device_full_acceptance_20261013/pump/查漏补缺候选_20261013/本轮补录.patch",
+          "sha256": "7ccb4242102ee698a7265b64291ae2f2cc1dde5dc038b2c213350e436592f809"
+        },
+        {
+          "path": "docs/governance/device_full_acceptance_20261013/pump/查漏补缺候选_20261013/docs/standards/gb19762_2025/STANDARD_MAPPING.md",
+          "sha256": "9944977edb2ed273aa476d11b75ec6e487dbb412a351695399168f369f414fde"
+        },
+        {
+          "path": "docs/governance/device_full_acceptance_20261013/pump/查漏补缺候选_20261013/docs/standards/gb19762_2025/profiles/pump_chemical.md",
+          "sha256": "60c8bf1dad0c41dfd31173cb1068b6e9e14e86c51bfabf5e05374d3d6ed8eb12"
+        },
+        {
+          "path": "docs/governance/device_full_acceptance_20261013/pump/查漏补缺候选_20261013/docs/standards/gb19762_2025/profiles/pump_water.md",
+          "sha256": "1ccb22d410ccbcbfc53a4711ed878db2f78c91bc74690ce221d36305ddd8e038"
+        }
+      ],
+      "xlsx_count": 0
+    },
+    {
+      "path": "docs/governance/device_full_acceptance_20261013/transformer/查漏补缺候选_未完成",
+      "excluded_from_formal_delivery": true,
+      "files": [
+        {
+          "path": "docs/governance/device_full_acceptance_20261013/transformer/查漏补缺候选_未完成/build_v22_candidate.mjs",
+          "sha256": "8f9b143b2a76a78343a104174ce037aeb6c2a6fdd1d262c02704c98b0757c614"
+        },
+        {
+          "path": "docs/governance/device_full_acceptance_20261013/transformer/查漏补缺候选_未完成/GB20052_变压器主映射表_V2.2_修订候选.md",
+          "sha256": "1df3f33022febe155c8b64186591fb51226213faf58be9edd189c14fb93dc7d1"
+        },
+        {
+          "path": "docs/governance/device_full_acceptance_20261013/transformer/查漏补缺候选_未完成/README.md",
+          "sha256": "593cb44502d92ae0120a9b48929dcb89f30f258e11421a8bd9fa1d3364bb0839"
+        },
+        {
+          "path": "docs/governance/device_full_acceptance_20261013/transformer/查漏补缺候选_未完成/V2.2_辅助阻抗补录坐标.json",
+          "sha256": "af52a03b2bc64e32d81b7f3e31741b832daf605754e9c09e157b5bcece834c26"
+        }
+      ],
+      "xlsx_count": 0
+    }
+  ]
+}

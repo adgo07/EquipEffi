@@ -1,0 +1,5 @@
+*/page_*.png
+*/*_zoom.png
+*/source_text.txt
+*/workbook_dump.json
+__pycache__/

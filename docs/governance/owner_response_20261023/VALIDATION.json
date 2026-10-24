@@ -1,0 +1,46 @@
+{
+  "completed_on": "2026-10-24",
+  "answered_count": 25,
+  "standards_count": 8,
+  "issue_status_counts": {
+    "RESOLVED": 15,
+    "PROVISIONAL": 10
+  },
+  "status_mismatch": [],
+  "unanswered_issue_changes": [],
+  "protected_unchanged_count": 264,
+  "protected_drift": [],
+  "new_broken_links": {},
+  "preexisting_broken_links": {},
+  "rounding_arithmetic": [
+    {
+      "input": "3.695",
+      "expected": "3.70",
+      "actual": "3.70",
+      "pass_check": true
+    },
+    {
+      "input": "3.705",
+      "expected": "3.71",
+      "actual": "3.71",
+      "pass_check": true
+    },
+    {
+      "input": "3.795",
+      "expected": "3.80",
+      "actual": "3.80",
+      "pass_check": true
+    },
+    {
+      "input": "3.805",
+      "expected": "3.81",
+      "actual": "3.81",
+      "pass_check": true
+    }
+  ],
+  "production_tests": "NOT_RUN",
+  "independent_acceptance": "NOT_RUN",
+  "initial_link_check": "Ran before new manifest/report result existed; those generated targets now exist; rechecked after generation.",
+  "git_diff_check": "Changed tracked task files pass; preexisting unrelated .gitignore:30 blank EOF excluded.",
+  "unanswered_issue_body_comparison": "All unanswered issue bodies byte-equivalent after strip to before snapshot; 0 changed."
+}

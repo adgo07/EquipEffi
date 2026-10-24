@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-13",
+  "executor": "Codex GB30254 Stage A session",
+  "source_sha256": "53a6d2e8098fea9f81adf6a12fe3298707bf6b22cc8c972110aacdcd8a168135",
+  "workbook_sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+  "tables": {
+    "1": {
+      "rows": 43,
+      "numeric_efficiency_cells": 657,
+      "dash_cells": 117,
+      "xlsx_range": "表1!A8:S50"
+    },
+    "2": {
+      "rows": 42,
+      "numeric_efficiency_cells": 648,
+      "dash_cells": 108,
+      "xlsx_range": "表2!A8:S49"
+    },
+    "3": {
+      "rows": 35,
+      "numeric_efficiency_cells": 570,
+      "dash_cells": 60,
+      "xlsx_range": "表3!A8:S42"
+    },
+    "4": {
+      "rows": 35,
+      "numeric_efficiency_cells": 630,
+      "dash_cells": 0,
+      "xlsx_range": "表4!A8:S42"
+    },
+    "5": {
+      "rows": 25,
+      "numeric_efficiency_cells": 300,
+      "dash_cells": 0,
+      "xlsx_range": "表5!A8:M32"
+    },
+    "6": {
+      "rows": 24,
+      "numeric_efficiency_cells": 288,
+      "dash_cells": 0,
+      "xlsx_range": "表6!A8:M31"
+    }
+  },
+  "checked_cells": 3582,
+  "numeric_efficiency_cells": 3093,
+  "dash_cells": 285,
+  "power_cells": 204,
+  "xlsx_value_failures": 0,
+  "display_precision_failures": 0,
+  "second_reader_unmatched_rows": [],
+  "formula_count": 0,
+  "independent_acceptance": "NOT_RUN",
+  "visual_numeric_coverage": "glyph anchors and visual sample only; not full independent cell transcription"
+}

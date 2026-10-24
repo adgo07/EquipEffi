@@ -1,0 +1,259 @@
+{
+  "gb19761_2020": {
+    "workbook": "docs/standards/gb19761_2020/data/GB19761_2020_表1-4核对工作簿.xlsx",
+    "sheets": [
+      {
+        "name": "表1",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 241,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表2",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 503,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表3",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 133,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表4",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 513,
+        "formulas": 0,
+        "error_cells": []
+      }
+    ]
+  },
+  "gb28381_2026": {
+    "workbook": "docs/standards/gb28381_2026/GB28381_2026_TABLE_VALUES.xlsx",
+    "sheets": [
+      {
+        "name": "表1",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 248,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表2",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 178,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表3",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 220,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表4",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 1458,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表5",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 1361,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表6",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 1219,
+        "formulas": 0,
+        "error_cells": []
+      }
+    ]
+  },
+  "gb32030_2022": {
+    "workbook": "docs/standards/gb32030_2022/data/GB32030_2022_表值映射.xlsx",
+    "sheets": [
+      {
+        "name": "表1",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 120,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表2",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 117,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表3",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 165,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表4",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 138,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表5",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 36,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表6",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 106,
+        "formulas": 0,
+        "error_cells": []
+      }
+    ]
+  },
+  "gbt36561_2018": {
+    "workbook": "docs/standards/gbt36561_2018/data/GBT36561_2018_TABLE_VALUES.xlsx",
+    "sheets": [
+      {
+        "name": "说明",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 27,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "正文表值",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 3989,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "附录系数",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 881,
+        "formulas": 0,
+        "error_cells": []
+      }
+    ]
+  },
+  "gb19577_2024": {
+    "workbook": "docs/standards/gb19577_2024/data/GB19577_2024_TABLE_VALUES.xlsx",
+    "sheets": [
+      {
+        "name": "表1",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 153,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表2",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 77,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表3",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 101,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表4",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 167,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表5",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 56,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表6",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 127,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表7",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 125,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表8",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 87,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表A.1",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 40,
+        "formulas": 0,
+        "error_cells": []
+      },
+      {
+        "name": "表A.2",
+        "dimension": null,
+        "merges": [],
+        "populated_cells": 87,
+        "formulas": 0,
+        "error_cells": []
+      }
+    ]
+  }
+}

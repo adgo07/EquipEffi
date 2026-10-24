@@ -1,0 +1,18 @@
+{
+  "source_sha256": "4ff8e7dd5b7adb86e33bcce49b60879e8c037f7178bb8f9091f1b5294d40f301",
+  "pdf_pages": 8,
+  "tables": 4,
+  "branch_rows": 135,
+  "numeric_values": 402,
+  "dash_source_cells": 1,
+  "dash_expanded_slots": 3,
+  "self_check_match": 405,
+  "self_check_fail": 0,
+  "independent_review": "NOT_RUN",
+  "by_table": {
+    "1": 24,
+    "2": 49,
+    "3": 12,
+    "4": 50
+  }
+}

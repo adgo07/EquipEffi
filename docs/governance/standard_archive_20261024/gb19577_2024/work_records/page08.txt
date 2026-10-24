@@ -1,0 +1,45 @@
+系数(IPLV)、全年综合制冷性能系数(ACCOP)和(或)制冷季节性能系数(CSPF)的最小允许值。
+注:对于水冷式舒适型和蒸发冷却式舒适型机组考核IPLV 和 COPc;对于风 冷 式 舒 适 型 机 组 考 核 CSPF 和 COPc;
+对于数据中心专用型机组考核 ACCOP。
+3.2 
+低环境温度空气源热泵(冷水)机组能效限定值 minimumallowablevaluesofenergyefficiencyfor
+lowambienttemperatureairsourceheatpump (waterchilling)packages
+在规定的标准工况条件下,低环境温度空气源热泵(冷 水)机 组 的 名 义 制 热 性 能 系 数(COPh)、低 温
+制热性能系数(COPdh)、制热季节性能系数(HSPF)和(或)全年性能系数(APF)的最小允许值。
+注:对于风机盘管型机组,季节性能系数考核全年 性 能 系 数 (APF);对 于 地 板 采 暖 型 和 散 热 器 型 机 组,季 节 性 能 系
+数考核制热季节性能系数(HSPF)。
+3.3 
+水(地)源 热 泵 机 组 能 效 限 定 值  minimum allowablevaluesofenergyefficiencyforwater-source
+(ground-source)heatpumps
+在规定的标 准 工 况 条 件 下,水 (地 )源 热 泵 机 组 的 全 年 综 合 性 能 系 数 (ACOP)或 制 热 性 能 系 数
+(COP)的最小允许值。
+注:对于热泵型机组考核全年综合性能系数(ACOP);对于单热型机组考核制热性能系数(COP)。
+3.4 
+溴化锂吸收式冷(温)水机组能效限定值 minimumallowablevaluesofenergyefficiencyforlithium
+bromideabsorptionwaterchillers(heaters)
+在规定的标准工况条件下,溴化锂吸收式冷(温)水机组的性能系数(COP)的 最 小 允 许 值 或 单 位 制
+冷量加热源耗量最大值。
+注:对于蒸汽型机组考核单位制冷量加热源耗量;对于直燃型机组考核性能系数(COP)。
+3.5 
+蒸气压缩循环高温热泵机组能效限定值 minimumallowablevaluesofenergyefficiencyforwater-
+sourcehightemperatureheatpumpsusingthevaporcompressioncycle
+在规定的标准工况条件下,蒸气压缩循环高温热泵机组的制热性能系数的最小允许值。
+注:对于水源高温热泵 机 组 考 核 制 热 性 能 系 数 (COPH );对 于 循 环 供 水 式 热 泵 高 温 热 水 机 组 考 核 制 热 性 能 系 数
+(COP)。
+3.6 
+间接蒸发冷却冷水机组能效限定 值  minimumallowablevaluesofenergyefficiencyforindirecte-
+vaporativecoolingwaterchillers
+在规定的标准工况条件下,间接蒸发冷 却 冷 水 机 组 全 年 能 效 比(AEER)或 能 效 比(EER)的 最 小 允
+许值。
+注:对于数据中心等类似场所用露点间接蒸发冷却高 温 冷 水 机 组,考 核 全 年 能 效 比(AEER);对 于 计 算 机 和 数 据 处
+理机房用复合式间接蒸发冷却冷水机组,考核能效比(EER)。
+3.7 
+一体式冷水(热泵)机 组 能 效 限 定 值  minimumallowablevaluesofenergyefficiencyforintegrated
+waterchilling(heatpump)package
+在规定的标准工况条件下,一体 式 冷 水(热 泵)机 组 综 合 部 分 负 荷 性 能 系 数(IPLVI)和 名 义 工 况 性
+能系数(COPI)的最小允许值。
+注:对于蒸发冷却式、冷却塔式和风冷式机组,考核综合部分负荷性能系数(IPLVI)、名义工况性能系数(COPI)。
+4 能效等级
+4.1 热泵和冷水机组的能效等级分为3级,其中1级能效最高。
+2
+GB 19577—2024

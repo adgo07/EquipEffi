@@ -1,0 +1,103 @@
+{
+  "checks": [
+    {
+      "name": "sheet_order",
+      "status": "PASS",
+      "detail": 30
+    },
+    {
+      "name": "coverage",
+      "status": "PASS",
+      "detail": {
+        "values": 10803,
+        "audit": 10803,
+        "power_rows": 707
+      }
+    },
+    {
+      "name": "table_cell_counts",
+      "status": "PASS",
+      "detail": {
+        "1": 567,
+        "2": 315,
+        "3": 315,
+        "4": 315,
+        "5": 315,
+        "6": 315,
+        "7": 315,
+        "8": 392,
+        "9": 392,
+        "10": 392,
+        "11": 375,
+        "12": 375,
+        "13": 375,
+        "14": 375,
+        "15": 375,
+        "16": 375,
+        "17": 375,
+        "18": 375,
+        "19": 375,
+        "20": 375,
+        "21": 375,
+        "22": 375,
+        "23": 375,
+        "24": 375,
+        "25": 375,
+        "26": 375,
+        "27": 375,
+        "28": 375,
+        "29": 420
+      }
+    },
+    {
+      "name": "xlsx_efficiency_values",
+      "status": "PASS",
+      "detail": {
+        "compared": 10803,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "xlsx_power_rows",
+      "status": "PASS",
+      "detail": {
+        "compared": 707,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "two_pdf_coordinate_reads",
+      "status": "PASS",
+      "detail": {
+        "MATCH": 10803
+      }
+    },
+    {
+      "name": "no_formulas",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "name": "source_anomaly_preserved",
+      "status": "PASS",
+      "detail": "N23=0.0; G23/U23=—"
+    },
+    {
+      "name": "dash_count",
+      "status": "PASS",
+      "detail": 152
+    }
+  ],
+  "totals": {
+    "pass_count": 9,
+    "fail_count": 0,
+    "error_count": 0,
+    "skip_count": 0
+  },
+  "sha256": {
+    "data/GB30253_2024_TABLE_VALUES.xlsx": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+    "data/table_values.csv": "972ea5b2de0111579fd338cb27f5e524814920dc2bfcfa837b512dfbdb5d4858",
+    "evidence/cell_audit.csv": "23937b2786b9da7dab7e231d698bce3929a603cb0cfd94976c5320f499eff12c",
+    "evidence/row_audit.csv": "6656587d97ea473bcb98f5646ac5a475167b62bfbf75e2b4b34f327e9f04cd03"
+  }
+}

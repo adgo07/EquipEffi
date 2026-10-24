@@ -1,0 +1,26 @@
+[
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\ACCEPTANCE_REPORT.md",
+    "sha256": "9e1d9216afb8f72c19aaf3b8733c1e21d561f1c4323937d2ae30838ff4bb2c7f"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\source_manifest.json",
+    "sha256": "c0f0812b4eb5b10a680f05d16424e7e7ce34211da4ad4e588fc1d11128e0652b"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\independent_compare.py",
+    "sha256": "b31bb681e47e5f8e3be6e54c0e3037d6a4db3a2da8a8207803b385c0c76f08f3"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\independent_cell_comparison.csv",
+    "sha256": "460deaf4961dba85ad7bcda7957a5cda096b91345111c3ac8d9292b2152cafa5"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\comparison_summary.json",
+    "sha256": "4230980e1f46833c43038edf5cfcf5d6277e2737d8c875f0cf6ecd9354c022fd"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\source_integrity_check.json",
+    "sha256": "8f231a1f55fdf8255be03bba0cb61bede503e74137f6bcb061fd302cff18afaf"
+  }
+]

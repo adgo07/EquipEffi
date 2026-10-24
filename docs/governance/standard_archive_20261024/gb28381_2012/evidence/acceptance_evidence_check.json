@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-13",
+  "independent_evidence_rows": 70,
+  "unique_positions": 70,
+  "current_workbook_consistent_positions": 70,
+  "independent_remaining_not_covered": 410,
+  "workbook_sha256": "217ff4171917de79dc4174f328f0293b045a2e57a18f330b41b210d32bd343bc",
+  "workbook_unchanged_from_acceptance_snapshot": true,
+  "evidence_files_sha256": {
+    "ACCEPTANCE_REPORT.md": "7b7893f0c68dd8e242df7acdee517c13ef5dd4cebd697f23dfb9ca8ed98b8903",
+    "independent_visual_cells.csv": "1a2f7d6631f25e01a876263c7d2f5b1c8814086266081b0d04f47613892d06b9",
+    "manifest_start.json": "8edecb9283eff1bb4cf0f61e5a49343db0575007b41a3a09aa809d7a0f995a90"
+  },
+  "method": "Read-only recheck of existing independent evidence; no new independent visual review"
+}

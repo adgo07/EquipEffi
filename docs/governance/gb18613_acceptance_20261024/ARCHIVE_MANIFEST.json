@@ -1,0 +1,42 @@
+{
+  "archived_by": "/root",
+  "date": "2026-10-24",
+  "original_author": "原验收报告未具名；不推定归档者为原执行者",
+  "files": [
+    {
+      "original_location": "G:\\Python Project\\EquipEffi\\_gb18613_acceptance\\ACCEPTANCE_REPORT.md",
+      "archived_path": "ACCEPTANCE_REPORT.md",
+      "sha256": "a6495ea2893ffca562baf441ee21d8e1490568474f920e694b20bccc2f9ee06e"
+    },
+    {
+      "original_location": "G:\\Python Project\\EquipEffi\\_gb18613_acceptance\\source_manifest.json",
+      "archived_path": "source_manifest.json",
+      "sha256": "8874526fed4ef17a5169443310a335633a7ce7066786fd28c87095b3ba5b0506"
+    },
+    {
+      "original_location": "G:\\Python Project\\EquipEffi\\_gb18613_acceptance\\compare_cells.py",
+      "archived_path": "compare_cells.py",
+      "sha256": "474df084c750aa376eb13793e01ccdb0b4c8322246a5a12e98b1dd7429178947"
+    },
+    {
+      "original_location": "G:\\Python Project\\EquipEffi\\_gb18613_acceptance\\evidence\\cell_compare.csv",
+      "archived_path": "evidence/cell_compare.csv",
+      "sha256": "0f081ff62af506dbbb71ccda1d4f94bad1f26cc890ad90de8cb32576723df275"
+    },
+    {
+      "original_location": "G:\\Python Project\\EquipEffi\\_gb18613_acceptance\\evidence\\summary.json",
+      "archived_path": "evidence/summary.json",
+      "sha256": "413dccc69a92844ca7ad6e2bad5d8c1eea9a9e6d0c6aaf4336e48915c1ee404f"
+    },
+    {
+      "original_location": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round4\\gb18613_2020_AUDIT.md",
+      "archived_path": "historical/ROUND4_AUDIT.md",
+      "sha256": "18286a3f5ee1b487bfcdd1ca17b6fa0c2d8942ffd578d42f22d3ef5484e868f2"
+    },
+    {
+      "original_location": "E:\\下载\\GB18613_2020_再次复验报告_R2_20261024.md",
+      "archived_path": "historical/ATTACHMENT_R2.md",
+      "sha256": "cdd30db15ee9ac26215e4fb5a87b7b116f0d0142fcafa5f9cd3a2603fd1114cb"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+_tmp/
+node_modules/
+__pycache__/
+*.inspect.ndjson

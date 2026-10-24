@@ -1,0 +1,51 @@
+{
+  "表1": {
+    "rows": 31,
+    "efficiency_cells": 372,
+    "numbers": 372,
+    "dashes": 0,
+    "blanks": 0
+  },
+  "表2": {
+    "rows": 11,
+    "efficiency_cells": 99,
+    "numbers": 84,
+    "dashes": 15,
+    "blanks": 0
+  },
+  "表3": {
+    "rows": 9,
+    "efficiency_cells": 81,
+    "numbers": 69,
+    "dashes": 11,
+    "blanks": 1
+  },
+  "表4": {
+    "rows": 9,
+    "efficiency_cells": 54,
+    "numbers": 51,
+    "dashes": 3,
+    "blanks": 0
+  },
+  "表5": {
+    "rows": 24,
+    "efficiency_cells": 216,
+    "numbers": 213,
+    "dashes": 3,
+    "blanks": 0
+  },
+  "表6": {
+    "rows": 24,
+    "efficiency_cells": 360,
+    "numbers": 360,
+    "dashes": 0,
+    "blanks": 0
+  },
+  "total_cells": 1290,
+  "total_pass": 1290,
+  "total_fail": 0,
+  "pdf": {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\2. GB+18613-2020 电动机能效限定值及能效等级.pdf",
+    "pages": 8
+  }
+}

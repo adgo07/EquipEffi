@@ -1,0 +1,79 @@
+{
+  "captured_utc": "2026-10-13T16:03:33.443387+00:00",
+  "meaning": "Completeness of review index and fields, not proof that interpretations are approved",
+  "groups": {
+    "motors": {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\motors\\owner_items.json",
+      "sha256": "cab638d9293eb73b822aabfd267a3ff599851df4161e735bcc8679a73ba66e3d",
+      "rows": 22,
+      "existing_unique": 9,
+      "missing_fields": [],
+      "duplicate_ids": []
+    },
+    "compressor_boiler": {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\owner_items.json",
+      "sha256": "254d354da5b3a1634a4c0260d4eaebfd14bd6ca2cf476aef1af7abd34813ec2b",
+      "rows": 16,
+      "existing_unique": 6,
+      "missing_fields": [],
+      "duplicate_ids": []
+    },
+    "hvac": {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\hvac\\owner_items.json",
+      "sha256": "b44d50ce5ee632591c3bf4bdef0d311a7ef06247bb2534e60d9b44a0c88b71b0",
+      "rows": 33,
+      "existing_unique": 20,
+      "missing_fields": [],
+      "duplicate_ids": []
+    },
+    "fans_submersible": {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\fans_submersible\\owner_items.json",
+      "sha256": "bb31c1ce7559ae2a289ac89222c7f817b35453775c78fd219abd308a275e6e58",
+      "rows": 32,
+      "existing_unique": 27,
+      "missing_fields": [],
+      "duplicate_ids": []
+    }
+  },
+  "expected_existing": 62,
+  "actual_existing": 62,
+  "missing_existing": [],
+  "unexpected_existing": [],
+  "duplicate_existing_rows": [
+    "EQP-STD-GB37479-003",
+    "EQP-STD-GB19577-005"
+  ],
+  "candidate_rows": 39,
+  "candidate_note": "LOCAL rows include cross-standard overlaps and routine design/maintenance; not a count of new standard errors or required Owner approvals",
+  "original_opinion_coverage": {
+    "motors": {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\motors\\original_opinions.json",
+      "sha256": "407ca7a70c14cebc85d40d3fe9f5d9ae87887735d7df226427b33cb3486c14a7",
+      "rows": 28,
+      "expected_rows": 28,
+      "note": "motors includes 18 historical plus 10 R3; compressor includes 11 R3 plus 4 extensions; fans lists 16 R3 original rows, inherited separately"
+    },
+    "compressor_boiler": {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\findings.json",
+      "sha256": "14a56dd2c5783a30fb071b6cc7236b4db68bb1515c025b103ceda96945447a40",
+      "rows": 15,
+      "expected_rows": 15,
+      "note": "motors includes 18 historical plus 10 R3; compressor includes 11 R3 plus 4 extensions; fans lists 16 R3 original rows, inherited separately"
+    },
+    "fans_submersible": {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\fans_submersible\\round3_findings.json",
+      "sha256": "2c54b936033ddfea2c8840f756661ef36138b958c49411353ac37365cd863d5f",
+      "rows": 16,
+      "expected_rows": 16,
+      "note": "motors includes 18 historical plus 10 R3; compressor includes 11 R3 plus 4 extensions; fans lists 16 R3 original rows, inherited separately"
+    },
+    "hvac": {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\hvac\\claim_verification.json",
+      "sha256": "76e72263ea1de2b9054a8588d053b352ede9cb19b3640ac9a835aecaf69e537e",
+      "r3_rows": 24,
+      "historical_rows": 24,
+      "r3_verbatim_rows": 24,
+      "historical_verbatim_rows": 24
+    }
+  }
+}

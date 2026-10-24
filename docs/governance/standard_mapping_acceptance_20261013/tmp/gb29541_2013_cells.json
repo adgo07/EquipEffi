@@ -1,0 +1,2022 @@
+[
+  {
+    "sheet": "表1_能效限值",
+    "xml": "xl/worksheets/sheet1.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A2": {
+        "value": "GB 29541—2013 表1 能源效率等级指标",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A3": {
+        "value": "制热量 H：kW；COP：W/W。原文：PDF物理4／印刷2。全部45个限值保留两位小数。",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A5": {
+        "value": "源行ID",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "B5": {
+        "value": "制热量 (kW)",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "C5": {
+        "value": "型式",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "D5": {
+        "value": "加热方式",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "E5": {
+        "value": "水泵分支",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "F5": {
+        "value": "1级 (W/W)",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "G5": {
+        "value": "2级 (W/W)",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "H5": {
+        "value": "3级 (W/W)",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "I5": {
+        "value": "4级 (W/W)",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "J5": {
+        "value": "5级 (W/W)",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "K5": {
+        "value": "原文源行",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "A6": {
+        "value": "T1-R01",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B6": {
+        "value": "H<10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C6": {
+        "value": "普通型",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D6": {
+        "value": "一次加热、循环加热式",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E6": {
+        "value": "不分供泵",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F6": {
+        "value": "4.6",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "G6": {
+        "value": "4.4",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "H6": {
+        "value": "4.1",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "I6": {
+        "value": "3.9",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "J6": {
+        "value": "3.7",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "K6": {
+        "value": "表1 数据行1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A7": {
+        "value": "T1-R02",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B7": {
+        "value": "H<10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C7": {
+        "value": "普通型",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D7": {
+        "value": "静态加热式",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E7": {
+        "value": "不分供泵",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F7": {
+        "value": "4.2",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "G7": {
+        "value": "4",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "H7": {
+        "value": "3.8",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "I7": {
+        "value": "3.6",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "J7": {
+        "value": "3.4",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "K7": {
+        "value": "表1 数据行2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A8": {
+        "value": "T1-R03",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B8": {
+        "value": "H<10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C8": {
+        "value": "低温型",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D8": {
+        "value": "一次加热、循环加热式",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E8": {
+        "value": "不分供泵",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F8": {
+        "value": "3.8",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "G8": {
+        "value": "3.6",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "H8": {
+        "value": "3.4",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "I8": {
+        "value": "3.2",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "J8": {
+        "value": "3",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "K8": {
+        "value": "表1 数据行3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A9": {
+        "value": "T1-R04",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B9": {
+        "value": "H≥10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C9": {
+        "value": "普通型",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D9": {
+        "value": "一次加热",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E9": {
+        "value": "不分供泵",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F9": {
+        "value": "4.6",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "G9": {
+        "value": "4.4",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "H9": {
+        "value": "4.1",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "I9": {
+        "value": "3.9",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "J9": {
+        "value": "3.7",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "K9": {
+        "value": "表1 数据行4",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A10": {
+        "value": "T1-R05",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B10": {
+        "value": "H≥10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C10": {
+        "value": "普通型",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D10": {
+        "value": "循环加热",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E10": {
+        "value": "不提供水泵",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F10": {
+        "value": "4.6",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "G10": {
+        "value": "4.4",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "H10": {
+        "value": "4.1",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "I10": {
+        "value": "3.9",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "J10": {
+        "value": "3.7",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "K10": {
+        "value": "表1 数据行5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A11": {
+        "value": "T1-R06",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B11": {
+        "value": "H≥10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C11": {
+        "value": "普通型",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D11": {
+        "value": "循环加热",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E11": {
+        "value": "提供水泵",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F11": {
+        "value": "4.5",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "G11": {
+        "value": "4.3",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "H11": {
+        "value": "4",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "I11": {
+        "value": "3.8",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "J11": {
+        "value": "3.6",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "K11": {
+        "value": "表1 数据行6",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A12": {
+        "value": "T1-R07",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B12": {
+        "value": "H≥10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C12": {
+        "value": "低温型",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D12": {
+        "value": "一次加热",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E12": {
+        "value": "不分供泵",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F12": {
+        "value": "3.9",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "G12": {
+        "value": "3.7",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "H12": {
+        "value": "3.5",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "I12": {
+        "value": "3.3",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "J12": {
+        "value": "3.1",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "K12": {
+        "value": "表1 数据行7",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A13": {
+        "value": "T1-R08",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B13": {
+        "value": "H≥10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C13": {
+        "value": "低温型",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D13": {
+        "value": "循环加热",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E13": {
+        "value": "不提供水泵",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F13": {
+        "value": "3.9",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "G13": {
+        "value": "3.7",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "H13": {
+        "value": "3.5",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "I13": {
+        "value": "3.3",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "J13": {
+        "value": "3.1",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "K13": {
+        "value": "表1 数据行8",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A14": {
+        "value": "T1-R09",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B14": {
+        "value": "H≥10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C14": {
+        "value": "低温型",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D14": {
+        "value": "循环加热",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E14": {
+        "value": "提供水泵",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F14": {
+        "value": "3.8",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "G14": {
+        "value": "3.6",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "H14": {
+        "value": "3.4",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "I14": {
+        "value": "3.2",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "J14": {
+        "value": "3",
+        "type": "n",
+        "style": "6",
+        "formula": null
+      },
+      "K14": {
+        "value": "表1 数据行9",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A15": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "B15": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C15": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D15": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E15": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F15": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G15": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H15": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I15": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J15": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K15": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A16": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "B16": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C16": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D16": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E16": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F16": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G16": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H16": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I16": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J16": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K16": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A17": {
+        "value": "说明：源表合并条件已逐行展开；“不分供泵”仅指该行未按供泵分列，不代表免计水泵能耗。",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B17": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C17": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D17": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E17": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F17": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G17": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H17": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I17": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J17": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K17": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A18": {
+        "value": "4.2：H>10 kW静态加热参照小容量静态指标；H=10及低温静态的解释缺口见主映射和登记请求。",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B18": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C18": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D18": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E18": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F18": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G18": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H18": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I18": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J18": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K18": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A19": {
+        "value": "本工作簿是Stage A表值资料，无评价公式；未独立验收、未冻结，不作软件正式支持声明。",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B19": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C19": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D19": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E19": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F19": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G19": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H19": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I19": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J19": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K19": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A20": {
+        "value": "原PDF：标准原文/14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B20": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C20": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D20": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E20": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F20": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G20": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H20": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I20": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J20": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K20": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A21": {
+        "value": "SHA256：94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B21": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C21": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D21": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E21": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F21": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "G21": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "H21": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "I21": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J21": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K21": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "条款数值与条件",
+    "xml": "xl/worksheets/sheet2.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A2": {
+        "value": "GB 29541—2013 条款数值与条件",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A3": {
+        "value": "来源：同一PDF；条款1—4.1位于物理3／印刷1；4.2—7位于物理4／印刷2；第8章位于物理5／无印刷页码。",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "A5": {
+        "value": "条款",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "B5": {
+        "value": "项目",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "C5": {
+        "value": "数值",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "D5": {
+        "value": "单位",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "E5": {
+        "value": "条件或比较关系",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "F5": {
+        "value": "说明",
+        "type": "str",
+        "style": "9",
+        "formula": null
+      },
+      "A6": {
+        "value": "表1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B6": {
+        "value": "制热量分界",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C6": {
+        "value": "10",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D6": {
+        "value": "kW",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E6": {
+        "value": "H<10 与 H≥10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F6": {
+        "value": "不插值；静态加热见4.2及问题请求001/002",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A7": {
+        "value": "4.1",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B7": {
+        "value": "能效等级数",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C7": {
+        "value": "5",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D7": {
+        "value": "级",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E7": {
+        "value": "1级最高",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F7": {
+        "value": "按实测COP和对应分支判级",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A8": {
+        "value": "4.2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B8": {
+        "value": "静态加热参照边界",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C8": {
+        "value": "10",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D8": {
+        "value": "kW",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E8": {
+        "value": "H>10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F8": {
+        "value": "参照小容量静态行，等于10的路由未明确",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A9": {
+        "value": "4.3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B9": {
+        "value": "实测COP/能效标注值最低比率",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C9": {
+        "value": "0.95",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "D9": {
+        "value": "比例",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E9": {
+        "value": "实测COP≥标注COP×0.95",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F9": {
+        "value": "标注COP仍须位于其额定等级的COP范围",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A10": {
+        "value": "4.3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B10": {
+        "value": "实测制热量/标注值最低比率",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C10": {
+        "value": "0.95",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "D10": {
+        "value": "比例",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E10": {
+        "value": "实测制热量≥标注制热量×0.95",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F10": {
+        "value": "额定与实测制热量均须落在对应额定制热量范围",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A11": {
+        "value": "4.3",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B11": {
+        "value": "实测制热消耗功率/标注值最高比率",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C11": {
+        "value": "1.1",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "D11": {
+        "value": "比例",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E11": {
+        "value": "实测功率≤标注功率×1.10",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F11": {
+        "value": "独立核查；不得把偏差作为COP等级容差",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A12": {
+        "value": "5",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B12": {
+        "value": "能效限定值等级",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C12": {
+        "value": "5",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D12": {
+        "value": "级",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E12": {
+        "value": "实测COP≥对应5级值",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F12": {
+        "value": "与4.3标注一致性分别检查",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A13": {
+        "value": "6",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B13": {
+        "value": "节能评价值等级",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C13": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D13": {
+        "value": "级",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E13": {
+        "value": "节能评价值为对应2级值",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F13": {
+        "value": "结合3.2的最小值定义使用",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A14": {
+        "value": "7",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B14": {
+        "value": "性能系数实测值小数位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C14": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D14": {
+        "value": "位",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E14": {
+        "value": "保留两位小数",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F14": {
+        "value": "本PDF未指定修约方法",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A15": {
+        "value": "8.2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B15": {
+        "value": "首次抽取样品数",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C15": {
+        "value": "1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D15": {
+        "value": "台",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E15": {
+        "value": "测试性能系数",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F15": {
+        "value": "能效限定值为出厂检验抽检项目",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A16": {
+        "value": "8.2",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B16": {
+        "value": "首次不满足后再抽样品数",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C16": {
+        "value": "2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "D16": {
+        "value": "台",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E16": {
+        "value": "再抽两台实测值均应满足规定要求",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F16": {
+        "value": "否则判该批不合格；不是平均值判定",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A17": {
+        "value": "7 a",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B17": {
+        "value": "提供水泵产品",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C17": {
+        "value": "不适用",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D17": {
+        "value": "能耗边界",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E17": {
+        "value": "耗电量计入水泵能耗",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F17": {
+        "value": "原文无水泵折减系数或扣除公式",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A18": {
+        "value": "7 b",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B18": {
+        "value": "带标配水箱产品",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C18": {
+        "value": "不适用",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D18": {
+        "value": "测试方法",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E18": {
+        "value": "GB/T 23137—2008；计入水泵能耗",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F18": {
+        "value": "不可按H分界替代本条测试方法路由",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A19": {
+        "value": "7 c",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B19": {
+        "value": "不带标配水箱产品",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C19": {
+        "value": "不适用",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D19": {
+        "value": "测试方法",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E19": {
+        "value": "GB/T 21362—2008",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F19": {
+        "value": "引用标准原文尚未核验",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "A20": {
+        "value": "7 d",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "B20": {
+        "value": "热水储存性能",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "C20": {
+        "value": "不适用",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "D20": {
+        "value": "要求",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "E20": {
+        "value": "满足相应标准要求",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      },
+      "F20": {
+        "value": "未擅自给出温度或储热限值",
+        "type": "str",
+        "style": "5",
+        "formula": null
+      }
+    }
+  }
+]

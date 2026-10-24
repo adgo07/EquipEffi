@@ -1,0 +1,2 @@
+{"kind":"region","sheet":"表1","address":"E6:J11","rows":6,"cols":6,"nonEmpty":36,"text":36,"maxTextLength":4,"preview":[["IPLV","6","5.6","5.2","COPc","4.2"],["IPLV","7.8","7.2","5.7","COPc","5"],["IPLV","8.1","7.5","6.2","COPc","5.4"],["IPLV","8.5","8.1","6.3","COPc","5.6"],["CSPF","4.5","4","3.5","COPc","2.7"],["CSPF","4.3","3.85","3.3","COPc","2.8"]],"previewAddress":"E6:J11","previewRows":6,"previewCols":6}
+{"kind":"notice","message":"Cell search matched 0 entries."}

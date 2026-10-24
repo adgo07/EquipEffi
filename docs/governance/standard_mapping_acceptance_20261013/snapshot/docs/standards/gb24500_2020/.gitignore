@@ -1,0 +1,7 @@
+# Local source renderings and artifact runtime only; retain reproducibility scripts.
+!tmp/
+tmp/*
+!tmp/build.mjs
+!tmp/verify.py
+!tmp/expected_cells.json
+data/*.inspect.ndjson

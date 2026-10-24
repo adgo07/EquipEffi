@@ -1,0 +1,622 @@
+{
+  "read_utc": "2026-10-13T15:54:23.072445+00:00",
+  "snapshot_checks": [
+    {
+      "standard": "gb18613_2020",
+      "snapshot_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb18613_2020__GB18613_2020_表1-6校对数据_A1.txt",
+      "snapshot_sha256": "50c26df289d2376b53096df019cf3c511d4876db92220128c1606a771d17a296",
+      "snapshot_nonempty_cells": 1661,
+      "current_nonempty_cells": 1661,
+      "diffs": [],
+      "xlsx_sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb"
+    },
+    {
+      "standard": "gb30254_2024",
+      "snapshot_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb30254_2024__GB30254_2024_标准表值.txt",
+      "snapshot_sha256": "3bac640eba694d989300e674bcc80e27ea4061ab91f0a3d31430baa003019cfe",
+      "snapshot_nonempty_cells": 4338,
+      "current_nonempty_cells": 4338,
+      "diffs": [],
+      "xlsx_sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912"
+    },
+    {
+      "standard": "gb30253_2024",
+      "snapshot_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb30253_2024__GB30253_2024_TABLE_VALUES.txt",
+      "snapshot_sha256": "73ccb7c26167f25cc6b3a3356feea11b064c28b851f0b68062322ad3daa21527",
+      "snapshot_nonempty_cells": 15291,
+      "current_nonempty_cells": 15291,
+      "diffs": [],
+      "xlsx_sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1"
+    }
+  ],
+  "timeline": [
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\STANDARD_MAPPING.md",
+      "older_12standard_manifest_sha256": "a78f42644363a1a525e0fa8b78f0dcc30e15c0926cffa469cf5cbc7a03405b8c",
+      "our_full_audit_start_sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d",
+      "current_sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\README.md",
+      "older_12standard_manifest_sha256": "4640f6641b769e1d1cf599e645b3e4dc9ff3d64f8cb82fe06c56b081fcc067d6",
+      "our_full_audit_start_sha256": "4f94b395ada998b70988df3b4ca0bc9f1639792091c919192783f5d6cbed4909",
+      "current_sha256": "4f94b395ada998b70988df3b4ca0bc9f1639792091c919192783f5d6cbed4909"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\ISSUE_REGISTRATION_REQUEST.md",
+      "older_12standard_manifest_sha256": "e0352e61b0e4632151548871dff214449cd9f18d19dd4e777aa54947826e7270",
+      "our_full_audit_start_sha256": "fc8b21269b7968e33201ec46bbb6b0ede1dc66508d56d8a40919b7bf16806735",
+      "current_sha256": "d70de8354f92af36f9d4ad7cedc936ac636290f319f557950029170bb931f30f"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\BOUNDARY_CANDIDATES.md",
+      "older_12standard_manifest_sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0",
+      "our_full_audit_start_sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0",
+      "current_sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\data\\GB18613_2020_表1-6校对数据_A1.xlsx",
+      "older_12standard_manifest_sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+      "our_full_audit_start_sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+      "current_sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\STANDARD_MAPPING.md",
+      "older_12standard_manifest_sha256": "b62d10ac7ef5e90c869d4a258d144e92bde09700d4c3267091055ac867ac1496",
+      "our_full_audit_start_sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba",
+      "current_sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\README.md",
+      "older_12standard_manifest_sha256": "fcd2570236974b22860485aae003e94819a228313439df1f7d9369871f480e9d",
+      "our_full_audit_start_sha256": "d3489184029b293a47ab9baff922792b1aab00579249145efa26eb77a441b61e",
+      "current_sha256": "d3489184029b293a47ab9baff922792b1aab00579249145efa26eb77a441b61e"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\ISSUE_REGISTRATION_REQUEST.md",
+      "older_12standard_manifest_sha256": "7a026367e918ea3201d0334786a92bc93ad228562943b92ef3c2e9cae82d8e51",
+      "our_full_audit_start_sha256": "af630a305f1339bf70ef52602fa9fc2c06ebf3a7eb1ac96982c2067a1e1caa45",
+      "current_sha256": "9b6c9a2c8d9a99b2d69435dfad14afe57cc6d37a0d9a02587eebf1d1983249bc"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\BOUNDARY_CASES.md",
+      "older_12standard_manifest_sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403",
+      "our_full_audit_start_sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403",
+      "current_sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\data\\GB30254_2024_标准表值.xlsx",
+      "older_12standard_manifest_sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+      "our_full_audit_start_sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+      "current_sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\STANDARD_MAPPING.md",
+      "older_12standard_manifest_sha256": "240221ca9c499368b8fea3712041e053acbedbb05baca618209740fc450c7173",
+      "our_full_audit_start_sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13",
+      "current_sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\README.md",
+      "older_12standard_manifest_sha256": "904ebb88edc25e36ed8143383a829036616c6f75f1b767bbb160e5c1a4c471ed",
+      "our_full_audit_start_sha256": "973147fc2c06462a50f3d114306de69a479dd31264ef32a77d4e4af34cb34e61",
+      "current_sha256": "973147fc2c06462a50f3d114306de69a479dd31264ef32a77d4e4af34cb34e61"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\ISSUE_REGISTRATION_REQUEST.md",
+      "older_12standard_manifest_sha256": "e0b0fb010ec675821276f0d6e8b176dc6a63c8a56e7cc9b6061fd0bb3acef1ca",
+      "our_full_audit_start_sha256": "83be22eb35f9f9d2eaf55e2af6f0c468ad71069e9425c5ea1b64072c713585ec",
+      "current_sha256": "06b9054bd70a8905ad7694b2f4413b4c618647dd016369a1ec272b8e68ba82e4"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\BOUNDARY_CANDIDATES.md",
+      "older_12standard_manifest_sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b",
+      "our_full_audit_start_sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b",
+      "current_sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\data\\GB30253_2024_TABLE_VALUES.xlsx",
+      "older_12standard_manifest_sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+      "our_full_audit_start_sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+      "current_sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1"
+    }
+  ],
+  "BC01": [
+    2,
+    1,
+    1
+  ],
+  "BC04": [
+    "76.5",
+    "72.25",
+    "67.35"
+  ],
+  "A1": {
+    "path": "G:\\Python Project\\EquipEffi\\src\\equipeffi\\resources\\standards\\gb30253_2024_pdf_verified_v1.json",
+    "sha256": "f69c052b46ccd9610896b1e0a58df0558c9f3ad43a4a04909ef154b4fcbb9250",
+    "status": "active",
+    "source_sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053",
+    "row": {
+      "power_kw": 55.0,
+      "efficiency": {
+        "1": [
+          96.6,
+          96.8,
+          96.6,
+          95.9,
+          95.9,
+          null,
+          null
+        ],
+        "2": [
+          96.2,
+          96.5,
+          96.0,
+          94.9,
+          94.9,
+          null,
+          null
+        ],
+        "3": [
+          95.3,
+          95.7,
+          95.1,
+          93.7,
+          93.7,
+          null,
+          null
+        ]
+      },
+      "no_data_cells": [
+        5,
+        12,
+        19
+      ],
+      "no_data_reason": "PDF表1中55 kW、12极对应的1级/2级/3级效率均为‘—’（标准原文无数据）；按用户复核结果判定为不在范围，不得猜测或插值",
+      "no_data_conclusion": "不在范围",
+      "data_id": "GB30253-R000017"
+    },
+    "activation_review": {
+      "reviewer": "用户确认",
+      "review_date": "2026-08-30",
+      "all_cells_reviewed": true,
+      "reviewed_tables": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "reviewed_efficiency_cell_count": 10803,
+      "reviewed_paths_sha256": "8f0df251b5455518dbf8c79f6320aedb279c96deebe7ebf06d15dee06859fc4d",
+      "pack_id": "gb30253_2024_pdf_verified_v1",
+      "source_sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053",
+      "items": [
+        {
+          "table_no": 1,
+          "power_kw": 55.0,
+          "level": 1,
+          "dimension": 12,
+          "replacement": null,
+          "no_data": true,
+          "pdf_page": 7,
+          "pdf_checked": true,
+          "comment": "PDF表1中55 kW、12极对应的1级/2级/3级效率均为‘—’（标准原文无数据）；按用户复核结果判定为不在范围，不得猜测或插值",
+          "workbook_row": 12494,
+          "previous_value": null,
+          "dimension_index": 5
+        },
+        {
+          "table_no": 1,
+          "power_kw": 55.0,
+          "level": 2,
+          "dimension": 12,
+          "replacement": null,
+          "no_data": true,
+          "pdf_page": 7,
+          "pdf_checked": true,
+          "comment": "PDF表1中55 kW、12极对应的1级/2级/3级效率均为‘—’（标准原文无数据）；按用户复核结果判定为不在范围，不得猜测或插值",
+          "workbook_row": 12501,
+          "previous_value": null,
+          "dimension_index": 5
+        },
+        {
+          "table_no": 1,
+          "power_kw": 55.0,
+          "level": 3,
+          "dimension": 12,
+          "replacement": null,
+          "no_data": true,
+          "pdf_page": 7,
+          "pdf_checked": true,
+          "comment": "PDF表1中55 kW、12极对应的1级/2级/3级效率均为‘—’（标准原文无数据）；按用户复核结果判定为不在范围，不得猜测或插值",
+          "workbook_row": 12508,
+          "previous_value": null,
+          "dimension_index": 5
+        }
+      ],
+      "source_pack": "resources/standards/gb30253_2024_pdf_verified_v1.json"
+    },
+    "runtime_executed": false
+  },
+  "root_registry": {
+    "sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908",
+    "motor_blocks": [
+      "### EQP-STD-GB18613-001 — 表3的2200 W、1级、4极空白\n\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB18613-001` / `R01`|\n|标准编号及版本|GB 18613—2020|\n|问题类型|MISSING / IMPLEMENTATION。|\n|标准原文事实/定位|表3，印刷第3页／PDF物理第5页，2200 W行，1级2极=85.9%，1级4极为空白，1级6极为横杠；2级、3级4极均为横杠。PDF原页图像与矢量网格确认4极空白格具有独立边界，并非与2极合并。|\n|当前技术判断|空白不能视为85.9、零、横杠或上行值；原文未说明该空白的含义。不能据相邻表补值，也不能由1500 W外推。|\n|软件当前处理方式/待决建议|保留原始空白类型，对需要此源格的查表/插值返回明确无法确定阈值的原因；正式处理须Owner确认或获得发布机构依据。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R01`](docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n",
+      "### EQP-STD-GB18613-002 — 表6转速区间共用端点\n\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB18613-002` / `R02`|\n|标准编号及版本|GB 18613—2020|\n|问题类型|AMBIGUITY / IMPLEMENTATION。|\n|标准原文事实/定位|表6表头（印刷5～6页／PDF7～8页）依次为≤500、500～700、700～1000、1000～1300、>1300 r/min，区间波浪线未给出开闭端点；第6章要求空调器风扇用电机取铭牌标称最高转速。|\n|当前技术判断|500、700、1000的共用端点可能使分支不唯一；1300受到>1300的明确排除约束。不能由连续性推断端点，因为相邻列值不同。|\n|软件当前处理方式/待决建议|可考虑(500,700]、(700,1000]、(1000,1300]的连续划分，但这只能是待Owner确认的软件约定，不写成标准明文；未确认前保留原区间标签。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R02`](docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n",
+      "### EQP-STD-GB18613-003 — 实测效率容差所需外部规范证据\n\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB18613-003` / `R03`|\n|标准编号及版本|GB 18613—2020|\n|问题类型|REFERENCE / IMPLEMENTATION。|\n|标准原文事实/定位|第4章（印刷1页／PDF3页）规定额定输出功率下实测效率不低于表1～6，并规定实测效率容差符合GB/T 755—2019表21、GB/T 5171.1—2014表18及相应产品标准。第5.2条（印刷6页／PDF8页）给出3级最低效率。|\n|当前技术判断|只取得本PDF，不能完整确定各产品容差口径；不能任意将容差当作降低等级阈值的业务epsilon，也不能无视该引用。|\n|软件当前处理方式/待决建议|Stage A给出未经容差调整的表值比较候选，Stage B前补齐适用引用标准、产品标准及容差适用关系，再决定正式判级处理。不得套用Pump Numeric Profile或工程记忆补规则。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R03`](docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n",
+      "### EQP-STD-GB18613-004 — 表6的75 W、>1300 r/min、3级为72.0%\n\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB18613-004` / `R04`|\n|标准编号及版本|GB 18613—2020|\n|问题类型|TYPO（疑似，未认定）/ IMPLEMENTATION。|\n|标准原文事实/定位|表6印刷5页／PDF7页，75 W行，1000～1300 r/min的3级值为72.8%，>1300 r/min的3级值为72.0%。同一行两分支的1级与2级分别同为78.8%、75.8%。已查看原图，72.0并非OCR错读。|\n|当前技术判断|该处与两列在邻近功率行的相同值模式不同，但模式差异不能证明标准错误，也不能据此改成72.8%。|\n|软件当前处理方式/待决建议|资料严格保留72.0%；如后续提出改值，须有正式勘误或Owner明确软件决定并保留原文。可选择原文照录作为后续软件口径，但本整理不代Owner批准。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R04`](docs/standards/gb18613_2020/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n",
+      "### EQP-STD-GB30254-001 — GB/T 755 容差的判定语义（建议前缀 EQP-STD-GB30254-）\n\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB30254-001` / `请求 1`|\n|标准编号及版本|GB 30254—2024|\n|问题类型|REFERENCE / IMPLEMENTATION。|\n|标准原文事实/定位|第4章（PDF物理页5 / 印刷页1）规定额定输出功率下实测效率不低于表1～6，容差符合 GB/T 755；第5章（PDF6 / 印刷2）规定实测效率不低于对应表3级。第2章中 GB/T 755 为不注日期引用。未在本标准给出容差数值或如何改变等级阈值的算式。|\n|当前技术判断|“表值”与“允许容差后的符合性界限”须区分。不能从旧版代码或常见效率允差公式直接推定新版本适用规则，更不能自行给3级下调阈值。|\n|软件当前处理方式/待决建议|保存表格原值；没有取得适用GB/T 755条款、额定/保证效率与实测效率关系证据之前，不新增容差扣减算法。主映射可说明名义阈值比较，但完整含容差结论仍需确认。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`请求 1`](docs/standards/gb30254_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n",
+      "### EQP-STD-GB30254-002 — 总范围与极数分支表值范围的差异\n\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB30254-002` / `请求 2`|\n|标准编号及版本|GB 30254—2024|\n|问题类型|MISSING / IMPLEMENTATION。|\n|标准原文事实/定位|第1章规定极数2～12及六类总功率范围（PDF5 / 印刷1）；表1～3部分大功率极数分支有明确“—”，表5～6仅列2/4/6/8极，没有10/12极列。第4章允许规定范围内“表中未列出额定功率值”的电动机线性插值。|\n|当前技术判断|无上端点的缺值与相邻有效点之间的未列功率不同；不同极数不能混用。第1章总范围不能直接提供缺失分支的阈值，插值不能自动变成外推。|\n|软件当前处理方式/待决建议|对应分支没有合法表值/相邻有效端点时不给等级，不补0、不跨极数、跨冷却方式或跨电压借值，不外推；最终采用“不适用”还是“无法评价”需Owner/Stage B确定，不能冒充标准官方排除范围。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`请求 2`](docs/standards/gb30254_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n",
+      "### EQP-STD-GB30253-001 — 表1的55 kW、12极、2级为0.0\n\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB30253-001` / `R1`|\n|标准编号及版本|GB 30253—2024|\n|问题类型|`TYPO` / `CONFLICT`|\n|标准原文事实/定位|印刷页3 / PDF物理页7，表1，55 kW行、2级12极列清楚印为 **0.0**。同一行1级和3级12极为短横线；45 kW该列为94.1。已看原页图像，不是OCR推测。|\n|当前技术判断|0.0与相邻效率及其他等级的表结构不协调，疑似笔误，但没有证据可替换为某个值或短横线。|\n|软件当前处理方式/待决建议|尚无Owner决定。本次工作簿如实保留数字0.0，单独标注待确认；不得将其自动用于正式判级。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R1`](docs/standards/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n",
+      "### EQP-STD-GB30253-002 — 实测效率容差引用GB/T 755，当前未取得引用原文\n\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB30253-002` / `R2`|\n|标准编号及版本|GB 30253—2024|\n|问题类型|REFERENCE / IMPLEMENTATION。|\n|标准原文事实/定位|第4章，印刷页2 / PDF物理页6：实测效率不应低于表1～29；同时规定实测效率容差符合GB/T 755。第2章对该引用不注日期，适用最新版本及修改单。|\n|当前技术判断|不能仅凭本PDF决定容差公式、适用方式及其与等级/限定值比较的关系；也不能把标准容差当作任意计算epsilon。|\n|软件当前处理方式/待决建议|尚无。保留表列下限与比较方向，正式容差处理留待有源解释。当前资料中未纳入GB/T755原文，也未核对其现行版本。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R2`](docs/standards/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n",
+      "### EQP-STD-GB30253-003 — 区间转速列与线性插值衔接\n\n|字段|记录|\n|---|---|\n|问题编号 / 本地请求|`EQP-STD-GB30253-003` / `R3`|\n|标准编号及版本|GB 30253—2024|\n|问题类型|AMBIGUITY / IMPLEMENTATION。|\n|标准原文事实/定位|第4章规定范围内未列额定功率/额定转速用线性插值。表8～10（PDF15～20，印刷11～16）列为45、60…500 r/min点，以及“>600～900”“>900～1200”“>1200～1800”“>1800～6000”区间。没有600 r/min独立点。表29使用速度区间（如≤100、>100～140），没有给区间插值锚点。|\n|当前技术判断|明确落在区间内可查该列；但500<n≤600时，不能无说明将“>600～900”当成600端点。跨区间插值也不能把整列任意改为中心点。|\n|软件当前处理方式/待决建议|尚无。当前映射保留区间原貌。区间内部直接选列；缺失锚点与跨边界插值解释保持需确认。；建议内容未获批准，正式实现仍待有源决定。|\n|支持证据|[`R3`](docs/standards/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|\n|确认程度|原文事实或疑点按专属请求的来源记录；无本项发布机构勘误或Owner软件决定，不将技术判断写成标准明文。|\n|状态|`OPEN`|\n|首次发现日期/最后更新日期|2026-10-13|\n\n"
+    ],
+    "runtime_filename_registered": false
+  },
+  "source_stability": {
+    "read_utc": "2026-10-13T15:42:54.188492+00:00",
+    "files": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\accepted_revision_manifest.json",
+        "sha256": "aa4d6423ab3ccdac6f9c95449a6ed05d50490587c32066e1c899c02ebbaaf609",
+        "bytes": 120981,
+        "mtime_utc": "2026-10-13T04:02:14.254279+00:00",
+        "end_sha256": "aa4d6423ab3ccdac6f9c95449a6ed05d50490587c32066e1c899c02ebbaaf609",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\CROSS_STANDARD_ACCEPTANCE_SUMMARY.md",
+        "sha256": "2078dd11ea2683db1c3bc7d28d887b69b5075935e8b20fc7f0fdff7837694ca9",
+        "bytes": 53342,
+        "mtime_utc": "2026-10-13T04:22:11.513868+00:00",
+        "end_sha256": "2078dd11ea2683db1c3bc7d28d887b69b5075935e8b20fc7f0fdff7837694ca9",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\CROSS_STANDARD_BOUNDARY_AUDIT.md",
+        "sha256": "d638070bf03ac1787332f67ac0977b9e897102acefbf946b2d2066b87cf45d75",
+        "bytes": 38491,
+        "mtime_utc": "2026-10-13T04:16:36.367256+00:00",
+        "end_sha256": "d638070bf03ac1787332f67ac0977b9e897102acefbf946b2d2066b87cf45d75",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb18613_2020_ACCEPTANCE_REVIEW.md",
+        "sha256": "8922fb188abab304561ffaeb2286479f4509c3d7da4c07e6063ae3f86e4744e1",
+        "bytes": 45519,
+        "mtime_utc": "2026-10-13T03:55:47.609486+00:00",
+        "end_sha256": "8922fb188abab304561ffaeb2286479f4509c3d7da4c07e6063ae3f86e4744e1",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb30253_2024_ACCEPTANCE_REVIEW.md",
+        "sha256": "884ed872370c345694d1c8afcf0d095b825dcd445787f2f571c61a2879d1f690",
+        "bytes": 31162,
+        "mtime_utc": "2026-10-13T04:19:06.063863+00:00",
+        "end_sha256": "884ed872370c345694d1c8afcf0d095b825dcd445787f2f571c61a2879d1f690",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb30254_2024_ACCEPTANCE_REVIEW.md",
+        "sha256": "2bfde42e677c1ce5c00a9506d84cbd96dbb210203625bc3823abeca6f574f7ed",
+        "bytes": 35878,
+        "mtime_utc": "2026-10-13T04:11:12.549845+00:00",
+        "end_sha256": "2bfde42e677c1ce5c00a9506d84cbd96dbb210203625bc3823abeca6f574f7ed",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb18613_2020__GB18613_2020_表1-6校对数据_A1.txt",
+        "sha256": "50c26df289d2376b53096df019cf3c511d4876db92220128c1606a771d17a296",
+        "bytes": 22378,
+        "mtime_utc": "2026-10-13T04:12:47.838430+00:00",
+        "end_sha256": "50c26df289d2376b53096df019cf3c511d4876db92220128c1606a771d17a296",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb30253_2024__GB30253_2024_TABLE_VALUES.txt",
+        "sha256": "73ccb7c26167f25cc6b3a3356feea11b064c28b851f0b68062322ad3daa21527",
+        "bytes": 180357,
+        "mtime_utc": "2026-10-13T04:12:48.289085+00:00",
+        "end_sha256": "73ccb7c26167f25cc6b3a3356feea11b064c28b851f0b68062322ad3daa21527",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb30254_2024__GB30254_2024_标准表值.txt",
+        "sha256": "3bac640eba694d989300e674bcc80e27ea4061ab91f0a3d31430baa003019cfe",
+        "bytes": 50270,
+        "mtime_utc": "2026-10-13T04:12:47.929006+00:00",
+        "end_sha256": "3bac640eba694d989300e674bcc80e27ea4061ab91f0a3d31430baa003019cfe",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_motors_AUDIT.md",
+        "sha256": "72f9ab70d9a51abcd25ddbb0ecb9e21a6364b0c938e4ff3562ab032df830b970",
+        "bytes": 24471,
+        "mtime_utc": "2026-10-13T15:21:45.113081+00:00",
+        "end_sha256": "72f9ab70d9a51abcd25ddbb0ecb9e21a6364b0c938e4ff3562ab032df830b970",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\ROUND3_PROBLEM_LIST.md",
+        "sha256": "4ce9ec7d085d2221c2e3a1cee81f9faf7c05bf93e9c41d6c8ac8860403c413cd",
+        "bytes": 36989,
+        "mtime_utc": "2026-10-13T15:22:56.930702+00:00",
+        "end_sha256": "4ce9ec7d085d2221c2e3a1cee81f9faf7c05bf93e9c41d6c8ac8860403c413cd",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\AGENTS.md",
+        "sha256": "a170e004c9feb89f8d1b8c60a0a994534194fb3545da28dd68467a3bb70db4f9",
+        "bytes": 28540,
+        "mtime_utc": "2026-10-13T02:04:22.728274+00:00",
+        "end_sha256": "a170e004c9feb89f8d1b8c60a0a994534194fb3545da28dd68467a3bb70db4f9",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\BOUNDARY_CANDIDATES.md",
+        "sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0",
+        "bytes": 4442,
+        "mtime_utc": "2026-10-13T03:01:41.644617+00:00",
+        "end_sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\data\\GB18613_2020_表1-6校对数据_A1.xlsx",
+        "sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+        "bytes": 21122,
+        "mtime_utc": "2026-10-13T02:59:56.225221+00:00",
+        "end_sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\ACCEPTANCE_RESPONSE_R1.md",
+        "sha256": "6f5b9d2e66b937184048d6245fd5aa4ebf681ad9c398237e6726de00bba04180",
+        "bytes": 3776,
+        "mtime_utc": "2026-10-13T04:00:47.183176+00:00",
+        "end_sha256": "6f5b9d2e66b937184048d6245fd5aa4ebf681ad9c398237e6726de00bba04180",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\evidence\\VERIFICATION.md",
+        "sha256": "88259227dd6d221f0294252881345e2f8872ca5c4a3fc80d15a5ff747f4b2fb9",
+        "bytes": 7616,
+        "mtime_utc": "2026-10-13T04:01:43.682720+00:00",
+        "end_sha256": "88259227dd6d221f0294252881345e2f8872ca5c4a3fc80d15a5ff747f4b2fb9",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\HANDOFF.md",
+        "sha256": "52c6efc2af552f2f397bb808b7d490adaa39a4d03bf657cb38e0aef3657e552a",
+        "bytes": 3452,
+        "mtime_utc": "2026-10-13T04:01:46.762443+00:00",
+        "end_sha256": "52c6efc2af552f2f397bb808b7d490adaa39a4d03bf657cb38e0aef3657e552a",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "d70de8354f92af36f9d4ad7cedc936ac636290f319f557950029170bb931f30f",
+        "bytes": 5551,
+        "mtime_utc": "2026-10-13T14:38:31.062239+00:00",
+        "end_sha256": "d70de8354f92af36f9d4ad7cedc936ac636290f319f557950029170bb931f30f",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\README.md",
+        "sha256": "4f94b395ada998b70988df3b4ca0bc9f1639792091c919192783f5d6cbed4909",
+        "bytes": 2359,
+        "mtime_utc": "2026-10-13T04:01:36.215071+00:00",
+        "end_sha256": "4f94b395ada998b70988df3b4ca0bc9f1639792091c919192783f5d6cbed4909",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\STANDARD_MAPPING.md",
+        "sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d",
+        "bytes": 12469,
+        "mtime_utc": "2026-10-13T04:01:38.842360+00:00",
+        "end_sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\BOUNDARY_CANDIDATES.md",
+        "sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b",
+        "bytes": 3516,
+        "mtime_utc": "2026-10-13T03:06:56.263924+00:00",
+        "end_sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\data\\GB30253_2024_TABLE_VALUES.xlsx",
+        "sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+        "bytes": 118459,
+        "mtime_utc": "2026-10-13T03:07:08.853897+00:00",
+        "end_sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\ACCEPTANCE_RESPONSE_20261013.md",
+        "sha256": "40a99114ca9a54ed9b7bc37db17264c42ca2642330952c150635dec3a57bbafb",
+        "bytes": 3976,
+        "mtime_utc": "2026-10-13T04:02:17.354357+00:00",
+        "end_sha256": "40a99114ca9a54ed9b7bc37db17264c42ca2642330952c150635dec3a57bbafb",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\evidence\\VERIFICATION.md",
+        "sha256": "7ae93e04104eae1db61281b027c724d4acdca4297eaca06b2bc3d2cdfa891cb0",
+        "bytes": 6424,
+        "mtime_utc": "2026-10-13T04:02:08.186392+00:00",
+        "end_sha256": "7ae93e04104eae1db61281b027c724d4acdca4297eaca06b2bc3d2cdfa891cb0",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\HANDOFF.md",
+        "sha256": "72904632bc23cc5d0cd1eb6232ce03855b2dffc268c9984fd4fdceb75f81b1f7",
+        "bytes": 2928,
+        "mtime_utc": "2026-10-13T04:02:58.780994+00:00",
+        "end_sha256": "72904632bc23cc5d0cd1eb6232ce03855b2dffc268c9984fd4fdceb75f81b1f7",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "06b9054bd70a8905ad7694b2f4413b4c618647dd016369a1ec272b8e68ba82e4",
+        "bytes": 4781,
+        "mtime_utc": "2026-10-13T14:38:31.184104+00:00",
+        "end_sha256": "06b9054bd70a8905ad7694b2f4413b4c618647dd016369a1ec272b8e68ba82e4",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\README.md",
+        "sha256": "973147fc2c06462a50f3d114306de69a479dd31264ef32a77d4e4af34cb34e61",
+        "bytes": 2824,
+        "mtime_utc": "2026-10-13T04:01:59.465638+00:00",
+        "end_sha256": "973147fc2c06462a50f3d114306de69a479dd31264ef32a77d4e4af34cb34e61",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\STANDARD_MAPPING.md",
+        "sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13",
+        "bytes": 13635,
+        "mtime_utc": "2026-10-13T04:02:03.845721+00:00",
+        "end_sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\BOUNDARY_CASES.md",
+        "sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403",
+        "bytes": 3731,
+        "mtime_utc": "2026-10-13T03:06:54.495163+00:00",
+        "end_sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\data\\GB30254_2024_标准表值.xlsx",
+        "sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+        "bytes": 31633,
+        "mtime_utc": "2026-10-13T02:59:14.760766+00:00",
+        "end_sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\ACCEPTANCE_RESPONSE_20261013.md",
+        "sha256": "bc0e1d482aa2910b2167db370d1eabd57f0ec4905f74b2f056309d2691cd3bb8",
+        "bytes": 6386,
+        "mtime_utc": "2026-10-13T04:02:23.956976+00:00",
+        "end_sha256": "bc0e1d482aa2910b2167db370d1eabd57f0ec4905f74b2f056309d2691cd3bb8",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\evidence\\SOURCE_AND_VERIFICATION.md",
+        "sha256": "27d47826181258b27b44306bdef95529778e8071d8ddf351d16916bedd5c5152",
+        "bytes": 8316,
+        "mtime_utc": "2026-10-13T04:05:14.205537+00:00",
+        "end_sha256": "27d47826181258b27b44306bdef95529778e8071d8ddf351d16916bedd5c5152",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\HANDOFF.md",
+        "sha256": "fe95aa32223f294c6a5046eae2ed4166080de9cd8b572e3204056abcc9a7d59d",
+        "bytes": 4017,
+        "mtime_utc": "2026-10-13T04:05:14.322966+00:00",
+        "end_sha256": "fe95aa32223f294c6a5046eae2ed4166080de9cd8b572e3204056abcc9a7d59d",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\ISSUE_REGISTRATION_REQUEST.md",
+        "sha256": "9b6c9a2c8d9a99b2d69435dfad14afe57cc6d37a0d9a02587eebf1d1983249bc",
+        "bytes": 4478,
+        "mtime_utc": "2026-10-13T14:38:31.125155+00:00",
+        "end_sha256": "9b6c9a2c8d9a99b2d69435dfad14afe57cc6d37a0d9a02587eebf1d1983249bc",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\README.md",
+        "sha256": "d3489184029b293a47ab9baff922792b1aab00579249145efa26eb77a441b61e",
+        "bytes": 2866,
+        "mtime_utc": "2026-10-13T04:05:13.966392+00:00",
+        "end_sha256": "d3489184029b293a47ab9baff922792b1aab00579249145efa26eb77a441b61e",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\STANDARD_MAPPING.md",
+        "sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba",
+        "bytes": 11577,
+        "mtime_utc": "2026-10-13T04:05:14.039728+00:00",
+        "end_sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\platform-lock.json",
+        "sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53",
+        "bytes": 2075,
+        "mtime_utc": "2026-10-01T15:10:00.665413+00:00",
+        "end_sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\src\\equipeffi\\resources\\standards\\gb30253_2024_pdf_verified_v1.json",
+        "sha256": "f69c052b46ccd9610896b1e0a58df0558c9f3ad43a4a04909ef154b4fcbb9250",
+        "bytes": 742369,
+        "mtime_utc": "2026-09-19T16:59:20.432586+00:00",
+        "end_sha256": "f69c052b46ccd9610896b1e0a58df0558c9f3ad43a4a04909ef154b4fcbb9250",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+        "sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908",
+        "bytes": 113342,
+        "mtime_utc": "2026-10-13T14:54:19.358202+00:00",
+        "end_sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\2. GB+18613-2020 电动机能效限定值及能效等级.pdf",
+        "sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+        "bytes": 359642,
+        "mtime_utc": "2026-08-16T12:46:55.205595+00:00",
+        "end_sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\3. GB 30254-2024 高压三相笼型异步电动机能效限定值及能效等级.pdf",
+        "sha256": "53a6d2e8098fea9f81adf6a12fe3298707bf6b22cc8c972110aacdcd8a168135",
+        "bytes": 1939219,
+        "mtime_utc": "2026-04-22T08:31:14+00:00",
+        "end_sha256": "53a6d2e8098fea9f81adf6a12fe3298707bf6b22cc8c972110aacdcd8a168135",
+        "stable": true
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\4. GB 30253-2024 永磁同步电动机能效限定值及能效等级.pdf",
+        "sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053",
+        "bytes": 6678347,
+        "mtime_utc": "2026-04-22T09:40:18+00:00",
+        "end_sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053",
+        "stable": true
+      }
+    ]
+  }
+}

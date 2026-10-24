@@ -1,0 +1,137 @@
+{
+  "source_sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+  "pages": 8,
+  "tables": 6,
+  "table_parts": 8,
+  "power_rows": 108,
+  "threshold_slots": 1182,
+  "numeric_thresholds": 1149,
+  "dashes": 32,
+  "blanks": 1,
+  "audited_cells": 1290,
+  "pypdf_row_checks": 108,
+  "pypdf_row_failures": 0,
+  "parts": [
+    {
+      "table": 1,
+      "pdf_page": 4,
+      "printed_page": 2,
+      "body_rows": 31,
+      "threshold_columns": 12,
+      "bbox": [
+        63.073,
+        130.942,
+        524.183,
+        744.592
+      ],
+      "header_rows": 3,
+      "body_merged_cells": 0
+    },
+    {
+      "table": 2,
+      "pdf_page": 5,
+      "printed_page": 3,
+      "body_rows": 11,
+      "threshold_columns": 9,
+      "bbox": [
+        70.836,
+        130.942,
+        531.946,
+        415.158
+      ],
+      "header_rows": 3,
+      "body_merged_cells": 0
+    },
+    {
+      "table": 3,
+      "pdf_page": 5,
+      "printed_page": 3,
+      "body_rows": 9,
+      "threshold_columns": 9,
+      "bbox": [
+        70.836,
+        460.862,
+        531.946,
+        704.517
+      ],
+      "header_rows": 3,
+      "body_merged_cells": 0
+    },
+    {
+      "table": 4,
+      "pdf_page": 6,
+      "printed_page": 4,
+      "body_rows": 9,
+      "threshold_columns": 6,
+      "bbox": [
+        63.073,
+        130.942,
+        524.183,
+        347.52500000000003
+      ],
+      "header_rows": 3,
+      "body_merged_cells": 0
+    },
+    {
+      "table": 5,
+      "pdf_page": 6,
+      "printed_page": 4,
+      "body_rows": 17,
+      "threshold_columns": 9,
+      "bbox": [
+        63.073,
+        393.228,
+        524.183,
+        754.1990000000001
+      ],
+      "header_rows": 3,
+      "body_merged_cells": 0
+    },
+    {
+      "table": 5,
+      "pdf_page": 7,
+      "printed_page": 5,
+      "body_rows": 7,
+      "threshold_columns": 9,
+      "bbox": [
+        70.836,
+        130.942,
+        531.946,
+        311.428
+      ],
+      "header_rows": 3,
+      "body_merged_cells": 0
+    },
+    {
+      "table": 6,
+      "pdf_page": 7,
+      "printed_page": 5,
+      "body_rows": 18,
+      "threshold_columns": 15,
+      "bbox": [
+        70.836,
+        357.13100000000003,
+        531.946,
+        754.1990000000001
+      ],
+      "header_rows": 4,
+      "body_merged_cells": 0
+    },
+    {
+      "table": 6,
+      "pdf_page": 8,
+      "printed_page": 6,
+      "body_rows": 6,
+      "threshold_columns": 15,
+      "bbox": [
+        63.073,
+        130.942,
+        524.183,
+        329.476
+      ],
+      "header_rows": 4,
+      "body_merged_cells": 0
+    }
+  ],
+  "method": "pdfplumber grid + pypdf ordered row text; author page-image review; not independent acceptance"
+}

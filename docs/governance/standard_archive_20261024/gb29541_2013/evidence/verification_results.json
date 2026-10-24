@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-13",
+  "pdf_sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df",
+  "xlsx_sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54",
+  "pdf_pages": 5,
+  "tables": 1,
+  "physical_data_rows": 9,
+  "grade_columns": 5,
+  "table_numeric_cells_matched": 45,
+  "clause_numeric_cells_matched": 11,
+  "formula_count": 0,
+  "independent_acceptance": false,
+  "checks": {
+    "pass": 7,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "not_run": [
+      "引用GB/T21362-2008和GB/T23137-2008全文核验",
+      "独立验收",
+      "生产unittest/compileall/smoke/性能基线（本次无生产改动）",
+      "Excel桌面原生打开（本次静态值工作簿）"
+    ]
+  }
+}

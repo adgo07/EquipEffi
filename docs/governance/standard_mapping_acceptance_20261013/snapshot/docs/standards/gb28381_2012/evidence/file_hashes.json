@@ -1,0 +1,20 @@
+{
+  ".gitignore": "587f6a8e1e4faefac8c431f44ebe1e432b4afe91ab09dba9246cd634b9aebf23",
+  "BOUNDARY_CASES.md": "335c69b99e543b7dd697e92dac1da6f29f1f7cbaa423818a067f1df407e2a28e",
+  "build_workbook.mjs": "eb775f4721bc644e58850fb70d7605db8f26869d8d9bb7fc0d0d6e91155f1787",
+  "check_delivery.py": "a8360ddc61fbb28c982042028e1254cc11cecae53338a4fa2d8a907aec6bc7f3",
+  "data/GB28381_2012_TABLES.xlsx": "217ff4171917de79dc4174f328f0293b045a2e57a18f330b41b210d32bd343bc",
+  "data/tables.json": "fc3a908bbdc134c27f1d25d7a1418c2fae682b4e9cbbeb7d86f3d142fced0666",
+  "evidence/AUDIT.md": "1a26db870443a8ea0e9eb5d38fb6fc052e387e802389a82747cf20d33e56cb94",
+  "evidence/check_results.json": "fd06949b145453914b0f9c09d91de1e8ec9d3512530a1c024b2e6c5a10d95714",
+  "evidence/delivery_checks.json": "3d013e2ec60b21bfa0d7b01721ed54d09f3ff78ae2887d87e2f6d7c4ddc6395a",
+  "evidence/source_cells.csv": "6fa5a54fff85d7ee7293e768d1c344f7ac346486047654b57f75aeefff6584be",
+  "evidence/visual_spot_checks.csv": "5e483cd62ae3a3109d2d9227f716f486af2f3c9706e8b7738112112dd29698e8",
+  "evidence/xlsx_cell_check.csv": "eed47720b405232580bbb2310d4d471496b2f489f45c696fe0e52d33816039ff",
+  "extract_verify.py": "539900d14ffc2b22a3e6b3c8d44fea0f4ba6f88d250fbbfb78ce1c38768ba0fb",
+  "HANDOFF.md": "27eb9cb4d0f7a70e477ffdb52d166c48ad57b1f540e78512d20774c9f95de54d",
+  "ISSUE_REGISTRATION_REQUEST.md": "5978410af0b9cb9de2503836ab2bf75f3ccb4e2e85e2ceb349badab09156286e",
+  "README.md": "13838892dd4c1680e405feb022cb05ef05a95d988e348cc94f051f06abf41d24",
+  "STANDARD_MAPPING.md": "0701a0701d910523cd5aee3286ad5f567f0c174833bcf66293ae569674ff4ef7",
+  "verify_visual_samples.py": "a879b8d5b425b6f20fdb9116b8329591de78b972afa834e8e423f52f015069cb"
+}

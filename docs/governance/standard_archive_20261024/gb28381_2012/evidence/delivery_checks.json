@@ -1,0 +1,7 @@
+{
+  "broken_links": [],
+  "condition_rows_pass": 96,
+  "typed_and_formatted_thresholds_pass": 480,
+  "final_render_sheets_visually_reviewed": 8,
+  "review_type": "execution self-check, not independent acceptance"
+}

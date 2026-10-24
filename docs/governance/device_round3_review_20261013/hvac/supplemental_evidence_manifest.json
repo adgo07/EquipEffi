@@ -1,0 +1,94 @@
+[
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\third_party_executor_verification_20261013\\EXECUTOR_VERIFICATION.md",
+    "sha256": "c11548f42179057d71d27fd2b333e21060c93906681e143a81143c5c16f48a4a"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\DISPATCH_INITIAL.md",
+    "sha256": "ca19932854e599306f0092c5b3f02c383c702a15493c4794516a83d912196ab4"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\INPUT_MANIFEST.json",
+    "sha256": "d278eaef67ef7c5bc9284bbc199d7b81f08e890b022004ed124fe854ca508d38"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\REVIEW_20261013_independent_review.md",
+    "sha256": "14c9cd2c7adc2960e3946bc453e7e71afb20056b5620a5b088c55c789454e3b2"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\29541\\p04.png",
+    "sha256": "6ae953b0056d5fa9281f17f61376b5ea37b04340253cd18a505c0852eb93015e"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\19576\\p03.png",
+    "sha256": "a267977a61434477e014edec2f51ab4a2cf0f9172da03cf609b3cb2d3a820f12"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\19576\\p04.png",
+    "sha256": "9c67c473c879d6cac272ec64c0b9462772964d89123e56e50b2476df036f8f3b"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\37479\\p04.png",
+    "sha256": "21b50314ed1a01cf3ac48cb26b6f244e8b3cda3f38a4a87a36963a6c2c22e957"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\37479\\p05.png",
+    "sha256": "518fe22fd25e2321fa5474ae2744173a3b27986b4a0933b920ca837f467f4350"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\21454\\p09.png",
+    "sha256": "b0d2a8b38ad5c36de441a39662d9094215cf191d32f9738e5b70a2a1838b2847"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\21454\\p13.png",
+    "sha256": "f1c6e84c02db4fbd77053597f0996b9ec7640bd0c43ee72d628b79f9dec18ab3"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\21454\\p14.png",
+    "sha256": "b30315dcab1b205f4b35875c53eed21cf5a3964c1253d811c472ea40fc9bc14e"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\19577\\p08.png",
+    "sha256": "481bd106f78943cbf314e60afc4e1c821c917aa0a279d20af9cad49481c9d54d"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\19577\\p09.png",
+    "sha256": "5dc7bf7f6b70c22256f5b9e4e483278532de346c7e461da682150e17a912270c"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\19577\\p10.png",
+    "sha256": "1ed477ea9e6f43342d0a2857e9bec7dafc7a13d9922fa30d4feeb7dda18b3eb1"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\19577\\p11.png",
+    "sha256": "7fe2a5fadd0afc0c434986c0b3cd5d490e32db120a3e88a956ad1968a3042e86"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\19577\\p14.png",
+    "sha256": "8ead7dde56498d945b2110c96726dbf7208f60e2ae39408748dffb1d88626bc2"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\19577\\p16.png",
+    "sha256": "88e6022aff0102df8f4c726ed05dc709ca18dfd052cddd0c7b5daacf06d4fd72"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\19577\\p17.png",
+    "sha256": "db0ed877607cf2db832b148dbd55dd3019dfba4a6485e5fbcf8f8db5ea4123f7"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\hvac\\19576_AEER_parenthesis.png",
+    "sha256": "519d00d06dac8223652277e38262c2a358d306eb696e27c4a754578eba70618d"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\hvac\\19577_table1_header.png",
+    "sha256": "1d0a669045eee98061f6f2a9e6fb364c17bc24aea7194949ef4e0b8918d78296"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\hvac\\19577_table2_header.png",
+    "sha256": "5a4adf6d1a5665042b4841d584d74af01ce58709965481708a6e7478e6e2ec29"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\hvac\\19577_table4_title.png",
+    "sha256": "bd7a28700908f151bbdd04a172c25df75ad90780a71531d62e2b617f0040bed5"
+  }
+]

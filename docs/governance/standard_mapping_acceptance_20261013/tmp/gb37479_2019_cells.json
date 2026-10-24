@@ -1,0 +1,2498 @@
+[
+  {
+    "sheet": "表1_风管机组",
+    "xml": "xl/worksheets/sheet1.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": "GB 37479—2019 表1 表值转录（Stage A）",
+        "type": "str",
+        "style": "6",
+        "formula": null
+      },
+      "A2": {
+        "value": "来源：原PDF印刷页2 / PDF物理页4；值自核，未独立验收",
+        "type": "str",
+        "style": null,
+        "formula": null
+      },
+      "A3": {
+        "value": "下界严格大于，上界小于等于；空端点=原文未给界限，非0；表2限定值见请求A",
+        "type": "str",
+        "style": null,
+        "formula": null
+      },
+      "A5": {
+        "value": "源行ID",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B5": {
+        "value": "冷却方式",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "C5": {
+        "value": "物理分支",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "D5": {
+        "value": "指标",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "E5": {
+        "value": "单位",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "F5": {
+        "value": "名义制冷量条件/W",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "G5": {
+        "value": "下界/W（不含）",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "H5": {
+        "value": "上界/W（含）",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "I5": {
+        "value": "1级",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "J5": {
+        "value": "2级",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "K5": {
+        "value": "3级",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "L5": {
+        "value": "原文定位",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "M5": {
+        "value": "印刷页",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "N5": {
+        "value": "PDF页",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "A6": {
+        "value": "表1-R01",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B6": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C6": {
+        "value": "单冷型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D6": {
+        "value": "SEER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E6": {
+        "value": "Wh/Wh",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F6": {
+        "value": "CC≤7100",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G6": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H6": {
+        "value": "7100",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I6": {
+        "value": "4.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J6": {
+        "value": "3.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K6": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L6": {
+        "value": "第4章/表1/数据行1",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M6": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N6": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A7": {
+        "value": "表1-R02",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B7": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C7": {
+        "value": "单冷型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D7": {
+        "value": "SEER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E7": {
+        "value": "Wh/Wh",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F7": {
+        "value": "7100<CC≤14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G7": {
+        "value": "7100",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H7": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I7": {
+        "value": "4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J7": {
+        "value": "3.6",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K7": {
+        "value": "2.9",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L7": {
+        "value": "第4章/表1/数据行2",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M7": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N7": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A8": {
+        "value": "表1-R03",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B8": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C8": {
+        "value": "单冷型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D8": {
+        "value": "SEER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E8": {
+        "value": "Wh/Wh",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F8": {
+        "value": "14000<CC≤28000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G8": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H8": {
+        "value": "28000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I8": {
+        "value": "3.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J8": {
+        "value": "3.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K8": {
+        "value": "2.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L8": {
+        "value": "第4章/表1/数据行3",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M8": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N8": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A9": {
+        "value": "表1-R04",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B9": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C9": {
+        "value": "单冷型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D9": {
+        "value": "SEER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E9": {
+        "value": "Wh/Wh",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F9": {
+        "value": "CC>28000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G9": {
+        "value": "28000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H9": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I9": {
+        "value": "3.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J9": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K9": {
+        "value": "2.6",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L9": {
+        "value": "第4章/表1/数据行4",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M9": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N9": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A10": {
+        "value": "表1-R05",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B10": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C10": {
+        "value": "热泵型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D10": {
+        "value": "APF",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E10": {
+        "value": "Wh/Wh",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F10": {
+        "value": "CC≤7100",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G10": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H10": {
+        "value": "7100",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I10": {
+        "value": "3.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J10": {
+        "value": "3.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K10": {
+        "value": "2.9",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L10": {
+        "value": "第4章/表1/数据行5",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M10": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N10": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A11": {
+        "value": "表1-R06",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B11": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C11": {
+        "value": "热泵型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D11": {
+        "value": "APF",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E11": {
+        "value": "Wh/Wh",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F11": {
+        "value": "7100<CC≤14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G11": {
+        "value": "7100",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H11": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I11": {
+        "value": "3.6",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J11": {
+        "value": "3.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K11": {
+        "value": "2.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L11": {
+        "value": "第4章/表1/数据行6",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M11": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N11": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A12": {
+        "value": "表1-R07",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B12": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C12": {
+        "value": "热泵型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D12": {
+        "value": "APF",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E12": {
+        "value": "Wh/Wh",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F12": {
+        "value": "14000<CC≤28000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G12": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H12": {
+        "value": "28000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I12": {
+        "value": "3.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J12": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K12": {
+        "value": "2.7",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L12": {
+        "value": "第4章/表1/数据行7",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M12": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N12": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A13": {
+        "value": "表1-R08",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B13": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C13": {
+        "value": "热泵型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D13": {
+        "value": "APF",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E13": {
+        "value": "Wh/Wh",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F13": {
+        "value": "CC>28000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G13": {
+        "value": "28000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H13": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I13": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J13": {
+        "value": "2.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K13": {
+        "value": "2.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L13": {
+        "value": "第4章/表1/数据行8",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M13": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N13": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A14": {
+        "value": "表1-R09",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B14": {
+        "value": "水冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C14": {
+        "value": "源表未细分冷热型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D14": {
+        "value": "IPLV",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E14": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F14": {
+        "value": "CC≤14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G14": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H14": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I14": {
+        "value": "4.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J14": {
+        "value": "4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K14": {
+        "value": "3.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L14": {
+        "value": "第4章/表1/数据行9",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M14": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N14": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A15": {
+        "value": "表1-R10",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B15": {
+        "value": "水冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C15": {
+        "value": "源表未细分冷热型",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D15": {
+        "value": "IPLV",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E15": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F15": {
+        "value": "CC>14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G15": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H15": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I15": {
+        "value": "4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J15": {
+        "value": "3.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K15": {
+        "value": "3.3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L15": {
+        "value": "第4章/表1/数据行10",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M15": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N15": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表2_全新风机组",
+    "xml": "xl/worksheets/sheet2.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": "GB 37479—2019 表2 表值转录（Stage A）",
+        "type": "str",
+        "style": "6",
+        "formula": null
+      },
+      "A2": {
+        "value": "来源：原PDF印刷页2 / PDF物理页4；值自核，未独立验收",
+        "type": "str",
+        "style": null,
+        "formula": null
+      },
+      "A3": {
+        "value": "下界严格大于，上界小于等于；空端点=原文未给界限，非0；表2限定值见请求A",
+        "type": "str",
+        "style": null,
+        "formula": null
+      },
+      "A5": {
+        "value": "源行ID",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B5": {
+        "value": "冷却方式",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "C5": {
+        "value": "物理分支",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "D5": {
+        "value": "指标",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "E5": {
+        "value": "单位",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "F5": {
+        "value": "名义制冷量条件/W",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "G5": {
+        "value": "下界/W（不含）",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "H5": {
+        "value": "上界/W（含）",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "I5": {
+        "value": "1级",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "J5": {
+        "value": "2级",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "K5": {
+        "value": "3级",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "L5": {
+        "value": "原文定位",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "M5": {
+        "value": "印刷页",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "N5": {
+        "value": "PDF页",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "A6": {
+        "value": "表2-R01",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B6": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C6": {
+        "value": "小焓差",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D6": {
+        "value": "EER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E6": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F6": {
+        "value": "CC≤4500",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G6": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H6": {
+        "value": "4500",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I6": {
+        "value": "3.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J6": {
+        "value": "3.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K6": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L6": {
+        "value": "第4章/表2/数据行1",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M6": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N6": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A7": {
+        "value": "表2-R02",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B7": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C7": {
+        "value": "小焓差",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D7": {
+        "value": "EER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E7": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F7": {
+        "value": "4500<CC≤7100",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G7": {
+        "value": "4500",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H7": {
+        "value": "7100",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I7": {
+        "value": "3.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J7": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K7": {
+        "value": "2.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L7": {
+        "value": "第4章/表2/数据行2",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M7": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N7": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A8": {
+        "value": "表2-R03",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B8": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C8": {
+        "value": "小焓差",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D8": {
+        "value": "EER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E8": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F8": {
+        "value": "7100<CC≤14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G8": {
+        "value": "7100",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H8": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I8": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J8": {
+        "value": "2.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K8": {
+        "value": "2.6",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L8": {
+        "value": "第4章/表2/数据行3",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M8": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N8": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A9": {
+        "value": "表2-R04",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B9": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C9": {
+        "value": "小焓差",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D9": {
+        "value": "EER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E9": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F9": {
+        "value": "CC>14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G9": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H9": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I9": {
+        "value": "2.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J9": {
+        "value": "2.6",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K9": {
+        "value": "2.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L9": {
+        "value": "第4章/表2/数据行4",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M9": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N9": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A10": {
+        "value": "表2-R05",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B10": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C10": {
+        "value": "大焓差",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D10": {
+        "value": "EER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E10": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F10": {
+        "value": "CC≤4500",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G10": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H10": {
+        "value": "4500",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I10": {
+        "value": "3.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J10": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K10": {
+        "value": "2.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L10": {
+        "value": "第4章/表2/数据行5",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M10": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N10": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A11": {
+        "value": "表2-R06",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B11": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C11": {
+        "value": "大焓差",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D11": {
+        "value": "EER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E11": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F11": {
+        "value": "4500<CC≤7100",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G11": {
+        "value": "4500",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H11": {
+        "value": "7100",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I11": {
+        "value": "3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J11": {
+        "value": "2.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K11": {
+        "value": "2.6",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L11": {
+        "value": "第4章/表2/数据行6",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M11": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N11": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A12": {
+        "value": "表2-R07",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B12": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C12": {
+        "value": "大焓差",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D12": {
+        "value": "EER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E12": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F12": {
+        "value": "7100<CC≤14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G12": {
+        "value": "7100",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H12": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I12": {
+        "value": "2.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J12": {
+        "value": "2.6",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K12": {
+        "value": "2.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L12": {
+        "value": "第4章/表2/数据行7",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M12": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N12": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A13": {
+        "value": "表2-R08",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B13": {
+        "value": "风冷式",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C13": {
+        "value": "大焓差",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D13": {
+        "value": "EER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E13": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F13": {
+        "value": "CC>14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G13": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H13": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I13": {
+        "value": "2.6",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J13": {
+        "value": "2.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K13": {
+        "value": "2.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L13": {
+        "value": "第4章/表2/数据行8",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M13": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N13": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A14": {
+        "value": "表2-R09",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B14": {
+        "value": "水冷式（水环式）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C14": {
+        "value": "小焓差",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D14": {
+        "value": "EER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E14": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F14": {
+        "value": "CC≤14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G14": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H14": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I14": {
+        "value": "4.7",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J14": {
+        "value": "4.5",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K14": {
+        "value": "4.3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L14": {
+        "value": "第4章/表2/数据行9",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M14": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N14": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A15": {
+        "value": "表2-R10",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B15": {
+        "value": "水冷式（水环式）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C15": {
+        "value": "小焓差",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D15": {
+        "value": "EER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E15": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F15": {
+        "value": "CC>14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G15": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H15": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I15": {
+        "value": "4.5",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J15": {
+        "value": "4.3",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K15": {
+        "value": "4.1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L15": {
+        "value": "第4章/表2/数据行10",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M15": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N15": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A16": {
+        "value": "表2-R11",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B16": {
+        "value": "水冷式（水环式）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C16": {
+        "value": "大焓差",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D16": {
+        "value": "EER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E16": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F16": {
+        "value": "CC≤14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G16": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H16": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I16": {
+        "value": "4.4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J16": {
+        "value": "4.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K16": {
+        "value": "4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L16": {
+        "value": "第4章/表2/数据行11",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M16": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N16": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A17": {
+        "value": "表2-R12",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B17": {
+        "value": "水冷式（水环式）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C17": {
+        "value": "大焓差",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D17": {
+        "value": "EER",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E17": {
+        "value": "W/W",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F17": {
+        "value": "CC>14000",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G17": {
+        "value": "14000",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "H17": {
+        "value": null,
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "I17": {
+        "value": "4.2",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "J17": {
+        "value": "4",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "K17": {
+        "value": "3.8",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "L17": {
+        "value": "第4章/表2/数据行12",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "M17": {
+        "value": "2",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "N17": {
+        "value": "4",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "条款数值",
+    "xml": "xl/worksheets/sheet3.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": "参数",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B1": {
+        "value": "数值",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "C1": {
+        "value": "单位",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "D1": {
+        "value": "条件/关系（文字，不是计算公式）",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "E1": {
+        "value": "条款",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "F1": {
+        "value": "印刷页",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "G1": {
+        "value": "PDF页",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "A2": {
+        "value": "适用性静压边界",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B2": {
+        "value": "0",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "C2": {
+        "value": "Pa",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": "静压>0（表压力）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": "第1章",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": "1",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": "3",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "电辅热室外干球温度边界",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B3": {
+        "value": "0",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "C3": {
+        "value": "℃",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": "温度≥0时电辅热不得自动开启",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": "5.3",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": "未印（正文第3页）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": "5",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": "实测能效/标注能效最低比例",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": "0.95",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C4": {
+        "value": "比值",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": "实测≥标注×0.95；不是等级限值折减",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": "5.4 b)",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": "未印（正文第3页）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G4": {
+        "value": "5",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "实测耗电计算值/标注值最高比例",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B5": {
+        "value": "1.1",
+        "type": "n",
+        "style": "5",
+        "formula": null
+      },
+      "C5": {
+        "value": "比值",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D5": {
+        "value": "实测计算值≤标注×1.10",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E5": {
+        "value": "5.4 d)",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F5": {
+        "value": "未印（正文第3页）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G5": {
+        "value": "5",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A6": {
+        "value": "实测值小数位数",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B6": {
+        "value": "2",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "C6": {
+        "value": "位",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D6": {
+        "value": "舍入方式待补引用标准证据",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E6": {
+        "value": "6.1、6.3",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F6": {
+        "value": "未印（正文第3页）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G6": {
+        "value": "5",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A7": {
+        "value": "SEER可选测试温度",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B7": {
+        "value": "29",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "C7": {
+        "value": "℃",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D7": {
+        "value": "额定/中间/最小能力均可选做",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E7": {
+        "value": "6.1 a)",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F7": {
+        "value": "未印（正文第3页）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G7": {
+        "value": "5",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A8": {
+        "value": "SEER换算来源温度",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B8": {
+        "value": "35",
+        "type": "n",
+        "style": "4",
+        "formula": null
+      },
+      "C8": {
+        "value": "℃",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D8": {
+        "value": "对应能力实测值",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E8": {
+        "value": "6.1 a)",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F8": {
+        "value": "未印（正文第3页）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G8": {
+        "value": "5",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A9": {
+        "value": "制冷量换算系数",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B9": {
+        "value": "1.077",
+        "type": "n",
+        "style": "7",
+        "formula": null
+      },
+      "C9": {
+        "value": "比值",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D9": {
+        "value": "29℃制冷量=35℃对应制冷量×1.077",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E9": {
+        "value": "6.1 a)",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F9": {
+        "value": "未印（正文第3页）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G9": {
+        "value": "5",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A10": {
+        "value": "功率换算系数",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B10": {
+        "value": "0.914",
+        "type": "n",
+        "style": "7",
+        "formula": null
+      },
+      "C10": {
+        "value": "比值",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "D10": {
+        "value": "29℃功率=35℃对应功率×0.914",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "E10": {
+        "value": "6.1 a)",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "F10": {
+        "value": "未印（正文第3页）",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "G10": {
+        "value": "5",
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  }
+]

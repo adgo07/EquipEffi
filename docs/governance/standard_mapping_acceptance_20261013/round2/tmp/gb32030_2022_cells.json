@@ -1,0 +1,7094 @@
+[
+  {
+    "sheet": "表1",
+    "xml": "xl/worksheets/sheet1.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "L1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 32030—2022 表1  小型潜水电泵",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "L2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "数值为 ηDB 上的百分点增量；— 为原表破折号；三级减容差，非绝对效率",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "L3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": "执行者自核，非独立验收；合并跨度见逐格CSV。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "L4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "等级",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "下限 kW",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "关系",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "上限 kW",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E5": {
+        "value": "关系",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F5": {
+        "value": "QDX和QD",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "G5": {
+        "value": "QX和Q",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "H5": {
+        "value": "QY",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "I5": {
+        "value": "QS",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "J5": {
+        "value": "QXR",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "K5": {
+        "value": "QXL",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "L5": {
+        "value": "其他",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "1",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "B6": {
+        "value": null,
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "C6": {
+        "value": null,
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "D6": {
+        "value": "3",
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "E6": {
+        "value": "≤",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "F6": {
+        "value": "2",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "G6": {
+        "value": "3",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "H6": {
+        "value": "2.5",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "I6": {
+        "value": "2",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "J6": {
+        "value": "1.5",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "K6": {
+        "value": "2.5",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "L6": {
+        "value": "3",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "A7": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B7": {
+        "value": "3",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C7": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D7": {
+        "value": "11",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E7": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F7": {
+        "value": "—",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G7": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H7": {
+        "value": "3",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "I7": {
+        "value": "2.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "J7": {
+        "value": "2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "K7": {
+        "value": "3",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "L7": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A8": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B8": {
+        "value": "11",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C8": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D8": {
+        "value": "22",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E8": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F8": {
+        "value": "—",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G8": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H8": {
+        "value": "3",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "I8": {
+        "value": "2.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "J8": {
+        "value": "2.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "K8": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "L8": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A9": {
+        "value": "2",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B9": {
+        "value": null,
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "C9": {
+        "value": null,
+        "type": "str",
+        "style": "23",
+        "formula": null
+      },
+      "D9": {
+        "value": "3",
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "E9": {
+        "value": "≤",
+        "type": "str",
+        "style": "24",
+        "formula": null
+      },
+      "F9": {
+        "value": "1",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "G9": {
+        "value": "1.5",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "H9": {
+        "value": "1.3",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "I9": {
+        "value": "1",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "J9": {
+        "value": "0.8",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "K9": {
+        "value": "1.3",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "L9": {
+        "value": "1.5",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "A10": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B10": {
+        "value": "3",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C10": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D10": {
+        "value": "11",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E10": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F10": {
+        "value": "—",
+        "type": "str",
+        "style": "30",
+        "formula": null
+      },
+      "G10": {
+        "value": "1.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H10": {
+        "value": "1.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "I10": {
+        "value": "1.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "J10": {
+        "value": "1",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "K10": {
+        "value": "1.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "L10": {
+        "value": "1.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A11": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B11": {
+        "value": "11",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C11": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D11": {
+        "value": "22",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E11": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F11": {
+        "value": "—",
+        "type": "str",
+        "style": "30",
+        "formula": null
+      },
+      "G11": {
+        "value": "1.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H11": {
+        "value": "1.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "I11": {
+        "value": "1.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "J11": {
+        "value": "1.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "K11": {
+        "value": "1.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "L11": {
+        "value": "1.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A12": {
+        "value": "3",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "B12": {
+        "value": null,
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "C12": {
+        "value": null,
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "D12": {
+        "value": "3",
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "E12": {
+        "value": "≤",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "F12": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "G12": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "H12": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "I12": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "J12": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "K12": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "L12": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "A13": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B13": {
+        "value": "3",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C13": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D13": {
+        "value": "11",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E13": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F13": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G13": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H13": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I13": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "J13": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "K13": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "L13": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A14": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B14": {
+        "value": "11",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C14": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D14": {
+        "value": "22",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E14": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F14": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G14": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H14": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I14": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "J14": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "K14": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "L14": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "L15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A16": {
+        "value": "来源：GB32030—2022，S00；SHA见真实性核验档。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "L16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A17": {
+        "value": "本地PDF 4，印刷页 2；物理源格见逐格CSV。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "L17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A18": {
+        "value": "空端点非0；外部基准效率及容差尚未核验。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "L18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "J19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "K19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "L19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表2",
+    "xml": "xl/worksheets/sheet2.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 32030—2022 表2  大中型潜水电泵",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "数值为 ηDB 上的百分点增量；— 为原表破折号；三级减容差，非绝对效率",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": "执行者自核，非独立验收；合并跨度见逐格CSV。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "等级",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "下限 kW",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "关系",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "上限 kW",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E5": {
+        "value": "关系",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F5": {
+        "value": "离心式",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "G5": {
+        "value": "轴流式",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "H5": {
+        "value": "混流式（蜗壳）",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "I5": {
+        "value": "混流式（导叶）",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "1",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "B6": {
+        "value": "22",
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "C6": {
+        "value": ">",
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "D6": {
+        "value": "100",
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "E6": {
+        "value": "≤",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "F6": {
+        "value": "3",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "G6": {
+        "value": "1.5",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "H6": {
+        "value": "2.5",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "I6": {
+        "value": "2",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "A7": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B7": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C7": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D7": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E7": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F7": {
+        "value": "3",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G7": {
+        "value": "2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H7": {
+        "value": "2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "I7": {
+        "value": "2.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A8": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B8": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C8": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D8": {
+        "value": "355",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E8": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F8": {
+        "value": "2.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G8": {
+        "value": "1.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H8": {
+        "value": "2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "I8": {
+        "value": "2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A9": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B9": {
+        "value": "355",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C9": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D9": {
+        "value": null,
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E9": {
+        "value": null,
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F9": {
+        "value": "2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G9": {
+        "value": "1",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H9": {
+        "value": "1.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "I9": {
+        "value": "1.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A10": {
+        "value": "2",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B10": {
+        "value": "22",
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "C10": {
+        "value": ">",
+        "type": "str",
+        "style": "23",
+        "formula": null
+      },
+      "D10": {
+        "value": "100",
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "E10": {
+        "value": "≤",
+        "type": "str",
+        "style": "24",
+        "formula": null
+      },
+      "F10": {
+        "value": "1.5",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "G10": {
+        "value": "0.8",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "H10": {
+        "value": "1.3",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "I10": {
+        "value": "1",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "A11": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B11": {
+        "value": "100",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C11": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D11": {
+        "value": "185",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E11": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F11": {
+        "value": "1.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G11": {
+        "value": "1",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H11": {
+        "value": "1",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "I11": {
+        "value": "1.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A12": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B12": {
+        "value": "185",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C12": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D12": {
+        "value": "355",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E12": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F12": {
+        "value": "1.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G12": {
+        "value": "0.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H12": {
+        "value": "1",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "I12": {
+        "value": "1",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A13": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B13": {
+        "value": "355",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C13": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D13": {
+        "value": null,
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E13": {
+        "value": null,
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F13": {
+        "value": "1",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G13": {
+        "value": "0.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H13": {
+        "value": "0.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "I13": {
+        "value": "0.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A14": {
+        "value": "3",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "B14": {
+        "value": "22",
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "C14": {
+        "value": ">",
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "D14": {
+        "value": "100",
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "E14": {
+        "value": "≤",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "F14": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "G14": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "H14": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "I14": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "A15": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B15": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C15": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D15": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E15": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F15": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G15": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H15": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I15": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A16": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B16": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C16": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D16": {
+        "value": "355",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E16": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F16": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G16": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H16": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I16": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A17": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B17": {
+        "value": "355",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C17": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D17": {
+        "value": null,
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E17": {
+        "value": null,
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F17": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G17": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H17": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I17": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I18": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A19": {
+        "value": "来源：GB32030—2022，S00；SHA见真实性核验档。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I19": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A20": {
+        "value": "本地PDF 4、5，印刷页 2、3；物理源格见逐格CSV。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I20": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A21": {
+        "value": "空端点非0；外部基准效率及容差尚未核验。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表3",
+    "xml": "xl/worksheets/sheet3.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 32030—2022 表3  污水污物潜水电泵",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "数值为 ηDB 上的百分点增量；— 为原表破折号；三级减容差，非绝对效率",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": "执行者自核，非独立验收；合并跨度见逐格CSV。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "等级",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "下限 kW",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "关系",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "上限 kW",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E5": {
+        "value": "关系",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F5": {
+        "value": "旋流式",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "G5": {
+        "value": "轴流式",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "H5": {
+        "value": "混流式",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "I5": {
+        "value": "其他式",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "1",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "B6": {
+        "value": null,
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "C6": {
+        "value": null,
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "D6": {
+        "value": "7.5",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "E6": {
+        "value": "≤",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "F6": {
+        "value": "2",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "G6": {
+        "value": "—",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "H6": {
+        "value": "—",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "I6": {
+        "value": "4",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "A7": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B7": {
+        "value": "7.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "C7": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D7": {
+        "value": "22",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E7": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F7": {
+        "value": "2.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G7": {
+        "value": "3",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H7": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "I7": {
+        "value": "4.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A8": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B8": {
+        "value": "22",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C8": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D8": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E8": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F8": {
+        "value": "2.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G8": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H8": {
+        "value": "4",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "I8": {
+        "value": "5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A9": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B9": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C9": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D9": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E9": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F9": {
+        "value": "—",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G9": {
+        "value": "4",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H9": {
+        "value": "4.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "I9": {
+        "value": "5.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A10": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B10": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C10": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D10": {
+        "value": "355",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E10": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F10": {
+        "value": "—",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G10": {
+        "value": "4",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H10": {
+        "value": "4.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "I10": {
+        "value": "5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A11": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B11": {
+        "value": "355",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C11": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D11": {
+        "value": null,
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E11": {
+        "value": null,
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F11": {
+        "value": "—",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G11": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H11": {
+        "value": "4",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "I11": {
+        "value": "4.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A12": {
+        "value": "2",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B12": {
+        "value": null,
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "C12": {
+        "value": null,
+        "type": "str",
+        "style": "23",
+        "formula": null
+      },
+      "D12": {
+        "value": "7.5",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "E12": {
+        "value": "≤",
+        "type": "str",
+        "style": "24",
+        "formula": null
+      },
+      "F12": {
+        "value": "1",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "G12": {
+        "value": "—",
+        "type": "str",
+        "style": "33",
+        "formula": null
+      },
+      "H12": {
+        "value": "—",
+        "type": "str",
+        "style": "33",
+        "formula": null
+      },
+      "I12": {
+        "value": "2",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "A13": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B13": {
+        "value": "7.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "C13": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D13": {
+        "value": "22",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E13": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F13": {
+        "value": "1.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G13": {
+        "value": "1.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H13": {
+        "value": "1.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "I13": {
+        "value": "2.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A14": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B14": {
+        "value": "22",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C14": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D14": {
+        "value": "100",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E14": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F14": {
+        "value": "1.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G14": {
+        "value": "1.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H14": {
+        "value": "2",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "I14": {
+        "value": "2.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A15": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B15": {
+        "value": "100",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C15": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D15": {
+        "value": "185",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E15": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F15": {
+        "value": "—",
+        "type": "str",
+        "style": "30",
+        "formula": null
+      },
+      "G15": {
+        "value": "2",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H15": {
+        "value": "2.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "I15": {
+        "value": "2.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A16": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B16": {
+        "value": "185",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C16": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D16": {
+        "value": "355",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E16": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F16": {
+        "value": "—",
+        "type": "str",
+        "style": "30",
+        "formula": null
+      },
+      "G16": {
+        "value": "2",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H16": {
+        "value": "2.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "I16": {
+        "value": "2.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A17": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B17": {
+        "value": "355",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C17": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D17": {
+        "value": null,
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E17": {
+        "value": null,
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F17": {
+        "value": "—",
+        "type": "str",
+        "style": "30",
+        "formula": null
+      },
+      "G17": {
+        "value": "1.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H17": {
+        "value": "2",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "I17": {
+        "value": "2.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A18": {
+        "value": "3",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "B18": {
+        "value": null,
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "C18": {
+        "value": null,
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "D18": {
+        "value": "7.5",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "E18": {
+        "value": "≤",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "F18": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "G18": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "H18": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "I18": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "A19": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B19": {
+        "value": "7.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "C19": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D19": {
+        "value": "22",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E19": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F19": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G19": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H19": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I19": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A20": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B20": {
+        "value": "22",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C20": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D20": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E20": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F20": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G20": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H20": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I20": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A21": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B21": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C21": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D21": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E21": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F21": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G21": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H21": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I21": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A22": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B22": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C22": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D22": {
+        "value": "355",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E22": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F22": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G22": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H22": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I22": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A23": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B23": {
+        "value": "355",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C23": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D23": {
+        "value": null,
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E23": {
+        "value": null,
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F23": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G23": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H23": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I23": {
+        "value": "-Δη",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A25": {
+        "value": "来源：GB32030—2022，S00；SHA见真实性核验档。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A26": {
+        "value": "本地PDF 5、6，印刷页 3、4；物理源格见逐格CSV。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B26": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C26": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D26": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E26": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F26": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G26": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H26": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I26": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A27": {
+        "value": "空端点非0；外部基准效率及容差尚未核验。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B27": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C27": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D27": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E27": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F27": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G27": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H27": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I27": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A28": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B28": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C28": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D28": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E28": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F28": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G28": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H28": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I28": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表4",
+    "xml": "xl/worksheets/sheet4.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 32030—2022 表4  井用潜水电泵",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "数值为 ηgr 上的百分点增量；— 为原表破折号；三级减容差，非绝对效率",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": "执行者自核，非独立验收；合并跨度见逐格CSV。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "等级",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "下限 kW",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "关系",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "上限 kW",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E5": {
+        "value": "关系",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F5": {
+        "value": "充水式",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "G5": {
+        "value": "充油式",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "H5": {
+        "value": "屏蔽式",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "I5": {
+        "value": "单相",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "1",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "B6": {
+        "value": null,
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "C6": {
+        "value": null,
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "D6": {
+        "value": "11",
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "E6": {
+        "value": "≤",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "F6": {
+        "value": "2",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "G6": {
+        "value": "3",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "H6": {
+        "value": "2.5",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "I6": {
+        "value": "3.5",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "A7": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B7": {
+        "value": "11",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C7": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D7": {
+        "value": "30",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E7": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F7": {
+        "value": "2.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G7": {
+        "value": "3",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H7": {
+        "value": "3",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "I7": {
+        "value": "—",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A8": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B8": {
+        "value": "30",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C8": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D8": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E8": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F8": {
+        "value": "3",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G8": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H8": {
+        "value": "—",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I8": {
+        "value": "—",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A9": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B9": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C9": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D9": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E9": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F9": {
+        "value": "2.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G9": {
+        "value": "3",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H9": {
+        "value": "—",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I9": {
+        "value": "—",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A10": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B10": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C10": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D10": {
+        "value": null,
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E10": {
+        "value": null,
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F10": {
+        "value": "2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G10": {
+        "value": "2.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "H10": {
+        "value": "—",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I10": {
+        "value": "—",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A11": {
+        "value": "2",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B11": {
+        "value": null,
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "C11": {
+        "value": null,
+        "type": "str",
+        "style": "23",
+        "formula": null
+      },
+      "D11": {
+        "value": "11",
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "E11": {
+        "value": "≤",
+        "type": "str",
+        "style": "24",
+        "formula": null
+      },
+      "F11": {
+        "value": "1",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "G11": {
+        "value": "1.5",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "H11": {
+        "value": "1.3",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "I11": {
+        "value": "1.8",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "A12": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B12": {
+        "value": "11",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C12": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D12": {
+        "value": "30",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E12": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F12": {
+        "value": "1.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G12": {
+        "value": "1.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H12": {
+        "value": "1.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "I12": {
+        "value": "—",
+        "type": "str",
+        "style": "30",
+        "formula": null
+      },
+      "A13": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B13": {
+        "value": "30",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C13": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D13": {
+        "value": "100",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E13": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F13": {
+        "value": "1.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G13": {
+        "value": "1.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H13": {
+        "value": "—",
+        "type": "str",
+        "style": "30",
+        "formula": null
+      },
+      "I13": {
+        "value": "—",
+        "type": "str",
+        "style": "30",
+        "formula": null
+      },
+      "A14": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B14": {
+        "value": "100",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C14": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D14": {
+        "value": "185",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E14": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F14": {
+        "value": "1.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G14": {
+        "value": "1.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H14": {
+        "value": "—",
+        "type": "str",
+        "style": "30",
+        "formula": null
+      },
+      "I14": {
+        "value": "—",
+        "type": "str",
+        "style": "30",
+        "formula": null
+      },
+      "A15": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B15": {
+        "value": "185",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C15": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D15": {
+        "value": null,
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E15": {
+        "value": null,
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F15": {
+        "value": "1",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G15": {
+        "value": "1.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "H15": {
+        "value": "—",
+        "type": "str",
+        "style": "30",
+        "formula": null
+      },
+      "I15": {
+        "value": "—",
+        "type": "str",
+        "style": "30",
+        "formula": null
+      },
+      "A16": {
+        "value": "3",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "B16": {
+        "value": null,
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "C16": {
+        "value": null,
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "D16": {
+        "value": "11",
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "E16": {
+        "value": "≤",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "F16": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "G16": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "H16": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "I16": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "A17": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B17": {
+        "value": "11",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C17": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D17": {
+        "value": "30",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E17": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F17": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G17": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H17": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I17": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A18": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B18": {
+        "value": "30",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C18": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D18": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E18": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F18": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G18": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H18": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I18": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A19": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B19": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C19": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D19": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E19": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F19": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G19": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H19": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I19": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A20": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B20": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C20": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D20": {
+        "value": null,
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E20": {
+        "value": null,
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F20": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G20": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "H20": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "I20": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A22": {
+        "value": "来源：GB32030—2022，S00；SHA见真实性核验档。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A23": {
+        "value": "本地PDF 6，印刷页 4；物理源格见逐格CSV。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A24": {
+        "value": "空端点非0；外部基准效率及容差尚未核验。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "H25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "I25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表5",
+    "xml": "xl/worksheets/sheet5.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 32030—2022 表5  井用流量扬程容差等级",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "引用等级原样保留；具体容差系数尚未核验",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": "执行者自核，非独立验收；合并跨度见逐格CSV。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "等级",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "下限 kW",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "关系",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "上限 kW",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E5": {
+        "value": "关系",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F5": {
+        "value": "容差系数等级",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "1",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "B6": {
+        "value": null,
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "C6": {
+        "value": null,
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "D6": {
+        "value": "100",
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "E6": {
+        "value": "≤",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "F6": {
+        "value": "1B",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "A7": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B7": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C7": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D7": {
+        "value": null,
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E7": {
+        "value": null,
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F7": {
+        "value": "1U",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "A8": {
+        "value": "2",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B8": {
+        "value": null,
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "C8": {
+        "value": null,
+        "type": "str",
+        "style": "23",
+        "formula": null
+      },
+      "D8": {
+        "value": "100",
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "E8": {
+        "value": "≤",
+        "type": "str",
+        "style": "24",
+        "formula": null
+      },
+      "F8": {
+        "value": "2B",
+        "type": "str",
+        "style": "24",
+        "formula": null
+      },
+      "A9": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B9": {
+        "value": "100",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C9": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D9": {
+        "value": null,
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E9": {
+        "value": null,
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F9": {
+        "value": "2U",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "A10": {
+        "value": "3",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "B10": {
+        "value": null,
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "C10": {
+        "value": null,
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "D10": {
+        "value": "100",
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "E10": {
+        "value": "≤",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "F10": {
+        "value": "2B",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "A11": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B11": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C11": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D11": {
+        "value": null,
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E11": {
+        "value": null,
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F11": {
+        "value": "2U",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "A12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A13": {
+        "value": "来源：GB32030—2022，S00；SHA见真实性核验档。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A14": {
+        "value": "本地PDF 7，印刷页 5；物理源格见逐格CSV。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A15": {
+        "value": "空端点非0；外部基准效率及容差尚未核验。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表6",
+    "xml": "xl/worksheets/sheet6.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 32030—2022 表6  混流潜水电泵",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "数值为 ηgr 上的百分点增量；— 为原表破折号；三级减容差，非绝对效率",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": "执行者自核，非独立验收；合并跨度见逐格CSV。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "等级",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "下限 kW",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "关系",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "上限 kW",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E5": {
+        "value": "关系",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F5": {
+        "value": "蜗壳式",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "G5": {
+        "value": "导叶式",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "1",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "B6": {
+        "value": null,
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "C6": {
+        "value": null,
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "D6": {
+        "value": "22",
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "E6": {
+        "value": "≤",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "F6": {
+        "value": "3.5",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "G6": {
+        "value": "3",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "A7": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B7": {
+        "value": "22",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C7": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D7": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E7": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F7": {
+        "value": "4",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G7": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A8": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B8": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C8": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D8": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E8": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F8": {
+        "value": "4.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G8": {
+        "value": "4",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A9": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B9": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C9": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D9": {
+        "value": "355",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E9": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F9": {
+        "value": "4.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G9": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A10": {
+        "value": "1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B10": {
+        "value": "355",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C10": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D10": {
+        "value": null,
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E10": {
+        "value": null,
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F10": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G10": {
+        "value": "3",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A11": {
+        "value": "2",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B11": {
+        "value": null,
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "C11": {
+        "value": null,
+        "type": "str",
+        "style": "23",
+        "formula": null
+      },
+      "D11": {
+        "value": "22",
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "E11": {
+        "value": "≤",
+        "type": "str",
+        "style": "24",
+        "formula": null
+      },
+      "F11": {
+        "value": "1.8",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "G11": {
+        "value": "1.5",
+        "type": "n",
+        "style": "25",
+        "formula": null
+      },
+      "A12": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B12": {
+        "value": "22",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C12": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D12": {
+        "value": "100",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E12": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F12": {
+        "value": "2.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G12": {
+        "value": "1.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A13": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B13": {
+        "value": "100",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C13": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D13": {
+        "value": "185",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E13": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F13": {
+        "value": "2.3",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G13": {
+        "value": "2",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A14": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B14": {
+        "value": "185",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C14": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D14": {
+        "value": "355",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E14": {
+        "value": "≤",
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F14": {
+        "value": "2",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G14": {
+        "value": "1.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A15": {
+        "value": "2",
+        "type": "n",
+        "style": "26",
+        "formula": null
+      },
+      "B15": {
+        "value": "355",
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "C15": {
+        "value": ">",
+        "type": "str",
+        "style": "28",
+        "formula": null
+      },
+      "D15": {
+        "value": null,
+        "type": "n",
+        "style": "27",
+        "formula": null
+      },
+      "E15": {
+        "value": null,
+        "type": "str",
+        "style": "29",
+        "formula": null
+      },
+      "F15": {
+        "value": "1.8",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "G15": {
+        "value": "1.5",
+        "type": "n",
+        "style": "31",
+        "formula": null
+      },
+      "A16": {
+        "value": "3",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "B16": {
+        "value": null,
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "C16": {
+        "value": null,
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "D16": {
+        "value": "22",
+        "type": "n",
+        "style": "17",
+        "formula": null
+      },
+      "E16": {
+        "value": "≤",
+        "type": "str",
+        "style": "19",
+        "formula": null
+      },
+      "F16": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "G16": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "32",
+        "formula": null
+      },
+      "A17": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B17": {
+        "value": "22",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C17": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D17": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E17": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F17": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G17": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A18": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B18": {
+        "value": "100",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C18": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D18": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E18": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F18": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G18": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A19": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B19": {
+        "value": "185",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C19": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D19": {
+        "value": "355",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E19": {
+        "value": "≤",
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F19": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G19": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A20": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "B20": {
+        "value": "355",
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "C20": {
+        "value": ">",
+        "type": "str",
+        "style": "13",
+        "formula": null
+      },
+      "D20": {
+        "value": null,
+        "type": "n",
+        "style": "11",
+        "formula": null
+      },
+      "E20": {
+        "value": null,
+        "type": "str",
+        "style": "14",
+        "formula": null
+      },
+      "F20": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "G20": {
+        "value": "-Δηgr",
+        "type": "str",
+        "style": "15",
+        "formula": null
+      },
+      "A21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G21": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A22": {
+        "value": "来源：GB32030—2022，S00；SHA见真实性核验档。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G22": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A23": {
+        "value": "本地PDF 7、8，印刷页 5、6；物理源格见逐格CSV。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G23": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A24": {
+        "value": "空端点非0；外部基准效率及容差尚未核验。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G24": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G25": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  }
+]

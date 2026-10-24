@@ -1,0 +1,4 @@
+snapshot/
+tmp/
+node_modules/
+__pycache__/

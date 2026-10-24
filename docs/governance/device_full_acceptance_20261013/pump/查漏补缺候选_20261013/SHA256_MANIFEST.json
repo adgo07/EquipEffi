@@ -1,0 +1,17 @@
+[
+  {
+    "path": "docs/standards/gb19762_2025/STANDARD_MAPPING.md",
+    "candidate_sha256": "9944977edb2ed273aa476d11b75ec6e487dbb412a351695399168f369f414fde",
+    "restored_sha256": "154fab292666030bc5ce7674cd04c2724337502eff007049ecf5e5c8e09374fa"
+  },
+  {
+    "path": "docs/standards/gb19762_2025/profiles/pump_water.md",
+    "candidate_sha256": "1ccb22d410ccbcbfc53a4711ed878db2f78c91bc74690ce221d36305ddd8e038",
+    "restored_sha256": "3c05073853c72a7295c13c97c6b02578e1b27bd69cd020e4a8cd5fe9b378d25b"
+  },
+  {
+    "path": "docs/standards/gb19762_2025/profiles/pump_chemical.md",
+    "candidate_sha256": "60c8bf1dad0c41dfd31173cb1068b6e9e14e86c51bfabf5e05374d3d6ed8eb12",
+    "restored_sha256": "7dfd314574395c3eb59fafc4d2c1e50112b3eb5c44ac205df9388c7b70842991"
+  }
+]

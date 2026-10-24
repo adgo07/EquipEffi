@@ -1,0 +1,21 @@
+from pathlib import Path
+import json,hashlib,datetime
+out=Path('docs/governance/device_full_acceptance_20261013/reverification/final_hvac');base=Path('docs/governance/device_full_acceptance_20261013/hvac')
+a=json.loads((out/'baseline_comparison.json').read_text(encoding='utf-8'))
+core=[x for x in a if Path(x['path']).suffix in ['.pdf','.xlsx'] or Path(x['path']).name=='STANDARD_MAPPING.md']
+(out/'core_artifact_manifest.json').write_text(json.dumps(core,ensure_ascii=False,indent=2),encoding='utf-8')
+e=[]
+for f in ['ACCEPTANCE_REPORT.md','source_manifest.json','independent_compare.py','independent_cell_comparison.csv','comparison_summary.json','source_integrity_check.json']:
+ p=(base/f).resolve();e.append({'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+(out/'reused_first_round_evidence.json').write_text(json.dumps(e,ensure_ascii=False,indent=2),encoding='utf-8')
+lines=['# 五项热工标准最终复验报告','', '日期：2026-10-13。范围：GB29541—2013、GB19576—2019、GB37479—2019、GB21454—2021、GB19577—2024。', '', '**结论：五项Stage A映射资料验收通过。** 首轮四项未登记缺口已补齐；本轮没有发现需修改表值、公式或映射事实的新差异。通过只指给定标准PDF对应的映射资料与问题登记出口，不批准未决软件解释、不宣布冻结/READY_FOR_IMPLEMENTATION/SUPPORTED，也不批准后续阶段。', '', '## 证据复用与变化复核', '', '以首轮54来源SHA逐文件比较：50份字节未变，4份变更。五份原PDF、五份主映射、五份XLSX全部字节未变，故复用首轮47/47原页、23/23原表、24/24编号公式及824项位置独立对照证据。没有把本轮登记检查冒充重新视觉核验47页或重新执行824项。本轮没有必要重复运行未变化工作簿的数值核验。', '', '完整对比见baseline_comparison.json；首轮证据绝对路径/哈希见reused_first_round_evidence.json。核心三件套绝对路径/哈希见core_artifact_manifest.json。', '', '4份变更均为ISSUE_REGISTRATION_REQUEST.md追加“正式编号回链”：29541、19576、37479、21454。通过截取新增标题前正文、恢复原终止换行，所得字节SHA与首轮记录逐份完全一致，证明原正文没有潜在改写。新增全部文字及逐行diff保存在changed_file_semantics.json和各标准_semantic.diff；逐项阅读确认仅补登记映射，并明确旧“未登记”为历史、根台账唯一权威、登记不批准建议亦不关闭问题。', '', '## 正式编号逐项对照', '', '|标准|本地请求→根ID|核验|','|---|---|---|','|29541—2013|001/002/003/004/005 → EQP-STD-GB29541-001/002/003/004/005|5项一一对应，OPEN|','|19576—2019|R01/R02 → EQP-STD-GB19576-001/002|2项一一对应，OPEN|','|37479—2019|请求A/请求C/请求B → EQP-STD-GB37479-001/002/003|按A/C/B实际顺序，非误用A/B/C，OPEN|','|21454—2021|R1/R2/R3/R4 → EQP-STD-GB21454-001/002/003/004|4项一一对应，OPEN|','|19577—2024|既有EQP-STD-GB19577-001～006|6项仍OPEN，各问题块正文与既有round2根台账快照完全一致|', '', '14项均检查：根台账标题只出现一次、版本对应、根→专属请求文件链接存在、专属本地键→稳定ID配对正确、专属→根路径可达、待决/未批准说明仍在。GB19577六项无重复新建、误关或擅批。机器检查见issue_links_check.json；其中19577采用标题边界抽取问题块，排除后续新章节标题，避免把新增其他设备章节误算作006正文改变。', '', '人工语义核验：29541的静态10kW/低温静态/修约/外部试验/额定实测选组五项事实和候选意见保持；19576的日期公开证据及试验依赖保持；37479的5.1漏引表2、日期、试验/修约保持；21454的SEER冲突、精度、逐bin容量、外部引用保持。根台账新增条目没有把建议写成已批准软件决定。问题类型字段有“待确认”或复合类型的整理状态，未擅自改成确定解释；不影响本轮确认稳定ID和证据追踪。', '', '## 未决解释与接入边界', '', 'OPEN不自动使Stage A资料验收失败；本轮确认的是疑点已被登记和完整保留。后续实际实现仍需按受影响分支处理原证据缺口：29541静态和选组、数值修约；19576/37479完整测试依据和37479最低限定值引用；21454多指标路由、修约、逐bin容量及测试依据；19577耗量方向/单位、组合指标、B点32.25/32.3、圆整、外部工况/压力/43℃及历史日期疑点。', '', '首轮已注明的GB19577 A.13可通过测试获得CD的补充说明仍属非阻断提示。五项外部引用全文、完整季节重算、官方全文同一性与XLSX视觉排版未在本轮新增核验，不据本次PASS声称已覆盖。根台账日期延期条目仍OPEN，本轮不把公开事实交Owner投票，亦不修改Catalog。', '', '## 当前环境与稳定性', '', '实际HEAD d9f711068bde583138a7f3dded6f64dcaa339761，origin=https://github.com/adgo07/EquipEffi.git；共享分支不切换、不提交。locked central SHA ee5feb0cc34dbd99790500fadd0c4c932e202a20。本任务不涉及中央公共Contract。复用首轮中央ACTIVE在线blob一致性及业务仓fetch TLS失败的限制记录，不声称本轮刷新远端。适用MUST：原文和证据分层、疑点登记、变更定向复验；MUST NOT：静默批准解释、改源、升支持或Frozen锁。无新增LOCAL DEFECT/CENTRAL CONTRACT GAP。', '', '本轮末次稳定性见final_stability.json：54受验文件及根台账/锁文件均与本轮开始快照一致。所有写入限于本目录。生产unittest/compileall/smoke/性能均not_run（无代码改变）；首轮数值检查824 pass原结果复用，不重新累计。Knowledge capture：无。', '', '## 核心三件套固定清单','', '|绝对路径|SHA-256|','|---|---|']
+lines += ['|`'+x['path']+'`|`'+x['current_sha256']+'`|' for x in core]
+(out/'FINAL_HVAC_REPORT.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+r=[]
+for x in a:
+ p=Path(x['path']);now=hashlib.sha256(p.read_bytes()).hexdigest();r.append({'path':str(p),'start_sha256':x['current_sha256'],'end_sha256':now,'stable':now==x['current_sha256']})
+for name in ['STANDARD_ISSUES_REGISTER','platform-lock']:
+ p=Path(name+('.md' if name=='STANDARD_ISSUES_REGISTER' else '.json'));snap=out/(name+'_snapshot.txt');before=hashlib.sha256(snap.read_bytes()).hexdigest();now=hashlib.sha256(p.read_bytes()).hexdigest();r.append({'path':str(p.resolve()),'start_sha256':before,'end_sha256':now,'stable':before==now})
+(out/'final_stability.json').write_text(json.dumps(r,ensure_ascii=False,indent=2),encoding='utf-8')
+assert all(x['stable'] for x in r)
+print('core',len(core),'stable',len(r),'PASS')

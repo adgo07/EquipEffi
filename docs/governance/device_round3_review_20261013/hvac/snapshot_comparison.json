@@ -1,0 +1,42 @@
+[
+  {
+    "standard": "gb19577_2024",
+    "workbook_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+    "workbook_sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e",
+    "snapshot_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb19577_2024__GB19577_2024_TABLE_VALUES.txt",
+    "snapshot_sha256": "4498c5ca4f6bc2ca779066112d368d5f40b8cf0eaf3dc350486686d3149c18af",
+    "nonempty_cell_count": 1020,
+    "normalized_text_equal": true,
+    "limit": "文本值/Sheet尺寸/合并区；不是OOXML和样式全比对；快照时序不由此认证"
+  },
+  {
+    "standard": "gb19576_2019",
+    "workbook_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+    "workbook_sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+    "snapshot_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb19576_2019__GB19576_2019_TABLE1.txt",
+    "snapshot_sha256": "3df705a72f2ffcd6de83944175870d214e00237848bddab86da0f2147baf0276",
+    "nonempty_cell_count": 159,
+    "normalized_text_equal": true,
+    "limit": "文本值/Sheet尺寸/合并区；不是OOXML和样式全比对；快照时序不由此认证"
+  },
+  {
+    "standard": "gb21454_2021",
+    "workbook_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+    "workbook_sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+    "snapshot_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb21454_2021__GB21454_2021_标准表值.txt",
+    "snapshot_sha256": "7e99d686aa658985c23335b3ad2537bfe06e4e045886a632e2b69d191c843bd1",
+    "nonempty_cell_count": 546,
+    "normalized_text_equal": true,
+    "limit": "文本值/Sheet尺寸/合并区；不是OOXML和样式全比对；快照时序不由此认证"
+  },
+  {
+    "standard": "gb37479_2019",
+    "workbook_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+    "workbook_sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4",
+    "snapshot_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb37479_2019__GB37479_2019_TABLE_VALUES.txt",
+    "snapshot_sha256": "4f17cefe232e559afe423347f81bfda581d6f8d2fa386e1ee3af6430a6b9aa9c",
+    "nonempty_cell_count": 398,
+    "normalized_text_equal": true,
+    "limit": "文本值/Sheet尺寸/合并区；不是OOXML和样式全比对；快照时序不由此认证"
+  }
+]

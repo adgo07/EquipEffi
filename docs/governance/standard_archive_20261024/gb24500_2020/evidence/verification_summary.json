@@ -1,0 +1,23 @@
+{
+  "pdf_sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285",
+  "xlsx_sha256": "9f8e243b96ea45cd0c1f1a33dc1c0a7b62eaa8a5f2f9095234c427463a68de1a",
+  "source_table_count": 4,
+  "normalized_rows": [
+    18,
+    21,
+    3,
+    15
+  ],
+  "threshold_cells": 78,
+  "pass": 78,
+  "fail": 0,
+  "error": 0,
+  "skip": 0,
+  "clause_5_2_cell": "限定值与来源!B5",
+  "clause_5_2_value": 97,
+  "clause_5_2_result": "PASS",
+  "formula_cells": 0,
+  "independent_acceptance": "NOT_RUN",
+  "native_excel": "NOT_RUN",
+  "production_tests": "NOT_RUN (documentation only)"
+}

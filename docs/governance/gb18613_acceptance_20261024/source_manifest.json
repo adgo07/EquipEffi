@@ -1,0 +1,81 @@
+{
+  "acceptance": "GB 18613-2020 STANDARD_MAPPING",
+  "generated_at": "2026-10-24T12:00:00+08:00",
+  "time_zone": "Asia/Shanghai",
+  "repository": {
+    "worktree": "G:\\Python Project\\EquipEffi",
+    "origin": "https://github.com/adgo07/EquipEffi.git",
+    "branch": "codex/six-standard-mappings",
+    "head": "d9f711068bde583138a7f3dded6f64dcaa339761",
+    "origin_master": "13cd242a8999e32997f49123a603cd66f1f259d0",
+    "locked_central_sha": "ee5feb0cc34dbd99790500fadd0c4c932e202a20",
+    "central_contract_scope": "not applicable; no central public contract change"
+  },
+  "files": {
+    "pdf": {
+      "path": "标准原文/2. GB+18613-2020 电动机能效限定值及能效等级.pdf",
+      "sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+      "pages": 8,
+      "rendered_dpi": 200
+    },
+    "mapping": {
+      "path": "docs/standards/gb18613_2020/STANDARD_MAPPING.md",
+      "sha256": "bb9d72315a3ac4c29cf805e3f128f7390dd3fdfbd678fea1b8bc817f353997f0"
+    },
+    "workbook": {
+      "path": "docs/standards/gb18613_2020/data/GB18613_2020_表1-6校对数据_A1.xlsx",
+      "sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb"
+    },
+    "issue_register": {
+      "path": "STANDARD_ISSUES_REGISTER.md",
+      "sha256": "54d4309bd77e6ef18e4b05dce7495edf868ef50143c488e39578e0bb23447fe2"
+    }
+  },
+  "tooling": {
+    "python": "3.13.3",
+    "pymupdf": "1.28.2",
+    "openpyxl": "used read-only",
+    "rendering": "PyMuPDF page.get_pixmap(dpi=200)"
+  },
+  "coverage": {
+    "tables": 6,
+    "segments": 8,
+    "power_rows": 108,
+    "efficiency_cells": 1182,
+    "efficiency_numbers": 1149,
+    "efficiency_dashes": 32,
+    "efficiency_true_blanks": 1,
+    "total_compared_cells": 1290,
+    "pass": 1290,
+    "fail": 0
+  },
+  "visual_checks": {
+    "pages_inspected": [4, 5, 6, 7, 8],
+    "focus": [
+      "table 1 last row 315~1000 and 12 columns",
+      "table 2/3 dashes and table 3 C14 true blank",
+      "table 4/5 pole columns",
+      "table 5 continuation and table 6 speed headers",
+      "table 6 75 W >1300 3级 72.0 vs 72.8",
+      "table 6 note and clauses 5.1, 5.2, 6"
+    ]
+  },
+  "prior_acceptance_corroboration": {
+    "path": "docs/governance/device_full_acceptance_20261013/motors/GB18613_2020_ACCEPTANCE.md",
+    "result": "1290/1290, 0 differences, image-based"
+  },
+  "evidence_files": [
+    "evidence/cell_compare.csv",
+    "evidence/summary.json",
+    "compare_cells.py",
+    "ACCEPTANCE_REPORT.md"
+  ],
+  "not_covered": [
+    "GB/T 755-2019, GB/T 5171.1-2014, GB/T 1032, GB/T 5171.21 and product standards full text",
+    "official errata or issuing-body interpretation",
+    "production Calculator, Canonical, Approved Golden, UI, Record",
+    "native Excel open/formula/interaction",
+    "Stage B/C/D, support_status promotion, release acceptance",
+    "independent measurement or test reproduction"
+  ]
+}

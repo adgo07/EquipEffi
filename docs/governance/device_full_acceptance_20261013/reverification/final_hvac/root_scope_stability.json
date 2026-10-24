@@ -1,0 +1,88 @@
+{
+  "root_whole_file_changed_during_review": true,
+  "reason": "Other standard changes; 20 scoped blocks unchanged after newline normalization",
+  "end_sha256": "4989190f141d482dbb00c3fedb5c0ac2b52d8560e24ec4c66ccf02c36f1bc79e",
+  "end_snapshot_stable_on_reread": true,
+  "scoped_blocks": [
+    {
+      "id": "EQP-STD-GB29541-001",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB29541-002",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB29541-003",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB29541-004",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB29541-005",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB19576-001",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB19576-002",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB37479-001",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB37479-002",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB37479-003",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB21454-001",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB21454-002",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB21454-003",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB21454-004",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB19577-001",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB19577-002",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB19577-003",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB19577-004",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB19577-005",
+      "unchanged_during_review": true
+    },
+    {
+      "id": "EQP-STD-GB19577-006",
+      "unchanged_during_review": true
+    }
+  ]
+}

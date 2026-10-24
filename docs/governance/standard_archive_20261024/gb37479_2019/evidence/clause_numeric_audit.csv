@@ -1,0 +1,10 @@
+﻿source_sha256,pdf_page,clause,xlsx_cell,visually_transcribed_expected,xlsx_actual,result,scope
+cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde,3,1,条款数值!B2,0,0,PASS,执行者源页自核后的导出一致性；非独立验收
+cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde,5,5.3,条款数值!B3,0,0,PASS,执行者源页自核后的导出一致性；非独立验收
+cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde,5,5.4b,条款数值!B4,0.95,0.95,PASS,执行者源页自核后的导出一致性；非独立验收
+cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde,5,5.4d,条款数值!B5,1.10,1.1,PASS,执行者源页自核后的导出一致性；非独立验收
+cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde,5,6.1/6.3,条款数值!B6,2,2,PASS,执行者源页自核后的导出一致性；非独立验收
+cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde,5,6.1a,条款数值!B7,29,29,PASS,执行者源页自核后的导出一致性；非独立验收
+cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde,5,6.1a,条款数值!B8,35,35,PASS,执行者源页自核后的导出一致性；非独立验收
+cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde,5,6.1a,条款数值!B9,1.077,1.077,PASS,执行者源页自核后的导出一致性；非独立验收
+cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde,5,6.1a,条款数值!B10,0.914,0.914,PASS,执行者源页自核后的导出一致性；非独立验收

@@ -1,0 +1,22 @@
+{
+  "method": "exact rational arithmetic; not a runtime Numeric Profile",
+  "A1_level1_fraction": "28059/340",
+  "A1_level1_decimal_preview": "82.5264705882353",
+  "A1_grade": 2,
+  "A2_threshold_fractions": [
+    "1632277/8400",
+    "1713823/8400",
+    "1795463/8400"
+  ],
+  "A2_decimal_previews": [
+    "194.31869047619048",
+    "204.02654761904762",
+    "213.74559523809523"
+  ],
+  "A2_grade": 2,
+  "pass": 2,
+  "fail": 0,
+  "error": 0,
+  "skip": 0,
+  "not_run": "Other 28 candidate rows are designed, not executable runtime tests."
+}

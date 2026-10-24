@@ -1,0 +1,12 @@
+{
+  "errors": [],
+  "protected_files": 14,
+  "prior_protected_files": 264,
+  "manifest_entries": 877,
+  "Owner_rules_preserved": 25,
+  "grade_values_compared": 150,
+  "active_local_links_checked": 271,
+  "standard_count": 15,
+  "production_tests": "NOT_RUN: documentation and file organization only",
+  "pdf_reverification": "NOT_RUN: migration fidelity check only"
+}

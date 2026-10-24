@@ -1,0 +1,26 @@
+{
+  "pdf_pages": 5,
+  "tables": 2,
+  "physical_branches": 7,
+  "table_rows": 22,
+  "grade_cells": {
+    "pass": 66,
+    "fail": 0,
+    "error": 0,
+    "skip": 0
+  },
+  "clause_values": {
+    "pass": 9,
+    "fail": 0
+  },
+  "row_identity_checks": 110,
+  "endpoint_checks": 44,
+  "xlsx_formula_count": 0,
+  "independent_cell_acceptance": "NOT_RUN",
+  "production_unittest": "NOT_RUN: Stage A only",
+  "compileall": "NOT_RUN: no production changes",
+  "smoke": "NOT_RUN: no product execution",
+  "performance": "NOT_RUN: no performance task",
+  "pdf_sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde",
+  "xlsx_sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+}

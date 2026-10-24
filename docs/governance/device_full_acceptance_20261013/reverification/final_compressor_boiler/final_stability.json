@@ -1,0 +1,126 @@
+{
+  "checked_at_utc": "2026-10-13T14:49:10.054284+00:00",
+  "source_files": [
+    {
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf",
+      "start_sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc",
+      "end_sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+      "start_sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285",
+      "end_sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\HANDOFF.md",
+      "start_sha256": "2c989a4a038abb57ce9604c608da368f31216ec08fcf42396f5a086d5b911044",
+      "end_sha256": "2c989a4a038abb57ce9604c608da368f31216ec08fcf42396f5a086d5b911044",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\ISSUE_REGISTRATION_REQUEST.md",
+      "start_sha256": "3952456cddde101fc67f04a251b9f8fc68b0086de4cff31cc53a80a547344543",
+      "end_sha256": "3952456cddde101fc67f04a251b9f8fc68b0086de4cff31cc53a80a547344543",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\README.md",
+      "start_sha256": "9b75c6a9ba98afa70c568e17ab29b220a7b96a87f6bc39411ce0a4ba57da77f0",
+      "end_sha256": "9b75c6a9ba98afa70c568e17ab29b220a7b96a87f6bc39411ce0a4ba57da77f0",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+      "start_sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9",
+      "end_sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\data\\GB19153_2019_标准表值.xlsx",
+      "start_sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+      "end_sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\BOUNDARY_CANDIDATES.md",
+      "start_sha256": "eb2c191b99b28142288d31e53de97887f0022ab9777c609b9fbe7e102127b6e6",
+      "end_sha256": "eb2c191b99b28142288d31e53de97887f0022ab9777c609b9fbe7e102127b6e6",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\REVIEW_20261013_verification_review.md",
+      "start_sha256": "e9d7d74642109a4acb0be10ec081dc102a6fba7a3e23c8918df50fb87c7cda8d",
+      "end_sha256": "e9d7d74642109a4acb0be10ec081dc102a6fba7a3e23c8918df50fb87c7cda8d",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\evidence\\VERIFICATION.md",
+      "start_sha256": "bec4407c6a2b6ed93c5adaca73269569813e743f4bd8924916823705ae5c701f",
+      "end_sha256": "bec4407c6a2b6ed93c5adaca73269569813e743f4bd8924916823705ae5c701f",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ACCEPTANCE_RESPONSE.md",
+      "start_sha256": "360827b90ef0bb3137f687405d24a541fefc58449c6a42775bb6e08172a8a0e1",
+      "end_sha256": "360827b90ef0bb3137f687405d24a541fefc58449c6a42775bb6e08172a8a0e1",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\BOUNDARY_CANDIDATES.md",
+      "start_sha256": "b31886bbb467bfe9d82df653fc8106f05cf02e42108bef41d74e7204b91455c5",
+      "end_sha256": "b31886bbb467bfe9d82df653fc8106f05cf02e42108bef41d74e7204b91455c5",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\HANDOFF.md",
+      "start_sha256": "c491cbee70b816d7a6d00c470996b9139fe2079759b4a43c85ea35e6d9ed6e3f",
+      "end_sha256": "c491cbee70b816d7a6d00c470996b9139fe2079759b4a43c85ea35e6d9ed6e3f",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\ISSUE_REGISTRATION_REQUEST.md",
+      "start_sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8",
+      "end_sha256": "051b806a6d0c6b5589bc891e06b78075f4978f5771409d2e06a9b16895dde6b8",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\README.md",
+      "start_sha256": "59014f44bd65458faf6df56688390d28ae3b1a9775ce67a109981209543a1e77",
+      "end_sha256": "59014f44bd65458faf6df56688390d28ae3b1a9775ce67a109981209543a1e77",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\SOURCE_AND_VERIFICATION.md",
+      "start_sha256": "c427b78a904b701e2e883e441d626f1d2664f6f07a234680983bdb163fa967a3",
+      "end_sha256": "c427b78a904b701e2e883e441d626f1d2664f6f07a234680983bdb163fa967a3",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+      "start_sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a",
+      "end_sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\data\\GB24500_2020_TABLE_VALUES.xlsx",
+      "start_sha256": "9f8e243b96ea45cd0c1f1a33dc1c0a7b62eaa8a5f2f9095234c427463a68de1a",
+      "end_sha256": "9f8e243b96ea45cd0c1f1a33dc1c0a7b62eaa8a5f2f9095234c427463a68de1a",
+      "stable": true
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\evidence\\REVIEW_20261013_verification_review.md",
+      "start_sha256": "ba841cc2ecda7dc21323e20a5b8ab8a034962cfa61d33dd947f9f2356817543d",
+      "end_sha256": "ba841cc2ecda7dc21323e20a5b8ab8a034962cfa61d33dd947f9f2356817543d",
+      "stable": true
+    }
+  ],
+  "all_sources_stable": true,
+  "root_registry": {
+    "path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+    "start_sha256": "4989190f141d482dbb00c3fedb5c0ac2b52d8560e24ec4c66ccf02c36f1bc79e",
+    "end_sha256": "4989190f141d482dbb00c3fedb5c0ac2b52d8560e24ec4c66ccf02c36f1bc79e",
+    "stable": true
+  }
+}

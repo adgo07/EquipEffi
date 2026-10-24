@@ -1,0 +1,4 @@
+# 原PDF渲染及临时解析资料只用于本地核验，不上传原文副本。
+_work/
+**/node_modules/
+*.xlsx.inspect.ndjson

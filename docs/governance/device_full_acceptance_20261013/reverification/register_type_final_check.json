@@ -1,0 +1,62 @@
+{
+  "review_utc": "2026-10-13T15:01:41.809086+00:00",
+  "old_snapshot": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\root_end_snapshot.txt",
+  "old_sha256": "4989190f141d482dbb00c3fedb5c0ac2b52d8560e24ec4c66ccf02c36f1bc79e",
+  "start_sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908",
+  "end_sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908",
+  "stable": true,
+  "checks": [
+    {
+      "id": "EQP-STD-GB30253-001",
+      "expected": "TYPO / CONFLICT",
+      "actual": "TYPO / CONFLICT",
+      "pass": true
+    },
+    {
+      "id": "EQP-STD-GB24500-001",
+      "expected": "IMPLEMENTATION / AMBIGUITY",
+      "actual": "IMPLEMENTATION / AMBIGUITY",
+      "pass": true
+    },
+    {
+      "id": "EQP-STD-GB24500-002",
+      "expected": "REFERENCE / IMPLEMENTATION",
+      "actual": "REFERENCE / IMPLEMENTATION",
+      "pass": true
+    },
+    {
+      "id": "EQP-STD-GB29541-001",
+      "expected": "MISSING / AMBIGUITY",
+      "actual": "MISSING / AMBIGUITY",
+      "pass": true
+    },
+    {
+      "id": "EQP-STD-GB29541-002",
+      "expected": "MISSING / AMBIGUITY",
+      "actual": "MISSING / AMBIGUITY",
+      "pass": true
+    },
+    {
+      "id": "EQP-STD-GB29541-003",
+      "expected": "IMPLEMENTATION / REFERENCE",
+      "actual": "IMPLEMENTATION / REFERENCE",
+      "pass": true
+    },
+    {
+      "id": "EQP-STD-GB29541-004",
+      "expected": "REFERENCE",
+      "actual": "REFERENCE",
+      "pass": true
+    },
+    {
+      "id": "EQP-STD-GB29541-005",
+      "expected": "AMBIGUITY",
+      "actual": "AMBIGUITY",
+      "pass": true
+    }
+  ],
+  "all_other_text_unchanged": true,
+  "old_snapshot_exact_sha_matches_previous_manifest": true,
+  "result": "PASS",
+  "scope": "Only 8 issue-type lines changed; all other content exact; 49 registration audit rerun; remaining 262 files stable per parent final check"
+}

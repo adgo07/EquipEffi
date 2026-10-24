@@ -1,0 +1,243 @@
+{
+  "links": [
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "STANDARD_MAPPING.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "profiles/pump_water.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "profiles/pump_chemical.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "../../PUMP_NUMERIC_AND_DECISION_CONTRACT_V2.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "../../../specs/equipment_efficiency/evidence_registry.json",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "../../../src/equipeffi/resources/standards/pump.json",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "../../../specs/equipment_efficiency/golden/pump_water/",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "../../../specs/equipment_efficiency/golden/pump_chemical/",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "../../../specs/equipment_efficiency/golden/owner_approvals/",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "../../../V1_SCOPE.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "../../../ROADMAP.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "../../phase3_acceptance_record.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "../../phase5_acceptance_record.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "../../../STANDARD_ISSUES_REGISTER.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\README.md",
+      "target": "../../../AGENTS.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\STANDARD_MAPPING.md",
+      "target": "README.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\STANDARD_MAPPING.md",
+      "target": "profiles/pump_water.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\STANDARD_MAPPING.md",
+      "target": "profiles/pump_chemical.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\STANDARD_MAPPING.md",
+      "target": "../../PUMP_NUMERIC_AND_DECISION_CONTRACT_V2.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\STANDARD_MAPPING.md",
+      "target": "../../../AGENTS.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\STANDARD_MAPPING.md",
+      "target": "../../../STANDARD_ISSUES_REGISTER.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\STANDARD_MAPPING.md",
+      "target": "README.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_chemical.md",
+      "target": "../README.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_chemical.md",
+      "target": "../STANDARD_MAPPING.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_chemical.md",
+      "target": "../../../../V1_SCOPE.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_chemical.md",
+      "target": "../../../../ROADMAP.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_chemical.md",
+      "target": "../../../../AGENTS.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_chemical.md",
+      "target": "../../../../V1_SCOPE.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_chemical.md",
+      "target": "../../../phase5_acceptance_record.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_chemical.md",
+      "target": "../../../PUMP_NUMERIC_AND_DECISION_CONTRACT_V2.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_water.md",
+      "target": "../README.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_water.md",
+      "target": "../STANDARD_MAPPING.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_water.md",
+      "target": "../../../../V1_SCOPE.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_water.md",
+      "target": "../../../../ROADMAP.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_water.md",
+      "target": "../../../../AGENTS.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_water.md",
+      "target": "../../../PUMP_NUMERIC_AND_DECISION_CONTRACT_V2.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb19762_2025\\profiles\\pump_water.md",
+      "target": "../../../PUMP_NUMERIC_AND_DECISION_CONTRACT_V2.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb20052_2024\\README.md",
+      "target": "../gb20052_v21/GB20052_变压器主映射表_V2.1.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb20052_2024\\README.md",
+      "target": "../gb20052_v21/GB20052_2024_变压器表1-35人工校对数据工作簿_V2.1.xlsx",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb20052_2024\\README.md",
+      "target": "../gb20052_v21/GB20052_V21_FROZEN_BASELINE.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb20052_2024\\README.md",
+      "target": "../../../STANDARD_ISSUES_REGISTER.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb20052_2024\\README.md",
+      "target": "../gb20052_v21/GB20052_STANDARD_INTERPRETATIONS.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb20052_2024\\README.md",
+      "target": "../gb20052_v21/GB20052_TABLE_01_35_AUDIT.csv",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb20052_2024\\README.md",
+      "target": "../gb20052_v21/GB20052_V21_ACCEPTANCE.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb20052_2024\\README.md",
+      "target": "../gb20052_v21/GB20052_V21_CHANGELOG.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb20052_2024\\README.md",
+      "target": "../../../V1_SCOPE.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\standards\\gb20052_2024\\README.md",
+      "target": "../../../ROADMAP.md",
+      "exists": true
+    }
+  ],
+  "original_pdfs_checked": 25,
+  "original_pdfs_changed": [],
+  "transformer_mapping_lf_sha256": "5934a9112aee783b8b0335db8bbead480bde773c5e4ff365a137e7f9f3c1ae24",
+  "transformer_xlsx_sha256": "35a499bb5406588cdc300c5019bffd0de428d3e08cba21d076ccc8b6f69f2565"
+}

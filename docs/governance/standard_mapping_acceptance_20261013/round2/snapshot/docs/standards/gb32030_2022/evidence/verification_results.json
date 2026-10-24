@@ -1,0 +1,18 @@
+{
+  "xlsx_sha256": "5e86007b5a3cc6e9f80ccb8233b83cba9fe721df3bd6f36e3bbdaf446e889433",
+  "grid_transport_checks": 654,
+  "csv_coordinate_checks": 279,
+  "checks": {
+    "PASS": 933
+  },
+  "spot_checks": 31,
+  "spot_results": {
+    "PASS": 31
+  },
+  "formula_count": 0,
+  "independent_numeric_acceptance": "NOT_RUN",
+  "production_unittest": "NOT_RUN",
+  "compileall": "NOT_RUN",
+  "smoke": "NOT_RUN",
+  "performance": "NOT_RUN"
+}

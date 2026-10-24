@@ -1,0 +1,90 @@
+{
+  "generated_utc": "2026-10-13T15:59:09.633769+00:00",
+  "files": [
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\boiler_workbook_readback.txt",
+      "sha256": "462594af54222dc7955dea79fcba25a6aad02695a1497223c73472343f9f2aa6",
+      "bytes": 7952
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\current_source_inventory.csv",
+      "sha256": "7c00caa885d218359955f0775bd420004c71c3bd1994d30fbc88d10d94bdce86",
+      "bytes": 21550
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\current_source_inventory.json",
+      "sha256": "29fd63f571e178fbd5c3548fd55fd7370e49999d281898ecc41898ef0954be61",
+      "bytes": 39076
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\evidence_manifest.json",
+      "sha256": "16fcb7f953a8deaf69fd17a7d4e3f477f2def1bd1ae61f3f9f72925258e75c57",
+      "bytes": 50715
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\final_stability.json",
+      "sha256": "899e58c8904ef185e55b7a98c7b2baa5967bd7b74b4c4929aab01345a2db57f0",
+      "bytes": 119
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\findings.csv",
+      "sha256": "a2151dbb1ea3f524ed0c95a3c2ea139112ecf447b3c0f4bb3113ba2a10db0fba",
+      "bytes": 14659
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\findings.json",
+      "sha256": "14a56dd2c5783a30fb071b6cc7236b4db68bb1515c025b103ceda96945447a40",
+      "bytes": 19871
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\independent_cells.csv",
+      "sha256": "04be707b726ba9500fa9c962b1b898095901c9d3c3b9143b0ab575d61b21f613",
+      "bytes": 353671
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\independent_check.py",
+      "sha256": "40ce991b87e96adfdd3018aa89d2979b2b411bffb4b0be053fd4b552e4a82bf8",
+      "bytes": 5825
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\independent_summary.json",
+      "sha256": "3a63a34b89e33fadbb5657643768234a7795c9be68b3de1d6ae1cadda2a7a246",
+      "bytes": 1356
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\owner_items.json",
+      "sha256": "254d354da5b3a1634a4c0260d4eaebfd14bd6ca2cf476aef1af7abd34813ec2b",
+      "bytes": 35555
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\owner_questions.json",
+      "sha256": "7aced9dd3ab2af539d81efb6f2285bcff574f97145ddb7e03e0d46c1ae9266f0",
+      "bytes": 12110
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\request_timeline.json",
+      "sha256": "956610152c2b63d05ae72cb57bd92916c5d667de44415f713d8a4a33f12923bf",
+      "bytes": 1085
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\ROUND3_REVIEW.md",
+      "sha256": "b764373dce15863b57fd78ed0c19fcea209ce2cc1e58c947068601f8b57ea38d",
+      "bytes": 14213
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\runtime_discrepancies.json",
+      "sha256": "bbd34b5e5ae21862f5f07d0f234aba9252ec32cda82fa114b7dfb7fa2c8f6ef2",
+      "bytes": 8818
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\six_issue_check.json",
+      "sha256": "273f2cf4bf7c2d7faf1349a29e31268cfd0fb4d0dc6a36d42596df3301d07e4d",
+      "bytes": 1029
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\compressor_boiler\\UNRESOLVED_INTERPRETATIONS.md",
+      "sha256": "af1ce400e807f60789dbf47b773986d856088dd8b35570d75aaefd72bdcd1a17",
+      "bytes": 10087
+    }
+  ]
+}

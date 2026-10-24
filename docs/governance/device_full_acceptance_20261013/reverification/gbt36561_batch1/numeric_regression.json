@@ -1,0 +1,3278 @@
+[
+  {
+    "record_id": "GBT36561-2018-T1-0001",
+    "cell": "正文表值!F2",
+    "expected": "3",
+    "actual": 3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0002",
+    "cell": "正文表值!F3",
+    "expected": ".1",
+    "actual": 0.1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0003",
+    "cell": "正文表值!F4",
+    "expected": ".1",
+    "actual": 0.1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0004",
+    "cell": "正文表值!F5",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0005",
+    "cell": "正文表值!F6",
+    "expected": ".2",
+    "actual": 0.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0006",
+    "cell": "正文表值!F7",
+    "expected": ".2",
+    "actual": 0.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0007",
+    "cell": "正文表值!F8",
+    "expected": "8",
+    "actual": 8,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0008",
+    "cell": "正文表值!F9",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0009",
+    "cell": "正文表值!F10",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0010",
+    "cell": "正文表值!F11",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0011",
+    "cell": "正文表值!F12",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0012",
+    "cell": "正文表值!F13",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0013",
+    "cell": "正文表值!F14",
+    "expected": "15",
+    "actual": 15,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0014",
+    "cell": "正文表值!F15",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0015",
+    "cell": "正文表值!F16",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0016",
+    "cell": "正文表值!F17",
+    "expected": "20",
+    "actual": 20,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0017",
+    "cell": "正文表值!F18",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0018",
+    "cell": "正文表值!F19",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0019",
+    "cell": "正文表值!F20",
+    "expected": "25",
+    "actual": 25,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0020",
+    "cell": "正文表值!F21",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T1-0021",
+    "cell": "正文表值!F22",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0022",
+    "cell": "正文表值!F23",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0023",
+    "cell": "正文表值!F24",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0024",
+    "cell": "正文表值!F25",
+    "expected": "15",
+    "actual": 15,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0025",
+    "cell": "正文表值!F26",
+    "expected": "15",
+    "actual": 15,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0026",
+    "cell": "正文表值!F27",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0027",
+    "cell": "正文表值!F28",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0028",
+    "cell": "正文表值!F29",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0029",
+    "cell": "正文表值!F30",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0030",
+    "cell": "正文表值!F31",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0031",
+    "cell": "正文表值!F32",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0032",
+    "cell": "正文表值!F33",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0033",
+    "cell": "正文表值!F34",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T2-0034",
+    "cell": "正文表值!F35",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0035",
+    "cell": "正文表值!F36",
+    "expected": "3",
+    "actual": 3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0036",
+    "cell": "正文表值!F37",
+    "expected": "1.1",
+    "actual": 1.1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0037",
+    "cell": "正文表值!F38",
+    "expected": ".2",
+    "actual": 0.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0038",
+    "cell": "正文表值!F39",
+    "expected": "1.5",
+    "actual": 1.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0039",
+    "cell": "正文表值!F40",
+    "expected": "—",
+    "actual": "—",
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0040",
+    "cell": "正文表值!F41",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0041",
+    "cell": "正文表值!F42",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0042",
+    "cell": "正文表值!F43",
+    "expected": "1.7",
+    "actual": 1.7,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0043",
+    "cell": "正文表值!F44",
+    "expected": ".3",
+    "actual": 0.3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0044",
+    "cell": "正文表值!F45",
+    "expected": "3",
+    "actual": 3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0045",
+    "cell": "正文表值!F46",
+    "expected": "—",
+    "actual": "—",
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0046",
+    "cell": "正文表值!F47",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0047",
+    "cell": "正文表值!F48",
+    "expected": "8",
+    "actual": 8,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0048",
+    "cell": "正文表值!F49",
+    "expected": "2.2",
+    "actual": 2.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0049",
+    "cell": "正文表值!F50",
+    "expected": ".4",
+    "actual": 0.4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0050",
+    "cell": "正文表值!F51",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0051",
+    "cell": "正文表值!F52",
+    "expected": ".38",
+    "actual": 0.38,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0052",
+    "cell": "正文表值!F53",
+    "expected": "3",
+    "actual": 3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0053",
+    "cell": "正文表值!F54",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0054",
+    "cell": "正文表值!F55",
+    "expected": "2.2",
+    "actual": 2.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0055",
+    "cell": "正文表值!F56",
+    "expected": ".4",
+    "actual": 0.4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0056",
+    "cell": "正文表值!F57",
+    "expected": "6",
+    "actual": 6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0057",
+    "cell": "正文表值!F58",
+    "expected": ".38",
+    "actual": 0.38,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0058",
+    "cell": "正文表值!F59",
+    "expected": "3",
+    "actual": 3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0059",
+    "cell": "正文表值!F60",
+    "expected": "15",
+    "actual": 15,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0060",
+    "cell": "正文表值!F61",
+    "expected": "2.8",
+    "actual": 2.8,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0061",
+    "cell": "正文表值!F62",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0062",
+    "cell": "正文表值!F63",
+    "expected": "7",
+    "actual": 7,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0063",
+    "cell": "正文表值!F64",
+    "expected": ".38",
+    "actual": 0.38,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0064",
+    "cell": "正文表值!F65",
+    "expected": "3",
+    "actual": 3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0065",
+    "cell": "正文表值!F66",
+    "expected": "20",
+    "actual": 20,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0066",
+    "cell": "正文表值!F67",
+    "expected": "2.8",
+    "actual": 2.8,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0067",
+    "cell": "正文表值!F68",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0068",
+    "cell": "正文表值!F69",
+    "expected": "7",
+    "actual": 7,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0069",
+    "cell": "正文表值!F70",
+    "expected": ".38",
+    "actual": 0.38,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0070",
+    "cell": "正文表值!F71",
+    "expected": "3",
+    "actual": 3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0071",
+    "cell": "正文表值!F72",
+    "expected": "25",
+    "actual": 25,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0072",
+    "cell": "正文表值!F73",
+    "expected": "5.6",
+    "actual": 5.6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0073",
+    "cell": "正文表值!F74",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0074",
+    "cell": "正文表值!F75",
+    "expected": "—",
+    "actual": "—",
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0075",
+    "cell": "正文表值!F76",
+    "expected": ".75",
+    "actual": 0.75,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0076",
+    "cell": "正文表值!F77",
+    "expected": "6",
+    "actual": 6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0077",
+    "cell": "正文表值!F78",
+    "expected": "—",
+    "actual": "—",
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0078",
+    "cell": "正文表值!F79",
+    "expected": "2.8",
+    "actual": 2.8,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0079",
+    "cell": "正文表值!F80",
+    "expected": "—",
+    "actual": "—",
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0080",
+    "cell": "正文表值!F81",
+    "expected": "6",
+    "actual": 6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0081",
+    "cell": "正文表值!F82",
+    "expected": "—",
+    "actual": "—",
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T3-0082",
+    "cell": "正文表值!F83",
+    "expected": "6",
+    "actual": 6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T4-0083",
+    "cell": "正文表值!F84",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T4-0084",
+    "cell": "正文表值!F85",
+    "expected": "4",
+    "actual": 4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T4-0085",
+    "cell": "正文表值!F86",
+    "expected": "2.5",
+    "actual": 2.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T4-0086",
+    "cell": "正文表值!F87",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T5-0087",
+    "cell": "正文表值!F88",
+    "expected": ".1",
+    "actual": 0.1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T5-0088",
+    "cell": "正文表值!F89",
+    "expected": ".15",
+    "actual": 0.15,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T6-0089",
+    "cell": "正文表值!F90",
+    "expected": ".3",
+    "actual": 0.3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T6-0090",
+    "cell": "正文表值!F91",
+    "expected": ".3",
+    "actual": 0.3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T6-0091",
+    "cell": "正文表值!F92",
+    "expected": ".3",
+    "actual": 0.3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T6-0092",
+    "cell": "正文表值!F93",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0093",
+    "cell": "正文表值!F94",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0094",
+    "cell": "正文表值!F95",
+    "expected": "4",
+    "actual": 4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0095",
+    "cell": "正文表值!F96",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0096",
+    "cell": "正文表值!F97",
+    "expected": "4",
+    "actual": 4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0097",
+    "cell": "正文表值!F98",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0098",
+    "cell": "正文表值!F99",
+    "expected": "4",
+    "actual": 4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0099",
+    "cell": "正文表值!F100",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0100",
+    "cell": "正文表值!F101",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0101",
+    "cell": "正文表值!F102",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0102",
+    "cell": "正文表值!F103",
+    "expected": "3",
+    "actual": 3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0103",
+    "cell": "正文表值!F104",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0104",
+    "cell": "正文表值!F105",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0105",
+    "cell": "正文表值!F106",
+    "expected": "3",
+    "actual": 3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0106",
+    "cell": "正文表值!F107",
+    "expected": "10000",
+    "actual": 10000,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0107",
+    "cell": "正文表值!F108",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0108",
+    "cell": "正文表值!F109",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0109",
+    "cell": "正文表值!F110",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0110",
+    "cell": "正文表值!F111",
+    "expected": "4",
+    "actual": 4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0111",
+    "cell": "正文表值!F112",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0112",
+    "cell": "正文表值!F113",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0113",
+    "cell": "正文表值!F114",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0114",
+    "cell": "正文表值!F115",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0115",
+    "cell": "正文表值!F116",
+    "expected": "3000",
+    "actual": 3000,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T7-0116",
+    "cell": "正文表值!F117",
+    "expected": "8",
+    "actual": 8,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0117",
+    "cell": "正文表值!F118",
+    "expected": "330",
+    "actual": 330,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0118",
+    "cell": "正文表值!F119",
+    "expected": "390",
+    "actual": 390,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0119",
+    "cell": "正文表值!F120",
+    "expected": "470",
+    "actual": 470,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0120",
+    "cell": "正文表值!F121",
+    "expected": "340",
+    "actual": 340,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0121",
+    "cell": "正文表值!F122",
+    "expected": "400",
+    "actual": 400,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0122",
+    "cell": "正文表值!F123",
+    "expected": "480",
+    "actual": 480,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0123",
+    "cell": "正文表值!F124",
+    "expected": "370",
+    "actual": 370,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0124",
+    "cell": "正文表值!F125",
+    "expected": "460",
+    "actual": 460,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0125",
+    "cell": "正文表值!F126",
+    "expected": "560",
+    "actual": 560,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0126",
+    "cell": "正文表值!F127",
+    "expected": "390",
+    "actual": 390,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0127",
+    "cell": "正文表值!F128",
+    "expected": "480",
+    "actual": 480,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0128",
+    "cell": "正文表值!F129",
+    "expected": "600",
+    "actual": 600,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0129",
+    "cell": "正文表值!F130",
+    "expected": "540",
+    "actual": 540,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0130",
+    "cell": "正文表值!F131",
+    "expected": "680",
+    "actual": 680,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0131",
+    "cell": "正文表值!F132",
+    "expected": "840",
+    "actual": 840,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0132",
+    "cell": "正文表值!F133",
+    "expected": "480",
+    "actual": 480,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0133",
+    "cell": "正文表值!F134",
+    "expected": "630",
+    "actual": 630,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0134",
+    "cell": "正文表值!F135",
+    "expected": "760",
+    "actual": 760,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0135",
+    "cell": "正文表值!F136",
+    "expected": "440",
+    "actual": 440,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0136",
+    "cell": "正文表值!F137",
+    "expected": "560",
+    "actual": 560,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0137",
+    "cell": "正文表值!F138",
+    "expected": "700",
+    "actual": 700,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0138",
+    "cell": "正文表值!F139",
+    "expected": "460",
+    "actual": 460,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0139",
+    "cell": "正文表值!F140",
+    "expected": "590",
+    "actual": 590,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0140",
+    "cell": "正文表值!F141",
+    "expected": "700",
+    "actual": 700,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0141",
+    "cell": "正文表值!F142",
+    "expected": "420",
+    "actual": 420,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0142",
+    "cell": "正文表值!F143",
+    "expected": "550",
+    "actual": 550,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0143",
+    "cell": "正文表值!F144",
+    "expected": "650",
+    "actual": 650,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0144",
+    "cell": "正文表值!F145",
+    "expected": "400",
+    "actual": 400,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0145",
+    "cell": "正文表值!F146",
+    "expected": "510",
+    "actual": 510,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0146",
+    "cell": "正文表值!F147",
+    "expected": "600",
+    "actual": 600,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0147",
+    "cell": "正文表值!F148",
+    "expected": "210",
+    "actual": 210,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0148",
+    "cell": "正文表值!F149",
+    "expected": "270",
+    "actual": 270,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0149",
+    "cell": "正文表值!F150",
+    "expected": "320",
+    "actual": 320,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0150",
+    "cell": "正文表值!F151",
+    "expected": "190",
+    "actual": 190,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0151",
+    "cell": "正文表值!F152",
+    "expected": "250",
+    "actual": 250,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0152",
+    "cell": "正文表值!F153",
+    "expected": "290",
+    "actual": 290,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0153",
+    "cell": "正文表值!F154",
+    "expected": "1400",
+    "actual": 1400,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0154",
+    "cell": "正文表值!F155",
+    "expected": "1550",
+    "actual": 1550,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0155",
+    "cell": "正文表值!F156",
+    "expected": "1700",
+    "actual": 1700,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0156",
+    "cell": "正文表值!F157",
+    "expected": "1000",
+    "actual": 1000,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0157",
+    "cell": "正文表值!F158",
+    "expected": "1230",
+    "actual": 1230,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0158",
+    "cell": "正文表值!F159",
+    "expected": "1400",
+    "actual": 1400,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0159",
+    "cell": "正文表值!F160",
+    "expected": "950",
+    "actual": 950,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0160",
+    "cell": "正文表值!F161",
+    "expected": "1090",
+    "actual": 1090,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0161",
+    "cell": "正文表值!F162",
+    "expected": "1200",
+    "actual": 1200,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0162",
+    "cell": "正文表值!F163",
+    "expected": "400",
+    "actual": 400,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0163",
+    "cell": "正文表值!F164",
+    "expected": "540",
+    "actual": 540,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0164",
+    "cell": "正文表值!F165",
+    "expected": "660",
+    "actual": 660,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0165",
+    "cell": "正文表值!F166",
+    "expected": "350",
+    "actual": 350,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0166",
+    "cell": "正文表值!F167",
+    "expected": "480",
+    "actual": 480,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0167",
+    "cell": "正文表值!F168",
+    "expected": "600",
+    "actual": 600,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0168",
+    "cell": "正文表值!F169",
+    "expected": "390",
+    "actual": 390,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0169",
+    "cell": "正文表值!F170",
+    "expected": "530",
+    "actual": 530,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0170",
+    "cell": "正文表值!F171",
+    "expected": "650",
+    "actual": 650,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0171",
+    "cell": "正文表值!F172",
+    "expected": "680",
+    "actual": 680,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0172",
+    "cell": "正文表值!F173",
+    "expected": "900",
+    "actual": 900,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0173",
+    "cell": "正文表值!F174",
+    "expected": "1050",
+    "actual": 1050,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0174",
+    "cell": "正文表值!F175",
+    "expected": "650",
+    "actual": 650,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0175",
+    "cell": "正文表值!F176",
+    "expected": "850",
+    "actual": 850,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0176",
+    "cell": "正文表值!F177",
+    "expected": "1000",
+    "actual": 1000,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0177",
+    "cell": "正文表值!F178",
+    "expected": "300",
+    "actual": 300,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0178",
+    "cell": "正文表值!F179",
+    "expected": "400",
+    "actual": 400,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0179",
+    "cell": "正文表值!F180",
+    "expected": "500",
+    "actual": 500,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0180",
+    "cell": "正文表值!F181",
+    "expected": "165",
+    "actual": 165,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0181",
+    "cell": "正文表值!F182",
+    "expected": "210",
+    "actual": 210,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0182",
+    "cell": "正文表值!F183",
+    "expected": "290",
+    "actual": 290,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0183",
+    "cell": "正文表值!F184",
+    "expected": "300",
+    "actual": 300,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0184",
+    "cell": "正文表值!F185",
+    "expected": "400",
+    "actual": 400,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0185",
+    "cell": "正文表值!F186",
+    "expected": "520",
+    "actual": 520,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0186",
+    "cell": "正文表值!F187",
+    "expected": "60",
+    "actual": 60,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0187",
+    "cell": "正文表值!F188",
+    "expected": "100",
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0188",
+    "cell": "正文表值!F189",
+    "expected": "170",
+    "actual": 170,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0189",
+    "cell": "正文表值!F190",
+    "expected": "330",
+    "actual": 330,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0190",
+    "cell": "正文表值!F191",
+    "expected": "370",
+    "actual": 370,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0191",
+    "cell": "正文表值!F192",
+    "expected": "450",
+    "actual": 450,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0192",
+    "cell": "正文表值!F193",
+    "expected": "110",
+    "actual": 110,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0193",
+    "cell": "正文表值!F194",
+    "expected": "140",
+    "actual": 140,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T8-0194",
+    "cell": "正文表值!F195",
+    "expected": "200",
+    "actual": 200,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0195",
+    "cell": "正文表值!F196",
+    "expected": "40193",
+    "actual": 40193,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0196",
+    "cell": "正文表值!F197",
+    "expected": "46055",
+    "actual": 46055,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0197",
+    "cell": "正文表值!F198",
+    "expected": "9600",
+    "actual": 9600,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0198",
+    "cell": "正文表值!F199",
+    "expected": "11000",
+    "actual": 11000,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0199",
+    "cell": "正文表值!F200",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0200",
+    "cell": "正文表值!F201",
+    "expected": "5234",
+    "actual": 5234,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0201",
+    "cell": "正文表值!F202",
+    "expected": "5652",
+    "actual": 5652,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0202",
+    "cell": "正文表值!F203",
+    "expected": "1250",
+    "actual": 1250,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0203",
+    "cell": "正文表值!F204",
+    "expected": "1350",
+    "actual": 1350,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0204",
+    "cell": "正文表值!F205",
+    "expected": ".95",
+    "actual": 0.95,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0205",
+    "cell": "正文表值!F206",
+    "expected": "586",
+    "actual": 586,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0206",
+    "cell": "正文表值!F207",
+    "expected": "9211",
+    "actual": 9211,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0207",
+    "cell": "正文表值!F208",
+    "expected": "1400",
+    "actual": 1400,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0208",
+    "cell": "正文表值!F209",
+    "expected": "2200",
+    "actual": 2200,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0209",
+    "cell": "正文表值!F210",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0210",
+    "cell": "正文表值!F211",
+    "expected": "14654",
+    "actual": 14654,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0211",
+    "cell": "正文表值!F212",
+    "expected": "17585",
+    "actual": 17585,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0212",
+    "cell": "正文表值!F213",
+    "expected": "3500",
+    "actual": 3500,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0213",
+    "cell": "正文表值!F214",
+    "expected": "4200",
+    "actual": 4200,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0214",
+    "cell": "正文表值!F215",
+    "expected": "1.14",
+    "actual": 1.14,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0215",
+    "cell": "正文表值!F216",
+    "expected": "34541",
+    "actual": 34541,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0216",
+    "cell": "正文表值!F217",
+    "expected": "41868",
+    "actual": 41868,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0217",
+    "cell": "正文表值!F218",
+    "expected": "8250",
+    "actual": 8250,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0218",
+    "cell": "正文表值!F219",
+    "expected": "10000",
+    "actual": 10000,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T9-0219",
+    "cell": "正文表值!F220",
+    "expected": "1.1",
+    "actual": 1.1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0220",
+    "cell": "正文表值!F221",
+    "expected": "33",
+    "actual": 33,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0221",
+    "cell": "正文表值!F222",
+    "expected": "36",
+    "actual": 36,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0222",
+    "cell": "正文表值!F223",
+    "expected": "40",
+    "actual": 40,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0223",
+    "cell": "正文表值!F224",
+    "expected": "35",
+    "actual": 35,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0224",
+    "cell": "正文表值!F225",
+    "expected": "40",
+    "actual": 40,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0225",
+    "cell": "正文表值!F226",
+    "expected": "50",
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0226",
+    "cell": "正文表值!F227",
+    "expected": "35",
+    "actual": 35,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0227",
+    "cell": "正文表值!F228",
+    "expected": "40",
+    "actual": 40,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0228",
+    "cell": "正文表值!F229",
+    "expected": "50",
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0229",
+    "cell": "正文表值!F230",
+    "expected": "40",
+    "actual": 40,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0230",
+    "cell": "正文表值!F231",
+    "expected": "45",
+    "actual": 45,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0231",
+    "cell": "正文表值!F232",
+    "expected": "50",
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0232",
+    "cell": "正文表值!F233",
+    "expected": "40",
+    "actual": 40,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0233",
+    "cell": "正文表值!F234",
+    "expected": "45",
+    "actual": 45,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0234",
+    "cell": "正文表值!F235",
+    "expected": "50",
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0235",
+    "cell": "正文表值!F236",
+    "expected": "55",
+    "actual": 55,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0236",
+    "cell": "正文表值!F237",
+    "expected": "60",
+    "actual": 60,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0237",
+    "cell": "正文表值!F238",
+    "expected": "65",
+    "actual": 65,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0238",
+    "cell": "正文表值!F239",
+    "expected": "50",
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0239",
+    "cell": "正文表值!F240",
+    "expected": "60",
+    "actual": 60,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0240",
+    "cell": "正文表值!F241",
+    "expected": "70",
+    "actual": 70,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0241",
+    "cell": "正文表值!F242",
+    "expected": "60",
+    "actual": 60,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0242",
+    "cell": "正文表值!F243",
+    "expected": "70",
+    "actual": 70,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0243",
+    "cell": "正文表值!F244",
+    "expected": "80",
+    "actual": 80,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0244",
+    "cell": "正文表值!F245",
+    "expected": "60",
+    "actual": 60,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0245",
+    "cell": "正文表值!F246",
+    "expected": "70",
+    "actual": 70,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0246",
+    "cell": "正文表值!F247",
+    "expected": "80",
+    "actual": 80,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0247",
+    "cell": "正文表值!F248",
+    "expected": "70",
+    "actual": 70,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0248",
+    "cell": "正文表值!F249",
+    "expected": "80",
+    "actual": 80,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0249",
+    "cell": "正文表值!F250",
+    "expected": "90",
+    "actual": 90,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0250",
+    "cell": "正文表值!F251",
+    "expected": "70",
+    "actual": 70,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0251",
+    "cell": "正文表值!F252",
+    "expected": "80",
+    "actual": 80,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0252",
+    "cell": "正文表值!F253",
+    "expected": "90",
+    "actual": 90,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0253",
+    "cell": "正文表值!F254",
+    "expected": "80",
+    "actual": 80,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0254",
+    "cell": "正文表值!F255",
+    "expected": "90",
+    "actual": 90,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0255",
+    "cell": "正文表值!F256",
+    "expected": "100",
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0256",
+    "cell": "正文表值!F257",
+    "expected": "40",
+    "actual": 40,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0257",
+    "cell": "正文表值!F258",
+    "expected": "45",
+    "actual": 45,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0258",
+    "cell": "正文表值!F259",
+    "expected": "50",
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0259",
+    "cell": "正文表值!F260",
+    "expected": "50",
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0260",
+    "cell": "正文表值!F261",
+    "expected": "55",
+    "actual": 55,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0261",
+    "cell": "正文表值!F262",
+    "expected": "60",
+    "actual": 60,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0262",
+    "cell": "正文表值!F263",
+    "expected": "45",
+    "actual": 45,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0263",
+    "cell": "正文表值!F264",
+    "expected": "50",
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0264",
+    "cell": "正文表值!F265",
+    "expected": "55",
+    "actual": 55,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0265",
+    "cell": "正文表值!F266",
+    "expected": "60",
+    "actual": 60,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0266",
+    "cell": "正文表值!F267",
+    "expected": "65",
+    "actual": 65,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0267",
+    "cell": "正文表值!F268",
+    "expected": "70",
+    "actual": 70,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0268",
+    "cell": "正文表值!F269",
+    "expected": "25",
+    "actual": 25,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0269",
+    "cell": "正文表值!F270",
+    "expected": "30",
+    "actual": 30,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0270",
+    "cell": "正文表值!F271",
+    "expected": "35",
+    "actual": 35,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0271",
+    "cell": "正文表值!F272",
+    "expected": "25",
+    "actual": 25,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0272",
+    "cell": "正文表值!F273",
+    "expected": "30",
+    "actual": 30,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0273",
+    "cell": "正文表值!F274",
+    "expected": "35",
+    "actual": 35,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0274",
+    "cell": "正文表值!F275",
+    "expected": "40",
+    "actual": 40,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0275",
+    "cell": "正文表值!F276",
+    "expected": "45",
+    "actual": 45,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0276",
+    "cell": "正文表值!F277",
+    "expected": "50",
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0277",
+    "cell": "正文表值!F278",
+    "expected": "40",
+    "actual": 40,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0278",
+    "cell": "正文表值!F279",
+    "expected": "50",
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T10-0279",
+    "cell": "正文表值!F280",
+    "expected": "60",
+    "actual": 60,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0280",
+    "cell": "正文表值!F281",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0281",
+    "cell": "正文表值!F282",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0282",
+    "cell": "正文表值!F283",
+    "expected": "1.5",
+    "actual": 1.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0283",
+    "cell": "正文表值!F284",
+    "expected": "1.5",
+    "actual": 1.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0284",
+    "cell": "正文表值!F285",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0285",
+    "cell": "正文表值!F286",
+    "expected": "2.5",
+    "actual": 2.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0286",
+    "cell": "正文表值!F287",
+    "expected": "1.2",
+    "actual": 1.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0287",
+    "cell": "正文表值!F288",
+    "expected": "1.5",
+    "actual": 1.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0288",
+    "cell": "正文表值!F289",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0289",
+    "cell": "正文表值!F290",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0290",
+    "cell": "正文表值!F291",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0291",
+    "cell": "正文表值!F292",
+    "expected": "1.5",
+    "actual": 1.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0292",
+    "cell": "正文表值!F293",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0293",
+    "cell": "正文表值!F294",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0294",
+    "cell": "正文表值!F295",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T11-0295",
+    "cell": "正文表值!F296",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0296",
+    "cell": "正文表值!F297",
+    "expected": "20",
+    "actual": 20,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0297",
+    "cell": "正文表值!F298",
+    "expected": "23",
+    "actual": 23,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0298",
+    "cell": "正文表值!F299",
+    "expected": "26",
+    "actual": 26,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0299",
+    "cell": "正文表值!F300",
+    "expected": "18",
+    "actual": 18,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0300",
+    "cell": "正文表值!F301",
+    "expected": "22",
+    "actual": 22,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0301",
+    "cell": "正文表值!F302",
+    "expected": "25",
+    "actual": 25,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0302",
+    "cell": "正文表值!F303",
+    "expected": "19",
+    "actual": 19,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0303",
+    "cell": "正文表值!F304",
+    "expected": "23",
+    "actual": 23,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0304",
+    "cell": "正文表值!F305",
+    "expected": "26",
+    "actual": 26,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0305",
+    "cell": "正文表值!F306",
+    "expected": "18",
+    "actual": 18,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0306",
+    "cell": "正文表值!F307",
+    "expected": "22",
+    "actual": 22,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0307",
+    "cell": "正文表值!F308",
+    "expected": "25",
+    "actual": 25,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0308",
+    "cell": "正文表值!F309",
+    "expected": "20",
+    "actual": 20,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0309",
+    "cell": "正文表值!F310",
+    "expected": "25",
+    "actual": 25,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0310",
+    "cell": "正文表值!F311",
+    "expected": "30",
+    "actual": 30,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0311",
+    "cell": "正文表值!F312",
+    "expected": "18",
+    "actual": 18,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0312",
+    "cell": "正文表值!F313",
+    "expected": "24",
+    "actual": 24,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0313",
+    "cell": "正文表值!F314",
+    "expected": "30",
+    "actual": 30,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0314",
+    "cell": "正文表值!F315",
+    "expected": "20",
+    "actual": 20,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0315",
+    "cell": "正文表值!F316",
+    "expected": "22",
+    "actual": 22,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0316",
+    "cell": "正文表值!F317",
+    "expected": "25",
+    "actual": 25,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0317",
+    "cell": "正文表值!F318",
+    "expected": "33",
+    "actual": 33,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0318",
+    "cell": "正文表值!F319",
+    "expected": "36",
+    "actual": 36,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0319",
+    "cell": "正文表值!F320",
+    "expected": "40",
+    "actual": 40,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0320",
+    "cell": "正文表值!F321",
+    "expected": "30",
+    "actual": 30,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0321",
+    "cell": "正文表值!F322",
+    "expected": "34",
+    "actual": 34,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0322",
+    "cell": "正文表值!F323",
+    "expected": "38",
+    "actual": 38,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0323",
+    "cell": "正文表值!F324",
+    "expected": "23",
+    "actual": 23,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0324",
+    "cell": "正文表值!F325",
+    "expected": "26",
+    "actual": 26,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T12-0325",
+    "cell": "正文表值!F326",
+    "expected": "30",
+    "actual": 30,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T13-0326",
+    "cell": "正文表值!F327",
+    "expected": "200",
+    "actual": 200,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T13-0327",
+    "cell": "正文表值!F328",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T13-0328",
+    "cell": "正文表值!F329",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T13-0329",
+    "cell": "正文表值!F330",
+    "expected": "850",
+    "actual": 850,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T13-0330",
+    "cell": "正文表值!F331",
+    "expected": "6",
+    "actual": 6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T13-0331",
+    "cell": "正文表值!F332",
+    "expected": ".10",
+    "actual": 0.1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T13-0332",
+    "cell": "正文表值!F333",
+    "expected": ".010",
+    "actual": 0.01,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T13-0333",
+    "cell": "正文表值!F334",
+    "expected": ".010",
+    "actual": 0.01,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T13-0334",
+    "cell": "正文表值!F335",
+    "expected": "50",
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0335",
+    "cell": "正文表值!F336",
+    "expected": "150",
+    "actual": 150,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0336",
+    "cell": "正文表值!F337",
+    "expected": "150",
+    "actual": 150,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0337",
+    "cell": "正文表值!F338",
+    "expected": "60",
+    "actual": 60,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0338",
+    "cell": "正文表值!F339",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0339",
+    "cell": "正文表值!F340",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0340",
+    "cell": "正文表值!F341",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0341",
+    "cell": "正文表值!F342",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0342",
+    "cell": "正文表值!F343",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0343",
+    "cell": "正文表值!F344",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0344",
+    "cell": "正文表值!F345",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0345",
+    "cell": "正文表值!F346",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0346",
+    "cell": "正文表值!F347",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0347",
+    "cell": "正文表值!F348",
+    "expected": "25",
+    "actual": 25,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T14-0348",
+    "cell": "正文表值!F349",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T15-0349",
+    "cell": "正文表值!F350",
+    "expected": "40",
+    "actual": 40,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T15-0350",
+    "cell": "正文表值!F351",
+    "expected": "20",
+    "actual": 20,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T15-0351",
+    "cell": "正文表值!F352",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T15-0352",
+    "cell": "正文表值!F353",
+    "expected": "0",
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T15-0353",
+    "cell": "正文表值!F354",
+    "expected": "30",
+    "actual": 30,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T15-0354",
+    "cell": "正文表值!F355",
+    "expected": "20",
+    "actual": 20,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T15-0355",
+    "cell": "正文表值!F356",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T15-0356",
+    "cell": "正文表值!F357",
+    "expected": "0",
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T15-0357",
+    "cell": "正文表值!F358",
+    "expected": "30",
+    "actual": 30,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T15-0358",
+    "cell": "正文表值!F359",
+    "expected": "20",
+    "actual": 20,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T15-0359",
+    "cell": "正文表值!F360",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T15-0360",
+    "cell": "正文表值!F361",
+    "expected": "0",
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0361",
+    "cell": "正文表值!F362",
+    "expected": "15",
+    "actual": 15,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0362",
+    "cell": "正文表值!F363",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0363",
+    "cell": "正文表值!F364",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0364",
+    "cell": "正文表值!F365",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0365",
+    "cell": "正文表值!F366",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0366",
+    "cell": "正文表值!F367",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0367",
+    "cell": "正文表值!F368",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0368",
+    "cell": "正文表值!F369",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0369",
+    "cell": "正文表值!F370",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0370",
+    "cell": "正文表值!F371",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0371",
+    "cell": "正文表值!F372",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0372",
+    "cell": "正文表值!F373",
+    "expected": "10",
+    "actual": 10,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0373",
+    "cell": "正文表值!F374",
+    "expected": "13",
+    "actual": 13,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0374",
+    "cell": "正文表值!F375",
+    "expected": "6",
+    "actual": 6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0375",
+    "cell": "正文表值!F376",
+    "expected": "6",
+    "actual": 6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0376",
+    "cell": "正文表值!F377",
+    "expected": "6",
+    "actual": 6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0377",
+    "cell": "正文表值!F378",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T16-0378",
+    "cell": "正文表值!F379",
+    "expected": "5",
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T17-0379",
+    "cell": "正文表值!F380",
+    "expected": "85",
+    "actual": 85,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T17-0380",
+    "cell": "正文表值!F381",
+    "expected": "70",
+    "actual": 70,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-T17-0381",
+    "cell": "正文表值!F382",
+    "expected": "60",
+    "actual": 60,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.1-0382",
+    "cell": "附录系数!F2",
+    "expected": ".3",
+    "actual": 0.3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.1-0383",
+    "cell": "附录系数!F3",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.1-0384",
+    "cell": "附录系数!F4",
+    "expected": ".7",
+    "actual": 0.7,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.1-0385",
+    "cell": "附录系数!F5",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.1-0386",
+    "cell": "附录系数!F6",
+    "expected": "1.05",
+    "actual": 1.05,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.1-0387",
+    "cell": "附录系数!F7",
+    "expected": "1.4",
+    "actual": 1.4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.1-0388",
+    "cell": "附录系数!F8",
+    "expected": "1.5",
+    "actual": 1.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.1-0389",
+    "cell": "附录系数!F9",
+    "expected": "1.3",
+    "actual": 1.3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.1-0390",
+    "cell": "附录系数!F10",
+    "expected": "1.5",
+    "actual": 1.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.1-0391",
+    "cell": "附录系数!F11",
+    "expected": "1.7",
+    "actual": 1.7,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.1-0392",
+    "cell": "附录系数!F12",
+    "expected": "1.9",
+    "actual": 1.9,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.2-0393",
+    "cell": "附录系数!F13",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.2-0394",
+    "cell": "附录系数!F14",
+    "expected": "2.5",
+    "actual": 2.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.2-0395",
+    "cell": "附录系数!F15",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.3-0396",
+    "cell": "附录系数!F16",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.3-0397",
+    "cell": "附录系数!F17",
+    "expected": "1.2",
+    "actual": 1.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.3-0398",
+    "cell": "附录系数!F18",
+    "expected": "1.4",
+    "actual": 1.4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.3-0399",
+    "cell": "附录系数!F19",
+    "expected": "1.6",
+    "actual": 1.6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.3-0400",
+    "cell": "附录系数!F20",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.3-0401",
+    "cell": "附录系数!F21",
+    "expected": "1.2",
+    "actual": 1.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.4-0402",
+    "cell": "附录系数!F22",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.4-0403",
+    "cell": "附录系数!F23",
+    "expected": "1.6",
+    "actual": 1.6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.4-0404",
+    "cell": "附录系数!F24",
+    "expected": "2.2",
+    "actual": 2.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.5-0405",
+    "cell": "附录系数!F25",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.5-0406",
+    "cell": "附录系数!F26",
+    "expected": "1.1",
+    "actual": 1.1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.5-0407",
+    "cell": "附录系数!F27",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.5-0408",
+    "cell": "附录系数!F28",
+    "expected": "1.3",
+    "actual": 1.3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.5-0409",
+    "cell": "附录系数!F29",
+    "expected": "1.7",
+    "actual": 1.7,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.6-0410",
+    "cell": "附录系数!F30",
+    "expected": ".6",
+    "actual": 0.6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.6-0411",
+    "cell": "附录系数!F31",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.6-0412",
+    "cell": "附录系数!F32",
+    "expected": "1.2",
+    "actual": 1.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.6-0413",
+    "cell": "附录系数!F33",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.6-0414",
+    "cell": "附录系数!F34",
+    "expected": "1.3",
+    "actual": 1.3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.6-0415",
+    "cell": "附录系数!F35",
+    "expected": "1.4",
+    "actual": 1.4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0416",
+    "cell": "附录系数!F36",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0417",
+    "cell": "附录系数!F37",
+    "expected": "δ",
+    "actual": "δ",
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0418",
+    "cell": "附录系数!F38",
+    "expected": "δ",
+    "actual": "δ",
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0419",
+    "cell": "附录系数!F39",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0420",
+    "cell": "附录系数!F40",
+    "expected": "≤0.4",
+    "actual": "≤0.4",
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0421",
+    "cell": "附录系数!F41",
+    "expected": ".9",
+    "actual": 0.9,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0422",
+    "cell": "附录系数!F42",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0423",
+    "cell": "附录系数!F43",
+    "expected": ">0.4",
+    "actual": ">0.4",
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0424",
+    "cell": "附录系数!F44",
+    "expected": "1.2",
+    "actual": 1.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0425",
+    "cell": "附录系数!F45",
+    "expected": ".81",
+    "actual": 0.81,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0426",
+    "cell": "附录系数!F46",
+    "expected": "—",
+    "actual": "—",
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0427",
+    "cell": "附录系数!F47",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0428",
+    "cell": "附录系数!F48",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0429",
+    "cell": "附录系数!F49",
+    "expected": "—",
+    "actual": "—",
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.7-0430",
+    "cell": "附录系数!F50",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.8-0431",
+    "cell": "附录系数!F51",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.8-0432",
+    "cell": "附录系数!F52",
+    "expected": "1.2",
+    "actual": 1.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.8-0433",
+    "cell": "附录系数!F53",
+    "expected": "1.5",
+    "actual": 1.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.8-0434",
+    "cell": "附录系数!F54",
+    "expected": ".4",
+    "actual": 0.4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.8-0435",
+    "cell": "附录系数!F55",
+    "expected": ".7",
+    "actual": 0.7,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.8-0436",
+    "cell": "附录系数!F56",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.8-0437",
+    "cell": "附录系数!F57",
+    "expected": "1.2",
+    "actual": 1.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.8-0438",
+    "cell": "附录系数!F58",
+    "expected": "1.5",
+    "actual": 1.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.8-0439",
+    "cell": "附录系数!F59",
+    "expected": "1.4",
+    "actual": 1.4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.8-0440",
+    "cell": "附录系数!F60",
+    "expected": "2.6",
+    "actual": 2.6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.8-0441",
+    "cell": "附录系数!F61",
+    "expected": "3",
+    "actual": 3,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.9-0442",
+    "cell": "附录系数!F62",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.9-0443",
+    "cell": "附录系数!F63",
+    "expected": "1.1",
+    "actual": 1.1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.9-0444",
+    "cell": "附录系数!F64",
+    "expected": "1.2",
+    "actual": 1.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.10-0445",
+    "cell": "附录系数!F65",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.10-0446",
+    "cell": "附录系数!F66",
+    "expected": "1.1",
+    "actual": 1.1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.10-0447",
+    "cell": "附录系数!F67",
+    "expected": "1.5",
+    "actual": 1.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.10-0448",
+    "cell": "附录系数!F68",
+    "expected": "1.7",
+    "actual": 1.7,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0449",
+    "cell": "附录系数!F69",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0450",
+    "cell": "附录系数!F70",
+    "expected": "1.6",
+    "actual": 1.6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0451",
+    "cell": "附录系数!F71",
+    "expected": "1.6",
+    "actual": 1.6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0452",
+    "cell": "附录系数!F72",
+    "expected": "1.8",
+    "actual": 1.8,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0453",
+    "cell": "附录系数!F73",
+    "expected": "2",
+    "actual": 2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0454",
+    "cell": "附录系数!F74",
+    "expected": "2.4",
+    "actual": 2.4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0455",
+    "cell": "附录系数!F75",
+    "expected": "2.6",
+    "actual": 2.6,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0456",
+    "cell": "附录系数!F76",
+    "expected": ".4",
+    "actual": 0.4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0457",
+    "cell": "附录系数!F77",
+    "expected": ".7",
+    "actual": 0.7,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0458",
+    "cell": "附录系数!F78",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0459",
+    "cell": "附录系数!F79",
+    "expected": "1.2",
+    "actual": 1.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0460",
+    "cell": "附录系数!F80",
+    "expected": "1.2",
+    "actual": 1.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0461",
+    "cell": "附录系数!F81",
+    "expected": "1.5",
+    "actual": 1.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.11-0462",
+    "cell": "附录系数!F82",
+    "expected": "1.4",
+    "actual": 1.4,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.12-0463",
+    "cell": "附录系数!F83",
+    "expected": "0",
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.12-0464",
+    "cell": "附录系数!F84",
+    "expected": ".2",
+    "actual": 0.2,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.12-0465",
+    "cell": "附录系数!F85",
+    "expected": ".5",
+    "actual": 0.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.12-0466",
+    "cell": "附录系数!F86",
+    "expected": "1",
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.12-0467",
+    "cell": "附录系数!F87",
+    "expected": "2.5",
+    "actual": 2.5,
+    "pass": true
+  },
+  {
+    "record_id": "GBT36561-2018-TA.12-0468",
+    "cell": "附录系数!F88",
+    "expected": "3",
+    "actual": 3,
+    "pass": true
+  }
+]

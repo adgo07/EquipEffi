@@ -1,0 +1,116 @@
+{
+  "utc_start": "2026-10-13T14:50:29.778087+00:00",
+  "sha256_start": "4989190f141d482dbb00c3fedb5c0ac2b52d8560e24ec4c66ccf02c36f1bc79e",
+  "scoped_27_sections": [
+    {
+      "id": "EQP-STD-GB19761-001",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB19761-002",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB19761-003",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB28381-007",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB28381-008",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB28381-009",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB28381-010",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB28381-011",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB28381-012",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GBT36561-001",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GBT36561-002",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GBT36561-003",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GBT36561-004",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GBT36561-005",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GBT36561-006",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GBT36561-007",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GBT36561-008",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GBT36561-009",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GBT36561-010",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GBT36561-011",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB28381-001",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB28381-002",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB28381-003",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB28381-004",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB28381-005",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB28381-006",
+      "unchanged": true
+    },
+    {
+      "id": "EQP-STD-GB32030-001",
+      "unchanged": true
+    }
+  ],
+  "sha256_end": "4989190f141d482dbb00c3fedb5c0ac2b52d8560e24ec4c66ccf02c36f1bc79e",
+  "utc_end": "2026-10-13T14:50:29.778914+00:00"
+}

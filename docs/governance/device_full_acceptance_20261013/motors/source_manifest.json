@@ -1,0 +1,82 @@
+[
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\2. GB+18613-2020 电动机能效限定值及能效等级.pdf",
+    "sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\data\\GB18613_2020_表1-6校对数据_A1.xlsx",
+    "sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\STANDARD_MAPPING.md",
+    "sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\ISSUE_REGISTRATION_REQUEST.md",
+    "sha256": "fc8b21269b7968e33201ec46bbb6b0ede1dc66508d56d8a40919b7bf16806735"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\3. GB 30254-2024 高压三相笼型异步电动机能效限定值及能效等级.pdf",
+    "sha256": "53a6d2e8098fea9f81adf6a12fe3298707bf6b22cc8c972110aacdcd8a168135"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\data\\GB30254_2024_标准表值.xlsx",
+    "sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\STANDARD_MAPPING.md",
+    "sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\ISSUE_REGISTRATION_REQUEST.md",
+    "sha256": "af630a305f1339bf70ef52602fa9fc2c06ebf3a7eb1ac96982c2067a1e1caa45"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\4. GB 30253-2024 永磁同步电动机能效限定值及能效等级.pdf",
+    "sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\data\\GB30253_2024_TABLE_VALUES.xlsx",
+    "sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\STANDARD_MAPPING.md",
+    "sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\ISSUE_REGISTRATION_REQUEST.md",
+    "sha256": "83be22eb35f9f9d2eaf55e2af6f0c468ad71069e9425c5ea1b64072c713585ec"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+    "sha256": "f60879e271dcb9a3ae939711add9a63b9d906bc10e0c9a1a6d39c05221caf89e"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\platform-lock.json",
+    "sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\README.md",
+    "sha256": "4f94b395ada998b70988df3b4ca0bc9f1639792091c919192783f5d6cbed4909"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\BOUNDARY_CANDIDATES.md",
+    "sha256": "3d58c8787cf002b5d828cfe071f7b965f9c74cdf75a7c7fdd02ab075fee9e5c0"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\README.md",
+    "sha256": "d3489184029b293a47ab9baff922792b1aab00579249145efa26eb77a441b61e"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\BOUNDARY_CASES.md",
+    "sha256": "7ba880b9c821ef5f23ae02f4d807ad321ac2a49b406b8f3a0567c8c2870c3403"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\README.md",
+    "sha256": "973147fc2c06462a50f3d114306de69a479dd31264ef32a77d4e4af34cb34e61"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\BOUNDARY_CANDIDATES.md",
+    "sha256": "050a8930f4163497c756745d2d540aaba1efb13f8a7c5d6cdaeeebf43c55044b"
+  }
+]

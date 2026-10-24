@@ -1,0 +1,704 @@
+[
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F6",
+    "branch": "T1-B1",
+    "grade": 1,
+    "value": 85,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G6",
+    "branch": "T1-B1",
+    "grade": 1,
+    "value": 86,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F7",
+    "branch": "T1-B1",
+    "grade": 2,
+    "value": 82,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G7",
+    "branch": "T1-B1",
+    "grade": 2,
+    "value": 83,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F8",
+    "branch": "T1-B1",
+    "grade": 3,
+    "value": 80,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G8",
+    "branch": "T1-B1",
+    "grade": 3,
+    "value": 81,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F9",
+    "branch": "T1-B2",
+    "grade": 1,
+    "value": 87,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G9",
+    "branch": "T1-B2",
+    "grade": 1,
+    "value": 89,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F10",
+    "branch": "T1-B2",
+    "grade": 2,
+    "value": 84,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G10",
+    "branch": "T1-B2",
+    "grade": 2,
+    "value": 86,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F11",
+    "branch": "T1-B2",
+    "grade": 3,
+    "value": 82,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G11",
+    "branch": "T1-B2",
+    "grade": 3,
+    "value": 84,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F12",
+    "branch": "T1-B3",
+    "grade": 1,
+    "value": 85,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G12",
+    "branch": "T1-B3",
+    "grade": 1,
+    "value": 86,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F13",
+    "branch": "T1-B3",
+    "grade": 2,
+    "value": 82,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G13",
+    "branch": "T1-B3",
+    "grade": 2,
+    "value": 83,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F14",
+    "branch": "T1-B3",
+    "grade": 3,
+    "value": 80,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G14",
+    "branch": "T1-B3",
+    "grade": 3,
+    "value": 81,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F15",
+    "branch": "T1-B4",
+    "grade": 1,
+    "value": 85,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G15",
+    "branch": "T1-B4",
+    "grade": 1,
+    "value": 86,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F16",
+    "branch": "T1-B4",
+    "grade": 2,
+    "value": 82,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G16",
+    "branch": "T1-B4",
+    "grade": 2,
+    "value": 83,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F17",
+    "branch": "T1-B4",
+    "grade": 3,
+    "value": 80,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G17",
+    "branch": "T1-B4",
+    "grade": 3,
+    "value": 81,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F18",
+    "branch": "T1-B5",
+    "grade": 1,
+    "value": 85,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G18",
+    "branch": "T1-B5",
+    "grade": 1,
+    "value": 86,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F19",
+    "branch": "T1-B5",
+    "grade": 2,
+    "value": 82,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G19",
+    "branch": "T1-B5",
+    "grade": 2,
+    "value": 83,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F20",
+    "branch": "T1-B5",
+    "grade": 3,
+    "value": 80,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G20",
+    "branch": "T1-B5",
+    "grade": 3,
+    "value": 81,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F21",
+    "branch": "T1-B6",
+    "grade": 1,
+    "value": 85,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G21",
+    "branch": "T1-B6",
+    "grade": 1,
+    "value": 87,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F22",
+    "branch": "T1-B6",
+    "grade": 2,
+    "value": 82,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G22",
+    "branch": "T1-B6",
+    "grade": 2,
+    "value": 84,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "F23",
+    "branch": "T1-B6",
+    "grade": 3,
+    "value": 80,
+    "pdf_page": 4,
+    "column": 5
+  },
+  {
+    "sheet": "表1 层状燃煤",
+    "cell": "G23",
+    "branch": "T1-B6",
+    "grade": 3,
+    "value": 82,
+    "pdf_page": 4,
+    "column": 6
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F6",
+    "branch": "T2-B1",
+    "grade": 1,
+    "value": 89,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F7",
+    "branch": "T2-B1",
+    "grade": 2,
+    "value": 85,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F8",
+    "branch": "T2-B1",
+    "grade": 3,
+    "value": 82,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F9",
+    "branch": "T2-B2",
+    "grade": 1,
+    "value": 90,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F10",
+    "branch": "T2-B2",
+    "grade": 2,
+    "value": 89,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F11",
+    "branch": "T2-B2",
+    "grade": 3,
+    "value": 86,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F12",
+    "branch": "T2-B3",
+    "grade": 1,
+    "value": 91,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F13",
+    "branch": "T2-B3",
+    "grade": 2,
+    "value": 90,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F14",
+    "branch": "T2-B3",
+    "grade": 3,
+    "value": 88,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F15",
+    "branch": "T2-B4",
+    "grade": 1,
+    "value": 90,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F16",
+    "branch": "T2-B4",
+    "grade": 2,
+    "value": 88,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F17",
+    "branch": "T2-B4",
+    "grade": 3,
+    "value": 86,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F18",
+    "branch": "T2-B5",
+    "grade": 1,
+    "value": 89,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F19",
+    "branch": "T2-B5",
+    "grade": 2,
+    "value": 88,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F20",
+    "branch": "T2-B5",
+    "grade": 3,
+    "value": 86,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F21",
+    "branch": "T2-B6",
+    "grade": 1,
+    "value": 90,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F22",
+    "branch": "T2-B6",
+    "grade": 2,
+    "value": 88,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F23",
+    "branch": "T2-B6",
+    "grade": 3,
+    "value": 86,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F24",
+    "branch": "T2-B7",
+    "grade": 1,
+    "value": 91,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F25",
+    "branch": "T2-B7",
+    "grade": 2,
+    "value": 89,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表2 流化床燃煤",
+    "cell": "F26",
+    "branch": "T2-B7",
+    "grade": 3,
+    "value": 86,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表3 生物质",
+    "cell": "F6",
+    "branch": "T3-B1",
+    "grade": 1,
+    "value": 88,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表3 生物质",
+    "cell": "G6",
+    "branch": "T3-B1",
+    "grade": 1,
+    "value": 91,
+    "pdf_page": 5,
+    "column": 6
+  },
+  {
+    "sheet": "表3 生物质",
+    "cell": "F7",
+    "branch": "T3-B1",
+    "grade": 2,
+    "value": 84,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表3 生物质",
+    "cell": "G7",
+    "branch": "T3-B1",
+    "grade": 2,
+    "value": 88,
+    "pdf_page": 5,
+    "column": 6
+  },
+  {
+    "sheet": "表3 生物质",
+    "cell": "F8",
+    "branch": "T3-B1",
+    "grade": 3,
+    "value": 80,
+    "pdf_page": 5,
+    "column": 5
+  },
+  {
+    "sheet": "表3 生物质",
+    "cell": "G8",
+    "branch": "T3-B1",
+    "grade": 3,
+    "value": 86,
+    "pdf_page": 5,
+    "column": 6
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F6",
+    "branch": "T4-B1",
+    "grade": 1,
+    "value": 96,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F7",
+    "branch": "T4-B1",
+    "grade": 2,
+    "value": 94,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F8",
+    "branch": "T4-B1",
+    "grade": 3,
+    "value": 92,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F9",
+    "branch": "T4-B2",
+    "grade": 1,
+    "value": 103,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F10",
+    "branch": "T4-B2",
+    "grade": 2,
+    "value": 101,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F11",
+    "branch": "T4-B2",
+    "grade": 3,
+    "value": 98,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F12",
+    "branch": "T4-B3",
+    "grade": 1,
+    "value": 93,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F13",
+    "branch": "T4-B3",
+    "grade": 2,
+    "value": 91,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F14",
+    "branch": "T4-B3",
+    "grade": 3,
+    "value": 88,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F15",
+    "branch": "T4-B4",
+    "grade": 1,
+    "value": 95,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F16",
+    "branch": "T4-B4",
+    "grade": 2,
+    "value": 93,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F17",
+    "branch": "T4-B4",
+    "grade": 3,
+    "value": 90,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F18",
+    "branch": "T4-B5",
+    "grade": 1,
+    "value": 92,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F19",
+    "branch": "T4-B5",
+    "grade": 2,
+    "value": 90,
+    "pdf_page": 6,
+    "column": 5
+  },
+  {
+    "sheet": "表4 室燃",
+    "cell": "F20",
+    "branch": "T4-B5",
+    "grade": 3,
+    "value": 88,
+    "pdf_page": 6,
+    "column": 5
+  }
+]

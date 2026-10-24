@@ -1,0 +1,398 @@
+[
+  {
+    "table": "表1",
+    "source_row": 1,
+    "sheet": "表1_风管机组",
+    "xlsx_row": 6,
+    "cooling": "风冷式",
+    "branch": "单冷型",
+    "metric": "SEER",
+    "unit": "Wh/Wh",
+    "condition": "CC≤7100",
+    "lower": null,
+    "upper": 7100,
+    "grades": [
+      4.2,
+      3.8,
+      3
+    ]
+  },
+  {
+    "table": "表1",
+    "source_row": 2,
+    "sheet": "表1_风管机组",
+    "xlsx_row": 7,
+    "cooling": "风冷式",
+    "branch": "单冷型",
+    "metric": "SEER",
+    "unit": "Wh/Wh",
+    "condition": "7100<CC≤14000",
+    "lower": 7100,
+    "upper": 14000,
+    "grades": [
+      4,
+      3.6,
+      2.9
+    ]
+  },
+  {
+    "table": "表1",
+    "source_row": 3,
+    "sheet": "表1_风管机组",
+    "xlsx_row": 8,
+    "cooling": "风冷式",
+    "branch": "单冷型",
+    "metric": "SEER",
+    "unit": "Wh/Wh",
+    "condition": "14000<CC≤28000",
+    "lower": 14000,
+    "upper": 28000,
+    "grades": [
+      3.8,
+      3.4,
+      2.8
+    ]
+  },
+  {
+    "table": "表1",
+    "source_row": 4,
+    "sheet": "表1_风管机组",
+    "xlsx_row": 9,
+    "cooling": "风冷式",
+    "branch": "单冷型",
+    "metric": "SEER",
+    "unit": "Wh/Wh",
+    "condition": "CC>28000",
+    "lower": 28000,
+    "upper": null,
+    "grades": [
+      3.2,
+      3,
+      2.6
+    ]
+  },
+  {
+    "table": "表1",
+    "source_row": 5,
+    "sheet": "表1_风管机组",
+    "xlsx_row": 10,
+    "cooling": "风冷式",
+    "branch": "热泵型",
+    "metric": "APF",
+    "unit": "Wh/Wh",
+    "condition": "CC≤7100",
+    "lower": null,
+    "upper": 7100,
+    "grades": [
+      3.8,
+      3.4,
+      2.9
+    ]
+  },
+  {
+    "table": "表1",
+    "source_row": 6,
+    "sheet": "表1_风管机组",
+    "xlsx_row": 11,
+    "cooling": "风冷式",
+    "branch": "热泵型",
+    "metric": "APF",
+    "unit": "Wh/Wh",
+    "condition": "7100<CC≤14000",
+    "lower": 7100,
+    "upper": 14000,
+    "grades": [
+      3.6,
+      3.2,
+      2.8
+    ]
+  },
+  {
+    "table": "表1",
+    "source_row": 7,
+    "sheet": "表1_风管机组",
+    "xlsx_row": 12,
+    "cooling": "风冷式",
+    "branch": "热泵型",
+    "metric": "APF",
+    "unit": "Wh/Wh",
+    "condition": "14000<CC≤28000",
+    "lower": 14000,
+    "upper": 28000,
+    "grades": [
+      3.4,
+      3,
+      2.7
+    ]
+  },
+  {
+    "table": "表1",
+    "source_row": 8,
+    "sheet": "表1_风管机组",
+    "xlsx_row": 13,
+    "cooling": "风冷式",
+    "branch": "热泵型",
+    "metric": "APF",
+    "unit": "Wh/Wh",
+    "condition": "CC>28000",
+    "lower": 28000,
+    "upper": null,
+    "grades": [
+      3,
+      2.8,
+      2.4
+    ]
+  },
+  {
+    "table": "表1",
+    "source_row": 9,
+    "sheet": "表1_风管机组",
+    "xlsx_row": 14,
+    "cooling": "水冷式",
+    "branch": "源表未细分冷热型",
+    "metric": "IPLV",
+    "unit": "W/W",
+    "condition": "CC≤14000",
+    "lower": null,
+    "upper": 14000,
+    "grades": [
+      4.2,
+      4,
+      3.4
+    ]
+  },
+  {
+    "table": "表1",
+    "source_row": 10,
+    "sheet": "表1_风管机组",
+    "xlsx_row": 15,
+    "cooling": "水冷式",
+    "branch": "源表未细分冷热型",
+    "metric": "IPLV",
+    "unit": "W/W",
+    "condition": "CC>14000",
+    "lower": 14000,
+    "upper": null,
+    "grades": [
+      4,
+      3.8,
+      3.3
+    ]
+  },
+  {
+    "table": "表2",
+    "source_row": 1,
+    "sheet": "表2_全新风机组",
+    "xlsx_row": 6,
+    "cooling": "风冷式",
+    "branch": "小焓差",
+    "metric": "EER",
+    "unit": "W/W",
+    "condition": "CC≤4500",
+    "lower": null,
+    "upper": 4500,
+    "grades": [
+      3.4,
+      3.2,
+      3
+    ]
+  },
+  {
+    "table": "表2",
+    "source_row": 2,
+    "sheet": "表2_全新风机组",
+    "xlsx_row": 7,
+    "cooling": "风冷式",
+    "branch": "小焓差",
+    "metric": "EER",
+    "unit": "W/W",
+    "condition": "4500<CC≤7100",
+    "lower": 4500,
+    "upper": 7100,
+    "grades": [
+      3.2,
+      3,
+      2.8
+    ]
+  },
+  {
+    "table": "表2",
+    "source_row": 3,
+    "sheet": "表2_全新风机组",
+    "xlsx_row": 8,
+    "cooling": "风冷式",
+    "branch": "小焓差",
+    "metric": "EER",
+    "unit": "W/W",
+    "condition": "7100<CC≤14000",
+    "lower": 7100,
+    "upper": 14000,
+    "grades": [
+      3,
+      2.8,
+      2.6
+    ]
+  },
+  {
+    "table": "表2",
+    "source_row": 4,
+    "sheet": "表2_全新风机组",
+    "xlsx_row": 9,
+    "cooling": "风冷式",
+    "branch": "小焓差",
+    "metric": "EER",
+    "unit": "W/W",
+    "condition": "CC>14000",
+    "lower": 14000,
+    "upper": null,
+    "grades": [
+      2.8,
+      2.6,
+      2.4
+    ]
+  },
+  {
+    "table": "表2",
+    "source_row": 5,
+    "sheet": "表2_全新风机组",
+    "xlsx_row": 10,
+    "cooling": "风冷式",
+    "branch": "大焓差",
+    "metric": "EER",
+    "unit": "W/W",
+    "condition": "CC≤4500",
+    "lower": null,
+    "upper": 4500,
+    "grades": [
+      3.2,
+      3,
+      2.8
+    ]
+  },
+  {
+    "table": "表2",
+    "source_row": 6,
+    "sheet": "表2_全新风机组",
+    "xlsx_row": 11,
+    "cooling": "风冷式",
+    "branch": "大焓差",
+    "metric": "EER",
+    "unit": "W/W",
+    "condition": "4500<CC≤7100",
+    "lower": 4500,
+    "upper": 7100,
+    "grades": [
+      3,
+      2.8,
+      2.6
+    ]
+  },
+  {
+    "table": "表2",
+    "source_row": 7,
+    "sheet": "表2_全新风机组",
+    "xlsx_row": 12,
+    "cooling": "风冷式",
+    "branch": "大焓差",
+    "metric": "EER",
+    "unit": "W/W",
+    "condition": "7100<CC≤14000",
+    "lower": 7100,
+    "upper": 14000,
+    "grades": [
+      2.8,
+      2.6,
+      2.4
+    ]
+  },
+  {
+    "table": "表2",
+    "source_row": 8,
+    "sheet": "表2_全新风机组",
+    "xlsx_row": 13,
+    "cooling": "风冷式",
+    "branch": "大焓差",
+    "metric": "EER",
+    "unit": "W/W",
+    "condition": "CC>14000",
+    "lower": 14000,
+    "upper": null,
+    "grades": [
+      2.6,
+      2.4,
+      2.2
+    ]
+  },
+  {
+    "table": "表2",
+    "source_row": 9,
+    "sheet": "表2_全新风机组",
+    "xlsx_row": 14,
+    "cooling": "水冷式（水环式）",
+    "branch": "小焓差",
+    "metric": "EER",
+    "unit": "W/W",
+    "condition": "CC≤14000",
+    "lower": null,
+    "upper": 14000,
+    "grades": [
+      4.7,
+      4.5,
+      4.3
+    ]
+  },
+  {
+    "table": "表2",
+    "source_row": 10,
+    "sheet": "表2_全新风机组",
+    "xlsx_row": 15,
+    "cooling": "水冷式（水环式）",
+    "branch": "小焓差",
+    "metric": "EER",
+    "unit": "W/W",
+    "condition": "CC>14000",
+    "lower": 14000,
+    "upper": null,
+    "grades": [
+      4.5,
+      4.3,
+      4.1
+    ]
+  },
+  {
+    "table": "表2",
+    "source_row": 11,
+    "sheet": "表2_全新风机组",
+    "xlsx_row": 16,
+    "cooling": "水冷式（水环式）",
+    "branch": "大焓差",
+    "metric": "EER",
+    "unit": "W/W",
+    "condition": "CC≤14000",
+    "lower": null,
+    "upper": 14000,
+    "grades": [
+      4.4,
+      4.2,
+      4
+    ]
+  },
+  {
+    "table": "表2",
+    "source_row": 12,
+    "sheet": "表2_全新风机组",
+    "xlsx_row": 17,
+    "cooling": "水冷式（水环式）",
+    "branch": "大焓差",
+    "metric": "EER",
+    "unit": "W/W",
+    "condition": "CC>14000",
+    "lower": 14000,
+    "upper": null,
+    "grades": [
+      4.2,
+      4,
+      3.8
+    ]
+  }
+]

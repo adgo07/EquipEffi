@@ -1,0 +1,109 @@
+[
+  {
+    "standard": "gb19761_2020",
+    "snapshot_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb19761_2020__GB19761_2020_表1-4核对工作簿.txt",
+    "snapshot_sha256": "c7e7123f54461dc45c81f894aa8caead81dabaee50a2f28f6effaf6907c91da8",
+    "cells_compared": 1390,
+    "differences": [],
+    "note": "已记录旧非空格逐格比较；该txt不证明旧时间戳、样式或XML字节，不替代本组首轮全sheet快照差异"
+  },
+  {
+    "standard": "gb28381_2012",
+    "snapshot_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb28381_2012__GB28381_2012_TABLES.txt",
+    "snapshot_sha256": "2dd4acd00649446db2de175b56810c69105c472adcb413113f4406316e525d1b",
+    "cells_compared": 1280,
+    "differences": [],
+    "note": "已记录旧非空格逐格比较；该txt不证明旧时间戳、样式或XML字节，不替代本组首轮全sheet快照差异"
+  },
+  {
+    "standard": "gb28381_2026",
+    "snapshot_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb28381_2026__GB28381_2026_TABLE_VALUES.txt",
+    "snapshot_sha256": "9ff5d6057d57cac703d1d18cf8eaf7ce197d84d6102120b5273553d616065727",
+    "cells_compared": 4684,
+    "differences": [],
+    "note": "已记录旧非空格逐格比较；该txt不证明旧时间戳、样式或XML字节，不替代本组首轮全sheet快照差异"
+  },
+  {
+    "standard": "gb32030_2022",
+    "snapshot_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gb32030_2022__GB32030_2022_表值映射.txt",
+    "snapshot_sha256": "119904529a34f001e9b5f66697a0e9b46d491261cb1125ad0ccff20729d715cd",
+    "cells_compared": 682,
+    "differences": [],
+    "note": "已记录旧非空格逐格比较；该txt不证明旧时间戳、样式或XML字节，不替代本组首轮全sheet快照差异"
+  },
+  {
+    "standard": "gbt36561_2018",
+    "snapshot_path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\evidence_snapshots\\gbt36561_2018__GBT36561_2018_TABLE_VALUES.txt",
+    "snapshot_sha256": "a691c0353d1beace76ff74757fca7b29943e2157c8d75d2f0d1e95335b3e13b1",
+    "cells_compared": 4897,
+    "differences": [
+      {
+        "sheet": "正文表值",
+        "cell": "H90",
+        "old": "注a检验棒插入主轴锥孔，在距主轴端面500 mm处测量",
+        "current": "注a检验棒插入主轴锥孔，在距主轴端面300 mm处测量"
+      },
+      {
+        "sheet": "正文表值",
+        "cell": "H91",
+        "old": "注b装直径≥φ300 mm圆盘，在半径150 mm处测量",
+        "current": "注b装直径>φ300 mm圆盘，在半径150 mm处测量"
+      },
+      {
+        "sheet": "正文表值",
+        "cell": "F294",
+        "old": "1.5",
+        "current": 1
+      },
+      {
+        "sheet": "正文表值",
+        "cell": "H354",
+        "old": "GB/T30839.4三等；R03需确认",
+        "current": "原表印GB/T 30829.4三等；与第2章、7.3、7.5所引GB/T 30839.4不一致；R11待确认"
+      },
+      {
+        "sheet": "正文表值",
+        "cell": "H355",
+        "old": "GB/T30839.4三等；R03需确认",
+        "current": "原表印GB/T 30829.4三等；与第2章、7.3、7.5所引GB/T 30839.4不一致；R11待确认"
+      },
+      {
+        "sheet": "正文表值",
+        "cell": "H356",
+        "old": "GB/T30839.4三等；R03需确认",
+        "current": "原表印GB/T 30829.4三等；与第2章、7.3、7.5所引GB/T 30839.4不一致；R11待确认"
+      },
+      {
+        "sheet": "正文表值",
+        "cell": "H357",
+        "old": "GB/T30839.4三等；R03需确认",
+        "current": "原表印GB/T 30829.4三等；与第2章、7.3、7.5所引GB/T 30839.4不一致；R11待确认"
+      },
+      {
+        "sheet": "正文表值",
+        "cell": "H358",
+        "old": "GB/T30839.4三等；R03需确认",
+        "current": "原表印GB/T 30829.4三等；与第2章、7.3、7.5所引GB/T 30839.4不一致；R11待确认"
+      },
+      {
+        "sheet": "正文表值",
+        "cell": "H359",
+        "old": "GB/T30839.4三等；R03需确认",
+        "current": "原表印GB/T 30829.4三等；与第2章、7.3、7.5所引GB/T 30839.4不一致；R11待确认"
+      },
+      {
+        "sheet": "正文表值",
+        "cell": "H360",
+        "old": "GB/T30839.4三等；R03需确认",
+        "current": "原表印GB/T 30829.4三等；与第2章、7.3、7.5所引GB/T 30839.4不一致；R11待确认"
+      },
+      {
+        "sheet": "正文表值",
+        "cell": "H361",
+        "old": "GB/T30839.4三等；R03需确认",
+        "current": "原表印GB/T 30829.4三等；与第2章、7.3、7.5所引GB/T 30839.4不一致；R11待确认"
+      }
+    ],
+    "note": "已记录旧非空格逐格比较；该txt不证明旧时间戳、样式或XML字节，不替代本组首轮全sheet快照差异"
+  }
+]

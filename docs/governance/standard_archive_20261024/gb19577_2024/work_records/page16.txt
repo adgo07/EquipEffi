@@ -1,0 +1,60 @@
+  式中:
+Qc(tj)———机组各负荷制冷量,单位为千瓦(kW);
+nj ———制冷季节中制冷的各温度下工作时间,单位为小时(h)。
+机组各负荷制冷量 Qc(tj)按公式(A.3)或公式(A.4)计算。
+a) 当室外温度在24 ℃(0负荷点)~35 ℃(A 点)之间时:
+Qc(tj)=Lc(tj) …………………………(A.3 )
+  b) 当室外温度在35 ℃(A 点)~43 ℃之间时:
+Qc(tj)=min[Lc(tj),φc(tj)] …………………………(A.4 )
+  式中:
+φc(tj)———机组各负荷实测制冷量,单位为千瓦(kW)。
+其中,机组各负荷的实测制冷量φc(tj)按公式(A.5)计算。
+φc(tj)=φc(tA)+φc(tA)-φc(tB)
+tA -tB
+× (tj -tA),tA ≤tj ≤43 ……………(A.5 )
+A.4.2 制冷季节耗电量
+制冷季节耗电量 CSTE 按公式(A.6)计算。
+CSTE=∑
+n
+j=1
+Qc(tj)
+COPbin(tj)
+é
+ëê
+ê
+ù
+ûú
+ú×nj …………………………(A.6 )
+  式中:
+COPbin(tj)———各工作温度下的制冷性能系数;
+COPbin(tj)———通过测试并按公式(A.7)~公式(A.11)计算获得。
+a) 当室外温度在43 ℃~35 ℃(A 点)之间时:
+COPbin(tj)=COPbin(tA)+COPbin(43)-COPbin(tA)
+43-tA
+× (tj -tA),tA ≤tj ……(A.7 )
+  b) 当室外温度在35 ℃(A 点)~32.3 ℃(B 点)之间时:
+COPbin(tj)=COPbin(tB)+COPbin(tA)-COPbin(tB)
+tA -tB
+× (tj -tB),tB ≤tj ≤tA …(A.8 )
+  c) 当室外温度在32.3 ℃(B 点)~29.5 ℃(C 点)之间时:
+COPbin(tj)=COPbin(tC)+COPbin(tB)-COPbin(tC)
+tB -tC
+× (tj -tC),tC ≤tj ≤tB …(A.9 )
+  d) 当室外温度在29.5 ℃(C 点)~26.8 ℃(D 点)之间时:
+COPbin(tj)= COPbin(tD)+COPbin(tC)-COPbin(tD)
+tC -tD
+× (tj -tD),tD ≤tj ≤tC …(A.10 )
+  e) 当室外温度在26.8 ℃(D 点)~24 ℃(0负荷点)之间时:
+COPbin(tj)=COPbin(tD)-0.0289×COPbin(tD)× (tj -tD),24≤tj ≤tD …(A.11 )
+  在 B、C、D 工况试验中,若机组的制冷量超过要求额定负荷的102%时,COPbin(tB、tC、tD)的计算按
+以下规定进行。
+a) 对于使用单台定频/定速压缩机的机组,COPbin(tB、tC、tD)按公式(A.12)计算。
+COPbin(tB,tC,tD)=COPDC(tB,tC,tD)
+CD
+………………………(A.12 )
+  式中:
+COPDC———B、C、D 工况下连续制冷运行时测得的制冷性能系数;
+CD ———衰减系数,通过测试获得,按公式(A.13)进行计算。
+CD =(-0.13·LF)+1.13 …………………………(A.13 )
+01
+GB 19577—2024

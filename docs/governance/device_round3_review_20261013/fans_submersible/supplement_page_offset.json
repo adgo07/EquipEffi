@@ -1,0 +1,33 @@
+{
+  "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\evidence\\cell_trace.csv",
+  "sha256": "2443cdfa06f655fcefcc3b871fdc3cb5b48bb3a4d9063670a8a6ce947892fd5b",
+  "rows": 279,
+  "triples": [
+    [
+      4,
+      2,
+      6
+    ],
+    [
+      5,
+      3,
+      7
+    ],
+    [
+      6,
+      4,
+      8
+    ],
+    [
+      7,
+      5,
+      9
+    ],
+    [
+      8,
+      6,
+      10
+    ]
+  ],
+  "all_official_equals_local_plus_two": true
+}

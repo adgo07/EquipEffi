@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-13",
+  "kind": "existing_independent_evidence_reconciliation_not_new_acceptance",
+  "acceptance_report_sha256": "7b7893f0c68dd8e242df7acdee517c13ef5dd4cebd697f23dfb9ca8ed98b8903",
+  "independent_csv_sha256": "1a2f7d6631f25e01a876263c7d2f5b1c8814086266081b0d04f47613892d06b9",
+  "workbook_sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+  "matches_acceptance_start_manifest": true,
+  "positions": 216,
+  "by_sheet": {
+    "表1": 30,
+    "表2": 30,
+    "表3": 12,
+    "表4": 10,
+    "表A.3": 69,
+    "表A.4": 65
+  },
+  "numeric_positions": 192,
+  "dash_positions": 24,
+  "recheck_failures": []
+}

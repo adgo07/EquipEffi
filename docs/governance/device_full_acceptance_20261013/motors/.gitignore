@@ -1,0 +1,4 @@
+*.png
+*_source_rows.json
+compare_run.txt
+__pycache__/

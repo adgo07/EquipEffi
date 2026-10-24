@@ -1,0 +1,35 @@
+{
+  "source_sha256": "a7c5b43e0fe86ff73fd55401c4145181302874bd1d95ef0bb33baa44f652f5f5",
+  "source_unchanged": true,
+  "review_units": 103,
+  "existing_ids": 62,
+  "supplementary_units": 41,
+  "all_ids_same_order": true,
+  "original_decision_fields_preserved": true,
+  "facts_and_questions_rewritten": 103,
+  "html_external_dependencies": 0,
+  "html_parsed": true,
+  "visual_browser_check": "NOT_RUN",
+  "spot_check_ids": [
+    "EQP-STD-GB18613-001",
+    "EQP-STD-GB30254-002",
+    "EQP-STD-GB19577-002",
+    "EQP-STD-GB19577-005",
+    "EQP-STD-GBT36561-006",
+    "LOCAL-MOTORS-TEST_REFERENCES",
+    "LOCAL-HVAC-N03",
+    "LOCAL-FAN-BLOWER-IDENTITY"
+  ],
+  "source_manifest_unchanged": true,
+  "root_register_unchanged": true,
+  "outputs": [
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\设备标准待核问题_易读版.md",
+      "sha256": "2c9926accbdf8fa9194ba35cf1bbd614a9e3f005cb1ef3832491ebde3bb8ba9c"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_round3_review_20261013\\设备标准待核问题_易读版.html",
+      "sha256": "94f11313a984bc0d1aa63d6651395e90cbbeba0c6f016578e2c095ca7fed64da"
+    }
+  ]
+}

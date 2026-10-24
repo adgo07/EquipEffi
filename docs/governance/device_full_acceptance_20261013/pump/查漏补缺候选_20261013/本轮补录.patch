@@ -1,0 +1,63 @@
+diff --git a/docs/standards/gb19762_2025/STANDARD_MAPPING.md b/docs/standards/gb19762_2025/STANDARD_MAPPING.md
+index 84dd23a..fcc8c76 100644
+--- a/docs/standards/gb19762_2025/STANDARD_MAPPING.md
++++ b/docs/standards/gb19762_2025/STANDARD_MAPPING.md
+@@ -2,6 +2,23 @@
+ 
+ 本文件组织既有依据，不新增公式、参数或软件解释，也不表示重新完成全标准审计。完整原文身份、表值资产与验收入口见[README](README.md)。
+ 
++## 原文范围、规定点与试验依据（2026-10-13 补录）
++
++下表仅补原标准的事实层及页码。现有软件输入、支持状态、结果、Golden 与 Canonical 均未因此改变。适用性或测量证据不足时，须保留待核事实，不从这份补录推出新的用户操作门禁。
++
++|对象|GB 19762—2025 原文事实|定位|
++|---|---|---|
++|适用范围|覆盖清水离心泵和输送洁净液体、装闭式叶轮的石油化工离心泵；不适用于非金属离心泵、无轴封回转动力泵。具体设备是否满足这些条件，需有产品/试验证据。|§1，印刷1，PDF物理7|
++|规定点|最高效率点（BEP）是在全（最大）叶轮直径和设计基型转速下的点；同一点的流量、扬程、转速与效率应成套取证。此处记录原文前提，不把输入声明自动当成实测证明。|§3.1及注，印刷1，PDF物理7|
++|试验|按GB/T 3216中2级要求试验；GB/T 3216列于§2规范性引用文件。该要求是试验依据，不能由仅填写BEP代替。|§2，印刷1，PDF物理7；§7，印刷5，PDF物理11|
++|资料性示例疑点|附录A.2的条件列给出转速2950 r/min，代入式写2960，结果ns=178.92。两处原文并存；算术核对不能代替发布机构纠正，未来取值口径保持待确认。|附录A.2.1/A.2.2，印刷6，PDF物理12；根台账待登记|
++
++|原文数据对象|印刷页|PDF物理页|说明|
++|---|---|---|---|
++|表1 等级阈值关系|2|8|清水/化工共用的等级关系|
++|表2 石油化工离心泵分支|2|8|Canonical `chemical` 旧 `source_pages` 不区分页码体系，以本行双页码为准；本轮不改运行时资产|
++|表3 清水离心泵C值|3—4|9—10|跨页续表，包含全部10行|
++
+ | 映射范围 | 正文 | 主要内容 |
+ |---|---|---|
+ | 清水离心泵 | [清水泵分支映射](profiles/pump_water.md) | 类别、字段、BEP语义、公式、表3、边界及历史证据 |
+diff --git a/docs/standards/gb19762_2025/profiles/pump_chemical.md b/docs/standards/gb19762_2025/profiles/pump_chemical.md
+index 4e64360..85a2b16 100644
+--- a/docs/standards/gb19762_2025/profiles/pump_chemical.md
++++ b/docs/standards/gb19762_2025/profiles/pump_chemical.md
+@@ -2,6 +2,8 @@
+ 
+ > **归档说明（2026-10-13）**：本文从原Profile目录迁入，以下正文保留形成时的Phase记录、版本与证据指纹；其中“当前”“候选”“待评审”“未发布”等按历史时期理解，不代表今日状态。当前有效依据和替代关系见[标准入口](../README.md)与[主映射导航](../STANDARD_MAPPING.md)。支持状态以[V1_SCOPE](../../../../V1_SCOPE.md)/[ROADMAP](../../../../ROADMAP.md)为准；日期与记录行为以[AGENTS §2.7/2.8](../../../../AGENTS.md)为准。本次仅调整归档和链接，不重新批准正文或修改业务规则。
+ 
++> **原文事实补录（2026-10-13）**：§1的石化适用条件为输送洁净液体且装闭式叶轮，并排除非金属离心泵、无轴封回转动力泵；§3.1注规定BEP在全（最大）叶轮直径和设计基型转速下；§7要求按GB/T 3216中2级试验。详见[主映射补录](../STANDARD_MAPPING.md#原文范围规定点与试验依据2026-10-13-补录)，下方历史正文不据此推导新用户门禁。
++
+ > **已取代的历史措辞**：下文的 `SUPPORT_PROMOTION_CANDIDATE`、`READY_FOR_INDEPENDENT_ACCEPTANCE`、“支持提升候选”及“待独立验收”仅描述当时的化工泵支持提升过程；该过程已由Phase 5独立验收通过取代，不得据此恢复候选状态。当前化工泵支持状态以[V1_SCOPE](../../../../V1_SCOPE.md)为准，验收事实见[Phase 5验收记录](../../../phase5_acceptance_record.md)。这不改变其他Phase自身的待验收状态。
+ 
+ <!-- preserved-profile-body -->
+diff --git a/docs/standards/gb19762_2025/profiles/pump_water.md b/docs/standards/gb19762_2025/profiles/pump_water.md
+index 7ae9bfc..4527b1d 100644
+--- a/docs/standards/gb19762_2025/profiles/pump_water.md
++++ b/docs/standards/gb19762_2025/profiles/pump_water.md
+@@ -2,6 +2,8 @@
+ 
+ > **归档说明（2026-10-13）**：本文从原Profile目录迁入，以下正文保留形成时的Phase记录、版本与证据指纹；其中“当前”“候选”“待评审”“未发布”等按历史时期理解，不代表今日状态。当前有效依据和替代关系见[标准入口](../README.md)与[主映射导航](../STANDARD_MAPPING.md)。支持状态以[V1_SCOPE](../../../../V1_SCOPE.md)/[ROADMAP](../../../../ROADMAP.md)为准；日期与记录行为以[AGENTS §2.7/2.8](../../../../AGENTS.md)为准。本次仅调整归档和链接，不重新批准正文或修改业务规则。
+ 
++> **原文事实补录（2026-10-13）**：§1排除非金属离心泵、无轴封回转动力泵；§3.1注规定BEP在全（最大）叶轮直径和设计基型转速下；§7要求按GB/T 3216中2级试验。完整条件、双页码及附录A.2原文疑点见[主映射补录](../STANDARD_MAPPING.md#原文范围规定点与试验依据2026-10-13-补录)。下方历史正文与既有业务契约未据此改动。
++
+ <!-- preserved-profile-body -->
+ 
+ 状态：`DRAFT_FOR_INDEPENDENT_REVIEW`。数值、输入和结果以 [`PUMP_NUMERIC_AND_DECISION_CONTRACT_V2`](../../../PUMP_NUMERIC_AND_DECISION_CONTRACT_V2.md) 为当前契约；本文件下文早期映射记录中与 V2 冲突的精度/状态描述已由 V2 取代。
+@@ -22,7 +24,7 @@
+ | 当前包 SHA-256（仓库文本 CRLF→LF 规范） | `5D91F01B1C5F26DC4F364A3156C4E974B159FA1005BD840489C0BC3465C18C0F` |
+ | 外部标准原文证据 | `source_id=GB19762-2025-PDF`；相对定位符见 `specs/equipment_efficiency/evidence_registry.json`；SHA-256 `7F515D8B9D6B4D2AB97FFA7BECB78520BA0579CFBD6D5ECA10C7E7CC77895FEC` |
+ | 标准实施日期 | `2026-03-01` |
+-| 表/来源页 | 表 1、表 3；当前包标注标准页 `9-10` |
++| 表/来源页 | 表1印刷2/PDF物理8；表3印刷3—4/PDF物理9—10；旧包页码`9-10`按其原记录保留，双页码见主映射补录 |
+ | 当前正式运行路径 | `EvaluationFacade` → `EvaluationService` → `WaterPumpEvaluator` → `JsonStandardRepository` |
+ | 当前实现文件 | `src/equipeffi/domain/evaluation/evaluators/pump.py` |
+ | 旧测试证据 | `tests/unit/test_device_evaluator_matrix.py`；只能验证当前行为，不能单独证明标准事实 |

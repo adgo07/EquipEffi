@@ -1,0 +1,291 @@
+{
+  "source_sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026",
+  "workbook_sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+  "pdf_pages": 4,
+  "logical_tables": 1,
+  "page_table_fragments": 2,
+  "branches": 13,
+  "numeric_cells": {
+    "pass": 39,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "not_run": 0
+  },
+  "independent_acceptance": "NOT_RUN",
+  "cells": [
+    {
+      "cell": "表1!G6",
+      "pdf_lexical": "4.50",
+      "xlsx_value": "4.5",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H6",
+      "pdf_lexical": "3.80",
+      "xlsx_value": "3.8",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I6",
+      "pdf_lexical": "2.90",
+      "xlsx_value": "2.9",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!G7",
+      "pdf_lexical": "3.60",
+      "xlsx_value": "3.6",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H7",
+      "pdf_lexical": "3.00",
+      "xlsx_value": "3",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I7",
+      "pdf_lexical": "2.70",
+      "xlsx_value": "2.7",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!G8",
+      "pdf_lexical": "3.50",
+      "xlsx_value": "3.5",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H8",
+      "pdf_lexical": "3.10",
+      "xlsx_value": "3.1",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I8",
+      "pdf_lexical": "2.70",
+      "xlsx_value": "2.7",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!G9",
+      "pdf_lexical": "3.40",
+      "xlsx_value": "3.4",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H9",
+      "pdf_lexical": "3.00",
+      "xlsx_value": "3",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I9",
+      "pdf_lexical": "2.60",
+      "xlsx_value": "2.6",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!G10",
+      "pdf_lexical": "4.50",
+      "xlsx_value": "4.5",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H10",
+      "pdf_lexical": "4.30",
+      "xlsx_value": "4.3",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I10",
+      "pdf_lexical": "3.70",
+      "xlsx_value": "3.7",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!G11",
+      "pdf_lexical": "4.00",
+      "xlsx_value": "4",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H11",
+      "pdf_lexical": "3.70",
+      "xlsx_value": "3.7",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I11",
+      "pdf_lexical": "3.30",
+      "xlsx_value": "3.3",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!G12",
+      "pdf_lexical": "4.00",
+      "xlsx_value": "4",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H12",
+      "pdf_lexical": "3.60",
+      "xlsx_value": "3.6",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I12",
+      "pdf_lexical": "3.00",
+      "xlsx_value": "3",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!G13",
+      "pdf_lexical": "4.20",
+      "xlsx_value": "4.2",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H13",
+      "pdf_lexical": "4.00",
+      "xlsx_value": "4",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I13",
+      "pdf_lexical": "3.50",
+      "xlsx_value": "3.5",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!G14",
+      "pdf_lexical": "3.90",
+      "xlsx_value": "3.9",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H14",
+      "pdf_lexical": "3.70",
+      "xlsx_value": "3.7",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I14",
+      "pdf_lexical": "3.20",
+      "xlsx_value": "3.2",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!G15",
+      "pdf_lexical": "3.60",
+      "xlsx_value": "3.6",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H15",
+      "pdf_lexical": "3.40",
+      "xlsx_value": "3.4",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I15",
+      "pdf_lexical": "2.90",
+      "xlsx_value": "2.9",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!G16",
+      "pdf_lexical": "4.10",
+      "xlsx_value": "4.1",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H16",
+      "pdf_lexical": "3.90",
+      "xlsx_value": "3.9",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I16",
+      "pdf_lexical": "3.40",
+      "xlsx_value": "3.4",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!G17",
+      "pdf_lexical": "3.20",
+      "xlsx_value": "3.2",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H17",
+      "pdf_lexical": "3.00",
+      "xlsx_value": "3",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I17",
+      "pdf_lexical": "2.80",
+      "xlsx_value": "2.8",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!G18",
+      "pdf_lexical": "4.00",
+      "xlsx_value": "4",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!H18",
+      "pdf_lexical": "3.70",
+      "xlsx_value": "3.7",
+      "display_format": "0.00",
+      "pass": true
+    },
+    {
+      "cell": "表1!I18",
+      "pdf_lexical": "3.00",
+      "xlsx_value": "3",
+      "display_format": "0.00",
+      "pass": true
+    }
+  ]
+}

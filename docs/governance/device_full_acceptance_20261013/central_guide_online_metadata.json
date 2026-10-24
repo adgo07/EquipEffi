@@ -1,0 +1,23 @@
+{
+  "checked_utc": "2026-10-13T14:01:04.722Z",
+  "repository": "adgo07/Qingzhou-contracts",
+  "ref": "main",
+  "source": "GitHub connector fetch_file",
+  "files": [
+    {
+      "path": "docs/GUIDE_INDEX.md",
+      "sha": "7d041cfcedcee27fc4e1904d627ad0a2d9e97fa5",
+      "url": "https://github.com/adgo07/Qingzhou-contracts/blob/main/docs/GUIDE_INDEX.md"
+    },
+    {
+      "path": "docs/governance/STANDARD_DEVELOPMENT_GUIDE_V0.1.md",
+      "sha": "ac80a956e5431113509d06d2ca23982165a61558",
+      "url": "https://github.com/adgo07/Qingzhou-contracts/blob/main/docs/governance/STANDARD_DEVELOPMENT_GUIDE_V0.1.md"
+    },
+    {
+      "path": "docs/governance/PRODUCT_DELIVERY_POLICY_V1.md",
+      "sha": "7831f2c156107b8e4c1b27525fdd4092f04fdbed",
+      "url": "https://github.com/adgo07/Qingzhou-contracts/blob/main/docs/governance/PRODUCT_DELIVERY_POLICY_V1.md"
+    }
+  ]
+}

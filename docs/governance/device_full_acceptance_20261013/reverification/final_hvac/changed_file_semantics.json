@@ -1,0 +1,30 @@
+[
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\ISSUE_REGISTRATION_REQUEST.md",
+    "first_content_reconstructed_sha256": "74ef9eff0c29805b1235136e69f33150335614c94aded3b47206c3adea5fd44d",
+    "first_content_matches_hash": true,
+    "change": "append formal ID backlinks only; original semantic content unchanged",
+    "addition": "## 正式编号回链（2026-10-13）\r\n\r\n本目录的请求键已在[根台账](../../../STANDARD_ISSUES_REGISTER.md)分配稳定编号。**状态与后续软件决定只以根台账为准**；本地旧文中“尚未登记”的句子描述登记前历史时点。登记不批准建议解释，也不关闭问题。\r\n\r\n|本地请求键|稳定编号|\r\n|---|---|\r\n|`001`|`EQP-STD-GB29541-001`|\r\n|`002`|`EQP-STD-GB29541-002`|\r\n|`003`|`EQP-STD-GB29541-003`|\r\n|`004`|`EQP-STD-GB29541-004`|\r\n|`005`|`EQP-STD-GB29541-005`|\r\n"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\ISSUE_REGISTRATION_REQUEST.md",
+    "first_content_reconstructed_sha256": "f57aa7cba9be2a4afcaeaa340995b8ae5310f34e0acb45fadb6965418b56959f",
+    "first_content_matches_hash": true,
+    "change": "append formal ID backlinks only; original semantic content unchanged",
+    "addition": "## 正式编号回链（2026-10-13）\r\n\r\n本目录的请求键已在[根台账](../../../STANDARD_ISSUES_REGISTER.md)分配稳定编号。**状态与后续软件决定只以根台账为准**；本地旧文中“尚未登记”的句子描述登记前历史时点。登记不批准建议解释，也不关闭问题。\r\n\r\n|本地请求键|稳定编号|\r\n|---|---|\r\n|`请求A`|`EQP-STD-GB37479-001`|\r\n|`请求C`|`EQP-STD-GB37479-002`|\r\n|`请求B`|`EQP-STD-GB37479-003`|\r\n"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\ISSUE_REGISTRATION_REQUEST.md",
+    "first_content_reconstructed_sha256": "23363ffa88f4dbd5d542016a3cac35e4c294fc06ff3362dfe49cb2d48d7df388",
+    "first_content_matches_hash": true,
+    "change": "append formal ID backlinks only; original semantic content unchanged",
+    "addition": "## 正式编号回链（2026-10-13）\r\n\r\n本目录的请求键已在[根台账](../../../STANDARD_ISSUES_REGISTER.md)分配稳定编号。**状态与后续软件决定只以根台账为准**；本地旧文中“尚未登记”的句子描述登记前历史时点。登记不批准建议解释，也不关闭问题。\r\n\r\n|本地请求键|稳定编号|\r\n|---|---|\r\n|`R01`|`EQP-STD-GB19576-001`|\r\n|`R02`|`EQP-STD-GB19576-002`|\r\n"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\ISSUE_REGISTRATION_REQUEST.md",
+    "first_content_reconstructed_sha256": "50408e7480ddf806ecc1773b7f4947e8e6b0c22b0f3f2a51910e82d81bafbb9d",
+    "first_content_matches_hash": true,
+    "change": "append formal ID backlinks only; original semantic content unchanged",
+    "addition": "## 正式编号回链（2026-10-13）\r\n\r\n本目录的请求键已在[根台账](../../../STANDARD_ISSUES_REGISTER.md)分配稳定编号。**状态与后续软件决定只以根台账为准**；本地旧文中“尚未登记”的句子描述登记前历史时点。登记不批准建议解释，也不关闭问题。\r\n\r\n|本地请求键|稳定编号|\r\n|---|---|\r\n|`R1`|`EQP-STD-GB21454-001`|\r\n|`R2`|`EQP-STD-GB21454-002`|\r\n|`R3`|`EQP-STD-GB21454-003`|\r\n|`R4`|`EQP-STD-GB21454-004`|\r\n"
+  }
+]

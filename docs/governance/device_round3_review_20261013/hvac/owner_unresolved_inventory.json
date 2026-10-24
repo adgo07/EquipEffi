@@ -1,0 +1,1103 @@
+[
+  {
+    "review_item_id": "OWNER-29541-001",
+    "existing_issue_id": "EQP-STD-GB29541-001",
+    "standard": "29541",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF4 表1静态H<10及4.2“制热量大于10 kW”",
+    "root_record_fact": "表1的静态加热行位于 `H<10`、普通型组；`H≥10` 组只有一次与循环加热。4.2写“制热量大于10 kW”的静态加热参照“10 kW以下”的静态加热指标。",
+    "impact": "静态恰好10kW无明确行，影响等级/5级限定/2级节能值",
+    "options_and_recommendation": "A保留需确认；B经Owner决定参照普通静态行；不能把原文>静默改≥",
+    "evidence_strength": "强：原页结构与不等号；官方解释缺",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "是否批准恰好10kW静态产品的具体软件路由？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+        "sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\STANDARD_MAPPING.md",
+        "sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\data\\GB29541_2013_标准表值.xlsx",
+        "sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54"
+      }
+    ],
+    "root_block_sha256": "fa4dd370a23f1c6820ad1d71bc7afbcec77d98cde41d431719db91338f649085"
+  },
+  {
+    "review_item_id": "OWNER-29541-002",
+    "existing_issue_id": "EQP-STD-GB29541-002",
+    "standard": "29541",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF4 表1低温型只有一次/循环；4.2未限定型式",
+    "root_record_fact": "表1 `H<10` 低温型仅列一次加热、循环加热式；唯一静态加热行归于普通型；4.2对大于10 kW静态加热作参照，但未写型式。",
+    "impact": "低温静态全容量及H>10参照范围不明",
+    "options_and_recommendation": "A不输出唯一等级；B有源解释后参照普通型；C另获低温指标，均不可自行造值",
+    "evidence_strength": "强：表结构；解释证据弱",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "低温静态是否纳入4.2参照，按什么分支？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+        "sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\STANDARD_MAPPING.md",
+        "sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\data\\GB29541_2013_标准表值.xlsx",
+        "sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54"
+      }
+    ],
+    "root_block_sha256": "e91812626f148b6f2cc11be44fc87e3baa0764b79a7de809586173ee258592b2"
+  },
+  {
+    "review_item_id": "OWNER-29541-003",
+    "existing_issue_id": "EQP-STD-GB29541-003",
+    "standard": "29541",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF4 第7章“性能系数实测值保留两位小数”",
+    "root_record_fact": "第7章末句为“性能系数实测值保留两位小数。”本PDF没有指定舍入模式，规范性引用为GB/T 21362—2008及GB/T 23137—2008；本轮未取得、核验两份引用标准全文。",
+    "impact": "临界COP、95%检查受修约模式/顺序影响",
+    "options_and_recommendation": "A仅接收有效测试报告两位值；B补2008引用后指定修约；不套Pump配置",
+    "evidence_strength": "强：两位要求；完整修约依据缺",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "正式输入精度、修约阶段与中点模式如何确定？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+        "sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\STANDARD_MAPPING.md",
+        "sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\data\\GB29541_2013_标准表值.xlsx",
+        "sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54"
+      }
+    ],
+    "root_block_sha256": "88ef882c0ff10f8719be434ef46d379561c74e24bce43bb3019eea5193219ae8"
+  },
+  {
+    "review_item_id": "OWNER-29541-004",
+    "existing_issue_id": "EQP-STD-GB29541-004",
+    "standard": "29541",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF3 第2/3章；PDF4 第7章GB/T21362—2008、23137—2008；供泵计能耗",
+    "root_record_fact": "第2、3、7章引用GB/T 21362—2008及GB/T 23137—2008；第7章按是否带标配水箱选择方法，且要求计入规定的水泵能耗及满足储热性能要求。",
+    "impact": "型式定义/工况/COP生成/储存性能依赖缺，不能凭功率比重算",
+    "options_and_recommendation": "A阈值查询仅接收合规测试结果；B补齐指定2008版后接原始计算",
+    "evidence_strength": "强：引用；引用内容未核",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "先接合规指标还是完整试验重算；哪些证据版本构成输入依据？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+        "sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\STANDARD_MAPPING.md",
+        "sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\data\\GB29541_2013_标准表值.xlsx",
+        "sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54"
+      }
+    ],
+    "root_block_sha256": "e283d2a91cc3a6258a7dd34310ffdef54ec64b6c0e0fb99b1b2988486f3fa48a"
+  },
+  {
+    "review_item_id": "OWNER-29541-005",
+    "existing_issue_id": "EQP-STD-GB29541-005",
+    "standard": "29541",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF4 表1“制热量/kW”；4.3“额定制热量和其实测值…范围内”",
+    "root_record_fact": "表1列名“制热量/kW”，分H<10及H≥10；4.3要求产品标注的额定制热量和其实测值均在“其额定能源效率等级对应的额定制热量范围”内，同时实测量不小于标注量95%。定位PDF物理4／印刷2，表1及4.3第二段。",
+    "impact": "额定9.8实测10.0可跨两组，影响阈值/容量符合性",
+    "options_and_recommendation": "A额定选组再核实测同组；B实测选组另核标注；保留差异候选",
+    "evidence_strength": "强：条款和分组；唯一实现解释缺",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "H选组依据何值，跨组如何处理，静态参照如何结合？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+        "sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\STANDARD_MAPPING.md",
+        "sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\data\\GB29541_2013_标准表值.xlsx",
+        "sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54"
+      }
+    ],
+    "root_block_sha256": "83a1bdbe68c560d8617e26d3146d9eb89dbc29392216df6897b159a3fd07ec0b"
+  },
+  {
+    "review_item_id": "OWNER-19576-001",
+    "existing_issue_id": "EQP-STD-GB19576-001",
+    "standard": "19576",
+    "priority": "P2",
+    "original_excerpt_and_location": "PDF1封面2020-05-01；原有延期证据索引国标委发〔2020〕15号",
+    "root_record_fact": "指定PDF封面（物理页1）显示2020-05-01实施，SHA见SOURCE_EVIDENCE；两处官方登记均显示2020-11-01",
+    "impact": "日期元数据，不改变阈值；官方渠道显示差异和原件来源尚需留痕",
+    "options_and_recommendation": "保留封面/延期双字段；补通知原件可核证据；不得增加日期门禁",
+    "evidence_strength": "封面强；延期本轮复用专属记录，未新认证外部全文",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "无需对公开日期投票；Owner仅决定补证后Catalog接入安排与证据接受边界",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+        "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+        "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+        "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+      }
+    ],
+    "root_block_sha256": "ff7c0c567c4267ea10008a8a8bc07dfd2ac9a5f14a1fe16190edcca507bfe792"
+  },
+  {
+    "review_item_id": "OWNER-19576-002",
+    "existing_issue_id": "EQP-STD-GB19576-002",
+    "standard": "19576",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF3 第2章三注日期引用；PDF4 §6.4按GB/T17758—2010，表1恒温恒湿AEER",
+    "root_record_fact": "第2章（印刷1/PDF3）引用GB/T17758—2010、GB/T19413—2010、JB/T11968—2014。第6章（印刷2/PDF4）分别规定测试依据；6.4将恒温恒湿型指向GB/T17758—2010，表1该型指标为AEER",
+    "impact": "不能将AEER视为COP或擅换19413；季节耗电适用、生成算法缺",
+    "options_and_recommendation": "A使用合规报告指标；B补17758/19413—2010、11968—2014后构建生成链",
+    "evidence_strength": "原文强；引用全文未核",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "恒温恒湿AEER及5.4耗电检验按何证据，采用何输入链？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+        "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+        "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+        "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+      }
+    ],
+    "root_block_sha256": "e963b3a2b5577348b25c46d2df6ac3facb667b48960c329d8ab388a889917302"
+  },
+  {
+    "review_item_id": "OWNER-37479-001",
+    "existing_issue_id": "EQP-STD-GB37479-001",
+    "standard": "37479",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF4 §5.1“能效限定值为表1中…3级”，同时含全新风；全新风在表2",
+    "root_record_fact": "第4章按表1和表2分等级；表1为风管送风式空调（热泵），表2为直接蒸发式全新风空气处理机组。5.1同时列出这两类机组，却仅指向“表1”3级指标。已核对原页图像，非文本抽取错误。",
+    "impact": "疑似漏引，限定值结论受影响；表2等级数据无错",
+    "options_and_recommendation": "A保留表2等级而限定值待确认；B经Owner批准用相应表三级；无权宣布官方已勘误",
+    "evidence_strength": "强：表题和原句；官方解释缺",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "是否批准以表2三级作为全新风限定值的软件解释，如何标记来源？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+        "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+        "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+        "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+      }
+    ],
+    "root_block_sha256": "b9af0fe1d573b4fa81352db985d77ce374f9d762d4f1aea734614d23882821e4"
+  },
+  {
+    "review_item_id": "OWNER-37479-002",
+    "existing_issue_id": "EQP-STD-GB37479-002",
+    "standard": "37479",
+    "priority": "P2",
+    "original_excerpt_and_location": "PDF1封面2020-05-01；既有延期附件第3页第4项2020-11-01",
+    "root_record_fact": "用户指定PDF封面为2020-05-01；官方详情为2020-11-01，状态现行。官方2019年全文公开通知仍列2020-05-01。",
+    "impact": "生命周期提示/来源链，非表值",
+    "options_and_recommendation": "保留双日期；补官方渠道同一性证据；不自动关OPEN",
+    "evidence_strength": "原文强；附件既有证据复用，官方同一性未认证",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "不选择公开事实；决定后续Catalog安排及证据接受范围",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+        "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+        "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+        "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+      }
+    ],
+    "root_block_sha256": "4eb3eaeaa24ba4a9eba331d1dd89b6259a9307da39d71824853ffc028cc279d5"
+  },
+  {
+    "review_item_id": "OWNER-37479-003",
+    "existing_issue_id": "EQP-STD-GB37479-003",
+    "standard": "37479",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF3 第2章；PDF5 §6.1/6.3“实测值保留两位小数”；6.2指GB21455",
+    "root_record_fact": "6.1与6.3要求实测值保留两位小数，但本文件未写舍入模式；6.1/6.3把完整测试和静压修正分别指向GB/T 18836、GB/T 17758—2010、GB/T 25128—2010；GB/T 18836、GB 21455未注年份。",
+    "impact": "完整SEER/APF/IPLV/EER、静压、两位修约和辅热测试依赖",
+    "options_and_recommendation": "A合规结果输入；B补18836、17758—2010、25128—2010、21455具体版次后原始计算",
+    "evidence_strength": "原文强；外部规则缺",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "先接哪种输入；Numeric Profile/测试版本如何定；补6.2路由",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+        "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+        "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+        "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+      }
+    ],
+    "root_block_sha256": "27c44ff0dc3cc1247f419f17f6f8d43f977ca0440d0846928a909d365347d645"
+  },
+  {
+    "review_item_id": "OWNER-21454-001",
+    "existing_issue_id": "EQP-STD-GB21454-001",
+    "standard": "21454",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF3 §3.1“对于单冷式产品，只考核其SEER”；PDF4 表1注“SEER、EERmin均应满足要求”",
+    "root_record_fact": "3.1末句“对于单冷式产品，只考核其SEER”（印刷1/PDF3）；4.2表1表注要求 CC≤14000 W 的风冷单冷型 SEER、EERmin 均满足（印刷2/PDF4）；4.4表3按水冷物理类型列IPLV(C)或EER（印刷2～3/PDF4～5）",
+    "impact": "小容量单冷是否双指标、水冷单冷路径，影响等级",
+    "options_and_recommendation": "A按具体表/表注限定；B仅按总句会漏指标，不建议；保留冲突原句",
+    "evidence_strength": "强：直接文本差异；官方解释缺",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "是否批准具体表及表注优先的软件路由？水冷如何衔接？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+        "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+        "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+        "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+      }
+    ],
+    "root_block_sha256": "fb3bc795ea406bfce272500b377331bd9f31f21d286b4ed1365d2a2bce574473"
+  },
+  {
+    "review_item_id": "OWNER-21454-002",
+    "existing_issue_id": "EQP-STD-GB21454-002",
+    "standard": "21454",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF6 §5.6b 0.01整倍数及95%；6.1.2/3两位小数",
+    "root_record_fact": "5.6b规定0.01整倍数、6.1.2及6.1.3要求实测值保留两位小数（印刷4/PDF6）；4.2～4.5要求不小于相应限值，5.6b另有实测≥标注95%",
+    "impact": "临界等级和允差顺序",
+    "options_and_recommendation": "A合规报告值；B补引用后修约；95%不得乘等级阈值",
+    "evidence_strength": "强：精度要求；算法次序缺",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "原始值/修约值哪个用于比较及中点模式？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+        "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+        "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+        "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+      }
+    ],
+    "root_block_sha256": "9bdc6248350496e63f89c9f0369eeda34bbfc3afc65ba54a4c9860c31fa9f4d3"
+  },
+  {
+    "review_item_id": "OWNER-21454-003",
+    "existing_issue_id": "EQP-STD-GB21454-003",
+    "standard": "21454",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF13 A.5“各温度tj时的机组实测制热量”；A.6只给COP",
+    "root_record_fact": "A.3.3式A.5在t_j＜−12℃且负荷大于φ_ful(t_j)时计算辅助电热功率；φ_ful(t_j)定义为各温度实测制热量。表A.1/A.2只有A～E五点，表A.3/A.4为逐温度bin。A.6明确给COP分段计算，未同时给φ_ful各bin插值式（印刷7～8、11/PDF9～10、13）",
+    "impact": "逐bin容量缺会误算辅热与HSPF",
+    "options_and_recommendation": "A要求逐bin实测证据；B补引用支持的容量取得法；不可默认COP同式插值/辅热0",
+    "evidence_strength": "强：原式；外部方法未核",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "仅五点数据时容量如何取，允许哪个有源方法？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+        "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+        "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+        "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+      }
+    ],
+    "root_block_sha256": "a299c2c0fd6369f7b394a007f8a020b8e1a0f969f134d22304f3ab26370f59e4"
+  },
+  {
+    "review_item_id": "OWNER-21454-004",
+    "existing_issue_id": "EQP-STD-GB21454-004",
+    "standard": "21454",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF3 第2章；PDF4/5表注；PDF6/7 §6；PDF11/13/14附录引用",
+    "root_record_fact": "第2章、表1/2/4表注、6.1～6.4、A.3.1.1a、A.3.3引用GB/T18836—2017、GB/T18837—2015、GB/T25857—2010",
+    "impact": "静压修正、季节指标、循环衰减尚非完整计算链",
+    "options_and_recommendation": "补GB/T18836—2017、18837—2015、25857—2010，或限定合规指标输入",
+    "evidence_strength": "原文强；外部全文缺",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "本阶段接入边界与指定版次取得计划？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+        "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+        "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+        "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+      }
+    ],
+    "root_block_sha256": "cbea2ab23a611004c20c3ccfb209f661a22f37ecff407d732bbb309f9cd24b97"
+  },
+  {
+    "review_item_id": "OWNER-19577-001",
+    "existing_issue_id": "EQP-STD-GB19577-001",
+    "standard": "19577",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF8 §3.4“单位制冷量加热源耗量最大值”；PDF9 §4.2“不应小于”；PDF11表5 0.4MPa为1.05/1.10/1.19",
+    "root_record_fact": "§3.4印刷2/PDF8定义蒸汽耗量为最大值；§4.2印刷3/PDF9总述实测值和标称值“不应小于”；表5印刷5/PDF11蒸汽耗量1级到3级递增（0.4 MPa为1.05、1.10、1.19）",
+    "impact": "方向相反且耗量单位未印，影响蒸汽支等级",
+    "options_and_recommendation": "A暂停该支唯一等级；B按§3.4/表5采用≤经Owner批准；单位须18431补证",
+    "evidence_strength": "强：原文冲突；正确单位外部证据缺",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "蒸汽耗量是否用≤、具体单位及有效输入来源？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+        "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+        "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+        "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+      }
+    ],
+    "root_block_sha256": "a6315eb149d9aca2c148a366f32f3f3b83c155bb00ddbea74e100f8774009fcc"
+  },
+  {
+    "review_item_id": "OWNER-19577-002",
+    "existing_issue_id": "EQP-STD-GB19577-002",
+    "standard": "19577",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF9表1/2的3级横跨两列；PDF10/12表3/7/8同类；§4.2表1或表2",
+    "root_record_fact": "§4.2允许表1或表2一个指标体系；表1/2/3/7/8附加指标只在3级表头下，§5.1又定义3级为能效限定值；§3.1注称数据中心专用型考核ACCOP，但表1同分支有COPc",
+    "impact": "高级别是否受三级附指标门槛、双通道选择/混搭、数据中心COPc三子问题",
+    "options_and_recommendation": "A先保留全部源值；B建议各完整通道先验底线再分级，未批准；不得按误报改成无等级归属",
+    "evidence_strength": "强：表头归属；组合语义仍需解释",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "逐一批准：高级别底线、通道选择、数据中心COPc与§3.1注关系",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+        "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+        "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+        "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+      }
+    ],
+    "root_block_sha256": "8d6b6871de297eaba7bab1f29f984c73576b2ead4497c62f243895f5714a1991"
+  },
+  {
+    "review_item_id": "OWNER-19577-003",
+    "existing_issue_id": "EQP-STD-GB19577-003",
+    "standard": "19577",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF14 表A.1 B=32.25℃；PDF16 A.4.2 b/c B=32.3℃",
+    "root_record_fact": "表A.1印刷8/PDF14 B点干球温度32.25℃；A.4.2 b/c印刷10/PDF16写32.3℃(B点)，公式使用tB",
+    "impact": "tB影响插值及CSPF",
+    "options_and_recommendation": "A表工况32.25候选；B正文32.3；需补证/Owner，表文都保留",
+    "evidence_strength": "强：两印值；官方修正缺",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "tB实际采用哪个数值及32.3是否只是显示修约？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+        "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+        "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+        "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+      }
+    ],
+    "root_block_sha256": "6cba421cb31fd83f5a6399cb0b8efa06702bca3433be6a39bd65d24d97420725"
+  },
+  {
+    "review_item_id": "OWNER-19577-004",
+    "existing_issue_id": "EQP-STD-GB19577-004",
+    "standard": "19577",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF13 §5.3注：通常0.01、间接蒸发冷却0.1倍数圆整",
+    "root_record_fact": "§5.3注印刷7/PDF13要求通常按0.01倍数、间接蒸发冷却按0.1倍数圆整，未在本PDF规定中点规则、过程精度或与比较顺序的完整关系",
+    "impact": "不同设备临界比较、模式与时点缺",
+    "options_and_recommendation": "A收合规修约指标；B依产品标准证据定Profile；不默认HALF_UP/HALF_EVEN",
+    "evidence_strength": "强：倍数；完整Profile缺",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "六类与间接蒸发支各采用什么输入/圆整顺序？",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+        "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+        "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+        "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+      }
+    ],
+    "root_block_sha256": "53f2dcbfd7ae78d40be4e1de2519d1c259ab495a097764019d6e34a4692e7f85"
+  },
+  {
+    "review_item_id": "OWNER-19577-005",
+    "existing_issue_id": "EQP-STD-GB19577-005",
+    "standard": "19577",
+    "priority": "P1",
+    "original_excerpt_and_location": "PDF7/13 §2/6共13不注日期引用；PDF11表5/6；PDF16 A.3/A.4共享35℃、A.7 COPbin(43)、A.13“通过测试获得，按公式…计算”",
+    "root_record_fact": "§2/§6的13份不注日期产品/试验标准未随本任务提供；表5饱和蒸汽压力未在本PDF标清绝压/表压口径；A.4.2(A.7)用COPbin(43)，A.3只列A/B/C/D四点；A.3/A.4两式共用35℃端点；表6H1a～H5b工况定义由GB/T25861承载",
+    "impact": "包含版本、耗量单位/压力绝表压、H工况、43℃点、35℃取值、CD测试与公式关系；不可漏子项",
+    "options_and_recommendation": "A保留来源缺口仅查合规指标；B逐引用补证；不能删0小时高温公式、不能猜H/压力；CD不自行视为任选",
+    "evidence_strength": "强：正文；外部解释缺。CD原句无“或”，本组旧意见过度",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "分项确认引用实际版本、压力/单位、H代码、43℃来源、35℃共点选择、CD来源关系",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+        "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+        "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+        "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+      }
+    ],
+    "root_block_sha256": "78362218413e4b118e36e4c61e6175a1c403217157eb7f01bfe92d5e3eacf66c"
+  },
+  {
+    "review_item_id": "OWNER-19577-006",
+    "existing_issue_id": "EQP-STD-GB19577-006",
+    "standard": "19577",
+    "priority": "P2",
+    "original_excerpt_and_location": "PDF5前言“2008年首次发布为GB19577—2004”",
+    "root_record_fact": "前言印刷Ⅲ/PDF5写“2008年首次发布为GB19577—2004”，年份文字并存；本版封面2024-04-29发布、2025-02-01实施日期无此冲突。",
+    "impact": "疑似历史年份笔误，不影响本版阈值",
+    "options_and_recommendation": "保留原句并补2004版官方历史证据；不凭编号静默改2008",
+    "evidence_strength": "强：原句；正确历史待外证",
+    "approval_status": "OPEN；未见Owner已批准软件解释",
+    "owner_question": "有源补证后如何记录历史元数据；不要求Owner猜正确年份",
+    "registration": "既有稳定ID；不新增重复问题",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+        "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+        "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+        "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+      }
+    ],
+    "root_block_sha256": "0d96c083ba59f18d2ec9fbc2013a5bbd74c5cc32c45ab618f75c7973ef55e9b8"
+  },
+  {
+    "review_item_id": "N01",
+    "existing_issue_id": null,
+    "standard": "21454",
+    "priority": "P1",
+    "classification": "映射错漏",
+    "origin": "R3 M2/A3；旧21454问题8",
+    "original_excerpt_and_location": "PDF9表A.1/2百分数；PDF14 A.9 LD/100；表A.1!B6=1.3格式0%",
+    "impact": "主映射§4数值百分比未区分存储比值与LD百分数数值",
+    "options_and_recommendation": "建议映射明写Excel ratio×100=LD；或公式入口收ratio并不再/100；两条数学等价但契约只能选一条",
+    "evidence_strength": "强：实读值/格式和原式",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "Owner只需确认Stage B输入单位契约；本次可直接改进事实说明，不是标准勘误",
+    "registration": "未登记；建议新映射问题，勿抢占旧建议编号005/007",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+        "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+        "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+        "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+      }
+    ]
+  },
+  {
+    "review_item_id": "N02",
+    "existing_issue_id": "EQP-STD-GB37479-003",
+    "standard": "37479",
+    "priority": "P2",
+    "classification": "映射错漏",
+    "origin": "R3 M4；旧37479问题参考工况",
+    "original_excerpt_and_location": "PDF5 §6.2“辅助电加热的测试方法按GB21455进行”",
+    "impact": "主映射漏6.2，旧本组报告误称已保留；外部依赖根003已有21455但无明确路由",
+    "options_and_recommendation": "补原句和6.2→21455；不得把未注日期自行定某版",
+    "evidence_strength": "强：原页直接",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "无需解释投票；Owner后续决定实际测试依据版本/取得安排",
+    "registration": "可补既有003的明确定位，无须重复新建",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+        "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+        "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+        "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+      }
+    ]
+  },
+  {
+    "review_item_id": "N03",
+    "existing_issue_id": null,
+    "standard": "19576",
+    "priority": "P2",
+    "classification": "第三方误解或证据不足",
+    "origin": "R3 M6；旧19576 F-01",
+    "original_excerpt_and_location": "本PDF4页；PDF4 §6.4后结束线/印刷2；旧报告称出版信息8页",
+    "impact": "4与8差异需登记，但不证明缺正文；官方全文同一性未证",
+    "options_and_recommendation": "补出版原件/官方全文对照；可能空白封页，不能凭推测关闭",
+    "evidence_strength": "本地页数强；8页为旧审计外部记录本轮未认证",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "Owner决定来源补证/风险接受，不能代替官方全文事实核验",
+    "registration": "未见专属登记；建议来源疑点新增",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+        "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+        "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+        "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+      }
+    ]
+  },
+  {
+    "review_item_id": "N04",
+    "existing_issue_id": null,
+    "standard": "19576",
+    "priority": "P2",
+    "classification": "标准原文疑错歧义",
+    "origin": "旧19576 F-02；R3 i5",
+    "original_excerpt_and_location": "PDF3表1热泵(APF,Wh/Wh))；PDF4机房(AEER,W/W))；6.2“单元式空调机组”",
+    "impact": "两处多余右括号及术语异写未留痕；指标值不受影响",
+    "options_and_recommendation": "保留原字面，在整理字段标准化并注释；不宣称官方勘误",
+    "evidence_strength": "强：整页和本目录AEER放大图",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "Owner是否接受规范化展示及如何记录原文疑似排版；不自关",
+    "registration": "未登记；建议TYPO/TERM候选",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+        "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+        "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+        "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+      }
+    ]
+  },
+  {
+    "review_item_id": "N05",
+    "existing_issue_id": null,
+    "standard": "37479",
+    "priority": "P2",
+    "classification": "软件解释待Owner",
+    "origin": "旧37479建议004",
+    "original_excerpt_and_location": "PDF3第4章等级；PDF5 §5.4a“不应小于…额定等级…指标规定值”",
+    "impact": "旧审计称等号归属未登记；原文支持≥，最高满足等级扫描为软件组合规则",
+    "options_and_recommendation": "建议≥满足该级并取最高满足等级，标技术实现；备选仅报告各级满足关系",
+    "evidence_strength": "≥证据强；自动输出策略为待设计",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "是否批准自动取最高满足等级的输出规则？不把≥本身称标准笔误",
+    "registration": "未独立登记；如影响正式结果可挂003或新增IMPLEMENTATION",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+        "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+        "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+        "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+      }
+    ]
+  },
+  {
+    "review_item_id": "N06",
+    "existing_issue_id": null,
+    "standard": "19576,37479",
+    "priority": "P1",
+    "classification": "软件解释待Owner",
+    "origin": "G1/R3 M7 M8；根清单B7",
+    "original_excerpt_and_location": "19576 PDF3 §1排除风管；37479 PDF3 §1静压>0",
+    "impact": "静压0且确属风管送风式，两份标准均不适用；不是互相矛盾或全体系无标准",
+    "options_and_recommendation": "先验证产品身份；不套两表；补外部产品标准及其他适用标准，状态按既有契约",
+    "evidence_strength": "两标准排除条件强；真实产品归属及全体系覆盖不足",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "Owner确定产品身份资料及无匹配标准的后续路由；不得现在新造终态",
+    "registration": "未联合登记；建议跨标准候选",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+        "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+        "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+        "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+        "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+        "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+        "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+      }
+    ]
+  },
+  {
+    "review_item_id": "N07",
+    "existing_issue_id": null,
+    "standard": "19576,37479,21454,19577",
+    "priority": "P2",
+    "classification": "第三方误解或证据不足",
+    "origin": "G2/B7 屋顶式",
+    "original_excerpt_and_location": "19576 PDF3明文排除屋顶式；其他标准未按名称单列",
+    "impact": "仅这些文件未单列不能证明全标准体系无依据",
+    "options_and_recommendation": "保留实际结构/产品标准待证；不能按名称替代分类",
+    "evidence_strength": "排除文字强；其他标准不覆盖的推断弱",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "Owner决定接入时要求哪些产品身份信息，不批准默认落表",
+    "registration": "未联合登记；候选待补证",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+        "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+        "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+        "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+        "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+        "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+        "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+        "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+        "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+        "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+        "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+        "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+        "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+      }
+    ]
+  },
+  {
+    "review_item_id": "N08",
+    "existing_issue_id": null,
+    "standard": "19576,37479",
+    "priority": "P1",
+    "classification": "软件解释待Owner",
+    "origin": "O1/O2/R3 M7",
+    "original_excerpt_and_location": "19576 PDF3/4表1与37479 PDF4表1；7000下界与7100切点",
+    "impact": "同名SEER/APF/IPLV不同设备阈值，错误合并路由会错级",
+    "options_and_recommendation": "先类别后选表；禁止以指标名/容量或最有利阈值选标准",
+    "evidence_strength": "强：两表；不是标准间矛盾",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "设备身份唯一化的输入证据及冲突处理如何定？",
+    "registration": "未联合登记；建议跨标准候选",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+        "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+        "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+        "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+        "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+        "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+        "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+      }
+    ]
+  },
+  {
+    "review_item_id": "N09",
+    "existing_issue_id": null,
+    "standard": "21454,37479,19576",
+    "priority": "P1",
+    "classification": "软件解释待Owner",
+    "origin": "O3/旧21454问题10/H5",
+    "original_excerpt_and_location": "21454 PDF3范围、PDF4/5静压表注和PDF11风管型室内机；37479 PDF3范围",
+    "impact": "多联机带风管室内机可能被泛化路由为37479；静压用途不同",
+    "options_and_recommendation": "候选先按整机多联身份→21454、一拖一风管→37479；补18837/18836定义后批准",
+    "evidence_strength": "原条文强；外部产品术语定义缺",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "整机/室内机层级如何判断；静压修正与范围筛选怎样区分？",
+    "registration": "未联合登记；建议与21454-004关联",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+        "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+        "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+        "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+        "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+        "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+        "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+        "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+        "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+        "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+      }
+    ]
+  },
+  {
+    "review_item_id": "N10",
+    "existing_issue_id": null,
+    "standard": "19576,19577",
+    "priority": "P1",
+    "classification": "软件解释待Owner",
+    "origin": "O4/H6/R3 M7",
+    "original_excerpt_and_location": "19576 PDF4表1机房AEER；19577 PDF8 §3.6机房复合式间接蒸发EER；PDF9数据中心ACCOP",
+    "impact": "机房用途不能唯一决定AEER/EER/ACCOP，须区分设备结构",
+    "options_and_recommendation": "按风侧单元机/水侧冷水机产品身份再选表；不得仅按机房关键字",
+    "evidence_strength": "强：原页指标；分类实现待决定",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "Owner批准设备识别维度及缺证处理，不更改原阈值",
+    "registration": "未联合登记；建议跨标准候选",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+        "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+        "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+        "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+        "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+        "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+        "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+      }
+    ]
+  },
+  {
+    "review_item_id": "N11",
+    "existing_issue_id": null,
+    "standard": "19576",
+    "priority": "P2",
+    "classification": "软件解释待Owner",
+    "origin": "现映射§2/BOUNDARY B17",
+    "original_excerpt_and_location": "PDF3 §1静压0修饰范围，PDF4机房表行无容量下限",
+    "impact": "专用型出现非0静压、普通CC<7000无行时，范围与无表行须区分",
+    "options_and_recommendation": "专用型补产品标准；普通<7000不外推；不将7000施到所有分支",
+    "evidence_strength": "原文强；产品定义及软件输出待设计",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "具体输入缺口/不适用/无合法行怎样映射既有业务状态？",
+    "registration": "与002相关但现根未完整点名；建议补子项",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+        "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+        "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+        "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+      }
+    ]
+  },
+  {
+    "review_item_id": "N12",
+    "existing_issue_id": "EQP-STD-GB19577-005",
+    "standard": "19577",
+    "priority": "P2",
+    "classification": "软件解释待Owner",
+    "origin": "旧本组A.13提示；本轮纠正",
+    "original_excerpt_and_location": "PDF16 A.13“通过测试获得，按公式(A.13)进行计算”",
+    "impact": "不等于“或通过测试获得”；独立任选CD可能改变CSPF",
+    "options_and_recommendation": "主映射补全原句；方法关系交产品试验原文补证；不得自行允许任选",
+    "evidence_strength": "原句强；唯一解释缺",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "CD测试输入与公式关系是什么，能否独立提供CD？",
+    "registration": "已在本清单扩展既有005子问题，建议回填而不重复编号",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+        "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+        "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+        "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+      }
+    ]
+  },
+  {
+    "review_item_id": "N13",
+    "existing_issue_id": null,
+    "standard": "37479,19577,19576,21454,29541",
+    "priority": "P2",
+    "classification": "第三方误解或证据不足",
+    "origin": "旧37479来源形态；各报告未认证官方同一性",
+    "original_excerpt_and_location": "本地PDF可核SHA/元数据；DocGen/iText生成/修改记录",
+    "impact": "工具重存信息不证明篡改，也不证明官方原版逐字同一；47页覆盖仅给定PDF",
+    "options_and_recommendation": "保留取得渠道未知/用户提供；有需要取官方全文比对，不凭生产器定造假或缺失",
+    "evidence_strength": "本地SHA强；原始取得链弱",
+    "approval_status": "未见批准；本清单不关闭疑点",
+    "owner_question": "Owner决定后续来源证据要求，疑似原文错在认证前不自关",
+    "registration": "本地来源限制已记；若作正式实现依据需追踪补证",
+    "source_artifacts": [
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+        "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+        "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+        "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+        "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+        "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+        "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+        "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+        "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+        "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+        "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+        "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+        "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\标准原文\\14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+        "sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\STANDARD_MAPPING.md",
+        "sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f"
+      },
+      {
+        "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\data\\GB29541_2013_标准表值.xlsx",
+        "sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54"
+      }
+    ]
+  }
+]

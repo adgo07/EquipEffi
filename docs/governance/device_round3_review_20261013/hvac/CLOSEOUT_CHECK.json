@@ -1,0 +1,258 @@
+{
+  "completed_at_utc": "2026-10-13T16:04:48.099428+00:00",
+  "source_stable": 69,
+  "source_total": 69,
+  "core_pdf_mapping_xlsx_stable": "15/15",
+  "old_audits_fully_read": [
+    "gb19577_2024_ACCEPTANCE_REVIEW.md",
+    "gb19576_2019_ACCEPTANCE_REVIEW.md",
+    "gb37479_2019_ACCEPTANCE_REVIEW.md",
+    "gb21454_2021_ACCEPTANCE_REVIEW.md",
+    "gb29541_2013/evidence/REVIEW_20261013_independent_review.md"
+  ],
+  "verbatim_r3_rows": 24,
+  "verbatim_history_rows": 24,
+  "verbatim_checks": [
+    {
+      "id": "HVAC-R3-B1",
+      "source_line": 137,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-B2",
+      "source_line": 138,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-M1",
+      "source_line": 139,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-M2",
+      "source_line": 140,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-M3",
+      "source_line": 141,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-M4",
+      "source_line": 142,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-M5",
+      "source_line": 143,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-M6",
+      "source_line": 144,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-M7",
+      "source_line": 145,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-M8",
+      "source_line": 146,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-m1",
+      "source_line": 147,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-m2",
+      "source_line": 148,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-m3",
+      "source_line": 149,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-m4",
+      "source_line": 150,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-m5",
+      "source_line": 151,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-m6",
+      "source_line": 152,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-m7",
+      "source_line": 153,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-m8",
+      "source_line": 154,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-m9",
+      "source_line": 155,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-i1",
+      "source_line": 156,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-i2",
+      "source_line": 157,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-i3",
+      "source_line": 158,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-i4",
+      "source_line": 159,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-i5",
+      "source_line": 160,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H01",
+      "source_line": 55,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H02",
+      "source_line": 56,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H03",
+      "source_line": 57,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H04",
+      "source_line": 58,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H05",
+      "source_line": 59,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H06",
+      "source_line": 60,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H07",
+      "source_line": 61,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H08",
+      "source_line": 62,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H09",
+      "source_line": 63,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H10",
+      "source_line": 64,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H11",
+      "source_line": 65,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H12",
+      "source_line": 66,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H13",
+      "source_line": 67,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H14",
+      "source_line": 68,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H15",
+      "source_line": 69,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H16",
+      "source_line": 70,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H17",
+      "source_line": 71,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H18",
+      "source_line": 72,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H19",
+      "source_line": 73,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H20",
+      "source_line": 74,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H21",
+      "source_line": 75,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H22",
+      "source_line": 76,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H23",
+      "source_line": 77,
+      "verbatim_match": true
+    },
+    {
+      "id": "HVAC-R3-H24",
+      "source_line": 78,
+      "verbatim_match": true
+    }
+  ],
+  "scope": "只写本轮hvac目录；未改源/旧报告/根台账/代码，未提交"
+}

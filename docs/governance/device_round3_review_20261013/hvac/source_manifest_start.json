@@ -1,0 +1,386 @@
+[
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+    "sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df",
+    "first_hvac_sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\CHANGELOG.md",
+    "sha256": "6419dcbf37077fc96b95ef47247470ffd20f5bdcebe387968e46d9187fb1187b",
+    "first_hvac_sha256": "6419dcbf37077fc96b95ef47247470ffd20f5bdcebe387968e46d9187fb1187b",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\HANDOFF.md",
+    "sha256": "43cd6a15aeba6654920a656291b6c0908b0343efc0abad7a2396adfef16cfb8d",
+    "first_hvac_sha256": "43cd6a15aeba6654920a656291b6c0908b0343efc0abad7a2396adfef16cfb8d",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\ISSUE_REGISTRATION_REQUEST.md",
+    "sha256": "1713dda307c1222f72dd8debbead91365248e09672126387d1bc649894d457bc",
+    "first_hvac_sha256": "74ef9eff0c29805b1235136e69f33150335614c94aded3b47206c3adea5fd44d",
+    "unchanged": false
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\README.md",
+    "sha256": "052430cf8fd88bebcb97ba9bba77d3e3811fc4a8c167725e72e9adab779971fa",
+    "first_hvac_sha256": "052430cf8fd88bebcb97ba9bba77d3e3811fc4a8c167725e72e9adab779971fa",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\STANDARD_MAPPING.md",
+    "sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f",
+    "first_hvac_sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\data\\GB29541_2013_标准表值.xlsx",
+    "sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54",
+    "first_hvac_sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\ACCEPTANCE_RESPONSE.md",
+    "sha256": "ed803bd56bc643c30a289dc5b82cb7c2a30ae8d8a23d80456401f6ea58cdb0e8",
+    "first_hvac_sha256": "ed803bd56bc643c30a289dc5b82cb7c2a30ae8d8a23d80456401f6ea58cdb0e8",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\BOUNDARY_CANDIDATES.md",
+    "sha256": "3010ebece4e634e9419dbd97e48b567a2ad7d6e4a6f2b5d3c847271fcb50662f",
+    "first_hvac_sha256": "3010ebece4e634e9419dbd97e48b567a2ad7d6e4a6f2b5d3c847271fcb50662f",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\cell_verification.csv",
+    "sha256": "7f4d7455e98cb28c342a293e82bc1256c8338b462fa49fe68e45ec1b2be9297a",
+    "first_hvac_sha256": "7f4d7455e98cb28c342a293e82bc1256c8338b462fa49fe68e45ec1b2be9297a",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\REVIEW_20261013_independent_review.md",
+    "sha256": "14c9cd2c7adc2960e3946bc453e7e71afb20056b5620a5b088c55c789454e3b2",
+    "first_hvac_sha256": "14c9cd2c7adc2960e3946bc453e7e71afb20056b5620a5b088c55c789454e3b2",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\SOURCE_REGISTER.md",
+    "sha256": "9ea6978502f79f9b7e64262021901440cd9101b18c7499ee4952dfa7cd7edd8c",
+    "first_hvac_sha256": "9ea6978502f79f9b7e64262021901440cd9101b18c7499ee4952dfa7cd7edd8c",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\evidence\\VERIFICATION.md",
+    "sha256": "fc1f8a58b457684c726a4417943776aaa77f1511e438dd0369eb7d714cb996e6",
+    "first_hvac_sha256": "fc1f8a58b457684c726a4417943776aaa77f1511e438dd0369eb7d714cb996e6",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+    "sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9",
+    "first_hvac_sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\BOUNDARY_CANDIDATES.md",
+    "sha256": "b7bdbd3978361ac8b76ac86017e0d179bcda8d8e63c171abdf8b918328b41af8",
+    "first_hvac_sha256": "b7bdbd3978361ac8b76ac86017e0d179bcda8d8e63c171abdf8b918328b41af8",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\HANDOFF.md",
+    "sha256": "35475efb07cf76b3366e8fd840d436cf23c2effc4ad004e3bde00a17e9730207",
+    "first_hvac_sha256": "35475efb07cf76b3366e8fd840d436cf23c2effc4ad004e3bde00a17e9730207",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\ISSUE_REGISTRATION_REQUEST.md",
+    "sha256": "d15986ba11eba549fd0a0484545d6fb871987ff9fd491acae1871f36c980705e",
+    "first_hvac_sha256": "d15986ba11eba549fd0a0484545d6fb871987ff9fd491acae1871f36c980705e",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\README.md",
+    "sha256": "6359aa5804402dc4d515bc3e6608573b9fc3ab51ebea63255f554c0668d55942",
+    "first_hvac_sha256": "6359aa5804402dc4d515bc3e6608573b9fc3ab51ebea63255f554c0668d55942",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+    "sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83",
+    "first_hvac_sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+    "sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e",
+    "first_hvac_sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\evidence\\cell_audit.csv",
+    "sha256": "e254d684d52d2819d447c2a5f4fa4aca53ff8dafb0e7f864ea5754876dd90f8d",
+    "first_hvac_sha256": "e254d684d52d2819d447c2a5f4fa4aca53ff8dafb0e7f864ea5754876dd90f8d",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\evidence\\VERIFICATION.md",
+    "sha256": "1363ae99b3a5bee03e8ccf5908a89624d9203cd78a43412f149ae497727a3efc",
+    "first_hvac_sha256": "1363ae99b3a5bee03e8ccf5908a89624d9203cd78a43412f149ae497727a3efc",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+    "sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde",
+    "first_hvac_sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\BOUNDARY_CANDIDATES.md",
+    "sha256": "470b57f4fb6b2b6bc76c39bf55bc93fc69f35cbac2207f3975d758c6a034758e",
+    "first_hvac_sha256": "470b57f4fb6b2b6bc76c39bf55bc93fc69f35cbac2207f3975d758c6a034758e",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\HANDOFF.md",
+    "sha256": "2df7e37cf6100139fb04a6a0eeb394f8feda391da5166b3e900804305015264e",
+    "first_hvac_sha256": "2df7e37cf6100139fb04a6a0eeb394f8feda391da5166b3e900804305015264e",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\ISSUE_REGISTRATION_REQUEST.md",
+    "sha256": "d6cbb939c5a97fd1d15f44856d00864206c9400e2c3464b025ade4c9a376497b",
+    "first_hvac_sha256": "f57aa7cba9be2a4afcaeaa340995b8ae5310f34e0acb45fadb6965418b56959f",
+    "unchanged": false
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\README.md",
+    "sha256": "ab195f0c93b31dbc809ac15472a614cc030a79fc3cec4ecc55a345480a2fc3df",
+    "first_hvac_sha256": "ab195f0c93b31dbc809ac15472a614cc030a79fc3cec4ecc55a345480a2fc3df",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+    "sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf",
+    "first_hvac_sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+    "sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4",
+    "first_hvac_sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\evidence\\ACCEPTANCE_RESPONSE_20261013.md",
+    "sha256": "e1f3cafbf4f9bfa1cbef33b21ecfb9133e6b61731642bcb330688f8518d03109",
+    "first_hvac_sha256": "e1f3cafbf4f9bfa1cbef33b21ecfb9133e6b61731642bcb330688f8518d03109",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\evidence\\clause_numeric_audit.csv",
+    "sha256": "b6a9c72c6b4f674c5235f0b899c490c77a4a2fc38505b93f04c7f8415821d71e",
+    "first_hvac_sha256": "b6a9c72c6b4f674c5235f0b899c490c77a4a2fc38505b93f04c7f8415821d71e",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\evidence\\numeric_audit.csv",
+    "sha256": "9e6191b7a735fde2b163ddd01e844066b1013d3998a2cf1edf114281ae5e2a9d",
+    "first_hvac_sha256": "9e6191b7a735fde2b163ddd01e844066b1013d3998a2cf1edf114281ae5e2a9d",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\evidence\\SOURCE_AND_VERIFICATION.md",
+    "sha256": "47246bc9da8518d131ffeac50756532dd77110af4dc375d78f954f67f00ced97",
+    "first_hvac_sha256": "47246bc9da8518d131ffeac50756532dd77110af4dc375d78f954f67f00ced97",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+    "sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026",
+    "first_hvac_sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\ACCEPTANCE_RESPONSE.md",
+    "sha256": "82438a74db9da7efac1bd372fed0da606495654c6305c4d9c6488dd743275ea1",
+    "first_hvac_sha256": "82438a74db9da7efac1bd372fed0da606495654c6305c4d9c6488dd743275ea1",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\BOUNDARY_CANDIDATES.md",
+    "sha256": "9a599d7df6a7160ebc962fa28c269a9e16d291a57e2ccae719533bad2c8b0e87",
+    "first_hvac_sha256": "9a599d7df6a7160ebc962fa28c269a9e16d291a57e2ccae719533bad2c8b0e87",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\HANDOFF.md",
+    "sha256": "ffabeef049f20bc94e3e7c794788dee035e4ab1e2bd587c1e3816d044072e0d6",
+    "first_hvac_sha256": "ffabeef049f20bc94e3e7c794788dee035e4ab1e2bd587c1e3816d044072e0d6",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\ISSUE_REGISTRATION_REQUEST.md",
+    "sha256": "25646797b88240bfdaef905295af420b17b6f2dd0cb27525967ce42638af8f69",
+    "first_hvac_sha256": "23363ffa88f4dbd5d542016a3cac35e4c294fc06ff3362dfe49cb2d48d7df388",
+    "unchanged": false
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\README.md",
+    "sha256": "78d296522ab23f01136bd8987241e4102104cd8bf537ba9aa92fa478f6987a0b",
+    "first_hvac_sha256": "78d296522ab23f01136bd8987241e4102104cd8bf537ba9aa92fa478f6987a0b",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\SOURCE_EVIDENCE.md",
+    "sha256": "9b2ca2080904914755407ee5bfeb22e254a0ad7a3b0f2d3c9800126b2116a105",
+    "first_hvac_sha256": "9b2ca2080904914755407ee5bfeb22e254a0ad7a3b0f2d3c9800126b2116a105",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+    "sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63",
+    "first_hvac_sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\VERIFICATION.md",
+    "sha256": "44be94412c2512a3e6fb29fe7aebbc8643f36c71fa230f1331356cb13ae82537",
+    "first_hvac_sha256": "44be94412c2512a3e6fb29fe7aebbc8643f36c71fa230f1331356cb13ae82537",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+    "sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+    "first_hvac_sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\evidence\\cell_audit.csv",
+    "sha256": "945ee11d0178e8cbb34c25d4d6294f9acb65714f2a972bda5c89047dd5a8af79",
+    "first_hvac_sha256": "945ee11d0178e8cbb34c25d4d6294f9acb65714f2a972bda5c89047dd5a8af79",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+    "sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+    "first_hvac_sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\BOUNDARY_CANDIDATES.md",
+    "sha256": "33fa4d962f8bfca5f17bf675399c996ad957292942ebc87ff7b836306bcf7533",
+    "first_hvac_sha256": "33fa4d962f8bfca5f17bf675399c996ad957292942ebc87ff7b836306bcf7533",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\HANDOFF.md",
+    "sha256": "e818a01cce50a8800b969fded39c5ef5e83936649016c4d19c3bb04bd4882fd2",
+    "first_hvac_sha256": "e818a01cce50a8800b969fded39c5ef5e83936649016c4d19c3bb04bd4882fd2",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\ISSUE_REGISTRATION_REQUEST.md",
+    "sha256": "9d31d959f223bc9369d7b2f0d91226a2248b86b71ad47ecf7f2f9c1ec57e6778",
+    "first_hvac_sha256": "50408e7480ddf806ecc1773b7f4947e8e6b0c22b0f3f2a51910e82d81bafbb9d",
+    "unchanged": false
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\README.md",
+    "sha256": "81ebd89e4381223b79e9cda56b789cc763efaeaa83e89cb558c3943ae273b5f0",
+    "first_hvac_sha256": "81ebd89e4381223b79e9cda56b789cc763efaeaa83e89cb558c3943ae273b5f0",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+    "sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105",
+    "first_hvac_sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+    "sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+    "first_hvac_sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\evidence\\ACCEPTANCE_RESPONSE.md",
+    "sha256": "01c590be9f57d603aaa9477a940af6d26b1d78e975d864934dbad31ed361a641",
+    "first_hvac_sha256": "01c590be9f57d603aaa9477a940af6d26b1d78e975d864934dbad31ed361a641",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\evidence\\cell_audit.csv",
+    "sha256": "3e47e0ab6dd5072b537fc818465e553dea8224fd661cff8b68933da811624fe1",
+    "first_hvac_sha256": "3e47e0ab6dd5072b537fc818465e553dea8224fd661cff8b68933da811624fe1",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\evidence\\VERIFICATION.md",
+    "sha256": "02b96d954377372bf9dc04d33239b69041f3f1dafb4202d47a7c4d18efc3f901",
+    "first_hvac_sha256": "02b96d954377372bf9dc04d33239b69041f3f1dafb4202d47a7c4d18efc3f901",
+    "unchanged": true
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\STANDARD_ISSUES_REGISTER.md",
+    "sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\platform-lock.json",
+    "sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\accepted_revision_manifest.json",
+    "sha256": "aa4d6423ab3ccdac6f9c95449a6ed05d50490587c32066e1c899c02ebbaaf609"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\accepted_revision_manifest_secondary.json",
+    "sha256": "d2f7e01210b723c6d602cf0304c15fcc84372881965b0134fc2aef06ad75782d"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\CROSS_STANDARD_ACCEPTANCE_SUMMARY.md",
+    "sha256": "2078dd11ea2683db1c3bc7d28d887b69b5075935e8b20fc7f0fdff7837694ca9"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\CROSS_STANDARD_BOUNDARY_AUDIT.md",
+    "sha256": "d638070bf03ac1787332f67ac0977b9e897102acefbf946b2d2066b87cf45d75"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\final_hvac_AUDIT.md",
+    "sha256": "b56a8c3e1f9d5ccf47f92359c71d59cbf2fb4f78e4513886c367431f813b1d0e"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\round3\\ROUND3_PROBLEM_LIST.md",
+    "sha256": "4ce9ec7d085d2221c2e3a1cee81f9faf7c05bf93e9c41d6c8ac8860403c413cd"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\ACCEPTANCE_REPORT.md",
+    "sha256": "9e1d9216afb8f72c19aaf3b8733c1e21d561f1c4323937d2ae30838ff4bb2c7f"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\comparison_summary.json",
+    "sha256": "4230980e1f46833c43038edf5cfcf5d6277e2737d8c875f0cf6ecd9354c022fd"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\hvac\\independent_cell_comparison.csv",
+    "sha256": "460deaf4961dba85ad7bcda7957a5cda096b91345111c3ac8d9292b2152cafa5"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb19576_2019_ACCEPTANCE_REVIEW.md",
+    "sha256": "4f315b1c38e77732b192248873fb6a0336576b7a78179942359947ba412dcc44"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb19577_2024_ACCEPTANCE_REVIEW.md",
+    "sha256": "2cbec1f18c36a58a75c06a0bbca5687f70e33f218fe58b594343c40fa749a1a3"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb37479_2019_ACCEPTANCE_REVIEW.md",
+    "sha256": "8d5d54ec84291d4d25a1390ad34cb8d6f668b041bf17d45875920c15d70126f5"
+  },
+  {
+    "path": "G:\\Python Project\\EquipEffi\\_acceptance_20261013\\reviews\\gb21454_2021_ACCEPTANCE_REVIEW.md",
+    "sha256": "651c22dfdc38c93290b177cecbd47b57d16fdb42bac26b4c78cf75595bb44371"
+  }
+]

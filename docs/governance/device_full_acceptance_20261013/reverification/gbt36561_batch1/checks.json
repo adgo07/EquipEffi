@@ -1,0 +1,347 @@
+{
+  "targets": [
+    {
+      "record_id": "GBT36561-2018-T6-0089",
+      "json": {
+        "table": "6",
+        "printed_page": 5,
+        "pdf_page": 8,
+        "branch": "主轴锥孔径向跳动",
+        "metric": "主轴锥孔径向跳动",
+        "value": 0.3,
+        "unit": "mm",
+        "condition": "注a检验棒插入主轴锥孔，在距主轴端面300 mm处测量",
+        "operator": "≤",
+        "source_cell": "主轴锥孔径向跳动/主轴锥孔径向跳动",
+        "record_id": "GBT36561-2018-T6-0089",
+        "source_numeric_text": "0.3"
+      },
+      "csv": {
+        "table": "6",
+        "printed_page": "5",
+        "pdf_page": "8",
+        "branch": "主轴锥孔径向跳动",
+        "metric": "主轴锥孔径向跳动",
+        "value": "0.3",
+        "unit": "mm",
+        "condition": "注a检验棒插入主轴锥孔，在距主轴端面300 mm处测量",
+        "operator": "≤",
+        "source_cell": "主轴锥孔径向跳动/主轴锥孔径向跳动",
+        "record_id": "GBT36561-2018-T6-0089",
+        "source_numeric_text": "0.3"
+      },
+      "evidence": {
+        "table": "6",
+        "printed_page": 5,
+        "pdf_page": 8,
+        "branch": "主轴锥孔径向跳动",
+        "metric": "主轴锥孔径向跳动",
+        "value": 0.3,
+        "unit": "mm",
+        "condition": "注a检验棒插入主轴锥孔，在距主轴端面300 mm处测量",
+        "operator": "≤",
+        "source_cell": "主轴锥孔径向跳动/主轴锥孔径向跳动",
+        "record_id": "GBT36561-2018-T6-0089",
+        "source_numeric_text": "0.3",
+        "sheet": "正文表值",
+        "value_cell": "F90",
+        "row_range": "A90:K90"
+      },
+      "xlsx_value": 0.3,
+      "xlsx_condition": "注a检验棒插入主轴锥孔，在距主轴端面300 mm处测量",
+      "xlsx_cell": "正文表值!H90",
+      "pass": true
+    },
+    {
+      "record_id": "GBT36561-2018-T6-0090",
+      "json": {
+        "table": "6",
+        "printed_page": 5,
+        "pdf_page": 8,
+        "branch": "回转工作台面跳动",
+        "metric": "回转工作台面跳动",
+        "value": 0.3,
+        "unit": "mm",
+        "condition": "注b装直径>φ300 mm圆盘，在半径150 mm处测量",
+        "operator": "≤",
+        "source_cell": "回转工作台面跳动/回转工作台面跳动",
+        "record_id": "GBT36561-2018-T6-0090",
+        "source_numeric_text": "0.3"
+      },
+      "csv": {
+        "table": "6",
+        "printed_page": "5",
+        "pdf_page": "8",
+        "branch": "回转工作台面跳动",
+        "metric": "回转工作台面跳动",
+        "value": "0.3",
+        "unit": "mm",
+        "condition": "注b装直径>φ300 mm圆盘，在半径150 mm处测量",
+        "operator": "≤",
+        "source_cell": "回转工作台面跳动/回转工作台面跳动",
+        "record_id": "GBT36561-2018-T6-0090",
+        "source_numeric_text": "0.3"
+      },
+      "evidence": {
+        "table": "6",
+        "printed_page": 5,
+        "pdf_page": 8,
+        "branch": "回转工作台面跳动",
+        "metric": "回转工作台面跳动",
+        "value": 0.3,
+        "unit": "mm",
+        "condition": "注b装直径>φ300 mm圆盘，在半径150 mm处测量",
+        "operator": "≤",
+        "source_cell": "回转工作台面跳动/回转工作台面跳动",
+        "record_id": "GBT36561-2018-T6-0090",
+        "source_numeric_text": "0.3",
+        "sheet": "正文表值",
+        "value_cell": "F91",
+        "row_range": "A91:K91"
+      },
+      "xlsx_value": 0.3,
+      "xlsx_condition": "注b装直径>φ300 mm圆盘，在半径150 mm处测量",
+      "xlsx_cell": "正文表值!H91",
+      "pass": true
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0293",
+      "json": {
+        "table": "11",
+        "printed_page": 11,
+        "pdf_page": 14,
+        "branch": "井式炉",
+        "metric": "升温时间",
+        "value": 1,
+        "unit": "h",
+        "condition": "额定温度950℃；有效加热容积0.2～1.0 m³；原文～端点未补比较符",
+        "operator": "≤",
+        "source_cell": "井式炉/升温时间",
+        "record_id": "GBT36561-2018-T11-0293",
+        "source_numeric_text": "1.0"
+      },
+      "csv": {
+        "table": "11",
+        "printed_page": "11",
+        "pdf_page": "14",
+        "branch": "井式炉",
+        "metric": "升温时间",
+        "value": "1",
+        "unit": "h",
+        "condition": "额定温度950℃；有效加热容积0.2～1.0 m³；原文～端点未补比较符",
+        "operator": "≤",
+        "source_cell": "井式炉/升温时间",
+        "record_id": "GBT36561-2018-T11-0293",
+        "source_numeric_text": "1.0"
+      },
+      "evidence": {
+        "table": "11",
+        "printed_page": 11,
+        "pdf_page": 14,
+        "branch": "井式炉",
+        "metric": "升温时间",
+        "value": 1,
+        "unit": "h",
+        "condition": "额定温度950℃；有效加热容积0.2～1.0 m³；原文～端点未补比较符",
+        "operator": "≤",
+        "source_cell": "井式炉/升温时间",
+        "record_id": "GBT36561-2018-T11-0293",
+        "source_numeric_text": "1.0",
+        "sheet": "正文表值",
+        "value_cell": "F294",
+        "row_range": "A294:K294"
+      },
+      "xlsx_value": 1,
+      "xlsx_condition": "额定温度950℃；有效加热容积0.2～1.0 m³；原文～端点未补比较符",
+      "xlsx_cell": "正文表值!F294",
+      "pass": true
+    }
+  ],
+  "build_source_literal_checks": {
+    "FS01": true,
+    "FS02": true,
+    "FS03": true
+  },
+  "full_numeric_regression": {
+    "pass": 468,
+    "fail": 0
+  },
+  "T6_T11_cross_asset": [
+    {
+      "record_id": "GBT36561-2018-T6-0089",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T6-0090",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T6-0091",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T6-0092",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0280",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0281",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0282",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0283",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0284",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0285",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0286",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0287",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0288",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0289",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0290",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0291",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0292",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0293",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0294",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "record_id": "GBT36561-2018-T11-0295",
+      "pass": true,
+      "errors": []
+    }
+  ],
+  "published_sha_checks": [
+    {
+      "path": ".gitignore",
+      "pass": true
+    },
+    {
+      "path": "BOUNDARY_CANDIDATES.md",
+      "pass": true
+    },
+    {
+      "path": "build_data.py",
+      "pass": true
+    },
+    {
+      "path": "build_workbook.mjs",
+      "pass": true
+    },
+    {
+      "path": "data/GBT36561_2018_TABLE_VALUES.xlsx",
+      "pass": true
+    },
+    {
+      "path": "data/table_values.csv",
+      "pass": true
+    },
+    {
+      "path": "data/table_values.json",
+      "pass": true
+    },
+    {
+      "path": "evidence/check_results.json",
+      "pass": true
+    },
+    {
+      "path": "evidence/numeric_review.csv",
+      "pass": true
+    },
+    {
+      "path": "evidence/TABLE_LOCATIONS.md",
+      "pass": true
+    },
+    {
+      "path": "evidence/workbook_coordinates.json",
+      "pass": true
+    },
+    {
+      "path": "HANDOFF.md",
+      "pass": true
+    },
+    {
+      "path": "ISSUE_REGISTRATION_REQUEST.md",
+      "pass": true
+    },
+    {
+      "path": "README.md",
+      "pass": true
+    },
+    {
+      "path": "render_source.py",
+      "pass": true
+    },
+    {
+      "path": "SOURCE_AND_CHECKS.md",
+      "pass": true
+    },
+    {
+      "path": "STANDARD_MAPPING.md",
+      "pass": true
+    },
+    {
+      "path": "verify_assets.py",
+      "pass": true
+    }
+  ],
+  "numeric_review_target_rows": [],
+  "scope": "FS01/02/03 only; FS04 excluded"
+}

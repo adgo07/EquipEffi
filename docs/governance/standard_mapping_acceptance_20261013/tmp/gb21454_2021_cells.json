@@ -1,0 +1,6242 @@
+[
+  {
+    "sheet": "表1",
+    "xml": "xl/worksheets/sheet1.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 21454—2021 表1 风冷式单冷型多联机",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "标准表值整理稿；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "名义制冷量 CC (W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "1级 EERmin (W/W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "1级 SEER (Wh/Wh)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "2级 EERmin (W/W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E5": {
+        "value": "2级 SEER (Wh/Wh)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F5": {
+        "value": "3级 EERmin (W/W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "G5": {
+        "value": "3级 SEER (Wh/Wh)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "CC≤14000",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B6": {
+        "value": "3.6",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "C6": {
+        "value": "5.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "D6": {
+        "value": "2.9",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "E6": {
+        "value": "5.1",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "F6": {
+        "value": "2.1",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G6": {
+        "value": "4.8",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A7": {
+        "value": "14000<CC≤28000",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B7": {
+        "value": "—",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C7": {
+        "value": "5.1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "D7": {
+        "value": "—",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E7": {
+        "value": "4.7",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "F7": {
+        "value": "—",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "G7": {
+        "value": "4.4",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "A8": {
+        "value": "28000<CC≤50000",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B8": {
+        "value": "—",
+        "type": "str",
+        "style": "12",
+        "formula": null
+      },
+      "C8": {
+        "value": "4.9",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "D8": {
+        "value": "—",
+        "type": "str",
+        "style": "12",
+        "formula": null
+      },
+      "E8": {
+        "value": "4.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "F8": {
+        "value": "—",
+        "type": "str",
+        "style": "12",
+        "formula": null
+      },
+      "G8": {
+        "value": "4.2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A9": {
+        "value": "50000<CC≤68000",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B9": {
+        "value": "—",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C9": {
+        "value": "4.8",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "D9": {
+        "value": "—",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E9": {
+        "value": "4.4",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "F9": {
+        "value": "—",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "G9": {
+        "value": "4.1",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "A10": {
+        "value": "CC>68000",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B10": {
+        "value": "—",
+        "type": "str",
+        "style": "12",
+        "formula": null
+      },
+      "C10": {
+        "value": "4.7",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "D10": {
+        "value": "—",
+        "type": "str",
+        "style": "12",
+        "formula": null
+      },
+      "E10": {
+        "value": "4.3",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "F10": {
+        "value": "—",
+        "type": "str",
+        "style": "12",
+        "formula": null
+      },
+      "G10": {
+        "value": "4",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A12": {
+        "value": "来源：GB 21454—2021 表1，印刷2 / PDF4。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A13": {
+        "value": "—：原表不作指标要求，不是0或缺失。CC≤14000时两个指标均须满足。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A14": {
+        "value": "不同静压按GB/T18837—2015、GB/T18836—2017修正；外部方法待补证。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A15": {
+        "value": "原PDF SHA-256：ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表2",
+    "xml": "xl/worksheets/sheet2.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 21454—2021 表2 风冷式热泵型多联机",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "标准表值整理稿；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "名义制冷量 CC (W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "1级 EERmin (W/W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "1级 APF (Wh/Wh)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "2级 EERmin (W/W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E5": {
+        "value": "2级 APF (Wh/Wh)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F5": {
+        "value": "3级 EERmin (W/W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "G5": {
+        "value": "3级 APF (Wh/Wh)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "CC≤14000",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B6": {
+        "value": "3.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "C6": {
+        "value": "5.2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "D6": {
+        "value": "2.8",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "E6": {
+        "value": "4.4",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "F6": {
+        "value": "2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G6": {
+        "value": "3.6",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A7": {
+        "value": "14000<CC≤28000",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B7": {
+        "value": "—",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C7": {
+        "value": "4.8",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "D7": {
+        "value": "—",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E7": {
+        "value": "4.3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "F7": {
+        "value": "—",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "G7": {
+        "value": "3.5",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "A8": {
+        "value": "28000<CC≤50000",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B8": {
+        "value": "—",
+        "type": "str",
+        "style": "12",
+        "formula": null
+      },
+      "C8": {
+        "value": "4.5",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "D8": {
+        "value": "—",
+        "type": "str",
+        "style": "12",
+        "formula": null
+      },
+      "E8": {
+        "value": "4.2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "F8": {
+        "value": "—",
+        "type": "str",
+        "style": "12",
+        "formula": null
+      },
+      "G8": {
+        "value": "3.4",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A9": {
+        "value": "50000<CC≤68000",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B9": {
+        "value": "—",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "C9": {
+        "value": "4.2",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "D9": {
+        "value": "—",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "E9": {
+        "value": "4",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "F9": {
+        "value": "—",
+        "type": "str",
+        "style": "10",
+        "formula": null
+      },
+      "G9": {
+        "value": "3.3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "A10": {
+        "value": "CC>68000",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B10": {
+        "value": "—",
+        "type": "str",
+        "style": "12",
+        "formula": null
+      },
+      "C10": {
+        "value": "4",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "D10": {
+        "value": "—",
+        "type": "str",
+        "style": "12",
+        "formula": null
+      },
+      "E10": {
+        "value": "3.8",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "F10": {
+        "value": "—",
+        "type": "str",
+        "style": "12",
+        "formula": null
+      },
+      "G10": {
+        "value": "3.2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A12": {
+        "value": "来源：GB 21454—2021 表2，印刷2 / PDF4。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A13": {
+        "value": "—：原表不作指标要求，不是0或缺失。CC≤14000时两个指标均须满足。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A14": {
+        "value": "不同静压按GB/T18837—2015、GB/T18836—2017修正；外部方法待补证。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A15": {
+        "value": "原PDF SHA-256：ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表3",
+    "xml": "xl/worksheets/sheet3.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 21454—2021 表3 水冷式多联机",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "标准表值整理稿；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "指标 (W/W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "物理类型",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "名义制冷量 CC (W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "1级",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E5": {
+        "value": "2级",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F5": {
+        "value": "3级",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "IPLV(C)",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B6": {
+        "value": "水环式",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "C6": {
+        "value": "CC≤28000",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "D6": {
+        "value": "7",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "E6": {
+        "value": "5.9",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "F6": {
+        "value": "5.2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A7": {
+        "value": "IPLV(C)",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B7": {
+        "value": "水环式",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "C7": {
+        "value": "CC>28000",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "D7": {
+        "value": "6.8",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "E7": {
+        "value": "5.8",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "F7": {
+        "value": "5",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "A8": {
+        "value": "EER",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B8": {
+        "value": "地埋管式",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "C8": {
+        "value": "—",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "D8": {
+        "value": "4.6",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "E8": {
+        "value": "4.2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "F8": {
+        "value": "3.8",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "A9": {
+        "value": "EER",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B9": {
+        "value": "地下水式",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "C9": {
+        "value": "—",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "D9": {
+        "value": "5",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "E9": {
+        "value": "4.5",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "F9": {
+        "value": "4.3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "A10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A11": {
+        "value": "来源：GB 21454—2021 表3，印刷3 / PDF5。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A12": {
+        "value": "原表IPLV(C)与水环式分别跨第1～2数据行合并；EER跨第3～4行合并。本表逐行展开。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A13": {
+        "value": "地埋管式/地下水式容量栏保留原—；表3未另给符号释义，不据此增加容量门槛。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A14": {
+        "value": "原PDF SHA-256：ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表4",
+    "xml": "xl/worksheets/sheet4.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 21454—2021 表4 低温多联机",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "标准表值整理稿；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "名义制热量 HC (W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "1级 HSPF (Wh/Wh)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "2级 HSPF (Wh/Wh)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "3级 HSPF (Wh/Wh)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E5": {
+        "value": "COP−12℃ (W/W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F5": {
+        "value": "COP−20℃ (W/W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "G5": {
+        "value": "类别",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "HC≤18000",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B6": {
+        "value": "3.4",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "C6": {
+        "value": "3.2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "D6": {
+        "value": "3",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "E6": {
+        "value": "2.2",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "F6": {
+        "value": "1.8",
+        "type": "n",
+        "style": "12",
+        "formula": null
+      },
+      "G6": {
+        "value": "户用型",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A7": {
+        "value": "HC>18000",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B7": {
+        "value": "3.2",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "C7": {
+        "value": "3",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "D7": {
+        "value": "2.8",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "E7": {
+        "value": "1.9",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "F7": {
+        "value": "1.5",
+        "type": "n",
+        "style": "10",
+        "formula": null
+      },
+      "G7": {
+        "value": "工商业用型",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A8": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B8": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C8": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D8": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E8": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F8": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G8": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A9": {
+        "value": "来源：GB 21454—2021 表4，印刷3 / PDF5。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B9": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C9": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D9": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E9": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F9": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G9": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A10": {
+        "value": "原表3级表头覆盖HSPF、COP−12℃、COP−20℃；表注明确各等级COP均满足最低等级限值。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A11": {
+        "value": "不同静压按指定引用标准修正；HSPF试验和计算按附录A。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A12": {
+        "value": "原PDF SHA-256：ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "G14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表A.1",
+    "xml": "xl/worksheets/sheet5.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 21454—2021 表A.1 户用型试验工况",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "标准表值整理稿；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "测试点",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "负荷率",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "热源干球 (℃)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "热源湿球 (℃)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E5": {
+        "value": "使用侧干球 (℃)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F5": {
+        "value": "使用侧湿球 (℃)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "A",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B6": {
+        "value": "1.3",
+        "type": "n",
+        "style": "19",
+        "formula": null
+      },
+      "C6": {
+        "value": "-20",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "D6": {
+        "value": "—",
+        "type": "str",
+        "style": "20",
+        "formula": null
+      },
+      "E6": {
+        "value": "20",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "F6": {
+        "value": "<15",
+        "type": "str",
+        "style": "21",
+        "formula": null
+      },
+      "A7": {
+        "value": "B",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B7": {
+        "value": "1",
+        "type": "n",
+        "style": "14",
+        "formula": null
+      },
+      "C7": {
+        "value": "-12",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "D7": {
+        "value": "-13.5",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "E7": {
+        "value": "20",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "F7": {
+        "value": "<15",
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "A8": {
+        "value": "C",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B8": {
+        "value": "0.81",
+        "type": "n",
+        "style": "19",
+        "formula": null
+      },
+      "C8": {
+        "value": "-7",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "D8": {
+        "value": "-8",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "E8": {
+        "value": "20",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "F8": {
+        "value": "<15",
+        "type": "str",
+        "style": "21",
+        "formula": null
+      },
+      "A9": {
+        "value": "D",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B9": {
+        "value": "0.48",
+        "type": "n",
+        "style": "14",
+        "formula": null
+      },
+      "C9": {
+        "value": "2",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "D9": {
+        "value": "1",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "E9": {
+        "value": "20",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "F9": {
+        "value": "<15",
+        "type": "str",
+        "style": "18",
+        "formula": null
+      },
+      "A10": {
+        "value": "E",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B10": {
+        "value": "0.3",
+        "type": "n",
+        "style": "19",
+        "formula": null
+      },
+      "C10": {
+        "value": "7",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "D10": {
+        "value": "6",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "E10": {
+        "value": "20",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "F10": {
+        "value": "<15",
+        "type": "str",
+        "style": "21",
+        "formula": null
+      },
+      "A11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A12": {
+        "value": "来源：GB 21454—2021 表A.1，印刷7 / PDF9。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A13": {
+        "value": "项目类别及使用侧干/湿球原格跨A～E五行合并；此处展开保留关联，不是五个独立源格。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A14": {
+        "value": "A点热源湿球—：湿度过低，不作要求。使用侧<15仅适用于湿球影响室内侧换热的装置（脚注b）。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A15": {
+        "value": "原PDF SHA-256：ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表A.2",
+    "xml": "xl/worksheets/sheet6.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 21454—2021 表A.2 工商业用型试验工况",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "标准表值整理稿；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "测试点",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "负荷率",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "热源干球 (℃)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "热源湿球 (℃)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "E5": {
+        "value": "使用侧干球 (℃)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "F5": {
+        "value": "使用侧湿球 (℃)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "A",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B6": {
+        "value": "1.32",
+        "type": "n",
+        "style": "19",
+        "formula": null
+      },
+      "C6": {
+        "value": "-20",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "D6": {
+        "value": "—",
+        "type": "str",
+        "style": "20",
+        "formula": null
+      },
+      "E6": {
+        "value": "20",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "F6": {
+        "value": "15",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "A7": {
+        "value": "B",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B7": {
+        "value": "1",
+        "type": "n",
+        "style": "14",
+        "formula": null
+      },
+      "C7": {
+        "value": "-12",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "D7": {
+        "value": "-13.5",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "E7": {
+        "value": "20",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "F7": {
+        "value": "15",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "A8": {
+        "value": "C",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B8": {
+        "value": "0.8",
+        "type": "n",
+        "style": "19",
+        "formula": null
+      },
+      "C8": {
+        "value": "-7",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "D8": {
+        "value": "-8",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "E8": {
+        "value": "20",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "F8": {
+        "value": "15",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "A9": {
+        "value": "D",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B9": {
+        "value": "0.44",
+        "type": "n",
+        "style": "14",
+        "formula": null
+      },
+      "C9": {
+        "value": "2",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "D9": {
+        "value": "1",
+        "type": "n",
+        "style": "16",
+        "formula": null
+      },
+      "E9": {
+        "value": "20",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "F9": {
+        "value": "15",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "A10": {
+        "value": "E",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B10": {
+        "value": "0.24",
+        "type": "n",
+        "style": "19",
+        "formula": null
+      },
+      "C10": {
+        "value": "7",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "D10": {
+        "value": "6",
+        "type": "n",
+        "style": "20",
+        "formula": null
+      },
+      "E10": {
+        "value": "20",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "F10": {
+        "value": "15",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "A11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A12": {
+        "value": "来源：GB 21454—2021 表A.2，印刷7 / PDF9。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A13": {
+        "value": "项目类别及使用侧干/湿球原格跨A～E五行合并；此处展开保留关联，不是五个独立源格。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A14": {
+        "value": "A点热源湿球—：湿度过低，不作要求。使用侧湿球15无表A.1脚注b，不得复制为<15。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A15": {
+        "value": "原PDF SHA-256：ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "E17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "F17": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表A.3",
+    "xml": "xl/worksheets/sheet7.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 21454—2021 表A.3 户用型各温度发生时间",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "标准表值整理稿；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "温度区间 j",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "室外温度 (℃)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "小时数 (h)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "原表定位",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "1",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B6": {
+        "value": "-19",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C6": {
+        "value": "1",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D6": {
+        "value": "PDF9 / 印刷7 / 左块第1行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A7": {
+        "value": "2",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B7": {
+        "value": "-18",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C7": {
+        "value": "1",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D7": {
+        "value": "PDF9 / 印刷7 / 左块第2行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A8": {
+        "value": "3",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B8": {
+        "value": "-17",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C8": {
+        "value": "3",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D8": {
+        "value": "PDF9 / 印刷7 / 左块第3行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A9": {
+        "value": "4",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B9": {
+        "value": "-16",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C9": {
+        "value": "6",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D9": {
+        "value": "PDF9 / 印刷7 / 左块第4行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A10": {
+        "value": "5",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B10": {
+        "value": "-15",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C10": {
+        "value": "14",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D10": {
+        "value": "PDF9 / 印刷7 / 左块第5行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A11": {
+        "value": "6",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B11": {
+        "value": "-14",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C11": {
+        "value": "14",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D11": {
+        "value": "PDF9 / 印刷7 / 左块第6行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A12": {
+        "value": "7",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B12": {
+        "value": "-13",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C12": {
+        "value": "30",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D12": {
+        "value": "PDF9 / 印刷7 / 右块第1行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A13": {
+        "value": "8",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B13": {
+        "value": "-12",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C13": {
+        "value": "39",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D13": {
+        "value": "PDF9 / 印刷7 / 右块第2行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A14": {
+        "value": "9",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B14": {
+        "value": "-11",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C14": {
+        "value": "36",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D14": {
+        "value": "PDF9 / 印刷7 / 右块第3行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A15": {
+        "value": "10",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B15": {
+        "value": "-10",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C15": {
+        "value": "62",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D15": {
+        "value": "PDF9 / 印刷7 / 右块第4行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A16": {
+        "value": "11",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B16": {
+        "value": "-9",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C16": {
+        "value": "76",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D16": {
+        "value": "PDF9 / 印刷7 / 右块第5行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A17": {
+        "value": "12",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B17": {
+        "value": "-8",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C17": {
+        "value": "98",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D17": {
+        "value": "PDF9 / 印刷7 / 右块第6行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A18": {
+        "value": "13",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B18": {
+        "value": "-7",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C18": {
+        "value": "120",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D18": {
+        "value": "PDF10 / 印刷8 / 左块第1行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A19": {
+        "value": "14",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B19": {
+        "value": "-6",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C19": {
+        "value": "155",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D19": {
+        "value": "PDF10 / 印刷8 / 左块第2行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A20": {
+        "value": "15",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B20": {
+        "value": "-5",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C20": {
+        "value": "145",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D20": {
+        "value": "PDF10 / 印刷8 / 左块第3行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A21": {
+        "value": "16",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B21": {
+        "value": "-4",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C21": {
+        "value": "180",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D21": {
+        "value": "PDF10 / 印刷8 / 左块第4行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A22": {
+        "value": "17",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B22": {
+        "value": "-3",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C22": {
+        "value": "242",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D22": {
+        "value": "PDF10 / 印刷8 / 左块第5行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A23": {
+        "value": "18",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B23": {
+        "value": "-2",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C23": {
+        "value": "271",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D23": {
+        "value": "PDF10 / 印刷8 / 左块第6行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A24": {
+        "value": "19",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B24": {
+        "value": "-1",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C24": {
+        "value": "242",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D24": {
+        "value": "PDF10 / 印刷8 / 左块第7行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A25": {
+        "value": "20",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B25": {
+        "value": "0",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C25": {
+        "value": "211",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D25": {
+        "value": "PDF10 / 印刷8 / 左块第8行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A26": {
+        "value": "21",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B26": {
+        "value": "1",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C26": {
+        "value": "192",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D26": {
+        "value": "PDF10 / 印刷8 / 左块第9行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A27": {
+        "value": "22",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B27": {
+        "value": "2",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C27": {
+        "value": "181",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D27": {
+        "value": "PDF10 / 印刷8 / 左块第10行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A28": {
+        "value": "23",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B28": {
+        "value": "3",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C28": {
+        "value": "195",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D28": {
+        "value": "PDF10 / 印刷8 / 左块第11行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A29": {
+        "value": "24",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B29": {
+        "value": "4",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C29": {
+        "value": "206",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D29": {
+        "value": "PDF10 / 印刷8 / 左块第12行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A30": {
+        "value": "25",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B30": {
+        "value": "5",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C30": {
+        "value": "181",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D30": {
+        "value": "PDF10 / 印刷8 / 右块第1行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A31": {
+        "value": "26",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B31": {
+        "value": "6",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C31": {
+        "value": "137",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D31": {
+        "value": "PDF10 / 印刷8 / 右块第2行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A32": {
+        "value": "27",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B32": {
+        "value": "7",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C32": {
+        "value": "119",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D32": {
+        "value": "PDF10 / 印刷8 / 右块第3行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A33": {
+        "value": "28",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B33": {
+        "value": "8",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C33": {
+        "value": "130",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D33": {
+        "value": "PDF10 / 印刷8 / 右块第4行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A34": {
+        "value": "29",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B34": {
+        "value": "9",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C34": {
+        "value": "83",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D34": {
+        "value": "PDF10 / 印刷8 / 右块第5行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A35": {
+        "value": "30",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B35": {
+        "value": "10",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C35": {
+        "value": "84",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D35": {
+        "value": "PDF10 / 印刷8 / 右块第6行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A36": {
+        "value": "31",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B36": {
+        "value": "11",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C36": {
+        "value": "76",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D36": {
+        "value": "PDF10 / 印刷8 / 右块第7行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A37": {
+        "value": "32",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B37": {
+        "value": "12",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C37": {
+        "value": "45",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D37": {
+        "value": "PDF10 / 印刷8 / 右块第8行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A38": {
+        "value": "33",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B38": {
+        "value": "13",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C38": {
+        "value": "48",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D38": {
+        "value": "PDF10 / 印刷8 / 右块第9行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A39": {
+        "value": "34",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B39": {
+        "value": "14",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C39": {
+        "value": "40",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D39": {
+        "value": "PDF10 / 印刷8 / 右块第10行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A40": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B40": {
+        "value": "原文总计 (h)",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C40": {
+        "value": "3663",
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "D40": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A41": {
+        "value": "来源：GB 21454—2021 表A.3，印刷7～8 / PDF9～10。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B41": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C41": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D41": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A42": {
+        "value": "原文总计 3663 h；原表左右栏展开按j保序。合计与各行分别核对。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B42": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C42": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D42": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A43": {
+        "value": "0小时是原表数值，不能改为空白；户用与工商业相同温度仍保留各自时数。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B43": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C43": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D43": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A44": {
+        "value": "原PDF SHA-256：ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B44": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C44": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D44": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A45": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B45": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C45": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D45": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A46": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B46": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C46": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D46": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表A.4",
+    "xml": "xl/worksheets/sheet8.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 21454—2021 表A.4 工商业用型各温度发生时间",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "标准表值整理稿；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "温度区间 j",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "室外温度 (℃)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "C5": {
+        "value": "小时数 (h)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "D5": {
+        "value": "原表定位",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "1",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B6": {
+        "value": "-19",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C6": {
+        "value": "0",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D6": {
+        "value": "PDF10 / 印刷8 / 左块第1行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A7": {
+        "value": "2",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B7": {
+        "value": "-18",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C7": {
+        "value": "0",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D7": {
+        "value": "PDF10 / 印刷8 / 左块第2行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A8": {
+        "value": "3",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B8": {
+        "value": "-17",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C8": {
+        "value": "1",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D8": {
+        "value": "PDF10 / 印刷8 / 左块第3行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A9": {
+        "value": "4",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B9": {
+        "value": "-16",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C9": {
+        "value": "0",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D9": {
+        "value": "PDF10 / 印刷8 / 左块第4行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A10": {
+        "value": "5",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B10": {
+        "value": "-15",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C10": {
+        "value": "1",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D10": {
+        "value": "PDF10 / 印刷8 / 左块第5行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A11": {
+        "value": "6",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B11": {
+        "value": "-14",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C11": {
+        "value": "3",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D11": {
+        "value": "PDF10 / 印刷8 / 左块第6行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A12": {
+        "value": "7",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B12": {
+        "value": "-13",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C12": {
+        "value": "5",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D12": {
+        "value": "PDF10 / 印刷8 / 左块第7行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A13": {
+        "value": "8",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B13": {
+        "value": "-12",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C13": {
+        "value": "2",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D13": {
+        "value": "PDF10 / 印刷8 / 左块第8行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A14": {
+        "value": "9",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B14": {
+        "value": "-11",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C14": {
+        "value": "6",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D14": {
+        "value": "PDF10 / 印刷8 / 左块第9行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A15": {
+        "value": "10",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B15": {
+        "value": "-10",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C15": {
+        "value": "15",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D15": {
+        "value": "PDF10 / 印刷8 / 左块第10行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A16": {
+        "value": "11",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B16": {
+        "value": "-9",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C16": {
+        "value": "12",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D16": {
+        "value": "PDF10 / 印刷8 / 左块第11行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A17": {
+        "value": "12",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B17": {
+        "value": "-8",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C17": {
+        "value": "26",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D17": {
+        "value": "PDF10 / 印刷8 / 左块第12行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A18": {
+        "value": "13",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B18": {
+        "value": "-7",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C18": {
+        "value": "32",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D18": {
+        "value": "PDF10 / 印刷8 / 左块第13行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A19": {
+        "value": "14",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B19": {
+        "value": "-6",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C19": {
+        "value": "30",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D19": {
+        "value": "PDF10 / 印刷8 / 左块第14行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A20": {
+        "value": "15",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B20": {
+        "value": "-5",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C20": {
+        "value": "32",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D20": {
+        "value": "PDF10 / 印刷8 / 左块第15行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A21": {
+        "value": "16",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B21": {
+        "value": "-4",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C21": {
+        "value": "52",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D21": {
+        "value": "PDF10 / 印刷8 / 左块第16行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A22": {
+        "value": "17",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B22": {
+        "value": "-3",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C22": {
+        "value": "52",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D22": {
+        "value": "PDF10 / 印刷8 / 左块第17行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A23": {
+        "value": "18",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B23": {
+        "value": "-2",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C23": {
+        "value": "64",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D23": {
+        "value": "PDF10 / 印刷8 / 右块第1行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A24": {
+        "value": "19",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B24": {
+        "value": "-1",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C24": {
+        "value": "66",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D24": {
+        "value": "PDF10 / 印刷8 / 右块第2行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A25": {
+        "value": "20",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B25": {
+        "value": "0",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C25": {
+        "value": "65",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D25": {
+        "value": "PDF10 / 印刷8 / 右块第3行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A26": {
+        "value": "21",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B26": {
+        "value": "1",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C26": {
+        "value": "46",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D26": {
+        "value": "PDF10 / 印刷8 / 右块第4行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A27": {
+        "value": "22",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B27": {
+        "value": "2",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C27": {
+        "value": "66",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D27": {
+        "value": "PDF10 / 印刷8 / 右块第5行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A28": {
+        "value": "23",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B28": {
+        "value": "3",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C28": {
+        "value": "66",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D28": {
+        "value": "PDF10 / 印刷8 / 右块第6行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A29": {
+        "value": "24",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B29": {
+        "value": "4",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C29": {
+        "value": "60",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D29": {
+        "value": "PDF10 / 印刷8 / 右块第7行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A30": {
+        "value": "25",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B30": {
+        "value": "5",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C30": {
+        "value": "54",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D30": {
+        "value": "PDF10 / 印刷8 / 右块第8行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A31": {
+        "value": "26",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B31": {
+        "value": "6",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C31": {
+        "value": "41",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D31": {
+        "value": "PDF10 / 印刷8 / 右块第9行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A32": {
+        "value": "27",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B32": {
+        "value": "7",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C32": {
+        "value": "33",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D32": {
+        "value": "PDF10 / 印刷8 / 右块第10行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A33": {
+        "value": "28",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B33": {
+        "value": "8",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C33": {
+        "value": "45",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D33": {
+        "value": "PDF10 / 印刷8 / 右块第11行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A34": {
+        "value": "29",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B34": {
+        "value": "9",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C34": {
+        "value": "35",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D34": {
+        "value": "PDF10 / 印刷8 / 右块第12行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A35": {
+        "value": "30",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B35": {
+        "value": "10",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C35": {
+        "value": "38",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D35": {
+        "value": "PDF10 / 印刷8 / 右块第13行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A36": {
+        "value": "31",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "B36": {
+        "value": "11",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "C36": {
+        "value": "44",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "D36": {
+        "value": "PDF10 / 印刷8 / 右块第14行",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "A37": {
+        "value": "32",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "B37": {
+        "value": "12",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "C37": {
+        "value": "23",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "D37": {
+        "value": "PDF10 / 印刷8 / 右块第15行",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "A38": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B38": {
+        "value": "原文总计 (h)",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "C38": {
+        "value": "1015",
+        "type": "n",
+        "style": "22",
+        "formula": null
+      },
+      "D38": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A39": {
+        "value": "来源：GB 21454—2021 表A.4，印刷8 / PDF10。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B39": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C39": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D39": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A40": {
+        "value": "原文总计 1015 h；原表左右栏展开按j保序。合计与各行分别核对。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B40": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C40": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D40": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A41": {
+        "value": "0小时是原表数值，不能改为空白；户用与工商业相同温度仍保留各自时数。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B41": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C41": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D41": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A42": {
+        "value": "原PDF SHA-256：ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B42": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C42": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D42": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A43": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B43": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C43": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D43": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A44": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B44": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "C44": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "D44": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  },
+  {
+    "sheet": "表A.5",
+    "xml": "xl/worksheets/sheet9.xml",
+    "dimension": null,
+    "merges": [],
+    "cells": {
+      "A1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B1": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A2": {
+        "value": "GB 21454—2021 表A.5 室内机最多连接数量",
+        "type": "str",
+        "style": "2",
+        "formula": null
+      },
+      "B2": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A3": {
+        "value": "标准表值整理稿；执行者自核，未经独立逐格验收",
+        "type": "str",
+        "style": "3",
+        "formula": null
+      },
+      "B3": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B4": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A5": {
+        "value": "名义制热量 HC (W)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "B5": {
+        "value": "最多室内机 (台)",
+        "type": "str",
+        "style": "7",
+        "formula": null
+      },
+      "A6": {
+        "value": "HC≤10000",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B6": {
+        "value": "3",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "A7": {
+        "value": "10000<HC≤18000",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B7": {
+        "value": "4",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "A8": {
+        "value": "18000<HC≤32000",
+        "type": "str",
+        "style": "11",
+        "formula": null
+      },
+      "B8": {
+        "value": "6",
+        "type": "n",
+        "style": "21",
+        "formula": null
+      },
+      "A9": {
+        "value": "HC>32000",
+        "type": "str",
+        "style": "8",
+        "formula": null
+      },
+      "B9": {
+        "value": "10",
+        "type": "n",
+        "style": "18",
+        "formula": null
+      },
+      "A10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B10": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A11": {
+        "value": "来源：GB 21454—2021 表A.5，印刷9 / PDF11。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B11": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A12": {
+        "value": "A.3.1.1b另规定：HC≤10000最少2台，HC>10000最少3台；本表仅存最多台数。",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B12": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A13": {
+        "value": "原PDF SHA-256：ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+        "type": "str",
+        "style": "1",
+        "formula": null
+      },
+      "B13": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B14": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B15": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "A16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      },
+      "B16": {
+        "value": null,
+        "type": "n",
+        "style": "1",
+        "formula": null
+      }
+    }
+  }
+]

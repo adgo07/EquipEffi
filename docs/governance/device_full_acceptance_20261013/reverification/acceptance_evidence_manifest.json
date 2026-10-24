@@ -1,0 +1,301 @@
+{
+  "created_utc": "2026-10-13T15:03:06.713468+00:00",
+  "note": "Audit deliverables hashes, not part of source stability window; this manifest excludes itself",
+  "files": [
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\ACCEPTANCE_SUMMARY.md",
+      "relative_path": "ACCEPTANCE_SUMMARY.md",
+      "sha256": "b449b12d31e43952d4287c59d3949a8ed1da75b6d2386d4a0e21b940af2dfdc7"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\DEVICE_INDEPENDENT_INDEX.md",
+      "relative_path": "DEVICE_INDEPENDENT_INDEX.md",
+      "sha256": "8fa93b502d22fdbf53346f6ffa42cb5d87191b6c2274d0b29051a48669bfd3f4"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\excluded_asset_preservation.json",
+      "relative_path": "reverification/excluded_asset_preservation.json",
+      "sha256": "855063a1c4ee6b39357b2aa00e058eb1a5170405047437db1da30c43f2600026"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_compressor_boiler\\append_only_diff.json",
+      "relative_path": "reverification/final_compressor_boiler/append_only_diff.json",
+      "sha256": "6358dbedd9acc648f0d0fa626b89228a6e721d50098e806865eac74531092a1d"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_compressor_boiler\\FINAL_REVERIFICATION.md",
+      "relative_path": "reverification/final_compressor_boiler/FINAL_REVERIFICATION.md",
+      "sha256": "d5a9a2886482f0d1beed41f4d76a5f4d13337d76622cf8b1fdf8cdfcb8116052"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_compressor_boiler\\final_stability.json",
+      "relative_path": "reverification/final_compressor_boiler/final_stability.json",
+      "sha256": "7080f2392c3716ba05629502eeccb26c145aefc2c92803fc0873346417bd00b6"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_compressor_boiler\\manifest_comparison.json",
+      "relative_path": "reverification/final_compressor_boiler/manifest_comparison.json",
+      "sha256": "dfe077a47fd9eb1caf3b6eeb791c7b3ee6b7da4d6b5937aaa1932c45b63a568e"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_compressor_boiler\\reverification_manifest.json",
+      "relative_path": "reverification/final_compressor_boiler/reverification_manifest.json",
+      "sha256": "df64f2c154dfb71148072d3b23089a8edfb91c91bd3814501e66044cbc0ac292"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\build_source_check.json",
+      "relative_path": "reverification/final_fans_submersible/build_source_check.json",
+      "sha256": "0ba253203be9aff5e9bd86ebaa9a86e951d8d1e4ca545092fab623f8048053f7"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\end_hashes.json",
+      "relative_path": "reverification/final_fans_submersible/end_hashes.json",
+      "sha256": "1d7d6779dc6c5aa8e85527e7ef6e4a1b300d6c2fab09b455a4237852dbccee1a"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\fs04_checks.json",
+      "relative_path": "reverification/final_fans_submersible/fs04_checks.json",
+      "sha256": "daaa59256a8e1e180534fe73fd43a54115f94ce5942e3abc9344d118a9703d45"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\full_468_cross_asset.json",
+      "relative_path": "reverification/final_fans_submersible/full_468_cross_asset.json",
+      "sha256": "a6f61b7be67d156012355807910c7ed29eec8378286abe9742fafead92ca68aa"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\hash_changes.json",
+      "relative_path": "reverification/final_fans_submersible/hash_changes.json",
+      "sha256": "88f0b262e7067f720301bb8f787a634876e4c82a4406114b995a485677b9d5e4"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\heat_first_round_hash_changes.json",
+      "relative_path": "reverification/final_fans_submersible/heat_first_round_hash_changes.json",
+      "sha256": "81816c314b555d213f8ed6085b3369c47370105af40f44883c118614ef71c39b"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\issue_links_and_status.json",
+      "relative_path": "reverification/final_fans_submersible/issue_links_and_status.json",
+      "sha256": "4a2d75a69db007eb91ae8516b5dde4e9dfa76acd3425d874ce491cedf9cd8c8a"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\primary_comparison.json",
+      "relative_path": "reverification/final_fans_submersible/primary_comparison.json",
+      "sha256": "1958db63efb795faf8d8cb1c04b55c8bec016ff193f1ec4ebfd132966f2ad696"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\published_manifest_check.json",
+      "relative_path": "reverification/final_fans_submersible/published_manifest_check.json",
+      "sha256": "1a496bd2c2ca9c8d5612a7b6f6bcb71bf49eb776c45ba4f36f7142089cabf55e"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\reference_comparison.json",
+      "relative_path": "reverification/final_fans_submersible/reference_comparison.json",
+      "sha256": "50f7976ef4725b91a997a610031183f4e787d01eae4d2ca64272cefea7f3a722"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\REPORT.md",
+      "relative_path": "reverification/final_fans_submersible/REPORT.md",
+      "sha256": "e447c125a2b1fba03ef8e58bb260813d2e07715702ff2d8714ff923eff2ffe2d"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\root_second_window.json",
+      "relative_path": "reverification/final_fans_submersible/root_second_window.json",
+      "sha256": "4bd0ab2263d98e4c8a27bc02b838cb4e7c5cb68174e9d9200af22e4a2857231d"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\start_hashes.json",
+      "relative_path": "reverification/final_fans_submersible/start_hashes.json",
+      "sha256": "088751ff5d74680086b08719a5d4848086ef63c2a6525e1a49775bf9e2dc4d58"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\verify_final.py",
+      "relative_path": "reverification/final_fans_submersible/verify_final.py",
+      "sha256": "010545d25f43601a05c29c23dbd19a0af4f0e223e997a113da81698888e74be4"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_fans_submersible\\workbook_full_cell_diff.json",
+      "relative_path": "reverification/final_fans_submersible/workbook_full_cell_diff.json",
+      "sha256": "cbd6c1414510b193be0d6775d70e504a94b1a1af21c7e83a96b7bb6534cf7a64"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\baseline_comparison.json",
+      "relative_path": "reverification/final_hvac/baseline_comparison.json",
+      "sha256": "dedb8394ee9a321a75fbe0a0af10c62a7271ede01ad1a636aba809eb4c008579"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\changed_file_semantics.json",
+      "relative_path": "reverification/final_hvac/changed_file_semantics.json",
+      "sha256": "cfb3707f560832d48407df439c708d078c44407ab609777cb4756387f646f49f"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\check.py",
+      "relative_path": "reverification/final_hvac/check.py",
+      "sha256": "2a1f9775fb1cfed24eaf9ee4be4c2db812ccbeb8cdabdf83fc0579d29516071b"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\check_type.py",
+      "relative_path": "reverification/final_hvac/check_type.py",
+      "sha256": "c04d36bbe262ef7663afbd948ca1d805a794266a6ac75107249d02253495c5f2"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\core_artifact_manifest.json",
+      "relative_path": "reverification/final_hvac/core_artifact_manifest.json",
+      "sha256": "fa187edc4d7412a2154970f0e105f6b7bd940282fb1f3f0cabaf3270130d1a7a"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\diff_and_links.py",
+      "relative_path": "reverification/final_hvac/diff_and_links.py",
+      "sha256": "3494f3e447183cd5d320ee4da1a53d0bdaebcf5746f4ca3d73a773d651e0484e"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\FINAL_HVAC_REPORT.md",
+      "relative_path": "reverification/final_hvac/FINAL_HVAC_REPORT.md",
+      "sha256": "a8f72ff4d18c1db91973c938797f404ec35874d3d85ed63a51227b30bfe3518b"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\final_stability.json",
+      "relative_path": "reverification/final_hvac/final_stability.json",
+      "sha256": "4824e2409ed90e325020aa5a525c1131bf7f127afc284e2926878047b90d31ad"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\finalize.py",
+      "relative_path": "reverification/final_hvac/finalize.py",
+      "sha256": "1aba5e60af8a12a5ac4da45a3a7852c4d217f7f20082a3e708d363b75c19d707"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\finish_current.py",
+      "relative_path": "reverification/final_hvac/finish_current.py",
+      "sha256": "47d9f6c3823889fe8197165b287b255c60b11095ad2f9ca9671c5637678bc07f"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\gb19576_2019_semantic.diff",
+      "relative_path": "reverification/final_hvac/gb19576_2019_semantic.diff",
+      "sha256": "0c7723f779614b1c39c8e5f5611b162ff69ef4a7a430ba50b03a87876a28a306"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\gb21454_2021_semantic.diff",
+      "relative_path": "reverification/final_hvac/gb21454_2021_semantic.diff",
+      "sha256": "5228afa97421e52c23a16b79b5fbe223da9969616415eeb175debdb39243602c"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\gb29541_2013_semantic.diff",
+      "relative_path": "reverification/final_hvac/gb29541_2013_semantic.diff",
+      "sha256": "dfce0a11031a15a84bcdbdac3bdc7e5ed84b5d77889474bae7f60582b2ed4247"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\gb37479_2019_semantic.diff",
+      "relative_path": "reverification/final_hvac/gb37479_2019_semantic.diff",
+      "sha256": "c0dc2cf85fef61bb9a2e2468a4d72be4626c715b4fe98b07581366a7c4da57a3"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\issue_links_check.json",
+      "relative_path": "reverification/final_hvac/issue_links_check.json",
+      "sha256": "071656ec66984f975992f9f1d0e3e3f5cf23339a7a703dbd324f16928fd0fae4"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\platform-lock_snapshot.txt",
+      "relative_path": "reverification/final_hvac/platform-lock_snapshot.txt",
+      "sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\reused_first_round_evidence.json",
+      "relative_path": "reverification/final_hvac/reused_first_round_evidence.json",
+      "sha256": "718eb43aa8d3bb57865b6aac22ce64a266dd6c155dfa8831784cd5936e372a39"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\root_end_snapshot.txt",
+      "relative_path": "reverification/final_hvac/root_end_snapshot.txt",
+      "sha256": "4989190f141d482dbb00c3fedb5c0ac2b52d8560e24ec4c66ccf02c36f1bc79e"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\root_scope_stability.json",
+      "relative_path": "reverification/final_hvac/root_scope_stability.json",
+      "sha256": "981e0c568d748303d663b112eaaae01d7cc20f23916114e4f92b4a4ea602cde1"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\STANDARD_ISSUES_REGISTER_snapshot.txt",
+      "relative_path": "reverification/final_hvac/STANDARD_ISSUES_REGISTER_snapshot.txt",
+      "sha256": "39983c77957aed81012ade97a9800bae7b106268c344553aa239da493cf908f1"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_hvac\\type_recheck.json",
+      "relative_path": "reverification/final_hvac/type_recheck.json",
+      "sha256": "4a955627147bb9eea05f3db32b374d873086482ba654e6c026b3b14756b043e5"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_motors\\manifest.json",
+      "relative_path": "reverification/final_motors/manifest.json",
+      "sha256": "7352f133a8387f3ba359b056a4726bc3c13ad0f8467492ca0101b833354ae225"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_motors\\REPORT.md",
+      "relative_path": "reverification/final_motors/REPORT.md",
+      "sha256": "de79d43fdd3f64d7edb5bcd1f30f0ffc43180f733764e1c87ec8255f8ed605bf"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_motors\\reverify.py",
+      "relative_path": "reverification/final_motors/reverify.py",
+      "sha256": "d442059816ec615da73a9c67a2f118d85d8383a1d4054eb1237b8d85c3298887"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\FINAL_REVIEW_STATUS.md",
+      "relative_path": "reverification/FINAL_REVIEW_STATUS.md",
+      "sha256": "3af6bde851aec6eb8c6722c7b219e969fc50610cff3ef5e0f5ec03887c648635"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_source_manifest.csv",
+      "relative_path": "reverification/final_source_manifest.csv",
+      "sha256": "417899f19cd05612dcf1486256081646e25118947e1cddd494d3fd3adcb06c7b"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\final_source_manifest.json",
+      "relative_path": "reverification/final_source_manifest.json",
+      "sha256": "d3456404bc624463ecdedea42a6401d793422297f103da2daf6f6c97df75e745"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\FORMAL_DELIVERABLES.md",
+      "relative_path": "reverification/FORMAL_DELIVERABLES.md",
+      "sha256": "ad0859df38c98d4f1b17417669239394f256ebba2365ccbcb6357f8a645dd5b8"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\independent_index.json",
+      "relative_path": "reverification/independent_index.json",
+      "sha256": "39703a86633ce389ae575f6db30c6b35c3d642db36f11732fd0a371bf6285aa3"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\issue_registration_audit.csv",
+      "relative_path": "reverification/issue_registration_audit.csv",
+      "sha256": "d551b7ffcaf2ef692546b87774e95e2115c713730fd398e8033ad088d74d5c53"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\issue_registration_audit.json",
+      "relative_path": "reverification/issue_registration_audit.json",
+      "sha256": "46099b43265d1d1e26bdd2e9fba23fc66ccc9f09a3a5f95a11f3728d68069c35"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\register_final_snapshot.txt",
+      "relative_path": "reverification/register_final_snapshot.txt",
+      "sha256": "670f9644cd8c9d428e1676c9620c6e7fc573a3ecb9959dac40994971f9b97908"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\register_type_final.diff",
+      "relative_path": "reverification/register_type_final.diff",
+      "sha256": "06079093ab3858272b0872bb55e698ef28efad4615dc78d79b81cb3d4986dec3"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\register_type_final_check.json",
+      "relative_path": "reverification/register_type_final_check.json",
+      "sha256": "5cc342f55e52b8c5a482189ea6aa41751847b3229f11962a7b484c04cc28f9db"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\REGISTER_TYPE_FIX_REQUEST.md",
+      "relative_path": "reverification/REGISTER_TYPE_FIX_REQUEST.md",
+      "sha256": "64c83201958232ec01e3dc8741451f05478c57c9a5630f1400794668e7f11002"
+    },
+    {
+      "path": "G:\\Python Project\\EquipEffi\\docs\\governance\\device_full_acceptance_20261013\\reverification\\verify_final_register.py",
+      "relative_path": "reverification/verify_final_register.py",
+      "sha256": "bcb2a88f13f9c8ec7dc4303840c70f62ef22f691929bd7c200a46886a4c5ef9a"
+    }
+  ]
+}

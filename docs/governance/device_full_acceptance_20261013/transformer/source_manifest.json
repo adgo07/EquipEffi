@@ -1,0 +1,17 @@
+[
+  {
+    "absolute_path": "G:\\Python Project\\EquipEffi\\标准原文\\1. GB 20052-2024 电力变压器能效限定值及能效等级.pdf",
+    "sha256_bytes": "862d32069301bb76bcf1477e38befdcc32dfb219a409032c41ff374e88863a3f",
+    "sha256_lf_text": null
+  },
+  {
+    "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb20052_v21\\GB20052_2024_变压器表1-35人工校对数据工作簿_V2.1.xlsx",
+    "sha256_bytes": "35a499bb5406588cdc300c5019bffd0de428d3e08cba21d076ccc8b6f69f2565",
+    "sha256_lf_text": null
+  },
+  {
+    "absolute_path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb20052_v21\\GB20052_变压器主映射表_V2.1.md",
+    "sha256_bytes": "d0b0ccb23605920f6a3f0b9870eb8e333f94316b6623babcb101e1f3d20ce6a0",
+    "sha256_lf_text": "5934a9112aee783b8b0335db8bbead480bde773c5e4ff365a137e7f9f3c1ae24"
+  }
+]

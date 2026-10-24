@@ -1,0 +1,424 @@
+{
+  "checked_bjt": "2026-10-13T22:17:31.040549+08:00",
+  "total": 52,
+  "unchanged": 52,
+  "changed": [],
+  "checks": [
+    {
+      "standard": "gb18613_2020",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\STANDARD_MAPPING.md",
+      "initial_sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d",
+      "current_sha256": "c83635649dddb0ecf5fb4f65b283e1b51f90e2ac05150b76b4956c9ca807ee0d",
+      "unchanged": true
+    },
+    {
+      "standard": "gb18613_2020",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb18613_2020\\data\\GB18613_2020_表1-6校对数据_A1.xlsx",
+      "initial_sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+      "current_sha256": "fabb5722cf73afbdaf8fa8c5e76b8eddc86918b4cffe5ce060594afc609164bb",
+      "unchanged": true
+    },
+    {
+      "standard": "gb18613_2020",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\2. GB+18613-2020 电动机能效限定值及能效等级.pdf",
+      "initial_sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+      "current_sha256": "ba617a76b79cecdda57fab3950ecccaecbb1b2997645192f0429395468167304",
+      "unchanged": true
+    },
+    {
+      "standard": "gb30254_2024",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\STANDARD_MAPPING.md",
+      "initial_sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba",
+      "current_sha256": "2c538829a29f20822516d68a98b88ca57f4aeb5afc464a2ffdd65d6100a5e5ba",
+      "unchanged": true
+    },
+    {
+      "standard": "gb30254_2024",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30254_2024\\data\\GB30254_2024_标准表值.xlsx",
+      "initial_sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+      "current_sha256": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912",
+      "unchanged": true
+    },
+    {
+      "standard": "gb30254_2024",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\3. GB 30254-2024 高压三相笼型异步电动机能效限定值及能效等级.pdf",
+      "initial_sha256": "53a6d2e8098fea9f81adf6a12fe3298707bf6b22cc8c972110aacdcd8a168135",
+      "current_sha256": "53a6d2e8098fea9f81adf6a12fe3298707bf6b22cc8c972110aacdcd8a168135",
+      "unchanged": true
+    },
+    {
+      "standard": "gb30253_2024",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\STANDARD_MAPPING.md",
+      "initial_sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13",
+      "current_sha256": "07d1e9aaa4baf760276f663687e570522d0b14d4e11592c648d74035383d6a13",
+      "unchanged": true
+    },
+    {
+      "standard": "gb30253_2024",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb30253_2024\\data\\GB30253_2024_TABLE_VALUES.xlsx",
+      "initial_sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+      "current_sha256": "34cafd69c14bc5b15d4e674ab7a18b49ec8cc55fe34175a698b827074d2004a1",
+      "unchanged": true
+    },
+    {
+      "standard": "gb30253_2024",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\4. GB 30253-2024 永磁同步电动机能效限定值及能效等级.pdf",
+      "initial_sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053",
+      "current_sha256": "6e6878b22b125c86efb31e6e198b941b15bb25ae8e79a63993a9361c914f3053",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19153_2019",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\STANDARD_MAPPING.md",
+      "initial_sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9",
+      "current_sha256": "e19a82b5a6a395f965d5a28e4b96948f96c8f4d6e28c6310d9add5712a046ac9",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19153_2019",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19153_2019\\data\\GB19153_2019_标准表值.xlsx",
+      "initial_sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+      "current_sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19153_2019",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.pdf",
+      "initial_sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc",
+      "current_sha256": "ab4ff8e101da57ba0b5a778fa2882cb5f4eb8c2c5d403829cac83d1cef1c09cc",
+      "unchanged": true
+    },
+    {
+      "standard": "gb24500_2020",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\STANDARD_MAPPING.md",
+      "initial_sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a",
+      "current_sha256": "50e7b91c73f5777c58a982e90fcc115d17a159bc403fdab54f60f285771d7f3a",
+      "unchanged": true
+    },
+    {
+      "standard": "gb24500_2020",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb24500_2020\\data\\GB24500_2020_TABLE_VALUES.xlsx",
+      "initial_sha256": "9f8e243b96ea45cd0c1f1a33dc1c0a7b62eaa8a5f2f9095234c427463a68de1a",
+      "current_sha256": "9f8e243b96ea45cd0c1f1a33dc1c0a7b62eaa8a5f2f9095234c427463a68de1a",
+      "unchanged": true
+    },
+    {
+      "standard": "gb24500_2020",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\11. GB+24500-2020 工业锅炉能效限定值及能效等级.pdf",
+      "initial_sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285",
+      "current_sha256": "e270072e4d3cdefc9a9969524870a50bd454c5405a729c993b2e2584551cf285",
+      "unchanged": true
+    },
+    {
+      "standard": "gb29541_2013",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\STANDARD_MAPPING.md",
+      "initial_sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f",
+      "current_sha256": "814934c48ebc7bd9b3e4fa3cf502fb32d811cc545acb3b44b446e43233c15c7f",
+      "unchanged": true
+    },
+    {
+      "standard": "gb29541_2013",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb29541_2013\\data\\GB29541_2013_标准表值.xlsx",
+      "initial_sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54",
+      "current_sha256": "a7f92d9ab87aa90d44d80d72754d3ee1ce63266276d5ed06cdded9f4380e4b54",
+      "unchanged": true
+    },
+    {
+      "standard": "gb29541_2013",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\14. GB 29541 2013 热泵热水机（器）能效限定值及能效等级.pdf",
+      "initial_sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df",
+      "current_sha256": "94d5f6cc5502e76da01fc030a00d2acd54f40dd83cb967886149fb6b158e15df",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19761_2020",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\STANDARD_MAPPING.md",
+      "initial_sha256": "4b40e07a248ff416308a32556df7a86e0f61887697b36d418fd83dcd3103e1db",
+      "current_sha256": "4b40e07a248ff416308a32556df7a86e0f61887697b36d418fd83dcd3103e1db",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19761_2020",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19761_2020\\data\\GB19761_2020_表1-4核对工作簿.xlsx",
+      "initial_sha256": "2a290e6e19c19fa2e5fd729e52da9551dbc87998ca4a7e33083d292c12f1442d",
+      "current_sha256": "2a290e6e19c19fa2e5fd729e52da9551dbc87998ca4a7e33083d292c12f1442d",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19761_2020",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\8. GB+19761-2020 通风机能效限定值及能效等级.pdf",
+      "initial_sha256": "4ff8e7dd5b7adb86e33bcce49b60879e8c037f7178bb8f9091f1b5294d40f301",
+      "current_sha256": "4ff8e7dd5b7adb86e33bcce49b60879e8c037f7178bb8f9091f1b5294d40f301",
+      "unchanged": true
+    },
+    {
+      "standard": "gb28381_2012",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\STANDARD_MAPPING.md",
+      "initial_sha256": "a2f629fcc1551201e2a597c5f3ee28dadfa62a5bf649b0e9f7ff6cd9caa0514e",
+      "current_sha256": "a2f629fcc1551201e2a597c5f3ee28dadfa62a5bf649b0e9f7ff6cd9caa0514e",
+      "unchanged": true
+    },
+    {
+      "standard": "gb28381_2012",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2012\\data\\GB28381_2012_TABLES.xlsx",
+      "initial_sha256": "217ff4171917de79dc4174f328f0293b045a2e57a18f330b41b210d32bd343bc",
+      "current_sha256": "217ff4171917de79dc4174f328f0293b045a2e57a18f330b41b210d32bd343bc",
+      "unchanged": true
+    },
+    {
+      "standard": "gb28381_2012",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\9. GB 28381-2012 离心鼓风机能效限定值及节能评价值.pdf",
+      "initial_sha256": "07410053c5b190193169686f54b5f86fb243a9a069c3f6c3e0f085637c9b1a75",
+      "current_sha256": "07410053c5b190193169686f54b5f86fb243a9a069c3f6c3e0f085637c9b1a75",
+      "unchanged": true
+    },
+    {
+      "standard": "gb28381_2026",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\STANDARD_MAPPING.md",
+      "initial_sha256": "d709e556ec497bf790a769826bf79815c61232fab72e2e7841704f6799a55941",
+      "current_sha256": "d709e556ec497bf790a769826bf79815c61232fab72e2e7841704f6799a55941",
+      "unchanged": true
+    },
+    {
+      "standard": "gb28381_2026",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb28381_2026\\GB28381_2026_TABLE_VALUES.xlsx",
+      "initial_sha256": "ab8621f06f9ebcc5bc1a062e2dab6a39f76512983025d42af279acd2e0e351d7",
+      "current_sha256": "ab8621f06f9ebcc5bc1a062e2dab6a39f76512983025d42af279acd2e0e351d7",
+      "unchanged": true
+    },
+    {
+      "standard": "gb28381_2026",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\9. GB+28381-2026 鼓风机能效限定值及能效等级.pdf",
+      "initial_sha256": "64a8ef7934933eff49874c5f121db5a1f32f69ff1a16295cd1abe4d740b80d35",
+      "current_sha256": "64a8ef7934933eff49874c5f121db5a1f32f69ff1a16295cd1abe4d740b80d35",
+      "unchanged": true
+    },
+    {
+      "standard": "gb32030_2022",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\STANDARD_MAPPING.md",
+      "initial_sha256": "87c73aa84810b21c08dedfd3d6f0eb0d24a3fc6755d3d68a81a8bafba3ee4448",
+      "current_sha256": "87c73aa84810b21c08dedfd3d6f0eb0d24a3fc6755d3d68a81a8bafba3ee4448",
+      "unchanged": true
+    },
+    {
+      "standard": "gb32030_2022",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb32030_2022\\data\\GB32030_2022_表值映射.xlsx",
+      "initial_sha256": "5e86007b5a3cc6e9f80ccb8233b83cba9fe721df3bd6f36e3bbdaf446e889433",
+      "current_sha256": "5e86007b5a3cc6e9f80ccb8233b83cba9fe721df3bd6f36e3bbdaf446e889433",
+      "unchanged": true
+    },
+    {
+      "standard": "gb32030_2022",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\10. GB 32030-2022_潜水电泵能效限定值及能效等级.pdf",
+      "initial_sha256": "1cdd52a9e0dacb998829e6852453146b5252deb371b804c35b99f9dd8b3b06d4",
+      "current_sha256": "1cdd52a9e0dacb998829e6852453146b5252deb371b804c35b99f9dd8b3b06d4",
+      "unchanged": true
+    },
+    {
+      "standard": "gbt36561_2018",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\STANDARD_MAPPING.md",
+      "initial_sha256": "dc59a8573a1467443afb3e8d4ecd0e073edb0f50713ffa742e4bd0d0ec062cde",
+      "current_sha256": "dc59a8573a1467443afb3e8d4ecd0e073edb0f50713ffa742e4bd0d0ec062cde",
+      "unchanged": true
+    },
+    {
+      "standard": "gbt36561_2018",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gbt36561_2018\\data\\GBT36561_2018_TABLE_VALUES.xlsx",
+      "initial_sha256": "284ceebe8b76f2b20cbbfe3ebb144e2abd4e85a6f598d6d389510e13f410af0a",
+      "current_sha256": "284ceebe8b76f2b20cbbfe3ebb144e2abd4e85a6f598d6d389510e13f410af0a",
+      "unchanged": true
+    },
+    {
+      "standard": "gbt36561_2018",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\12. GBT+36561-2018 清洁节能热处理装备技术要求及评价体系.pdf",
+      "initial_sha256": "f1a6b29aa25d13b69f16006dd822e4ad2641830468bd6c395056e6751095ba37",
+      "current_sha256": "f1a6b29aa25d13b69f16006dd822e4ad2641830468bd6c395056e6751095ba37",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19577_2024",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\STANDARD_MAPPING.md",
+      "initial_sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83",
+      "current_sha256": "c8e891198f47315e9cac82d0ca869daa3f8df5ed394cd1c48e90ecd98a138c83",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19577_2024",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19577_2024\\data\\GB19577_2024_TABLE_VALUES.xlsx",
+      "initial_sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e",
+      "current_sha256": "0ebf428916f51a8c1c462149ec4582e916e9cfbefcbfc39435077dcc8011633e",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19577_2024",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\13. GB 19577-2024 热泵和冷水机组能效限定值及能效等级.pdf",
+      "initial_sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9",
+      "current_sha256": "809170a5c226d35c29a34dc73299c1589e6dc2acfdcb7b0241d0cbb00bfa58d9",
+      "unchanged": true
+    },
+    {
+      "standard": "gb37479_2019",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\STANDARD_MAPPING.md",
+      "initial_sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf",
+      "current_sha256": "9e58abd111ccbbcb841b2197c18b90d6bca174a75845e3c4c20dc7d41d04cadf",
+      "unchanged": true
+    },
+    {
+      "standard": "gb37479_2019",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb37479_2019\\data\\GB37479_2019_TABLE_VALUES.xlsx",
+      "initial_sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4",
+      "current_sha256": "e10747bf85ade8f062848c67db7261d0f6c25ec447b963535ff084223ecbfcb4",
+      "unchanged": true
+    },
+    {
+      "standard": "gb37479_2019",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\15. GB_37479-2019 风管送风式空调机组能效限定值及能效等级.pdf",
+      "initial_sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde",
+      "current_sha256": "cf4bef6fca2b88c5ed1a78006c0a6c411fa74330241e9b373c76d8684a338fde",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19576_2019",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\STANDARD_MAPPING.md",
+      "initial_sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63",
+      "current_sha256": "c63430b55aaa995ab5f22f5c3dc2280423d362939d63c9aeefd8650df160cd63",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19576_2019",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19576_2019\\data\\GB19576_2019_TABLE1.xlsx",
+      "initial_sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+      "current_sha256": "7ee299877c7ed5ab70f2b5c732a20df7056de7e6eec7e75eac9070c9d1df377d",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19576_2019",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\16. GB 19576_2019 单元式空气调节机能效限定值及能效等级.pdf",
+      "initial_sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026",
+      "current_sha256": "1c5c97fd39351ed9708fd69f45c9b37dfba8fccea3cc4f810b32de3522876026",
+      "unchanged": true
+    },
+    {
+      "standard": "gb21454_2021",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\STANDARD_MAPPING.md",
+      "initial_sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105",
+      "current_sha256": "0134539630497ad3b20d17570857d6a3f49810695a4998d61ba64bd6869e1105",
+      "unchanged": true
+    },
+    {
+      "standard": "gb21454_2021",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb21454_2021\\data\\GB21454_2021_标准表值.xlsx",
+      "initial_sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+      "current_sha256": "7c85f6b7b7955e6c15df4fdbb012824b21dcc010d44b90067ed83556065efcc6",
+      "unchanged": true
+    },
+    {
+      "standard": "gb21454_2021",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\17. GB 21454-2021 多联式空调（热泵）机组能效限定值及能效等级.pdf",
+      "initial_sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+      "current_sha256": "ae091115094de6dcc2f587e35bd5a9389708fb37714804ef510ea831613a7331",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19762_2025",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19762_2025\\STANDARD_MAPPING.md",
+      "initial_sha256": "154fab292666030bc5ce7674cd04c2724337502eff007049ecf5e5c8e09374fa",
+      "current_sha256": "154fab292666030bc5ce7674cd04c2724337502eff007049ecf5e5c8e09374fa",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19762_2025",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19762_2025\\profiles\\pump_chemical.md",
+      "initial_sha256": "7dfd314574395c3eb59fafc4d2c1e50112b3eb5c44ac205df9388c7b70842991",
+      "current_sha256": "7dfd314574395c3eb59fafc4d2c1e50112b3eb5c44ac205df9388c7b70842991",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19762_2025",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb19762_2025\\profiles\\pump_water.md",
+      "initial_sha256": "3c05073853c72a7295c13c97c6b02578e1b27bd69cd020e4a8cd5fe9b378d25b",
+      "current_sha256": "3c05073853c72a7295c13c97c6b02578e1b27bd69cd020e4a8cd5fe9b378d25b",
+      "unchanged": true
+    },
+    {
+      "standard": "gb19762_2025",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\6 7. GB 19762-2025 离心泵能效限定值及能效等级.pdf",
+      "initial_sha256": "7f515d8b9d6b4d2ab97ffa7becb78520ba0579cfbd6d5eca10c7e7cc77895fec",
+      "current_sha256": "7f515d8b9d6b4d2ab97ffa7becb78520ba0579cfbd6d5eca10c7e7cc77895fec",
+      "unchanged": true
+    },
+    {
+      "standard": "gb20052_v21",
+      "kind": "mapping_files",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb20052_v21\\GB20052_变压器主映射表_V2.1.md",
+      "initial_sha256": "d0b0ccb23605920f6a3f0b9870eb8e333f94316b6623babcb101e1f3d20ce6a0",
+      "current_sha256": "d0b0ccb23605920f6a3f0b9870eb8e333f94316b6623babcb101e1f3d20ce6a0",
+      "unchanged": true
+    },
+    {
+      "standard": "gb20052_v21",
+      "kind": "workbooks",
+      "path": "G:\\Python Project\\EquipEffi\\docs\\standards\\gb20052_v21\\GB20052_2024_变压器表1-35人工校对数据工作簿_V2.1.xlsx",
+      "initial_sha256": "35a499bb5406588cdc300c5019bffd0de428d3e08cba21d076ccc8b6f69f2565",
+      "current_sha256": "35a499bb5406588cdc300c5019bffd0de428d3e08cba21d076ccc8b6f69f2565",
+      "unchanged": true
+    },
+    {
+      "standard": "gb20052_v21",
+      "kind": "source_pdfs",
+      "path": "G:\\Python Project\\EquipEffi\\标准原文\\1. GB 20052-2024 电力变压器能效限定值及能效等级.pdf",
+      "initial_sha256": "862d32069301bb76bcf1477e38befdcc32dfb219a409032c41ff374e88863a3f",
+      "current_sha256": "862d32069301bb76bcf1477e38befdcc32dfb219a409032c41ff374e88863a3f",
+      "unchanged": true
+    }
+  ]
+}

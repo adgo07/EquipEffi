@@ -1,0 +1,86 @@
+[
+  {
+    "table": 1,
+    "branch": "机械支撑离心",
+    "flow_points": 34,
+    "rows": 34,
+    "slots": 102,
+    "numeric": 102,
+    "dashes": 0,
+    "pages": [
+      7,
+      8
+    ]
+  },
+  {
+    "table": 2,
+    "branch": "轴流",
+    "flow_points": 24,
+    "rows": 24,
+    "slots": 72,
+    "numeric": 72,
+    "dashes": 0,
+    "pages": [
+      8,
+      9
+    ]
+  },
+  {
+    "table": 3,
+    "branch": "悬浮支撑离心",
+    "flow_points": 30,
+    "rows": 30,
+    "slots": 90,
+    "numeric": 90,
+    "dashes": 0,
+    "pages": [
+      9,
+      10
+    ]
+  },
+  {
+    "table": 4,
+    "branch": "单级正压罗茨",
+    "flow_points": 32,
+    "rows": 96,
+    "slots": 960,
+    "numeric": 924,
+    "dashes": 36,
+    "pages": [
+      10,
+      11,
+      12,
+      13
+    ]
+  },
+  {
+    "table": 5,
+    "branch": "单级负压罗茨",
+    "flow_points": 32,
+    "rows": 96,
+    "slots": 864,
+    "numeric": 840,
+    "dashes": 24,
+    "pages": [
+      13,
+      14,
+      15,
+      16,
+      17
+    ]
+  },
+  {
+    "table": 6,
+    "branch": "螺杆",
+    "flow_points": 21,
+    "rows": 63,
+    "slots": 882,
+    "numeric": 819,
+    "dashes": 63,
+    "pages": [
+      17,
+      18,
+      19
+    ]
+  }
+]

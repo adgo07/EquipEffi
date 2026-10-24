@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "errors": [],
+  "publication_base": "13cd242a8999e32997f49123a603cd66f1f259d0",
+  "manifest_entries": 877,
+  "historical_gb18613_checks_superseded": 56,
+  "replacement_evidence": "docs/governance/gb18613_acceptance_20261024/DELIVERY_HASHES.json and A2_REVIEW.md",
+  "other_standards_unchanged": true,
+  "active_local_links_checked": 272,
+  "grade_values_compared": 150,
+  "gb18613": {
+    "status": "PASS",
+    "local_links": 58,
+    "candidate_groups": 26,
+    "archived_cell_records": 1290,
+    "source_hashes": "PASS",
+    "retired_files_absent": true,
+    "scope": "Clean Git tree document and archive integrity, not production tests"
+  },
+  "protected_and_runtime": "PASS",
+  "production_tests": "NOT_RUN locally; final-head Windows Core CI required before merge",
+  "pdf_reverification": "NOT_RUN; existing same-hash evidence retained"
+}
