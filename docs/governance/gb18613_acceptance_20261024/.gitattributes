@@ -1,0 +1,4 @@
+* -text whitespace=cr-at-eol
+# Preserve original Markdown hard breaks in archived reports only.
+ACCEPTANCE_REPORT.md -whitespace
+historical/ATTACHMENT_R2.md -whitespace

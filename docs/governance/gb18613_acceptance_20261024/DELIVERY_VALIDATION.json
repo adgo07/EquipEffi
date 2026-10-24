@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-24",
+  "review": "A2_REVIEW.md",
+  "verified_payload_tree_before_receipt": "4adbecd054524674eca8bd4697c9b7ad08c59800",
+  "local_links": 51,
+  "candidate_groups": 26,
+  "archived_cell_records": 1290,
+  "status": "PASS",
+  "scope": "Document links, archive and hashes in clean Git export; no production or PDF audit rerun"
+}
