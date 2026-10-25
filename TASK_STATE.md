@@ -5,13 +5,11 @@
 - 路线：EquipEffi V2.3；默认分支：`master`。
 - Phase 0 为不可变基线；Phase 1–7 已独立验收（PR #10–#15）。Phase 8（GB 19762 Excel 批量评价）已合并 PR [#16](https://github.com/adgo07/EquipEffi/pull/16)，merge SHA `64b656ee4924fbf09f3fd87596ef1a1a779d1f09`；当前为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`。不得自行声明 `PHASE_8_PASS`，不得开始 Phase 9。
 
-## 当前工作：GB 18613 电动机接入实施（2026-10-25）
+## 当前工作：电动机接入工程验收收口（2026-10-25）
 
-Owner在PR33设计复审后授权“方案定下来后，若没有需要我确定的就开始实施”。效率1～100%（含端点）作为软件输入防呆，不改变A.2映射；没有新增待决标准解释。按设计分为内核、产品接通及独立验收：内核提交`1c53d5d4`已提交PR34，当前产品分支为`codex/motor-product-20261025`，设计基线为`e5aa673c1add75fdddb71360f11437a3d543f8b6`。主工作区已有改动不动。
+Owner确认PR35代码/工程验收通过，授权结束Draft、顺序合并并从最终合并代码重建候选包。PR33@a3e90d92、PR34@32f7da5f已合并。55d66f6d完整Windows CI run40183041126：1191项通过、真实exit0，QA-MOTOR-001/002按工程范围关闭。详见现有[实施记录](docs/standards/gb18613_2020/IMPLEMENTATION_REPORT.md)。
 
-六表内核、V6.2的20列电机Sheet、Qt和混合批量正在实施验收；候选入口显式使用`--motor-candidate`，默认继续泵/变压器及V6.1。不升级SUPPORTED、Phase状态或发布版本。当前证据和未完成项见[实施记录](docs/standards/gb18613_2020/IMPLEMENTATION_REPORT.md)。PR33修订提交Windows CI成功不等同于实现提交的CI成功。
-
-2026-10-25 Owner确认d03fe1cf候选分设备统计/历史及WPS频率文本、正偶数极数、104行扩展、保存重开全部正常；QA-MOTOR-003关闭。此后00e27733完整Windows CI 1178项通过且进程正常退出，QA-MOTOR-004已关闭；当前PR35仍未合并，新提交须单独核验CI，不把人工核验代替完整门禁。
+候选仍显式--motor-candidate，默认泵/变压器及V6.1不变，不提升SUPPORTED或发布范围。旧d03fe1cf包只保留历史人工证据，不能作为本轮成品；最终包的启动/批量输出/历史打开单独验证。无干净Windows限制保留。
 
 ## 历史工作：变压器接入最终复核（2026-10-23）
 
