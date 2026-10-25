@@ -45,6 +45,10 @@ Owner 已确认 ZIP 正常解压后批量评价、记录和外部打开正常，
 
 当前标准统一从[标准总入口](docs/standards/README.md)直接进入主映射。GB 19576—2019、GB 29541—2013、GB 37479—2019的全部等级限值已在映射中，其余12项保留必要工作簿。核验材料和旧交接集中[归档](docs/governance/standard_archive_20261024/README.md)，不再维护每标准README/HANDOFF/请求单作为当前入口。Owner既有解释和未决事项保留，根台账仍是唯一问题状态权威。离心泵和变压器全部原位保护；不改变Phase、Profile支持状态或软件实现。最终检查见[核验记录](docs/governance/standard_archive_20261024/VALIDATION.json)。
 
+## GB 18613 第一步接入设计（2026-10-25）
+
+Owner已授权Stage B设计，基线为PR32合并后的`master@2adcef7e`。[设计正文](docs/standards/gb18613_2020/INTEGRATION_DESIGN.md)已形成待评审稿：六类电机共用现有20列Sheet，拟派生V6.2；泵/变压器输入契约和全部已批准映射不变。仅文档工作，不表示已实现、已支持或已发布；后续顺序为内核、产品接通、独立验收。范围权威仍见V1_SCOPE。
+
 ## GB 18613 文档交付修正（2026-10-24）
 
 A.2规则修订和证据正式归档已整合到PR #32分支；范围、独立差异复核、最终文件SHA及提交状态见[交付记录](docs/governance/gb18613_acceptance_20261024/DELIVERY.md)。不改生产、标准源表、Golden、Phase或支持状态，不恢复退役治理文件。

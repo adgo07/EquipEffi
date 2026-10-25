@@ -23,6 +23,12 @@ Owner已明确下一版本加入 `GB 20052—2024 transformer`，现有 `pump_wa
 - [接入设计与Excel兼容方案](docs/standards/gb20052_2024/INTEGRATION_DESIGN.md)给出已确认字段、25列布局、旧新模板矩阵、数值及测试设计。设计批准不等于软件已实现或支持状态已提升。
 - 上表与现有 `scope_status` 枚举继续描述当前Windows V1，不以未来范围改写当前发布能力。变压器正式实现及验收完成后，再按Owner决定更新当前产品状态。
 
+### 电动机第一步设计授权（2026-10-25）
+
+Owner已确认开展GB 18613—2020电动机第一步接入设计，依据PR32已合并的A.2主映射及A.1六表校对工作簿。范围为该标准六类电机，不包括GB 30254高压或GB 30253永磁同步；其它标准存在归档文件不代表已获确认。
+
+[第一步设计稿](docs/standards/gb18613_2020/INTEGRATION_DESIGN.md)提出20列电动机Sheet、统一单位、六表选路、数值规则和模板兼容方案。本轮不改当前`motor_lv`的`POST_V1`状态，不开放产品入口，不提升支持状态；设计评审后再开展实现。泵、变压器映射及输入契约保持稳定。
+
 ### 其他已登记 Profile
 
 - `UNDER_REVIEW`：`fan`、`blower`、`submersible`、`heat_treatment`、`heat_pump_chiller`、`heat_pump_water_heater`、`duct_ac`、`unitary_ac`、`multi_split_ac`。
