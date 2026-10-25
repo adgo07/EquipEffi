@@ -1,0 +1,52 @@
+{
+  "profile_schema_version": "numeric-profile-adoption-1.0",
+  "numeric_profile_id": "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1",
+  "profile_version": "1.0.0",
+  "numeric_contract_version": "v1",
+  "numeric_contract_status": "FROZEN",
+  "numeric_contract_source": {
+    "repository": "https://github.com/adgo07/Qingzhou-contracts.git",
+    "commit_sha": "ee5feb0cc34dbd99790500fadd0c4c932e202a20",
+    "path": "contracts/numeric/NUMERIC_CONTRACT_V1_FROZEN.md"
+  },
+  "authoritative_scopes": [
+    "motor_lv"
+  ],
+  "representation": "lossless decimal lexemes / exact scaled integers / reduced rational thresholds",
+  "working_precision": "exact_for_business_operations",
+  "rounding_mode": "none_for_business_comparison",
+  "comparison_policy": "full-value exact cross-product comparison",
+  "explicit_rounding_policy": "none for business comparison",
+  "transcendental_policy": "not_applicable",
+  "tolerance_policy": {
+    "business_boundary": "no business epsilon",
+    "numerical_conformance": "exact arithmetic and serialization only",
+    "business_mismatch_within_numerical_tolerance": "FAIL"
+  },
+  "display_policy": {
+    "rounding_mode": "ROUND_HALF_UP",
+    "interpolated_places": 2,
+    "direct_thresholds": "preserve source precision",
+    "authority": "presentation only; MUST NOT feed authoritative grade comparison"
+  },
+  "ingress_policy": {
+    "python_float": "REJECT",
+    "non_finite": "REJECT",
+    "decimal_lexical_text": "AUTHORITATIVE",
+    "maximum_text_characters": 128,
+    "maximum_mantissa_digits": 30,
+    "maximum_absolute_exponent": 30,
+    "thousands_separators": "REJECT",
+    "implicit_units": "REJECT"
+  },
+  "normalization_policy": "exact integer-scale conversion of kW to W and kV to V; use category-selected table and branch; interpolate only adjacent power endpoints in the same table/branch/grade",
+  "trace_reference": {
+    "profile_declaration": "specs/equipment_efficiency/numeric/equipeffi_motor_numeric_profile_v1.json",
+    "standard_pack": "src/equipeffi/resources/standards/gb18613_2020.json",
+    "calculator": "src/equipeffi/domain/devices/motor/calculator.py",
+    "threshold_trace": "MotorEvaluation.thresholds / trace / references",
+    "note": "Exact fractions and source cells are serialized as strings; display rounding does not affect comparison."
+  },
+  "platform_default": false,
+  "other_device_policy": "This profile applies only to GB 18613 motor_lv. It does not change Pump Decimal50 or establish a platform-wide numeric default."
+}

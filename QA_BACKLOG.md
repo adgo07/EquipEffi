@@ -59,6 +59,13 @@ PR31 最终验收发现，artifact-tool 导出的合法 XLSX 可被 `UnifiedWork
 | QA-P7-002 | REGISTERED_DEVIATION | LEGACY_RECORD_BASIS | 较早历史记录缺少完整标准依据字段。不得回填当前版本、重算或追溯改写；按既有降级文案展示。 |
 | QA-P1-008 | OPEN | V1_RUNTIME / Owner 决定是否进入 M4 | `get_pack` 每次仍对整包 dict 执行 `deepcopy`；10,000 行实测约 5.759 s、约占端到端 13.6%。在审计调用方不修改返回值之前不得移除复制；固定性能参考同 [332d79c](https://github.com/adgo07/EquipEffi/commit/332d79c7d999feb4047c920ecb4359655bf9440e)。 |
 
+## 电动机接入实施（2026-10-25）
+
+| 编号 | 状态 | 范围 | 依据与验收 |
+|---|---|---|---|
+| QA-MOTOR-001 | OPEN | GB18613六表唯一内核 | Owner已授权按PR33设计实施；A.2映射/A.1源表不改，替换旧低压链；BC-01—26、数值Conformance及源格核验。效率1～100是Owner防呆决定，不是标准解释变化。 |
+| QA-MOTOR-002 | OPEN | Qt/Excel/历史闭环 | V6.2保留20列，保护泵/变压器；旧模板说明固定区及再导入、混合批次、状态投影、候选入口及原生验收。实现前后证据随实施报告记录，不提前宣布SUPPORTED。 |
+
 ## P0 / Hotfix 状态
 
 当前仍列为 P0 的活动项只有 `QA-AUD-010`，状态 `VERIFY`。未登记获准 Hotfix；该项需补足标准原文与 Golden 证据后再判断是否需要最小修复。
