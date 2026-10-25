@@ -7,7 +7,7 @@ from .calculator import (
 from .input_contract import (
     BASIS_OPTIONS, MOTOR_CATEGORIES, MOTOR_INPUT_CONTRACT,
     MotorCategoryOption, MotorInputError, MotorInputField,
-    normalize_motor_input, options, scope_hint, speed_band_label, test_basis_hint, visible_fields,
+    efficiency_basis_hint, normalize_motor_input, options, scope_hint, speed_band_label, visible_fields,
 )
 
 __all__ = [
@@ -15,5 +15,5 @@ __all__ = [
     "Gb18613MotorCalculator", "MOTOR_CATEGORIES", "MOTOR_INPUT_CONTRACT",
     "MotorCategoryOption", "MotorEvaluation", "MotorInputError",
     "MotorInputField", "MotorPackError", "normalize_motor_input", "options",
-    "scope_hint", "speed_band_label", "test_basis_hint", "visible_fields",
+    "efficiency_basis_hint", "scope_hint", "speed_band_label", "visible_fields",
 ]

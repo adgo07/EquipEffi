@@ -16,7 +16,7 @@ from ...domain.devices.motor.input_contract import (
     BASIS_OPTIONS as MOTOR_BASIS_OPTIONS,
     MOTOR_CATEGORIES,
     scope_hint as motor_scope_hint,
-    test_basis_hint as motor_test_basis_hint,
+    efficiency_basis_hint as motor_efficiency_basis_hint,
     visible_fields as motor_visible_fields,
 )
 from .ooxml_reader import OOXMLReadError, OOXMLWorkbook
@@ -946,7 +946,7 @@ class V62MotorTemplateResource(V6TemplateResource):
                 if category.table_no is None:
                     continue
                 scope = motor_scope_hint(category.category_id)
-                basis = motor_test_basis_hint(category.category_id)
+                basis = motor_efficiency_basis_hint(category.category_id)
                 if scope and scope not in str(template_detail):
                     issues.append(
                         f"模板说明!B21缺少{category.label}适用范围提示")

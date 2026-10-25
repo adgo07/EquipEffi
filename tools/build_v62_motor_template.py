@@ -24,7 +24,7 @@ from equipeffi.domain.devices.motor.input_contract import (  # noqa: E402
     BASIS_OPTIONS,
     MOTOR_CATEGORIES,
     scope_hint,
-    test_basis_hint,
+    efficiency_basis_hint,
     visible_fields,
 )
 from equipeffi.infrastructure.excel.template_resource import (  # noqa: E402
@@ -566,7 +566,7 @@ def _motor_guidance_text() -> tuple[str, str]:
         f"{_category_label(category)}：{scope_hint(_category_id(category))}"
         for category in MOTOR_CATEGORIES if _field(category, "table_no") is not None)
     basis_text = "；".join(
-        f"{_category_label(category)}：{test_basis_hint(_category_id(category))}"
+        f"{_category_label(category)}：{efficiency_basis_hint(_category_id(category))}"
         for category in MOTOR_CATEGORIES if _field(category, "table_no") is not None)
     detail = (
         "电动机仅接入GB 18613—2020六类；类别按实际结构明确选择，不从型号或备注推断。"

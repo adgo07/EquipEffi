@@ -72,7 +72,7 @@ class MotorAnalysisPage(QWidget):
             self.scope_hint.clear()
             return
         self.scope_hint.setText("\n".join((self.contract.scope_hint(category),
-                                           self.contract.test_basis_hint(category))))
+                                           self.contract.efficiency_basis_hint(category))))
         for field in self.contract.visible_fields(category):
             label = field.label + ("（必填）" if field.required else "")
             if field.unit:

@@ -63,10 +63,12 @@ PR31 最终验收发现，artifact-tool 导出的合法 XLSX 可被 `UnifiedWork
 
 | 编号 | 状态 | 范围 | 依据与验收 |
 |---|---|---|---|
-| QA-MOTOR-001 | OPEN | GB18613六表唯一内核 | Owner已授权按PR33设计实施；A.2映射/A.1源表不改，替换旧低压链；BC-01—26、数值Conformance及源格核验。效率1～100是Owner防呆决定，不是标准解释变化。 |
+| QA-MOTOR-001 | OPEN | GB18613六表计算内核 | Owner已授权按PR33设计实施；A.2映射/A.1源表不改，本PR核查旧链调用方，实际替换由QA-MOTOR-002产品PR完成；BC-01—26、数值Conformance及源格核验。效率1～100是Owner防呆决定，不是标准解释变化。 |
 | QA-MOTOR-002 | OPEN | Qt/Excel/历史闭环 | V6.2保留20列，保护泵/变压器；旧模板说明固定区及再导入、混合批次、状态投影、候选入口及原生验收。实现前后证据随实施报告记录，不提前宣布SUPPORTED。 |
 | QA-MOTOR-003 | CLOSED | 人工验收反馈 | 2026-10-25 Owner确认d03fe1cf候选的分设备统计和批次历史均正确；WPS频率文本、K正偶数无下拉、第104行追加、保存重开均正常。对应EQP-STD-GB18613-009；固定版本及证据见实施报告。此项关闭不代表完整CI或正式支持验收通过。 |
 | QA-MOTOR-004 | CLOSED | 完整测试进程退出 | 00e27733 的 Windows CI run40180005924：1178项OK，Qt工作线程静止、窗口与QApplication显式清理完成，真实进程退出码0，完整workflow成功。保留失败/异常与活动线程失败门禁；未删测试或吞退出码。原生人工操作证据独立记录，本轮后续提交仍须各自CI。 |
+
+| QA-MOTOR-005 | CLOSED | PR34独立审查修复 | 先复现空category_id误报包故障、生成器单位转换受外部Decimal上下文影响；核对pytest收集、Conformance语义/schema、直查显示精度与口径不符时追溯。修复限电机内核/生成器/验证材料，不改冻结源表、泵/变压器、历史或支持状态；不借此提前接通产品；已修复并通过motor unittest 26项、核心pytest 24项及45个subtest，11条向量自动schema校验。证据见docs/standards/gb18613_2020/PR33_PR34_REVIEW_FIXES.md。 |
 
 ## P0 / Hotfix 状态
 

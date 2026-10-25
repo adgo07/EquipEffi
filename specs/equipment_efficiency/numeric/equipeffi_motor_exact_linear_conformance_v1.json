@@ -86,6 +86,17 @@
         "source_path": "docs/standards/gb18613_2020/STANDARD_MAPPING.md",
         "locator": "BC-04; table 1 G6:G7"
       },
+      "rounding": {
+        "stage": "display",
+        "mode": "ROUND_HALF_UP",
+        "places": 2,
+        "purpose": "display",
+        "source": {
+          "profile_id": "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1",
+          "profile_path": "specs/equipment_efficiency/numeric/equipeffi_motor_numeric_profile_v1.json",
+          "policy": "display_policy"
+        }
+      },
       "expected_business_result": {
         "evaluation_status": "SUCCESS",
         "grade": "2",
@@ -97,6 +108,64 @@
         "grade_2_exact": {"numerator": "289", "denominator": "4", "unit": "percent_point"},
         "grade_3_exact": {"numerator": "1347", "denominator": "20", "unit": "percent_point"},
         "grade_2_display": "72.25"
+      }
+    },
+    {
+      "case_id": "MOTOR-NUM-TABLE1-FOUR-POLE-DISPLAY-TIE-HALF-UP",
+      "category": "display_separation",
+      "numeric_contract_version": "v1",
+      "numeric_profile_id": "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1",
+      "authority_scope": "motor_lv",
+      "inputs": {
+        "category_id": "three_phase_induction",
+        "rated_output_power_kw": "0.125",
+        "rated_voltage_kv": "0.38",
+        "rated_frequency_hz": "50",
+        "poles": "4",
+        "measured_efficiency_pct": "65.225"
+      },
+      "provenance": {
+        "source_id": "GB 18613-2020",
+        "source_path": "docs/standards/gb18613_2020/STANDARD_MAPPING.md",
+        "locator": "BC-04; table 1 4-pole grade-3 interpolation between the 0.12 and 0.18 kW rows"
+      },
+      "calculation_value": {
+        "numerator": "2609",
+        "denominator": "40",
+        "unit": "percent_point"
+      },
+      "comparison_value": "65.225",
+      "operator": "gte",
+      "threshold": {
+        "numerator": "2609",
+        "denominator": "40",
+        "unit": "percent_point"
+      },
+      "display_value": "65.23",
+      "rounding": {
+        "stage": "display",
+        "mode": "ROUND_HALF_UP",
+        "places": 2,
+        "purpose": "display",
+        "source": {
+          "profile_id": "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1",
+          "profile_path": "specs/equipment_efficiency/numeric/equipeffi_motor_numeric_profile_v1.json",
+          "policy": "display_policy"
+        }
+      },
+      "expected_business_result": {
+        "evaluation_status": "SUCCESS",
+        "grade": "3",
+        "table_id": "GB18613-T01",
+        "branch_id": "poles_4",
+        "method": "LINEAR_INTERPOLATION",
+        "normalized_power_w": "125",
+        "grade_3_exact": {
+          "numerator": "2609",
+          "denominator": "40",
+          "unit": "percent_point"
+        },
+        "grade_3_display": "65.23"
       }
     },
     {
@@ -250,6 +319,12 @@
         "source_path": "src/equipeffi/domain/devices/motor/calculator.py",
         "locator": "exact scaled integer arithmetic; no Decimal context dependency"
       },
+      "requested_profile": "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1",
+      "effective_profile": "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1",
+      "ambient_profile": {
+        "precision": 2,
+        "rounding_mode": "ROUND_CEILING"
+      },
       "expected_business_result": {
         "evaluation_status": "SUCCESS",
         "grade": "3",
@@ -278,6 +353,9 @@
         "source_path": "src/equipeffi/domain/devices/motor/calculator.py",
         "locator": "Gb18613MotorCalculator._get_table; standard-pack numeric_profile_id"
       },
+      "requested_profile": "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1",
+      "effective_profile": null,
+      "conflicting_profile": "UNEXPECTED_PROFILE",
       "expected_error": {
         "error_type": "MotorPackError"
       }

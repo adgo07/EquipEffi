@@ -157,7 +157,7 @@ def scope_hint(category_id: str | None) -> str:
     return _SCOPE_HINTS.get(category.table_no, "") if category is not None else ""
 
 
-def test_basis_hint(category_id: str | None) -> str:
+def efficiency_basis_hint(category_id: str | None) -> str:
     """Return the field's required efficiency-test-basis reminder."""
     category = _resolve_category(category_id)
     return _TEST_BASIS_HINTS.get(category.table_no, "") if category is not None else ""
@@ -179,8 +179,7 @@ def normalize_motor_input(values: Mapping[str, Any]) -> dict[str, Any]:
     if by_id is not None and by_label is not None and by_id.category_id != by_label.category_id:
         raise MotorInputError("category_id", "设备类别与类别标识不一致。")
     category = by_id or by_label
-    if category is not None:
-        normalized["category_id"] = category.category_id
+    normalized["category_id"] = category.category_id if category is not None else None
 
     raw_basis = values.get("efficiency_basis_status")
     basis_text = raw_basis.strip() if isinstance(raw_basis, str) else raw_basis
@@ -210,7 +209,7 @@ class MotorInputContract:
     options = staticmethod(options)
     normalize = staticmethod(normalize_motor_input)
     scope_hint = staticmethod(scope_hint)
-    test_basis_hint = staticmethod(test_basis_hint)
+    efficiency_basis_hint = staticmethod(efficiency_basis_hint)
     speed_band_label = staticmethod(speed_band_label)
 
 

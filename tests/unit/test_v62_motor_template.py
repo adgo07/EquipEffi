@@ -13,7 +13,7 @@ from equipeffi.domain.devices.motor.input_contract import (
     BASIS_OPTIONS,
     MOTOR_CATEGORIES,
     scope_hint,
-    test_basis_hint,
+    efficiency_basis_hint,
     visible_fields,
 )
 from equipeffi.domain.devices.motor.calculator import Gb18613MotorCalculator
@@ -264,7 +264,7 @@ class V62MotorTemplateTests(unittest.TestCase):
                 "max_nameplate_speed_rpm" in visible)
             if category.table_no is not None:
                 self.assertTrue(scope_hint(category.category_id))
-                self.assertTrue(test_basis_hint(category.category_id))
+                self.assertTrue(efficiency_basis_hint(category.category_id))
         self.assertFalse(field_map["poles"].get("defined_name_prefix"))
         self.assertEqual(field_map["poles"]["excel_validation"]["type"], "custom")
         self.assertEqual(field_map["rated_frequency_hz"]["excel_validation"]["type"], "custom")

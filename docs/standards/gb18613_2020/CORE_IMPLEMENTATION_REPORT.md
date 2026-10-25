@@ -10,4 +10,8 @@ Owner授权设计收口后实施，效率1～100%为软件防呆，不改变映�
 
 验证：输入契约/Calculator/数值Conformance共20项通过（FAIL=0、ERROR=0、SKIP=0）；10条Conformance向量通过locked Common Core schema验证。主会话独立将新包与源工作簿比较1290格（108功率+1182限值），全部一致；未重新进行PDF逐格审计。builder重复生成成功，内容完整性SHA256为`506DDAD282F09F89CD5F467E34DC552010FABA41714F1AAB5B4DCBBDA0391A85`。正式业务标准源和已批准Golden未变。
 
-Qt/Excel、历史、旧链退出与发布资源接通属于后一产品提交；本内核提交不替代其验证。原生包、WPS交互、干净Windows验收在本提交为NOT_RUN；不修改数据库、当前发布或支持状态。Knowledge capture：无。
+旧链调用方核查：现有 standard_manifest.json 的 motor_lv 仍指向旧包，evaluator_registry.py 仍调用旧 MotorEvaluator；新内核在本 PR 中是可独立验证的核心库。内核 PR 负责识别上述迁移范围；Qt/Excel、历史、实际路由切换、旧链/旧包退出与发布资源接通由后一产品 PR 完成。本内核提交不宣称“唯一运行内核替换完成”，不替代产品验证。原生包、WPS交互、干净Windows验收在本提交为NOT_RUN；不修改数据库、当前发布或支持状态。Knowledge capture：无。
+
+## 独立验收修复（2026-10-25）
+
+上述20项/10向量/506DDAD摘要为初始实施证据，修订后为motor unittest 26项、核心pytest 24项及45个subtest、11条Conformance向量自动schema验证通过。包新增源显示精度，既有1290项源事实不变；新内容摘要E0F4A9DC83742CFB22CA746F824DD5398909713064E5EC795828B3EF57AB0EA3。修复空类别、ambient builder与来源保留，详情见[两份审查逐项核实](PR33_PR34_REVIEW_FIXES.md)。QA-MOTOR-005仅按工程缺陷关闭，QA-MOTOR-001/002的正式验收状态不自动提升。

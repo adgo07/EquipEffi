@@ -35,3 +35,6 @@ docs/governance/standard_archive_20261024/** -whitespace
 
 # Stable byte identity for the current standard issues register across checkouts.
 STANDARD_ISSUES_REGISTER.md text eol=lf
+
+# Locked conformance schema is vendored byte-for-byte for offline validation.
+tests/fixtures/numeric/conformance_vector_v1.schema.json -text
