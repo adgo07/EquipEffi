@@ -86,10 +86,12 @@ class MotorCalculatorTests(unittest.TestCase):
         self.assertEqual(self.ev(2,"0.15","80",poles=2).reason_codes,("NO_INDICATOR",))
         self.assertEqual(self.ev(4,"0.25","75",poles=2).reason_codes,("NO_INDICATOR",))
         t4=self.ev(4,"0.25","73.5",poles=4)
-        self.assertEqual([t4.thresholds[f"grade_{n}"]["display_text"] for n in (1,2,3)],["73.5","68.5","62"])
+        self.assertEqual([t4.thresholds[f"grade_{n}"]["display_text"] for n in (1,2,3)],["73.5","68.5","62.0"])
+        source_value = self.pack["tables"][3]["rows"][0]["branches"]["poles_4"]["grade_3"]
+        self.assertEqual((source_value["source_text"], source_value["value"], source_value["display_text"]), ("62", "62", "62.0"))
         self.assertEqual(self.ev(5,"1.1","80",poles=8).reason_codes,("NO_INDICATOR",))
         t5=self.ev(5,"1.1","77",poles=6)
-        self.assertEqual([t5.thresholds[f"grade_{n}"]["display_text"] for n in (1,2,3)],["77","73","69"])
+        self.assertEqual([t5.thresholds[f"grade_{n}"]["display_text"] for n in (1,2,3)],["77.0","73.0","69.0"])
         self.assertEqual((self.ev(3,"0.75","80",poles=4).grade,self.ev(5,"0.75","80",poles=4).grade),("2","1"))
 
     def test_bc09_12_speed_groups_use_right_inclusive_edges_and_keep_source_value(self):
@@ -102,7 +104,7 @@ class MotorCalculatorTests(unittest.TestCase):
         self.assertEqual((above.trace[0]["branch_id"],above.trace[0]["speed_band_label"]),("rpm_band_5","r>1300 r/min"))
         self.assertEqual(at.thresholds["grade_1"]["exact"],{"numerator":"406","denominator":"5","unit":"percent_point"})
         self.assertEqual(above.thresholds["grade_1"]["exact"],{"numerator":"163","denominator":"2","unit":"percent_point"})
-        self.assertEqual(self.ev(6,"0.075","72.4",speed="1400").thresholds["grade_3"]["display_text"],"72")
+        self.assertEqual(self.ev(6,"0.075","72.4",speed="1400").thresholds["grade_3"]["display_text"],"72.0")
         self.assertEqual(self.ev(6,"0.0675","80",speed="1400").thresholds["grade_3"]["exact"],{"numerator":"72","denominator":"1","unit":"percent_point"})
 
     def test_bc15_16_25_26_basis_and_table5_speed_requirement(self):
@@ -124,6 +126,40 @@ class MotorCalculatorTests(unittest.TestCase):
         self.assertEqual(self.ev(2,"0.25",None,poles=4,voltage="0.6901").evaluation_status,"OUT_OF_STANDARD_SCOPE")
         unknown=self.calc.evaluate({"category_id":"UNCERTAIN_CATEGORY"},self.pack)
         self.assertEqual(unknown.reason_codes,("CATEGORY_UNCERTAIN",))
+
+    def test_empty_category_id_is_missing_but_invalid_values_keep_priority(self):
+        blank = self.calc.evaluate({
+            "category_id": "", "rated_output_power_kw": "0.12",
+            "rated_voltage_kv": "0.38", "rated_frequency_hz": "50",
+            "poles": "2", "measured_efficiency_pct": "80",
+        }, self.pack)
+        self.assertEqual((blank.evaluation_status, blank.missing_fields, blank.reason_codes),
+                         ("INSUFFICIENT_DATA", ("category_id",), ("CATEGORY_MISSING",)))
+        invalid_number = self.calc.evaluate({
+            "category_id": "", "rated_output_power_kw": "0.12",
+            "measured_efficiency_pct": "NaN",
+        }, self.pack)
+        self.assertEqual((invalid_number.evaluation_status, invalid_number.invalid_fields),
+                         ("INVALID_INPUT", ("measured_efficiency_pct",)))
+        invalid_category = self.calc.evaluate({"category_id": "unknown-category"}, self.pack)
+        self.assertEqual((invalid_category.evaluation_status, invalid_category.invalid_fields),
+                         ("INVALID_INPUT", ("category_id",)))
+
+    def test_efficiency_basis_block_keeps_lookup_trace_but_not_grade_threshold_projection(self):
+        result = self.ev(4, "0.25", "80", poles=4, basis="UNKNOWN")
+        self.assertEqual((result.evaluation_status, result.grade, result.ui_conclusion),
+                         ("INSUFFICIENT_DATA", None, "无法判定"))
+        self.assertEqual(result.reason_codes, ("EFFICIENCY_BASIS_UNKNOWN",))
+        self.assertEqual(
+            [result.thresholds[f"grade_{level}"]["state"] for level in (1, 2, 3)],
+            ["NOT_COMPUTED", "NOT_COMPUTED", "NOT_COMPUTED"],
+        )
+        trace = result.trace[0]
+        self.assertEqual(trace["table_id"], "GB18613-T04")
+        self.assertTrue(trace["sources"])
+        self.assertTrue(all(source["source_cell"] for source in trace["sources"]))
+        self.assertIn("required_test_basis", trace)
+        self.assertIn("required_test_basis", result.references)
 
     def test_bc21_24_efficiency_speed_and_lexical_bounds(self):
         self.assertEqual(self.ev(1,"0.12","85.9",poles=2).evaluation_status,"SUCCESS")

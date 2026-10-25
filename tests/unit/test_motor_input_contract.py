@@ -6,7 +6,7 @@ import unittest
 
 from equipeffi.domain.devices.motor.input_contract import (
     BASIS_OPTIONS, MOTOR_CATEGORIES, MotorInputError, normalize_motor_input,
-    options, scope_hint, test_basis_hint, visible_fields,
+    efficiency_basis_hint, options, scope_hint, visible_fields,
 )
 
 
@@ -41,11 +41,11 @@ class MotorInputContractTests(unittest.TestCase):
             self.assertIn(term, scope_hint("three_phase_induction"))
         self.assertIn("一般用途", scope_hint("capacitor_start"))
         self.assertIn("空调器风扇", scope_hint("ac_fan_brushless_dc"))
-        self.assertIn("GB/T 1032 B法", test_basis_hint("three_phase_induction"))
-        self.assertIn("不得以普通输入/输出功率比替代", test_basis_hint("three_phase_induction"))
-        self.assertIn("GB/T 5171.21直接法", test_basis_hint("capacitor_run"))
-        self.assertIn("铭牌标称最高转速", test_basis_hint("ac_fan_capacitor_run"))
-        self.assertIn("整体效率", test_basis_hint("ac_fan_brushless_dc"))
+        self.assertIn("GB/T 1032 B法", efficiency_basis_hint("three_phase_induction"))
+        self.assertIn("不得以普通输入/输出功率比替代", efficiency_basis_hint("three_phase_induction"))
+        self.assertIn("GB/T 5171.21直接法", efficiency_basis_hint("capacitor_run"))
+        self.assertIn("铭牌标称最高转速", efficiency_basis_hint("ac_fan_capacitor_run"))
+        self.assertIn("整体效率", efficiency_basis_hint("ac_fan_brushless_dc"))
 
     def test_category_specific_enum_options(self) -> None:
         self.assertEqual(options("three_phase_induction", "poles"), (("2", "2极"), ("4", "4极"), ("6", "6极"), ("8", "8极")))

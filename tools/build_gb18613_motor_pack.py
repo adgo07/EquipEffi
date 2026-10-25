@@ -103,6 +103,47 @@ def _cell_text(cell: ET.Element | None, shared: list[str]) -> str:
     return raw
 
 
+def _style_number_formats(archive: zipfile.ZipFile) -> tuple[str | None, ...]:
+    styles_path = "xl/styles.xml"
+    if styles_path not in archive.namelist():
+        raise PackBuildError("A.1源工作簿缺少数字格式定义。")
+    styles = ET.fromstring(archive.read(styles_path))
+    custom_formats = {
+        int(item.attrib["numFmtId"]): item.attrib["formatCode"]
+        for item in styles.findall(f".//{_q(NS_MAIN, 'numFmt')}")
+        if "numFmtId" in item.attrib and "formatCode" in item.attrib
+    }
+    cell_xfs = styles.find(_q(NS_MAIN, "cellXfs"))
+    if cell_xfs is None:
+        raise PackBuildError("A.1源工作簿缺少单元格格式定义。")
+    builtin_formats = {0: "General"}
+    result = []
+    for xf in cell_xfs:
+        num_format_id = int(xf.attrib.get("numFmtId", "0"))
+        result.append(custom_formats.get(num_format_id, builtin_formats.get(num_format_id)))
+    return tuple(result)
+
+
+def _source_display_text(
+    raw: str, cell: ET.Element | None, number_formats: tuple[str | None, ...], address: str,
+) -> str:
+    if cell is None:
+        raise PackBuildError(f"数值源格{address}缺少单元格样式。")
+    try:
+        style_index = int(cell.attrib.get("s", "0"))
+        number_format = number_formats[style_index]
+    except (ValueError, IndexError) as exc:
+        raise PackBuildError(f"数值源格{address}的单元格样式无效。") from exc
+    if number_format != "0.0":
+        raise PackBuildError(f"数值源格{address}的显示格式不属于已核验的0.0格式：{number_format!r}")
+    value = _parse_decimal(raw, address)
+    text = _decimal_text(value)
+    fraction = text.partition(".")[2]
+    if len(fraction) > 1:
+        raise PackBuildError(f"数值源格{address}的有效精度超过已核验的0.0格式：{raw!r}")
+    return text if fraction else text + ".0"
+
+
 def _sheet_names(archive: zipfile.ZipFile) -> dict[str, str]:
     workbook = ET.fromstring(archive.read("xl/workbook.xml"))
     rel_root = ET.fromstring(archive.read("xl/_rels/workbook.xml.rels"))
@@ -137,9 +178,13 @@ def _power_range(raw: str, table_no: int, row_no: int, unit: str) -> dict[str, s
     high = _parse_decimal(match.group(2) or match.group(1), f"表{table_no}!A{row_no}")
     if low <= 0 or high < low:
         raise PackBuildError(f"表{table_no} A{row_no}功率区间无效。")
-    factor = Decimal("1000") if unit == "kW" else Decimal("1")
+    if unit == "kW":
+        normalized_low = Decimal((low.as_tuple().sign, low.as_tuple().digits, low.as_tuple().exponent + 3))
+        normalized_high = Decimal((high.as_tuple().sign, high.as_tuple().digits, high.as_tuple().exponent + 3))
+    else:
+        normalized_low, normalized_high = low, high
     return {"source_text": raw, "unit": unit, "lower": _decimal_text(low), "upper": _decimal_text(high),
-            "normalized_w_lower": _decimal_text(low * factor), "normalized_w_upper": _decimal_text(high * factor)}
+            "normalized_w_lower": _decimal_text(normalized_low), "normalized_w_upper": _decimal_text(normalized_high)}
 
 
 def _branches(table_no: int) -> list[dict[str, Any]]:
@@ -183,6 +228,7 @@ def build_pack(root: Path = ROOT) -> dict[str, Any]:
     tables: list[dict[str, Any]] = []
     with zipfile.ZipFile(workbook_path) as archive:
         shared, sheets = _shared_strings(archive), _sheet_names(archive)
+        number_formats = _style_number_formats(archive)
         if not {f"表{i}" for i in range(1, 7)}.issubset(sheets):
             raise PackBuildError("A.1工作簿缺少表1至表6工作表。")
         sheet_cells: dict[int, dict[str, ET.Element]] = {}
@@ -216,8 +262,13 @@ def build_pack(root: Path = ROOT) -> dict[str, Any]:
                                 raise PackBuildError(f"阈值超出合理数据域：{sheet}!{cell_address}={text}")
                             source_state, state, value = "NUMERIC", "AVAILABLE", _decimal_text(number)
                         counts[state if state == "AVAILABLE" else source_state] += 1
-                        by_grade[f"grade_{grade}"] = {"state": state, "source_state": source_state, "source_text": text,
+                        item = {"state": state, "source_state": source_state, "source_text": text,
                             "value": value, "source_sheet": sheet, "source_cell": cell_address, "source_row_id": row_id}
+                        if state == "AVAILABLE":
+                            item["display_text"] = _source_display_text(
+                                text, cells.get(cell_address), number_formats, f"{sheet}!{cell_address}",
+                            )
+                        by_grade[f"grade_{grade}"] = item
                     row["branches"][branch["branch_id"]] = by_grade
                 rows.append(row)
             tables.append({"table_id": f"GB18613-T{table_no:02d}", "table_no": table_no, "source_sheet": sheet,

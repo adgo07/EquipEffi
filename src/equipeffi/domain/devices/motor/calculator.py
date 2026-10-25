@@ -11,7 +11,7 @@ from typing import Any, Mapping
 from .input_contract import MOTOR_CATEGORIES, MotorInputError, normalize_motor_input, speed_band_label
 
 DECIMAL_PROFILE_ID = "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1"
-CALCULATOR_VERSION = "gb18613-motor-gb18613_2020-v2.0.0"
+CALCULATOR_VERSION = "gb18613-motor-gb18613_2020-v2.0.1"
 PACK_SCHEMA_VERSION = "equipeffi.motor-standard-pack.v1"
 PACK_ID = "gb18613_2020_v2"
 STANDARD_CODE = "GB 18613-2020"
@@ -188,7 +188,7 @@ class Gb18613MotorCalculator:
         reason = self._basis_block(basis)
         if reason:
             code, message = reason
-            return self._result("INSUFFICIENT_DATA", None, "无法判定", message, thresholds=_empty_thresholds(code), reason_codes=(code,), conclusion="UNABLE_TO_JUDGE", references=references, trace=({"efficiency_basis_status": basis, "efficiency_basis_raw": normalized.get("efficiency_basis_raw", "")},))
+            return self._result("INSUFFICIENT_DATA", None, "无法判定", message, thresholds=_empty_thresholds(code), reason_codes=(code,), conclusion="UNABLE_TO_JUDGE", references=references, trace=(trace,))
         grade = self._classify(efficiency, thresholds)
         if grade is None:
             ui, conclusion, message = "未达3级", "NOT_COMPLIANT", "实测效率低于该表3级限值，未达到3级。"
@@ -387,7 +387,7 @@ class Gb18613MotorCalculator:
             return {"state": "NO_INDICATOR", "exact": None, "display_text": "—", "sources": [self._source_ref(item)], "method": "DIRECT", "reason": "SOURCE_HAS_NO_INDICATOR"}
         value = _Scaled.parse(item["value"], "threshold")
         n, d = value.fraction()
-        return {"state": "AVAILABLE", "exact": _ratio_dict(n, d), "display_text": str(item.get("source_text") or value.plain()), "sources": [self._source_ref(item)], "method": "DIRECT", "reason": None}
+        return {"state": "AVAILABLE", "exact": _ratio_dict(n, d), "display_text": str(item.get("display_text") or item.get("source_text") or value.plain()), "sources": [self._source_ref(item)], "method": "DIRECT", "reason": None}
 
     def _interpolate(self, branch: str, level: int, p0: _Scaled, p1: _Scaled, power: _Scaled, row0: Mapping[str, Any], row1: Mapping[str, Any]) -> dict[str, Any]:
         a, b = self._source_item(row0, branch, level), self._source_item(row1, branch, level)
