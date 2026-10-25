@@ -59,12 +59,13 @@ PR31 最终验收发现，artifact-tool 导出的合法 XLSX 可被 `UnifiedWork
 | QA-P7-002 | REGISTERED_DEVIATION | LEGACY_RECORD_BASIS | 较早历史记录缺少完整标准依据字段。不得回填当前版本、重算或追溯改写；按既有降级文案展示。 |
 | QA-P1-008 | OPEN | V1_RUNTIME / Owner 决定是否进入 M4 | `get_pack` 每次仍对整包 dict 执行 `deepcopy`；10,000 行实测约 5.759 s、约占端到端 13.6%。在审计调用方不修改返回值之前不得移除复制；固定性能参考同 [332d79c](https://github.com/adgo07/EquipEffi/commit/332d79c7d999feb4047c920ecb4359655bf9440e)。 |
 
-## 电动机接入设计（2026-10-25）
+## 电动机接入实施（2026-10-25）
 
 | 编号 | 状态 | 范围 | 依据与验收 |
 |---|---|---|---|
-| QA-MOTOR-001 | OPEN | GB18613输入与数值契约 | 设计确定六表独立内核、精确比较与Conformance；效率1～100为Owner软件防呆，不改A.2映射/A.1源表。内核PR核查调用及迁移范围，产品PR负责旧链实际退出。实现与验证状态沿用本编号更新。 |
-| QA-MOTOR-002 | OPEN | Qt/Excel/历史闭环 | 设计保留20列、保护泵/变压器，约定候选开关、固定输出区、再导入及混合批次。产品PR负责接通和原生/WPS验收，不以设计通过提升SUPPORTED。 |
+| QA-MOTOR-001 | OPEN | GB18613六表计算内核 | Owner已授权按PR33设计实施；A.2映射/A.1源表不改，本PR核查旧链调用方，实际替换由QA-MOTOR-002产品PR完成；BC-01—26、数值Conformance及源格核验。效率1～100是Owner防呆决定，不是标准解释变化。 |
+| QA-MOTOR-002 | OPEN | Qt/Excel/历史闭环 | V6.2保留20列，保护泵/变压器；旧模板说明固定区及再导入、混合批次、状态投影、候选入口及原生验收。实现前后证据随实施报告记录，不提前宣布SUPPORTED。 |
+| QA-MOTOR-005 | CLOSED | PR34独立审查修复 | 先复现空category_id误报包故障、生成器单位转换受外部Decimal上下文影响；核对pytest收集、Conformance语义/schema、直查显示精度与口径不符时追溯。修复限电机内核/生成器/验证材料，不改冻结源表、泵/变压器、历史或支持状态；不借此提前接通产品；已修复并通过motor unittest 26项、核心pytest 24项及45个subtest，11条向量自动schema校验。证据见docs/standards/gb18613_2020/PR33_PR34_REVIEW_FIXES.md。 |
 
 ## P0 / Hotfix 状态
 
