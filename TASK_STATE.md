@@ -11,6 +11,8 @@ Owner在PR33设计复审后授权“方案定下来后，若没有需要我确�
 
 六表内核、V6.2的20列电机Sheet、Qt和混合批量正在实施验收；候选入口显式使用`--motor-candidate`，默认继续泵/变压器及V6.1。不升级SUPPORTED、Phase状态或发布版本。当前证据和未完成项见[实施记录](docs/standards/gb18613_2020/IMPLEMENTATION_REPORT.md)。PR33修订提交Windows CI成功不等同于实现提交的CI成功。
 
+2026-10-25 Owner确认d03fe1cf候选分设备统计/历史及WPS频率文本、正偶数极数、104行扩展、保存重开全部正常；QA-MOTOR-003关闭。完整CI仍在1178项OK后原生退出崩溃（QA-MOTOR-004），未合并PR35，不把人工核验代替完整门禁。
+
 ## 历史工作：变压器接入最终复核（2026-10-23）
 
 Owner已批准下一版本纳入GB 20052—2024、25列方案并授权实施、验收后顺序合并。设计PR [#29](https://github.com/adgo07/EquipEffi/pull/29)已合并于`4ae97dac2397756094e56565eb79062bcc3e6a51`；内核PR [#30](https://github.com/adgo07/EquipEffi/pull/30)及产品PR [#31](https://github.com/adgo07/EquipEffi/pull/31)按已授权顺序在最终CI成功后依次合并；实际合并状态以对应PR为准。
