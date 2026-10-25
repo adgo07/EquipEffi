@@ -53,3 +53,7 @@ CI run40168204528已确认不是简单日志误判：1171项OK后测试子进程
 最新完整CI run40176754592：1178项OK后Fatal Python error: Aborted、进程exit3。新增Qt测试局部清理未彻底解决，QA-MOTOR-004继续开放；禁止据人工通过合并失败门禁。没有干净Windows或Sandbox，继续沿用Owner接受的本机隔离验证限制；不声明SUPPORTED、正式发布或Phase PASS。标准原文/扫描件/源校对工作簿不得随运行包分发。
 
 后续CI修订仅涉及测试入口：仍一次完整unittest discovery，结束后检查活动QThread/QThreadPool及非daemon Python工作线程，再正常销毁Qt窗口和QApplication。活动工作线程/清理错误均返回失败，不kill、不跳测、不吞退出码。90项Qt/线程子集通过且全部清理阶段标记出现、exit0；临时失败/异常测试返回1；主会话另用真实活动QThread验证检查确实拒绝未退出线程。产品程序、模板和已获人工确认的d03fe1cf候选内容不变；完整CI仍待固定提交验证。
+
+### 完整 CI 退出复验（2026-10-25）
+
+固定提交 `00e277334daf559062b1a29799f0cbacf351d7ca` 的 Windows CI run `40180005924` 成功。完整 unittest 1178 项、971.987 秒，FAIL=0、ERROR=0、SKIP=0；Qt shutdown 标记到达 after，真实子进程退出码 0。工作线程已静止，显式销毁窗口及 QApplication；没有跳过测试、强制成功退出或掩盖活动线程。QA-MOTOR-004 按该固定版本证据关闭；后续审查修复提交的 CI 单独记录。

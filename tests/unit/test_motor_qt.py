@@ -66,6 +66,9 @@ class MotorQtTests(unittest.TestCase):
                 page.category.setCurrentIndex(page.category.findData("ac_fan_brushless_dc"))
                 self.assertIn("max_nameplate_speed_rpm", page.field_inputs)
                 page.category.setCurrentIndex(page.category.findData("three_phase_induction"))
+                for condition in ("单速", "封闭自扇冷", "N设计", "连续工作制"):
+                    self.assertIn(condition, page.scope_hint.text())
+                self.assertFalse(page.scope_hint.isHidden())
                 for key, value in dict(rated_voltage_kv="0.38", rated_frequency_hz="50",
                                        rated_output_power_kw="0.14", poles="4",
                                        measured_efficiency_pct="71.43").items():
