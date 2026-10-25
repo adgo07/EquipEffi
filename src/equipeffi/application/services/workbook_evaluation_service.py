@@ -175,7 +175,12 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         conclusion = result.ui_conclusion
         summary.conclusion_rows[conclusion] = summary.conclusion_rows.get(conclusion, 0) + 1
         summary.conclusion_quantities[conclusion] = summary.conclusion_quantities.get(conclusion, 0) + quantity
-        if result.trace and result.references not in references:
+        # A legal terminal result can carry standard/package provenance even
+        # when it needed no table lookup and therefore has no trace.
+        finalizable = getattr(
+            result, "finalizable",
+            status in {"SUCCESS", "OUT_OF_STANDARD_SCOPE", "INSUFFICIENT_DATA"})
+        if finalizable and result.references and result.references not in references:
             references.append(result.references)
         messages = tuple(message for message in (
             result.explanation, *basis_formatter(result.trace))

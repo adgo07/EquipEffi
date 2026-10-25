@@ -196,6 +196,12 @@ def _motor_source_input_errors_by_row(cell_metadata) -> dict[int, tuple[tuple[st
                 and metadata.raw_value != ""):
             grouped.setdefault(row_number, []).append(
                 (column, f"{address}被识别为日期或时间格式，请填写固定业务值后重试。"))
+        if (column == "M" and metadata.is_percentage
+                and metadata.raw_value != ""):
+            grouped.setdefault(row_number, []).append((
+                column,
+                f"{address}使用了百分比单元格格式，请取消该格式并按普通数值填写"
+                "（例如90，不要输入90%）。"))
     return {row: tuple(errors) for row, errors in grouped.items()}
 
 

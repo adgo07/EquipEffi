@@ -92,6 +92,11 @@ class MotorQtTests(unittest.TestCase):
                 self.assertNotIn("three_phase_induction", restored)
                 self.assertNotIn("AS_DECLARED_BY_FIELD", restored)
                 self.assertIn("按字段要求填报", restored)
+                self.assertIn("软件状态：已接入，尚待正式支持验收。", restored)
+                snapshot = default_history.service.open_record(page._last_outcome.record.record_id)
+                default_history._render_technical(snapshot, snapshot.result_snapshot)
+                self.assertIn("开发状态：已接入，尚待正式支持验收", default_history.technical.text())
+                self.assertNotIn("支持状态：—", default_history.technical.text())
             finally:
                 _dispose_widget(default_history)
                 _dispose_widget(records)

@@ -44,6 +44,7 @@ from .template_resource import (
 from .worksheet_patch import (
     SheetStructureError,
     WorksheetPatch,
+    column_number,
     cell_xml,
     outer_attributes,
 )
@@ -353,10 +354,98 @@ def _motor_cell_payloads(outcome: BatchRowOutcome) -> dict[str, tuple[str, str]]
     return payloads
 
 
+def _add_missing_motor_result_cells(
+        xml: str, outcomes: dict[int, BatchRowOutcome]) -> str:
+    """Create absent result cells with the matching column's template style."""
+    try:
+        patch = WorksheetPatch(xml)
+    except SheetStructureError as error:
+        raise ResultWorkbookWriteError(
+            f"电动机结果写回结构校验失败：{error}；拒绝产出结果工作簿") from error
+
+    missing_rows = sorted(number for number in outcomes if number not in patch.rows)
+    if missing_rows:
+        raise ResultWorkbookWriteError(
+            "结果写回失败：无法在「电动机」Sheet中定位数据行 "
+            f"{missing_rows[:10]}（共 {len(missing_rows)} 行）")
+    duplicates = patch.duplicate_references()
+    if duplicates:
+        raise ResultWorkbookWriteError(
+            "电动机输入工作表存在重复单元格坐标："
+            f"{sorted(duplicates)[:10]}；拒绝写回")
+
+    missing_by_row: dict[int, tuple[str, ...]] = {}
+    for row_number in sorted(outcomes):
+        row = patch.rows[row_number]
+        present = {cell.reference for cell in row.cells if cell.reference}
+        missing_columns = tuple(
+            column for column in MOTOR_RESULT_COLUMNS
+            if f"{column}{row_number}" not in present)
+        if missing_columns:
+            missing_by_row[row_number] = missing_columns
+    if not missing_by_row:
+        return xml
+
+    table_ref = str(MOTOR_SHEET_CONTRACT.get("table", {}).get("ref", ""))
+    range_match = re.fullmatch(r"[A-Z]+([1-9][0-9]*):[A-Z]+([1-9][0-9]*)",
+                               table_ref)
+    first_template_row = int(MOTOR_SHEET_CONTRACT.get("header_row", 0)) + 1
+    last_template_row = max(patch.rows, default=first_template_row)
+    if range_match is not None:
+        first_template_row = max(first_template_row, int(range_match.group(1)) + 1)
+        last_template_row = int(range_match.group(2))
+
+    source_styles: dict[str, list[tuple[int, str]]] = {}
+    for row_number in sorted(patch.rows):
+        if not first_template_row <= row_number <= last_template_row:
+            continue
+        row = patch.rows[row_number]
+        for cell in row.cells:
+            match = re.fullmatch(r"([A-Z]+)[1-9][0-9]*", cell.reference or "")
+            if (match is not None and match.group(1) in MOTOR_RESULT_COLUMNS
+                    and cell.style is not None):
+                source_styles.setdefault(match.group(1), []).append(
+                    (row_number, cell.style))
+
+    plan = plan_namespace(xml)
+    edits: list[tuple[int, int, str]] = []
+    for row_number, columns in missing_by_row.items():
+        row = patch.rows[row_number]
+        row_prefix = _patch_prefix(plan, row.prefix, row.element.ns_uri)
+        for column in columns:
+            candidates = source_styles.get(column, ())
+            if not candidates:
+                raise ResultWorkbookWriteError(
+                    f"模板中找不到电动机结果列{column}的同列样式来源")
+            _source_row, style = min(
+                candidates, key=lambda item: (abs(item[0] - row_number), item[0]))
+            target = column_number(column)
+            insertion = row.body_end
+            for cell in row.cells:
+                split = re.fullmatch(r"([A-Z]+)[1-9][0-9]*", cell.reference or "")
+                if split is not None and column_number(split.group(1)) > target:
+                    insertion = cell.start
+                    break
+            reference = f"{column}{row_number}"
+            edits.append((insertion, insertion,
+                          cell_xml(reference, style, ("s", ""), row_prefix)))
+
+    result = _normalise_main_namespace(patch.apply(edits))
+    try:
+        assert_non_main_elements_preserved(xml, result)
+        assert_unique_references(result)
+        assert_main_namespace_semantics(result)
+    except InvariantViolation as error:
+        raise ResultWorkbookWriteError(
+            f"电动机缺失结果单元格补齐校验失败：{error}") from error
+    return result
+
+
 def patch_motor_sheet_xml(xml: str,
                           outcomes: dict[int, BatchRowOutcome], *,
                           threshold_style_map: dict[str, dict[str, str]] | None = None) -> str:
     """Write only GB 18613 result columns; never calculate Excel thresholds."""
+    xml = _add_missing_motor_result_cells(xml, outcomes)
     threshold_cells: set[tuple[int, str, str]] = set()
     for row_number, outcome in outcomes.items():
         conclusion = str(outcome.conclusion or "").strip()

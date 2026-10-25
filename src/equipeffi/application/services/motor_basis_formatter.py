@@ -102,7 +102,10 @@ def _source_power_kw(source: Mapping[str, Any]) -> str | None:
     if value is None:
         return None
     if unit in {"w", "watt", "watts", "瓦"}:
-        value /= Decimal(1000)
+        # Shifting the Decimal exponent is exact and independent of the caller's
+        # active precision/rounding context (unlike Decimal division).
+        parts = value.as_tuple()
+        value = Decimal((parts.sign, parts.digits, parts.exponent - 3))
     return _number_text(value)
 
 

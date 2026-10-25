@@ -607,6 +607,8 @@ class RecordsPage(QWidget):
         lines = [f"采用标准：{snapshot.standard_code}",
                  f"设备类别：{label}", f"评价日期：{snapshot.as_of}",
                  f"评价结论：{result.get('ui_conclusion') or snapshot.ui_conclusion}"]
+        if result.get("support_status") == "IMPLEMENTED":
+            lines.append("软件状态：已接入，尚待正式支持验收。")
         for field in contract.visible_fields(category):
             value = inputs.get(field.field_id)
             if value is None or value == "":
@@ -773,7 +775,9 @@ class RecordsPage(QWidget):
             # Phase 3/4 期间形成的 chemical Record 快照里是
             # `NOT_IN_RELEASE_SCOPE`，这里就显示"当前版本未支持"，
             # 不会被追溯改成"正式支持"。不重算、不改写 snapshot。
-            ("支持状态", support_status_text(result.get("support_status"))),
+            (("开发状态", "已接入，尚待正式支持验收")
+             if result.get("support_status") == "IMPLEMENTED"
+             else ("支持状态", support_status_text(result.get("support_status")))),
             ("规则集标识", standard.get("rule_profile") or snapshot.ruleset_version or "—"),
             ("标准包", standard.get("pack_id") or "—"),
             ("数据版本", snapshot.canonical_version or "—"),
