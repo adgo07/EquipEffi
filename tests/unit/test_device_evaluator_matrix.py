@@ -34,7 +34,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
 
     def test_all_registered_examples_return_structured_result(self):
         expected = {
-            "motor_lv": Conclusion.LEVEL_1,
             "motor_hv": Conclusion.LEVEL_1,
             "motor_pmsm": Conclusion.LEVEL_1,
             "compressor": Conclusion.LEVEL_1,
@@ -56,7 +55,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         # The 17th specs entry is a legacy transformer fixture; the V2.1
         # Calculator tests use the derived 35-table pack as their source of truth.
         self.assertEqual(len(self.specs), 17)
-        self.assertEqual(set(expected), set(EVALUATOR_FACTORIES))
+        self.assertEqual(set(expected), set(EVALUATOR_FACTORIES) - {"motor_lv"})
         for device_type, conclusion in expected.items():
             spec = self.specs[device_type]
             with self.subTest(device_type=device_type):
@@ -69,6 +68,8 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         """每个已启用示例都能把实际使用的标准记录传给跨端消费者。"""
         all_ids = []
         for device_type in EVALUATOR_FACTORIES:
+            if device_type == "motor_lv":
+                continue  # GB 18613 is covered by its dedicated calculator tests.
             spec = self.specs[device_type]
             with self.subTest(device_type=device_type):
                 result = self.evaluate(device_type, spec["example"])
@@ -323,22 +324,7 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
         self.assertEqual(standard_step["data_ids"], lookup["data_ids"])
 
-    def test_low_voltage_motor_normal_lookup_preserves_matching_context(self):
-        """低压电动机表1查表应保留功率+极数轴及条款上下文。"""
-        result = self.evaluate("motor_lv", dict(self.specs["motor_lv"]["example"]))
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["matching"], "功率+极数")
-        self.assertEqual(lookup["query_conditions"], {
-            "power_kw": "7.5",
-            "dimension": "4",
-            "dimension_name": "poles",
-        })
-        self.assertEqual(lookup["source_clause"], "表1")
 
-    def test_low_voltage_motor_exact_lookup_marks_standard_row_as_matched(self):
-        """低压电动机正常精确功率档查表应显式标记命中状态。"""
-        result = self.evaluate("motor_lv", dict(self.specs["motor_lv"]["example"]))
-        self.assertEqual(result.lookups[0]["match_status"], "命中")
 
     def test_compressor_lookup_preserves_standard_pack_data_ids(self):
         """空压机各等级查表行优先返回标准包记录ID。"""
@@ -547,7 +533,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
 
     def test_percent_efficiency_fields_reject_fractional_percent(self):
         fields = {
-            "motor_lv": "rated_efficiency",
             "motor_hv": "rated_efficiency",
             "motor_pmsm": "efficiency_at_90pct_speed",
             "pump_water": "pump_efficiency",
@@ -744,59 +729,8 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
 
 
 
-    def test_motor_range_miss_retains_reported_efficiency(self):
-        result = self.evaluate("motor_lv", {
-            **self.specs["motor_lv"]["example"],
-            "rated_power_kw": 99999,
-        })
-        self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
-        self.assertEqual(result.actual_metrics["额定效率_%"], Decimal("98"))
 
-    def test_low_voltage_motor_unsupported_category_does_not_use_three_phase_table(self):
-        """GB 18613-2020表1仅为三相异步电动机，不能套用到电容类电机。"""
-        result = self.evaluate("motor_lv", {
-            "category": "电容起动异步电动机",
-            "rated_power_kw": 7.5,
-            "poles": 4,
-            "rated_efficiency": 98,
-        })
-        self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
-        self.assertEqual(result.actual_metrics["额定效率_%"], Decimal("98"))
-        self.assertFalse(result.limits)
-        self.assertFalse(result.comparisons)
-        self.assertTrue(result.lookups)
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["match_status"], "设备类别未命中")
-        self.assertEqual(lookup["category"], "电容起动异步电动机")
-        self.assertEqual(lookup["candidate_count"], 42)
-        self.assertEqual(lookup["source_page"], 4)
-        self.assertIn("三相异步电动机", lookup["supported_categories"])
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(len(standard_step["data_ids"]), 42)
 
-    def test_motor_power_extrapolation_retains_candidate_rows_and_source(self):
-        """电动机功率超出表格时禁止外推，并保留功率档候选证据。"""
-        result = self.evaluate("motor_lv", {
-            **self.specs["motor_lv"]["example"],
-            "rated_power_kw": 99999,
-        })
-        self.assertEqual(result.conclusion, Conclusion.OUT_OF_SCOPE)
-        self.assertEqual(result.actual_metrics["额定效率_%"], Decimal("98"))
-        self.assertTrue(result.lookups)
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["step_type"], "线性插值")
-        self.assertEqual(lookup["match_status"], "功率档未命中")
-        self.assertEqual(lookup["query_conditions"]["power_kw"], "99999")
-        self.assertEqual(lookup["query_conditions"]["dimension"], "4")
-        self.assertEqual(lookup["candidate_count"], 42)
-        self.assertEqual(lookup["available_power_kw"][0], "0.12")
-        self.assertEqual(lookup["available_power_kw"][-1], "1000.0")
-        self.assertEqual(lookup["data_ids"][0], "GB18613-R000001")
-        self.assertEqual(lookup["data_ids"][-1], "GB18613-R000042")
-        self.assertEqual(lookup["source_pages"], ["4"])
-        self.assertIn("禁止外推", lookup["standard_rule"])
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["data_ids"], lookup["data_ids"])
 
     def test_motor_unresolved_table_retains_reported_efficiency(self):
         result = self.evaluate("motor_hv", {
@@ -1530,150 +1464,12 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
         self.assertIn("有效数值", result.explanation)
 
-    def test_motor_invalid_discrete_dimension_is_reported_as_unable(self):
-        """极数/转速无法解析时不得误报为标准范围外。"""
-        values = dict(self.specs["motor_lv"]["example"], poles="待复核")
-        result = self.evaluate("motor_lv", values)
-        self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
-        self.assertIn("极数不是有效数值", result.explanation)
 
-    def test_low_voltage_motor_missing_poles_retains_candidate_rows_and_dimensions(self):
-        """缺少极数时也要保留GB 18613表1的离散维度和候选行。"""
-        result = self.evaluate("motor_lv", {
-            "category": "三相异步电动机",
-            "rated_power_kw": 7.5,
-            "rated_efficiency": 98,
-        })
-        self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
-        self.assertIn("缺少极数", result.explanation)
-        self.assertEqual(len(result.lookups), 1)
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["match_status"], "极数未提供")
-        self.assertEqual(lookup["table"], "表1")
-        self.assertEqual(lookup["matching"], "功率+极数")
-        self.assertEqual(lookup["query_conditions"], {
-            "power_kw": "7.5",
-            "dimension": "",
-            "dimension_name": "poles",
-        })
-        self.assertEqual(lookup["available_dimensions"], ["2", "4", "6", "8"])
-        self.assertEqual(lookup["candidate_count"], 42)
-        self.assertEqual(lookup["data_ids"][0], "GB18613-R000001")
-        self.assertEqual(lookup["data_ids"][-1], "GB18613-R000042")
-        self.assertEqual(lookup["source_page"], 4)
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["data_ids"], lookup["data_ids"])
 
-    def test_low_voltage_motor_missing_efficiency_retains_limits_and_lookup(self):
-        """表1路由和标准行已确定但额定效率缺失时应保留阈值证据。"""
-        result = self.evaluate("motor_lv", {
-            "category": "三相异步电动机",
-            "rated_power_kw": 7.5,
-            "poles": 4,
-        })
-        self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
-        self.assertIn("额定效率", result.explanation)
-        self.assertIn("额定效率", result.missing_fields)
-        self.assertEqual(result.actual_metrics, {})
-        self.assertEqual(result.comparisons, [])
-        self.assertEqual(len(result.lookups), 1)
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["match_status"], "命中")
-        self.assertEqual(lookup["table"][:2], "表1")
-        self.assertEqual(lookup["query_conditions"], {
-            "power_kw": "7.5",
-            "dimension": "4",
-            "dimension_name": "poles",
-        })
-        self.assertEqual(lookup["data_ids"], ["GB18613-R000015"])
-        self.assertEqual(lookup["source_page"], 4)
-        self.assertEqual(result.limits, {
-            "1级效率_%": Decimal("94.0"),
-            "2级效率_%": Decimal("92.6"),
-            "3级效率_%": Decimal("90.4"),
-        })
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["data_ids"], lookup["data_ids"])
-        self.assertEqual(standard_step["output"], result.limits)
 
-    def test_low_voltage_motor_missing_power_retains_candidate_rows_and_actual_efficiency(self):
-        """表1路由和极数已确定但额定功率缺失时应保留功率轴和已填效率。"""
-        result = self.evaluate("motor_lv", {
-            "category": "三相异步电动机",
-            "poles": 4,
-            "rated_efficiency": 98,
-        })
-        self.assertEqual(result.conclusion, Conclusion.UNABLE_TO_JUDGE)
-        self.assertIn("额定功率", result.explanation)
-        self.assertIn("额定功率", result.missing_fields)
-        self.assertEqual(result.actual_metrics["额定效率_%"], Decimal("98"))
-        self.assertEqual(len(result.lookups), 1)
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["match_status"], "额定功率未提供")
-        self.assertEqual(lookup["table"][:2], "表1")
-        self.assertEqual(lookup["matching"], "功率+极数")
-        self.assertEqual(lookup["query_conditions"], {
-            "power_kw": "",
-            "dimension": "4",
-            "dimension_name": "poles",
-        })
-        self.assertEqual(lookup["available_dimensions"], ["2", "4", "6", "8"])
-        self.assertEqual(lookup["available_power_kw"][0], "0.12")
-        self.assertEqual(lookup["available_power_kw"][-1], "1000.0")
-        self.assertEqual(lookup["candidate_count"], 42)
-        self.assertEqual(lookup["data_ids"][0], "GB18613-R000001")
-        self.assertEqual(lookup["data_ids"][-1], "GB18613-R000042")
-        self.assertEqual(lookup["source_page"], 4)
-        self.assertTrue(lookup["no_interpolation"])
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["data_ids"], lookup["data_ids"])
 
-    def test_low_voltage_motor_lookup_preserves_standard_pack_data_id(self):
-        """低压电机查表必须沿用标准包中的稳定记录ID。"""
-        result = self.evaluate("motor_lv", dict(self.specs["motor_lv"]["example"]))
-        self.assertEqual(result.lookups[0]["data_ids"], ["GB18613-R000015"])
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["data_ids"], ["GB18613-R000015"])
-        interpolated = self.evaluate(
-            "motor_lv",
-            {**self.specs["motor_lv"]["example"], "rated_power_kw": 5},
-        )
-        self.assertEqual(
-            interpolated.lookups[0]["data_ids"],
-            ["GB18613-R000013", "GB18613-R000014"],
-        )
 
-    def test_low_voltage_motor_first_power_interval_interpolates_by_poles(self):
-        """GB 18613-2020表1首个功率区间应按极数保留插值端点和系数。"""
-        result = self.evaluate("motor_lv", {
-            "category": "三相异步电动机",
-            "rated_power_kw": 0.19,
-            "poles": 4,
-            # 0.18/0.20 kW、4极的1级阈值为78.7/79.6，
-            # 中点插值为79.15；以等值输入验证边界比较方向。
-            "rated_efficiency": 79.15,
-        })
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
-        self.assertEqual(result.limits["1级效率_%"], Decimal("79.15"))
-        lookup = result.lookups[0]
-        self.assertEqual(lookup["step_type"], "线性插值")
-        self.assertEqual(lookup["matching"], "功率+极数")
-        self.assertEqual(lookup["query_conditions"], {
-            "power_kw": "0.19",
-            "dimension": "4",
-            "dimension_name": "poles",
-        })
-        self.assertEqual(lookup["endpoints"], [0.18, 0.2])
-        self.assertEqual(lookup["factor"], "0.5")
-        self.assertEqual(lookup["data_ids"], ["GB18613-R000002", "GB18613-R000003"])
-        self.assertEqual(lookup["source_page"], 4)
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["data_ids"], lookup["data_ids"])
 
-    def test_low_voltage_exact_lookup_preserves_standard_source_page(self):
-        """低压电动机精确查表应保留GB 18613表1的PDF来源页。"""
-        result = self.evaluate("motor_lv", dict(self.specs["motor_lv"]["example"]))
-        self.assertEqual(result.lookups[0]["source_page"], 4)
 
     def test_high_voltage_exact_lookup_preserves_standard_source_pages(self):
         """高压电动机精确查表应保留命中表族的PDF页码范围。"""
@@ -1732,12 +1528,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
         self.assertEqual(standard_step["data_ids"], ["GB19762-T3-01"])
 
-    def test_generic_motor_result_preserves_standard_table_clause(self):
-        """通用电机结果和追踪都应保留实际命中的标准表号。"""
-        result = self.evaluate("motor_lv", dict(self.specs["motor_lv"]["example"]))
-        self.assertEqual(result.standard_reference["clause"], "表1")
-        standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
-        self.assertEqual(standard_step["clause"], "表1")
 
     def test_submersible_grouped_product_form_matches_table_columns(self):
         values = dict(self.specs["submersible"]["example"], subtype="QXL")
@@ -1992,17 +1782,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         standard_step = next(item for item in result.trace if item.get("step_type") == "标准查询结果")
         self.assertEqual(standard_step["clause"], result.standard_reference["clause"])
 
-    def test_motor_exact_boundary_interpolation_and_no_extrapolation(self):
-        base = dict(self.specs["motor_lv"]["example"])
-        result = self.evaluate("motor_lv", base)
-        boundary = self.evaluate("motor_lv", {**base, "rated_efficiency": result.limits["1级效率_%"]})
-        self.assertEqual(boundary.conclusion, Conclusion.LEVEL_1)
-
-        interpolated = self.evaluate("motor_lv", {**base, "rated_power_kw": 5, "rated_efficiency": 98})
-        self.assertEqual(interpolated.lookups[0]["step_type"], "线性插值")
-
-        outside = self.evaluate("motor_lv", {**base, "rated_power_kw": 0.01})
-        self.assertEqual(outside.conclusion, Conclusion.OUT_OF_SCOPE)
 
     def test_standard_intervals_preserve_open_and_closed_boundaries(self):
         self.assertTrue(_interval_hit("0.25", "0.25≤ψ<0.95"))
@@ -2018,9 +1797,6 @@ class DeviceEvaluatorMatrixTests(unittest.TestCase):
         self.assertTrue(_interval_hit("1000", ">700~1000℃"))
         self.assertFalse(_interval_hit("1000.01", ">700~1000℃"))
 
-    def test_below_minimum_level_is_not_compliant(self):
-        values = dict(self.specs["motor_lv"]["example"], rated_efficiency=1)
-        self.assertEqual(self.evaluate("motor_lv", values).conclusion, Conclusion.NOT_COMPLIANT)
 
     def test_calculated_and_lookup_outputs_are_retained(self):
         water = self.evaluate("pump_water", self.specs["pump_water"]["example"])

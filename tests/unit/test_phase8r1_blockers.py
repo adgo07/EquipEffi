@@ -339,6 +339,10 @@ class B2InvalidInputTests(R1TestCase):
 # ===========================================================================
 
 def _sheet_path(archive: zipfile.ZipFile) -> str:
+    return _sheet_path_by_name(archive, PUMP_SHEET)
+
+
+def _sheet_path_by_name(archive: zipfile.ZipFile, sheet_name: str) -> str:
     workbook = archive.read("xl/workbook.xml").decode("utf-8")
     rels = archive.read("xl/_rels/workbook.xml.rels").decode("utf-8")
     relation_map = {}
@@ -348,12 +352,12 @@ def _sheet_path(archive: zipfile.ZipFile) -> str:
         if rid and target:
             relation_map[rid.group(1)] = target.group(1)
     for element in re.findall(r"<sheet\b[^>]*>", workbook):
-        if 'name="离心泵"' not in element:
+        if f'name="{sheet_name}"' not in element:
             continue
         rid = re.search(r'[A-Za-z0-9]+:id="([^"]*)"', element).group(1)
         target = relation_map[rid].lstrip("/")
         return target if target.startswith("xl/") else f"xl/{target}"
-    raise AssertionError("找不到离心泵 sheet")
+    raise AssertionError(f"找不到{sheet_name}sheet")
 
 
 def _patch_number_cell(path: Path, reference: str, literal: str) -> None:
@@ -397,13 +401,18 @@ class B3InputPrecisionTests(R1TestCase):
             persist=False)
         with zipfile.ZipFile(source) as archive:
             before = {name: archive.read(name) for name in archive.namelist()}
+            allowed_changed_parts = {
+                _sheet_path_by_name(archive, PUMP_SHEET),
+                _sheet_path_by_name(archive, "模板说明"),
+            }
         with zipfile.ZipFile(result.result_workbook) as archive:
             after = {info.filename: archive.read(info.filename)
                      for info in archive.infolist()}
         self.assertEqual(set(before), set(after), "不得增删任何 zip 部件")
-        changed = [name for name in before if before[name] != after[name]]
-        self.assertEqual(changed, [_sheet_path(zipfile.ZipFile(source))],
-                         "只允许「离心泵」Sheet 变化")
+        changed = {name for name in before if before[name] != after[name]}
+        self.assertEqual(
+            changed, allowed_changed_parts,
+            "只允许「离心泵」Sheet与「模板说明」Sheet固定输出区域所在部件变化")
 
     def test_writer_does_not_touch_any_input_cell(self):
         """只允许 12 个授权结果列变化；用户输入列一个都不许被改写。"""
@@ -451,12 +460,39 @@ class B3InputPrecisionTests(R1TestCase):
             persist=False)
         before = openpyxl.load_workbook(source, data_only=False)
         after = openpyxl.load_workbook(result.result_workbook, data_only=False)
+        self.assertEqual(after.sheetnames, before.sheetnames,
+                         "不得增删或重排工作表")
+        notes_exception_cells = {
+            f"{column}{row}"
+            for row in range(27, 35)
+            for column in ("A", "B")
+        }
+        notes_labels = (
+            "本次批量处理说明", "模板版本", "处理时间", "已评价Sheet",
+            "未评价Sheet", "统计口径", "未评价提示", "软件区域标识",
+        )
         for name in before.sheetnames:
             if name == PUMP_SHEET:
                 continue
             with self.subTest(sheet=name):
-                self.assertEqual(after[name].max_row, before[name].max_row)
+                if name != "模板说明":
+                    self.assertEqual(after[name].max_row, before[name].max_row)
                 self.assertEqual(after[name].max_column, before[name].max_column)
+                max_row = max(before[name].max_row, after[name].max_row)
+                max_column = max(before[name].max_column, after[name].max_column)
+                for row in range(1, max_row + 1):
+                    for column in range(1, max_column + 1):
+                        cell = after[name].cell(row, column)
+                        if name == "模板说明" and cell.coordinate in notes_exception_cells:
+                            continue
+                        with self.subTest(cell=cell.coordinate):
+                            self.assertEqual(
+                                cell.value, before[name].cell(row, column).value,
+                                "除模板说明!A27:B34外，其他Sheet单元格值均须保持不变")
+        notes_after = after["模板说明"]
+        for row, label in enumerate(notes_labels, start=27):
+            with self.subTest(sheet="模板说明", row=row):
+                self.assertEqual(notes_after[f"A{row}"].value, label)
 
     def test_source_workbook_is_never_overwritten(self):
         import hashlib

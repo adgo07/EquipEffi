@@ -23,4 +23,5 @@ class UnifiedResultWriter(Protocol):
 
     def write(self, source: Path,
               outcomes_by_sheet: dict[str, dict[int, BatchRowOutcome]],
-              destination: Path, *, overwrite: bool = False) -> Path: ...
+              destination: Path, *, overwrite: bool = False,
+              batch_summary: dict | None = None) -> Path: ...

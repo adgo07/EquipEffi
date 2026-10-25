@@ -53,6 +53,16 @@ FIRST_DATA_ROW = 4
 AS_OF = date(2026, 8, 23)
 OTHER_NS = "urn:independent"
 MC_NS = "http://schemas.openxmlformats.org/markup-compatibility/2006"
+TEMPLATE_NOTES_SHEET = "模板说明"
+BATCH_NOTES_LABELS = (
+    "本次批量处理说明", "模板版本", "处理时间", "已评价Sheet",
+    "未评价Sheet", "统计口径", "未评价提示", "软件区域标识",
+)
+BATCH_NOTES_OUTPUT_CELLS = {
+    f"{column}{row}"
+    for row in range(27, 35)
+    for column in ("A", "B")
+}
 
 
 def sheet_target(archive: zipfile.ZipFile, sheet_name: str = PUMP_SHEET) -> str:
@@ -133,6 +143,15 @@ class R4TestCase(unittest.TestCase):
         with zipfile.ZipFile(workbook) as archive:
             xml = archive.read(sheet_target(archive)).decode("utf-8")
         return {fact.reference: fact.text for fact in parse_cells_with_expat(xml)}
+
+    @staticmethod
+    def sheet_cell_values(sheet) -> dict[str, object]:
+        return {
+            cell.coordinate: cell.value
+            for row in sheet.iter_rows()
+            for cell in row
+            if cell.value is not None
+        }
 
     def result_of(self, source: Path, name: str):
         return self.batch.evaluate_workbook(
@@ -371,12 +390,49 @@ class R4TestCase(unittest.TestCase):
         result = self.result_of(self.source, "parts_out.xlsx")
         with zipfile.ZipFile(self.source) as archive:
             before = {name: archive.read(name) for name in archive.namelist()}
+            allowed_changed_parts = {
+                sheet_target(archive, PUMP_SHEET),
+                sheet_target(archive, TEMPLATE_NOTES_SHEET),
+            }
         with zipfile.ZipFile(result.result_workbook) as archive:
             after = {info.filename: archive.read(info.filename)
                      for info in archive.infolist()}
         self.assertEqual(set(before), set(after))
-        changed = [name for name in before if before[name] != after[name]]
-        self.assertEqual(changed, [sheet_target(zipfile.ZipFile(self.source))])
+        changed = {name for name in before if before[name] != after[name]}
+        self.assertEqual(
+            changed, allowed_changed_parts,
+            "仅允许离心泵Sheet与模板说明Sheet固定输出区域所在XML部件变化")
+
+        input_workbook = openpyxl.load_workbook(self.source, data_only=False)
+        result_workbook = openpyxl.load_workbook(result.result_workbook, data_only=False)
+        try:
+            self.assertEqual(result_workbook.sheetnames, input_workbook.sheetnames,
+                             "不得增删或重排工作表")
+            for sheet_name in input_workbook.sheetnames:
+                if sheet_name == PUMP_SHEET:
+                    continue
+                before_cells = self.sheet_cell_values(input_workbook[sheet_name])
+                after_cells = self.sheet_cell_values(result_workbook[sheet_name])
+                if sheet_name == TEMPLATE_NOTES_SHEET:
+                    before_cells = {
+                        ref: value for ref, value in before_cells.items()
+                        if ref not in BATCH_NOTES_OUTPUT_CELLS
+                    }
+                    after_cells = {
+                        ref: value for ref, value in after_cells.items()
+                        if ref not in BATCH_NOTES_OUTPUT_CELLS
+                    }
+                    notes = result_workbook[sheet_name]
+                    for row, expected in enumerate(BATCH_NOTES_LABELS, start=27):
+                        with self.subTest(sheet=sheet_name, row=row):
+                            self.assertEqual(notes[f"A{row}"].value, expected)
+                with self.subTest(sheet=sheet_name):
+                    self.assertEqual(
+                        after_cells, before_cells,
+                        "除模板说明!A27:B34外，其他Sheet的单元格内容必须保持不变")
+        finally:
+            input_workbook.close()
+            result_workbook.close()
 
     # ==================================================================
     # D04 — 原子提交：失败不得留下残缺文件

@@ -274,15 +274,19 @@ class WriterStructureTests(unittest.TestCase):
         """批量路径同样不得把漏写当成成功（不写 batch_record、不返回结果）。"""
 
         from unittest.mock import patch
-        from equipeffi.infrastructure.excel.pump_result_writer import (
-            PumpResultWorkbookWriter as Writer,
+        from equipeffi.infrastructure.excel.unified_result_writer import (
+            UnifiedResultWorkbookWriter as Writer,
         )
 
         class _Broken(Writer):
-            def write(self, source, outcomes, destination, *, overwrite=False):
+            def write(self, source, outcomes, destination, *, overwrite=False,
+                      batch_summary=None):
                 # 直接触发"定位不到行"的硬失败路径
-                fake = {99999: outcomes[sorted(outcomes)[0]]}
-                return super().write(source, fake, destination)
+                pump_rows = outcomes["离心泵"]
+                fake = dict(outcomes)
+                fake["离心泵"] = {99999: pump_rows[sorted(pump_rows)[0]]}
+                return super().write(source, fake, destination,
+                                     batch_summary=batch_summary)
 
         self.batch.writer = _Broken()
         with self.assertRaises(ResultWorkbookWriteError):

@@ -31,15 +31,25 @@ class WorkbookEvaluationSummary(BatchEvaluationSummary):
 class WorkbookEvaluationService(PumpBatchEvaluationService):
     """保留泵逐行评价行为；变压器通过独立的同核应用服务评价。"""
 
-    def __init__(self, analysis, transformer, **kwargs):
+    def __init__(self, analysis, transformer, *, motor=None, **kwargs):
         super().__init__(analysis, **kwargs)
         self.transformer = transformer
+        self.motor = motor
+        self._devices = {
+            "离心泵": ("centrifugal_pump", "GB 19762-2025", "离心泵"),
+            "变压器": ("transformer", "GB 20052-2024", "transformer"),
+            "电动机": ("motor", "GB 18613-2020", "motor_lv"),
+        }
 
     def evaluate_workbook(self, source: Path, *, destination: Path | None = None,
                           as_of: date | None = None, persist: bool = True):
         source = Path(source)
         as_of = as_of or date.today()
         workbook = self.reader.read(source)
+        if not any(sheet.rows for sheet in workbook.sheets.values()):
+            raise ValueError("没有可评价数据；未接通Sheet的内容未评价。")
+        if self.motor is None and getattr(workbook.sheets.get("电动机"), "rows", ()):
+            raise ValueError("本构建未启用电动机接入验收候选，不能评价电动机Sheet。")
         total = WorkbookEvaluationSummary(unprocessed_sheets=workbook.unprocessed_sheets)
         by_sheet = {}
         for name, sheet in workbook.sheets.items():
@@ -54,6 +64,8 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
                 elif name == "变压器":
                     rows[row.row_number] = self._transformer_row(
                         row, as_of, summary, references)
+                elif name == "电动机":
+                    rows[row.row_number] = self._motor_row(row, as_of, summary, references)
                 else:
                     raise ValueError(f"未登记的批量处理设备：{name}")
             by_sheet[name] = rows
@@ -84,14 +96,15 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
                     "calculator_version": provenance.calculator_version}]
             total.sheets.append(summary.as_dict() | {
                 "sheet_name": name,
-                "sheet_id": "centrifugal_pump" if name == "离心泵" else "transformer",
-                "standard_code": "GB 19762-2025" if name == "离心泵" else "GB 20052-2024",
-                "device_type": "离心泵" if name == "离心泵" else "transformer",
+                "sheet_id": self._devices[name][0],
+                "standard_code": self._devices[name][1],
+                "device_type": self._devices[name][2],
                 "template": sheet.template_identity,
                 "evaluation_provenance": references,
             })
         destination = destination or self.writer.default_destination(source)
-        result_path = self.writer.write(source, by_sheet, Path(destination))
+        result_path = self.writer.write(source, by_sheet, Path(destination),
+                                        batch_summary=total.as_dict())
         result = BatchEvaluationResult(
             batch_record_id=self._record_id_factory(), source_workbook=str(source),
             source_workbook_sha256=_sha256_of(source), result_workbook=str(result_path),
@@ -107,6 +120,16 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         return result
 
     def _transformer_row(self, row, as_of, summary, references):
+        return self._device_row(row, as_of, summary, references, self.transformer,
+                                TransformerAnalysisRequest, format_transformer_basis_lines)
+
+    def _motor_row(self, row, as_of, summary, references):
+        from .motor_analysis_service import MotorAnalysisRequest
+        from .motor_basis_formatter import format_motor_basis_lines
+        return self._device_row(row, as_of, summary, references, self.motor,
+                                MotorAnalysisRequest, format_motor_basis_lines)
+
+    def _device_row(self, row, as_of, summary, references, service, request_type, basis_formatter):
         quantity, error = parse_quantity(row.values.get("quantity"))
         if row.input_errors:
             summary.input_error_rows += 1
@@ -125,9 +148,9 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         quantity = int(quantity)
         summary.total_quantity += quantity
         try:
-            result = self.transformer.evaluate(TransformerAnalysisRequest(row.values, as_of))
+            result = service.evaluate(request_type(row.values, as_of))
         except Exception as error:
-            logging.getLogger(__name__).exception("变压器批量评价执行失败，行%s", row.row_number)
+            logging.getLogger(__name__).exception("设备批量评价执行失败，行%s", row.row_number)
             summary.execution_error_rows += 1
             reason = f"执行失败：{type(error).__name__}"
             summary.issues.append(BatchRowIssue(row.row_number, "EXECUTION_ERROR", reason, quantity))
@@ -155,7 +178,7 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         if result.trace and result.references not in references:
             references.append(result.references)
         messages = tuple(message for message in (
-            result.explanation, *format_transformer_basis_lines(result.trace))
+            result.explanation, *basis_formatter(result.trace))
             if message)
         return BatchRowOutcome(
             row.row_number, bool(status), conclusion, status, result.grade,

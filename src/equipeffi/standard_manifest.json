@@ -13,12 +13,12 @@
     },
     {
       "device_type": "motor_lv",
-      "pack_id": "gb18613_2020_v1",
-      "source": "resources/standards/motor_lv.json",
+      "pack_id": "gb18613_2020_v2",
+      "source": "resources/standards/gb18613_2020.json",
       "standard_code": "GB 18613-2020",
       "effective_date": "2021-06-01",
       "status": "active",
-      "data_version": "2026.08.23"
+      "data_version": "2026.10.25"
     },
     {
       "device_type": "motor_hv",

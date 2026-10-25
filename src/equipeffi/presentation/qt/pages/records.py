@@ -79,10 +79,12 @@ class RecordsPage(QWidget):
     """正式记录历史页。"""
 
     def __init__(self, service: CentrifugalPumpAnalysisService, navigator=None, *,
-                 batch=None, transformer=None):
+                 batch=None, transformer=None, motor=None):
         super().__init__()
         self.service = service
         self.transformer_service = transformer
+        self.motor_service = motor
+        self.motor_contract = motor.input_contract if motor is not None else None
         self.transformer_contract = (transformer.input_contract
                                      if transformer is not None else None)
         self._transformer_categories = {
@@ -500,6 +502,8 @@ class RecordsPage(QWidget):
         result = snapshot.result_snapshot
         input_snapshot = snapshot.input_snapshot
 
+        if getattr(snapshot, "device_type", "") == "motor_lv":
+            return self._show_motor_record(snapshot, result, input_snapshot)
         if getattr(snapshot, "device_type", "") == "transformer":
             return self._show_transformer_record(snapshot, result, input_snapshot)
 
@@ -590,7 +594,46 @@ class RecordsPage(QWidget):
         return text
 
     def _category_label(self, value: str) -> str:
-        return self._transformer_categories.get(value, value)
+        motor_labels = {item.category_id: item.label for item in getattr(self.motor_contract, "categories", ())}
+        return motor_labels.get(value, self._transformer_categories.get(value, value))
+
+    def _show_motor_record(self, snapshot, result, inputs):
+        from ....application.services.motor_basis_formatter import format_motor_basis_lines
+        category = inputs.get("category_id") or snapshot.product_category
+        contract = self.motor_contract
+        if contract is None:
+            # 仅读取静态字段标签，不加载标准包或重新运行算法。
+            from ....application.services.motor_analysis_service import get_motor_input_contract
+            contract = get_motor_input_contract()
+        label = next((item.label for item in contract.categories
+                      if item.category_id == category), snapshot.product_category)
+        lines = [f"采用标准：{snapshot.standard_code}",
+                 f"设备类别：{label}", f"评价日期：{snapshot.as_of}",
+                 f"评价结论：{result.get('ui_conclusion') or snapshot.ui_conclusion}"]
+        for field in contract.visible_fields(category):
+            value = inputs.get(field.field_id)
+            if value is None or value == "":
+                continue
+            choices = dict(contract.options(category, field.field_id))
+            if field.field_id == "efficiency_basis_status":
+                choices["AS_DECLARED_BY_FIELD"] = "按字段要求填报"
+            value = choices.get(value, value)
+            unit = f"（{field.unit}）" if field.unit else ""
+            lines.append(f"{field.label}{unit}：{value}")
+        for level, value in (result.get("thresholds") or {}).items():
+            if not isinstance(value, dict):
+                continue
+            if value.get("state") == "AVAILABLE":
+                lines.append(f"{level[-1]}级效率限值：{value.get('display_text', '')}%")
+            elif value.get("state") == "NO_INDICATOR":
+                lines.append(f"{level[-1]}级效率限值：—（标准无指标）")
+        if result.get("explanation"):
+            lines.append(result["explanation"])
+        lines.extend(format_motor_basis_lines(result.get("trace", ())))
+        lines.append(f"保存时间：{snapshot.finalized_at_utc}")
+        text = "\n".join(lines)
+        self.detail.setText(text)
+        return text
 
     def _show_transformer_record(self, snapshot, result, input_snapshot) -> str:
         """展示变压器记录的冻结快照，不调用计算服务。"""

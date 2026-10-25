@@ -102,7 +102,25 @@ def create_transformer_analysis_service(*, paths=None, with_persistence: bool = 
                                       pack_sha256=digest, app_version=__version__)
 
 
-def create_batch_evaluation_service(*, paths=None):
+def motor_candidate_enabled() -> bool:
+    """验收候选的显式装配开关；默认发布配置不开放电机。"""
+    import os
+    return os.environ.get("EQUIPEFFI_ENABLE_MOTOR_CANDIDATE", "") == "1"
+
+
+def create_motor_analysis_service(*, paths=None, with_persistence: bool = True):
+    from . import __version__
+    from .application.services.motor_analysis_service import MotorAnalysisService
+    from .domain.devices.motor.calculator import Gb18613MotorCalculator
+    from .infrastructure.standards.motor_repository import load_motor_pack
+
+    pack, digest = load_motor_pack()
+    records = create_records_runtime(paths=paths)[1] if with_persistence else None
+    return MotorAnalysisService(pack, Gb18613MotorCalculator(), records=records,
+                                pack_sha256=digest, app_version=__version__)
+
+
+def create_batch_evaluation_service(*, paths=None, motor_candidate: bool | None = None):
     """创建正式 Excel 批量评价服务，与单台分析复用同一个分析服务。"""
 
     from .application.services.workbook_evaluation_service import WorkbookEvaluationService
@@ -120,15 +138,23 @@ def create_batch_evaluation_service(*, paths=None):
 
     paths = paths if paths is not None else AppDataPaths.default()
     analysis = create_pump_analysis_service(paths=paths)
+    enabled = motor_candidate_enabled() if motor_candidate is None else motor_candidate
+    template_identity = V61_TEMPLATE_IDENTITY
+    template_resource = V61TransformerTemplateResource()
+    if enabled:
+        from .infrastructure.excel.template_resource import V62_TEMPLATE_IDENTITY, V62MotorTemplateResource
+        template_identity = V62_TEMPLATE_IDENTITY
+        template_resource = V62MotorTemplateResource()
     # 载体端口在装配层注入：Application 只认识 Protocol，不认识 Excel。
     return WorkbookEvaluationService(
         analysis,
         create_transformer_analysis_service(with_persistence=False),
+        motor=create_motor_analysis_service(with_persistence=False) if enabled else None,
         reader=UnifiedWorkbookReader(),
         writer=UnifiedResultWorkbookWriter(),
         batch_repository=SqliteBatchRecordRepository(paths.records_db),
-        template_identity=V61_TEMPLATE_IDENTITY,
-        template_resource=V61TransformerTemplateResource(),
+        template_identity=template_identity,
+        template_resource=template_resource,
         app_version=__version__)
 
 
@@ -145,12 +171,13 @@ def launch_qt(*, paths=None) -> int:
     service, logger = create_settings_runtime(paths=resolved)
     analysis = create_pump_analysis_service(paths=resolved)
     transformer = create_transformer_analysis_service(paths=resolved)
+    motor = create_motor_analysis_service(paths=resolved) if motor_candidate_enabled() else None
     # 批量评价复用同一个正式分析服务。
     batch = create_batch_evaluation_service(paths=resolved)
     previous = install_exception_hook(logger)
     try:
         return run(service, logger, analysis, batch=batch,
-                   transformer=transformer,
+                   transformer=transformer, motor=motor,
                    data_location=resolved.root,
                    external_launch_context=external_launch_environment)
     finally:

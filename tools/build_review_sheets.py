@@ -35,15 +35,6 @@ def sheet_transformer(ws, data):
             _warn_red(ws, ws.max_row, range(7, 13))
 
 
-def sheet_motor_lv(ws, data):
-    ws.append(["功率kW", "2极1", "2极2", "2极3", "4极1", "4极2", "4极3",
-               "6极1", "6极2", "6极3", "8极1", "8极2", "8极3", "校对", "备注"])
-    for r in data["rows"]:
-        e = [r["efficiency"].get(lv, {}).get(str(idx)) for lv in ("1", "2", "3") for idx in range(4)]
-        ws.append([r["power_kw"], e[0], e[4], e[8], e[1], e[5], e[9],
-                   e[2], e[6], e[10], e[3], e[7], e[11], "待校对", ""])
-
-
 def sheet_motor(ws, data, label):
     """高压电机/永磁：每行对应一个功率×极数/转速维度。"""
     ws.append(["表", "极数/转速", "功率kW", "1级", "2级", "3级", "校对", "备注"])
@@ -137,7 +128,6 @@ def sheet_blower(ws, data):
 
 BUILDERS = {
     "transformer": sheet_transformer,
-    "motor_lv": sheet_motor_lv,
     "motor_hv": lambda ws, d: sheet_motor(ws, d, "高压电机"),
     "compressor": sheet_compressor,
     "pump": sheet_pump,
@@ -148,12 +138,12 @@ BUILDERS = {
     "blower": sheet_blower,
 }
 
-FILES = ["transformer.json", "motor_lv.json", "motor_hv.json",
+FILES = ["transformer.json", "motor_hv.json",
          "compressor.json", "pump.json", "fan.json", "submersible.json",
          "boiler.json", "heat_treatment.json", "blower.json"]
 
 NAME = {
-    "transformer": "变压器", "motor_lv": "低压电机", "motor_hv": "高压电机",
+    "transformer": "变压器", "motor_hv": "高压电机",
     "compressor": "空压机", "pump": "泵_清水化工",
     "fan": "通风机", "submersible": "潜水电泵", "boiler": "锅炉",
     "heat_treatment": "热处理", "blower": "鼓风机",

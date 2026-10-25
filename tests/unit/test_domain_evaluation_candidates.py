@@ -8,6 +8,9 @@ from pathlib import Path
 
 from equipeffi.domain.common.enums import Conclusion, EliminationScope
 from equipeffi.domain.common.models import DeviceDraft
+from equipeffi.application.services.motor_analysis_service import MotorAnalysisRequest, MotorAnalysisService
+from equipeffi.domain.devices.motor.calculator import Gb18613MotorCalculator
+from equipeffi.infrastructure.standards.motor_repository import load_motor_pack
 from equipeffi.domain.evaluation.decimal_math import bracket, linear_interpolate
 from equipeffi.domain.evaluation.device_evaluators import PmsmEvaluator
 from equipeffi.domain.evaluation.elimination import EliminationMatcher
@@ -37,16 +40,47 @@ class DomainEvaluationCandidateTests(unittest.TestCase):
                 linear_interpolate(value, 0, 0, 1, 1)
 
     def test_motor_percentage_candidate_results(self):
-        draft = DeviceDraft(record_id="LV-98", device_type="motor_lv", raw_values={
-            "category": "三相异步电动机（一般用途）", "rated_power_kw": 7.5,
-            "poles": 4, "rated_efficiency": 98,
-        })
-        result = self.evaluate_candidate(draft)
-        self.assertEqual(result.conclusion, Conclusion.LEVEL_1)
-        self.assertEqual(result.actual_metrics["额定效率_%"], 98)
-        invalid = DeviceDraft(record_id="LV-098", device_type="motor_lv",
-                              raw_values=dict(draft.raw_values, rated_efficiency=0.98))
-        self.assertEqual(self.evaluate_candidate(invalid).conclusion, Conclusion.UNABLE_TO_JUDGE)
+        pack, digest = load_motor_pack()
+        service = MotorAnalysisService(
+            pack, Gb18613MotorCalculator(), pack_sha256=digest)
+        values = {
+            "category_id": "three_phase_induction",
+            "rated_output_power_kw": "7.5",
+            "rated_voltage_kv": "0.38",
+            "rated_frequency_hz": "50",
+            "poles": "4",
+            "measured_efficiency_pct": "98",
+        }
+        result = service.evaluate(MotorAnalysisRequest(values))
+        self.assertEqual(result.evaluation_status, "SUCCESS")
+        self.assertEqual((result.grade, result.ui_conclusion), ("1", "1级"))
+        self.assertEqual(result.raw_values["measured_efficiency_pct"], "98")
+
+        fractional = service.evaluate(MotorAnalysisRequest(
+            dict(values, measured_efficiency_pct="0.98")))
+        self.assertEqual(fractional.evaluation_status, "INVALID_INPUT")
+        self.assertEqual(fractional.invalid_fields, ("measured_efficiency_pct",))
+
+        legacy_fields = self.evaluate_candidate(DeviceDraft(
+            record_id="LV-LEGACY-FIELDS", device_type="motor_lv", raw_values={
+                "category_id": "three_phase_induction", "rated_power_kw": "7.5",
+                "rated_voltage_kv": "0.38", "rated_frequency_hz": "50",
+                "poles": "4", "rated_efficiency": "98",
+            }))
+        self.assertEqual(legacy_fields.evaluation_status, "INSUFFICIENT_DATA")
+        self.assertIn("rated_output_power_kw", legacy_fields.missing_fields)
+        self.assertEqual(legacy_fields.missing_fields, ["rated_output_power_kw"])
+        self.assertIsNone(legacy_fields.grade)
+
+        legacy_label = self.evaluate_candidate(DeviceDraft(
+            record_id="LV-LEGACY-LABEL", device_type="motor_lv", raw_values={
+                "category": "三相异步电动机（一般用途）", "rated_power_kw": "7.5",
+                "rated_voltage_v": 380, "rated_frequency_hz": "50",
+                "poles": 4, "rated_efficiency": "98",
+            }))
+        self.assertEqual(legacy_label.evaluation_status, "INVALID_INPUT")
+        self.assertIn("INPUT_INVALID", legacy_label.issue_codes)
+
 
     def test_pmsm_uses_pdf_verified_pack_and_keeps_explicit_no_data_cells(self):
         pack = self.repo.get_pack("motor_pmsm")

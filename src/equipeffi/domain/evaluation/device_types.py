@@ -6,11 +6,14 @@ import re
 from typing import Any
 
 
+
 """公共设备类型与内部规则profile。
 
 V4的15个设备sheet是对外契约；标准评价器仍可按标准差异保留内部profile。
 本模块只负责类型解析，不执行任何能效计算。
 """
+
+from ..devices.motor.input_contract import MotorInputError, MOTOR_CATEGORIES, normalize_motor_input
 
 
 PUBLIC_DEVICE_TYPES: tuple[str, ...] = (
@@ -177,27 +180,48 @@ def _voltage_kv(values: dict[str, Any]) -> Decimal | None:
 def _resolve_motor(values: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
     profile = values.get("motor_profile") or values.get("rule_profile")
     if profile in {"lv", "motor_lv"}:
-        return "motor_lv", [{"rule": "公共电动机profile", "profile": "lv"}]
+        return "motor_lv", [{"rule": "显式电动机内部profile", "profile": "lv"}]
     if profile in {"hv", "motor_hv"}:
-        return "motor_hv", [{"rule": "公共电动机profile", "profile": "hv"}]
+        return "motor_hv", [{"rule": "显式电动机内部profile", "profile": "hv"}]
     if profile in {"pmsm", "motor_pmsm"}:
-        return "motor_pmsm", [{"rule": "公共电动机profile", "profile": "pmsm"}]
+        return "motor_pmsm", [{"rule": "显式电动机内部profile", "profile": "pmsm"}]
+
+    standard = str(values.get("standard_code", values.get("standard", "")) or "")
+    normalized_standard = standard.replace("—", "-").replace(" ", "").upper()
+    category_value = values.get("category_id", values.get("category"))
+    motor_category_ids = {item.category_id for item in MOTOR_CATEGORIES}
+    if normalized_standard == "GB18613-2020":
+        try:
+            normalized = normalize_motor_input({
+                "category_id": values.get("category_id"),
+                "category": values.get("category"),
+            })
+        except MotorInputError as error:
+            raise DeviceTypeResolutionError(str(error)) from error
+        category_id = normalized.get("category_id")
+        if not category_id:
+            raise DeviceTypeResolutionError("GB 18613-2020评价必须明确选择电动机类别")
+        return "motor_lv", [{
+            "rule": "按明确标准和类别路由电动机",
+            "standard_code": "GB 18613-2020",
+            "category_id": category_id,
+            "profile": "lv",
+        }]
+    if isinstance(category_value, str) and category_value in motor_category_ids:
+        raise DeviceTypeResolutionError("电动机必须明确选择标准和设备类别，不能仅按类别推断标准")
 
     category = str(values.get("category", ""))
     if any(token in category for token in ("永磁", "永磁同步")):
         return "motor_pmsm", [{"rule": "按设备类别路由电动机", "category": category, "profile": "pmsm"}]
     if any(token in category for token in ("高压", "高电压")):
         return "motor_hv", [{"rule": "按设备类别路由电动机", "category": category, "profile": "hv"}]
-    if any(token in category for token in ("低压", "低电压")):
-        return "motor_lv", [{"rule": "按设备类别路由电动机", "category": category, "profile": "lv"}]
 
     voltage = _voltage_kv(values)
     if voltage is not None:
         if voltage <= Decimal("1.14"):
-            return "motor_lv", [{"rule": "按额定电压路由电动机", "rated_voltage_kv": str(voltage), "profile": "lv"}]
+            raise DeviceTypeResolutionError("低压电动机须明确选择GB 18613-2020及六类电动机之一，不能根据电压推断类别")
         return "motor_hv", [{"rule": "按额定电压路由电动机", "rated_voltage_kv": str(voltage), "profile": "hv"}]
-    raise DeviceTypeResolutionError("电动机缺少可区分低压、高压或永磁产品的设备类别、profile或额定电压")
-
+    raise DeviceTypeResolutionError("电动机缺少明确的标准和类别或内部profile")
 
 _PUMP_PROFILE_ALIASES = {
     "water": "pump_water",

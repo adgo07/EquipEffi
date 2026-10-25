@@ -27,7 +27,7 @@ class Writer:
     def default_destination(self, source):
         return source.with_name("result.xlsx")
 
-    def write(self, source, outcomes, destination):
+    def write(self, source, outcomes, destination, *, batch_summary=None):
         self.calls.append(outcomes)
         destination.write_bytes(b"result fixture")
         return destination
@@ -102,7 +102,7 @@ class UnifiedWorkbookApplicationTests(unittest.TestCase):
 
     def test_writer_failure_never_persists_completed_batch(self):
         service = self.service({"quantity": "1"})
-        def fail(*args):
+        def fail(*args, **kwargs):
             raise OSError("disk full")
         self.writer.write = fail
         with self.assertRaisesRegex(OSError, "disk full"):

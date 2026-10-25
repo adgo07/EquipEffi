@@ -4,7 +4,7 @@
 选择原则：
 1. 对已有结构化 JSON 的设备，优先使用已按分析表/PDF修正并通过规则检查的 JSON；
 2. 对 JSON 尚未覆盖或为空的设备，保留之前批量转换的 Excel，并明确标注为待进一步逐格复核；
-3. 对低压和高压电机，额外从“标准”sheet重新重建并与 JSON 比较。
+3. 对高压电机，额外从“标准”sheet重新重建并与 JSON 比较。
 
 永磁同步电机旧JSON、粗校对Excel和旧分析表明确禁止进入本脚本；其唯一
 数据生成入口是 tools/rebuild_pmsm_pdf.py。
@@ -27,14 +27,8 @@ CONVERTED = Path(r"G:\Python Project\project\TRFM md\TRFM md\重点设备能效�
 FOURTH = Path(r"C:\Users\WANGWEI\Documents\EquipEffi\能效标准表格提取")
 ANALYSIS = Path(r"G:\标准  规范\02_能耗限额_终端产品\用能设备\（无图片)用能设备能效分析表V1.11.xlsx")
 
-MOTOR_JOBS = {
-    "motor_lv": ("电动机标准", "GB 18613-2020", "电动机能效限定值及能效等级"),
-    "motor_hv": ("高压电机标准", "GB 30254-2024", "高压三相笼型异步电动机能效限定值及能效等级"),
-}
-
 CONVERTED_MAP = {
     "transformer": "1. GB 20052-2024 电力变压器能效限定值及能效等级.xlsx",
-    "motor_lv": "2. GB 18613-2020 电动机能效限定值及能效等级.xlsx",
     "motor_hv": "3. GB 30254-2024 高压三相笼型异步电动机能效限定值及能效等级（2025.9.1实施）.xlsx",
     "compressor": "5. GB 19153-2019 容积式空气压缩机能效限定值及能效等级.xlsx",
     "pump": "6 7. GB 19762-2025 离心泵能效限定值及能效等级.xlsx",
@@ -51,7 +45,7 @@ CONVERTED_MAP = {
 }
 
 DISPLAY = {
-    "transformer": "变压器", "motor_lv": "低压电动机", "motor_hv": "高压电动机",
+    "transformer": "变压器", "motor_hv": "高压电动机",
     "compressor": "空压机", "pump": "泵",
     "fan": "通风机", "blower": "鼓风机", "submersible": "潜水电泵",
     "boiler": "工业锅炉", "heat_treatment": "热处理设备",
@@ -94,7 +88,7 @@ def workbook_quality(path):
 
 def fourth_matches(key):
     tokens = {
-        "transformer": ("20052",), "motor_lv": ("18613",), "motor_hv": ("30254",),
+        "transformer": ("20052",), "motor_hv": ("30254",),
         "compressor": ("19153",), "pump": ("19762",),
         "fan": ("19761",), "blower": ("28381-2012",), "submersible": ("32030",),
         "boiler": ("24500",), "heat_treatment": ("36561",), "heat_pump_chiller": ("19577",),
@@ -117,7 +111,7 @@ def fourth_audit():
         return result
     wb = openpyxl.load_workbook(report, read_only=True, data_only=True)
     ws = wb["校对汇总"]
-    code_to_key = {"20052": "transformer", "18613": "motor_lv", "30254": "motor_hv", "19153": "compressor", "19762": "pump", "19761": "fan", "28381-2012": "blower", "32030": "submersible", "24500": "boiler", "36561": "heat_treatment", "19577": "heat_pump_chiller", "29541": "heat_pump_water_heater", "37479": "duct_ac", "19576": "unitary_ac", "21454": "multi_split_ac"}
+    code_to_key = {"20052": "transformer", "30254": "motor_hv", "19153": "compressor", "19762": "pump", "19761": "fan", "28381-2012": "blower", "32030": "submersible", "24500": "boiler", "36561": "heat_treatment", "19577": "heat_pump_chiller", "29541": "heat_pump_water_heater", "37479": "duct_ac", "19576": "unitary_ac", "21454": "multi_split_ac"}
     for row in ws.iter_rows(min_row=2, values_only=True):
         name = str(row[0] or "").replace("+", " ").replace("_", " ")
         key = next((v for token, v in code_to_key.items() if token in name), None)
@@ -127,14 +121,12 @@ def fourth_audit():
     return result
 
 
-def compare_motors():
-    """用分析表标准sheet重建低压/高压电机；永磁电机禁止走本链路。"""
-    from tools.extract_standards import extract_motor_lv
+def compare_high_voltage_motor():
+    """Use the analysis-sheet source only for the still-existing GB30254 legacy pack."""
     from tools.extract_motor_tables import extract_generic
 
     wb = openpyxl.load_workbook(ANALYSIS, data_only=True)
     rebuilt = {
-        "motor_lv": extract_motor_lv(wb),
         "motor_hv": extract_generic(wb, "高压电机标准", "GB 30254-2024", "高压三相笼型异步电动机能效限定值及能效等级", "2025-09-01"),
     }
     results = {}
@@ -149,7 +141,6 @@ def compare_motors():
         }
     wb.close()
     return results
-
 
 def main():
     OUT.mkdir(exist_ok=True)
@@ -171,7 +162,7 @@ def main():
     selected = {}
     for src in sorted(SOURCE_JSON.glob("*.json")):
         key = src.stem
-        if key == "motor_pmsm":
+        if key in {"motor_lv", "motor_pmsm"}:
             continue
         tables, rows = json_counts(src)
         if rows > 0:
@@ -184,7 +175,7 @@ def main():
         if not src.exists() or json_counts(src)[1] == 0:
             selected[key] = {"设备": DISPLAY.get(key, key), "选择": "来源4 Excel（PDF逐格校对结果）", "表数": None, "行数": None}
 
-    motor_results = compare_motors()
+    motor_results = compare_high_voltage_motor()
     fourth_results = fourth_audit()
     report = OUT / "三来源设备对比报告.md"
     lines = [
@@ -221,7 +212,7 @@ def main():
         size = f"{item['表数']}表/{item['行数']}行" if item["表数"] is not None else "—"
         lines.append(f"| {item['设备']} | {item['选择']} | {size} | {note} |")
 
-    lines += ["", "## 三类电机独立重建结果", ""]
+    lines += ["", "## 高压电机独立重建结果", ""]
     for key, result in motor_results.items():
         lines.append(f"- {DISPLAY[key]}：{'一致' if result['equal'] else '不一致'}；标准表 {result['expected_tables']} / {result['expected_rows']} 行，JSON {result['actual_tables']} / {result['actual_rows']} 行。")
 

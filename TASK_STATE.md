@@ -5,7 +5,13 @@
 - 路线：EquipEffi V2.3；默认分支：`master`。
 - Phase 0 为不可变基线；Phase 1–7 已独立验收（PR #10–#15）。Phase 8（GB 19762 Excel 批量评价）已合并 PR [#16](https://github.com/adgo07/EquipEffi/pull/16)，merge SHA `64b656ee4924fbf09f3fd87596ef1a1a779d1f09`；当前为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`。不得自行声明 `PHASE_8_PASS`，不得开始 Phase 9。
 
-## 当前工作：变压器接入最终复核（2026-10-23）
+## 当前工作：GB 18613 电动机接入实施（2026-10-25）
+
+Owner在PR33设计复审后授权“方案定下来后，若没有需要我确定的就开始实施”。效率1～100%（含端点）作为软件输入防呆，不改变A.2映射；没有新增待决标准解释。按设计分为内核、产品接通及独立验收：内核提交`1c53d5d4`已提交PR34，当前产品分支为`codex/motor-product-20261025`，设计基线为`e5aa673c1add75fdddb71360f11437a3d543f8b6`。主工作区已有改动不动。
+
+六表内核、V6.2的20列电机Sheet、Qt和混合批量正在实施验收；候选入口显式使用`--motor-candidate`，默认继续泵/变压器及V6.1。不升级SUPPORTED、Phase状态或发布版本。当前证据和未完成项见[实施记录](docs/standards/gb18613_2020/IMPLEMENTATION_REPORT.md)。PR33修订提交Windows CI成功不等同于实现提交的CI成功。
+
+## 历史工作：变压器接入最终复核（2026-10-23）
 
 Owner已批准下一版本纳入GB 20052—2024、25列方案并授权实施、验收后顺序合并。设计PR [#29](https://github.com/adgo07/EquipEffi/pull/29)已合并于`4ae97dac2397756094e56565eb79062bcc3e6a51`；内核PR [#30](https://github.com/adgo07/EquipEffi/pull/30)及产品PR [#31](https://github.com/adgo07/EquipEffi/pull/31)按已授权顺序在最终CI成功后依次合并；实际合并状态以对应PR为准。
 

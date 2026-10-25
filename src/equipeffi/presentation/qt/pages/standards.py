@@ -40,10 +40,11 @@ class StandardsPage(QWidget):
     """展示当前正式标准并允许基于该标准开始分析。"""
 
     def __init__(self, service, navigator=None, parent: QWidget | None = None,
-                 *, transformer=None):
+                 *, transformer=None, motor=None):
         super().__init__(parent)
         self.service = service
         self.transformer_service = transformer
+        self.motor_service = motor
         self.navigator = navigator
         self.standard_code: str | None = None
 
@@ -75,6 +76,11 @@ class StandardsPage(QWidget):
             self.standard_selector.addItem(
                 f"{transformer_overview['standard_code']} · {transformer_overview['name']}",
                 transformer_overview["standard_code"])
+            if motor is not None:
+                motor_overview = motor.standard_overview()
+                self.standard_selector.addItem(
+                    f"{motor_overview['standard_code']} · {motor_overview['name']}（验收候选）",
+                    motor_overview["standard_code"])
             self.standard_selector.currentIndexChanged.connect(self.refresh)
             layout.addWidget(self.standard_selector)
 
@@ -122,6 +128,10 @@ class StandardsPage(QWidget):
     def refresh(self) -> None:
         selected_code = (self.standard_selector.currentData()
                          if self.standard_selector is not None else None)
+        if self.motor_service is not None and selected_code == "GB 18613-2020":
+            self._render_transformer(self.motor_service.standard_overview())
+            self.intro.setText("电动机接入验收候选；尚未宣布正式支持。")
+            return
         if (self.transformer_service is not None
                 and selected_code == self.transformer_service.standard_overview()["standard_code"]):
             self._render_transformer(self.transformer_service.standard_overview())
