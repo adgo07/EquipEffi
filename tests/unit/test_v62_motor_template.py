@@ -12,13 +12,12 @@ from equipeffi.application.ports.batch_workbook import BatchRowOutcome
 from equipeffi.domain.devices.motor.input_contract import (
     BASIS_OPTIONS,
     MOTOR_CATEGORIES,
-    options,
     scope_hint,
     test_basis_hint,
     visible_fields,
 )
 from equipeffi.domain.devices.motor.calculator import Gb18613MotorCalculator
-from equipeffi.infrastructure.excel.ooxml_reader import OOXMLWorkbook
+from equipeffi.infrastructure.excel.ooxml_reader import OOXMLReadError, OOXMLWorkbook
 from equipeffi.infrastructure.excel.pump_result_writer import _sheet_target
 from equipeffi.infrastructure.excel.template_resource import (
     DEFAULT_V61_TEMPLATE,
@@ -186,6 +185,22 @@ def _defined_names(path: Path) -> dict[str, tuple[str, ...]]:
     return {name: tuple(values) for name, values in names.items()}
 
 
+def _patch_motor_sheet_revision(source: Path, destination: Path, revision: str) -> Path:
+    with ZipFile(source) as original:
+        entries = [(info, original.read(info.filename)) for info in original.infolist()]
+    workbook_xml = "xl/workbook.xml"
+    root = ET.fromstring(dict((info.filename, data) for info, data in entries)[workbook_xml])
+    marker = TEMPLATE_MANIFEST["identity_markers"]["sheet_contract_prefix"] + "motor"
+    node = next(item for item in root.findall(f"{{{MAIN_NS}}}definedNames/{{{MAIN_NS}}}definedName")
+                if item.attrib.get("name") == marker)
+    node.text = f'"{revision}"'
+    content = ET.tostring(root, encoding="utf-8", xml_declaration=True)
+    with ZipFile(destination, "w", ZIP_DEFLATED) as patched:
+        for info, data in entries:
+            patched.writestr(info, content if info.filename == workbook_xml else data)
+    return destination
+
+
 def _config_values(path: Path) -> dict[tuple[int, int], object]:
     with OOXMLWorkbook(path) as workbook:
         grid = workbook.rows("配置")
@@ -210,6 +225,9 @@ class V62MotorTemplateTests(unittest.TestCase):
         self.assertEqual(V62_TEMPLATE_IDENTITY["template_id"],
                          "equipeffi.device-efficiency.V6.2")
         self.assertEqual(V62_TEMPLATE_ENTRY["template_contract_revision"], "unified-v6.v3")
+        motor_entry = next(sheet for sheet in V62_TEMPLATE_ENTRY["sheets"]
+                           if sheet["sheet_id"] == "motor")
+        self.assertEqual(motor_entry["contract_revision"], "motor-input.v2")
         self.assertEqual(V62_TEMPLATE_ENTRY["input_compatibility"], "ACCEPTED")
         self.assertEqual(V62_TEMPLATE_ENTRY["status"], "CANDIDATE")
         digest = hashlib.sha256(self.template.read_bytes()).hexdigest().upper()
@@ -247,15 +265,52 @@ class V62MotorTemplateTests(unittest.TestCase):
             if category.table_no is not None:
                 self.assertTrue(scope_hint(category.category_id))
                 self.assertTrue(test_basis_hint(category.category_id))
-                choices = options(category.category_id, "poles")
-                self.assertEqual(
-                    tuple(value for value, _label in choices),
-                    tuple(str(value) for value in category.route_facts.get("poles", ())))
+        self.assertFalse(field_map["poles"].get("defined_name_prefix"))
+        self.assertEqual(field_map["poles"]["excel_validation"]["type"], "custom")
+        self.assertEqual(field_map["rated_frequency_hz"]["excel_validation"]["type"], "custom")
         self.assertEqual(field_map["efficiency_basis_status"]["defined_name"],
                          "EV_MOTOR_V62_BASIS")
         self.assertEqual([label for _code, label in BASIS_OPTIONS],
                          ["按上述口径填报", "仅有铭牌效率", "已知试验工况不符合",
                           "驱动不可分离但仅有电机本体效率（仅表6）", "效率口径不确定"])
+
+    def test_frequency_and_poles_use_free_entry_controls(self):
+        with ZipFile(self.template) as archive:
+            motor_part = _sheet_target(archive, "电动机")
+            root = ET.fromstring(archive.read(motor_part))
+        validations = {}
+        for node in root.findall(f"{{{MAIN_NS}}}dataValidations/{{{MAIN_NS}}}dataValidation"):
+            reference = node.attrib.get("sqref", "")
+            column = reference.split("4:", 1)[0]
+            validations[column] = node
+
+        frequency = validations["H"]
+        self.assertEqual(frequency.attrib["type"], "custom")
+        frequency_formula = frequency.find(f"{{{MAIN_NS}}}formula1").text
+        self.assertIn("ISNUMBER(H4)", frequency_formula)
+        self.assertIn("ISTEXT(H4)", frequency_formula)
+
+        poles = validations["K"]
+        self.assertEqual(poles.attrib["type"], "custom")
+        self.assertEqual(
+            poles.find(f"{{{MAIN_NS}}}formula1").text,
+            'OR(K4="",AND(ISNUMBER(K4),K4>0,MOD(K4,2)=0))')
+        self.assertFalse(any(
+            name.startswith("EV_MOTOR_V62_POLES_")
+            for name in _defined_names(self.template)))
+
+    def test_previous_motor_input_v1_candidate_is_rejected_before_reading(self):
+        old_candidate = self.temp_dir / "motor-input-v1-candidate.xlsx"
+        _patch_motor_sheet_revision(self.template, old_candidate, "motor-input.v1")
+
+        validation = V62MotorTemplateResource().validate(old_candidate)
+        self.assertFalse(validation.is_valid)
+        self.assertIn("重新输出空白模板并复制输入数据", validation.message)
+        self.assertIn("旧文件不会被修改", validation.message)
+        self.assertIn("motor-input.v1", validation.message)
+        self.assertIn("motor-input.v2", validation.message)
+        with self.assertRaisesRegex(OOXMLReadError, "motor-input.v1"):
+            UnifiedWorkbookReader().read(old_candidate)
 
     def test_builder_preserves_pump_transformer_and_shared_configuration(self):
         v61_path = TEMPLATE_DIR / DEFAULT_V61_TEMPLATE
@@ -322,31 +377,37 @@ class V62MotorTemplateTests(unittest.TestCase):
         self.assertEqual(LEGAL_MOTOR_CONCLUSIONS,
                          {"1级", "2级", "3级", "未达3级", "不在范围", "无法判定"})
 
-    def test_reader_maps_explicit_category_basis_and_poles_and_rejects_formula_input(self):
+    def test_reader_preserves_frequency_text_and_arbitrary_poles_and_rejects_formula_input(self):
         category = MOTOR_CATEGORIES[0]
+        table_five = MOTOR_CATEGORIES[4]
         source = self.temp_dir / "motor-input.xlsx"
         _patch_motor_sheet(self.template, source, {
             "B4": "风机电机", "C4": "M-750", "D4": 1, "E4": "泵房",
-            "F4": category.label, "G4": 0.4, "H4": 50,
+            "F4": category.label, "G4": 0.4, "H4": "5~120",
             "I4": BASIS_OPTIONS[0][1], "J4": 0.75,
-            "K4": "4极", "M4": 90.25, "R4": "铭牌照片", "S4": "备注",
+            "K4": 10, "M4": 90.25, "R4": "铭牌照片", "S4": "备注",
             "B5": "输入含公式", "F5": category.label,
             "H5": ("formula", '"50"'), "J5": 0.75,
+            "B6": "表5留痕", "F6": table_five.label,
+            "H6": "50 Hz 铭牌文字", "K6": 12,
         })
         result = UnifiedWorkbookReader().read(source)
         motor = result.sheets["电动机"]
         self.assertEqual(result.template_identity["template_version"], "V6.2")
-        self.assertEqual(len(motor.rows), 2)
-        first, second = motor.rows
+        self.assertEqual(len(motor.rows), 3)
+        first, second, third = motor.rows
         self.assertEqual(first.row_number, 4)
         self.assertEqual(first.values["category_id"], category.category_id)
-        self.assertEqual(first.values["poles"], "4")
+        self.assertEqual(first.values["rated_frequency_hz"], "5~120")
+        self.assertEqual(first.values["poles"], 10)
         self.assertEqual(first.values["efficiency_basis_status"], BASIS_OPTIONS[0][1])
         self.assertEqual(first.values["efficiency_basis_raw"], BASIS_OPTIONS[0][1])
         self.assertEqual(first.values["measured_efficiency_pct"], 90.25)
         self.assertEqual(second.values["rated_frequency_hz"], "")
         self.assertTrue(any("H5" in message and "公式" in message
                             for message in second.input_errors))
+        self.assertEqual(third.values["rated_frequency_hz"], "50 Hz 铭牌文字")
+        self.assertEqual(third.values["poles"], 12)
         self.assertNotIn("电动机", result.unprocessed_sheets)
         self.assertIn("空压机", result.unprocessed_sheets)
 

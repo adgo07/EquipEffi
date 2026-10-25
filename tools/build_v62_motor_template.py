@@ -23,7 +23,6 @@ sys.path.insert(0, str(ROOT / "tools"))
 from equipeffi.domain.devices.motor.input_contract import (  # noqa: E402
     BASIS_OPTIONS,
     MOTOR_CATEGORIES,
-    options,
     scope_hint,
     test_basis_hint,
     visible_fields,
@@ -65,17 +64,33 @@ TEMPLATE_NOTES_SHEET = "模板说明"
 FIRST_CONFIG_COLUMN = _column_number("EW")
 MOTOR_CATEGORY_COLUMN = _column_number("EW")
 MOTOR_CATEGORY_ID_COLUMN = _column_number("EX")
-MOTOR_POLES_FIRST_COLUMN = _column_number("EY")
 MOTOR_BASIS_COLUMN = _column_number("FG")
-MOTOR_POLES_NONE_COLUMN = _column_number("FH")
-MOTOR_CONFIG_LAST_COLUMN = MOTOR_POLES_NONE_COLUMN
+MOTOR_CONFIG_LAST_COLUMN = MOTOR_BASIS_COLUMN
 MOTOR_CATEGORY_NAME = "EV_MOTOR_V62_CATEGORY"
 MOTOR_CATEGORY_IDS_NAME = "EV_MOTOR_V62_CATEGORY_IDS"
 MOTOR_BASIS_NAME = "EV_MOTOR_V62_BASIS"
-MOTOR_POLES_PREFIX = "EV_MOTOR_V62_POLES_"
-MOTOR_POLES_NONE_NAME = MOTOR_POLES_PREFIX + "NONE"
 MOTOR_INPUT_ROWS = range(FIRST_DATA_ROW, LAST_DATA_ROW + 1)
 DECIMAL_FORMAT = "0.###############"
+
+# Excel input controls only; the Application contract owns business validation.
+MOTOR_EXCEL_VALIDATIONS = {
+    "rated_frequency_hz": {
+        "column": "H", "type": "custom",
+        "formula1": 'OR(H4="",ISNUMBER(H4),ISTEXT(H4))',
+        "error_title": "额定频率",
+        "error": "额定频率可填写数字或文本范围，请保留原始文本。",
+        "prompt_title": "额定频率",
+        "prompt": "可填数字或原始文本范围，如5~120；表1—4由软件核对范围，表5/6仅留痕。",
+    },
+    "poles": {
+        "column": "K", "type": "custom",
+        "formula1": 'OR(K4="",AND(ISNUMBER(K4),K4>0,MOD(K4,2)=0))',
+        "error_title": "极数",
+        "error": "极数应填写正偶数。",
+        "prompt_title": "极数",
+        "prompt": "填写任意正偶数；标准未覆盖值由软件判为不在范围，表6仅留痕。",
+    },
+}
 
 LEGACY_MOTOR_DEFINED_NAMES = frozenset({
     "EV_MOTOR_CATEGORY", "EV_POLES_LV", "EV_POLES_HV", "EV_POLES_PMSM",
@@ -187,8 +202,8 @@ def _motor_sheet_contract() -> dict[str, Any]:
             field["unit"] = unit
         if field_id == "efficiency_basis_status":
             field["defined_name"] = MOTOR_BASIS_NAME
-        elif field_id == "poles":
-            field["defined_name_prefix"] = MOTOR_POLES_PREFIX
+        if field_id in MOTOR_EXCEL_VALIDATIONS:
+            field["excel_validation"] = dict(MOTOR_EXCEL_VALIDATIONS[field_id])
         fields.append(field)
     fields.extend([
         {"column": "N", "role": "result", "label": "1级效率阈值", "unit": "%",
@@ -205,7 +220,7 @@ def _motor_sheet_contract() -> dict[str, Any]:
     fields.sort(key=lambda item: _column_number(str(item["column"])))
     return {
         "sheet_id": "motor", "sheet_name": MOTOR_SHEET,
-        "contract_revision": "motor-input.v1", "status": "CONNECTED",
+        "contract_revision": "motor-input.v2", "status": "CONNECTED",
         "header_row": 3,
         "table": {"name": "TblMotor", "ref": "A3:T103"},
         "fields": fields,
@@ -301,6 +316,14 @@ def _motor_validation(column: str, kind: str, formula1: str, *,
     return node
 
 
+def _configured_motor_validation(field_id: str) -> ET.Element:
+    rule = MOTOR_EXCEL_VALIDATIONS[field_id]
+    return _motor_validation(
+        str(rule["column"]), str(rule["type"]), str(rule["formula1"]),
+        error_title=str(rule["error_title"]), error=str(rule["error"]),
+        prompt_title=str(rule["prompt_title"]), prompt=str(rule["prompt"]))
+
+
 def _patch_motor_sheet(xml: bytes, decimal_styles: dict[str, str]) -> bytes:
     root = _parse_xml(xml)
     dimension = root.find(_tag("dimension"))
@@ -383,22 +406,14 @@ def _patch_motor_sheet(xml: bytes, decimal_styles: dict[str, str]) -> bytes:
         _motor_validation("G", "decimal", "0", operator="greaterThanOrEqual",
                           error_title="额定电压", error="额定电压请按kV填写非负数值。",
                           prompt_title="额定电压", prompt="表1—4按类别填写；表5/6不以电压选表。"),
-        _motor_validation("H", "decimal", "0", operator="greaterThanOrEqual",
-                          error_title="额定频率", error="额定频率请填写非负数值。",
-                          prompt_title="额定频率", prompt="表1—4按类别填写50 Hz；表5/6不以频率选表。"),
+        _configured_motor_validation("rated_frequency_hz"),
         _motor_validation("I", "list", MOTOR_BASIS_NAME,
                           error_title="效率口径说明", error="请选择已登记的效率口径说明。",
                           prompt_title="效率口径说明", prompt="留空表示按M列口径填报，不代表试验报告已核验。"),
         _motor_validation("J", "decimal", "0", operator="greaterThan",
                           error_title="额定输出功率", error="额定输出功率必须大于0。",
                           prompt_title="额定输出功率", prompt="统一使用kW，例如10 W填0.010，750 W填0.750。"),
-        _motor_validation(
-            "K", "list",
-            ('INDIRECT(IFERROR("' + MOTOR_POLES_PREFIX + '"&SUBSTITUTE('
-             'INDEX(' + MOTOR_CATEGORY_IDS_NAME + ',MATCH($F4,' + MOTOR_CATEGORY_NAME
-             + ',0)),"-","_"),"' + MOTOR_POLES_NONE_NAME + '"))'),
-            error_title="极数", error="请选择与设备类别匹配的极数。",
-            prompt_title="极数", prompt="表1—5按类别选择；表6按铭牌最高转速分组。"),
+        _configured_motor_validation("poles"),
         _motor_validation("L", "decimal", "0", operator="greaterThanOrEqual",
                           error_title="铭牌标称最高转速", error="转速请填写非负数值。",
                           prompt_title="铭牌标称最高转速", prompt="表6必填；其他类别不按该值选表。"),
@@ -456,18 +471,13 @@ def _patch_configuration(xml: bytes) -> bytes:
     if len(set(category_ids)) != 8 or len(set(labels)) != 8:
         raise ValueError("GB18613电动机类别ID和显示标签必须唯一")
 
-    # V6.1的配置数据保持原值；V6.2枚举位于独立的新区域EW:FH。
+    # V6.1的配置数据保持原值；V6.2类别与效率口径枚举位于独立区域。
     for offset, option in enumerate(categories):
         row_number = 2 + offset
         _set_config_cell(rows, MOTOR_CATEGORY_COLUMN, row_number, _category_label(option))
         _set_config_cell(rows, MOTOR_CATEGORY_ID_COLUMN, row_number, _category_id(option))
-        pole_options = options(_category_id(option), "poles")
-        pole_column = MOTOR_POLES_FIRST_COLUMN + offset
-        for option_index, (_value, label) in enumerate(pole_options):
-            _set_config_cell(rows, pole_column, 2 + option_index, label)
     for option_index, (_value, label) in enumerate(BASIS_OPTIONS):
         _set_config_cell(rows, MOTOR_BASIS_COLUMN, 2 + option_index, label)
-    _set_config_cell(rows, MOTOR_POLES_NONE_COLUMN, 2, "")
 
     for row in rows.values():
         cells = list(row.findall(_tag("c")))
@@ -503,23 +513,11 @@ def _patch_configuration(xml: bytes) -> bytes:
 
 
 def _motor_defined_names() -> dict[str, str]:
-    names = {
+    return {
         MOTOR_CATEGORY_NAME: "'配置'!$EW$2:$EW$9",
         MOTOR_CATEGORY_IDS_NAME: "'配置'!$EX$2:$EX$9",
         MOTOR_BASIS_NAME: f"'配置'!$FG$2:$FG${1 + len(BASIS_OPTIONS)}",
-        MOTOR_POLES_NONE_NAME: "'配置'!$FH$2:$FH$2",
     }
-    for offset, category in enumerate(MOTOR_CATEGORIES):
-        category_id = _category_id(category)
-        column = _column_letters(MOTOR_POLES_FIRST_COLUMN + offset)
-        choices = options(category_id, "poles")
-        if choices:
-            last_row = 1 + len(choices)
-            names[MOTOR_POLES_PREFIX + category_id.replace("-", "_")] = (
-                f"'配置'!${column}$2:${column}${last_row}")
-        else:
-            names[MOTOR_POLES_PREFIX + category_id.replace("-", "_")] = names[MOTOR_POLES_NONE_NAME]
-    return names
 
 
 def _identity_names(entry: dict[str, Any]) -> set[str]:
@@ -678,7 +676,7 @@ def _motor_manifest_entry(source_sha256: str, source_size: int) -> dict[str, Any
             "changes": [
                 "仅连接GB 18613六类电动机以及其他类别/不确定类别；高压和永磁同步电机旧数据留在旧模板。",
                 "保留20列，输入和结果由统一Application链处理；退出T4:T103旧自动评价公式。",
-                "在独立配置区域新增电机类别、效率口径和按类别极数列表；泵/变压器契约与既有共享枚举不变。",
+                "在独立配置区域新增电机类别和效率口径；极数改为正偶数输入，由统一Application判定标准覆盖；泵/变压器契约与既有共享枚举不变。",
             ],
         },
         "untouched_sheets": 14,
@@ -701,14 +699,13 @@ def _motor_manifest_entry(source_sha256: str, source_size: int) -> dict[str, Any
             "category_ids_column": "EX",
             "category_ids_defined_name": MOTOR_CATEGORY_IDS_NAME,
         },
-        "motor_pole_lists": {
-            "first_column": "EY", "first_row": 2,
-            "defined_name_prefix": MOTOR_POLES_PREFIX,
-            "empty_defined_name": MOTOR_POLES_NONE_NAME,
-        },
         "motor_efficiency_basis_enum": {
             "column": "FG", "first_row": 2,
             "defined_name": MOTOR_BASIS_NAME,
+        },
+        "motor_excel_validations": {
+            field_id: dict(rule)
+            for field_id, rule in MOTOR_EXCEL_VALIDATIONS.items()
         },
     })
     entry["configuration_contract"] = config

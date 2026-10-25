@@ -340,17 +340,14 @@ class RecordsPage(QWidget):
             f"评价日期：{snapshot.evaluation_date or '未记录'}",
             f"输入工作簿：{source_name}",
             f"结果工作簿：{result_name}",
-            f"数据行数：{snapshot.data_row_count}",
             f"设备数量总计：{snapshot.total_quantity} 台",
-            f"完成正式评价行数：{snapshot.evaluated_count} 行",
             f"完成正式评价数量：{snapshot.evaluated_quantity} 台",
+            f"数据行数：{snapshot.data_row_count}",
+            f"完成正式评价行数：{snapshot.evaluated_count} 行",
             f"未形成正式结论行数：{snapshot.unevaluated_count} 行",
         ]
-        for sheet in summary.get("sheets", ()):
-            name = str(sheet.get("sheet_name") or "工作表")
-            lines.append(
-                f"{name}：{sheet.get('data_row_count', 0)} 行，"
-                f"完成评价 {sheet.get('evaluated_quantity', 0)} 台")
+        from ....application.services.batch_summary_formatter import format_device_summary_lines
+        lines.extend(format_device_summary_lines(summary.get("sheets", ())))
         unprocessed = summary.get("unprocessed_sheets") or ()
         if unprocessed:
             lines.append("未处理工作表：" + "、".join(str(name) for name in unprocessed))

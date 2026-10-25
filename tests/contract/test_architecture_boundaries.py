@@ -67,6 +67,7 @@ class ArchitectureBoundaryTests(unittest.TestCase):
             "equipeffi.application.services.transformer_analysis_service",
             "equipeffi.application.services.motor_analysis_service",
             "equipeffi.application.services.motor_basis_formatter",
+            "equipeffi.application.services.batch_summary_formatter",
         )
         directory = self.ROOT / "src/equipeffi/presentation/qt"
         for path in directory.rglob("*.py"):

@@ -975,8 +975,8 @@
       "input_compatibility": "ACCEPTED",
       "legacy_import_compatibility": false,
       "filename": "设备能效分析空白模板_重构版V6_2.xlsx",
-      "asset_sha256": "12780374B2288F7BBA706A3DF614DE6BE362E1D46C247DF511CD7D8480CF830D",
-      "asset_size_bytes": 373132,
+      "asset_sha256": "D009850015B4C5E132D9FF72D0DDB1649E67AFFEAA8F457B12187466C75CEC0E",
+      "asset_size_bytes": 372995,
       "source_filename": "设备能效分析空白模板_重构版V6_1.xlsx",
       "source_sha256": "4EDAFEAEC9907598F1871D7D76FAF0809451667F070A2870E95DB263845029B0",
       "source_size_bytes": 403311,
@@ -1161,7 +1161,7 @@
         {
           "sheet_id": "motor",
           "sheet_name": "电动机",
-          "contract_revision": "motor-input.v1",
+          "contract_revision": "motor-input.v2",
           "status": "CONNECTED",
           "header_row": 3,
           "table": {
@@ -1229,7 +1229,16 @@
                 "capacitor_run",
                 "two_value_capacitor"
               ],
-              "unit": "Hz"
+              "unit": "Hz",
+              "excel_validation": {
+                "column": "H",
+                "type": "custom",
+                "formula1": "OR(H4=\"\",ISNUMBER(H4),ISTEXT(H4))",
+                "error_title": "额定频率",
+                "error": "额定频率可填写数字或文本范围，请保留原始文本。",
+                "prompt_title": "额定频率",
+                "prompt": "可填数字或原始文本范围，如5~120；表1—4由软件核对范围，表5/6仅留痕。"
+              }
             },
             {
               "column": "I",
@@ -1267,7 +1276,15 @@
                 "ac_fan_capacitor_run"
               ],
               "unit": "极",
-              "defined_name_prefix": "EV_MOTOR_V62_POLES_"
+              "excel_validation": {
+                "column": "K",
+                "type": "custom",
+                "formula1": "OR(K4=\"\",AND(ISNUMBER(K4),K4>0,MOD(K4,2)=0))",
+                "error_title": "极数",
+                "error": "极数应填写正偶数。",
+                "prompt_title": "极数",
+                "prompt": "填写任意正偶数；标准未覆盖值由软件判为不在范围，表6仅留痕。"
+              }
             },
             {
               "column": "L",
@@ -1699,7 +1716,7 @@
         "changes": [
           "仅连接GB 18613六类电动机以及其他类别/不确定类别；高压和永磁同步电机旧数据留在旧模板。",
           "保留20列，输入和结果由统一Application链处理；退出T4:T103旧自动评价公式。",
-          "在独立配置区域新增电机类别、效率口径和按类别极数列表；泵/变压器契约与既有共享枚举不变。"
+          "在独立配置区域新增电机类别和效率口径；极数改为正偶数输入，由统一Application判定标准覆盖；泵/变压器契约与既有共享枚举不变。"
         ]
       },
       "untouched_sheets": 14,
@@ -1734,16 +1751,30 @@
           "category_ids_column": "EX",
           "category_ids_defined_name": "EV_MOTOR_V62_CATEGORY_IDS"
         },
-        "motor_pole_lists": {
-          "first_column": "EY",
-          "first_row": 2,
-          "defined_name_prefix": "EV_MOTOR_V62_POLES_",
-          "empty_defined_name": "EV_MOTOR_V62_POLES_NONE"
-        },
         "motor_efficiency_basis_enum": {
           "column": "FG",
           "first_row": 2,
           "defined_name": "EV_MOTOR_V62_BASIS"
+        },
+        "motor_excel_validations": {
+          "rated_frequency_hz": {
+            "column": "H",
+            "type": "custom",
+            "formula1": "OR(H4=\"\",ISNUMBER(H4),ISTEXT(H4))",
+            "error_title": "额定频率",
+            "error": "额定频率可填写数字或文本范围，请保留原始文本。",
+            "prompt_title": "额定频率",
+            "prompt": "可填数字或原始文本范围，如5~120；表1—4由软件核对范围，表5/6仅留痕。"
+          },
+          "poles": {
+            "column": "K",
+            "type": "custom",
+            "formula1": "OR(K4=\"\",AND(ISNUMBER(K4),K4>0,MOD(K4,2)=0))",
+            "error_title": "极数",
+            "error": "极数应填写正偶数。",
+            "prompt_title": "极数",
+            "prompt": "填写任意正偶数；标准未覆盖值由软件判为不在范围，表6仅留痕。"
+          }
         }
       },
       "capacity_strategy": {

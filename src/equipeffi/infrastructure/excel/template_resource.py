@@ -15,7 +15,6 @@ from zipfile import BadZipFile, ZipFile
 from ...domain.devices.motor.input_contract import (
     BASIS_OPTIONS as MOTOR_BASIS_OPTIONS,
     MOTOR_CATEGORIES,
-    options as motor_options,
     scope_hint as motor_scope_hint,
     test_basis_hint as motor_test_basis_hint,
     visible_fields as motor_visible_fields,
@@ -318,8 +317,8 @@ def _motor_config_issues(path: Path, contract_entry: dict[str, Any]) -> list[str
     """Mechanically compare V6.2's dedicated config area to Domain input contract."""
     configuration = contract_entry.get("configuration_contract", {})
     category_cfg = configuration.get("motor_category_enum", {})
-    pole_cfg = configuration.get("motor_pole_lists", {})
     basis_cfg = configuration.get("motor_efficiency_basis_enum", {})
+    excel_validation_cfg = configuration.get("motor_excel_validations", {})
     try:
         with OOXMLWorkbook(path) as workbook:
             rows = workbook.rows(str(next(
@@ -340,6 +339,16 @@ def _motor_config_issues(path: Path, contract_entry: dict[str, Any]) -> list[str
         return rows[row_index][col] if row_index < len(rows) and col < len(rows[row_index]) else ""
 
     categories = tuple(MOTOR_CATEGORIES)
+    motor_contract = next((sheet for sheet in contract_entry.get("sheets", ())
+                           if sheet.get("sheet_id") == "motor"), {})
+    field_validations = {
+        str(field.get("field_id")): field.get("excel_validation")
+        for field in motor_contract.get("fields", ())
+        if field.get("field_id") and field.get("excel_validation")
+    }
+    if excel_validation_cfg != field_validations:
+        issues.append("Manifest电动机字段校验与电机专属模板配置不一致")
+
     first_row = int(category_cfg.get("first_row", 2))
     label_col = str(category_cfg.get("column", "EW"))
     id_col = str(category_cfg.get("category_ids_column", "EX"))
@@ -353,23 +362,6 @@ def _motor_config_issues(path: Path, contract_entry: dict[str, Any]) -> list[str
         if any(cell(column, row_number) not in (None, "")
                for row_number in range(first_row + len(categories), len(rows) + 1)):
             issues.append(f"配置!{column}含有Domain之外的电动机类别选项")
-
-    pole_first_col = str(pole_cfg.get("first_column", "EY"))
-    pole_first_index = col_index(pole_first_col)
-    pole_start_row = int(pole_cfg.get("first_row", 2))
-    for offset, category in enumerate(categories):
-        expected = tuple(label for _value, label in motor_options(category.category_id, "poles"))
-        column_index = pole_first_index + offset
-        column_number = column_index + 1
-        column = ""
-        while column_number:
-            column_number, remainder = divmod(column_number - 1, 26)
-            column = chr(65 + remainder) + column
-        actual = tuple(
-            value for row_number in range(pole_start_row, len(rows) + 1)
-            if (value := cell(column, row_number)) not in (None, ""))
-        if actual != expected:
-            issues.append(f"配置!{column}极数选项与Domain契约不一致")
 
     basis_first_row = int(basis_cfg.get("first_row", 2))
     basis_col = str(basis_cfg.get("column", "FG"))
@@ -388,23 +380,6 @@ def _motor_config_issues(path: Path, contract_entry: dict[str, Any]) -> list[str
         str(basis_cfg.get("defined_name", "")):
         f"'配置'!${basis_col}${basis_first_row}:${basis_col}${basis_first_row + len(expected_basis) - 1}",
     }
-    empty_name = str(pole_cfg.get("empty_defined_name", ""))
-    empty_col = "FH"
-    expected_names[empty_name] = f"'配置'!${empty_col}$2:${empty_col}$2"
-    for offset, category in enumerate(categories):
-        category_id = category.category_id
-        # The builder normalizes hyphens in the suffix but all stable IDs are
-        # preserved as provided by Domain.
-        name = str(pole_cfg.get("defined_name_prefix", "")) + category_id.replace("-", "_")
-        column_number = pole_first_index + offset + 1
-        column = ""
-        while column_number:
-            column_number, remainder = divmod(column_number - 1, 26)
-            column = chr(65 + remainder) + column
-        choices = motor_options(category_id, "poles")
-        end_row = pole_start_row + len(choices) - 1 if choices else 2
-        selected_column = column if choices else empty_col
-        expected_names[name] = f"'配置'!${selected_column}${pole_start_row}:${selected_column}${end_row}"
     for name, expected in expected_names.items():
         expressions = names.get(name, ())
         if len(expressions) != 1 or expressions[0].replace("$", "") != expected.replace("$", ""):
@@ -465,6 +440,8 @@ def _motor_manifest_contract_issues(contract: dict[str, Any]) -> list[str]:
         ]
         if manifest_field.get("required_for_categories") != required_categories:
             issues.append(f"电动机字段{field_id}条件必填与Domain契约不一致")
+    if fields.get("poles", {}).get("defined_name_prefix"):
+        issues.append("Manifest电动机极数仍声明受控下拉列表")
     return issues
 
 
@@ -609,6 +586,10 @@ def _resolve_v6_identity_from_names(
             continue
         actual_revision = _string_name_value(items[0])
         if actual_revision != expected_revision:
+            if (sheet_id == "motor" and actual_revision == "motor-input.v1"
+                    and expected_revision == "motor-input.v2"):
+                issues.append(
+                    "电动机候选模板已更新，请重新输出空白模板并复制输入数据；旧文件不会被修改。")
             issues.append(
                 f"Sheet 契约修订不匹配：{sheet_id} 声明 {actual_revision!r}，"
                 f"清单期望 {expected_revision!r}")
@@ -914,16 +895,37 @@ class V62MotorTemplateResource(V6TemplateResource):
                         formula_for(node, "formula1"), formula_for(node, "formula2"))
                     if actual != (kind, operator, first, second):
                         issues.append(f"电动机{column}列数据验证与输入契约不一致")
-                for column in ("G", "H", "J", "L"):
+                for column in ("G", "J", "L"):
                     node = validation_for(column)
                     if (node is None or node.attrib.get("type") != "decimal"
                             or node.attrib.get("operator") not in {"greaterThan", "greaterThanOrEqual"}
                             or formula_for(node, "formula1") not in {"0", "0.0"}):
                         issues.append(f"电动机{column}列数据验证不是非负数值输入")
-                pole_validation = validation_for("K")
-                if (pole_validation is None or pole_validation.attrib.get("type") != "list"
-                        or "EV_MOTOR_V62_POLES_" not in formula_for(pole_validation, "formula1")):
-                    issues.append("电动机K列数据验证未使用按类别专属极数列表")
+                motor_fields = {
+                    str(field.get("field_id")): field
+                    for field in motor_contract.get("fields", ())
+                    if field.get("field_id")
+                }
+                for field_id in ("rated_frequency_hz", "poles"):
+                    field = motor_fields.get(field_id, {})
+                    rule = field.get("excel_validation") or {}
+                    column = str(rule.get("column") or field.get("column") or "")
+                    node = validation_for(column) if column else None
+                    actual = {
+                        "type": node.attrib.get("type", "") if node is not None else "",
+                        "formula1": formula_for(node, "formula1"),
+                        "error_title": node.attrib.get("errorTitle", "") if node is not None else "",
+                        "error": node.attrib.get("error", "") if node is not None else "",
+                        "prompt_title": node.attrib.get("promptTitle", "") if node is not None else "",
+                        "prompt": node.attrib.get("prompt", "") if node is not None else "",
+                    }
+                    expected = {
+                        key: rule.get(key)
+                        for key in ("type", "formula1", "error_title", "error",
+                                    "prompt_title", "prompt")
+                    }
+                    if actual != expected:
+                        issues.append(f"电动机{column}列数据验证与输入契约不一致")
 
             fixed_labels = (
                 "本次批量处理说明", "模板版本", "处理时间", "已评价Sheet",

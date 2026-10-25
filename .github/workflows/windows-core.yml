@@ -44,6 +44,7 @@ jobs:
       PYTHONPATH: src
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONIOENCODING: utf-8
+      PYTHONFAULTHANDLER: "1"
       QT_QPA_PLATFORM: offscreen
     steps:
       - uses: actions/checkout@v4

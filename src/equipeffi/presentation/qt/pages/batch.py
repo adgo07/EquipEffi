@@ -557,21 +557,16 @@ class BatchPage(QWidget):
     def _render(self, result) -> None:
         summary = result.summary
         lines = [
-            f"数据行数 {summary.data_row_count} 行；"
             f"设备数量总计 {summary.total_quantity} 台；"
-            f"完成正式评价 {summary.evaluated_quantity} 台。",
+            f"完成正式评价 {summary.evaluated_quantity} 台"
+            f"（数据行数 {summary.data_row_count} 行）。",
             f"输入错误 {summary.input_error_rows} 行；"
             f"执行失败 {summary.execution_error_rows} 行；"
             f"未形成正式结论 {summary.unevaluated_rows} 行。",
             f"结果工作簿：{result.result_workbook or '（未输出）'}",
         ]
-        for sheet in getattr(summary, "sheets", ()) or ():
-            if not isinstance(sheet, dict):
-                continue
-            name = str(sheet.get("sheet_name") or "工作表")
-            lines.append(
-                f"{name}：{sheet.get('data_row_count', 0)} 行，"
-                f"完成评价 {sheet.get('evaluated_quantity', 0)} 台。")
+        from ....application.services.batch_summary_formatter import format_device_summary_lines
+        lines.extend(format_device_summary_lines(getattr(summary, "sheets", ())))
         unprocessed = getattr(summary, "unprocessed_sheets", ()) or ()
         if unprocessed:
             lines.append("未处理工作表：" + "、".join(str(name) for name in unprocessed))

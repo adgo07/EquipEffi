@@ -13,6 +13,41 @@ from equipeffi.infrastructure.persistence.sqlite_batch_record_repository import 
 
 
 class MotorProductFlowTests(unittest.TestCase):
+    def test_frequency_range_and_pole_scope_survive_excel_and_history(self):
+        with tempfile.TemporaryDirectory() as directory:
+            paths = AppDataPaths(Path(directory) / "data")
+            batch = create_batch_evaluation_service(paths=paths, motor_candidate=True)
+            source = Path(directory) / "feedback.xlsx"
+            batch.template_resource.download_to(source)
+            workbook = load_workbook(source)
+            motor = create_motor_analysis_service(with_persistence=False)
+            label = next(c.label for c in motor.input_contract.categories
+                         if c.category_id == "three_phase_induction")
+            for row, quantity, frequency, poles in ((4, 2, 50, 4), (5, 3, "5~120", 4),
+                                                     (6, 4, 50, 10), (7, 5, 50, 3)):
+                for column, value in {"D": quantity, "F": label, "G": 0.38,
+                                      "H": frequency, "J": 0.14, "K": poles, "M": 71.43}.items():
+                    workbook["电动机"][f"{column}{row}"] = value
+            workbook.save(source)
+            workbook.close()
+            before = source.read_bytes()
+            result = batch.evaluate_workbook(source)
+            self.assertEqual(source.read_bytes(), before)
+            self.assertEqual(result.summary.total_quantity, 14)
+            self.assertEqual(result.summary.evaluated_quantity, 9)
+            self.assertEqual(result.summary.input_error_quantity, 5)
+            self.assertEqual(result.summary.conclusion_quantities, {"3级": 2, "不在范围": 7})
+            output = load_workbook(result.result_workbook, data_only=True)
+            self.assertEqual([output["电动机"][f"Q{r}"].value for r in range(4, 8)],
+                             ["3级", "不在范围", "不在范围", None])
+            self.assertIn("输入错误", output["电动机"]["T7"].value)
+            self.assertIn("正偶数", output["电动机"]["T7"].value)
+            self.assertEqual(output["电动机"]["H5"].value, "5~120")
+            self.assertEqual(output["电动机"]["K6"].value, 10)
+            output.close()
+            record = SqliteBatchRecordRepository(paths.records_db).load_batch_record(result.batch_record_id)
+            self.assertEqual(record.summary["conclusion_quantities"], result.summary.conclusion_quantities)
+
     def test_candidate_switch_alone_launches_desktop(self):
         from equipeffi.entrypoint import main
         with patch.dict(os.environ, {}, clear=True), patch(
@@ -77,6 +112,15 @@ class MotorProductFlowTests(unittest.TestCase):
             record = SqliteBatchRecordRepository(paths.records_db).load_batch_record(result.batch_record_id)
             self.assertEqual(record.standard_code, "MULTI")
             self.assertEqual(len(record.summary["sheets"]), 3)
+            from equipeffi.application.services.batch_summary_formatter import format_device_summary_lines
+            device_lines = format_device_summary_lines(record.summary["sheets"])
+            self.assertEqual(device_lines, format_device_summary_lines(result.summary.sheets))
+            for device, quantity, conclusion in (("离心泵", 3, "不在范围"),
+                                                  ("变压器", 4, "不在范围"),
+                                                  ("电动机", 2, "3级")):
+                index = device_lines.index(f"{device}：共 {quantity} 台（数据 1 行）")
+                self.assertIn(f"{conclusion} {quantity} 台", device_lines[index + 1])
+                self.assertIn("2级 0 台", device_lines[index + 1])
             repeated = batch.evaluate_workbook(Path(result.result_workbook))
             self.assertEqual(repeated.summary.conclusion_quantities, result.summary.conclusion_quantities)
             with self.assertRaisesRegex(ValueError, "未启用"):

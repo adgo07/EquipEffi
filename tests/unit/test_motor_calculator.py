@@ -125,6 +125,63 @@ class MotorCalculatorTests(unittest.TestCase):
         unknown=self.calc.evaluate({"category_id":"UNCERTAIN_CATEGORY"},self.pack)
         self.assertEqual(unknown.reason_codes,("CATEGORY_UNCERTAIN",))
 
+    def test_frequency_text_is_out_of_scope_only_for_tables_one_to_four(self):
+        cases = ((1, "0.12", 2), (2, "0.25", 6), (3, "0.75", 4), (4, "0.25", 4))
+        for table, power, poles in cases:
+            with self.subTest(table=table):
+                result = self.ev(table, power, "80", poles=poles, frequency="5~120")
+                self.assertEqual(result.evaluation_status, "OUT_OF_STANDARD_SCOPE")
+                self.assertEqual(result.reason_codes, ("RATED_FREQUENCY_OUT_OF_SCOPE",))
+                self.assertIsNone(result.grade)
+
+        table5 = self.ev(5, "0.75", "80", poles=6, rated_frequency_hz="5~120")
+        self.assertEqual(table5.evaluation_status, "SUCCESS")
+        self.assertEqual(table5.trace[0]["rated_frequency_hz_raw"], "5~120")
+        self.assertEqual(self.ev(5, "0.75", "80", poles=6, rated_frequency_hz="5-120").evaluation_status, "SUCCESS")
+        table6 = self.ev(6, "0.15", "85", poles=10, speed="1300", rated_frequency_hz="5~120")
+        self.assertEqual(table6.evaluation_status, "SUCCESS")
+        self.assertEqual(table6.trace[0]["rated_frequency_hz_raw"], "5~120")
+        self.assertIsNone(table6.trace[0]["poles"])
+        self.assertEqual(table6.trace[0]["poles_input_raw"], "10")
+
+    def test_poles_require_positive_even_integer_and_respect_table_coverage(self):
+        cases = ((1, "0.12"), (2, "0.25"), (3, "0.75"), (4, "0.25"), (5, "0.75"))
+        for table, power in cases:
+            with self.subTest(table=table):
+                result = self.ev(table, power, "80", poles=10)
+                self.assertEqual(result.evaluation_status, "OUT_OF_STANDARD_SCOPE")
+                self.assertEqual(result.reason_codes, ("POLE_COUNT_OUT_OF_SCOPE",))
+
+        for invalid in ("1", "0", "-2", "2.5", "NaN", "Infinity", "=SUM(A1)"):
+            with self.subTest(poles=invalid):
+                result = self.ev(6, "0.15", "85", speed="1300", poles=invalid)
+                self.assertEqual(result.evaluation_status, "INVALID_INPUT")
+                self.assertIn("poles", result.invalid_fields)
+        for invalid in (True, 2.0, []):
+            result = self.calc.evaluate({"category_id": "ac_fan_brushless_dc", "rated_output_power_kw": "0.15", "measured_efficiency_pct": "85", "max_nameplate_speed_rpm": "1300", "poles": invalid}, self.pack)
+            self.assertEqual(result.evaluation_status, "INVALID_INPUT")
+            self.assertIn("poles", result.invalid_fields)
+
+        omitted = self.ev(6, "0.15", "85", speed="1300")
+        self.assertEqual(omitted.evaluation_status, "SUCCESS")
+        self.assertIsNone(omitted.trace[0]["poles"])
+        self.assertIsNone(omitted.trace[0]["poles_input_raw"])
+
+    def test_frequency_formulas_errors_and_malformed_numbers_remain_invalid(self):
+        for invalid in ("=50", "#DIV/0!", "Infinity", "1e31", "1e+", "50.2.3", "1,000", "0", "-1", "x" * 129, " " * 129):
+            with self.subTest(frequency=invalid):
+                result = self.ev(1, "0.12", "80", poles=2, frequency=invalid)
+                self.assertEqual(result.evaluation_status, "INVALID_INPUT")
+                self.assertIn("rated_frequency_hz", result.invalid_fields)
+        for invalid in ("=50", "#DIV/0!", "1e31", "1e+"):
+            result = self.ev(6, "0.15", "85", speed="1300", rated_frequency_hz=invalid)
+            self.assertEqual(result.evaluation_status, "INVALID_INPUT")
+            self.assertIn("rated_frequency_hz", result.invalid_fields)
+        for invalid in (True, [], 50.0):
+            result = self.calc.evaluate({"category_id": "three_phase_induction", "rated_output_power_kw": "0.12", "measured_efficiency_pct": "80", "rated_voltage_kv": "0.38", "rated_frequency_hz": invalid, "poles": "2"}, self.pack)
+            self.assertEqual(result.evaluation_status, "INVALID_INPUT")
+            self.assertIn("rated_frequency_hz", result.invalid_fields)
+
     def test_bc21_24_efficiency_speed_and_lexical_bounds(self):
         self.assertEqual(self.ev(1,"0.12","85.9",poles=2).evaluation_status,"SUCCESS")
         for efficiency in ("0","0.859","0.999","100.001","-1","NaN","Infinity"):
@@ -151,7 +208,7 @@ class MotorCalculatorTests(unittest.TestCase):
         self.assertEqual((no_indicator.reason_codes,no_indicator.missing_fields),(("NO_INDICATOR",),()))
 
     def test_nonapplicable_fields_only_get_type_and_nonnegative_validation(self):
-        result=self.calc.evaluate({"category_id":"ac_fan_brushless_dc","rated_output_power_kw":"0.15","measured_efficiency_pct":"85","max_nameplate_speed_rpm":"1300","rated_voltage_kv":"0","rated_frequency_hz":"60","poles":"0"},self.pack)
+        result=self.calc.evaluate({"category_id":"ac_fan_brushless_dc","rated_output_power_kw":"0.15","measured_efficiency_pct":"85","max_nameplate_speed_rpm":"1300","rated_voltage_kv":"0","rated_frequency_hz":"60","poles":"10"},self.pack)
         self.assertEqual(result.evaluation_status,"SUCCESS")
         for field in ("rated_voltage_kv","rated_frequency_hz"):
             bad=self.calc.evaluate({"category_id":"ac_fan_brushless_dc","rated_output_power_kw":"0.15","measured_efficiency_pct":"85","max_nameplate_speed_rpm":"1300",field:"-1"},self.pack)

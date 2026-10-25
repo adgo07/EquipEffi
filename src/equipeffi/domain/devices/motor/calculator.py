@@ -11,7 +11,7 @@ from typing import Any, Mapping
 from .input_contract import MOTOR_CATEGORIES, MotorInputError, normalize_motor_input, speed_band_label
 
 DECIMAL_PROFILE_ID = "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1"
-CALCULATOR_VERSION = "gb18613-motor-gb18613_2020-v2.0.0"
+CALCULATOR_VERSION = "gb18613-motor-gb18613_2020-v2.0.1"
 PACK_SCHEMA_VERSION = "equipeffi.motor-standard-pack.v1"
 PACK_ID = "gb18613_2020_v2"
 STANDARD_CODE = "GB 18613-2020"
@@ -137,6 +137,26 @@ def _field_label(field_id: str) -> str:
     return _FIELD_LABELS.get(field_id, field_id)
 
 
+def _is_frequency_text(value: str) -> bool:
+    """Return whether a non-numeric frequency string is valid evidence text."""
+    text = value.strip()
+    if not text or len(value) > 128:
+        return False
+    if text.startswith(("=", "#", "@")):
+        return False
+    if text.startswith("+") and re.search(r"[A-Za-z(]", text):
+        return False
+    if text.casefold() in {"nan", "+nan", "-nan", "inf", "+inf", "-inf", "infinity", "+infinity", "-infinity"}:
+        return False
+    if _DECIMAL_PATTERN.fullmatch(text):
+        return False
+    if re.fullmatch(r"[\s+\-0-9.,eE]+", text):
+        # A hyphen between digits is a textual range separator (e.g. 5-120),
+        # while malformed numeric lexemes such as 1e+ remain invalid.
+        return bool(re.search(r"\d\s*-\s*\d", text))
+    return True
+
+
 class Gb18613MotorCalculator:
     calculator_id = CALCULATOR_VERSION
     calculator_version = CALCULATOR_VERSION
@@ -176,9 +196,13 @@ class Gb18613MotorCalculator:
             labels = "、".join(_field_label(x) for x in missing)
             return self._result("INSUFFICIENT_DATA", None, "无法判定", f"资料不足，请补充：{labels}。", thresholds=_empty_thresholds("MISSING_REQUIRED_INPUT"), missing_fields=missing, reason_codes=("MISSING_FIELD",), conclusion="UNABLE_TO_JUDGE", references=references)
         branch_id = self._branch_id(table_no, parsed)
-        selected = self._select_thresholds(table, branch_id, parsed["rated_output_power_kw"])
+        power = parsed["rated_output_power_kw"]
+        if not isinstance(power, _Scaled):
+            raise MotorPackError("额定输出功率缺失或不是有效数值。")
+        selected = self._select_thresholds(table, branch_id, power)
         thresholds = selected["thresholds"]
-        efficiency = parsed["measured_efficiency_pct"]
+        raw_efficiency = parsed["measured_efficiency_pct"]
+        efficiency = raw_efficiency if isinstance(raw_efficiency, _Scaled) else None
         trace = self._evaluation_trace(table, branch_id, selected, parsed, normalized, efficiency)
         if any(thresholds[f"grade_{n}"]["state"] != "AVAILABLE" for n in (1, 2, 3)):
             return self._result("INSUFFICIENT_DATA", None, "无法判定", "所选表格、极数/转速组或相邻功率端点存在无可用指标，不能跨缺值补算。", thresholds=thresholds, trace=(trace,), reason_codes=("NO_INDICATOR",), conclusion="UNABLE_TO_JUDGE", references=references)
@@ -217,17 +241,24 @@ class Gb18613MotorCalculator:
             fields.append("max_nameplate_speed_rpm")
         return tuple(fields)
 
-    def _parse_inputs(self, values: Mapping[str, Any], table_no: int | None) -> tuple[dict[str, _Scaled | None], dict[str, str]]:
-        out: dict[str, _Scaled | None] = {}
+    def _parse_inputs(self, values: Mapping[str, Any], table_no: int | None) -> tuple[dict[str, _Scaled | str | None], dict[str, str]]:
+        out: dict[str, _Scaled | str | None] = {}
         errors: dict[str, str] = {}
         for field_id in _NUMERIC_FIELDS:
             raw = values.get(field_id)
+            if field_id == "rated_frequency_hz" and isinstance(raw, str) and len(raw) > 128:
+                out[field_id] = None
+                errors[field_id] = "额定频率文本不能超过128个字符。"
+                continue
             if raw is None or (isinstance(raw, str) and not raw.strip()):
                 out[field_id] = None
                 continue
             try:
                 out[field_id] = _Scaled.parse(raw, field_id)
             except _ValueError as exc:
+                if field_id == "rated_frequency_hz" and isinstance(raw, str) and _is_frequency_text(raw):
+                    out[field_id] = raw
+                    continue
                 errors[field_id] = f"{_field_label(field_id)}{exc}"
         if errors:
             return out, errors
@@ -246,7 +277,7 @@ class Gb18613MotorCalculator:
             errors["measured_efficiency_pct"] = "实测效率须为1%至100%的百分数点值。"
         for field_id in ("rated_voltage_kv", "rated_frequency_hz", "max_nameplate_speed_rpm"):
             value = out[field_id]
-            if value is None:
+            if not isinstance(value, _Scaled):
                 continue
             if field_id in active and value.coefficient <= 0:
                 errors[field_id] = f"{_field_label(field_id)}必须大于0。"
@@ -256,32 +287,31 @@ class Gb18613MotorCalculator:
         if poles is not None:
             try:
                 number = poles.as_integer("poles")
-                if "poles" in active and number <= 0:
-                    errors["poles"] = "极数必须为正整数。"
-                elif "poles" not in active and number < 0:
-                    errors["poles"] = "不适用极数留痕不得为负数。"
+                if number <= 0 or number % 2:
+                    errors["poles"] = "极数必须为正偶数。"
             except _ValueError as exc:
                 errors["poles"] = f"极数{exc}"
         return out, errors
 
     @staticmethod
-    def _scope_errors(table_no: int, values: Mapping[str, _Scaled | None]) -> list[str]:
+    def _scope_errors(table_no: int, values: Mapping[str, _Scaled | str | None]) -> list[str]:
         category = next(item for item in MOTOR_CATEGORIES if item.table_no == table_no)
         facts = category.route_facts
         result: list[str] = []
         power = values.get("rated_output_power_kw")
-        if power is not None and (_compare(power, _Scaled.parse(facts["power_min_kw"], "min")) < 0 or _compare(power, _Scaled.parse(facts["power_max_kw"], "max")) > 0):
+        if isinstance(power, _Scaled) and (_compare(power, _Scaled.parse(facts["power_min_kw"], "min")) < 0 or _compare(power, _Scaled.parse(facts["power_max_kw"], "max")) > 0):
             result.append("OUTSIDE_TABLE_POWER_RANGE")
         voltage, upper = values.get("rated_voltage_kv"), facts.get("rated_voltage_max_kv")
-        if voltage is not None and upper is not None:
+        if isinstance(voltage, _Scaled) and upper is not None:
             cmp = _compare(voltage, _Scaled.parse(upper, "voltage max"))
             if cmp > 0 or (cmp == 0 and not facts.get("rated_voltage_max_inclusive", False)):
                 result.append("RATED_VOLTAGE_OUT_OF_SCOPE")
         frequency, expected = values.get("rated_frequency_hz"), facts.get("rated_frequency_hz")
-        if frequency is not None and expected is not None and _compare(frequency, _Scaled.parse(expected, "frequency")) != 0:
-            result.append("RATED_FREQUENCY_OUT_OF_SCOPE")
+        if frequency is not None and expected is not None:
+            if not isinstance(frequency, _Scaled) or _compare(frequency, _Scaled.parse(expected, "frequency")) != 0:
+                result.append("RATED_FREQUENCY_OUT_OF_SCOPE")
         poles = values.get("poles")
-        if poles is not None and facts.get("poles") and poles.as_integer("poles") not in facts["poles"]:
+        if isinstance(poles, _Scaled) and facts.get("poles") and poles.as_integer("poles") not in facts["poles"]:
             result.append("POLE_COUNT_OUT_OF_SCOPE")
         return result
 
@@ -319,10 +349,15 @@ class Gb18613MotorCalculator:
         return [{"branch_id": f"rpm_band_{i}", "dimension": "max_nameplate_speed_rpm", "value": label} for i, label in enumerate(labels, 1)]
 
     @staticmethod
-    def _branch_id(table_no: int, values: Mapping[str, _Scaled | None]) -> str:
+    def _branch_id(table_no: int, values: Mapping[str, _Scaled | str | None]) -> str:
         if table_no < 6:
-            return f"poles_{values['poles'].as_integer('poles')}"
+            poles = values["poles"]
+            if not isinstance(poles, _Scaled):
+                raise MotorPackError("极数缺失或不是有效整数。")
+            return f"poles_{poles.as_integer('poles')}"
         speed = values["max_nameplate_speed_rpm"]
+        if not isinstance(speed, _Scaled):
+            raise MotorPackError("铭牌标称最高转速缺失或不是有效数值。")
         for band, limit in enumerate((500, 700, 1000, 1300), 1):
             if _compare(speed, _Scaled(limit, 0)) <= 0:
                 return f"rpm_band_{band}"
@@ -416,8 +451,11 @@ class Gb18613MotorCalculator:
                 return str(level)
         return None
 
-    def _evaluation_trace(self, table: Mapping[str, Any], branch: str, selected: Mapping[str, Any], parsed: Mapping[str, _Scaled | None], normalized: Mapping[str, Any], efficiency: _Scaled | None) -> dict[str, Any]:
+    def _evaluation_trace(self, table: Mapping[str, Any], branch: str, selected: Mapping[str, Any], parsed: Mapping[str, _Scaled | str | None], normalized: Mapping[str, Any], efficiency: _Scaled | None) -> dict[str, Any]:
         power = parsed["rated_output_power_kw"]
+        if not isinstance(power, _Scaled):
+            power = None
+        parsed_poles = parsed.get("poles")
         source_rows = selected["rows"]
         endpoints = []
         for row in source_rows:
@@ -426,9 +464,13 @@ class Gb18613MotorCalculator:
         sources = [{"grade": f"grade_{level}", **ref} for level in (1, 2, 3) for ref in selected["thresholds"][f"grade_{level}"]["sources"]]
         table_basis = table.get("required_test_basis", {})
         table_no = table["table_no"]
+        raw_poles = normalized.get("poles")
+        raw_frequency = normalized.get("rated_frequency_hz")
         return {"standard_code": STANDARD_CODE, "table_id": table["table_id"], "table_no": table_no,
                 "source_sheet": table["source_sheet"], "branch_id": branch,
-                "poles": parsed.get("poles").plain() if table_no <= 5 and parsed.get("poles") else None,
+                "poles": parsed_poles.plain() if table_no <= 5 and isinstance(parsed_poles, _Scaled) else None,
+                "poles_input_raw": str(raw_poles) if raw_poles is not None else None,
+                "rated_frequency_hz_raw": str(raw_frequency) if raw_frequency is not None else None,
                 "speed_band": branch if table_no == 6 else None,
                 "speed_band_label": speed_band_label(branch) if table_no == 6 else None,
                 "method": selected["method"], "rated_output_power_kw": power.plain() if power else None,

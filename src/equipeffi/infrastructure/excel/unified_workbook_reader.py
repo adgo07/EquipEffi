@@ -16,7 +16,6 @@ from ...domain.devices.transformer.input_contract import (
 )
 from ...domain.devices.motor.input_contract import (
     MOTOR_CATEGORIES,
-    options as motor_options,
 )
 from .ooxml_reader import OOXMLReadError, OOXMLWorkbook
 from .pump_workbook_reader import V6PumpWorkbookReader
@@ -149,13 +148,6 @@ def _motor_values(row: list[Any]) -> dict[str, Any]:
     category_id = category.category_id if category else raw_category
 
     raw_basis = _cell(row, "I")
-    poles = _cell(row, "K")
-    if category is not None and poles not in (None, ""):
-        pole_options = motor_options(category.category_id, "poles")
-        selected = next((value for value, label in pole_options
-                         if label == str(poles)), None)
-        if selected is not None:
-            poles = selected
 
     return {
         "device_name": _cell(row, "B"),
@@ -170,7 +162,9 @@ def _motor_values(row: list[Any]) -> dict[str, Any]:
         "efficiency_basis_status": raw_basis,
         "efficiency_basis_raw": raw_basis,
         "rated_output_power_kw": _cell(row, "J"),
-        "poles": poles,
+        # H and K are passed through unchanged. The Application contract owns
+        # frequency scope and positive-even pole validation/table coverage.
+        "poles": _cell(row, "K"),
         "max_nameplate_speed_rpm": _cell(row, "L"),
         "measured_efficiency_pct": _cell(row, "M"),
         "photo": _cell(row, "R"),

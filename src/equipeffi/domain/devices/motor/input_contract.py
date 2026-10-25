@@ -144,10 +144,10 @@ def options(category_id: str | None, field_id: str) -> tuple[tuple[str, str], ..
     if field_id == "efficiency_basis_status":
         return BASIS_OPTIONS
     if field_id == "poles":
-        category = _resolve_category(category_id)
-        if category is None:
-            return ()
-        return tuple((str(n), f"{n}极") for n in category.route_facts.get("poles", ()))
+        # Pole count is free numeric input. Standard coverage is checked by
+        # the calculator after validating the common positive-even contract.
+        _resolve_category(category_id)
+        return ()
     return ()
 
 

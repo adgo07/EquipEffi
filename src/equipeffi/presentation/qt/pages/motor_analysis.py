@@ -88,6 +88,10 @@ class MotorAnalysisPage(QWidget):
             else:
                 widget = QLineEdit()
                 widget.setPlaceholderText("请输入" if field.required else "可选")
+                if field.field_id == "rated_frequency_hz":
+                    widget.setPlaceholderText("如50或5～120；范围文本按不在范围处理")
+                elif field.field_id == "poles":
+                    widget.setPlaceholderText("正偶数，如2、4、10；表外极数按不在范围处理")
             widget.setObjectName(f"motorField_{field.field_id}")
             self.fields_form.addRow(label, widget)
             self.field_inputs[field.field_id] = widget
