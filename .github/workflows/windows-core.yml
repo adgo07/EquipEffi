@@ -73,10 +73,8 @@ jobs:
       - name: Full suite (single execution with log)
         run: |
           $logPath = "artifacts/windows-core/full_suite.log"
-          New-Item -ItemType Directory -Force -Path (Split-Path $logPath) | Out-Null
-          python -m unittest discover -s tests -t . -v 2>&1 | Tee-Object -FilePath $logPath
-          $testExitCode = $LASTEXITCODE
-          if ($testExitCode -ne 0) { exit $testExitCode }
+          python tools/run_test_log.py $logPath python -m unittest discover -s tests -t . -v
+          exit $LASTEXITCODE
 
       - name: Upload full-suite log
         if: always()
