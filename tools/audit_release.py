@@ -605,6 +605,7 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
     warnings.extend(asset_audit.warnings)
 
     env = dict(os.environ)
+    env.pop("EQUIPEFFI_ENABLE_MOTOR_CANDIDATE", None)
     env.pop("PYTHONPATH", None)
     env["PYTHONPATH"] = str(wheel.resolve())
     env["PYTHONIOENCODING"] = "utf-8"
@@ -673,7 +674,7 @@ print('headless-pumps-v6.1-transformer-v2.1-ok')
         status_payload = json.loads(status.stdout)
         checks["wheel_status"] = status_payload
         valid_status = (
-            set(status_payload) == {"ready", "desktop", "template", "pump_profiles", "transformer"}
+            set(status_payload) == {"ready", "desktop", "template", "pump_profiles", "transformer", "motor"}
             and status_payload.get("desktop", {}).get("surface") == "PySide6 Qt"
             and status_payload.get("desktop", {}).get("available") is True
             and status_payload.get("template", {}).get("available") is True
@@ -689,6 +690,8 @@ print('headless-pumps-v6.1-transformer-v2.1-ok')
             and status_payload.get("transformer", {}).get("available") is True
             and status_payload.get("transformer", {}).get("support_status") == "IMPLEMENTED"
             and status_payload.get("transformer", {}).get("standard_code") == "GB 20052-2024"
+            and status_payload.get("motor", {}).get("enabled") is False
+            and status_payload.get("motor", {}).get("available") is False
             and status_payload.get("ready") is True
             and status.returncode == 0
         )
@@ -699,6 +702,27 @@ print('headless-pumps-v6.1-transformer-v2.1-ok')
             )
     except (OSError, subprocess.SubprocessError, json.JSONDecodeError) as exc:
         errors.append(f"wheel --status运行时烟测失败: {type(exc).__name__}: {exc}")
+
+    try:
+        candidate = subprocess.run(
+            [sys.executable, "-m", "equipeffi", "--motor-candidate", "--status"],
+            cwd=str(wheel.parent), env=env, capture_output=True, text=True,
+            encoding="utf-8", timeout=45, check=False)
+        payload = json.loads(candidate.stdout)
+        checks["wheel_motor_candidate_status"] = payload
+        if not (
+            candidate.returncode == 0 and payload.get("ready") is True
+            and payload.get("template", {}).get("available") is True
+            and payload.get("template", {}).get("template_id") == "equipeffi.device-efficiency.V6.2"
+            and payload.get("template", {}).get("template_version") == "V6.2"
+            and payload.get("motor", {}).get("enabled") is True
+            and payload.get("motor", {}).get("available") is True
+            and payload.get("motor", {}).get("support_status") == "IMPLEMENTED"
+            and payload.get("motor", {}).get("standard_code") == "GB 18613-2020"
+        ):
+            errors.append("wheel电机候选V6.2/GB18613资源烟测失败：" + candidate.stdout)
+    except (OSError, subprocess.SubprocessError, json.JSONDecodeError) as exc:
+        errors.append(f"wheel电机候选烟测异常: {type(exc).__name__}: {exc}")
 
 
 def _audit_sdist(sdist: Path | None, root: Path, errors: list[str], warnings: list[str], checks: dict[str, Any]) -> None:
