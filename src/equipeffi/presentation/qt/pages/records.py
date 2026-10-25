@@ -79,10 +79,12 @@ class RecordsPage(QWidget):
     """正式记录历史页。"""
 
     def __init__(self, service: CentrifugalPumpAnalysisService, navigator=None, *,
-                 batch=None, transformer=None):
+                 batch=None, transformer=None, motor=None):
         super().__init__()
         self.service = service
         self.transformer_service = transformer
+        self.motor_service = motor
+        self.motor_contract = motor.input_contract if motor is not None else None
         self.transformer_contract = (transformer.input_contract
                                      if transformer is not None else None)
         self._transformer_categories = {
@@ -338,17 +340,14 @@ class RecordsPage(QWidget):
             f"评价日期：{snapshot.evaluation_date or '未记录'}",
             f"输入工作簿：{source_name}",
             f"结果工作簿：{result_name}",
-            f"数据行数：{snapshot.data_row_count}",
             f"设备数量总计：{snapshot.total_quantity} 台",
-            f"完成正式评价行数：{snapshot.evaluated_count} 行",
             f"完成正式评价数量：{snapshot.evaluated_quantity} 台",
+            f"数据行数：{snapshot.data_row_count}",
+            f"完成正式评价行数：{snapshot.evaluated_count} 行",
             f"未形成正式结论行数：{snapshot.unevaluated_count} 行",
         ]
-        for sheet in summary.get("sheets", ()):
-            name = str(sheet.get("sheet_name") or "工作表")
-            lines.append(
-                f"{name}：{sheet.get('data_row_count', 0)} 行，"
-                f"完成评价 {sheet.get('evaluated_quantity', 0)} 台")
+        from ....application.services.batch_summary_formatter import format_device_summary_lines
+        lines.extend(format_device_summary_lines(summary.get("sheets", ())))
         unprocessed = summary.get("unprocessed_sheets") or ()
         if unprocessed:
             lines.append("未处理工作表：" + "、".join(str(name) for name in unprocessed))
@@ -500,6 +499,8 @@ class RecordsPage(QWidget):
         result = snapshot.result_snapshot
         input_snapshot = snapshot.input_snapshot
 
+        if getattr(snapshot, "device_type", "") == "motor_lv":
+            return self._show_motor_record(snapshot, result, input_snapshot)
         if getattr(snapshot, "device_type", "") == "transformer":
             return self._show_transformer_record(snapshot, result, input_snapshot)
 
@@ -590,7 +591,48 @@ class RecordsPage(QWidget):
         return text
 
     def _category_label(self, value: str) -> str:
-        return self._transformer_categories.get(value, value)
+        motor_labels = {item.category_id: item.label for item in getattr(self.motor_contract, "categories", ())}
+        return motor_labels.get(value, self._transformer_categories.get(value, value))
+
+    def _show_motor_record(self, snapshot, result, inputs):
+        from ....application.services.motor_basis_formatter import format_motor_basis_lines
+        category = inputs.get("category_id") or snapshot.product_category
+        contract = self.motor_contract
+        if contract is None:
+            # 仅读取静态字段标签，不加载标准包或重新运行算法。
+            from ....application.services.motor_analysis_service import get_motor_input_contract
+            contract = get_motor_input_contract()
+        label = next((item.label for item in contract.categories
+                      if item.category_id == category), snapshot.product_category)
+        lines = [f"采用标准：{snapshot.standard_code}",
+                 f"设备类别：{label}", f"评价日期：{snapshot.as_of}",
+                 f"评价结论：{result.get('ui_conclusion') or snapshot.ui_conclusion}"]
+        if result.get("support_status") == "IMPLEMENTED":
+            lines.append("软件状态：已接入，尚待正式支持验收。")
+        for field in contract.visible_fields(category):
+            value = inputs.get(field.field_id)
+            if value is None or value == "":
+                continue
+            choices = dict(contract.options(category, field.field_id))
+            if field.field_id == "efficiency_basis_status":
+                choices["AS_DECLARED_BY_FIELD"] = "按字段要求填报"
+            value = choices.get(value, value)
+            unit = f"（{field.unit}）" if field.unit else ""
+            lines.append(f"{field.label}{unit}：{value}")
+        for level, value in (result.get("thresholds") or {}).items():
+            if not isinstance(value, dict):
+                continue
+            if value.get("state") == "AVAILABLE":
+                lines.append(f"{level[-1]}级效率限值：{value.get('display_text', '')}%")
+            elif value.get("state") == "NO_INDICATOR":
+                lines.append(f"{level[-1]}级效率限值：—（标准无指标）")
+        if result.get("explanation"):
+            lines.append(result["explanation"])
+        lines.extend(format_motor_basis_lines(result.get("trace", ())))
+        lines.append(f"保存时间：{snapshot.finalized_at_utc}")
+        text = "\n".join(lines)
+        self.detail.setText(text)
+        return text
 
     def _show_transformer_record(self, snapshot, result, input_snapshot) -> str:
         """展示变压器记录的冻结快照，不调用计算服务。"""
@@ -733,7 +775,9 @@ class RecordsPage(QWidget):
             # Phase 3/4 期间形成的 chemical Record 快照里是
             # `NOT_IN_RELEASE_SCOPE`，这里就显示"当前版本未支持"，
             # 不会被追溯改成"正式支持"。不重算、不改写 snapshot。
-            ("支持状态", support_status_text(result.get("support_status"))),
+            (("开发状态", "已接入，尚待正式支持验收")
+             if result.get("support_status") == "IMPLEMENTED"
+             else ("支持状态", support_status_text(result.get("support_status")))),
             ("规则集标识", standard.get("rule_profile") or snapshot.ruleset_version or "—"),
             ("标准包", standard.get("pack_id") or "—"),
             ("数据版本", snapshot.canonical_version or "—"),

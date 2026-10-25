@@ -31,10 +31,11 @@ Phase 7：普通用户界面没有「分析草稿」概念，因此本页不提�
 """
 
     def __init__(self, service, navigator=None, parent: QWidget | None = None,
-                 *, transformer=None):
+                 *, transformer=None, motor=None):
         super().__init__(parent)
         self.service = service
         self.transformer_service = transformer
+        self.motor_service = motor
         self.navigator = navigator
         self._record_ids: list[str] = []
 
@@ -54,7 +55,7 @@ Phase 7：普通用户界面没有「分析草稿」概念，因此本页不提�
         self.standard_label.setTextFormat(Qt.TextFormat.PlainText)
         layout.addWidget(self.standard_label)
 
-        primary = QHBoxLayout()
+        primary = QVBoxLayout() if motor is not None else QHBoxLayout()
         self.new_analysis_button = QPushButton("开始新的离心泵分析")
         self.new_analysis_button.clicked.connect(self._start_new_analysis)
         primary.addWidget(self.new_analysis_button)
@@ -63,6 +64,11 @@ Phase 7：普通用户界面没有「分析草稿」概念，因此本页不提�
             self._start_new_transformer_analysis)
         self.new_transformer_analysis_button.setVisible(transformer is not None)
         primary.addWidget(self.new_transformer_analysis_button)
+        self.new_motor_analysis_button = QPushButton("开始电动机分析（验收候选）")
+        self.new_motor_analysis_button.setVisible(motor is not None)
+        self.new_motor_analysis_button.clicked.connect(
+            lambda: self.navigator.open_analysis(standard_code="GB 18613-2020") if self.navigator else None)
+        primary.addWidget(self.new_motor_analysis_button)
         self.open_standard_button = QPushButton("查看标准库")
         self.open_standard_button.clicked.connect(self._open_standard)
         primary.addWidget(self.open_standard_button)
@@ -110,6 +116,11 @@ Phase 7：普通用户界面没有「分析草稿」概念，因此本页不提�
                 lines.append("软件状态：已接入，尚待正式支持验收")
             else:
                 lines.append("软件状态：当前状态以软件记录为准")
+        if self.motor_service is not None:
+            motor = self.motor_service.standard_overview()
+            lines.extend(("", "电动机（接入验收候选）",
+                          f"标准号：{motor['standard_code']}", f"标准名称：{motor['name']}",
+                          "软件状态：已接入候选，尚待正式支持验收"))
         self.standard_label.setText("\n".join(lines))
 
         self._record_ids = []

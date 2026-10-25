@@ -1,8 +1,9 @@
 """审计机器标准包的来源追溯覆盖情况。
 
 该工具是只读的。它不会根据标准编号猜测页码，也不会改写标准JSON；
-它只统计标准包、数据记录、data_id和来源页码的现有覆盖情况，便于后续
-逐包补录PDF页码时校对。PMSM的29张表仍由其专用复核/激活工具负责。
+它分别统计ID+页码和ID+可复核定位。工作簿记录的定位要求来源文件身份
+（路径及SHA-256）与sheet/cell，不把单元格地址转成PDF页码。PMSM的29张
+表仍由其专用复核/激活工具负责。
 
 用法：
     python tools/audit_standard_provenance.py
@@ -47,6 +48,9 @@ SOURCE_HINTS = {
 
 PAGE_KEYS = ("source_page", "source_pages", "pdf_page", "pages")
 ID_KEYS = ("data_id", "record_id", "rule_id")
+SOURCE_ROW_ID_KEY = "source_row_id"
+SOURCE_STATE_KEYS = ("source_state",)
+_SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
 # 这些字段是人工复核/激活的门禁元数据，不是标准值记录。尤其是
 # GB 30253-2024 的 activation_review 会为表1/55 kW/12极的三个无数据
 # 单元格保留复核证据；若把它们再次遍历，会造成记录数和缺失ID统计重复。
@@ -69,13 +73,23 @@ class PackProvenance:
     resource: str
     source_hint: str
     source_hint_matches: list[str]
+    source_location_kind: str
+    source_file_path: str
+    source_file_sha256: str
+    source_file_identity_complete: bool
     record_count: int
     records_with_id: int
     records_with_page: int
     records_with_id_and_page: int
+    records_with_sheet_cell: int
+    records_with_location: int
+    records_with_id_and_location: int
+    records_with_source_state: int
+    records_by_source_state: dict[str, int]
     package_level_page: str
     missing_record_id_count: int
     missing_record_page_count: int
+    missing_record_location_count: int
     note: str
 
 
@@ -110,17 +124,61 @@ def _has_page(value: dict[str, Any]) -> bool:
     return any(value.get(key) not in (None, "", [], {}) for key in PAGE_KEYS)
 
 
+def _has_id(value: dict[str, Any]) -> bool:
+    return any(value.get(key) not in (None, "") for key in (*ID_KEYS, SOURCE_ROW_ID_KEY))
+
+
+def _source_identity(payload: dict[str, Any]) -> tuple[str, str, bool, str]:
+    """Return source locator kind, file identity and its declared completeness."""
+
+    source_files = payload.get("source_files")
+    source_files = source_files if isinstance(source_files, dict) else {}
+    workbook = source_files.get("source_workbook")
+    if not isinstance(workbook, dict):
+        workbook = payload.get("source_workbook")
+    if isinstance(workbook, dict):
+        path = str(workbook.get("path") or workbook.get("filename") or "").strip()
+        digest = str(workbook.get("sha256") or "").strip()
+        complete = bool(path and _SHA256_RE.fullmatch(digest))
+        return "workbook_sheet_cell", path, complete, digest
+
+    source_file = payload.get("source_file")
+    path = str(source_file).strip() if isinstance(source_file, str) else ""
+    if path.lower().endswith((".xlsx", ".xlsm", ".xls")):
+        digest = str(payload.get("source_file_sha256") or "").strip()
+        complete = bool(path and _SHA256_RE.fullmatch(digest))
+        return "workbook_sheet_cell", path, complete, digest
+    if path.lower().endswith(".pdf"):
+        return "pdf_page", "", False, ""
+    return "page", "", False, ""
+
+
+def _has_sheet_cell(value: dict[str, Any]) -> bool:
+    return all(value.get(key) not in (None, "") for key in ("source_sheet", "source_cell"))
+
+
+def _has_location(value: dict[str, Any], inherited_page: str, *,
+                   source_location_kind: str,
+                   source_file_identity_complete: bool) -> bool:
+    if source_location_kind == "workbook_sheet_cell":
+        return source_file_identity_complete and _has_sheet_cell(value)
+    # For PDF and legacy page-based packages, only an explicit/inherited page
+    # counts. A worksheet cell is never interpreted as a PDF page.
+    return _has_page(value) or bool(inherited_page)
+
+
 def _is_record(value: dict[str, Any]) -> bool:
     """识别可能承载标准值的对象，避免把根元数据算作记录。"""
 
     # 表/容器对象本身可能同时带有表号和页码；真正的记录在其rows、
     # records或segments子列表中，不能把容器再算一遍。
-    if any(key in value for key in ("rows", "records", "segments", "tables", "devices", "table8")):
+    if any(key in value for key in (
+            "rows", "records", "segments", "tables", "devices", "table8", "branches")):
         return False
     if isinstance(value.get("ci"), list) and not any(value.get(key) not in (None, "") for key in ID_KEYS):
         # 清水泵根对象的ci是记录列表；单条ci记录通常带有data_id。
         return False
-    if any(value.get(key) not in (None, "") for key in ID_KEYS):
+    if _has_id(value):
         return True
     keys = set(value)
     if keys & METRIC_KEYS:
@@ -159,6 +217,10 @@ def audit(manifest_path: Path = MANIFEST, source_dir: Path | None = None) -> dic
             payload: dict[str, Any] = {}
         else:
             payload = json.loads(source.read_text(encoding="utf-8"))
+        location_kind, source_file_path, source_identity_complete, source_file_sha256 = (
+            _source_identity(payload) if isinstance(payload, dict)
+            else ("pdf_page", "", False, "")
+        )
         # 多个内部类型会复用一个JSON。按manifest内部类型取子树，避免把
         # HVAC五类或离心泵水/化工两类重复计入同一个标准包。
         scoped_payload: Any = payload
@@ -171,23 +233,52 @@ def audit(manifest_path: Path = MANIFEST, source_dir: Path | None = None) -> dic
             scoped_payload = payload["chemical"]
         record_pairs = list(_iter_records(scoped_payload))
         records = [item for item, _ in record_pairs]
-        with_ids = sum(1 for item in records if any(item.get(key) not in (None, "") for key in ID_KEYS))
+        with_ids = sum(1 for item in records if _has_id(item))
         with_pages = sum(1 for item, inherited_page in record_pairs if _has_page(item) or inherited_page)
         package_pages = next((str(payload.get(key)) for key in PAGE_KEYS if payload.get(key) not in (None, "", [], {})), "")
         with_id_and_page = sum(
             1 for (item, inherited_page) in record_pairs
-            if any(item.get(key) not in (None, "") for key in ID_KEYS)
+            if _has_id(item)
             and (_has_page(item) or inherited_page)
         )
+        with_sheet_cell = sum(1 for item in records if _has_sheet_cell(item))
+        with_location = sum(
+            1 for item, inherited_page in record_pairs
+            if _has_location(
+                item, inherited_page,
+                source_location_kind=location_kind,
+                source_file_identity_complete=source_identity_complete,
+            )
+        )
+        with_id_and_location = sum(
+            1 for item, inherited_page in record_pairs
+            if _has_id(item) and _has_location(
+                item, inherited_page,
+                source_location_kind=location_kind,
+                source_file_identity_complete=source_identity_complete,
+            )
+        )
+        by_source_state: dict[str, int] = {}
+        for item in records:
+            state = next((str(item.get(key)) for key in SOURCE_STATE_KEYS
+                          if item.get(key) not in (None, "")), "")
+            if state:
+                by_source_state[state] = by_source_state.get(state, 0) + 1
+        with_source_state = sum(by_source_state.values())
         missing_id = len(records) - with_ids
         missing_page = len(records) - with_pages
+        missing_location = len(records) - with_location
         note_parts: list[str] = []
         if not records:
             note_parts.append("未识别到标准值记录")
         if missing_id:
             note_parts.append("部分记录没有显式data_id（校对册可使用稳定路径ID，机器包仍建议补录）")
-        if missing_page:
+        if missing_page and location_kind == "workbook_sheet_cell":
+            note_parts.append("工作簿来源以文件身份+sheet/cell追溯，不将单元格映射为PDF页码")
+        elif missing_page:
             note_parts.append("部分记录没有记录级PDF页码；未据此推断页码")
+        if missing_location:
+            note_parts.append("部分记录没有可复核定位；工作簿定位需来源文件路径/SHA-256及sheet/cell")
         if str(entry.get("status", "")) == "normalized":
             note_parts.append("标准包未激活，来源覆盖不改变激活门禁")
         rows.append(
@@ -199,27 +290,43 @@ def audit(manifest_path: Path = MANIFEST, source_dir: Path | None = None) -> dic
                 resource=str(source),
                 source_hint=hint,
                 source_hint_matches=matches,
+                source_location_kind=location_kind,
+                source_file_path=source_file_path,
+                source_file_sha256=source_file_sha256,
+                source_file_identity_complete=source_identity_complete,
                 record_count=len(records),
                 records_with_id=with_ids,
                 records_with_page=with_pages,
                 records_with_id_and_page=with_id_and_page,
+                records_with_sheet_cell=with_sheet_cell,
+                records_with_location=with_location,
+                records_with_id_and_location=with_id_and_location,
+                records_with_source_state=with_source_state,
+                records_by_source_state=by_source_state,
                 package_level_page=package_pages,
                 missing_record_id_count=missing_id,
                 missing_record_page_count=missing_page,
+                missing_record_location_count=missing_location,
                 note="；".join(note_parts),
             )
         )
     complete = [row for row in rows if row.record_count and row.records_with_id_and_page == row.record_count]
+    complete_location = [
+        row for row in rows
+        if row.record_count and row.records_with_id_and_location == row.record_count
+    ]
     return {
         "manifest": str(manifest_path),
         "source_dir": str(Path(source_dir).resolve()) if source_dir else "",
         "pack_count": len(rows),
         "packs_with_complete_record_id_and_page": len(complete),
+        "packs_with_complete_record_id_and_location": len(complete_location),
         "warnings": warnings,
         "packs": [asdict(row) for row in rows],
         "interpretation": (
-            "本报告只反映机器标准包中已经登记的来源字段；缺少页码不代表标准值错误，"
-            "也不允许按标准编号或相邻表格猜测页码。"
+            "本报告只反映机器标准包中已经登记的来源字段。页码指标只统计明确登记的PDF页码，"
+            "不从sheet/cell推断页码；工作簿记录的可复核定位要求来源文件路径与SHA-256、"
+            "sheet和cell齐全。缺少页码不代表标准值错误，也不允许按标准编号或相邻表格猜测页码。"
         ),
     }
 
@@ -232,21 +339,33 @@ def _markdown(report: dict[str, Any]) -> str:
         "",
         f"- 标准包数：{report['pack_count']}",
         f"- 记录ID和记录级页码均完整的标准包：{report['packs_with_complete_record_id_and_page']}",
+        f"- 记录ID和可复核定位均完整的标准包：{report['packs_with_complete_record_id_and_location']}",
         f"- 外部来源目录：{report.get('source_dir') or '未指定'}",
         "",
-        "| 内部类型 | 标准 | 状态 | 记录数 | 有ID | 有页码 | ID+页码 | 待补记录ID | 待补记录页码 | 来源文件提示 |",
-        "|---|---|---|---:|---:|---:|---:|---:|---:|---|",
+        "| 内部类型 | 标准 | 状态 | 记录数 | 有ID | 有PDF页码 | ID+页码 | 有sheet/cell | ID+定位 | 待补ID | 待补页码 | 待补定位 | 来源身份/提示 |",
+        "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|",
     ]
     for item in report["packs"]:
         matches = "、".join(item["source_hint_matches"]) or item["source_hint"] or "未配置"
+        if item["source_file_path"]:
+            identity = item["source_file_path"]
+            if item["source_file_sha256"]:
+                identity += f" SHA-256 {item['source_file_sha256']}"
+            if not item["source_file_identity_complete"]:
+                identity += "（身份不完整）"
+            source_summary = identity
+        else:
+            source_summary = matches
         lines.append(
             f"| {item['device_type']} | {item['standard_code']} | {item['status']} | "
             f"{item['record_count']} | {item['records_with_id']} | {item['records_with_page']} | "
-            f"{item['records_with_id_and_page']} | {item['missing_record_id_count']} | "
-            f"{item['missing_record_page_count']} | {matches} |"
+            f"{item['records_with_id_and_page']} | {item['records_with_sheet_cell']} | "
+            f"{item['records_with_id_and_location']} | {item['missing_record_id_count']} | "
+            f"{item['missing_record_page_count']} | {item['missing_record_location_count']} | "
+            f"{source_summary} |"
         )
         if item["note"]:
-            lines.append(f"| 备注 | {item['note']} | | | | | | | | |")
+            lines.append(f"| 备注 | {item['note']} | | | | | | | | | | | |")
     if report["warnings"]:
         lines.extend(["", "## 审计警告", ""])
         lines.extend(f"- {item}" for item in report["warnings"])

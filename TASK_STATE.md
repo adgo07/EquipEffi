@@ -5,7 +5,13 @@
 - 路线：EquipEffi V2.3；默认分支：`master`。
 - Phase 0 为不可变基线；Phase 1–7 已独立验收（PR #10–#15）。Phase 8（GB 19762 Excel 批量评价）已合并 PR [#16](https://github.com/adgo07/EquipEffi/pull/16)，merge SHA `64b656ee4924fbf09f3fd87596ef1a1a779d1f09`；当前为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`。不得自行声明 `PHASE_8_PASS`，不得开始 Phase 9。
 
-## 当前工作：变压器接入最终复核（2026-10-23）
+## 当前工作：电动机接入工程验收收口（2026-10-25）
+
+Owner确认PR35代码/工程验收通过，授权结束Draft、顺序合并并从最终合并代码重建候选包。PR33@a3e90d92、PR34@32f7da5f已合并。55d66f6d完整Windows CI run40183041126：1191项通过、真实exit0，QA-MOTOR-001/002按工程范围关闭。详见现有[实施记录](docs/standards/gb18613_2020/IMPLEMENTATION_REPORT.md)。
+
+候选仍显式--motor-candidate，默认泵/变压器及V6.1不变，不提升SUPPORTED或发布范围。旧d03fe1cf包只保留历史人工证据，不能作为本轮成品；最终包的启动/批量输出/历史打开单独验证。无干净Windows限制保留。
+
+## 历史工作：变压器接入最终复核（2026-10-23）
 
 Owner已批准下一版本纳入GB 20052—2024、25列方案并授权实施、验收后顺序合并。设计PR [#29](https://github.com/adgo07/EquipEffi/pull/29)已合并于`4ae97dac2397756094e56565eb79062bcc3e6a51`；内核PR [#30](https://github.com/adgo07/EquipEffi/pull/30)及产品PR [#31](https://github.com/adgo07/EquipEffi/pull/31)按已授权顺序在最终CI成功后依次合并；实际合并状态以对应PR为准。
 
@@ -54,3 +60,7 @@ PR33设计复审修订：已吸收两份评审的旧链退出、固定批次说�
 ## GB 18613 文档交付修正（2026-10-24）
 
 A.2规则修订和证据正式归档已整合到PR #32分支；范围、独立差异复核、最终文件SHA及提交状态见[交付记录](docs/governance/gb18613_acceptance_20261024/DELIVERY.md)。不改生产、标准源表、Golden、Phase或支持状态，不恢复退役治理文件。
+
+2026-10-25两份独立意见已核实修复：设计5bedb16e、内核e854ef73已推送并同步产品；修复与56项产品定向复验见[审查修复记录](docs/standards/gb18613_2020/PR33_PR34_REVIEW_FIXES.md)。00e27733完整CI 1178项及进程退出已成功，QA-MOTOR-004关闭；本轮集成另触发CI。未合并PR、未提升SUPPORTED或发布。
+
+2026-10-25 PR35第二轮真实文件意见：修复百分比格式、缺输出格扩展行、合法终态批次来源及说明精度问题，补历史成熟度中文提示。独立21项复验通过；旧报告针对00e27733，不重复处理已由924c13a2修复的内核问题。整体QA-MOTOR-001/002保持OPEN，新Head完整CI单独核验，未合并或发布。详情沿用实施记录。

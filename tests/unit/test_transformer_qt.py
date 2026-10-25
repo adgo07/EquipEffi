@@ -309,8 +309,8 @@ class TransformerQtTests(unittest.TestCase):
                  "data_row_count": 1, "evaluated_quantity": 1,
                  "sheet_id": "centrifugal_pump"},
                 {"sheet_name": "变压器", "standard_code": "GB 20052-2024",
-                 "data_row_count": 1, "evaluated_quantity": 1,
-                 "sheet_id": "transformer"},
+                 "data_row_count": 1, "evaluated_quantity": 4, "total_quantity": 4,
+                 "conclusion_quantities": {"1级": 4}, "sheet_id": "transformer"},
             ], "unprocessed_sheets": ["电动机"]},
         )
         page = self._track(RecordsPage(
@@ -321,6 +321,9 @@ class TransformerQtTests(unittest.TestCase):
         self.assertIn("GB 19762-2025、GB 20052-2024", text)
         self.assertIn("离心泵、变压器", text)
         self.assertIn("未处理工作表：电动机", text)
+        self.assertIn("变压器：共 4 台（数据 1 行）", text)
+        self.assertIn("1级 4 台；2级 0 台；3级 0 台", text)
+        self.assertIn("总台数未记录", text)  # 旧泵快照不得由行数补造台数。
 
     def test_batch_summary_names_sheet_for_issues_and_reports_unprocessed(self):
         page = self._track(BatchPage(object()))
@@ -333,7 +336,8 @@ class TransformerQtTests(unittest.TestCase):
             unevaluated_rows=1,
             conclusion_quantities={"符合能效1级要求": 1},
             sheets=[{"sheet_name": "变压器", "data_row_count": 1,
-                     "evaluated_quantity": 1, "sheet_id": "transformer"}],
+                     "evaluated_quantity": 6, "total_quantity": 6,
+                     "conclusion_quantities": {"2级": 6}, "sheet_id": "transformer"}],
             unprocessed_sheets=("电动机",),
             issues=[SimpleNamespace(row_number=8, kind="INPUT_ERROR",
                                     reason="额定容量无效", sheet_name="变压器")],
@@ -347,6 +351,8 @@ class TransformerQtTests(unittest.TestCase):
         self.assertIn("变压器", text)
         self.assertIn("未处理工作表：电动机", text)
         self.assertIn("变压器 · 第 8 行", text)
+        self.assertIn("变压器：共 6 台（数据 1 行）", text)
+        self.assertIn("1级 0 台；2级 6 台；3级 0 台", text)
         self.assertNotIn("transformer", text)
         self.assertNotIn("MULTI", text)
 

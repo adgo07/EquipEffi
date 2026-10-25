@@ -31,7 +31,7 @@ from .tokens import TOKENS
 
 class MainWindow(QMainWindow):
     def __init__(self, settings: SettingsService, analysis=None, *,
-                 batch=None, transformer=None, workspace_id: str | None = None, app_version: str = "",
+                 batch=None, transformer=None, motor=None, workspace_id: str | None = None, app_version: str = "",
                  data_location=None, external_launch_context=None):
         super().__init__()
         self.settings = settings
@@ -43,6 +43,8 @@ class MainWindow(QMainWindow):
             "设备能效分析工具 · 离心泵与电力变压器能效分析"
             if transformer is not None
             else "设备能效分析工具 · GB 19762—2025 离心泵能效分析")
+        if motor is not None:
+            self.setWindowTitle("设备能效分析工具 · 电动机接入验收候选")
         self.resize(1000, 700)
         # 允许用户把窗口缩小；页面内容由各自的滚动区域承载，
         # 不得让内容的最小宽度把窗口锁在大尺寸上。
@@ -60,16 +62,19 @@ class MainWindow(QMainWindow):
         self.pages = QStackedWidget()
 
         # 所有页面都真实构建；analysis 为 None 时仍构建（用于仅设置/关于场景）。
-        self.home_page = (HomePage(analysis, self, transformer=transformer)
+        self.home_page = (HomePage(analysis, self, transformer=transformer, motor=motor)
                           if analysis is not None else None)
-        self.standards_page = (StandardsPage(analysis, self, transformer=transformer)
+        self.standards_page = (StandardsPage(analysis, self, transformer=transformer, motor=motor)
                                if analysis is not None else None)
         # Phase 7：普通流程没有草稿概念，分析页不接收 workspace_id。
         self.analysis_page = AnalysisPage(analysis, navigator=self) if analysis is not None else None
         self.transformer_analysis_page = (
             TransformerAnalysisPage(transformer) if transformer is not None else None)
+        from .pages.motor_analysis import MotorAnalysisPage
+        self.motor_analysis_page = MotorAnalysisPage(motor) if motor is not None else None
         self.device_analysis_page = (
-            DeviceAnalysisPage(self.analysis_page, self.transformer_analysis_page)
+            DeviceAnalysisPage(self.analysis_page, self.transformer_analysis_page,
+                               motor_page=self.motor_analysis_page)
             if self.analysis_page is not None and self.transformer_analysis_page is not None
             else None)
         # Phase 8：批量评价页只在装配了批量服务时构建（Excel 仍是 adapter 表面）。
@@ -83,11 +88,11 @@ class MainWindow(QMainWindow):
             self.batch_page.background_idle.connect(self._finish_deferred_close)
         self.records_page = (
             RecordsPage(analysis, navigator=self, batch=batch,
-                        transformer=transformer)
+                        transformer=transformer, motor=motor)
             if analysis is not None else None)
         self.settings_page = SettingsPage(settings, analysis, app_version=self.app_version,
                                          data_location=data_location, navigator=self,
-                                         transformer=transformer)
+                                         transformer=transformer, motor=motor)
 
         self._page_widgets = {
             "首页": self.home_page,

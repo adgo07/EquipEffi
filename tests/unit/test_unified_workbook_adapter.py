@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import Mock
 from xml.etree import ElementTree as ET
 from zipfile import ZIP_DEFLATED, ZipFile
 
@@ -266,10 +267,12 @@ class UnifiedWorkbookAdapterTests(unittest.TestCase):
         self.assertEqual(formula_row.values["standard_conditions"], "")
         self.assertEqual(formula_row.values["no_load_loss_w"], "")
         application = object.__new__(WorkbookEvaluationService)
+        application.transformer = Mock()
         summary = BatchEvaluationSummary(data_row_count=1)
         outcome = application._transformer_row(formula_row, date.today(), summary, [])
         self.assertEqual(outcome.evaluation_status, "INVALID_INPUT")
         self.assertTrue(outcome.is_input_error)
+        application.transformer.evaluate.assert_not_called()
         self.assertEqual(summary.total_quantity, 1)
         self.assertEqual(summary.input_error_rows, 1)
 

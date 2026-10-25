@@ -2,7 +2,7 @@
 """
 tools/extract_standards.py - 标准数据提取（V1.11标准sheet → JSON + 校对表Excel）
 
-第一批：变压器、低压电动机、空压机、清水泵/化工泵（GB 19762公式系数单独处理）
+第一批：变压器、空压机、清水泵/化工泵（GB 19762公式系数单独处理）
 
 用法：
     python tools/extract_standards.py [设备key...]    # 缺省=全部第一批
@@ -95,68 +95,6 @@ def extract_transformer(wb) -> dict:
     }
 
 
-# ============ 低压电动机 ============
-def extract_motor_lv(wb) -> dict:
-    ws = wb["电动机标准"]
-    # 实际结构（A列空，数据从B列起）：
-    # R3: [空, 额定功率/kW, 效率%...]
-    # R4: [空, 空, 1级, 空, 空, 空, 2级, 空, 空, 空, 3级, ...]
-    # R5: [空, 极数, 2, 4, 6, 8, 2, 4, 6, 8, 2, 4, 6, 8]
-    # R6+: [空, 0.12, 71.4, 74.3, ...]
-    poles = None
-    rows = []
-    for i, r in enumerate(ws.iter_rows(min_row=3, max_col=14), start=3):
-        vals = [c.value for c in r]
-        if i == 3:
-            continue  # 表头行
-        if i == 4:
-            continue  # 等级行
-        if i == 5:
-            poles = vals
-            continue
-        power = vals[1]  # B列
-        if power is None:
-            continue
-        try:
-            power_f = float(power)
-        except (TypeError, ValueError):
-            continue
-        # 极数去重（每组等级重复）
-        pole_list = []
-        for p in (poles[2:14] or []):
-            s = str(p).strip()
-            if s and int(float(s)) not in pole_list:
-                pole_list.append(int(float(s)))
-        # 效率按列序：1级[2,4,6,8] 2级[2,4,6,8] 3级[2,4,6,8]
-        eff = {}
-        n = len(pole_list)
-        for j in range(2, 14):
-            v = vals[j]
-            lv = str((j - 2) // n + 1)
-            idx = (j - 2) % n
-            f = None
-            if v not in (None, "", "—", "-"):
-                try:
-                    f = float(v)
-                except (TypeError, ValueError):
-                    f = None
-            eff.setdefault(lv, {})[idx] = f
-        rows.append({
-            "power_kw": power_f,
-            "efficiency": eff,
-        })
-    return {
-        "standard_code": "GB 18613-2020",
-        "standard_name": "电动机能效限定值及能效等级",
-        "effective_date": "2021-06-01",
-        "mode": "poles",
-        "dims": pole_list,
-        "levels": ["1", "2", "3"],
-        "unit_note": "效率单位%；efficiency: {等级: {极数索引: 效率}}",
-        "rows": rows,
-    }
-
-
 # ============ 空压机（GB 19153-2019，4张表） ============
 # V1.11"空压机标准"sheet横向布局了4张表：
 #   表1 A~N   一般用喷油回转（工频）     功率/等级/压力0.3~1.25×风冷液冷
@@ -223,7 +161,6 @@ def extract_compressor(wb) -> dict:
 
 EXTRACTORS = {
     "transformer": extract_transformer,
-    "motor_lv": extract_motor_lv,
     "compressor": extract_compressor,
 }
 
@@ -250,18 +187,6 @@ def build_review_xlsx(data_map: dict, out_path: Path):
                 if row["suspicious"]:
                     for c in range(6, 12):
                         ws.cell(ws.max_row, c + 1).font = red_font
-        elif key == "motor_lv":
-            heads = ["额定功率kW", "2极1级", "2极2级", "2极3级", "4极1级", "4极2级", "4极3级",
-                     "6极1级", "6极2级", "6极3级", "8极1级", "8极2级", "8极3级", "校对状态", "备注"]
-            ws.append(heads)
-            for row in data["rows"]:
-                e = []
-                for lv in ("1", "2", "3"):
-                    for idx in range(4):
-                        e.append(row["efficiency"].get(lv, {}).get(idx))
-                # 列顺序：2极(3个等级) 4极(3个) 6极(3个) 8极(3个)
-                ws.append([row["power_kw"], e[0], e[4], e[8], e[1], e[5], e[9],
-                           e[2], e[6], e[10], e[3], e[7], e[11], "待校对", ""])
         elif key == "compressor":
             heads = ["表", "类型", "功率kW", "等级", "排气压力MPa", "冷却方式", "比功率kW/(m³/min)",
                      "校对状态", "备注"]
@@ -272,7 +197,6 @@ def build_review_xlsx(data_map: dict, out_path: Path):
                 v = row["specific_power"]
                 ws.append([row["table"], row["type"], row["power_kw"], row["level"],
                            row["pressure_mpa"], row["cooling"], v if v is not None else "—", "待校对", ""])
-                # 可疑：同表同压力同冷却、相邻功率档比功率跳变>25%（比功率随功率递减，跳变应≤25%）
                 if prev and prev["t"] == row["table"] and prev["p"] == row["pressure_mpa"] \
                         and prev["c"] == row["cooling"] and prev["l"] == row["level"] \
                         and prev["v"] and v and prev["v"] > 0:

@@ -1,14 +1,15 @@
-"""旧兼容评价服务中其余设备的内部评价器注册表。
+"""Internal compatibility evaluator registrations.
 
-公开接口与内部profile路由仍由``device_types``定义；本模块只负责将仍由
-旧兼容服务承载的内部profile绑定到评价器。变压器正式评价走
-``domain.devices.transformer.TransformerCalculator``及其Application服务。
+GB 18613 now delegates to its dedicated calculator. The older shared MotorEvaluator
+remains only for the GB 30254 high-voltage profile; PMSM keeps its own evaluator.
 """
-
 from __future__ import annotations
 
 from typing import Any, Callable
 
+from ..common.enums import Conclusion
+from ..common.models import EvaluationResult
+from ..devices.motor.calculator import Gb18613MotorCalculator
 from .evaluators.boiler import BoilerEvaluator
 from .evaluators.blower import BlowerEvaluator
 from .evaluators.compressor import CompressorEvaluator
@@ -20,8 +21,61 @@ from .evaluators.pump import ChemicalPumpEvaluator, WaterPumpEvaluator
 from .evaluators.submersible import SubmersibleEvaluator
 
 
+_CONCLUSIONS = {
+    "LEVEL_1": Conclusion.LEVEL_1,
+    "LEVEL_2": Conclusion.LEVEL_2,
+    "LEVEL_3": Conclusion.LEVEL_3,
+    "NOT_COMPLIANT": Conclusion.NOT_COMPLIANT,
+    "OUT_OF_SCOPE": Conclusion.OUT_OF_SCOPE,
+    "UNABLE_TO_JUDGE": Conclusion.UNABLE_TO_JUDGE,
+}
+
+
+class Gb18613EvaluatorAdapter:
+    """Thin legacy result adapter over the single GB18613 calculator."""
+
+    def __init__(self):
+        self._calculator = Gb18613MotorCalculator()
+
+    def evaluate(self, values: dict[str, Any], pack: dict[str, Any]) -> EvaluationResult:
+        result = self._calculator.evaluate(values, pack)
+        conclusion = _CONCLUSIONS.get(
+            result.conclusion, Conclusion.UNABLE_TO_JUDGE)
+        thresholds = dict(result.thresholds)
+        limits = {
+            f"{index}级效率_%": (
+                item.get("display_text")
+                if item.get("state") == "AVAILABLE"
+                else "—" if item.get("state") == "NO_INDICATOR" else None
+            )
+            for index, item in (
+                (1, thresholds.get("grade_1", {})),
+                (2, thresholds.get("grade_2", {})),
+                (3, thresholds.get("grade_3", {})),
+            )
+        }
+        measured = values.get("measured_efficiency_pct")
+        return EvaluationResult(
+            record_id=str(values.get("record_id", "")),
+            conclusion=conclusion,
+            actual_metrics={"实测效率_%": measured} if measured not in (None, "") else {},
+            limits=limits,
+            lookups=[dict(item) for item in result.trace],
+            trace=[dict(item) for item in result.trace],
+            missing_fields=list(result.missing_fields),
+            standard_reference=dict(result.references),
+            explanation=result.explanation,
+            public_device_type="motor",
+            internal_device_type="motor_lv",
+            support_status="IMPLEMENTED",
+            evaluation_status=result.evaluation_status,
+            grade=result.grade,
+            issue_codes=list(result.reason_codes),
+        )
+
+
 EVALUATOR_FACTORIES: dict[str, Callable[[], Any]] = {
-    "motor_lv": lambda: MotorEvaluator("motor_lv"),
+    "motor_lv": Gb18613EvaluatorAdapter,
     "motor_hv": lambda: MotorEvaluator("motor_hv"),
     "motor_pmsm": lambda: PmsmEvaluator("motor_pmsm"),
     "compressor": CompressorEvaluator,

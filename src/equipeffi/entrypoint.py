@@ -11,6 +11,8 @@ from typing import Sequence
 def _runtime_status() -> dict[str, object]:
     """检查Qt、统一模板和设备实现，不创建窗口或用户数据库。"""
 
+    from .composition import motor_candidate_enabled
+    motor_enabled = motor_candidate_enabled()
     desktop: dict[str, object] = {"surface": "PySide6 Qt", "available": False}
     try:
         from PySide6 import QtWidgets
@@ -35,7 +37,13 @@ def _runtime_status() -> dict[str, object]:
 
         template["template_id"] = V61_TEMPLATE_IDENTITY["template_id"]
         template["template_version"] = V61_TEMPLATE_IDENTITY["template_version"]
-        validation = V61TransformerTemplateResource().validate()
+        resource = V61TransformerTemplateResource()
+        if motor_enabled:
+            from .infrastructure.excel.template_resource import V62_TEMPLATE_IDENTITY, V62MotorTemplateResource
+            template.update(template_id=V62_TEMPLATE_IDENTITY["template_id"],
+                            template_version=V62_TEMPLATE_IDENTITY["template_version"])
+            resource = V62MotorTemplateResource()
+        validation = resource.validate()
         template["available"] = validation.is_valid
         template["issues"] = list(validation.issues)
         if validation.missing_sheets:
@@ -85,11 +93,22 @@ def _runtime_status() -> dict[str, object]:
     except Exception as exc:
         transformer["error"] = f"{type(exc).__name__}: {exc}"
 
+    motor = {"enabled": motor_enabled, "available": False, "support_status": "IMPLEMENTED"}
+    if motor_enabled:
+        try:
+            from .composition import create_motor_analysis_service
+            service = create_motor_analysis_service(with_persistence=False)
+            motor.update(service.standard_overview())
+            motor["available"] = bool(service.input_contract.categories)
+        except Exception as exc:
+            motor["error"] = f"{type(exc).__name__}: {exc}"
+
     ready = (
         bool(desktop["available"])
         and bool(template["available"])
         and all(bool(profile["available"]) for profile in profiles.values())
         and bool(transformer["available"])
+        and (not motor_enabled or bool(motor["available"]))
     )
     return {
         "ready": ready,
@@ -97,6 +116,7 @@ def _runtime_status() -> dict[str, object]:
         "template": template,
         "pump_profiles": profiles,
         "transformer": transformer,
+        "motor": motor,
     }
 
 
@@ -105,6 +125,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="EquipEffi 设备能效分析桌面程序"
     )
+    parser.add_argument("--motor-candidate", action="store_true",
+                        help="启用GB18613电动机接入验收候选（非正式发布能力）")
     parser.add_argument("--qt", action="store_true", help="启动 PySide6 Qt 桌面程序")
     parser.add_argument("--gui", action="store_true", help="启动 PySide6 Qt 桌面程序（--qt 别名）")
     parser.add_argument("--status", action="store_true", help="无界面检查 Qt、统一模板和设备标准包可用性")
@@ -114,6 +136,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="将 --status 的 JSON 写入 UTF-8 文件（适用于无控制台启动）",
     )
     args = parser.parse_args(argv)
+    if args.motor_candidate:
+        import os
+        os.environ["EQUIPEFFI_ENABLE_MOTOR_CANDIDATE"] = "1"
 
     if args.status_file is not None and not args.status:
         parser.error("--status-file 只能与 --status 同时使用")
@@ -134,7 +159,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if sys.stdout is not None:
             print(payload)
         return 0 if status["ready"] else 1
-    if not argv:
+    if not argv or args.motor_candidate:
         from .composition import launch_qt
 
         return launch_qt()

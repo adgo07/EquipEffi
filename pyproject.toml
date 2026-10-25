@@ -35,6 +35,7 @@ equipeffi = [
     "resources/standards/*.json",
     "resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
     "resources/templates/设备能效分析空白模板_重构版V6_1.xlsx",
+    "resources/templates/设备能效分析空白模板_重构版V6_2.xlsx",
 ]
 
 [tool.pytest.ini_options]

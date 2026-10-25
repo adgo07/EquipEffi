@@ -295,7 +295,7 @@ class DeviceAnalysisPage(QWidget):
     """在泵和变压器页面间切换；默认保留原有泵流程。"""
 
     def __init__(self, pump_page: QWidget, transformer_page: TransformerAnalysisPage,
-                 parent: QWidget | None = None):
+                 parent: QWidget | None = None, *, motor_page=None):
         super().__init__(parent)
         self.pump_page = pump_page
         self.transformer_page = transformer_page
@@ -313,12 +313,18 @@ class DeviceAnalysisPage(QWidget):
         self.pages = QStackedWidget()
         self.pages.addWidget(pump_page)
         self.pages.addWidget(transformer_page)
+        self.motor_page = motor_page
+        if motor_page is not None:
+            self.device_selector.addItem("电动机（验收候选）", "motor_lv")
+            self.pages.addWidget(motor_page)
         layout.addWidget(self.pages, 1)
         self.device_selector.currentIndexChanged.connect(self.pages.setCurrentIndex)
         self.device_selector.setCurrentIndex(0)
 
     def select_standard(self, standard_code: str | None) -> None:
-        if standard_code == "GB 20052-2024":
+        if standard_code == "GB 18613-2020" and self.motor_page is not None:
+            self.device_selector.setCurrentIndex(2)
+        elif standard_code == "GB 20052-2024":
             self.device_selector.setCurrentIndex(1)
         elif standard_code == "GB 19762-2025":
             self.device_selector.setCurrentIndex(0)

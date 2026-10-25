@@ -24,3 +24,11 @@
 派生包旧内容摘要：`506DDAD282F09F89CD5F467E34DC552010FABA41714F1AAB5B4DCBBDA0391A85`；新内容摘要：`E0F4A9DC83742CFB22CA746F824DD5398909713064E5EC795828B3EF57AB0EA3`。108 条功率行与 1182 个阈值的全部既有字段不变（1149 数值、32 横杠、1 空白）；只增加 1149 个 display_text，其中 482 个整数值按源格式补 .0。旧记录不重算或回填。
 
 主会话复验：motor unittest 26 项通过（FAIL=0、ERROR=0、SKIP=0）；核心四文件 pytest 24 项、45 个 subtest 通过；11 条 Conformance 向量通过 locked schema 与计算结果核验。包移除新 display_text/integrity 后与旧包全部字段逐项一致。干净 Windows 仍为 NOT_RUN，Owner 已接受先做本机隔离验证的限制。Knowledge capture：无。
+
+## PR35 集成复验
+
+同步 PR33 `5bedb16e` / PR34 `e854ef73`；保留产品输入契约 motor-input.v2、频率文本、正偶数极数和分设备台数。内核内部身份升为v2.0.2，历史不重算。核心/模板/真实Application pytest共43项、75个subtest通过；Qt/真实混合批量/源表边界与源页证据unittest共13项通过；FAIL=0、ERROR=0、SKIP=0。compileall与diff检查通过。Qt页面实际条件提示已验证；新加载层校验、旧链退出、候选开关继续由产品测试覆盖。
+
+V6/V6.1/V6.2各自资源校验成功；V6.2生成器重放SHA仍为D009850015B4C5E132D9FF72D0DDB1649E67AFFEAA8F457B12187466C75CEC0E（372995字节）。未修改模板资产、原映射/校对表或中央锁；100/1000/10000行、两轮再导入、固定输出区冲突均在模板专项中通过。
+
+先前固定产品提交00e27733的完整Windows CI run40180005924已通过1178项并以0退出，QA-MOTOR-004据此关闭。本轮集成新提交另触发CI，不能套用前次CI结果。此前Owner在d03fe1cf的原生/WPS交互通过仅对应该候选，本轮没有宣称重新人工验收或干净Windows通过。

@@ -47,10 +47,11 @@ class MotorInputContractTests(unittest.TestCase):
         self.assertIn("铭牌标称最高转速", efficiency_basis_hint("ac_fan_capacitor_run"))
         self.assertIn("整体效率", efficiency_basis_hint("ac_fan_brushless_dc"))
 
-    def test_category_specific_enum_options(self) -> None:
-        self.assertEqual(options("three_phase_induction", "poles"), (("2", "2极"), ("4", "4极"), ("6", "6极"), ("8", "8极")))
-        self.assertEqual(options("two_value_capacitor", "poles"), (("2", "2极"), ("4", "4极")))
-        self.assertEqual(options("ac_fan_brushless_dc", "poles"), ())
+    def test_poles_are_open_text_inputs(self) -> None:
+        for category in MOTOR_CATEGORIES:
+            self.assertEqual(options(category.category_id, "poles"), ())
+        with self.assertRaises(MotorInputError):
+            options("not-a-motor-category", "poles")
         self.assertEqual(tuple(code for code, _ in BASIS_OPTIONS), ("USER_DECLARED", "NAMEPLATE_ONLY", "KNOWN_NONCONFORMING", "INSEPARABLE_MOTOR_ONLY", "UNKNOWN"))
 
     def test_normalization_preserves_numeric_lexemes_and_basis_evidence(self) -> None:
@@ -63,6 +64,8 @@ class MotorInputContractTests(unittest.TestCase):
         self.assertEqual(normalized["measured_efficiency_pct"], "71.4300")
         self.assertEqual(normalized["efficiency_basis_status"], "AS_DECLARED_BY_FIELD")
         self.assertEqual(normalized["efficiency_basis_raw"], "")
+        frequency_text = normalize_motor_input({"category_id": "three_phase_induction", "rated_frequency_hz": "5~120"})
+        self.assertEqual(frequency_text["rated_frequency_hz"], "5~120")
         explicit = normalize_motor_input({"category_id": "ac_fan_brushless_dc", "efficiency_basis_status": "驱动不可分离但仅有电机本体效率（仅表6）"})
         self.assertEqual(explicit["efficiency_basis_status"], "INSEPARABLE_MOTOR_ONLY")
 

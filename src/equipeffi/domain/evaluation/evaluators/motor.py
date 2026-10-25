@@ -1,4 +1,4 @@
-"""低压、高压和永磁同步电动机评价器。"""
+"""高压与永磁同步电动机评价器；GB 18613由独立Calculator负责。"""
 
 from __future__ import annotations
 
@@ -172,10 +172,9 @@ class MotorEvaluator:
     ) -> dict[str, Any]:
         """Keep the selected motor table and all power rows when power is absent.
 
-        GB 18613-2020/GB 30254-2024 select a table before using rated power
-        plus poles to select a row.  A missing power value must not be replaced
-        with a nearest row; retaining the complete discrete power axis makes
-        the missing-input result auditable and actionable.
+        GB 30254-2024 selects a table before using rated power plus poles to
+        select a row. Missing power is never replaced with a nearest row;
+        retaining the complete discrete power axis makes the result auditable.
         """
 
         all_tables = pack.get("tables") or [pack]
@@ -194,7 +193,7 @@ class MotorEvaluator:
         data_ids: list[str] = []
         available_power_kw: list[str] = []
         for row_index, row in enumerate(rows, start=1):
-            standard_prefix = "GB30254" if self.device_type == "motor_hv" else "GB18613"
+            standard_prefix = "GB30254"
             row_id = str(row.get("data_id") or f"{standard_prefix}-T{table_index:02d}-R{row_index:03d}")
             power_value = str(row.get("power_kw", ""))
             candidate_rows.append({
@@ -228,23 +227,22 @@ class MotorEvaluator:
             "missing_dimension": "额定功率",
             "dimension_label": dimension_label,
         }
-        # 低压GB 18613资源使用包级单页来源；沿用正常查表记录的
-        # ``source_page``键，同时保留统一的``source_pages``字段。
+        # Legacy table packs may store a single source page at pack level.
         if table is pack and raw_pages not in (None, ""):
             lookup["source_page"] = raw_pages
         return lookup
 
     def evaluate(self, values: dict[str, Any], pack: dict[str, Any]) -> EvaluationResult:
+        if self.device_type == "motor_lv":
+            raise RuntimeError("GB 18613-2020 must use Gb18613MotorCalculator.")
         if result := _active_or_unable(values, pack):
             return result
         needed = _missing(values, [("额定功率", ("rated_power_kw", "额定功率")), ("额定效率", ("rated_efficiency", "额定效率"))])
-        # 额定效率只用于最终等级比较，不参与GB 18613/GB 30254
-        # 的表族、功率行选择。两类电动机在其余查询条件完整时延后
-        # 处理该缺失，以便保留标准阈值和查表证据；额定功率缺失
-        # 仍仅由高压电动机的专门候选功率轴分支处理。
-        defer_efficiency_missing = self.device_type in {"motor_lv", "motor_hv"} and needed == ["额定效率"]
+        # 高压电机在仅缺效率时仍保留阈值和查表证据；缺少功率时
+        # 使用专门的候选功率轴分支。
+        defer_efficiency_missing = self.device_type == "motor_hv" and needed == ["额定效率"]
         if needed and not defer_efficiency_missing:
-            if self.device_type in {"motor_lv", "motor_hv"} and "额定功率" in needed:
+            if self.device_type == "motor_hv" and "额定功率" in needed:
                 # 电压、冷却方式和极数足以确定表族时，先保留整张表的
                 # 功率轴；不因功率缺失而丢掉已提供的效率或标准来源。
                 selected_table = self._select_table(values, pack)
@@ -283,50 +281,6 @@ class MotorEvaluator:
         else:
             actual = decimal(_value(values, "rated_efficiency", "额定效率"))
             actual_metrics = {"额定效率_%": actual}
-        # GB 18613-2020机器标准包只收录表1“三相异步电动机”。公共
-        # 电动机sheet还允许电容类、空调风扇用等其他产品，不能因为它们
-        # 具有功率和极数就静默套用三相异步电动机效率表。
-        if self.device_type == "motor_lv":
-            category = str(_value(values, "category", "设备类别") or "").strip()
-            supported_categories = ["三相异步电动机"]
-            if not category:
-                return _attach_metrics(
-                    unable(str(values.get("record_id", "")), pack, "低压电动机缺少设备类别", ["设备类别"]),
-                    actual_metrics,
-                )
-            if category not in {"三相异步电动机", "三相异步电动机（一般用途）"}:
-                rows = list(pack.get("rows", []))
-                candidate_rows = [
-                    {
-                        "data_id": str(row.get("data_id", "")),
-                        "power_kw": str(row.get("power_kw", "")),
-                    }
-                    for row in rows
-                ]
-                lookup = {
-                    "step_type": "精确查表",
-                    "table": "表1",
-                    "matching": "设备类别",
-                    "category": category,
-                    "supported_categories": supported_categories,
-                    "candidate_count": len(candidate_rows),
-                    "candidate_rows": candidate_rows,
-                    "data_ids": [row["data_id"] for row in candidate_rows if row["data_id"]],
-                    "match_status": "设备类别未命中",
-                    "standard_rule": "GB 18613-2020表1仅适用于三相异步电动机；其他类别不得默认映射",
-                    "source_clause": "表1",
-                    "source_page": pack.get("source_page", ""),
-                    "no_interpolation": True,
-                }
-                result = _attach_metrics(
-                    out_of_scope(
-                        str(values.get("record_id", "")),
-                        pack,
-                        "设备类别不在GB 18613-2020表1的三相异步电动机范围内，不能默认套用效率表",
-                    ),
-                    actual_metrics,
-                )
-                return _attach_lookup_trace(result, pack, "表1", [lookup])
         table = self._select_table(values, pack)
         if table is None:
             if self.device_type == "motor_hv":
@@ -375,7 +329,7 @@ class MotorEvaluator:
             def candidate_data_id(candidate: dict[str, Any], row_index: int) -> str:
                 return str(
                     candidate.get("data_id")
-                    or f"GB{('30254' if self.device_type == 'motor_hv' else '18613')}-T{table_index:02d}-R{row_index:03d}"
+                    or f"GB30254-T{table_index:02d}-R{row_index:03d}"
                 )
 
             candidate_rows = [
@@ -459,7 +413,7 @@ class MotorEvaluator:
             for row_index, candidate in enumerate(rows, start=1):
                 row_id = str(
                     candidate.get("data_id")
-                    or f"GB{('30254' if self.device_type == 'motor_hv' else '18613')}-T{table_index:02d}-R{row_index:03d}-D{dim_number}"
+                    or f"GB30254-T{table_index:02d}-R{row_index:03d}-D{dim_number}"
                 )
                 candidate_rows.append({
                     "power_kw": str(candidate.get("power_kw", "")),
@@ -503,7 +457,7 @@ class MotorEvaluator:
             def candidate_data_id(candidate: dict[str, Any], row_index: int) -> str:
                 return str(
                     candidate.get("data_id")
-                    or f"GB{('30254' if self.device_type == 'motor_hv' else '18613')}-T{table_index:02d}-R{row_index:03d}-D{dim_index:02d}"
+                    or f"GB30254-T{table_index:02d}-R{row_index:03d}-D{dim_index:02d}"
                 )
 
             raw_pages = table.get("source_pages", table.get("source_page", pack.get("source_page", "")))
@@ -548,7 +502,7 @@ class MotorEvaluator:
         row_data_ids = [
             str(
                 item.get("data_id")
-                or f"GB{('30254' if self.device_type == 'motor_hv' else '18613')}-T{table_index:02d}-R{next((idx for idx, candidate in enumerate(table.get('rows', []), start=1) if candidate is item), 1):03d}-D{dim_index:02d}"
+                or f"GB30254-T{table_index:02d}-R{next((idx for idx, candidate in enumerate(table.get('rows', []), start=1) if candidate is item), 1):03d}-D{dim_index:02d}"
             )
             for item in endpoint_rows
         ]
@@ -568,9 +522,8 @@ class MotorEvaluator:
             "data_id": sorted(row_data_ids)[0],
             "source_clause": table_name,
         }
-        # 低压GB 18613-2020的来源页存放在包级source_page，高压表族
-        # 则通常使用各表的source_pages；精确/插值公共记录只在确有
-        # 单页来源时输出source_page，避免伪造高压表页码。
+        # Emit a single page only when the selected table actually provides
+        # one; do not fabricate page references for table families.
         source_page = table.get("source_page", "")
         if source_page in (None, "") and table is pack:
             source_page = pack.get("source_page", "")

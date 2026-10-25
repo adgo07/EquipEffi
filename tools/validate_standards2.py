@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""验证低压/高压电机及PDF独立重建的永磁同步电机数据。
+"""验证高压电机及PDF独立重建的永磁同步电机数据。
 
 禁止读取 standards/motor_pmsm.json、standards2/motor_pmsm.json 或任何粗校对
 永磁工作簿；GB 30253-2024 只验证生产仓库使用的新29表数据包。
@@ -23,7 +23,6 @@ def main():
     total_level = 0
     total_trend = 0
     for key, source in (
-        ("motor_lv", OUT / "motor_lv.json"),
         ("motor_hv", OUT / "motor_hv.json"),
         ("motor_pmsm_pdf_verified", PMSM_VERIFIED),
     ):
@@ -67,7 +66,7 @@ def main():
         lines.append(f"- {key}: {row_count}行；等级顺序异常 {level_bad}；按功率下降异常 {trend_bad}")
 
     wb = openpyxl.load_workbook(OUT / "校对表_全部设备_三来源复核.xlsx", data_only=True)
-    for sheet in ("低压电机", "高压电机"):
+    for sheet in ("高压电机",):
         ws = wb[sheet]
         nonempty = sum(1 for row in ws.iter_rows(min_row=2) for c in row[1:6] if c.value is not None)
         lines.append(f"- 校对表 {sheet}: {ws.max_row - 1}行，核心数据非空单元格 {nonempty}")
