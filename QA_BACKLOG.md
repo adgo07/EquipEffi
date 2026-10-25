@@ -65,7 +65,7 @@ PR31 最终验收发现，artifact-tool 导出的合法 XLSX 可被 `UnifiedWork
 |---|---|---|---|
 | QA-MOTOR-001 | OPEN | GB18613六表计算内核 | Owner已授权按PR33设计实施；A.2映射/A.1源表不改，本PR核查旧链调用方，实际替换由QA-MOTOR-002产品PR完成；BC-01—26、数值Conformance及源格核验。效率1～100是Owner防呆决定，不是标准解释变化。 |
 | QA-MOTOR-002 | OPEN | Qt/Excel/历史闭环 | V6.2保留20列，保护泵/变压器；旧模板说明固定区及再导入、混合批次、状态投影、候选入口及原生验收。实现前后证据随实施报告记录，不提前宣布SUPPORTED。 |
-| QA-MOTOR-005 | CLOSED | PR34独立审查修复 | 先复现空category_id误报包故障、生成器单位转换受外部Decimal上下文影响；核对pytest收集、Conformance语义/schema、直查显示精度与口径不符时追溯。修复限电机内核/生成器/验证材料，不改冻结源表、泵/变压器、历史或支持状态；不借此提前接通产品。；已修复并通过motor unittest 26项、核心pytest 24项及45个subtest，11条向量自动schema校验。证据见docs/standards/gb18613_2020/PR33_PR34_REVIEW_FIXES.md。 |
+| QA-MOTOR-005 | CLOSED | PR34独立审查修复 | 先复现空category_id误报包故障、生成器单位转换受外部Decimal上下文影响；核对pytest收集、Conformance语义/schema、直查显示精度与口径不符时追溯。修复限电机内核/生成器/验证材料，不改冻结源表、泵/变压器、历史或支持状态；不借此提前接通产品；已修复并通过motor unittest 26项、核心pytest 24项及45个subtest，11条向量自动schema校验。证据见docs/standards/gb18613_2020/PR33_PR34_REVIEW_FIXES.md。 |
 
 ## P0 / Hotfix 状态
 
