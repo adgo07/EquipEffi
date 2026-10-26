@@ -1,0 +1,86 @@
+{
+  "platform": "windows",
+  "mode": "原生Qt自动操作，非人工验收",
+  "data_root": "D:\\project\\设备能效软件\\EquipEffi\\outputs\\ui-r2\\native-data-03",
+  "scale_factor_override": null,
+  "captures": [
+    {
+      "file": "single-records-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "logical_dpi": 96.0,
+      "table_size": [
+        356,
+        220
+      ],
+      "table_viewport": [
+        354,
+        155
+      ],
+      "row_height": 51,
+      "complete_row_visible": true,
+      "outer_scroll_max": 148
+    },
+    {
+      "file": "single-records-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "logical_dpi": 96.0,
+      "table_size": [
+        710,
+        352
+      ],
+      "table_viewport": [
+        708,
+        287
+      ],
+      "row_height": 51,
+      "complete_row_visible": true,
+      "outer_scroll_max": 0
+    }
+  ],
+  "roundtrips": [
+    {
+      "logical_size": [
+        560,
+        420
+      ],
+      "method": "鼠标单击后双击",
+      "detail_opened": true,
+      "context_preserved": true
+    },
+    {
+      "logical_size": [
+        560,
+        420
+      ],
+      "method": "键盘Enter",
+      "detail_opened": true,
+      "context_preserved": true
+    },
+    {
+      "logical_size": [
+        1000,
+        700
+      ],
+      "method": "鼠标单击后双击",
+      "detail_opened": true,
+      "context_preserved": true
+    },
+    {
+      "logical_size": [
+        1000,
+        700
+      ],
+      "method": "键盘Enter",
+      "detail_opened": true,
+      "context_preserved": true
+    }
+  ]
+}

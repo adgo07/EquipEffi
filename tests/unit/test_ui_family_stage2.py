@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-from PySide6.QtCore import QCoreApplication, QEvent, Qt
+from PySide6.QtCore import QCoreApplication, QEvent, Qt, QRect
 from PySide6.QtWidgets import QApplication, QComboBox, QScrollArea
 from PySide6.QtTest import QTest
 from equipeffi.composition import (create_settings_runtime, create_pump_analysis_service,
@@ -201,3 +201,44 @@ class UiFamilyStage2Tests(unittest.TestCase):
         with patch.object(self.settings, "set", side_effect=OSError("read only")):
             page.log_level.setCurrentIndex((page.log_level.currentIndex() + 1) % page.log_level.count())
         self.assertIn("设置未保存", page.notice.text())
+
+    def test_small_record_list_has_complete_row_and_mouse_keyboard_roundtrips(self):
+        record = self._pump_record()
+        self.window.resize(560, 420)
+        self.window.open_records()
+        page = self.window.records_page
+        page.search.setText("19762")
+        page.date_filter.setText(record.as_of)
+        QTest.qWait(20)
+        scroll = page.list_scroll_area
+        table = page.list
+        self.assertEqual(self.window.size().width(), 560)
+        self.assertGreater(scroll.verticalScrollBar().maximum(), 0)
+        scroll.ensureWidgetVisible(table, 0, 10)
+        QTest.qWait(20)
+        row = table.visualItemRect(table.item(0, 0))
+        self.assertGreaterEqual(table.viewport().height(), table.rowHeight(0))
+        self.assertTrue(table.viewport().rect().contains(row), (table.viewport().rect(), row))
+        visible_row = QRect(table.viewport().mapTo(scroll.viewport(), row.topLeft()), row.size())
+        self.assertTrue(scroll.viewport().rect().contains(visible_row), (scroll.viewport().rect(), visible_row))
+        saved_scroll = scroll.verticalScrollBar().value()
+        QTest.mouseClick(table.viewport(), Qt.MouseButton.LeftButton, pos=row.center())
+        QTest.mouseDClick(table.viewport(), Qt.MouseButton.LeftButton, pos=row.center())
+        self.assertEqual(page.stack.currentIndex(), 1)
+        self.assertIn("历史测试项目", page.detail.text())
+        QTest.mouseClick(page.back_button, Qt.MouseButton.LeftButton)
+        self.assertEqual(page.stack.currentIndex(), 0)
+        self.assertEqual(page.search.text(), "19762")
+        self.assertEqual(page.date_filter.text(), record.as_of)
+        self.assertEqual(scroll.verticalScrollBar().value(), saved_scroll)
+        table.setCurrentCell(0, 0)
+        table.setFocus()
+        QTest.keyClick(table, Qt.Key.Key_Return)
+        self.assertEqual(page.stack.currentIndex(), 1)
+        QTest.mouseClick(page.back_button, Qt.MouseButton.LeftButton)
+        self.assertEqual(page.list.currentRow(), 0)
+        self.assertEqual(scroll.verticalScrollBar().value(), saved_scroll)
+        self.window.resize(1000, 700)
+        QTest.qWait(20)
+        self.assertEqual(scroll.verticalScrollBar().maximum(), 0)
+        self.assertGreaterEqual(table.viewport().height(), table.rowHeight(0))

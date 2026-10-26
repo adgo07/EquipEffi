@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (
     QTabWidget,
     QVBoxLayout,
     QWidget, QStackedWidget, QScrollArea, QTableWidget, QTableWidgetItem,
-    QHeaderView, QAbstractItemView, QGridLayout, QButtonGroup, QSizePolicy,
+    QHeaderView, QAbstractItemView, QGridLayout, QButtonGroup, QSizePolicy, QLayout,
 )
 
 from ....application.services.centrifugal_pump_analysis_service import (
@@ -118,6 +118,8 @@ class RecordsPage(QWidget):
         outer.addWidget(self.stack)
         listing = QWidget()
         layout = QVBoxLayout(listing)
+        layout.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
+        listing.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
         layout.setContentsMargins(0, 0, 0, 0)
         top = QHBoxLayout()
         top.addWidget(heading("分析记录"))
@@ -170,6 +172,7 @@ class RecordsPage(QWidget):
         self.filter_summary.setWordWrap(True)
         single.addWidget(self.filter_summary)
         self.list = self._table(["设备/项目", "设备类别", "采用标准", "结论", "评价日期", "操作"], [230, 240, 160, 100, 120, 90])
+        self.list.setMinimumHeight(220)
         self.list.cellActivated.connect(lambda row, column: self._on_selected(row))
         self.list.cellDoubleClicked.connect(lambda row, column: self._on_selected(row))
         single.addWidget(self.list, 1)
@@ -189,6 +192,7 @@ class RecordsPage(QWidget):
         self.batch_summary.setWordWrap(True)
         batch_layout.addWidget(self.batch_summary)
         self.batch_list = self._table(["输入文件", "标准/设备", "数据行数", "设备台数", "处理摘要", "保存时间", "操作"], [220, 200, 100, 100, 210, 200, 90])
+        self.batch_list.setMinimumHeight(220)
         self.batch_list.cellActivated.connect(lambda row, column: self._on_batch_selected(row))
         self.batch_list.cellDoubleClicked.connect(lambda row, column: self._on_batch_selected(row))
         batch_layout.addWidget(self.batch_list, 1)
@@ -198,7 +202,12 @@ class RecordsPage(QWidget):
         self.lists.addWidget(self.batch_tab)
         self.classification.idClicked.connect(self.lists.setCurrentIndex)
         layout.addWidget(self.lists, 1)
-        self.stack.addWidget(listing)
+        # 小窗口滚动整个列表正文，筛选和按钮不能把表内正文压成细条。
+        self.list_scroll_area = QScrollArea()
+        self.list_scroll_area.setWidgetResizable(True)
+        self.list_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.list_scroll_area.setWidget(listing)
+        self.stack.addWidget(self.list_scroll_area)
         detail_page = QWidget()
         detail_layout = QVBoxLayout(detail_page)
         detail_layout.setContentsMargins(0, 0, 0, 0)
