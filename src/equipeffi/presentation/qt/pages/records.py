@@ -39,7 +39,9 @@ from ....application.services.centrifugal_pump_analysis_service import (
 )
 from ....application.services.transformer_analysis_service import (
     format_transformer_basis_lines,
+    get_transformer_input_contract,
 )
+from ....application.services.motor_analysis_service import get_motor_input_contract
 from ..labels import format_metric, support_status_text, user_grade_text
 
 #: 结论筛选项 → 匹配的 `evaluation_status` 集合（"全部" 不筛选）。
@@ -85,9 +87,9 @@ class RecordsPage(QWidget):
         self.service = service
         self.transformer_service = transformer
         self.motor_service = motor
-        self.motor_contract = motor.input_contract if motor is not None else None
+        self.motor_contract = motor.input_contract if motor is not None else get_motor_input_contract()
         self.transformer_contract = (transformer.input_contract
-                                     if transformer is not None else None)
+                                     if transformer is not None else get_transformer_input_contract())
         self._transformer_categories = {
             item.category_id: item.label
             for item in getattr(self.transformer_contract, "categories", ())
