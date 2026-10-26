@@ -227,7 +227,8 @@ class RecordsPage(QWidget):
             labels.append(label)
         self.detail, self.inputs_detail = labels
         self.batch_detail = self.detail
-        self.technical = QLabel(self)
+        # 既有内部投影不加入产品页面控件树；正式快照中的证据保持完整。
+        self.technical = QLabel()
         self.technical.hide()
         self.technical_box = None
         detail_layout.addWidget(self.detail_tabs, 1)

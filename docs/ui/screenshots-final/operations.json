@@ -3,7 +3,7 @@
   "mode": "Windows Qt自动操作；非人工桌面验收",
   "motor_candidate": true,
   "template_version": "V6.2",
-  "data_root": "D:\\project\\设备能效软件\\EquipEffi\\outputs\\ui-stage2\\native-data-04",
+  "data_root": "D:\\project\\设备能效软件\\EquipEffi\\outputs\\ui-stage2\\native-data-05",
   "scale_factor_override": null,
   "screens": [
     {
@@ -39,9 +39,9 @@
       "total_quantity": 9,
       "single_records_unchanged": true,
       "one_batch_record": true,
-      "input_sha256_before": "6c20e3988f3ac57265e55a82dc55be65d18e23d70315219a89d8814d3c090aee",
-      "input_sha256_after": "6c20e3988f3ac57265e55a82dc55be65d18e23d70315219a89d8814d3c090aee",
-      "output": "D:\\project\\设备能效软件\\EquipEffi\\outputs\\ui-stage2\\native-data-04\\测试数据_三设备输入_评价结果_20261027_002144.xlsx",
+      "input_sha256_before": "b5e2c11ad871fae5ef3aec4d03e21399ae886bae333d60467a592fca831d950b",
+      "input_sha256_after": "b5e2c11ad871fae5ef3aec4d03e21399ae886bae333d60467a592fca831d950b",
+      "output": "D:\\project\\设备能效软件\\EquipEffi\\outputs\\ui-stage2\\native-data-05\\测试数据_三设备输入_评价结果_20261027_002630.xlsx",
       "thread": null
     },
     {
