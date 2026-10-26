@@ -80,6 +80,8 @@ class TransformerAnalysisPage(QWidget):
             f"适用标准：{standard.get('standard_code', 'GB 20052-2024')}《"
             f"{standard.get('name', '电力变压器能效限定值及能效等级')}》"
         )
+        if standard.get("support_status") == "IMPLEMENTED":
+            standard_label.setText(standard_label.text() + "\n已接入，尚待正式支持验收。")
         standard_label.setWordWrap(True)
         outer.addWidget(standard_label)
 
