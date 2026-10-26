@@ -168,3 +168,91 @@ class UiFamilyStage1Tests(unittest.TestCase):
         scroll.verticalScrollBar().setValue(scroll.verticalScrollBar().maximum())
         self.app.processEvents()
         self.assertTrue(self.window.analysis_page.result_group.isVisible())
+
+    def test_new_detail_starts_at_top_and_back_preserves_list_context(self):
+        self.window.resize(560, 420)
+        self.window.open_standards()
+        page = self.window.standards_page
+        page.search.setText("能效")
+        page.status_filter.setCurrentIndex(page.status_filter.findData("EFFECTIVE"))
+        self.app.processEvents()
+        page.table.selectRow(0)
+        page.table.horizontalScrollBar().setValue(80)
+        list_scroll = page.table.horizontalScrollBar().value()
+        page.open_detail(0)
+        self.app.processEvents()
+        scroll = page.stack.currentWidget().findChild(QScrollArea).verticalScrollBar()
+        self.assertGreater(scroll.maximum(), 0)
+        scroll.setValue(scroll.maximum())
+        page.back_button.click()
+        self.app.processEvents()
+        self.assertEqual(page.search.text(), "能效")
+        self.assertEqual(page.status_filter.currentData(), "EFFECTIVE")
+        self.assertEqual(page.table.currentRow(), 0)
+        self.assertEqual(page.table.horizontalScrollBar().value(), list_scroll)
+        page.open_detail(1)
+        self.app.processEvents()
+        self.assertEqual(scroll.value(), 0)
+        self.assertIn("GB 20052-2024", page.section_labels[0].text())
+
+    def test_unknown_standard_after_detail_returns_visible_rejection(self):
+        page = self.window.standards_page
+        for code in ("UNKNOWN", "GB 18613-2020"):
+            self.window.open_standards()
+            page.open_detail(1)
+            page.start_button.click()
+            self.window.open_analysis(standard_code=code)
+            self.app.processEvents()
+            self.assertEqual(self.window.pages.currentWidget(), page)
+            self.assertEqual(page.stack.currentIndex(), 0)
+            self.assertTrue(page.list_status.isVisible())
+            self.assertIn("尚未开放", page.list_status.text())
+            self.assertIsNone(page.standard_code)
+            self.assertEqual(self.window.device_analysis_page.device_selector.currentData(), "transformer")
+
+    def test_catalog_read_failure_is_atomic_and_retry_restores_current_filter(self):
+        self.window.open_standards()
+        page = self.window.standards_page
+        page.search.setText("变压器")
+        page.open_detail(0)
+        # 同时覆盖首项失败和第二项失败；后者不能留下已读到的泵目录。
+        for service in page.services:
+            with self.subTest(service=type(service).__name__):
+                with patch.object(service, "standard_overview", side_effect=OSError("read unavailable")):
+                    page.refresh()
+                    self.app.processEvents()
+                    self.assertEqual(page.table.rowCount(), 0)
+                    self.assertEqual(page._catalog, [])
+                    self.assertEqual(page.stack.currentIndex(), 0)
+                    self.assertIsNone(page.standard_code)
+                    self.assertTrue(page.list_status.isVisible())
+                    self.assertIn("暂时无法读取标准", page.list_status.text())
+                    self.assertTrue(page.retry_button.isVisible())
+                    page.search.setText("19762")
+                    self.assertIn("暂时无法读取标准", page.list_status.text())
+                page.search.setText("变压器")
+                page.retry_button.click()
+                self.assertEqual(page.table.rowCount(), 1)
+                self.assertEqual(page.table.item(0, 0).text(), "GB 20052-2024")
+                self.assertTrue(page.retry_button.isHidden())
+                self.assertEqual(page.search.text(), "变压器")
+
+    def test_standard_columns_fill_on_first_show_and_viewport_resize(self):
+        self.window.resize(1440, 1000)
+        self.app.processEvents()
+        self.window.open_standards()
+        QTest.qWait(10)
+        page = self.window.standards_page
+        table = page.table
+        self.assertEqual(sum(table.columnWidth(i) for i in range(5)), table.viewport().width())
+        self.assertGreater(table.columnWidth(1), 300)
+        table.setFixedWidth(table.width() - 90)
+        QTest.qWait(10)
+        self.assertEqual(sum(table.columnWidth(i) for i in range(5)), table.viewport().width())
+        table.setMinimumWidth(0)
+        table.setMaximumWidth(16777215)
+        self.window.resize(560, 420)
+        QTest.qWait(10)
+        self.assertGreaterEqual(table.columnWidth(1), 300)
+        self.assertGreater(sum(table.columnWidth(i) for i in range(5)), table.viewport().width())
+        self.assertGreater(table.horizontalScrollBar().maximum(), 0)

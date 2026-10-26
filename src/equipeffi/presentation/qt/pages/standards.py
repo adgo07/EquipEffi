@@ -1,7 +1,8 @@
 """标准列表与独立三分区详情，仅投影已装配服务的权威元数据。"""
 from datetime import date
+import logging
 from pathlib import Path
-from PySide6.QtCore import Qt, QUrl
+from PySide6.QtCore import Qt, QUrl, QEvent, QTimer
 from PySide6.QtGui import QDesktopServices, QColor
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel,
     QLineEdit, QComboBox, QPushButton, QTableWidget, QTableWidgetItem, QHeaderView,
@@ -22,6 +23,7 @@ class StandardsPage(QWidget):
         self.standard_code = None
         self._catalog = []
         self._visible = []
+        self._load_error = False
         outer = QVBoxLayout(self)
         outer.setContentsMargins(TOKENS.page_margin, TOKENS.page_margin, TOKENS.page_margin, TOKENS.page_margin)
         self.stack = QStackedWidget()
@@ -50,6 +52,10 @@ class StandardsPage(QWidget):
         filters.setColumnStretch(0, 1)
         layout.addLayout(filters)
         self.table = QTableWidget(0, 5)
+        self._column_timer = QTimer(self)
+        self._column_timer.setSingleShot(True)
+        self._column_timer.timeout.connect(self._resize_columns)
+        self.table.viewport().installEventFilter(self)
         self.table.setHorizontalHeaderLabels(["标准编号", "标准名称", "标准状态", "实施日期", "软件支持"])
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
@@ -65,14 +71,19 @@ class StandardsPage(QWidget):
         self.table.cellActivated.connect(lambda row, column: self.open_detail(row))
         layout.addWidget(self.table, 1)
         self.list_status = QLabel()
+        self.list_status.setWordWrap(True)
         layout.addWidget(self.list_status)
+        self.retry_button = QPushButton("重试")
+        self.retry_button.clicked.connect(self.refresh)
+        self.retry_button.hide()
+        layout.addWidget(self.retry_button, alignment=Qt.AlignmentFlag.AlignLeft)
         self.stack.addWidget(listing)
         detail = QWidget()
         layout = QVBoxLayout(detail)
         layout.setContentsMargins(0, 0, 0, 0)
         self.back_button = QPushButton("返回标准库")
         self.back_button.setIcon(icon("back"))
-        self.back_button.clicked.connect(lambda: self.stack.setCurrentIndex(0))
+        self.back_button.clicked.connect(self.show_list)
         layout.addWidget(self.back_button, alignment=Qt.AlignmentFlag.AlignLeft)
         self.detail_heading = heading("")
         layout.addWidget(self.detail_heading)
@@ -82,6 +93,7 @@ class StandardsPage(QWidget):
         self.source_button.clicked.connect(self._open_source)
         self.start_button = QPushButton("按此标准分析")
         self.start_button.setProperty("primary", True)
+        self.start_button.setEnabled(False)
         self.start_button.clicked.connect(self._start_analysis)
         actions.addWidget(self.source_button)
         actions.addWidget(self.start_button)
@@ -91,6 +103,7 @@ class StandardsPage(QWidget):
         self.feedback.setWordWrap(True)
         layout.addWidget(self.feedback)
         scroll = QScrollArea()
+        self.detail_scroll = scroll
         scroll.setWidgetResizable(True)
         body = QWidget()
         sections = QVBoxLayout(body)
@@ -115,7 +128,23 @@ class StandardsPage(QWidget):
         self.refresh()
 
     def refresh(self):
-        self._catalog = []
+        try:
+            catalog = self._read_catalog()
+        except Exception:  # 展示读取失败，不能把旧目录或部分目录伪装成本次成功。
+            logging.getLogger("equipeffi.qt.standards").exception("标准目录读取失败")
+            self._catalog = []
+            self._load_error = True
+            self.show_list()
+            self._filter()
+            self.retry_button.show()
+            return
+        self._catalog = catalog
+        self._load_error = False
+        self.retry_button.hide()
+        self._filter()
+
+    def _read_catalog(self):
+        catalog = []
         for service in self.services:
             overview = service.standard_overview()
             row = dict(overview)
@@ -136,11 +165,16 @@ class StandardsPage(QWidget):
             else:
                 statuses = [s.get("support_status") for s in overview.get("scopes", ())]
                 row["support"] = "正式支持" if statuses and all(s == "SUPPORTED" for s in statuses) else "尚未开放"
-            self._catalog.append(row)
-        self._filter()
+            catalog.append(row)
+        return catalog
 
     def _filter(self, *_):
         # 不重建输入控件，中文预编辑、焦点和光标保持 Qt 原生行为。
+        if self._load_error:
+            self._visible = []
+            self.table.setRowCount(0)
+            self.list_status.setText("暂时无法读取标准目录，请重试。")
+            return
         keyword = self.search.text().strip().casefold().replace("—", "-")
         state = self.status_filter.currentData()
         selected = self.table.currentRow()
@@ -165,12 +199,28 @@ class StandardsPage(QWidget):
         self.table.verticalScrollBar().setValue(scroll)
         self.list_status.setText(f"共 {len(self._visible)} 项标准" if self._visible else "没有匹配的标准，请调整关键词或标准状态。")
 
-    def resizeEvent(self, event):
-        if hasattr(self, "table"):
-            available = self.table.viewport().width() - sum(self.table.columnWidth(i) for i in (0, 2, 3, 4))
-            self.table.setColumnWidth(1, max(300, available))
+    def eventFilter(self, watched, event):
+        if watched is self.table.viewport() and event.type() in (QEvent.Type.Resize, QEvent.Type.Show):
+            # 首次进入堆叠页也会改变viewport；等待本轮布局完成后分配剩余宽度。
+            self._column_timer.start(0)
+        return super().eventFilter(watched, event)
+
+    def _resize_columns(self):
+        if not self.table.isVisible():
+            return
+        available = self.table.viewport().width() - sum(self.table.columnWidth(i) for i in (0, 2, 3, 4))
+        width = max(300, available)
+        if self.table.columnWidth(1) != width:
+            self.table.setColumnWidth(1, width)
             self.table.resizeRowsToContents()
-        super().resizeEvent(event)
+
+    def show_list(self, message=None):
+        self.standard_code = None
+        self._selected = None
+        self.start_button.setEnabled(False)
+        self.stack.setCurrentIndex(0)
+        if message:
+            self.list_status.setText(message)
 
     def open_detail(self, row):
         if not 0 <= row < len(self._visible):
@@ -188,16 +238,18 @@ class StandardsPage(QWidget):
         self.section_labels[1].setText(item["scope"] or "当前元数据未提供适用范围，请查阅标准原文。")
         # 这里只概述已有评价模型，不复制限值、公式或类别选表规则。
         if "19762" in item["standard_code"]:
-            text = "按产品类别及适用条件评价泵效率（%），划分1级、2级、3级。输入流量（m³/h）、扬程（m）、转速（r/min）、泵效率（%）及适用类别条件。具体等级限值与关键参数由分析服务按所选类别提供。"
+            text = "按产品类别及适用条件评价泵效率（%），划分1级、2级、3级。输入流量（m³/h）、扬程（m）、转速（r/min）、泵效率（%）及适用类别条件。所选类别的具体等级限值与关键参数可在分析结果中查看。"
         elif "20052" in item["standard_code"]:
             text = "按适用型式、额定参数及标准条件查取空载损耗与负载损耗限值（W），分别比较并给出最终等级。不同类别采用相应表格与条件，具体限值在分析结果和保存的计算依据中查看。"
         else:
-            text = "按电动机类别及适用额定参数采用表1至表6的效率限值（%），评价1级、2级、3级。实测效率口径与额定参数须符合所选类别条件；具体限值由分析服务提供。"
+            text = "按电动机类别及适用额定参数采用表1至表6的效率限值（%），评价1级、2级、3级。实测效率口径与额定参数须符合所选类别条件；具体限值可在分析结果中查看。"
         self.section_labels[2].setText(text)
         self.stack.setCurrentIndex(1)
+        self.start_button.setEnabled(True)
+        self.detail_scroll.verticalScrollBar().setValue(0)
 
     def _open_source(self):
-        item = getattr(self, "_selected", {})
+        item = getattr(self, "_selected", None) or {}
         # source_file 是来源证据，不等于可打开文件；不猜本机路径或打包原件。
         location = item.get("document_url") or item.get("document_path")
         if not location:

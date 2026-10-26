@@ -1,9 +1,56 @@
 """无侧栏任务首页，最近记录来自正式服务。"""
 from PySide6.QtCore import Qt, QSize
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
-                              QLabel, QPushButton, QListWidget, QListWidgetItem, QScrollArea)
+                              QLabel, QPushButton, QListWidget, QListWidgetItem, QScrollArea,
+                              QStyleOptionButton, QStyle, QStylePainter, QSizePolicy)
 from ....application.services.centrifugal_pump_analysis_service import user_conclusion_from_snapshot
 from ..style import brand, icon
+
+
+class TaskCard(QPushButton):
+    """保留原生按钮键盘/焦点行为，标题与说明分别排版。"""
+
+    def __init__(self, name, description, symbol, primary=False):
+        super().__init__(f"{name}\n{description}")
+        self.setObjectName("taskCard")
+        self.setProperty("primary", primary)
+        self.setMinimumHeight(150)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        self.setAccessibleName(name)
+        self.setAccessibleDescription(description)
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(22, 22, 22, 22)
+        layout.setSpacing(14)
+        symbol_label = QLabel()
+        symbol_label.setPixmap(icon(symbol, "#FFFFFF" if primary else "#197CC2").pixmap(28, 28))
+        layout.addWidget(symbol_label)
+        text = QVBoxLayout()
+        text.setSpacing(10)
+        title = QLabel(name)
+        title.setObjectName("taskTitle")
+        description_label = QLabel(description)
+        description_label.setObjectName("taskDescription")
+        for label in (title, description_label):
+            label.setWordWrap(True)
+            text.addWidget(label)
+        layout.addLayout(text, 1)
+        for label in self.findChildren(QLabel):
+            label.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+
+    def sizeHint(self):
+        return QSize(260, 180)
+
+    def minimumSizeHint(self):
+        return QSize(0, 150)
+
+    def paintEvent(self, event):
+        option = QStyleOptionButton()
+        self.initStyleOption(option)
+        option.text = ""
+        option.icon = QIcon()
+        painter = QStylePainter(self)
+        painter.drawControl(QStyle.ControlElement.CE_PushButton, option)
 
 
 class HomePage(QWidget):
@@ -44,12 +91,7 @@ class HomePage(QWidget):
             ("表格导入", "统一工作簿批量评价", "excel", lambda: navigator.open_batch() if navigator else None),
             ("分析记录", "查看已保存的分析结果", "records", lambda: navigator.open_records() if navigator else None),
         ):
-            button = QPushButton(f"{name}\n\n{description}   →")
-            button.setObjectName("taskCard")
-            button.setIcon(icon(symbol, "#FFFFFF" if not self.task_buttons else "#197CC2"))
-            button.setIconSize(QSize(28, 28))
-            button.setMinimumHeight(150)
-            button.setProperty("primary", not self.task_buttons)
+            button = TaskCard(name, description, symbol, primary=not self.task_buttons)
             button.clicked.connect(action)
             self.task_buttons.append(button)
         layout.addLayout(self.cards)

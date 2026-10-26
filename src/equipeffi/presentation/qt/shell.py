@@ -189,7 +189,7 @@ class MainWindow(QMainWindow):
                 # 未知或未装配的标准不允许沿用上次设备。
                 self._show_page("标准库")
                 if self.standards_page is not None:
-                    self.standards_page.list_status.setText("该标准尚未开放分析，请从标准库选择已接入的标准。")
+                    self.standards_page.show_list("该标准尚未开放分析，请从标准库选择已接入的标准。")
                 return
         if self.device_analysis_page is not None:
             self.device_analysis_page.select_standard(standard_code)

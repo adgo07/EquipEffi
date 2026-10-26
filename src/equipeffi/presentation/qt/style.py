@@ -71,8 +71,12 @@ QPushButton:checked { background:#D6EBF9; color:#116FAE; border-color:#298CCB; }
 QPushButton:focus, QLineEdit:focus, QComboBox:focus { border:2px solid #197CC2; }
 QPushButton:disabled { color:#698198; background:#F0F4F8; }
 QPushButton[primary="true"] { background:#197CC2; color:white; border-color:#197CC2; }
-QPushButton#taskCard { text-align:left; background:white; border-radius:14px; padding:22px; font-size:16px; }
+QPushButton#taskCard { text-align:left; background:white; border-radius:14px; padding:0; }
 QPushButton#taskCard[primary="true"] { background:qlineargradient(x1:0,y1:0,x2:1,y2:1,stop:0 #174E7C,stop:1 #197CC2); color:white; }
+QLabel#taskTitle { font-size:20px; font-weight:600; color:#18364F; }
+QLabel#taskDescription { font-size:13px; color:#698198; }
+QPushButton#taskCard[primary="true"] QLabel#taskTitle { color:white; }
+QPushButton#taskCard[primary="true"] QLabel#taskDescription { color:#DCEFFC; }
 QLineEdit, QComboBox { background:white; border:1px solid #DAE7F1; border-radius:6px; min-height:24px; padding:7px 10px; selection-background-color:#D6EBF9; }
 QComboBox:disabled, QLineEdit:disabled { background:#F0F4F8; color:#526A7D; }
 QComboBox::drop-down { border:0; width:24px; }

@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import sys
+from unittest.mock import patch
 
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QApplication, QScrollArea
@@ -46,7 +47,9 @@ def main():
 
     tasks = [(1440, 1000, name) for name in ("home", "standards", "standard-detail", "pump")]
     tasks += [(1000, 700, "home"), (1000, 700, "pump-result"),
-              (560, 420, "standards"), (560, 420, "pump"), (560, 420, "standard-detail")]
+              (560, 420, "standards"), (560, 420, "pump"), (560, 420, "standard-detail"),
+              (560, 420, "standard-reopened"), (1000, 700, "standard-unavailable"),
+              (1000, 700, "standard-read-failure")]
 
     def step():
         if not tasks:
@@ -60,9 +63,24 @@ def main():
             window.open_home()
         elif name.startswith("standard"):
             window.open_standards()
-            window.standards_page.stack.setCurrentIndex(0)
+            standards = window.standards_page
+            standards.show_list()
             if name == "standard-detail":
-                window.standards_page.open_detail(0)
+                standards.open_detail(0)
+            elif name == "standard-reopened":
+                standards.open_detail(0)
+                app.processEvents()
+                standards.detail_scroll.verticalScrollBar().setValue(standards.detail_scroll.verticalScrollBar().maximum())
+                standards.back_button.click()
+                standards.open_detail(1)
+            elif name == "standard-unavailable":
+                standards.open_detail(1)
+                standards.start_button.click()
+                window.open_analysis(standard_code="UNKNOWN")
+            elif name == "standard-read-failure":
+                standards.open_detail(0)
+                with patch.object(standards.services[-1], "standard_overview", side_effect=OSError("截图故障注入测试")):
+                    standards.refresh()
         else:
             window.open_analysis(standard_code="GB 19762-2025")
             scroll = page.findChild(QScrollArea)
@@ -81,8 +99,24 @@ def main():
             app.processEvents()
             filename = f"{name}-{width}x{height}.png"
             assert window.grab().save(str(args.output / filename))
-            evidence["captures"].append({"file": filename, "logical_size": [window.width(), window.height()],
-                "device_pixel_ratio": window.devicePixelRatioF(), "sample": "隔离测试数据"})
+            item = {"file": filename, "logical_size": [window.width(), window.height()],
+                "device_pixel_ratio": window.devicePixelRatioF(), "sample": "隔离测试数据"}
+            if name.startswith("standard"):
+                standards = window.standards_page
+                item.update({"detail": standards.stack.currentIndex() == 1,
+                    "standard_code": standards.standard_code,
+                    "detail_scroll": standards.detail_scroll.verticalScrollBar().value(),
+                    "table_viewport_width": standards.table.viewport().width(),
+                    "column_widths": [standards.table.columnWidth(i) for i in range(5)],
+                    "visible_feedback": standards.list_status.text() if standards.list_status.isVisible() else None,
+                    "failure_injection": name == "standard-read-failure"})
+                if name == "standards" and width == 1440:
+                    assert sum(item["column_widths"]) == item["table_viewport_width"]
+                if name == "standard-reopened":
+                    assert item["detail_scroll"] == 0
+                if name in ("standard-unavailable", "standard-read-failure"):
+                    assert not item["detail"] and item["visible_feedback"]
+            evidence["captures"].append(item)
             QTimer.singleShot(100, step)
         QTimer.singleShot(250, capture)
 
