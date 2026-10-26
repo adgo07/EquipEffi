@@ -314,7 +314,8 @@ class BatchFlowTests(M2TestCase):
 
         page.set_source(self.make_input(3))
         self.app.processEvents()
-        self.assertIn("检查通过", page.check_label.text())
+        self.assertIn("文件结构已读取", page.check_label.text())
+        self.assertIn("字段有效性与结论以批量评价结果为准", page.check_label.text())
         self.assertIn("3 行", page.check_label.text())
 
     def test_default_output_path_is_generated_and_never_overwrites_input(self):

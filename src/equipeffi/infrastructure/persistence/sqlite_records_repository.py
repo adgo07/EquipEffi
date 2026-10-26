@@ -289,10 +289,12 @@ _RECORD_COLUMNS = (
 )
 
 
-#: 列表展示所需的最小列投影：**不**读取 `*_snapshot_json`（历史记录可能很多）。
+#: 列表仅传输标量投影；名称由SQLite从已保存输入提取，不装载完整快照对象。
 _SUMMARY_COLUMNS = (
     "record_id, standard_code, product_category, as_of, evaluation_status, "
-    "grade, ui_conclusion, finalized_at_utc"
+    "grade, ui_conclusion, finalized_at_utc, "
+    "COALESCE(NULLIF(json_extract(input_snapshot_json, '$.project_name'), ''), "
+    "NULLIF(json_extract(input_snapshot_json, '$.equipment_no'), ''), product_category)"
 )
 
 
@@ -300,7 +302,7 @@ def _summary_from_row(row) -> RecordSummary:
     return RecordSummary(
         record_id=row[0], standard_code=row[1], product_category=row[2],
         as_of=row[3], evaluation_status=row[4], grade=row[5],
-        ui_conclusion=row[6], finalized_at_utc=row[7],
+        ui_conclusion=row[6], finalized_at_utc=row[7], display_name=row[8],
     )
 
 

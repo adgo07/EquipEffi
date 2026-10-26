@@ -1,0 +1,262 @@
+{
+  "platform": "windows",
+  "mode": "Windows Qt自动操作；非人工桌面验收",
+  "motor_candidate": true,
+  "template_version": "V6.2",
+  "data_root": "D:\\project\\设备能效软件\\EquipEffi\\outputs\\ui-stage2\\native-data-03",
+  "scale_factor_override": null,
+  "screens": [
+    {
+      "name": "\\\\.\\DISPLAY1",
+      "logical_dpi": 96.0,
+      "device_pixel_ratio": 1.5
+    }
+  ],
+  "operations": [
+    {
+      "action": "泵单台鼠标点击分析并自动记录",
+      "saved": true
+    },
+    {
+      "action": "变压器单台鼠标点击分析并自动记录",
+      "saved": true
+    },
+    {
+      "action": "候选电机单台鼠标点击分析并自动记录",
+      "saved": true
+    },
+    {
+      "action": "选文件自动检查",
+      "recognized_sheets": [
+        "变压器",
+        "电动机",
+        "离心泵"
+      ]
+    },
+    {
+      "action": "后台三设备批量评价完成并线程退出",
+      "data_rows": 3,
+      "total_quantity": 9,
+      "single_records_unchanged": true,
+      "one_batch_record": true,
+      "input_sha256_before": "90bdebcd384ccf0eb1852a28f97457012fa0403cc85a4f21a2a380fc6074f457",
+      "input_sha256_after": "90bdebcd384ccf0eb1852a28f97457012fa0403cc85a4f21a2a380fc6074f457",
+      "output": "D:\\project\\设备能效软件\\EquipEffi\\outputs\\ui-stage2\\native-data-03\\测试数据_三设备输入_评价结果_20261027_001652.xlsx",
+      "thread": null
+    },
+    {
+      "action": "取消保留结果；重新选择同一源也使旧结果失效",
+      "passed": true
+    },
+    {
+      "action": "打开单台与批次两页签独立详情",
+      "detail_tabs": [
+        "基本信息与结果",
+        "输入数据与计算依据"
+      ]
+    }
+  ],
+  "captures": [
+    {
+      "file": "home-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": false
+    },
+    {
+      "file": "standards-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "standard-detail-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "pump-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "transformer-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "transformer-result-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "motor-candidate-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "motor-candidate-small-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "motor-result-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "batch-check-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "batch-result-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "single-records-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "single-detail-result-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "single-detail-basis-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "batch-records-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "batch-detail-result-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "batch-detail-basis-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "batch-detail-small-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "settings-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "settings-small-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    }
+  ],
+  "failures": []
+}

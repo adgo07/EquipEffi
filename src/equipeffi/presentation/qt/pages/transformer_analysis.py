@@ -27,6 +27,8 @@ from ....application.services.transformer_analysis_service import (
 from ..labels import format_metric, user_grade_text
 from ..tokens import TOKENS
 from ..style import heading
+from ..widgets.form_fields import (searchable_categories, selected_category, field_form,
+                                  field_row, responsive_forms, primary_action)
 
 _LOGGER = logging.getLogger("equipeffi.qt.transformer")
 
@@ -43,9 +45,13 @@ _THRESHOLD_LABELS = (
 class TransformerAnalysisPage(QWidget):
     """按 Application 注入的输入契约生成表单，保留数值原始文本。"""
 
-    def __init__(self, service, *, parent: QWidget | None = None):
+    def __init__(self, service, *, navigator=None, parent: QWidget | None = None):
         super().__init__(parent)
         self.service = service
+        self.navigator = navigator
+        self._category_values = {}
+        self._editing_category = None
+        self.last_saved_record_id = None
         self.contract = service.input_contract
         self.category_options = tuple(self.contract.categories)
         self._category_by_id = {item.category_id: item for item in self.category_options}
@@ -62,6 +68,8 @@ class TransformerAnalysisPage(QWidget):
         outer.setSpacing(TOKENS.section_gap)
 
         heading = QLabel("新建分析")
+        self.heading = heading
+        heading.setObjectName("pageHeading")
         font = heading.font()
         font.setPixelSize(TOKENS.title_font_size)
         font.setBold(True)
@@ -79,16 +87,17 @@ class TransformerAnalysisPage(QWidget):
         scroll.setWidgetResizable(True)
         body = QWidget()
         layout = QVBoxLayout(body)
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(TOKENS.section_gap)
 
         basic = QGroupBox("基本信息")
-        basic_form = QFormLayout(basic)
+        basic_form = field_form(basic)
         self.project_name = QLineEdit()
         self.project_name.setPlaceholderText("可选")
         self.equipment_no = QLineEdit()
         self.equipment_no.setPlaceholderText("可选")
-        basic_form.addRow("企业/项目名称", self.project_name)
-        basic_form.addRow("设备编号", self.equipment_no)
+        field_row(basic_form, "企业/项目名称（可选）", self.project_name)
+        field_row(basic_form, "设备编号（可选）", self.equipment_no)
         layout.addWidget(basic)
 
         category_box = QGroupBox("产品类别")
@@ -98,20 +107,34 @@ class TransformerAnalysisPage(QWidget):
         self.category.addItem("请选择产品类别…", None)
         for option in self.category_options:
             self.category.addItem(option.label, option.category_id)
+        searchable_categories(self.category)
         category_layout.addWidget(self.category)
         self.category_help = QLabel(TRANSFORMER_SCOPE_HINT)
         self.category_help.setWordWrap(True)
         category_layout.addWidget(self.category_help)
         layout.addWidget(category_box)
 
-        self.fields_group = QGroupBox("设备参数")
-        self.fields_form = QFormLayout(self.fields_group)
+        self.fields_group = QGroupBox("额定参数")
+        self.fields_form = field_form(self.fields_group)
+        self.conditions_group = QGroupBox("标准条件")
+        self.conditions_form = field_form(self.conditions_group)
+        layout.addWidget(self.conditions_group)
         layout.addWidget(self.fields_group)
+        self.loss_group = QGroupBox("损耗数据")
+        self.loss_form = field_form(self.loss_group)
+        layout.addWidget(self.loss_group)
+        self._forms = [basic_form, self.conditions_form, self.fields_form, self.loss_form]
 
         self.evaluate_button = QPushButton("分析")
+        self.evaluate_button.setProperty("primary", True)
         self.evaluate_button.clicked.connect(self.evaluate)
         action_row = QHBoxLayout()
         action_row.addWidget(self.evaluate_button)
+        self.view_record_button = QPushButton("查看记录")
+        self.view_record_button.setProperty("primary", True)
+        self.view_record_button.clicked.connect(lambda: self.navigator.open_records(record_id=self.last_saved_record_id) if self.navigator and self.last_saved_record_id else None)
+        self.view_record_button.hide()
+        action_row.addWidget(self.view_record_button)
         action_row.addStretch()
         layout.addLayout(action_row)
 
@@ -119,6 +142,7 @@ class TransformerAnalysisPage(QWidget):
         result_layout = QVBoxLayout(self.result_group)
         self.conclusion = QLabel("完成参数填写后点击「分析」。")
         self.conclusion.setObjectName("transformerConclusion")
+        self.conclusion.setProperty("coreResult", True)
         self.conclusion.setWordWrap(True)
         font = self.conclusion.font()
         font.setBold(True)
@@ -136,20 +160,50 @@ class TransformerAnalysisPage(QWidget):
         self.record_label = QLabel("")
         self.record_label.setWordWrap(True)
         result_layout.addWidget(self.record_label)
+        self.stale_label = QLabel("输入已变更，请重新分析")
+        self.stale_label.setWordWrap(True)
+        self.stale_label.setProperty("warning", True)
+        self.stale_label.hide()
+        result_layout.insertWidget(0, self.stale_label)
         layout.addWidget(self.result_group)
         layout.addStretch()
         scroll.setWidget(body)
         outer.addWidget(scroll, 1)
 
         self.category.currentIndexChanged.connect(self._on_category_changed)
+        self.category.editTextChanged.connect(self._mark_stale)
+        self.project_name.textChanged.connect(self._mark_stale)
+        self.equipment_no.textChanged.connect(self._mark_stale)
         self._on_category_changed()
 
+    def resizeEvent(self, event):
+        if hasattr(self, "_forms"):
+            responsive_forms(self._forms, self.width())
+        super().resizeEvent(event)
+
+    def _mark_stale(self, *_):
+        if self._last_result is not None:
+            self.stale_label.show()
+            self.view_record_button.hide()
+            self.evaluate_button.setText("分析")
+            primary_action(self.evaluate_button, True)
+
     def _on_category_changed(self, *_args) -> None:
-        while self.fields_form.rowCount():
-            self.fields_form.removeRow(0)
+        if self._editing_category:
+            self._category_values[self._editing_category] = {
+                key: control.currentData() if isinstance(control, QComboBox) else control.text()
+                for key, control in self.field_inputs.items()}
+        for form in (self.fields_form, self.conditions_form, self.loss_form):
+            while form.rowCount():
+                form.removeRow(0)
         self.field_inputs.clear()
-        category_id = self.category.currentData()
+        category_id = selected_category(self.category)
+        self._editing_category = category_id
+        self._mark_stale()
+        self.category_help.setText((f"已选类别：{self._category_by_id[category_id].label}\n" if category_id else "") + TRANSFORMER_SCOPE_HINT)
         if not category_id:
+            for group in (self.conditions_group, self.fields_group, self.loss_group):
+                group.hide()
             return
 
         options = tuple(self.contract.condition_options(category_id))
@@ -162,6 +216,8 @@ class TransformerAnalysisPage(QWidget):
                 label += f"（{field.unit}）"
             if field.field_id == "standard_conditions":
                 control = QComboBox()
+                control.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
+                control.setMinimumContentsLength(10)
                 control.setObjectName("transformerStandardConditions")
                 control.addItem("请选择标准条件…", None)
                 for option in options:
@@ -176,7 +232,18 @@ class TransformerAnalysisPage(QWidget):
                 else:
                     control.setPlaceholderText("可选")
             self.field_inputs[field.field_id] = control
-            self.fields_form.addRow(label, control)
+            form = (self.conditions_form if field.field_id == "standard_conditions" else
+                    self.loss_form if field.field_id in {"no_load_loss_w", "load_loss_w"} else self.fields_form)
+            field_row(form, label, control)
+            previous = self._category_values.get(category_id, {}).get(field.field_id)
+            if previous is not None:
+                if isinstance(control, QComboBox):
+                    control.setCurrentIndex(max(control.findData(previous), 0))
+                else:
+                    control.setText(previous)
+            (control.currentIndexChanged if isinstance(control, QComboBox) else control.textChanged).connect(self._mark_stale)
+        for group, form in ((self.conditions_group, self.conditions_form), (self.fields_group, self.fields_form), (self.loss_group, self.loss_form)):
+            group.setVisible(form.rowCount() > 0)
 
         if not fields:
             note = QLabel("此类别没有可填写的额定参数。")
@@ -184,7 +251,7 @@ class TransformerAnalysisPage(QWidget):
             self.fields_form.addRow(note)
 
     def _collect_values(self) -> dict:
-        category_id = self.category.currentData()
+        category_id = selected_category(self.category)
         if not category_id:
             raise ValueError("请先选择产品类别。")
         category = self._category_by_id[category_id]
@@ -208,6 +275,11 @@ class TransformerAnalysisPage(QWidget):
         self._last_result = None
         self._last_outcome = None
         self.last_record_status = None
+        self.last_saved_record_id = None
+        self.view_record_button.hide()
+        self.stale_label.hide()
+        self.evaluate_button.setText("分析")
+        primary_action(self.evaluate_button, True)
         self.record_label.setText("")
         self.thresholds_label.setText("")
         self.explanation.setText("")
@@ -231,6 +303,11 @@ class TransformerAnalysisPage(QWidget):
         self.last_record_status = outcome.record_status
         self._render(outcome.result)
         self._render_record_status(outcome)
+        if outcome.record_status == "SAVED" and outcome.record:
+            self.last_saved_record_id = outcome.record.record_id
+            self.view_record_button.setVisible(self.navigator is not None)
+            self.evaluate_button.setText("再次分析")
+            primary_action(self.evaluate_button, False)
         return outcome.result
 
     def _show_error(self, message: str) -> None:
@@ -280,7 +357,7 @@ class TransformerAnalysisPage(QWidget):
     def _render_record_status(self, outcome) -> None:
         status = outcome.record_status
         if status == "SAVED":
-            text = "本次分析已自动保存到分析记录。"
+            text = "本次分析已自动保存到分析记录。再次分析会生成新记录。"
             color = "#1f6f3f"
         elif status == "SAVE_FAILED":
             text = "计算结果已产生，但历史记录保存失败，本次结果未被记录。"
@@ -303,9 +380,10 @@ class DeviceAnalysisPage(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(*(TOKENS.page_margin,) * 4)
         layout.addWidget(heading("新建分析"))
-        if hasattr(pump_page, "heading"):
-            pump_page.heading.hide()
-            pump_page.layout().setContentsMargins(0, 0, 0, 0)
+        for page in (pump_page, transformer_page, motor_page):
+            if page is not None and hasattr(page, "heading"):
+                page.heading.hide()
+                page.layout().setContentsMargins(0, 0, 0, 0)
         selector_row = QHBoxLayout()
         selector_row.setSpacing(12)
         selector_row.addWidget(QLabel("分析设备"))

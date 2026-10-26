@@ -59,7 +59,9 @@ QLabel { background:transparent; }
 QLabel#pageHeading { font-size:24px; font-weight:600; color:#18364F; }
 QLabel#homeHeading { font-size:30px; font-weight:800; color:#18364F; }
 QLabel#coreResult { font-size:26px; font-weight:600; color:#18364F; }
+QLabel[coreResult="true"] { font-size:26px; font-weight:600; color:#18364F; }
 QLabel#muted { color:#698198; font-size:13px; }
+QLabel[warning="true"] { color:#956420; }
 QFrame#sidebar { background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 #E6F2FC,stop:0.5 #EDF6FD,stop:1 #E6F2FB); border-right:1px solid #DAE7F1; }
 QListWidget#navigation { background:transparent; border:0; outline:0; }
 QListWidget#navigation::item { min-height:46px; padding:0 10px; margin:3px 0; border-radius:9px; }

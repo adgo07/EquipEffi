@@ -29,6 +29,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 from PySide6.QtCore import QCoreApplication, QEvent, QPoint, QRect
 from PySide6.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton
+from PySide6.QtTest import QTest
 
 from equipeffi.composition import create_settings_runtime
 from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
@@ -731,11 +732,14 @@ class SettingsPageTests(ProductShellTestCase):
         )
         self.assertIn("尚待正式支持验收", page.about.text())
         self.assertIn("运行日志存放于 logs 子目录", page.runtime.text())
+        self.assertFalse(page.runtime_section.is_expanded())
+        page.runtime_section.set_expanded(True)
+        QTest.qWait(10)  # 折叠区展开后的换行高度由页面定时器更新。
 
         long_directory = self.paths.root.joinpath(*(["nested"] * 8))
         self.settings.set("last.directory", str(long_directory))
         page.refresh()
-        self.app.processEvents()
+        QTest.qWait(10)
         last_directory_height = page.last_directory.heightForWidth(
             page.last_directory.width())
         self.assertGreaterEqual(

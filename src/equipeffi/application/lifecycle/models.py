@@ -204,7 +204,7 @@ class RecordQuery:
 class RecordSummary:
     """列表展示所需的**轻量投影**。
 
-    刻意不加载 `*_snapshot_json`：历史记录可能很多，列表只需要这几列。
+    不传输完整快照JSON；项目/设备名称仅从保存的输入提取标量。
     打开某条记录时才用 `load_record` 取完整不可变快照。
     """
 
@@ -216,6 +216,7 @@ class RecordSummary:
     grade: str | None
     ui_conclusion: str
     finalized_at_utc: str
+    display_name: str = ""
 
 
 @dataclass(frozen=True)

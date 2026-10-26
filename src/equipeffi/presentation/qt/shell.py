@@ -90,9 +90,9 @@ class MainWindow(QMainWindow):
         # Phase 7：普通流程没有草稿概念，分析页不接收 workspace_id。
         self.analysis_page = AnalysisPage(analysis, navigator=self) if analysis is not None else None
         self.transformer_analysis_page = (
-            TransformerAnalysisPage(transformer) if transformer is not None else None)
+            TransformerAnalysisPage(transformer, navigator=self) if transformer is not None else None)
         from .pages.motor_analysis import MotorAnalysisPage
-        self.motor_analysis_page = MotorAnalysisPage(motor) if motor is not None else None
+        self.motor_analysis_page = MotorAnalysisPage(motor, navigator=self) if motor is not None else None
         self.device_analysis_page = (
             DeviceAnalysisPage(self.analysis_page, self.transformer_analysis_page,
                                motor_page=self.motor_analysis_page)
@@ -207,6 +207,11 @@ class MainWindow(QMainWindow):
         self._show_page("分析记录")
         if record_id:
             page.show_record(record_id)
+
+    def open_batch_record(self, batch_record_id: str) -> None:
+        self.open_records()
+        if self.records_page is not None:
+            self.records_page.show_batch_record(batch_record_id)
 
     def open_settings(self) -> None:
         self._show_page("设置")

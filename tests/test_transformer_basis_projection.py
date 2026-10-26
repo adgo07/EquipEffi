@@ -175,7 +175,8 @@ class TransformerBasisProjectionTests(unittest.TestCase):
 
             page.category.setCurrentIndex(
                 page.category.findData("GB20052-T32"))
-            self.assertEqual(page.category_help.text(), TRANSFORMER_SCOPE_HINT)
+            self.assertIn(TRANSFORMER_SCOPE_HINT, page.category_help.text())
+            self.assertIn("已选类别：", page.category_help.text())
             condition = next(option for option in
                              transformer.input_contract.condition_options("GB20052-T32")
                              if option.values.get("thermal_class") == "F")
