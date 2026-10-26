@@ -115,12 +115,12 @@ class MotorQtTests(unittest.TestCase):
                                     transformer=create_transformer_analysis_service(paths=paths),
                                     motor=create_motor_analysis_service(paths=paths))
                 self.assertIn("验收候选", window.windowTitle())
-                self.assertIn("GB 18613-2020", window.home_page.standard_label.text())
+                self.assertEqual(window.standards_page.table.item(2, 0).text(), "GB 18613-2020")
                 window.open_analysis(standard_code="GB 18613-2020")
                 self.assertIs(window.device_analysis_page.pages.currentWidget(), window.motor_analysis_page)
-                selector = window.standards_page.standard_selector
-                selector.setCurrentIndex(selector.findData("GB 18613-2020"))
-                self.assertIn("电动机能效", window.standards_page.facts.text())
+                window.standards_page.open_detail(2)
+                self.assertIn("电动机能效", window.standards_page.section_labels[0].text())
+                self.assertEqual(window.standards_page.table.item(2, 4).text(), "验收候选")
             finally:
                 _dispose_widget(window)
                 close_logging(logger)

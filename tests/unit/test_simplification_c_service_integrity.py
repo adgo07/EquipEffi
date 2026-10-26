@@ -413,8 +413,9 @@ class HomePageHistoricalProjectionTests(unittest.TestCase):
         self.assertEqual(service.limit, 5)
         for record, label in zip(records, expected):
             with self.subTest(record_id=record.record_id):
-                row = next(text for text in rendered if record.record_id in text)
-                self.assertIn(f"　{label}　", row)
+                row = rendered[records.index(record)]
+                self.assertEqual(page.records.item(records.index(record)).toolTip(), record.record_id)
+                self.assertIn(label, row)
         self.assertEqual(records, before, "首页展示不得改写历史记录")
 
 

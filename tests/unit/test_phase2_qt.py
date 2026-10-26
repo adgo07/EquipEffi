@@ -65,7 +65,8 @@ class QtShellTests(unittest.TestCase):
                 self.assertEqual(window.pages.currentIndex(), index)
                 widget = window.pages.currentWidget()
                 labels = [label.text() for label in widget.findChildren(QLabel)]
-                self.assertIn(name, labels)
+                expected = "设备能效分析工具" if name == "首页" else name
+                self.assertIn(expected, labels)
                 # 不得残留开发态占位文案
                 blob = "\n".join(labels)
                 self.assertNotIn("尚未在 Phase", blob)

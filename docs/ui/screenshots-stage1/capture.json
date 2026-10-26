@@ -1,0 +1,96 @@
+{
+  "platform": "windows",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "data_root": "D:\\project\\设备能效软件\\EquipEffi\\outputs\\ui-stage1\\data-04",
+  "scale_factor_override": null,
+  "screens": [
+    {
+      "name": "\\\\.\\DISPLAY1",
+      "logical_dpi": 96.0,
+      "device_pixel_ratio": 1.5
+    }
+  ],
+  "captures": [
+    {
+      "file": "home-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "standards-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "standard-detail-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "pump-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "home-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "pump-result-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "standards-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "pump-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "standard-detail-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    }
+  ]
+}

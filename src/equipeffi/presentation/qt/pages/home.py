@@ -1,168 +1,124 @@
-"""首页：只承载真实高价值任务。
-
-复用现有 `list_workspaces()` / `list_records()`；**不新增** records schema，
-也**不建立**第二套 persistence。刻意不做 KPI / Dashboard / 无业务价值图表。
-"""
-from __future__ import annotations
-
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (
-    QGroupBox,
-    QHBoxLayout,
-    QLabel,
-    QListWidget,
-    QListWidgetItem,
-    QPushButton,
-    QVBoxLayout,
-    QWidget,
-)
-
-from ....application.services.centrifugal_pump_analysis_service import (
-    user_conclusion_from_snapshot,
-)
-from ..tokens import TOKENS
+"""无侧栏任务首页，最近记录来自正式服务。"""
+from PySide6.QtCore import Qt, QSize
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
+                              QLabel, QPushButton, QListWidget, QListWidgetItem, QScrollArea)
+from ....application.services.centrifugal_pump_analysis_service import user_conclusion_from_snapshot
+from ..style import brand, icon
 
 
 class HomePage(QWidget):
-    """开始新分析 / 打开最近历史记录 / 查看适用标准信息。
-
-Phase 7：普通用户界面没有「分析草稿」概念，因此本页不提供草稿入口；
-每次「分析」都会自动形成一条历史记录，本页直接列出最近记录。
-"""
-
-    def __init__(self, service, navigator=None, parent: QWidget | None = None,
-                 *, transformer=None, motor=None):
+    def __init__(self, service, navigator=None, parent=None, *, transformer=None, motor=None):
         super().__init__(parent)
-        self.service = service
-        self.transformer_service = transformer
-        self.motor_service = motor
-        self.navigator = navigator
-        self._record_ids: list[str] = []
-
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(*(TOKENS.page_margin,) * 4)
-        layout.setSpacing(TOKENS.section_gap)
-
-        heading = QLabel("首页")
-        font = heading.font()
-        font.setPixelSize(TOKENS.title_font_size)
-        font.setBold(True)
-        heading.setFont(font)
-        layout.addWidget(heading)
-
-        self.standard_label = QLabel()
-        self.standard_label.setWordWrap(True)
-        self.standard_label.setTextFormat(Qt.TextFormat.PlainText)
-        layout.addWidget(self.standard_label)
-
-        primary = QVBoxLayout() if motor is not None else QHBoxLayout()
-        self.new_analysis_button = QPushButton("开始新的离心泵分析")
-        self.new_analysis_button.clicked.connect(self._start_new_analysis)
-        primary.addWidget(self.new_analysis_button)
-        self.new_transformer_analysis_button = QPushButton("开始新的变压器分析")
-        self.new_transformer_analysis_button.clicked.connect(
-            self._start_new_transformer_analysis)
-        self.new_transformer_analysis_button.setVisible(transformer is not None)
-        primary.addWidget(self.new_transformer_analysis_button)
-        self.new_motor_analysis_button = QPushButton("开始电动机分析（验收候选）")
-        self.new_motor_analysis_button.setVisible(motor is not None)
-        self.new_motor_analysis_button.clicked.connect(
-            lambda: self.navigator.open_analysis(standard_code="GB 18613-2020") if self.navigator else None)
-        primary.addWidget(self.new_motor_analysis_button)
-        self.open_standard_button = QPushButton("查看标准库")
-        self.open_standard_button.clicked.connect(self._open_standard)
-        primary.addWidget(self.open_standard_button)
-        primary.addStretch()
-        layout.addLayout(primary)
-
-        records_group = QGroupBox("最近的历史记录")
-        records_layout = QVBoxLayout(records_group)
+        self.service, self.navigator = service, navigator
+        self._record_ids = []
+        outer = QVBoxLayout(self)
+        outer.setContentsMargins(0, 0, 0, 0)
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        body = QWidget()
+        layout = QVBoxLayout(body)
+        layout.setContentsMargins(32, 24, 32, 24)
+        layout.setSpacing(24)
+        bar = QHBoxLayout()
+        bar.addWidget(brand())
+        bar.addStretch()
+        settings = QPushButton("设置")
+        settings.setIcon(icon("settings"))
+        settings.clicked.connect(lambda: navigator.open_settings() if navigator else None)
+        bar.addWidget(settings)
+        layout.addLayout(bar)
+        title = QLabel("设备能效分析工具")
+        title.setObjectName("homeHeading")
+        title.setWordWrap(True)
+        layout.addWidget(title)
+        subtitle = QLabel("查询标准，完成设备分析与批量评价")
+        subtitle.setObjectName("muted")
+        subtitle.setWordWrap(True)
+        layout.addWidget(subtitle)
+        self.cards = QGridLayout()
+        self.cards.setSpacing(14)
+        self.task_buttons = []
+        for name, description, symbol, action in (
+            ("标准库", "查询标准与适用范围", "book", self._open_standard),
+            ("新建分析", "填写设备参数并分析", "plus", self._start_new_analysis),
+            ("表格导入", "统一工作簿批量评价", "excel", lambda: navigator.open_batch() if navigator else None),
+            ("分析记录", "查看已保存的分析结果", "records", lambda: navigator.open_records() if navigator else None),
+        ):
+            button = QPushButton(f"{name}\n\n{description}   →")
+            button.setObjectName("taskCard")
+            button.setIcon(icon(symbol, "#FFFFFF" if not self.task_buttons else "#197CC2"))
+            button.setIconSize(QSize(28, 28))
+            button.setMinimumHeight(150)
+            button.setProperty("primary", not self.task_buttons)
+            button.clicked.connect(action)
+            self.task_buttons.append(button)
+        layout.addLayout(self.cards)
+        row = QHBoxLayout()
+        row.addWidget(QLabel("最近分析记录"))
+        row.addStretch()
+        all_records = QPushButton("查看全部")
+        all_records.clicked.connect(lambda: navigator.open_records() if navigator else None)
+        row.addWidget(all_records)
+        layout.addLayout(row)
         self.records = QListWidget()
-        self.records.itemDoubleClicked.connect(self._open_record_item)
-        records_layout.addWidget(self.records)
-        self.open_record_button = QPushButton("打开选中的记录")
-        self.open_record_button.clicked.connect(self._open_selected_record)
-        records_layout.addWidget(self.open_record_button)
-        layout.addWidget(records_group)
-
+        self.records.setMinimumHeight(180)
+        self.records.itemActivated.connect(self._open_record_item)
+        layout.addWidget(self.records)
+        self.record_status = QLabel()
+        self.record_status.setWordWrap(True)
+        layout.addWidget(self.record_status)
+        self.retry_button = QPushButton("重试")
+        self.retry_button.clicked.connect(self.refresh)
+        layout.addWidget(self.retry_button, alignment=Qt.AlignmentFlag.AlignLeft)
         layout.addStretch()
+        scroll.setWidget(body)
+        outer.addWidget(scroll)
+        self._columns = 0
         self.refresh()
 
-    # -- 数据 ---------------------------------------------------------------
+    def resizeEvent(self, event):
+        columns = 4 if self.width() >= 1200 else 2 if self.width() >= 700 else 1
+        if columns != self._columns:
+            self._columns = columns
+            for index, button in enumerate(self.task_buttons):
+                self.cards.addWidget(button, index // columns, index % columns)
+            for column in range(4):
+                self.cards.setColumnStretch(column, (147 if column == 0 else 100) if column < columns else 0)
+        super().resizeEvent(event)
 
-    def refresh(self) -> None:
-        """刷新标准信息与最近历史记录。"""
-
-        pump = self.service.standard_overview()
-        lines = [
-            "离心泵",
-            f"标准号：{pump['standard_code']}",
-            f"标准名称：{pump['standard_name']}",
-            f"实施日期：{pump['effective_date'] or '—'}",
-        ]
-        if self.transformer_service is not None:
-            transformer = self.transformer_service.standard_overview()
-            transformer_name = transformer.get(
-                "name", "电力变压器能效限定值及能效等级")
-            lines.extend((
-                "",
-                "电力变压器",
-                f"标准号：{transformer['standard_code']}",
-                f"标准名称：{transformer_name}",
-                f"实施日期：{transformer.get('effective_date') or '—'}",
-            ))
-            support_status = transformer.get("support_status")
-            if support_status == "IMPLEMENTED":
-                lines.append("软件状态：已接入，尚待正式支持验收")
-            else:
-                lines.append("软件状态：当前状态以软件记录为准")
-        if self.motor_service is not None:
-            motor = self.motor_service.standard_overview()
-            lines.extend(("", "电动机（接入验收候选）",
-                          f"标准号：{motor['standard_code']}", f"标准名称：{motor['name']}",
-                          "软件状态：已接入候选，尚待正式支持验收"))
-        self.standard_label.setText("\n".join(lines))
-
-        self._record_ids = []
+    def refresh(self):
         self.records.clear()
-        for record in self.service.list_records(limit=5):
+        self._record_ids = []
+        try:
+            records = self.service.list_records(limit=5)
+        except Exception:
+            self.record_status.setText("暂时无法读取记录")
+            self.retry_button.show()
+            return
+        self.retry_button.hide()
+        self.record_status.setText("" if records else "尚无分析记录，可点击「新建分析」开始。")
+        for record in records:
+            values = getattr(record, "input_snapshot", None) or {}
+            name = values.get("project_name") or values.get("equipment_no") or record.product_category
             conclusion = user_conclusion_from_snapshot(
-                {"grade": record.grade,
-                 "evaluation_status": record.evaluation_status},
-                record.ui_conclusion,
-            )
-            self.records.addItem(QListWidgetItem(
-                f"{record.record_id}　{record.product_category}　{conclusion}"
-                f"　{record.as_of}"))
+                {"grade": record.grade, "evaluation_status": record.evaluation_status}, record.ui_conclusion)
+            item = QListWidgetItem(f"{name}　 ·　{conclusion}　 ·　{record.as_of}")
+            item.setToolTip(record.record_id)
+            item.setSizeHint(QSize(0, 42))
+            self.records.addItem(item)
             self._record_ids.append(record.record_id)
 
-        has_records = bool(self._record_ids)
-        self.open_record_button.setEnabled(has_records)
-        if not has_records:
-            self.records.addItem(QListWidgetItem("暂无正式记录"))
+    def _start_new_analysis(self):
+        if self.navigator:
+            self.navigator.open_analysis()
 
-    # -- 动作 ---------------------------------------------------------------
-
-    def _start_new_analysis(self) -> None:
-        if self.navigator is not None:
-            self.navigator.open_analysis(
-                standard_code=self.service.standard_overview()["standard_code"])
-
-    def _start_new_transformer_analysis(self) -> None:
-        if self.navigator is not None and self.transformer_service is not None:
-            self.navigator.open_analysis(
-                standard_code=self.transformer_service.standard_overview()["standard_code"])
-
-    def _open_standard(self) -> None:
-        if self.navigator is not None:
+    def _open_standard(self):
+        if self.navigator:
             self.navigator.open_standards()
 
-    def _open_record_item(self, item: QListWidgetItem) -> None:
+    def _open_record_item(self, item):
         self._open_record(self.records.row(item))
 
-    def _open_selected_record(self) -> None:
-        self._open_record(self.records.currentRow())
-
-    def _open_record(self, row: int) -> None:
-        if 0 <= row < len(self._record_ids) and self.navigator is not None:
+    def _open_record(self, row):
+        if self.navigator and 0 <= row < len(self._record_ids):
             self.navigator.open_records(record_id=self._record_ids[row])

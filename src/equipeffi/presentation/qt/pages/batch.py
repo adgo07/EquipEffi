@@ -118,7 +118,7 @@ class BatchPage(QWidget):
         layout.setSpacing(TOKENS.spacing)
 
         # 一级页面标题与导航名一致（与其余页面相同的约定）。
-        title = QLabel("Excel导入")
+        title = QLabel("表格导入")
         title.setObjectName("pageTitle")
         layout.addWidget(title)
 

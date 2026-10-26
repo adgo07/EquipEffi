@@ -3,6 +3,7 @@
 include README.md
 include pyproject.toml
 recursive-include src/equipeffi *.py
+recursive-include src/equipeffi/presentation/qt/assets *.png *.svg
 include src/equipeffi/standard_manifest.json
 include src/equipeffi/resources/TEMPLATE_MANIFEST.json
 include src/equipeffi/resources/elimination_catalog_batches_1_4.json

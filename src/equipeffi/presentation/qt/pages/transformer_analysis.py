@@ -26,6 +26,7 @@ from ....application.services.transformer_analysis_service import (
 )
 from ..labels import format_metric, user_grade_text
 from ..tokens import TOKENS
+from ..style import heading
 
 _LOGGER = logging.getLogger("equipeffi.qt.transformer")
 
@@ -301,6 +302,10 @@ class DeviceAnalysisPage(QWidget):
         self.transformer_page = transformer_page
         layout = QVBoxLayout(self)
         layout.setContentsMargins(*(TOKENS.page_margin,) * 4)
+        layout.addWidget(heading("新建分析"))
+        if hasattr(pump_page, "heading"):
+            pump_page.heading.hide()
+            pump_page.layout().setContentsMargins(0, 0, 0, 0)
         selector_row = QHBoxLayout()
         selector_row.addWidget(QLabel("分析设备"))
         self.device_selector = QComboBox()
@@ -308,7 +313,6 @@ class DeviceAnalysisPage(QWidget):
         self.device_selector.addItem("离心泵", "centrifugal_pump")
         self.device_selector.addItem("变压器", "transformer")
         selector_row.addWidget(self.device_selector)
-        selector_row.addStretch()
         layout.addLayout(selector_row)
         self.pages = QStackedWidget()
         self.pages.addWidget(pump_page)
@@ -317,14 +321,23 @@ class DeviceAnalysisPage(QWidget):
         if motor_page is not None:
             self.device_selector.addItem("电动机（验收候选）", "motor_lv")
             self.pages.addWidget(motor_page)
+        else:
+            self.device_selector.addItem("电动机（尚未开放）", "motor_lv")
+            self.device_selector.model().item(self.device_selector.count() - 1).setEnabled(False)
+            self.device_selector.setToolTip("电动机仅在显式装配的验收候选构建中开放。")
         layout.addWidget(self.pages, 1)
         self.device_selector.currentIndexChanged.connect(self.pages.setCurrentIndex)
         self.device_selector.setCurrentIndex(0)
 
-    def select_standard(self, standard_code: str | None) -> None:
+    def select_standard(self, standard_code: str | None) -> bool:
+        if standard_code is None:
+            return True
         if standard_code == "GB 18613-2020" and self.motor_page is not None:
             self.device_selector.setCurrentIndex(2)
         elif standard_code == "GB 20052-2024":
             self.device_selector.setCurrentIndex(1)
         elif standard_code == "GB 19762-2025":
             self.device_selector.setCurrentIndex(0)
+        else:
+            return False
+        return True
