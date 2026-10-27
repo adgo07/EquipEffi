@@ -5,7 +5,13 @@
 - 路线：EquipEffi V2.3；默认分支：`master`。
 - Phase 0 为不可变基线；Phase 1–7 已独立验收（PR #10–#15）。Phase 8（GB 19762 Excel 批量评价）已合并 PR [#16](https://github.com/adgo07/EquipEffi/pull/16)，merge SHA `64b656ee4924fbf09f3fd87596ef1a1a779d1f09`；当前为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`。不得自行声明 `PHASE_8_PASS`，不得开始 Phase 9。
 
-## 当前工作：电动机接入工程验收收口（2026-10-25）
+## 当前工作：三个已确认标准收口（2026-10-27）
+
+Owner要求先收口离心泵、变压器、电动机。当前实际发布状态集中见[V1_SCOPE](V1_SCOPE.md)，不另建状态台账。PR36已合并，v0.2.1已正式发布于`e140283b110e77992099836fddcb34f018e01009`，完整Windows CI 1225项通过。泵默认SUPPORTED、变压器默认IMPLEMENTED、电机候选IMPLEMENTED且正式入口关闭；本次文档收口不自动提升支持或改变装配。
+
+统一旧入口中的“尚未实现／待验收”描述，保留既有验收和限制；泵示例矛盾仅补事实核对，不改标准源件、映射、Golden或算法。六个既有模块定向25项复验通过。变压器支持提升与电机正式开放／V6.2切换的具体决定待Owner确认。下方原开发分支、旧包和阶段文字为历史记录，不代表当前工作树。
+
+## 历史工作：电动机接入工程验收收口（2026-10-25）
 
 Owner确认PR35代码/工程验收通过，授权结束Draft、顺序合并并从最终合并代码重建候选包。PR33@a3e90d92、PR34@32f7da5f已合并。55d66f6d完整Windows CI run40183041126：1191项通过、真实exit0，QA-MOTOR-001/002按工程范围关闭。详见现有[实施记录](docs/standards/gb18613_2020/IMPLEMENTATION_REPORT.md)。
 
