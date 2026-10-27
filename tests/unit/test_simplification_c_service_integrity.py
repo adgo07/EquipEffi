@@ -3,7 +3,8 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-from dataclasses import dataclass
+from dataclasses import replace
+from copy import deepcopy
 from datetime import date
 from pathlib import Path
 import tempfile
@@ -367,16 +368,6 @@ class PumpCalculatorVersionTests(unittest.TestCase):
                          f"pump-calculator:sha256:{digest.hexdigest()}")
 
 
-@dataclass(frozen=True)
-class _HomeHistoryRecord:
-    record_id: str
-    product_category: str
-    grade: str | None
-    evaluation_status: str
-    ui_conclusion: str
-    as_of: str
-
-
 class HomePageHistoricalProjectionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -386,15 +377,28 @@ class HomePageHistoricalProjectionTests(unittest.TestCase):
 
     def test_recent_history_uses_shared_snapshot_projection_without_mutating_records(self):
         from equipeffi.presentation.qt.pages.home import HomePage
+        from PySide6.QtCore import Qt
+        from equipeffi.composition import create_pump_analysis_service
+        from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
 
-        records = (
-            _HomeHistoryRecord("R1", "测试泵", "1", "SUCCESS", "1级", "2026-10-20"),
-            _HomeHistoryRecord("R2", "测试泵", "2", "SUCCESS", "2级", "2026-10-20"),
-            _HomeHistoryRecord("R3", "测试泵", "3", "SUCCESS", "3级", "2026-10-20"),
-            _HomeHistoryRecord("R4", "测试泵", "BELOW_MINIMUM", "SUCCESS", "未达标", "2026-10-20"),
-            _HomeHistoryRecord("R5", "测试泵", None, "OUT_OF_STANDARD_SCOPE", "不适用", "2026-10-20"),
-        )
-        before = records
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        actual_service = create_pump_analysis_service(paths=AppDataPaths(Path(temp.name)))
+        request = PumpAnalysisRequest("单级单吸清水离心泵", date(2026, 10, 20),
+            QBEP="100", HBEP="50", speed="2900", efficiency="80", suction="单吸", stages="1")
+        base = actual_service.analyze_and_record(request).record
+        self.assertIsNotNone(base)
+        # Full real RecordSnapshot contract, including standard and frozen input/
+        # result/reference evidence; retain legacy historical conclusion labels.
+        records = tuple(replace(base, record_id=rid, grade=grade, evaluation_status=status,
+            ui_conclusion=legacy, result_snapshot=dict(base.result_snapshot, grade=grade,
+                evaluation_status=status, ui_conclusion=legacy))
+            for rid, grade, status, legacy in (
+                ("R1", "1", "SUCCESS", "1级"), ("R2", "2", "SUCCESS", "2级"),
+                ("R3", "3", "SUCCESS", "3级"), ("R4", "BELOW_MINIMUM", "SUCCESS", "未达标"),
+                ("R5", None, "OUT_OF_STANDARD_SCOPE", "不适用")))
+        before = deepcopy(records)
+        stored_before = deepcopy(actual_service.list_records())
 
         class HistoryService:
             def standard_overview(self):
@@ -406,17 +410,23 @@ class HomePageHistoricalProjectionTests(unittest.TestCase):
 
         service = HistoryService()
         page = HomePage(service)
+        self.addCleanup(page.deleteLater)
         page.refresh()
 
         expected = ("1级", "2级", "3级", "未达3级", "不在范围")
-        rendered = tuple(page.records.item(index).text() for index in range(page.records.count()))
+        rendered = tuple(page.records.item(index, 2).text() for index in range(page.records.rowCount()))
         self.assertEqual(service.limit, 5)
+        self.assertEqual(page.records.rowCount(), 5)
+        self.assertEqual(page._record_ids, [record.record_id for record in records])
         for record, label in zip(records, expected):
             with self.subTest(record_id=record.record_id):
-                row = rendered[records.index(record)]
-                self.assertEqual(page.records.item(records.index(record)).toolTip(), record.record_id)
-                self.assertIn(label, row)
+                row = records.index(record)
+                self.assertEqual(page.records.item(row, 0).data(Qt.ItemDataRole.UserRole), record.record_id)
+                self.assertEqual(page.records.item(row, 1).text(), record.standard_code)
+                self.assertEqual(page.records.item(row, 2).toolTip(), label)
+                self.assertEqual(rendered[row], label)
         self.assertEqual(records, before, "首页展示不得改写历史记录")
+        self.assertEqual(actual_service.list_records(), stored_before, "首页展示不得写入原数据库")
 
 
 class QtBatchDisplayWiringTests(unittest.TestCase):
@@ -426,10 +436,13 @@ class QtBatchDisplayWiringTests(unittest.TestCase):
 
         cls.app = QApplication.instance() or QApplication([])
 
-    @staticmethod
-    def _service():
-        return CentrifugalPumpAnalysisService(
-            JsonStandardRepository(ROOT / "src" / "equipeffi"))
+    def _service(self):
+        from equipeffi.composition import create_pump_analysis_service
+        from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
+
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        return create_pump_analysis_service(paths=AppDataPaths(Path(temp.name)))
 
     @staticmethod
     def _write_input(path: Path, *, flow: int, efficiency: int = 80) -> None:
@@ -477,7 +490,7 @@ class QtBatchDisplayWiringTests(unittest.TestCase):
         page.category.setCurrentIndex(
             page.category.findData("单级单吸清水离心泵"))
         for key, value in (
-            ("QBEP", "-1"), ("HBEP", "50"),
+            ("QBEP", "100"), ("HBEP", "50"),
             ("speed", "2900"), ("efficiency", "80"),
         ):
             page.point_inputs[key].setText(value)
@@ -485,16 +498,39 @@ class QtBatchDisplayWiringTests(unittest.TestCase):
 
     def test_invalid_input_stays_separate_in_live_qt_and_batch_results(self):
         import openpyxl
+        from PySide6.QtTest import QTest
 
         from equipeffi.infrastructure.excel.pump_workbook_reader import PUMP_SHEET
 
         service = self._service()
         page = self._page(service)
         self.addCleanup(page.deleteLater)
-        live_result = page.evaluate()
-        self.assertEqual(live_result.evaluation_status, "INVALID_INPUT")
-        self.assertEqual(page.conclusion.text(), "输入错误")
-        self.assertEqual(service.list_records(), [])
+        request = page._collect_request()
+        page.evaluate()
+        self.assertIsNotNone(page.last_saved_record_id)
+        before = deepcopy(service.list_records())
+        edit = page.point_inputs["QBEP"]
+        edit.clear()
+        QTest.keyClicks(edit, "-1")
+        self.assertEqual(edit.text(), "-")
+        for text in ("-", "-1"):
+            with self.subTest(input=text), patch.object(service, "analyze_and_record", wraps=service.analyze_and_record) as analyze:
+                edit.setText(text)
+                self.assertIsNone(page.evaluate())
+                analyze.assert_not_called()
+                self.assertEqual(page.conclusion.text(), "—")
+                self.assertIn("流量", edit.numeric_error.text())
+                self.assertFalse(edit.numeric_error.isHidden())
+                self.assertEqual(page.last_record_status, "NOT_RECORDED")
+                self.assertIsNone(page.last_saved_record_id)
+                self.assertEqual(service.list_records(), before)
+        application = service.analyze_and_record(replace(request, QBEP="-1"))
+        self.assertEqual(application.result.evaluation_status, "INVALID_INPUT")
+        self.assertEqual(user_conclusion_text(application.result), "输入错误")
+        self.assertFalse(application.result.finalizable)
+        self.assertEqual(application.record_status, "NOT_RECORDED")
+        self.assertIsNone(application.record)
+        self.assertEqual(service.list_records(), before)
 
         with tempfile.TemporaryDirectory() as temp:
             source = Path(temp) / "input.xlsx"
@@ -505,8 +541,15 @@ class QtBatchDisplayWiringTests(unittest.TestCase):
                 as_of=date(2026, 10, 19), persist=False)
             outcome = batch.outcomes[0]
             self.assertTrue(outcome.is_input_error)
-            self.assertEqual(outcome.conclusion, page.conclusion.text())
+            self.assertFalse(outcome.is_execution_error)
+            self.assertEqual(outcome.conclusion, user_conclusion_text(application.result))
             self.assertEqual(outcome.conclusion, "输入错误")
+            self.assertEqual(batch.summary.input_error_rows, 1)
+            self.assertEqual(batch.summary.execution_error_rows, 0)
+            self.assertEqual(batch.summary.concluded_rows, 0)
+            self.assertEqual(batch.summary.evaluated_quantity, 0)
+            self.assertTrue(all(value == 0 for value in batch.summary.conclusion_quantities.values()))
+            self.assertEqual(service.list_records(), before)
             workbook = openpyxl.load_workbook(destination, data_only=True)
             self.addCleanup(workbook.close)
             self.assertEqual(workbook[PUMP_SHEET]["X4"].value, "输入错误")
@@ -520,22 +563,40 @@ class QtBatchDisplayWiringTests(unittest.TestCase):
         service = self._service()
         page = self._page(service)
         self.addCleanup(page.deleteLater)
+        page.evaluate()
+        self.assertIsNotNone(page.last_saved_record_id)
+        before = deepcopy(service.list_records())
         with tempfile.TemporaryDirectory() as temp:
             source = Path(temp) / "input.xlsx"
             destination = Path(temp) / "result.xlsx"
             self._write_input(source, flow=100)
-            with patch.object(service, "evaluate", side_effect=RuntimeError("simulated failure")):
+            with patch.object(service, "evaluate", side_effect=RuntimeError("simulated failure")) as evaluate:
                 self.assertIsNone(page.evaluate())
+                evaluate.assert_called_once()
+                actual = evaluate.call_args.args[0]
+                self.assertEqual((actual.QBEP, actual.HBEP, actual.speed, actual.efficiency,
+                                  actual.suction, actual.stages), ("100", "50", "2900", "80", "单吸", "1"))
                 self.assertEqual(page.conclusion.text(), "—")
                 self.assertEqual(page.summary.text(), SYSTEM_FAILURE_TEXT)
+                self.assertIsNone(page._last_result)
+                self.assertIsNone(page.last_saved_record_id)
+                self.assertEqual(service.list_records(), before)
 
+                evaluate.reset_mock()
                 batch = self._batch(service).evaluate_workbook(
                     source, destination=destination,
                     as_of=date(2026, 10, 19), persist=False)
+                evaluate.assert_called_once()
             outcome = batch.outcomes[0]
             self.assertTrue(outcome.is_execution_error)
+            self.assertFalse(outcome.is_input_error)
             self.assertEqual(outcome.conclusion, "执行失败")
             self.assertNotEqual(outcome.conclusion, "无法判定")
+            self.assertEqual(batch.summary.execution_error_rows, 1)
+            self.assertEqual(batch.summary.input_error_rows, 0)
+            self.assertEqual(batch.summary.concluded_rows, 0)
+            self.assertEqual(batch.summary.evaluated_quantity, 0)
+            self.assertEqual(service.list_records(), before)
             workbook = openpyxl.load_workbook(destination, data_only=True)
             self.addCleanup(workbook.close)
             self.assertEqual(workbook[PUMP_SHEET]["X4"].value, "执行失败")

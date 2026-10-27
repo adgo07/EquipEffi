@@ -16,6 +16,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 from unittest.mock import patch
+from copy import deepcopy
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
@@ -308,13 +309,48 @@ class AutoRecordTests(Phase7TestCase):
         self.assertEqual(page.last_record_status, "RECORDED")
 
     def test_invalid_input_is_not_recorded(self):
+        from PySide6.QtCore import Qt
+        from PySide6.QtTest import QTest
+        from PySide6.QtWidgets import QScrollArea
+
         page = self.page()
         self.fill(page, "单级单吸清水离心泵")
-        page.point_inputs["efficiency"].setText("abc")
-        result = page.evaluate()
-        self.assertEqual(result.evaluation_status, "INVALID_INPUT")
-        self.assertEqual(page.last_record_status, "NOT_RECORDED")
-        self.assertEqual(self.service.list_records(), [])
+        valid_request = page._collect_request()
+        page.evaluate()
+        self.assertIsNotNone(page.last_saved_record_id)
+        before = deepcopy(self.service.list_records())
+        page.resize(1000, 700)
+        page.show()
+        edit = page.point_inputs["efficiency"]
+        edit.clear()
+        QTest.keyClicks(edit, "abc")
+        self.assertEqual(edit.text(), "")
+        QTest.keyClicks(edit, "1e")
+        self.assertEqual(edit.text(), "1e")
+        # Actual intermediate editing and programmatic/IME bypass both stop in UI.
+        for text in ("1e", "abc"):
+            with self.subTest(input=text):
+                edit.setText(text)
+                with patch.object(self.service, "analyze_and_record", wraps=self.service.analyze_and_record) as analyze:
+                    page.findChild(QScrollArea).ensureWidgetVisible(page.evaluate_button)
+                    QTest.qWait(30)
+                    QTest.mouseClick(page.evaluate_button, Qt.MouseButton.LeftButton)
+                    analyze.assert_not_called()
+                self.assertIsNone(page._last_result)
+                self.assertIn("效率", edit.numeric_error.text())
+                self.assertFalse(edit.numeric_error.isHidden())
+                self.assertEqual(page.last_record_status, "NOT_RECORDED")
+                self.assertIsNone(page.last_saved_record_id)
+                self.assertEqual(self.service.list_records(), before)
+        # The lower Application contract still reports an input error, not a
+        # legitimate insufficient-data result, and cannot save it.
+        from dataclasses import replace
+        outcome = self.service.analyze_and_record(replace(valid_request, efficiency="abc"))
+        self.assertEqual(outcome.result.evaluation_status, "INVALID_INPUT")
+        self.assertFalse(outcome.result.finalizable)
+        self.assertEqual(outcome.record_status, "NOT_RECORDED")
+        self.assertIsNone(outcome.record)
+        self.assertEqual(self.service.list_records(), before)
 
     def test_unresolved_category_is_not_recorded(self):
         page = self.page()

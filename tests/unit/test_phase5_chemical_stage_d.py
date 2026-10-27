@@ -23,6 +23,8 @@ from pathlib import Path
 import sqlite3
 import tempfile
 import unittest
+from copy import deepcopy
+from unittest.mock import patch
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
@@ -367,13 +369,38 @@ class QtChemicalStageDTests(unittest.TestCase):
         variants = (
             ("normal", dict(SINGLE_NORMAL), "SUCCESS"),
             ("out of scope", dict(SINGLE_NORMAL, HBEP="10"), "OUT_OF_STANDARD_SCOPE"),
-            # Phase 7：单级类别的级数被类别锁定，"单级 + 级数2"不再可达；
-            # 非法数值（非数字）仍是可达的 INVALID_INPUT 业务终态。
+            # R4：非法数值在UI阻止；Application仍独立返回INVALID_INPUT。
             ("invalid", dict(SINGLE_NORMAL, efficiency="abc"), "INVALID_INPUT"),
         )
         for label, values, expected in variants:
             with self.subTest(case=label):
                 self._fill(CHEMICAL_SINGLE, values)
+                if label == "invalid":
+                    from PySide6.QtTest import QTest
+
+                    before = deepcopy(self.service.list_records())
+                    edit = self.page.point_inputs["efficiency"]
+                    edit.clear()
+                    QTest.keyClicks(edit, "abc")
+                    self.assertEqual(edit.text(), "")
+                    QTest.keyClicks(edit, "1e")
+                    self.assertEqual(edit.text(), "1e")
+                    with patch.object(self.service, "analyze_and_record", wraps=self.service.analyze_and_record) as analyze:
+                        self.assertIsNone(self.page.evaluate())
+                        analyze.assert_not_called()
+                    self.assertIn("效率", edit.numeric_error.text())
+                    self.assertFalse(edit.numeric_error.isHidden())
+                    self.assertEqual(self.page.last_record_status, "NOT_RECORDED")
+                    self.assertIsNone(self.page.last_saved_record_id)
+                    self.assertEqual(self.service.list_records(), before)
+                    outcome = self.service.analyze_and_record(_request(CHEMICAL_SINGLE, efficiency="abc"))
+                    self.assertEqual(outcome.result.evaluation_status, expected)
+                    self.assertEqual(outcome.result.support_status, "SUPPORTED")
+                    self.assertFalse(outcome.result.finalizable)
+                    self.assertEqual(outcome.record_status, "NOT_RECORDED")
+                    self.assertIsNone(outcome.record)
+                    self.assertEqual(self.service.list_records(), before)
+                    continue
                 result = self.page.evaluate()
                 self.assertEqual(result.evaluation_status, expected)
                 self.assertEqual(result.support_status, "SUPPORTED")
