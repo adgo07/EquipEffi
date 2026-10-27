@@ -278,11 +278,13 @@ class PumpBatchEvaluationService:
         self._record_id_factory = record_id_factory or (
             lambda: f"BATCH-{uuid4().hex[:12]}")
 
-    def list_batch_records(self, limit: int = 50) -> list[BatchRecordSnapshot]:
+    def list_batch_records(self, limit: int = 50, *, keyword: str = "") -> list[BatchRecordSnapshot]:
         """只读列出最近批次摘要；limit 由调用方递增以继续访问更早记录。"""
 
         if self.batch_repository is None:
             return []
+        if keyword.strip():
+            return self.batch_repository.list_batch_records(limit=limit, keyword=keyword.strip())
         return self.batch_repository.list_batch_records(limit=limit)
 
     def open_batch_record(self, batch_record_id: str) -> BatchRecordSnapshot:

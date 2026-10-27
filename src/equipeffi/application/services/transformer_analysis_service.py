@@ -18,6 +18,12 @@ STANDARD_CODE = "GB 20052-2024"
 NUMERIC_PROFILE = "EQUIPEFFI_TRANSFORMER_GB20052_DECIMAL50_V1"
 
 
+def get_transformer_input_contract():
+    """只读字段名称与单位，供无当前计算服务的历史页面使用。"""
+    from ...domain.devices.transformer.input_contract import TRANSFORMER_INPUT_CONTRACT
+    return TRANSFORMER_INPUT_CONTRACT
+
+
 def snapshot_value(value: Any) -> Any:
     """精确快照，不通过float，不依赖UI展示格式。"""
     if isinstance(value, Decimal):
@@ -88,8 +94,7 @@ class TransformerAnalysisService:
 
     @property
     def input_contract(self):
-        from ...domain.devices.transformer.input_contract import TRANSFORMER_INPUT_CONTRACT
-        return TRANSFORMER_INPUT_CONTRACT
+        return get_transformer_input_contract()
 
     def evaluate(self, request: TransformerAnalysisRequest) -> TransformerAnalysisResult:
         if request.standard_code != STANDARD_CODE:

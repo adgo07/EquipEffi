@@ -25,6 +25,7 @@ from PySide6.QtWidgets import (
 )
 
 from ..tokens import TOKENS
+from ..widgets.collapsible import CollapsibleSection
 
 #: 普通用户**不得**出现的设置项（机械门禁会检查它们不出现在本页）。
 FORBIDDEN_SETTING_TOKENS: tuple[str, ...] = (
@@ -86,6 +87,7 @@ class SettingsPage(QWidget):
         layout.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
 
         heading = QLabel("设置")
+        heading.setObjectName("pageHeading")
         font = heading.font()
         font.setPixelSize(TOKENS.title_font_size)
         font.setBold(True)
@@ -108,14 +110,14 @@ class SettingsPage(QWidget):
 
         self.last_directory = QLabel()
         self.last_directory.setWordWrap(True)
+        self.last_directory.setTextFormat(Qt.TextFormat.PlainText)
+        self.last_directory.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         preferences_layout.addWidget(self.last_directory)
 
         self.notice = QLabel("")
         self.notice.setWordWrap(True)
         preferences_layout.addWidget(self.notice)
-        settings_note = QLabel(
-            "数值精度、规则集、计算器与标准版本等由版本化证据固定，"
-            "不作为用户设置项。")
+        settings_note = QLabel("设置会自动保存；上次使用的目录仅用于文件选择。")
         settings_note.setWordWrap(True)
         preferences_layout.addWidget(settings_note)
         layout.addWidget(preferences)
@@ -128,16 +130,18 @@ class SettingsPage(QWidget):
         about_layout.addWidget(self.about)
         layout.addWidget(about)
 
-        runtime = QGroupBox("运行信息")
+        self.runtime_section = CollapsibleSection("运行信息")
+        runtime = self.runtime_section.content
         runtime_layout = QVBoxLayout(runtime)
         self.runtime = QLabel()
         self.runtime.setWordWrap(True)
         self.runtime.setTextFormat(Qt.TextFormat.PlainText)
+        self.runtime.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         runtime_layout.addWidget(self.runtime)
         self.refresh_button = QPushButton("刷新运行信息")
         self.refresh_button.clicked.connect(self.refresh)
         runtime_layout.addWidget(self.refresh_button)
-        layout.addWidget(runtime)
+        layout.addWidget(self.runtime_section)
 
         layout.addStretch()
         self.scroll_area.setWidget(content)
@@ -151,6 +155,7 @@ class SettingsPage(QWidget):
         self._label_height_timer = QTimer(self)
         self._label_height_timer.setSingleShot(True)
         self._label_height_timer.timeout.connect(self._adjust_wrapped_label_heights)
+        self.runtime_section.toggle_button.toggled.connect(lambda _: self._label_height_timer.start(0))
         self.scroll_area.viewport().installEventFilter(self)
         self.refresh()
 
@@ -163,7 +168,7 @@ class SettingsPage(QWidget):
 
     def _adjust_wrapped_label_heights(self) -> None:
         for label in self._wrapped_labels:
-            if label.width() <= 0:
+            if label.width() <= 0 or not label.isVisible():
                 continue
             required_height = label.heightForWidth(label.width())
             if required_height >= 0:
@@ -226,7 +231,9 @@ class SettingsPage(QWidget):
             return
         try:
             self.settings.set("log.level", value)
-        except (ValueError, TypeError) as error:
-            self.notice.setText(f"设置未保存：{error}")
+        except Exception:
+            import logging
+            logging.getLogger("equipeffi.qt.settings").exception("设置保存失败")
+            self.notice.setText("设置未保存，请检查数据目录是否可写，然后重试。")
             return
         self.notice.setText("已保存。")

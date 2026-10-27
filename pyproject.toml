@@ -28,6 +28,8 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 equipeffi = [
+    "presentation/qt/assets/*.png",
+    "presentation/qt/assets/*.svg",
     "standard_manifest.json",
     "resources/TEMPLATE_MANIFEST.json",
     "resources/elimination_catalog_batches_1_4.json",

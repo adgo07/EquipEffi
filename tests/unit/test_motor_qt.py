@@ -44,7 +44,9 @@ class MotorQtTests(unittest.TestCase):
                 self.assertEqual(page.evaluate().ui_conclusion, "不在范围")
                 self.assertEqual(page.last_record_status, "SAVED")
                 page.field_inputs["poles"].setText("3")
-                self.assertEqual(page.evaluate().evaluation_status, "INVALID_INPUT")
+                self.assertIsNone(page.evaluate())
+                self.assertIsNone(page.last_saved_record_id)
+                self.assertIn("正偶数", page.field_inputs["poles"].numeric_error.text())
                 self.assertNotEqual(page.last_record_status, "SAVED")
             finally:
                 _dispose_widget(page)
@@ -87,6 +89,10 @@ class MotorQtTests(unittest.TestCase):
                 self.assertIn("3级", text)
                 self.assertIn("71.43", text)
                 default_history = RecordsPage(create_pump_analysis_service(paths=paths))
+                self.assertTrue(any("三相异步电动机" in default_history.list.item(row, 1).text()
+                                    for row in range(default_history.list.rowCount())))
+                self.assertFalse(any("three_phase_induction" in default_history.list.item(row, 1).text()
+                                     for row in range(default_history.list.rowCount())))
                 restored = default_history.show_record(page._last_outcome.record.record_id)
                 self.assertIn("三相异步电动机", restored)
                 self.assertNotIn("three_phase_induction", restored)
@@ -115,12 +121,12 @@ class MotorQtTests(unittest.TestCase):
                                     transformer=create_transformer_analysis_service(paths=paths),
                                     motor=create_motor_analysis_service(paths=paths))
                 self.assertIn("验收候选", window.windowTitle())
-                self.assertIn("GB 18613-2020", window.home_page.standard_label.text())
+                self.assertEqual(window.standards_page.table.item(2, 0).text(), "GB 18613-2020")
                 window.open_analysis(standard_code="GB 18613-2020")
                 self.assertIs(window.device_analysis_page.pages.currentWidget(), window.motor_analysis_page)
-                selector = window.standards_page.standard_selector
-                selector.setCurrentIndex(selector.findData("GB 18613-2020"))
-                self.assertIn("电动机能效", window.standards_page.facts.text())
+                window.standards_page.open_detail(2)
+                self.assertIn("电动机能效", window.standards_page.section_labels[0].text())
+                self.assertEqual(window.standards_page.table.item(2, 4).text(), "验收候选")
             finally:
                 _dispose_widget(window)
                 close_logging(logger)

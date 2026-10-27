@@ -10,23 +10,17 @@ from __future__ import annotations
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QComboBox,
-    QGroupBox,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
-    QListWidget,
-    QListWidgetItem,
-    QPushButton,
-    QTabWidget,
-    QVBoxLayout,
-    QWidget,
+    QComboBox, QHBoxLayout, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout,
+    QWidget, QStackedWidget, QScrollArea, QTableWidgetItem,
+    QAbstractItemView, QGridLayout, QButtonGroup, QSizePolicy, QLayout,
 )
 
 from ....application.services.centrifugal_pump_analysis_service import (
     CentrifugalPumpAnalysisService,
 )
 from ..tokens import TOKENS
+from ..widgets.compact_table import CompactTable
+from ..style import heading, icon
 from ....application.services.centrifugal_pump_analysis_service import (
     PUMP_ANALYSIS_DETAIL_METRIC_IDS,
     PUMP_LEVEL_LIMIT_METRIC_IDS,
@@ -37,9 +31,10 @@ from ....application.services.centrifugal_pump_analysis_service import (
 )
 from ....application.services.transformer_analysis_service import (
     format_transformer_basis_lines,
+    get_transformer_input_contract,
 )
+from ....application.services.motor_analysis_service import get_motor_input_contract
 from ..labels import format_metric, support_status_text, user_grade_text
-from ..widgets.collapsible import CollapsibleSection
 
 #: 结论筛选项 → 匹配的 `evaluation_status` 集合（"全部" 不筛选）。
 #:
@@ -84,9 +79,9 @@ class RecordsPage(QWidget):
         self.service = service
         self.transformer_service = transformer
         self.motor_service = motor
-        self.motor_contract = motor.input_contract if motor is not None else None
+        self.motor_contract = motor.input_contract if motor is not None else get_motor_input_contract()
         self.transformer_contract = (transformer.input_contract
-                                     if transformer is not None else None)
+                                     if transformer is not None else get_transformer_input_contract())
         self._transformer_categories = {
             item.category_id: item.label
             for item in getattr(self.transformer_contract, "categories", ())
@@ -109,131 +104,158 @@ class RecordsPage(QWidget):
         self.refresh()
 
     def _build(self) -> None:
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(*(TOKENS.page_margin,) * 4)
-        layout.setSpacing(TOKENS.section_gap)
-
-        heading = QLabel("分析记录")
-        font = heading.font()
-        font.setPixelSize(TOKENS.title_font_size)
-        font.setBold(True)
-        heading.setFont(font)
-        heading_row = QHBoxLayout()
-        heading_row.addWidget(heading)
-        heading_row.addStretch()
+        outer = QVBoxLayout(self)
+        outer.setContentsMargins(*(TOKENS.page_margin,) * 4)
+        self.stack = QStackedWidget()
+        outer.addWidget(self.stack)
+        listing = QWidget()
+        layout = QVBoxLayout(listing)
+        layout.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
+        listing.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
+        layout.setContentsMargins(0, 0, 0, 0)
+        top = QHBoxLayout()
+        top.addWidget(heading("分析记录"))
+        top.addStretch()
         self.refresh_button = QPushButton("刷新")
         self.refresh_button.clicked.connect(self.refresh)
-        heading_row.addWidget(self.refresh_button)
-        layout.addLayout(heading_row)
-
-        self.tabs = QTabWidget()
+        top.addWidget(self.refresh_button)
+        layout.addLayout(top)
+        selector = QHBoxLayout()
+        self.classification = QButtonGroup(self)
+        self.single_button = QPushButton("单台分析")
+        self.batch_button = QPushButton("批量评价")
+        for index, button in enumerate((self.single_button, self.batch_button)):
+            button.setCheckable(True)
+            self.classification.addButton(button, index)
+            selector.addWidget(button)
+        selector.addStretch()
+        self.single_button.setChecked(True)
+        self.batch_button.setEnabled(self.batch_service is not None)
+        layout.addLayout(selector)
+        self.lists = QStackedWidget()
         self.single_tab = QWidget()
-        single_layout = QVBoxLayout(self.single_tab)
-
-        single_layout.addWidget(QLabel("以下筛选仅作用于单台分析记录。"))
-        filters = QHBoxLayout()
-        filters.addWidget(QLabel("搜索"))
+        single = QVBoxLayout(self.single_tab)
+        single.setContentsMargins(0, 0, 0, 0)
+        filters = QGridLayout()
         self.search = QLineEdit()
-        self.search.setPlaceholderText("按记录编号、设备类别或标准搜索")
+        self.search.setPlaceholderText("搜索设备/项目名称、记录编号、类别、标准或结论")
+        self.search.setClearButtonEnabled(True)
         self.search.textChanged.connect(self._apply_filters)
-        filters.addWidget(self.search, 2)
-
-        filters.addWidget(QLabel(
-            "设备类别" if self.transformer_service is not None else "泵型"))
+        filters.addWidget(self.search, 0, 0, 1, 2)
         self.category_filter = QComboBox()
+        self.category_filter.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
+        self.category_filter.setMinimumContentsLength(8)
         self.category_filter.currentIndexChanged.connect(self._apply_filters)
-        filters.addWidget(self.category_filter, 1)
-
-        filters.addWidget(QLabel("结论"))
+        filters.addWidget(self.category_filter, 1, 0)
         self.conclusion_filter = QComboBox()
         for label, _ in CONCLUSION_FILTERS:
             self.conclusion_filter.addItem(label)
         self.conclusion_filter.currentIndexChanged.connect(self._apply_filters)
-        filters.addWidget(self.conclusion_filter, 1)
-
-        filters.addWidget(QLabel("评价日期"))
+        filters.addWidget(self.conclusion_filter, 1, 1)
         self.date_filter = QLineEdit()
-        self.date_filter.setPlaceholderText("YYYY-MM-DD")
+        self.date_filter.setPlaceholderText("评价日期 YYYY-MM-DD")
         self.date_filter.textChanged.connect(self._apply_filters)
-        filters.addWidget(self.date_filter, 1)
-        single_layout.addLayout(filters)
-
-        self.filter_summary = QLabel("")
-        single_layout.addWidget(self.filter_summary)
-
-        holder = QHBoxLayout()
-        self.list = QListWidget()
-        self.list.currentRowChanged.connect(self._on_selected)
-        holder.addWidget(self.list, 2)
-
-        detail_group = QGroupBox("记录详情")
-        detail_layout = QVBoxLayout(detail_group)
-        self.detail = QLabel("请选择一条记录。")
-        self.detail.setWordWrap(True)
-        self.detail.setTextFormat(Qt.TextFormat.PlainText)
-        self.detail.setAlignment(Qt.AlignmentFlag.AlignTop)
-        detail_layout.addWidget(self.detail)
-
-        # Owner Phase 8 R1 / UI03：普通产品界面不展示审计信息区域。
-        # 证据继续保存在 Record；这里保留不可见占位以兼容既有内部调用点。
-        self.technical = QLabel("")
-        self.technical.setVisible(False)
-        self.technical_box = None
-        detail_layout.addStretch()
-        holder.addWidget(detail_group, 3)
-        single_layout.addLayout(holder, 1)
-
-        buttons = QHBoxLayout()
+        filters.addWidget(self.date_filter, 2, 0)
         self.clear_filters_button = QPushButton("清除筛选")
         self.clear_filters_button.clicked.connect(self.clear_filters)
-        buttons.addWidget(self.clear_filters_button)
+        filters.addWidget(self.clear_filters_button, 2, 1)
+        single.addLayout(filters)
+        self.filter_summary = QLabel()
+        self.filter_summary.setWordWrap(True)
+        single.addWidget(self.filter_summary)
+        self.list = self._table(["设备/项目", "设备类别", "采用标准", "结论", "评价日期", "操作"], [230, 240, 160, 100, 120, 90])
+        self.list.setMinimumHeight(220)
+        self.list.cellActivated.connect(lambda row, column: self._on_selected(row))
+        self.list.cellDoubleClicked.connect(lambda row, column: self._on_selected(row))
+        single.addWidget(self.list, 1)
         self.load_more_button = QPushButton("加载更多")
         self.load_more_button.clicked.connect(self.load_more)
-        self.load_more_button.setEnabled(False)
-        buttons.addWidget(self.load_more_button)
-        buttons.addStretch()
-        single_layout.addLayout(buttons)
-        self.tabs.addTab(self.single_tab, "单台分析记录")
+        single.addWidget(self.load_more_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.lists.addWidget(self.single_tab)
+        self.batch_tab = QWidget()
+        batch_layout = QVBoxLayout(self.batch_tab)
+        batch_layout.setContentsMargins(0, 0, 0, 0)
+        self.batch_search = QLineEdit()
+        self.batch_search.setPlaceholderText("搜索全部批次：输入文件名、标准或工作表")
+        self.batch_search.setClearButtonEnabled(True)
+        self.batch_search.textChanged.connect(self.refresh_batch_records)
+        batch_layout.addWidget(self.batch_search)
+        self.batch_summary = QLabel()
+        self.batch_summary.setWordWrap(True)
+        batch_layout.addWidget(self.batch_summary)
+        self.batch_list = self._table(["输入文件", "标准/设备", "数据行数", "设备台数", "处理摘要", "保存时间", "操作"], [220, 200, 100, 100, 210, 200, 90])
+        self.batch_list.setMinimumHeight(220)
+        self.batch_list.cellActivated.connect(lambda row, column: self._on_batch_selected(row))
+        self.batch_list.cellDoubleClicked.connect(lambda row, column: self._on_batch_selected(row))
+        batch_layout.addWidget(self.batch_list, 1)
+        self.batch_load_more_button = QPushButton("加载更多批次")
+        self.batch_load_more_button.clicked.connect(self.load_more_batch_records)
+        batch_layout.addWidget(self.batch_load_more_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.lists.addWidget(self.batch_tab)
+        self.classification.idClicked.connect(self.lists.setCurrentIndex)
+        layout.addWidget(self.lists, 1)
+        # 小窗口滚动整个列表正文，筛选和按钮不能把表内正文压成细条。
+        self.list_scroll_area = QScrollArea()
+        self.list_scroll_area.setWidgetResizable(True)
+        self.list_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.list_scroll_area.setWidget(listing)
+        self.stack.addWidget(self.list_scroll_area)
+        detail_page = QWidget()
+        detail_layout = QVBoxLayout(detail_page)
+        detail_layout.setContentsMargins(0, 0, 0, 0)
+        self.back_button = QPushButton("返回分析记录")
+        self.back_button.setIcon(icon("back"))
+        self.back_button.clicked.connect(lambda: self.stack.setCurrentIndex(0))
+        detail_layout.addWidget(self.back_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.detail_heading = heading("记录详情")
+        detail_layout.addWidget(self.detail_heading)
+        self.detail_tabs = QTabWidget()
+        self._detail_scrolls = []
+        labels = []
+        for title in ("基本信息与结果", "输入数据与计算依据"):
+            scroll = QScrollArea()
+            scroll.setWidgetResizable(True)
+            body = QWidget()
+            content = QVBoxLayout(body)
+            label = QLabel("请选择一条记录。")
+            label.setWordWrap(True)
+            label.setTextFormat(Qt.TextFormat.PlainText)
+            label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+            label.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
+            content.addWidget(label)
+            content.addStretch()
+            scroll.setWidget(body)
+            self.detail_tabs.addTab(scroll, title)
+            self._detail_scrolls.append(scroll)
+            labels.append(label)
+        self.detail, self.inputs_detail = labels
+        self.batch_detail = self.detail
+        # 既有内部投影不加入产品页面控件树；正式快照中的证据保持完整。
+        self.technical = QLabel()
+        self.technical.hide()
+        self.technical_box = None
+        detail_layout.addWidget(self.detail_tabs, 1)
+        self.stack.addWidget(detail_page)
 
-        self.batch_tab = None
-        self.batch_list = None
-        self.batch_detail = None
-        self.batch_summary = None
-        self.batch_load_more_button = None
-        if self.batch_service is not None:
-            self.batch_tab = QWidget()
-            batch_layout = QVBoxLayout(self.batch_tab)
-            batch_layout.addWidget(QLabel(
-                "批次记录独立于单台分析记录，单台筛选不会影响此列表。"))
-            self.batch_summary = QLabel("尚无批量评价记录。")
-            batch_layout.addWidget(self.batch_summary)
+    @staticmethod
+    def _table(headers, widths):
+        compact = [110, 140, 120, 68, 92, 62] if len(headers) == 6 else [100, 85, 66, 66, 115, 118, 62]
+        table = CompactTable(headers, widths, compact)
+        table.setHorizontalHeaderLabels(headers)
+        table.verticalHeader().hide()
+        table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        table.setAlternatingRowColors(True)
+        table.setWordWrap(False)
+        table.verticalHeader().setMinimumSectionSize(40)
+        return table
 
-            batch_holder = QHBoxLayout()
-            self.batch_list = QListWidget()
-            self.batch_list.currentRowChanged.connect(self._on_batch_selected)
-            batch_holder.addWidget(self.batch_list, 2)
-
-            batch_detail_group = QGroupBox("批次详情（只读）")
-            batch_detail_layout = QVBoxLayout(batch_detail_group)
-            self.batch_detail = QLabel("请选择一条批次记录。")
-            self.batch_detail.setWordWrap(True)
-            self.batch_detail.setTextFormat(Qt.TextFormat.PlainText)
-            self.batch_detail.setAlignment(Qt.AlignmentFlag.AlignTop)
-            batch_detail_layout.addWidget(self.batch_detail)
-            batch_holder.addWidget(batch_detail_group, 3)
-            batch_layout.addLayout(batch_holder, 1)
-
-            batch_buttons = QHBoxLayout()
-            self.batch_load_more_button = QPushButton("加载更多批次")
-            self.batch_load_more_button.clicked.connect(
-                self.load_more_batch_records)
-            self.batch_load_more_button.setEnabled(False)
-            batch_buttons.addWidget(self.batch_load_more_button)
-            batch_buttons.addStretch()
-            batch_layout.addLayout(batch_buttons)
-            self.tabs.addTab(self.batch_tab, "批量评价记录")
-
-        layout.addWidget(self.tabs, 1)
+    def _enter_detail(self, title):
+        self.detail_heading.setText(title)
+        self.detail_tabs.setCurrentIndex(0)
+        self.stack.setCurrentIndex(1)
+        for scroll in self._detail_scrolls:
+            scroll.verticalScrollBar().setValue(0)
 
     # -- 数据 ---------------------------------------------------------------
 
@@ -262,14 +284,16 @@ class RecordsPage(QWidget):
 
     def _load_batch_records(self) -> None:
         try:
-            records = list(self.batch_service.list_batch_records(
-                limit=self._batch_limit + 1))
+            keyword = self.batch_search.text().strip()
+            records = list(self.batch_service.list_batch_records(limit=self._batch_limit + 1, **({"keyword": keyword} if keyword else {})))
         except Exception:  # noqa: BLE001 - 失败明确显示，不伪装成无历史
             import logging
 
             logging.getLogger("equipeffi.qt.records").exception(
                 "查询批量评价记录失败")
-            self.batch_summary.setText("读取批量评价记录失败，请稍后重试。")
+            self._batch_visible = []
+            self.batch_list.setRowCount(0)
+            self.batch_summary.setText("读取批量评价记录失败，请点击刷新重试。")
             self.batch_load_more_button.setEnabled(False)
             return
 
@@ -279,29 +303,24 @@ class RecordsPage(QWidget):
             selected_id = self._batch_visible[selected_row].batch_record_id
         self._batch_has_more = len(records) > self._batch_limit
         self._batch_visible = records[:self._batch_limit]
-        self.batch_list.blockSignals(True)
-        self.batch_list.clear()
-        for record in self._batch_visible:
-            date_text = record.evaluation_date or record.created_at_utc[:10]
-            saved_at = record.created_at_utc.replace("T", " ")
-            source_name = record.source_file_name or "未记录文件名"
-            standard_text = _batch_standard_label(record.standard_code, record.summary)
-            self.batch_list.addItem(QListWidgetItem(
-                f"{date_text} | {saved_at} UTC | {source_name} | "
-                f"{standard_text} | {record.data_row_count} 行 | "
-                f"{record.total_quantity} 台"))
-        self.batch_list.blockSignals(False)
-
-        if not self._batch_visible:
-            self.batch_detail.setText(
-                "尚无批量评价记录。完成一次 Excel 批量评价后会显示在这里。")
-        else:
-            selected_index = next(
-                (i for i, record in enumerate(self._batch_visible)
-                 if record.batch_record_id == selected_id),
-                0)
-            # setCurrentRow 会经 currentRowChanged 打开所选快照一次。
-            self.batch_list.setCurrentRow(selected_index)
+        self.batch_list.setRowCount(len(self._batch_visible))
+        for row, record in enumerate(self._batch_visible):
+            summary = record.summary or {}
+            values = (record.source_file_name or "未记录文件名",
+                      _batch_standard_label(record.standard_code, summary),
+                      str(record.data_row_count), str(record.total_quantity),
+                      f"已评价 {record.evaluated_count} 行；未形成结论 {record.unevaluated_count} 行",
+                      record.created_at_utc.replace("T", " ") + " UTC")
+            for column, value in enumerate(values):
+                self.batch_list.setItem(row, column, QTableWidgetItem(value))
+            button = QPushButton("查看")
+            button.clicked.connect(lambda checked=False, rid=record.batch_record_id: self.show_batch_record(rid))
+            self.batch_list.setCellWidget(row, 6, button)
+            if record.batch_record_id == selected_id:
+                self.batch_list.selectRow(row)
+        self.batch_list.resizeRowsToContents()
+        if not self._batch_visible and self.stack.currentIndex() == 0:
+            self.batch_detail.setText("尚无批量评价记录。")
         if self._batch_has_more:
             self.batch_summary.setText(
                 f"已显示最近 {len(self._batch_visible)} 条批次记录；"
@@ -329,11 +348,13 @@ class RecordsPage(QWidget):
                 "打开批量评价记录失败")
             text = "无法读取这条批次记录，请刷新后重试。"
             self.batch_detail.setText(text)
+            self.inputs_detail.clear()
+            self._enter_detail("批次记录无法读取")
             return text
 
         summary = snapshot.summary if isinstance(snapshot.summary, dict) else {}
-        source_name = snapshot.source_file_name or "未记录"
-        result_name = snapshot.output_file_name or "未生成"
+        source_name = snapshot.source_file_name or "该记录未保存此信息"
+        result_name = snapshot.output_file_name or "该记录未保存此信息"
         lines = [
             f"采用标准：{_batch_standard_label(snapshot.standard_code, summary)}",
             f"工作表：{_batch_sheet_label(snapshot.sheet_name, summary.get('sheets', ())) }",
@@ -368,6 +389,13 @@ class RecordsPage(QWidget):
             lines.append(f"保存时间：{snapshot.created_at_utc}")
         text = "\n".join(lines)
         self.batch_detail.setText(text)
+        for row, record in enumerate(self._batch_visible):
+            if record.batch_record_id == batch_record_id:
+                self.batch_list.selectRow(row)
+        self.inputs_detail.setText(self._batch_basis(snapshot, summary))
+        self.batch_button.setChecked(True)
+        self.lists.setCurrentIndex(1)
+        self._enter_detail("批量评价记录")
         return text
 
     def _sync_category_filter(self) -> None:
@@ -428,7 +456,11 @@ class RecordsPage(QWidget):
             import logging
 
             logging.getLogger("equipeffi.qt.records").exception("查询历史记录失败")
-            self.filter_summary.setText("读取历史记录失败，请稍后重试。")
+            if reset:
+                self._visible = []
+                self.list.setRowCount(0)
+            self.load_more_button.setEnabled(False)
+            self.filter_summary.setText("读取历史记录失败，请点击刷新重试。")
             return
         self._total = page.total
         self._visible = list(page.records) if reset else [*self._visible,
@@ -438,18 +470,24 @@ class RecordsPage(QWidget):
         self._update_summary()
 
     def _render_list(self) -> None:
-        self.list.blockSignals(True)
-        self.list.clear()
-        for record in self._visible:
+        selected = self.list.currentRow()
+        scroll = self.list.verticalScrollBar().value()
+        self.list.setRowCount(len(self._visible))
+        for row, record in enumerate(self._visible):
             conclusion = user_conclusion_from_snapshot(
-                {"grade": record.grade,
-                 "evaluation_status": record.evaluation_status},
-                record.ui_conclusion)
-            self.list.addItem(QListWidgetItem(
-                f"{record.as_of} | {record.standard_code} | "
-                f"{self._category_label(record.product_category)} | {conclusion}"))
-        self.list.blockSignals(False)
-        if not self._visible:
+                {"grade": record.grade, "evaluation_status": record.evaluation_status}, record.ui_conclusion)
+            category = self._category_label(record.product_category)
+            values = (getattr(record, "display_name", "") or category, category, record.standard_code, conclusion, record.as_of)
+            for column, value in enumerate(values):
+                self.list.setItem(row, column, QTableWidgetItem(value))
+            button = QPushButton("查看")
+            button.clicked.connect(lambda checked=False, rid=record.record_id: self.show_record(rid))
+            self.list.setCellWidget(row, 5, button)
+        self.list.resizeRowsToContents()
+        if 0 <= selected < len(self._visible):
+            self.list.selectRow(selected)
+        self.list.verticalScrollBar().setValue(scroll)
+        if not self._visible and self.stack.currentIndex() == 0:
             self.detail.setText("没有符合条件的记录。" if self._total or self.search.text()
                                 else "尚无正式记录。完成一次分析并保存后会显示在这里。")
             if self.technical is not None:
@@ -495,7 +533,15 @@ class RecordsPage(QWidget):
     def show_record(self, record_id: str) -> str:
         """Reopen：只读原快照，不调用 evaluator、不按今天日期重算。"""
 
-        snapshot = self.service.open_record(record_id)
+        try:
+            snapshot = self.service.open_record(record_id)
+        except Exception:
+            import logging
+            logging.getLogger("equipeffi.qt.records").exception("打开单台记录失败")
+            self.detail.setText("无法读取这条记录，请返回列表并刷新后重试。")
+            self.inputs_detail.clear()
+            self._enter_detail("记录无法读取")
+            return self.detail.text()
         result = snapshot.result_snapshot
         input_snapshot = snapshot.input_snapshot
 
@@ -586,7 +632,7 @@ class RecordsPage(QWidget):
         lines.extend(self._basis_lines(snapshot, result))
         lines.append(f"保存时间：{snapshot.finalized_at_utc}")
         text = "\n".join(lines)
-        self.detail.setText(text)
+        self._display_record(snapshot, result)
         self._render_technical(snapshot, result)
         return text
 
@@ -631,7 +677,7 @@ class RecordsPage(QWidget):
         lines.extend(format_motor_basis_lines(result.get("trace", ())))
         lines.append(f"保存时间：{snapshot.finalized_at_utc}")
         text = "\n".join(lines)
-        self.detail.setText(text)
+        self._display_record(snapshot, result)
         return text
 
     def _show_transformer_record(self, snapshot, result, input_snapshot) -> str:
@@ -699,7 +745,7 @@ class RecordsPage(QWidget):
         if snapshot.finalized_at_utc:
             lines.append(f"保存时间：{snapshot.finalized_at_utc}")
         text = "\n".join(lines)
-        self.detail.setText(text)
+        self._display_record(snapshot, result)
         return text
 
     def _condition_label(self, category_id: str, value) -> str:
@@ -712,6 +758,120 @@ class RecordsPage(QWidget):
                            if dict(item.values) == value), None)
             return option.label if option else "已记录"
         return "已记录"
+
+    def _display_record(self, snapshot, result):
+        """两个页签均只投影本条快照；字段契约仅提供名称与单位。"""
+        inputs = snapshot.input_snapshot or {}
+        absent = "该记录未保存此信息"
+        category = inputs.get("category_id") or snapshot.product_category
+        device = getattr(snapshot, "device_type", "")
+        basic = [f"采用标准：{snapshot.standard_code or absent}",
+                 f"设备类别：{self._category_label(category)}",
+                 f"评价日期：{snapshot.as_of or absent}",
+                 f"评价结论：{user_conclusion_from_snapshot(result, snapshot.ui_conclusion)}"]
+        for label, key in (("企业/项目名称", "project_name"), ("设备编号", "equipment_no")):
+            if device != "motor_lv":
+                basic.append(f"{label}：{inputs.get(key) or absent}")
+        status = result.get("support_status")
+        basic.append("保存时软件状态：" + ("已接入，尚待正式支持验收" if status == "IMPLEMENTED"
+                     else support_status_text(status) if status else absent))
+        if result.get("explanation"):
+            basic.append(f"判定说明：{result['explanation']}")
+        if result.get("missing_fields"):
+            basic.append("本次存在缺失信息，详见输入数据。")
+        input_lines = []
+        basis = []
+        if device in ("transformer", "motor_lv"):
+            contract = self.transformer_contract if device == "transformer" else self.motor_contract
+            if contract is None:
+                if device == "transformer":
+                    from ....application.services.transformer_analysis_service import get_transformer_input_contract
+                    contract = get_transformer_input_contract()
+                    self.transformer_contract = contract
+                else:
+                    from ....application.services.motor_analysis_service import get_motor_input_contract
+                    contract = get_motor_input_contract()
+            known = next((item for item in contract.categories if item.category_id == category), None)
+            if known:
+                basic[1] = f"设备类别：{known.label}"
+                for field in contract.visible_fields(category):
+                    value = inputs.get(field.field_id)
+                    if value not in (None, ""):
+                        if field.field_id == "standard_conditions":
+                            value = self._condition_label(category, value)
+                        elif device == "motor_lv":
+                            choices = dict(contract.options(category, field.field_id))
+                            if field.field_id == "efficiency_basis_status":
+                                choices["AS_DECLARED_BY_FIELD"] = "按字段要求填报"
+                            value = choices.get(value, value)
+                    unit = f"（{field.unit}）" if field.unit else ""
+                    input_lines.append(f"{field.label}{unit}：{value if value not in (None, '') else absent}")
+            if device == "transformer":
+                from .transformer_analysis import _THRESHOLD_LABELS
+                for key, label in _THRESHOLD_LABELS:
+                    if (result.get("thresholds") or {}).get(key) is not None:
+                        basic.append(f"{label}：{format_metric(result['thresholds'][key], name=key)} W")
+                for key, label in (("no_load_loss_w", "空载损耗"), ("load_loss_w", "负载损耗")):
+                    if inputs.get(key) is not None:
+                        basic.append(f"{label}：{inputs[key]} W")
+                basis = format_transformer_basis_lines(result.get("trace", ()))
+            else:
+                from ....application.services.motor_basis_formatter import format_motor_basis_lines
+                for key, threshold in (result.get("thresholds") or {}).items():
+                    if isinstance(threshold, dict) and threshold.get("state") == "AVAILABLE":
+                        basic.append(f"{key[-1]}级效率限值：{threshold.get('display_text', absent)}%")
+                    elif isinstance(threshold, dict) and threshold.get("state") == "NO_INDICATOR":
+                        basic.append(f"{key[-1]}级效率限值：—（标准无指标）")
+                if inputs.get("measured_efficiency_pct") is not None:
+                    basic.append(f"实测效率：{inputs['measured_efficiency_pct']}%")
+                basis = format_motor_basis_lines(result.get("trace", ()))
+        else:
+            for key, label in (("QBEP", "流量 Q（m³/h）"), ("HBEP", "扬程 H（m）"),
+                               ("speed", "转速 n（r/min）"), ("efficiency", "泵效率 η（%）"),
+                               ("suction", "吸入方式"), ("stages", "级数")):
+                input_lines.append(f"{label}：{inputs.get(key) if inputs.get(key) not in (None, '') else absent}")
+            metrics = result.get("metrics_by_id") or {}
+            for metric_id in (PUMP_METRIC_IDS["actual_efficiency"], *PUMP_LEVEL_LIMIT_METRIC_IDS):
+                metric = metrics.get(metric_id)
+                if isinstance(metric, dict):
+                    basic.append(f"{metric.get('display_name', '效率')}：{format_metric(metric.get('value'), name=str(metric.get('display_name') or ''))}")
+            if not metrics:
+                for key, value in (result.get("thresholds") or {}).items():
+                    basic.append(f"{THRESHOLD_DISPLAY_NAMES.get(key, key)}：{format_metric(value, name=key)}")
+            basis = self._basis_lines(snapshot, result)
+            for metric_id in PUMP_ANALYSIS_DETAIL_METRIC_IDS:
+                metric = metrics.get(metric_id)
+                if isinstance(metric, dict):
+                    basis.append(f"{metric.get('display_name', '')}：{format_metric(metric.get('value'), name=str(metric.get('display_name') or ''))}")
+            if not any(metric_id in metrics for metric_id in PUMP_ANALYSIS_DETAIL_METRIC_IDS):
+                for key, value in ((result.get("calculation_trace") or {}).get("derived") or {}).items():
+                    basis.append(f"{key}：{format_metric(value, name=str(key))}")
+        basic.append(f"保存时间：{snapshot.finalized_at_utc or absent}")
+        self.detail.setText("\n".join(basic))
+        self.inputs_detail.setText("保存时输入数据\n" + "\n".join(input_lines or [absent])
+                                  + "\n\n计算依据\n" + "\n".join(basis or ["该记录未保存完整计算依据。未使用当前标准补齐。 "]))
+        self.single_button.setChecked(True)
+        for row, record in enumerate(self._visible):
+            if record.record_id == snapshot.record_id:
+                self.list.selectRow(row)
+        self.lists.setCurrentIndex(0)
+        self._enter_detail("单台分析记录")
+
+    @staticmethod
+    def _batch_basis(snapshot, summary):
+        lines = ["本批次保存了工作表摘要与问题统计；未保存逐行完整输入，不从当前工作簿补造。",
+                 f"模板版本：{getattr(snapshot, 'template_version', '') or '该记录未保存此信息'}"]
+        from ....application.services.batch_summary_formatter import format_device_summary_lines
+        lines.extend(format_device_summary_lines(summary.get("sheets", ())))
+        kinds = {"INPUT_ERROR": "输入错误", "EXECUTION_ERROR": "执行失败", "UNEVALUATED": "未形成正式结论"}
+        for issue in summary.get("issues", ()):
+            if isinstance(issue, dict):
+                lines.append(f"{issue.get('sheet_name') or '工作表'} · 第{issue.get('row', '未记录')}行 · "
+                             f"{kinds.get(issue.get('kind'), '问题')}：{issue.get('reason') or '该记录未保存此信息'}")
+        if not summary.get("issues"):
+            lines.append("本批次未记录需关注的行。" if "issues" in summary else
+                         "该记录未保存逐行问题明细；不补造缺失信息。")
+        return "\n".join(lines)
 
     @staticmethod
     def _basis_lines(snapshot, result) -> list[str]:

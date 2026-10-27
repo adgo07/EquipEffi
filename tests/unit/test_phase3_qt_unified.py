@@ -417,8 +417,8 @@ class RecordsPageTests(unittest.TestCase):
         self._finalize("单级石油化工离心泵", QBEP="100", HBEP="14", speed="2900",
                        efficiency="73", suction="单吸", stages="1")
         self.page.refresh()
-        self.assertEqual(self.page.list.count(), 2)
-        listed = [self.page.list.item(i).text() for i in range(self.page.list.count())]
+        self.assertEqual(self.page.list.rowCount(), 2)
+        listed = [self.page.list.item(i, 1).text() for i in range(self.page.list.rowCount())]
         self.assertTrue(any("单级单吸清水离心泵" in text for text in listed))
         self.assertTrue(any("单级石油化工离心泵" in text for text in listed))
 
@@ -467,7 +467,7 @@ class RecordsPageTests(unittest.TestCase):
 
     def test_empty_history_is_explained(self):
         self.page.refresh()
-        self.assertEqual(self.page.list.count(), 0)
+        self.assertEqual(self.page.list.rowCount(), 0)
         self.assertIn("尚无正式记录", self.page.detail.text())
 
 

@@ -110,13 +110,22 @@ class SqliteBatchRecordRepository:
             ) from error
         return None if row is None else _from_row(row)
 
-    def list_batch_records(self, limit: int = 50) -> list[BatchRecordSnapshot]:
+    def list_batch_records(self, limit: int = 50, *, keyword: str = "") -> list[BatchRecordSnapshot]:
+        # 在全部既有批次中只读搜索，再取最近limit条，不局限于已加载的50条。
+        where, params = "", []
+        if keyword.strip():
+            pattern = "%" + keyword.strip().lower().replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
+            where = ("WHERE LOWER(source_file_name) LIKE ? ESCAPE '\\' "
+                     "OR LOWER(standard_code) LIKE ? ESCAPE '\\' "
+                     "OR LOWER(sheet_name) LIKE ? ESCAPE '\\' "
+                     "OR LOWER(COALESCE(json_extract(summary_json, '$.sheets'), '')) LIKE ? ESCAPE '\\' ")
+            params = [pattern] * 4
         try:
             with closing(sqlite3.connect(self.database)) as connection:
                 rows = connection.execute(
                     f"SELECT {_COLUMNS} FROM batch_record "
-                    "ORDER BY created_at_utc DESC LIMIT ?",
-                    (int(limit),),
+                    + where + "ORDER BY created_at_utc DESC, batch_record_id ASC LIMIT ?",
+                    (*params, max(int(limit), 1)),
                 ).fetchall()
         except sqlite3.Error as error:
             raise LifecyclePersistenceError(

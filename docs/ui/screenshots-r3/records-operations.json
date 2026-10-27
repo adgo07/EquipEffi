@@ -1,0 +1,278 @@
+{
+  "data_root": "D:\\project\\设备能效软件\\ui-review-20261027\\r3-records-data",
+  "captures": [
+    {
+      "file": "single-records-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "logical_dpi": 96.0,
+      "table_size": [
+        356,
+        220
+      ],
+      "table_viewport": [
+        354,
+        155
+      ],
+      "row_height": 51,
+      "complete_row_visible": true,
+      "first_cell_rect": [
+        0,
+        0,
+        229,
+        50
+      ],
+      "table_viewport_rect": [
+        0,
+        0,
+        354,
+        155
+      ],
+      "first_cell_in_outer_viewport": [
+        1,
+        194,
+        229,
+        50
+      ],
+      "outer_viewport_rect": [
+        0,
+        0,
+        356,
+        372
+      ],
+      "outer_scroll_max": 148
+    },
+    {
+      "file": "single-records-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "logical_dpi": 96.0,
+      "table_size": [
+        710,
+        352
+      ],
+      "table_viewport": [
+        708,
+        287
+      ],
+      "row_height": 51,
+      "complete_row_visible": true,
+      "first_cell_rect": [
+        0,
+        0,
+        229,
+        50
+      ],
+      "table_viewport_rect": [
+        0,
+        0,
+        708,
+        287
+      ],
+      "first_cell_in_outer_viewport": [
+        1,
+        306,
+        229,
+        50
+      ],
+      "outer_viewport_rect": [
+        0,
+        0,
+        710,
+        652
+      ],
+      "outer_scroll_max": 0
+    }
+  ],
+  "failures": [],
+  "status": "completed",
+  "scale_factor_override": null,
+  "platform": "windows",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "native_windows": true,
+  "screens": [
+    {
+      "name": "\\\\.\\DISPLAY1",
+      "logical_dpi": 96.0,
+      "device_pixel_ratio": 1.5
+    }
+  ],
+  "mode": "Qt自动操作，原生平台见platform；非人工验收",
+  "roundtrips": [
+    {
+      "logical_size": [
+        560,
+        420
+      ],
+      "method": "鼠标单击后双击",
+      "detail": {
+        "stack_index": 1,
+        "text": "采用标准：GB 19762-2025\n设备类别：单级单吸清水离心泵\n评价日期：2026-10-27\n评价结论：1级\n企业/项目名称：R2隔离测试项目\n设备编号：测试泵 P-001\n保存时软件状态：正式支持\n判定说明：按GB 19762-2025表1/表3的设计/标称指标判定为1级\n实际泵效率：90\n1级能效效率限值（%）：79.79\n2级能效效率限值（%）：77.79\n3级能效效率限值（%）：72.79\n保存时间：2026-10-27T05:04:12.919769+00:00",
+        "tabs": [
+          "基本信息与结果",
+          "输入数据与计算依据"
+        ],
+        "current_tab": 0
+      },
+      "before": {
+        "search": "19762",
+        "date": "2026-10-27",
+        "category": "",
+        "conclusion": 0,
+        "row": 0,
+        "column": 0,
+        "record_id": "ANALYSIS-5c07baf2bf06",
+        "outer_scroll": 112,
+        "table_scroll": 0,
+        "table_horizontal_scroll": 0
+      },
+      "after": {
+        "search": "19762",
+        "date": "2026-10-27",
+        "category": "",
+        "conclusion": 0,
+        "row": 0,
+        "column": 0,
+        "record_id": "ANALYSIS-5c07baf2bf06",
+        "outer_scroll": 112,
+        "table_scroll": 0,
+        "table_horizontal_scroll": 0
+      },
+      "detail_opened": true,
+      "context_preserved": true
+    },
+    {
+      "logical_size": [
+        560,
+        420
+      ],
+      "method": "键盘Enter",
+      "detail": {
+        "stack_index": 1,
+        "text": "采用标准：GB 19762-2025\n设备类别：单级单吸清水离心泵\n评价日期：2026-10-27\n评价结论：1级\n企业/项目名称：R2隔离测试项目\n设备编号：测试泵 P-001\n保存时软件状态：正式支持\n判定说明：按GB 19762-2025表1/表3的设计/标称指标判定为1级\n实际泵效率：90\n1级能效效率限值（%）：79.79\n2级能效效率限值（%）：77.79\n3级能效效率限值（%）：72.79\n保存时间：2026-10-27T05:04:12.919769+00:00",
+        "tabs": [
+          "基本信息与结果",
+          "输入数据与计算依据"
+        ],
+        "current_tab": 0
+      },
+      "before": {
+        "search": "19762",
+        "date": "2026-10-27",
+        "category": "",
+        "conclusion": 0,
+        "row": 0,
+        "column": 0,
+        "record_id": "ANALYSIS-5c07baf2bf06",
+        "outer_scroll": 112,
+        "table_scroll": 0,
+        "table_horizontal_scroll": 0
+      },
+      "after": {
+        "search": "19762",
+        "date": "2026-10-27",
+        "category": "",
+        "conclusion": 0,
+        "row": 0,
+        "column": 0,
+        "record_id": "ANALYSIS-5c07baf2bf06",
+        "outer_scroll": 112,
+        "table_scroll": 0,
+        "table_horizontal_scroll": 0
+      },
+      "detail_opened": true,
+      "context_preserved": true
+    },
+    {
+      "logical_size": [
+        1000,
+        700
+      ],
+      "method": "鼠标单击后双击",
+      "detail": {
+        "stack_index": 1,
+        "text": "采用标准：GB 19762-2025\n设备类别：单级单吸清水离心泵\n评价日期：2026-10-27\n评价结论：1级\n企业/项目名称：R2隔离测试项目\n设备编号：测试泵 P-001\n保存时软件状态：正式支持\n判定说明：按GB 19762-2025表1/表3的设计/标称指标判定为1级\n实际泵效率：90\n1级能效效率限值（%）：79.79\n2级能效效率限值（%）：77.79\n3级能效效率限值（%）：72.79\n保存时间：2026-10-27T05:04:12.919769+00:00",
+        "tabs": [
+          "基本信息与结果",
+          "输入数据与计算依据"
+        ],
+        "current_tab": 0
+      },
+      "before": {
+        "search": "19762",
+        "date": "2026-10-27",
+        "category": "",
+        "conclusion": 0,
+        "row": 0,
+        "column": 0,
+        "record_id": "ANALYSIS-5c07baf2bf06",
+        "outer_scroll": 0,
+        "table_scroll": 0,
+        "table_horizontal_scroll": 0
+      },
+      "after": {
+        "search": "19762",
+        "date": "2026-10-27",
+        "category": "",
+        "conclusion": 0,
+        "row": 0,
+        "column": 0,
+        "record_id": "ANALYSIS-5c07baf2bf06",
+        "outer_scroll": 0,
+        "table_scroll": 0,
+        "table_horizontal_scroll": 0
+      },
+      "detail_opened": true,
+      "context_preserved": true
+    },
+    {
+      "logical_size": [
+        1000,
+        700
+      ],
+      "method": "键盘Enter",
+      "detail": {
+        "stack_index": 1,
+        "text": "采用标准：GB 19762-2025\n设备类别：单级单吸清水离心泵\n评价日期：2026-10-27\n评价结论：1级\n企业/项目名称：R2隔离测试项目\n设备编号：测试泵 P-001\n保存时软件状态：正式支持\n判定说明：按GB 19762-2025表1/表3的设计/标称指标判定为1级\n实际泵效率：90\n1级能效效率限值（%）：79.79\n2级能效效率限值（%）：77.79\n3级能效效率限值（%）：72.79\n保存时间：2026-10-27T05:04:12.919769+00:00",
+        "tabs": [
+          "基本信息与结果",
+          "输入数据与计算依据"
+        ],
+        "current_tab": 0
+      },
+      "before": {
+        "search": "19762",
+        "date": "2026-10-27",
+        "category": "",
+        "conclusion": 0,
+        "row": 0,
+        "column": 0,
+        "record_id": "ANALYSIS-5c07baf2bf06",
+        "outer_scroll": 0,
+        "table_scroll": 0,
+        "table_horizontal_scroll": 0
+      },
+      "after": {
+        "search": "19762",
+        "date": "2026-10-27",
+        "category": "",
+        "conclusion": 0,
+        "row": 0,
+        "column": 0,
+        "record_id": "ANALYSIS-5c07baf2bf06",
+        "outer_scroll": 0,
+        "table_scroll": 0,
+        "table_horizontal_scroll": 0
+      },
+      "detail_opened": true,
+      "context_preserved": true
+    }
+  ],
+  "record_id": "ANALYSIS-5c07baf2bf06"
+}

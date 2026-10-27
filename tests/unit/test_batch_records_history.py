@@ -158,8 +158,9 @@ class BatchRecordHistoryShellTests(unittest.TestCase):
         self.assertIs(window.batch_page._external_launch_context, launch_context)
         # 页面构建先加载一次；导航到历史页会再读一次并展示批次。
         window.open_records()
-        self.assertEqual(page.batch_list.count(), 1)
-        self.assertIn("输入-001.xlsx", page.batch_list.item(0).text())
+        self.assertEqual(page.batch_list.rowCount(), 1)
+        self.assertIn("输入-001.xlsx", page.batch_list.item(0, 0).text())
+        page.show_batch_record("BATCH-001")
         self.assertIn("输入-001.xlsx", page.batch_detail.text())
         self.assertEqual(batch.requested_limits, [51, 51])
 
@@ -179,26 +180,27 @@ class BatchRecordHistoryPageTests(unittest.TestCase):
         self.addCleanup(page.deleteLater)
 
         self.assertEqual(
-            [page.tabs.tabText(i) for i in range(page.tabs.count())],
-            ["单台分析记录", "批量评价记录"])
-        self.assertEqual(page.batch_list.count(), 50)
-        self.assertIn("输入-060.xlsx", page.batch_list.item(0).text())
-        self.assertIn("2026-10-21 00:01:00+00:00 UTC", page.batch_list.item(0).text())
-        self.assertEqual(batch.opened, ["BATCH-060"])
+            [page.single_button.text(), page.batch_button.text()],
+            ["单台分析", "批量评价"])
+        self.assertEqual(page.batch_list.rowCount(), 50)
+        self.assertIn("输入-060.xlsx", page.batch_list.item(0, 0).text())
+        self.assertIn("2026-10-21 00:01:00+00:00 UTC", page.batch_list.item(0, 5).text())
+        self.assertEqual(batch.opened, [], "列表只查询，不自动打开详情")
         self.assertTrue(page.batch_load_more_button.isEnabled())
         self.assertEqual(batch.requested_limits, [51])
 
         page.search.setText("no matching record")
         self.assertEqual(page.filtered_records(), [])
-        self.assertEqual(page.batch_list.count(), 50)
+        self.assertEqual(page.batch_list.rowCount(), 50)
 
         page.batch_load_more_button.click()
-        self.assertEqual(page.batch_list.count(), 61)
+        self.assertEqual(page.batch_list.rowCount(), 61)
         self.assertFalse(page.batch_load_more_button.isEnabled())
         self.assertEqual(batch.requested_limits, [51, 101])
-        self.assertEqual(batch.opened, ["BATCH-060", "BATCH-060"])
+        self.assertEqual(batch.opened, [], "加载更多不自动打开详情")
 
-        page.batch_list.setCurrentRow(60)
+        page.batch_list.setCurrentCell(60, 0)
+        page.batch_list.cellActivated.emit(60, 0)
         detail = page.batch_detail.text()
         self.assertEqual(batch.opened[-1], "BATCH-000")
         self.assertIn("数据行数：1", detail)
@@ -215,11 +217,12 @@ class BatchRecordHistoryPageTests(unittest.TestCase):
         page = RecordsPage(analysis, batch=batch)
         self.addCleanup(page.deleteLater)
 
-        page.batch_list.setCurrentRow(1)
+        page.batch_list.setCurrentCell(1, 0)
+        page.batch_list.cellActivated.emit(1, 0)
         batch.records.insert(0, _snapshot(99))
         page.refresh()
 
-        self.assertEqual(page.batch_list.count(), 3)
+        self.assertEqual(page.batch_list.rowCount(), 3)
         self.assertIn("GB 19762-2025", page.batch_detail.text())
         self.assertEqual(batch.requested_limits[-1], 51)
 

@@ -31,7 +31,8 @@ from typing import Any, Callable
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QComboBox,
-    QFormLayout,
+    QCompleter,
+    QRadioButton,
     QFrame,
     QGridLayout,
     QGroupBox,
@@ -57,6 +58,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
     category_field_constraints,
 )
 from ..tokens import TOKENS
+from ..style import icon
 from ..labels import (
     format_metric,
     issue_code_texts,
@@ -65,6 +67,9 @@ from ..labels import (
 )
 
 _LOGGER = logging.getLogger("equipeffi.qt.analysis")
+
+from ..widgets.choice_combo import ChoiceComboBox
+from ..widgets.numeric_input import numeric_field, numeric_container, validate_numeric_fields
 
 #: 设备参数字段（用户可见标签 + 内部字段名 + 单位）。
 #:
@@ -110,6 +115,7 @@ class AnalysisPage(QWidget):
         self.last_saved_record_id: str | None = None
         #: 最近一次记录保存状态：RECORDED / NOT_RECORDED / SAVE_FAILED。
         self.last_record_status: str | None = None
+        self._responsive_grids = []
         self._build()
 
     # -- 构建 ---------------------------------------------------------------
@@ -120,6 +126,7 @@ class AnalysisPage(QWidget):
         outer.setSpacing(TOKENS.section_gap)
 
         heading = QLabel("新建分析")
+        self.heading = heading
         font = heading.font()
         font.setPixelSize(TOKENS.title_font_size)
         font.setBold(True)
@@ -134,10 +141,12 @@ class AnalysisPage(QWidget):
         scroll.setWidgetResizable(True)
         body = QWidget()
         layout = QVBoxLayout(body)
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(TOKENS.section_gap)
         layout.addWidget(self._basic_group())
         layout.addWidget(self._category_group())
         layout.addWidget(self._points_group())
+        layout.addWidget(self._conditions_group())
         layout.addWidget(self._actions())
         layout.addWidget(self._result_group())
         layout.addStretch()
@@ -145,6 +154,52 @@ class AnalysisPage(QWidget):
         outer.addWidget(scroll, 1)
         # 先建好输入控件再应用一次类别联动，避免信号早于控件创建。
         self._on_category_changed()
+        self.stale_label = QLabel("输入已变更，请重新分析")
+        self.stale_label.setWordWrap(True)
+        self.stale_label.setStyleSheet("color:#956420;")
+        self.result_group.layout().insertWidget(0, self.stale_label)
+        self.stale_label.hide()
+        for edit in (self.project_name, self.equipment_no, self.stages, *self.point_inputs.values()):
+            edit.textChanged.connect(self._mark_stale)
+        self.category.currentIndexChanged.connect(self._mark_stale)
+        self.suction.currentIndexChanged.connect(self._mark_stale)
+
+    def resizeEvent(self, event):
+        columns = 2 if self.width() >= 680 else 1
+        for grid, widgets in self._responsive_grids:
+            for index, widget in enumerate(widgets):
+                grid.addWidget(widget, index // columns, index % columns)
+            grid.setColumnStretch(0, 1)
+            grid.setColumnStretch(1, 1 if columns == 2 else 0)
+        super().resizeEvent(event)
+
+    def _fields(self, group, fields):
+        grid = QGridLayout(group)
+        grid.setSpacing(12)
+        widgets = []
+        for label, control in fields:
+            widget = QWidget()
+            layout = QVBoxLayout(widget)
+            layout.setContentsMargins(0, 0, 0, 0)
+            caption = QLabel(label)
+            caption.setWordWrap(True)
+            layout.addWidget(caption)
+            layout.addWidget(control)
+            if hasattr(control, "numeric_error"):
+                layout.addWidget(control.numeric_error)
+            widgets.append(widget)
+            grid.addWidget(widget, len(widgets) - 1, 0)
+        self._responsive_grids.append((grid, widgets))
+
+    def _mark_stale(self, *_):
+        if self._last_result is not None:
+            self.stale_label.show()
+            self.view_record_button.hide()
+            self.evaluate_button.setText("分析")
+            self.evaluate_button.setToolTip("")
+            self.evaluate_button.setProperty("primary", True)
+            self.evaluate_button.style().unpolish(self.evaluate_button)
+            self.evaluate_button.style().polish(self.evaluate_button)
 
     def _basic_group(self) -> QGroupBox:
         """基本信息：企业/项目名称与设备编号。
@@ -153,19 +208,17 @@ class AnalysisPage(QWidget):
         """
 
         group = QGroupBox("基本信息")
-        form = QFormLayout(group)
         self.project_name = QLineEdit()
         self.project_name.setPlaceholderText("可选")
         self.equipment_no = QLineEdit()
         self.equipment_no.setPlaceholderText("可选")
-        form.addRow("企业/项目名称", self.project_name)
-        form.addRow("设备编号", self.equipment_no)
+        self._fields(group, [("企业/项目名称（可选）", self.project_name), ("设备编号（可选）", self.equipment_no)])
         return group
 
     def _category_group(self) -> QGroupBox:
         group = QGroupBox("产品类别")
         layout = QVBoxLayout(group)
-        self.category = QComboBox()
+        self.category = ChoiceComboBox()
         # 不预选任何正式类别：软件不得替用户猜泵型（猜错会把用户导向错误规则）。
         self.category.addItem("请选择产品类别…", None)
         group_labels = dict(PUMP_CATEGORY_GROUPS)
@@ -181,6 +234,13 @@ class AnalysisPage(QWidget):
             for category in entries:
                 self.category.addItem(category.visible_name, category.visible_name)
         self.category.setCurrentIndex(0)
+        self.category.setEditable(True)
+        self.category.setInsertPolicy(QComboBox.InsertPolicy.NoInsert)
+        self.category.completer().setFilterMode(Qt.MatchFlag.MatchContains)
+        self.category.completer().setCompletionMode(QCompleter.CompletionMode.PopupCompletion)
+        self.category.completer().setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        self.category.lineEdit().setPlaceholderText("搜索或选择产品类别")
+        self.category.editTextChanged.connect(self._on_category_text_changed)
         layout.addWidget(self.category)
         self.category_help = QLabel("")
         self.category_help.setWordWrap(True)
@@ -190,28 +250,47 @@ class AnalysisPage(QWidget):
 
     def _points_group(self) -> QGroupBox:
         group = QGroupBox("设备参数")
-        grid = QGridLayout(group)
         self.point_inputs: dict[str, QLineEdit] = {}
-        for row, (key, label, unit) in enumerate(POINT_FIELDS):
-            grid.addWidget(QLabel(f"{label}（{unit}）"), row, 0)
+        fields = []
+        for key, label, unit in POINT_FIELDS:
             edit = QLineEdit()
+            numeric_field(edit, label, "pump_percent" if key == "efficiency" else "positive")
             edit.setPlaceholderText("请输入设备参数数值")
-            grid.addWidget(edit, row, 1)
+            fields.append((f"{label}（{unit}）", edit))
             self.point_inputs[key] = edit
-        grid.addWidget(QLabel("吸入方式"), len(POINT_FIELDS), 0)
-        self.suction = QComboBox()
+        self._fields(group, fields)
+        return group
+
+    def _conditions_group(self):
+        group = QGroupBox("类别条件")
+        grid = QGridLayout(group)
+        grid.addWidget(QLabel("吸入方式"), 0, 0)
+        self.suction = QComboBox(self)
         self.suction.addItem("请选择", None)
         for option in SUCTION_OPTIONS:
             self.suction.addItem(option, option)
-        grid.addWidget(self.suction, len(POINT_FIELDS), 1)
-        grid.addWidget(QLabel("级数"), len(POINT_FIELDS) + 1, 0)
+        self.suction.hide()
+        radios = QWidget()
+        radio_layout = QHBoxLayout(radios)
+        radio_layout.setContentsMargins(0, 0, 0, 0)
+        self.suction_buttons = []
+        for option in SUCTION_OPTIONS:
+            radio = QRadioButton(option)
+            radio.toggled.connect(lambda checked, value=option: self.suction.setCurrentIndex(self.suction.findData(value)) if checked else None)
+            radio_layout.addWidget(radio)
+            self.suction_buttons.append(radio)
+        radio_layout.addStretch()
+        self.suction.currentIndexChanged.connect(self._sync_suction)
+        grid.addWidget(radios, 0, 1)
+        grid.addWidget(QLabel("级数"), 1, 0)
         self.stages = QLineEdit()
-        grid.addWidget(self.stages, len(POINT_FIELDS) + 1, 1)
+        numeric_field(self.stages, "级数", "integer")
+        grid.addWidget(numeric_container(self.stages), 1, 1)
         # 类别锁定说明：让用户知道该值由泵型唯一决定，不是软件随意填的。
         self.locked_hint = QLabel("")
         self.locked_hint.setWordWrap(True)
         self.locked_hint.setStyleSheet("color: #65727e;")
-        grid.addWidget(self.locked_hint, len(POINT_FIELDS) + 2, 0, 1, 2)
+        grid.addWidget(self.locked_hint, 2, 0, 1, 2)
         return group
 
     def _actions(self) -> QWidget:
@@ -219,15 +298,24 @@ class AnalysisPage(QWidget):
         layout = QHBoxLayout(holder)
         layout.setContentsMargins(0, 0, 0, 0)
         self.evaluate_button = QPushButton("分析")
+        self.evaluate_button.setProperty("primary", True)
         self.evaluate_button.clicked.connect(self.evaluate)
         layout.addWidget(self.evaluate_button)
+        self.view_record_button = QPushButton("查看记录")
+        self.view_record_button.setProperty("primary", True)
+        self.view_record_button.setIcon(icon("records"))
+        self.view_record_button.clicked.connect(lambda: self.navigator.open_records(record_id=self.last_saved_record_id) if self.navigator and self.last_saved_record_id else None)
+        self.view_record_button.hide()
+        layout.addWidget(self.view_record_button)
         layout.addStretch()
         return holder
 
     def _result_group(self) -> QGroupBox:
         group = QGroupBox("分析结果")
+        self.result_group = group
         layout = QVBoxLayout(group)
         self.conclusion = QLabel("—")
+        self.conclusion.setObjectName("coreResult")
         font = self.conclusion.font()
         font.setPixelSize(TOKENS.title_font_size)
         font.setBold(True)
@@ -276,7 +364,20 @@ class AnalysisPage(QWidget):
     # -- 交互 ---------------------------------------------------------------
 
     def current_category(self) -> str | None:
+        if self.category.currentText() != self.category.itemText(self.category.currentIndex()):
+            return None
         return self.category.currentData()
+
+    def _on_category_text_changed(self, *_):
+        if hasattr(self, "stale_label"):
+            self._mark_stale()
+
+    def _sync_suction(self, *_):
+        for radio in self.suction_buttons:
+            radio.setAutoExclusive(False)
+            radio.setChecked(radio.text() == self.suction.currentData())
+            radio.setAutoExclusive(True)
+            radio.setEnabled(self.suction.isEnabled())
 
     def _on_category_changed(self, *_: object) -> None:
         """应用类别唯一决定的字段约束（级数 / 吸入方式）。
@@ -289,7 +390,7 @@ class AnalysisPage(QWidget):
         category = self.current_category()
         entry = next((c for c in PUMP_CATEGORIES if c.visible_name == category), None)
         self.category_help.setText(
-            entry.help_text if entry is not None
+            f"已选类别：{entry.visible_name}\n{entry.help_text}" if entry is not None
             else "请选择产品类别。若无法判断，可选“不确定类别”查看判断说明。")
 
         constraints = category_field_constraints(category)
@@ -320,11 +421,16 @@ class AnalysisPage(QWidget):
         self.locked_hint.setText(
             "该泵型已唯一确定：" + "、".join(locked_labels) + "（由标准适用范围决定，不可修改）"
             if locked_labels else "")
+        self._sync_suction()
 
     def _collect_request(self) -> PumpAnalysisRequest | None:
         category = self.current_category()
         if not category:
             self._show_error("请先选择产品类别。")
+            return None
+        if not validate_numeric_fields([*self.point_inputs.values(), self.stages]):
+            self.last_record_status = "NOT_RECORDED"
+            self._show_error("请修正标出的数值输入。此次未形成分析记录。")
             return None
         values = {key: (edit.text().strip() or None)
                   for key, edit in self.point_inputs.items()}
@@ -361,6 +467,13 @@ class AnalysisPage(QWidget):
         self._last_result = None
         self.last_saved_record_id = None
         self.last_record_status = None
+        self.stale_label.hide()
+        self.view_record_button.hide()
+        self.evaluate_button.setText("分析")
+        self.evaluate_button.setToolTip("")
+        self.evaluate_button.setProperty("primary", True)
+        self.evaluate_button.style().unpolish(self.evaluate_button)
+        self.evaluate_button.style().polish(self.evaluate_button)
 
         request = self._collect_request()
         if request is None:
@@ -380,6 +493,13 @@ class AnalysisPage(QWidget):
         self.last_saved_record_id = (outcome.record.record_id if outcome.record else None)
         self._render(outcome.result)
         self._render_record_status(outcome)
+        if outcome.recorded:
+            self.view_record_button.setVisible(self.navigator is not None)
+            self.evaluate_button.setText("再次分析")
+            self.evaluate_button.setProperty("primary", False)
+            self.evaluate_button.style().unpolish(self.evaluate_button)
+            self.evaluate_button.style().polish(self.evaluate_button)
+            self.evaluate_button.setToolTip("再次分析会产生一条新的分析记录。")
         return outcome.result
 
     # -- 展示 ---------------------------------------------------------------
@@ -400,7 +520,7 @@ class AnalysisPage(QWidget):
         if outcome.recorded:
             self.record_label.setText(
                 f"已自动保存为历史记录：{outcome.record.record_id}"
-                f"（可在「分析记录」中打开查看）")
+                f"（可在「分析记录」中打开查看）。再次分析会生成新记录。")
             self.record_label.setStyleSheet("color: #1f6f3f;")
         elif outcome.save_failed:
             self.record_label.setText(

@@ -34,7 +34,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QPushButton,
     QVBoxLayout,
-    QWidget,
+    QWidget, QScrollArea, QGridLayout, QProgressBar, QSizePolicy,
 )
 
 from ....application.services.pump_batch_evaluation_service import (
@@ -43,6 +43,7 @@ from ....application.services.pump_batch_evaluation_service import (
 )
 from ..labels import user_facing_issue_kind
 from ..tokens import TOKENS
+from ..style import heading, icon
 
 SYSTEM_FAILURE_TEXT = "批量评价未能完成，请检查工作簿或联系技术人员。"
 
@@ -113,115 +114,112 @@ class BatchPage(QWidget):
     # -- 构建 --------------------------------------------------------------
 
     def _build(self) -> None:
-        layout = QVBoxLayout(self)
+        outer = QVBoxLayout(self)
+        outer.setContentsMargins(0, 0, 0, 0)
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        body = QWidget()
+        layout = QVBoxLayout(body)
         layout.setContentsMargins(*(TOKENS.page_margin,) * 4)
-        layout.setSpacing(TOKENS.spacing)
-
-        # 一级页面标题与导航名一致（与其余页面相同的约定）。
-        title = QLabel("Excel导入")
-        title.setObjectName("pageTitle")
-        layout.addWidget(title)
-
-        subtitle = QLabel("设备（Excel）批量输入 / 输出")
-        layout.addWidget(subtitle)
-
-        hint = QLabel(
-            "Excel 用于批量填写与批量输出，正式计算由软件完成。\n"
-            "先输出一份空白模板填写，再回到这里选择文件即可直接批量评价——"
-            "软件会自动检查文件并自动生成新的结果文件（不会覆盖你的输入文件）。"
-            "想填多少台就填多少台，软件会自动适应，无需事先设置。")
-        hint.setWordWrap(True)
-        layout.addWidget(hint)
-
-        # 1) 输出空白模板（一次操作，绝不逐 Sheet 询问容量）
-        template_box = QGroupBox("第 1 步：输出空白模板")
-        template_layout = QHBoxLayout(template_box)
-        self.template_label = QLabel("输出软件内置的正式空白模板（全设备统一）。")
+        layout.setSpacing(TOKENS.section_gap)
+        layout.addWidget(heading("表格导入"))
+        template_box = QGroupBox("模板与说明")
+        template_layout = QVBoxLayout(template_box)
+        version = getattr(self.batch, "template_identity", {}).get("template_version") or "当前构建模板"
+        self.template_label = QLabel(f"统一工作簿 · {version}\n按需填写行数，保留各设备工作表；结果另存为新文件。")
         self.template_label.setWordWrap(True)
-        template_layout.addWidget(self.template_label, 1)
-        self.template_button = QPushButton("输出空白模板")
+        template_layout.addWidget(self.template_label)
+        self.template_button = QPushButton("下载空白模板")
+        self.template_button.setIcon(icon("download"))
         self.template_button.clicked.connect(self.export_blank_template)
-        template_layout.addWidget(self.template_button)
+        template_layout.addWidget(self.template_button, alignment=Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(template_box)
-
-        # 2) 选择 Excel（选中即自动轻检查 + 自动输出路径）
-        picker = QGroupBox("第 2 步：选择要批量评价的 Excel")
+        picker = QGroupBox("选择文件")
         picker_layout = QVBoxLayout(picker)
-
-        source_row = QHBoxLayout()
-        source_row.addWidget(QLabel("输入工作簿"))
         self.source_edit = QLineEdit()
         self.source_edit.setReadOnly(True)
-        source_row.addWidget(self.source_edit, 1)
-        self.source_button = QPushButton("选择…")
+        self.source_edit.setPlaceholderText("请选择软件模板填写的工作簿（.xlsx）")
+        self.source_edit.textChanged.connect(self._invalidate_source)
+        picker_layout.addWidget(self.source_edit)
+        self.source_button = QPushButton("选择 / 更换文件")
         self.source_button.clicked.connect(self._pick_source)
-        source_row.addWidget(self.source_button)
-        picker_layout.addLayout(source_row)
-
-        # 自动检查结果（不再需要用户点一次「导入检查」）
-        self.check_label = QLabel("选择 Excel 后会自动检查。")
-        self.check_label.setWordWrap(True)
-        self.check_label.setTextFormat(Qt.TextFormat.PlainText)
-        self.check_label.setTextInteractionFlags(
-            Qt.TextInteractionFlag.TextSelectableByMouse
-        )
-        picker_layout.addWidget(self.check_label)
-
-        # 输出位置：默认自动生成，只有想改时才展开
-        self.target_row_widget = QWidget()
-        target_row = QHBoxLayout(self.target_row_widget)
-        target_row.setContentsMargins(0, 0, 0, 0)
-        target_row.addWidget(QLabel("结果保存为"))
-        self.target_edit = QLineEdit()
-        self.target_edit.setPlaceholderText("留空则自动生成带时间戳的新文件，不会覆盖输入")
-        target_row.addWidget(self.target_edit, 1)
-        self.target_button = QPushButton("另存为…")
-        self.target_button.clicked.connect(self._pick_target)
-        target_row.addWidget(self.target_button)
-        self.target_row_widget.setVisible(False)
-        picker_layout.addWidget(self.target_row_widget)
-
-        target_toggle_row = QHBoxLayout()
+        picker_layout.addWidget(self.source_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.target_hint = QLabel("默认自动保存为新文件（带时间戳），不会覆盖输入。")
+        self.target_hint.setWordWrap(True)
+        picker_layout.addWidget(self.target_hint)
         self.target_toggle = QPushButton("更改输出位置…")
         self.target_toggle.setCheckable(True)
         self.target_toggle.toggled.connect(self._toggle_target_row)
-        target_toggle_row.addWidget(self.target_toggle)
-        self.target_hint = QLabel("默认自动保存为新文件（带时间戳），不会覆盖输入。")
-        self.target_hint.setWordWrap(True)
-        target_toggle_row.addWidget(self.target_hint, 1)
-        picker_layout.addLayout(target_toggle_row)
+        picker_layout.addWidget(self.target_toggle, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.target_row_widget = QWidget()
+        target_row = QVBoxLayout(self.target_row_widget)
+        target_row.setContentsMargins(0, 0, 0, 0)
+        self.target_edit = QLineEdit()
+        self.target_edit.setPlaceholderText("留空则自动生成新文件")
+        target_row.addWidget(self.target_edit)
+        self.target_button = QPushButton("另存为…")
+        self.target_button.clicked.connect(self._pick_target)
+        target_row.addWidget(self.target_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.target_row_widget.hide()
+        picker_layout.addWidget(self.target_row_widget)
         layout.addWidget(picker)
-
-        # 3) 批量评价 + 完成后快捷操作
-        actions = QHBoxLayout()
+        check = QGroupBox("数据检查与预览")
+        check_layout = QVBoxLayout(check)
+        self.check_label = QLabel("选择文件后自动检查结构及数据行；字段问题以正式评价结果为准。")
+        self.check_label.setWordWrap(True)
+        self.check_label.setTextFormat(Qt.TextFormat.PlainText)
+        self.check_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        check_layout.addWidget(self.check_label)
+        self.progress = QProgressBar()
+        self.progress.setRange(0, 0)
+        self.progress.setTextVisible(False)
+        self.progress.hide()
+        check_layout.addWidget(self.progress)
         self.run_button = QPushButton("批量评价")
+        self.run_button.setProperty("primary", True)
         self.run_button.clicked.connect(self.start_run)
-        actions.addWidget(self.run_button)
-        # 完成后的一步操作；未完成前不可用
-        self.open_result_button = QPushButton("打开结果")
-        self.open_result_button.clicked.connect(self.open_result)
-        self.open_result_button.setEnabled(False)
-        actions.addWidget(self.open_result_button)
-        self.open_folder_button = QPushButton("打开所在文件夹")
-        self.open_folder_button.clicked.connect(self.open_result_folder)
-        self.open_folder_button.setEnabled(False)
-        actions.addWidget(self.open_folder_button)
-        actions.addStretch(1)
-        layout.addLayout(actions)
-
-        # 4) 批次总结
-        result_box = QGroupBox("批次总结")
+        check_layout.addWidget(self.run_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(check)
+        result_box = QGroupBox("处理结果")
         result_layout = QVBoxLayout(result_box)
         self.summary_label = QLabel("尚未开始。")
-        self.summary_label.setWordWrap(True)
-        result_layout.addWidget(self.summary_label)
         self.conclusion_label = QLabel("")
-        self.conclusion_label.setWordWrap(True)
-        result_layout.addWidget(self.conclusion_label)
         self.issue_label = QLabel("")
-        self.issue_label.setWordWrap(True)
-        result_layout.addWidget(self.issue_label)
-        layout.addWidget(result_box, 1)
+        for label in (self.summary_label, self.conclusion_label, self.issue_label):
+            label.setWordWrap(True)
+            label.setTextFormat(Qt.TextFormat.PlainText)
+            label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+            label.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
+            result_layout.addWidget(label)
+        actions = QGridLayout()
+        self.open_result_button = QPushButton("打开结果")
+        self.open_result_button.clicked.connect(self.open_result)
+        self.open_folder_button = QPushButton("打开所在文件夹")
+        self.open_folder_button.clicked.connect(self.open_result_folder)
+        self.open_record_button = QPushButton("查看批次记录")
+        self.open_record_button.clicked.connect(self.open_batch_record)
+        for row, button in enumerate((self.open_result_button, self.open_folder_button, self.open_record_button)):
+            button.setEnabled(False)
+            actions.addWidget(button, row, 0, alignment=Qt.AlignmentFlag.AlignLeft)
+        result_layout.addLayout(actions)
+        layout.addWidget(result_box)
+        layout.addStretch()
+        scroll.setWidget(body)
+        outer.addWidget(scroll)
+        self.last_check = None
+
+    def _invalidate_source(self, *_):
+        had_previous = self.last_result is not None or self.last_check is not None
+        self.last_result = None
+        self.last_check = None
+        self._reset_quick_actions()
+        self.summary_label.setText("已更换文件，原检查与结果已失效。请重新评价。" if had_previous else "尚未开始。")
+        self.conclusion_label.clear()
+        self.issue_label.clear()
+
+    def open_batch_record(self):
+        if self.navigator and self.last_result and self.last_result.batch_record_saved:
+            self.navigator.open_batch_record(self.last_result.batch_record_id)
 
     # -- 输出空白模板 ------------------------------------------------------
 
@@ -265,6 +263,8 @@ class BatchPage(QWidget):
             logging.getLogger("equipeffi.qt.batch").exception("记住上次目录失败")
 
     def _pick_source(self) -> None:
+        if self.busy or self._thread is not None:
+            return
         chosen, _ = QFileDialog.getOpenFileName(
             self, "选择要批量评价的工作簿", self._last_directory(),
             "Excel 工作簿 (*.xlsx)")
@@ -293,7 +293,12 @@ class BatchPage(QWidget):
         结果直接显示。检查只读取文件，不写任何东西、不产生批次记录。
         """
 
+        if self.busy or self._thread is not None:
+            return
+        self._invalidate_source()
+        self.source_edit.blockSignals(True)
         self.source_edit.setText(str(path))
+        self.source_edit.blockSignals(False)
         self._remember_directory(path)
         # 输出路径**不在选中时预填**：留空即表示"自动生成"，运行时才计算。
         # 这样用户手动设置过的位置永远不会被静默覆盖。
@@ -321,6 +326,7 @@ class BatchPage(QWidget):
         可以由「选择文件」自动触发，也可以由测试/调用方直接调用。
         """
 
+        self.last_check = None
         source = self.source_edit.text().strip()
         if not source:
             self.check_label.setText("请先选择要批量评价的工作簿。")
@@ -351,9 +357,9 @@ class BatchPage(QWidget):
             row_count, skipped = len(workbook.rows), workbook.skipped_blank_rows
             details = ""
         self.check_label.setText(
-            f"检查通过：发现 {row_count} 行需要评价的数据"
+            f"文件结构已读取：发现 {row_count} 行需要评价的数据"
             f"（另有 {skipped} 行完全空白，已跳过）。"
-            "可以直接点「批量评价」。" + details)
+            "字段有效性与结论以批量评价结果为准。" + details)
         return workbook
 
     # -- 完成后快捷操作 ----------------------------------------------------
@@ -361,6 +367,7 @@ class BatchPage(QWidget):
     def _reset_quick_actions(self) -> None:
         self.open_result_button.setEnabled(False)
         self.open_folder_button.setEnabled(False)
+        self.open_record_button.setEnabled(False)
 
     @staticmethod
     def _completion_message(result) -> str:
@@ -469,6 +476,9 @@ class BatchPage(QWidget):
         self._reset_quick_actions()
         self._outcome_received = False
         self._set_busy(True, "正在批量评价，请稍候…（大批量可能需要几分钟）")
+        self.summary_label.setText("正在处理当前工作簿，请稍候。")
+        self.conclusion_label.clear()
+        self.issue_label.clear()
 
         thread = QThread(self)
         worker = _BatchWorker(self.batch, Path(source), target)
@@ -486,6 +496,9 @@ class BatchPage(QWidget):
     def _set_busy(self, busy: bool, message: str = "") -> None:
         self.busy = busy
         self.run_button.setEnabled(not busy and self._thread is None)
+        for control in (self.source_button, self.target_button, self.target_edit, self.target_toggle, self.template_button):
+            control.setEnabled(not busy)
+        self.progress.setVisible(busy)
         if message:
             self.check_label.setText(message)
 
@@ -555,6 +568,7 @@ class BatchPage(QWidget):
         return self._thread is None
 
     def _render(self, result) -> None:
+        self.open_record_button.setEnabled(bool(result.batch_record_saved and self.navigator))
         summary = result.summary
         lines = [
             f"设备数量总计 {summary.total_quantity} 台；"

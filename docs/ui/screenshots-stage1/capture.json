@@ -1,0 +1,214 @@
+{
+  "platform": "windows",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "data_root": "D:\\project\\设备能效软件\\EquipEffi\\outputs\\ui-stage1\\r1-data-01",
+  "scale_factor_override": null,
+  "screens": [
+    {
+      "name": "\\\\.\\DISPLAY1",
+      "logical_dpi": 96.0,
+      "device_pixel_ratio": 1.5
+    }
+  ],
+  "captures": [
+    {
+      "file": "home-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "standards-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "detail": false,
+      "standard_code": null,
+      "detail_scroll": 0,
+      "table_viewport_width": 1148,
+      "column_widths": [
+        160,
+        533,
+        115,
+        120,
+        220
+      ],
+      "visible_feedback": "共 2 项标准",
+      "failure_injection": false
+    },
+    {
+      "file": "standard-detail-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "detail": true,
+      "standard_code": "GB 19762-2025",
+      "detail_scroll": 0,
+      "table_viewport_width": 1148,
+      "column_widths": [
+        160,
+        533,
+        115,
+        120,
+        220
+      ],
+      "visible_feedback": null,
+      "failure_injection": false
+    },
+    {
+      "file": "pump-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "home-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "pump-result-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "standards-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "detail": false,
+      "standard_code": null,
+      "detail_scroll": 0,
+      "table_viewport_width": 366,
+      "column_widths": [
+        160,
+        300,
+        115,
+        120,
+        220
+      ],
+      "visible_feedback": "共 2 项标准",
+      "failure_injection": false
+    },
+    {
+      "file": "pump-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据"
+    },
+    {
+      "file": "standard-detail-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "detail": true,
+      "standard_code": "GB 19762-2025",
+      "detail_scroll": 0,
+      "table_viewport_width": 366,
+      "column_widths": [
+        160,
+        300,
+        115,
+        120,
+        220
+      ],
+      "visible_feedback": null,
+      "failure_injection": false
+    },
+    {
+      "file": "standard-reopened-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "detail": true,
+      "standard_code": "GB 20052-2024",
+      "detail_scroll": 0,
+      "table_viewport_width": 366,
+      "column_widths": [
+        160,
+        300,
+        115,
+        120,
+        220
+      ],
+      "visible_feedback": null,
+      "failure_injection": false
+    },
+    {
+      "file": "standard-unavailable-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "detail": false,
+      "standard_code": null,
+      "detail_scroll": 0,
+      "table_viewport_width": 708,
+      "column_widths": [
+        160,
+        300,
+        115,
+        120,
+        220
+      ],
+      "visible_feedback": "该标准尚未开放分析，请从标准库选择已接入的标准。",
+      "failure_injection": false
+    },
+    {
+      "file": "standard-read-failure-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "detail": false,
+      "standard_code": null,
+      "detail_scroll": 0,
+      "table_viewport_width": 708,
+      "column_widths": [
+        160,
+        300,
+        115,
+        120,
+        220
+      ],
+      "visible_feedback": "暂时无法读取标准目录，请重试。",
+      "failure_injection": true
+    }
+  ]
+}

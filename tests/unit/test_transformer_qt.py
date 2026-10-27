@@ -274,10 +274,10 @@ class TransformerQtTests(unittest.TestCase):
             navigator, "selected", kwargs.get("standard_code")))
         page = self._track(StandardsPage(
             _PumpService(), navigator, transformer=transformer))
-        page.standard_selector.setCurrentIndex(1)
-        visible = page.facts.text() + page.scopes.text() + page.intro.text()
+        page.open_detail(1)
+        visible = "\n".join(label.text() for label in page.section_labels) + page.table.item(1, 4).text()
         self.assertIn("GB 20052-2024", visible)
-        self.assertIn("已接入，尚待正式支持验收", visible)
+        self.assertIn("已接入，待正式支持验收", visible)
         self.assertNotIn("本版本已正式支持", visible)
         page._start_analysis()
         self.assertEqual(navigator.selected, "GB 20052-2024")

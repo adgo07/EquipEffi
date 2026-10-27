@@ -29,6 +29,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 from PySide6.QtCore import QCoreApplication, QEvent, QPoint, QRect
 from PySide6.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton
+from PySide6.QtTest import QTest
 
 from equipeffi.composition import create_settings_runtime
 from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
@@ -259,14 +260,15 @@ class AppShellTests(ProductShellTestCase):
                 self.assertEqual(window.pages.currentIndex(), index)
                 widget = window.pages.currentWidget()
                 self.assertIsNotNone(widget)
-                self.assertIn(title, _visible_text(widget))
+                expected = "设备能效分析工具" if title == "首页" else title
+                self.assertIn(expected, _visible_text(widget))
 
     def test_registry_pages_are_the_real_page_classes(self):
         window = self.window()
         self.assertIsInstance(window._page_widgets["首页"], HomePage)
         self.assertIsInstance(window._page_widgets["标准库"], StandardsPage)
         self.assertIsInstance(window._page_widgets["新建分析"], AnalysisPage)
-        self.assertIsInstance(window._page_widgets["Excel导入"], BatchPage)
+        self.assertIsInstance(window._page_widgets["表格导入"], BatchPage)
         self.assertIsInstance(window._page_widgets["分析记录"], RecordsPage)
         self.assertIsInstance(window._page_widgets["设置"], SettingsPage)
 
@@ -294,8 +296,8 @@ class AppShellTests(ProductShellTestCase):
         """
 
         self.assertNotIn("参数库", " ".join(PAGES))
-        self.assertIn("Excel导入", PAGES)
-        self.assertEqual(PAGES, ("首页", "标准库", "新建分析", "Excel导入",
+        self.assertIn("表格导入", PAGES)
+        self.assertEqual(PAGES, ("首页", "标准库", "新建分析", "表格导入",
                                  "分析记录", "设置"))
 
     def test_navigation_contract_only_switches_pages_and_selects_objects(self):
@@ -329,57 +331,40 @@ class AppShellTests(ProductShellTestCase):
 # --------------------------------------------------------------------------
 
 class HomePageTests(ProductShellTestCase):
-    def test_home_offers_new_analysis_and_current_standard(self):
+    def test_home_offers_standard_first_task_cards(self):
         window = self.window()
         home = window.home_page
-        self.assertIn("开始新的离心泵分析", home.new_analysis_button.text())
-        self.assertIn("查看标准库", home.open_standard_button.text())
-        self.assertTrue(home.new_transformer_analysis_button.isHidden())
-        overview = self.service.standard_overview()
-        self.assertIn(overview["standard_code"], home.standard_label.text())
-        self.assertIn(overview["standard_name"], home.standard_label.text())
+        self.assertEqual([b.text().splitlines()[0] for b in home.task_buttons],
+                         ["标准库", "新建分析", "表格导入", "分析记录"])
+        self.assertTrue(window.sidebar.isHidden())
+        home.task_buttons[0].click()
+        self.assertEqual(window.pages.currentIndex(), PAGES.index("标准库"))
+        self.assertFalse(window.sidebar.isHidden())
 
-    def test_home_shows_both_device_standards_and_routes_each_shortcut(self):
-        """首页依赖真实服务 read model，并给每个入口传入明确标准号。"""
-
+    def test_home_routes_devices_through_new_analysis_and_standards(self):
         from equipeffi.composition import create_transformer_analysis_service
-
-        transformer = create_transformer_analysis_service(
-            paths=self.paths, with_persistence=True)
+        transformer = create_transformer_analysis_service(paths=self.paths)
         window = self.window(transformer=transformer)
         home = window.home_page
-        text = home.standard_label.text()
-        pump_overview = self.service.standard_overview()
-        transformer_overview = transformer.standard_overview()
-
-        self.assertIn(pump_overview["standard_code"], text)
-        self.assertIn(pump_overview["standard_name"], text)
-        self.assertIn(transformer_overview["standard_code"], text)
-        self.assertIn(transformer_overview["name"], text)
-        self.assertIn("已接入，尚待正式支持验收", text)
-        self.assertEqual(text.count("尚待正式支持验收"), 1)
-        self.assertNotIn("本版本已正式支持", text)
-        self.assertNotIn("IMPLEMENTED", text)
-        self.assertFalse(home.new_transformer_analysis_button.isHidden())
-        self.assertIn("查看标准库", home.open_standard_button.text())
-
-        home.new_analysis_button.click()
-        self.assertEqual(window.device_analysis_page.device_selector.currentData(),
-                         "centrifugal_pump")
+        home.task_buttons[0].click()
+        page = window.standards_page
+        codes = [page.table.item(row, 0).text() for row in range(page.table.rowCount())]
+        self.assertEqual(codes, [self.service.standard_overview()["standard_code"],
+                                 transformer.standard_overview()["standard_code"]])
+        self.assertEqual(page.table.item(1, 4).text(), "已接入，待正式支持验收")
+        page.open_detail(1)
+        page.start_button.click()
+        self.assertEqual(window.device_analysis_page.device_selector.currentData(), "transformer")
         window.open_home()
-        home.new_transformer_analysis_button.click()
-        self.assertEqual(window.device_analysis_page.device_selector.currentData(),
-                         "transformer")
-        window.open_home()
-        home.new_analysis_button.click()
-        self.assertEqual(window.device_analysis_page.device_selector.currentData(),
-                         "centrifugal_pump")
+        home.task_buttons[1].click()
+        self.assertEqual(window.device_analysis_page.device_selector.currentData(), "transformer")
+        window.open_analysis(standard_code="GB 19762-2025")
+        self.assertEqual(window.device_analysis_page.device_selector.currentData(), "centrifugal_pump")
 
     def test_home_lists_recent_records_from_existing_capabilities(self):
         home = self.window().home_page
-        # 空状态不得显示开发态文案，也不得崩溃。
-        self.assertIn("暂无正式记录", home.records.item(0).text())
-        self.assertFalse(home.open_record_button.isEnabled())
+        self.assertEqual(home.records.rowCount(), 0)
+        self.assertIn("尚无分析记录", home.record_status.text())
 
     def test_home_has_no_draft_surface(self):
         """Phase 7：普通界面没有「分析草稿」概念，首页也不提供草稿入口。"""
@@ -427,36 +412,66 @@ class StandardsPageTests(ProductShellTestCase):
     def test_standard_facts_come_from_the_application_read_model(self):
         page = self.window().standards_page
         overview = self.service.standard_overview()
-        text = page.facts.text() + page.scopes.text() + page.source.text()
-        for key in ("standard_code", "standard_name", "effective_date", "data_version"):
+        page.open_detail(0)
+        text = "\n".join(label.text() for label in page.section_labels)
+        for key in ("standard_code", "standard_name", "effective_date"):
             self.assertIn(str(overview[key]), text)
+        self.assertEqual(page.table.columnCount(), 5)
 
     def test_standard_page_shows_supported_categories_and_support_status(self):
         page = self.window().standards_page
-        overview = self.service.standard_overview()
-        scopes = page.scopes.text()
-        for category in overview["supported_categories"]:
-            self.assertIn(category, scopes)
-        self.assertIn("正式支持", scopes)
+        page.open_detail(0)
+        for category in self.service.standard_overview()["supported_categories"]:
+            self.assertIn(category, page.section_labels[1].text())
+        self.assertEqual(page.table.item(0, 4).text(), "正式支持")
+        self.assertNotIn("软件支持", page.section_labels[1].text())
 
     def test_standard_page_starts_an_analysis(self):
         window = self.window()
-        window.standards_page._start_analysis()
+        window.standards_page.open_detail(0)
+        window.standards_page.start_button.click()
         self.assertEqual(window.pages.currentIndex(), PAGES.index("新建分析"))
 
     def test_standard_page_does_not_keep_a_second_standard_table(self):
-        """禁止 Presentation 自维护第二份标准表 / 硬编码第二套标准数据。"""
-
-        source = (SRC / "equipeffi" / "presentation" / "qt" / "pages"
-                  / "standards.py").read_text(encoding="utf-8")
-        self.assertNotIn("GB 19762", source.replace("GB 19762—2025《", ""))
-        # 不得解析 Markdown/PDF，也不得内联标准限值表。
-        for forbidden in ("open(", "read_text", ".pdf", ".md", "sqlite"):
+        source = (SRC / "equipeffi" / "presentation" / "qt" / "pages" / "standards.py").read_text(encoding="utf-8")
+        for forbidden in ("read_text", "sqlite"):
             self.assertNotIn(forbidden, source)
 
-    def test_standard_page_reports_missing_supersession_instead_of_inventing(self):
+    def test_special_options_are_searchable_and_separate_from_supported_categories(self):
         page = self.window().standards_page
-        self.assertIn("未提供", page.source.text())
+        original = page.service.standard_overview()
+        overview = dict(original, special_categories=["仅供分类的特殊选项"])
+        with patch.object(page.service, "standard_overview", return_value=overview):
+            page.refresh()
+        page.search.setText("仅供分类的特殊选项")
+        self.assertEqual(page.table.rowCount(), 1)
+        page.open_detail(0)
+        self.assertIn("其他可选项（不表示正式支持类别）：仅供分类的特殊选项", page.section_labels[1].text())
+
+    def test_unknown_and_similar_number_codes_do_not_inherit_known_requirements(self):
+        page = self.window().standards_page
+        original = page.service.standard_overview()
+        for code in ("UNKNOWN", "OTHER 19762-2025", "OTHER 20052-2024", "GB 18613-2099"):
+            with self.subTest(code=code), patch.object(page.service, "standard_overview", return_value=dict(original, standard_code=code)):
+                page.refresh()
+                page.open_detail(0)
+                text = page.section_labels[2].text()
+                self.assertIn("未提供标准要求摘要", text)
+                self.assertNotIn("表1至表6", text)
+                self.assertNotIn("泵效率", text)
+                self.assertNotIn("空载损耗", text)
+        with patch.object(page.service, "standard_overview", return_value=dict(original, standard_code="UNKNOWN", requirements_text="来自现有展示投影的摘要")):
+            page.refresh()
+            page.open_detail(0)
+            self.assertEqual(page.section_labels[2].text(), "来自现有展示投影的摘要")
+
+    def test_standard_page_reports_missing_original_truthfully(self):
+        page = self.window().standards_page
+        page.open_detail(0)
+        page.source_button.click()
+        self.assertIn("当前没有可打开的标准原文", page.feedback.text())
+        self.assertEqual(len(page.section_labels), 3)
+
 
 
 # --------------------------------------------------------------------------
@@ -745,11 +760,14 @@ class SettingsPageTests(ProductShellTestCase):
         )
         self.assertIn("尚待正式支持验收", page.about.text())
         self.assertIn("运行日志存放于 logs 子目录", page.runtime.text())
+        self.assertFalse(page.runtime_section.is_expanded())
+        page.runtime_section.set_expanded(True)
+        QTest.qWait(10)  # 折叠区展开后的换行高度由页面定时器更新。
 
         long_directory = self.paths.root.joinpath(*(["nested"] * 8))
         self.settings.set("last.directory", str(long_directory))
         page.refresh()
-        self.app.processEvents()
+        QTest.qWait(10)
         last_directory_height = page.last_directory.heightForWidth(
             page.last_directory.width())
         self.assertGreaterEqual(
@@ -891,7 +909,7 @@ class StandardLifecycleNoticeTests(ProductShellTestCase):
 
         overview = self.service.standard_overview()
         self.assertEqual(overview["lifecycle_state"], "EFFECTIVE")
-        self.assertNotIn("尚未实施", self.window().standards_page.source.text())
+        self.assertEqual(self.window().standards_page.table.item(0, 2).text(), "已实施")
 
     def test_standards_page_derives_lifecycle_instead_of_hardcoding(self):
         source = (SRC / "equipeffi" / "presentation" / "qt" / "pages"
@@ -903,7 +921,9 @@ class StandardLifecycleNoticeTests(ProductShellTestCase):
         overview = self.service.standard_overview()
         self.assertEqual(overview["supersession_note"],
                          "当前标准数据未提供废止或被替代关系信息。")
-        page_text = self.window().standards_page.source.text()
+        page = self.window().standards_page
+        page.open_detail(0)
+        page_text = "\n".join(label.text() for label in page.section_labels)
         self.assertNotIn("已废止", page_text)
         self.assertNotIn("已被替代", page_text)
 

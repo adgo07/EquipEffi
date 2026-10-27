@@ -1,209 +1,269 @@
-"""标准库：当前正式标准的真实产品页面。
-
-所有标准事实都来自**当前正式 Application read model**
-（`CentrifugalPumpAnalysisService.standard_overview()`），它组合的是既有权威数据
-（Canonical 标准包 + 产品类别目录 + 发布门禁）。
-
-本页**不**维护第二份标准表、**不**解析 Markdown/PDF、**不**硬编码第二套标准数据。
-"""
-from __future__ import annotations
-
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (
-    QComboBox,
-    QGroupBox,
-    QHBoxLayout,
-    QLabel,
-    QPushButton,
-    QVBoxLayout,
-    QWidget,
-)
-
-from ..labels import support_status_text
+"""标准列表与独立三分区详情，仅投影已装配服务的权威元数据。"""
+from datetime import date
+import logging
+from pathlib import Path
+from PySide6.QtCore import Qt, QUrl, QEvent, QTimer
+from PySide6.QtGui import QDesktopServices, QColor
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel,
+    QLineEdit, QComboBox, QPushButton, QTableWidgetItem,
+    QAbstractItemView, QStackedWidget, QScrollArea, QGroupBox)
+from ..style import heading, icon
 from ..tokens import TOKENS
+from ..widgets.compact_table import CompactTable
 
-#: 标准生命周期内部状态 → 面向用户的中文说明（只翻译，不新增事实）。
 LIFECYCLE_STATE_LABELS = {
-    "EFFECTIVE": "已实施",
-    "NOT_YET_EFFECTIVE": "尚未实施",
-    "UNKNOWN": "未提供实施日期",
-}
-
-#: 发布门禁内部取值 → 面向用户的说明。仅用于把权威取值翻译成中文，不新增事实。
-_SUPPORT_STATUS_HINT = {
-    "SUPPORTED": "本版本已正式支持",
-    "NOT_IN_RELEASE_SCOPE": "本版本尚未开放",
-}
+    "EFFECTIVE": "已实施", "NOT_YET_EFFECTIVE": "尚未实施", "UNKNOWN": "未提供实施日期"}
 
 
 class StandardsPage(QWidget):
-    """展示当前正式标准并允许基于该标准开始分析。"""
-
-    def __init__(self, service, navigator=None, parent: QWidget | None = None,
-                 *, transformer=None, motor=None):
+    def __init__(self, service, navigator=None, parent=None, *, transformer=None, motor=None):
         super().__init__(parent)
-        self.service = service
-        self.transformer_service = transformer
+        self.service, self.navigator = service, navigator
+        self.services = [s for s in (service, transformer, motor) if s is not None]
         self.motor_service = motor
-        self.navigator = navigator
-        self.standard_code: str | None = None
-
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(*(TOKENS.page_margin,) * 4)
-        layout.setSpacing(TOKENS.section_gap)
-
-        heading = QLabel("标准库")
-        font = heading.font()
-        font.setPixelSize(TOKENS.title_font_size)
-        font.setBold(True)
-        heading.setFont(font)
-        layout.addWidget(heading)
-
-        self.intro = QLabel()
-        self.intro.setWordWrap(True)
-        self.intro.setTextFormat(Qt.TextFormat.PlainText)
-        layout.addWidget(self.intro)
-
-        self.standard_selector = None
-        if transformer is not None:
-            self.standard_selector = QComboBox()
-            self.standard_selector.setObjectName("standardSelector")
-            pump_overview = service.standard_overview()
-            transformer_overview = transformer.standard_overview()
-            self.standard_selector.addItem(
-                f"{pump_overview['standard_code']} · {pump_overview['standard_name']}",
-                pump_overview["standard_code"])
-            self.standard_selector.addItem(
-                f"{transformer_overview['standard_code']} · {transformer_overview['name']}",
-                transformer_overview["standard_code"])
-            if motor is not None:
-                motor_overview = motor.standard_overview()
-                self.standard_selector.addItem(
-                    f"{motor_overview['standard_code']} · {motor_overview['name']}（验收候选）",
-                    motor_overview["standard_code"])
-            self.standard_selector.currentIndexChanged.connect(self.refresh)
-            layout.addWidget(self.standard_selector)
-
-        facts_group = QGroupBox("标准信息")
-        self.facts = QLabel()
-        self.facts.setWordWrap(True)
-        self.facts.setTextFormat(Qt.TextFormat.PlainText)
-        facts_layout = QVBoxLayout(facts_group)
-        facts_layout.addWidget(self.facts)
-        layout.addWidget(facts_group)
-
-        scopes_group = QGroupBox("适用范围与软件支持状态")
-        self.scopes = QLabel()
-        self.scopes.setWordWrap(True)
-        self.scopes.setTextFormat(Qt.TextFormat.PlainText)
-        scopes_layout = QVBoxLayout(scopes_group)
-        scopes_layout.addWidget(self.scopes)
-        layout.addWidget(scopes_group)
-
-        source_group = QGroupBox("来源与替代关系")
-        self.source = QLabel()
-        self.source.setWordWrap(True)
-        self.source.setTextFormat(Qt.TextFormat.PlainText)
-        source_layout = QVBoxLayout(source_group)
-        source_layout.addWidget(self.source)
-        layout.addWidget(source_group)
-        self.source_group = source_group
-        if transformer is not None:
-            # This read model has no user-facing source/document view; keep the
-            # older pump presentation intact while the new standard is selected.
-            source_group.setVisible(False)
-
+        self.standard_code = None
+        self._catalog = []
+        self._visible = []
+        self._load_error = False
+        outer = QVBoxLayout(self)
+        outer.setContentsMargins(TOKENS.page_margin, TOKENS.page_margin, TOKENS.page_margin, TOKENS.page_margin)
+        self.stack = QStackedWidget()
+        outer.addWidget(self.stack)
+        listing = QWidget()
+        layout = QVBoxLayout(listing)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(16)
+        layout.addWidget(heading("标准库"))
+        subtitle = QLabel("查询标准与适用范围，选择标准后开始设备分析")
+        subtitle.setWordWrap(True)
+        subtitle.setObjectName("muted")
+        layout.addWidget(subtitle)
+        filters = QGridLayout()
+        self.search = QLineEdit()
+        self.search.setPlaceholderText("搜索标准编号、名称或适用对象")
+        self.search.setClearButtonEnabled(True)
+        self.search.setAccessibleName("标准关键词")
+        self.status_filter = QComboBox()
+        self.status_filter.setAccessibleName("标准状态")
+        self.status_filter.addItem("全部标准状态", "")
+        for state, label in LIFECYCLE_STATE_LABELS.items():
+            self.status_filter.addItem(label, state)
+        filters.addWidget(self.search, 0, 0)
+        filters.addWidget(self.status_filter, 0, 1)
+        filters.setColumnStretch(0, 1)
+        layout.addLayout(filters)
+        self.table = CompactTable(["标准编号", "标准名称", "标准状态", "实施日期", "软件支持"],
+                                  [160, 300, 115, 120, 220], [122, 200, 78, 92, 148])
+        self._column_timer = QTimer(self)
+        self._column_timer.setSingleShot(True)
+        self._column_timer.timeout.connect(self._resize_columns)
+        self.table.viewport().installEventFilter(self)
+        self.table.setHorizontalHeaderLabels(["标准编号", "标准名称", "标准状态", "实施日期", "软件支持"])
+        self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.table.setAlternatingRowColors(True)
+        self.table.setWordWrap(False)
+        self.table.verticalHeader().hide()
+        self.table.verticalHeader().setMinimumSectionSize(40)
+        self.table.cellClicked.connect(lambda row, column: self.open_detail(row) if column in (0, 1) else None)
+        self.table.cellActivated.connect(lambda row, column: self.open_detail(row))
+        layout.addWidget(self.table, 1)
+        self.list_status = QLabel()
+        self.list_status.setWordWrap(True)
+        layout.addWidget(self.list_status)
+        self.retry_button = QPushButton("重试")
+        self.retry_button.clicked.connect(self.refresh)
+        self.retry_button.hide()
+        layout.addWidget(self.retry_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.stack.addWidget(listing)
+        detail = QWidget()
+        layout = QVBoxLayout(detail)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.back_button = QPushButton("返回标准库")
+        self.back_button.setIcon(icon("back"))
+        self.back_button.clicked.connect(self.show_list)
+        layout.addWidget(self.back_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.detail_heading = heading("")
+        layout.addWidget(self.detail_heading)
         actions = QHBoxLayout()
-        self.start_button = QPushButton("基于该标准开始分析")
+        self.source_button = QPushButton("查看标准原文")
+        self.source_button.setIcon(icon("book"))
+        self.source_button.clicked.connect(self._open_source)
+        self.start_button = QPushButton("按此标准分析")
+        self.start_button.setProperty("primary", True)
+        self.start_button.setEnabled(False)
         self.start_button.clicked.connect(self._start_analysis)
+        actions.addWidget(self.source_button)
         actions.addWidget(self.start_button)
         actions.addStretch()
         layout.addLayout(actions)
-        layout.addStretch()
-
+        self.feedback = QLabel()
+        self.feedback.setWordWrap(True)
+        layout.addWidget(self.feedback)
+        scroll = QScrollArea()
+        self.detail_scroll = scroll
+        scroll.setWidgetResizable(True)
+        body = QWidget()
+        sections = QVBoxLayout(body)
+        sections.setContentsMargins(0, 0, 0, 0)
+        self.section_labels = []
+        for title in ("基本信息", "适用范围", "标准要求"):
+            box = QGroupBox(title)
+            content = QVBoxLayout(box)
+            label = QLabel()
+            label.setWordWrap(True)
+            label.setTextFormat(Qt.TextFormat.PlainText)
+            label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+            content.addWidget(label)
+            sections.addWidget(box)
+            self.section_labels.append(label)
+        sections.addStretch()
+        scroll.setWidget(body)
+        layout.addWidget(scroll, 1)
+        self.stack.addWidget(detail)
+        self.search.textChanged.connect(self._filter)
+        self.status_filter.currentIndexChanged.connect(self._filter)
         self.refresh()
 
-    # -- 数据 ---------------------------------------------------------------
-
-    def refresh(self) -> None:
-        selected_code = (self.standard_selector.currentData()
-                         if self.standard_selector is not None else None)
-        if self.motor_service is not None and selected_code == "GB 18613-2020":
-            self._render_transformer(self.motor_service.standard_overview())
-            self.intro.setText("电动机接入验收候选；尚未宣布正式支持。")
+    def refresh(self):
+        try:
+            catalog = self._read_catalog()
+        except Exception:  # 展示读取失败，不能把旧目录或部分目录伪装成本次成功。
+            logging.getLogger("equipeffi.qt.standards").exception("标准目录读取失败")
+            self._catalog = []
+            self._load_error = True
+            self.show_list()
+            self._filter()
+            self.retry_button.show()
             return
-        if (self.transformer_service is not None
-                and selected_code == self.transformer_service.standard_overview()["standard_code"]):
-            self._render_transformer(self.transformer_service.standard_overview())
+        self._catalog = catalog
+        self._load_error = False
+        self.retry_button.hide()
+        self._filter()
+
+    def _read_catalog(self):
+        catalog = []
+        for service in self.services:
+            overview = service.standard_overview()
+            row = dict(overview)
+            row["name"] = overview.get("standard_name") or overview.get("name") or "未提供"
+            row["scope"] = overview.get("scope_text") or "、".join(overview.get("supported_categories", ()))
+            special = overview.get("special_categories", ())
+            if special:
+                row["scope"] += "\n其他可选项（不表示正式支持类别）：" + "、".join(special)
+            state = overview.get("lifecycle_state")
+            if not state:
+                effective = overview.get("effective_date")
+                try:
+                    state = "EFFECTIVE" if date.today() >= date.fromisoformat(effective) else "NOT_YET_EFFECTIVE"
+                except (ValueError, TypeError):
+                    state = "UNKNOWN"
+            row["lifecycle_state"] = state
+            if service is self.motor_service:
+                row["support"] = "验收候选"
+            elif overview.get("support_status") == "IMPLEMENTED":
+                row["support"] = "已接入，待正式支持验收"
+            else:
+                statuses = [s.get("support_status") for s in overview.get("scopes", ())]
+                row["support"] = "正式支持" if statuses and all(s == "SUPPORTED" for s in statuses) else "尚未开放"
+            catalog.append(row)
+        return catalog
+
+    def _filter(self, *_):
+        # 不重建输入控件，中文预编辑、焦点和光标保持 Qt 原生行为。
+        if self._load_error:
+            self._visible = []
+            self.table.setRowCount(0)
+            self.list_status.setText("暂时无法读取标准目录，请重试。")
             return
+        keyword = self.search.text().strip().casefold().replace("—", "-")
+        state = self.status_filter.currentData()
+        selected = self.table.currentRow()
+        code = self.table.item(selected, 0).text() if selected >= 0 else None
+        scroll = self.table.verticalScrollBar().value()
+        self._visible = [row for row in self._catalog if
+            (not state or row["lifecycle_state"] == state) and
+            keyword in " ".join((row["standard_code"], row["name"], row["scope"])).casefold().replace("—", "-")]
+        self.table.setRowCount(len(self._visible))
+        for index, row in enumerate(self._visible):
+            values = (row["standard_code"], row["name"], LIFECYCLE_STATE_LABELS.get(row["lifecycle_state"], "未提供"),
+                      row.get("effective_date") or "未提供", row["support"])
+            for column, value in enumerate(values):
+                item = QTableWidgetItem(value)
+                if column in (0, 1):
+                    item.setForeground(QColor("#197CC2"))
+                    item.setToolTip("打开标准详情")
+                self.table.setItem(index, column, item)
+            if row["standard_code"] == code:
+                self.table.selectRow(index)
+        self.table.resizeRowsToContents()
+        self.table.verticalScrollBar().setValue(scroll)
+        self.list_status.setText(f"共 {len(self._visible)} 项标准" if self._visible else "没有匹配的标准，请调整关键词或标准状态。")
 
-        overview = self.service.standard_overview()
-        self.source_group.setVisible(True)
-        self._render_pump(overview)
+    def eventFilter(self, watched, event):
+        if watched is self.table.viewport() and event.type() in (QEvent.Type.Resize, QEvent.Type.Show):
+            # 首次进入堆叠页也会改变viewport；等待本轮布局完成后分配剩余宽度。
+            self._column_timer.start(0)
+        return super().eventFilter(watched, event)
 
-    def _render_pump(self, overview) -> None:
-        self.standard_code = overview["standard_code"]
+    def _resize_columns(self):
+        if not self.table.isVisible():
+            return
+        self.table.fit_columns()
 
-        self.intro.setText(
-            "当前版本正式使用的标准。标准参数、限值与本项目对标准依据的引用，"
-            "均来自该标准的权威数据；本页不另存一份标准数据。")
+    def show_list(self, message=None):
+        self.standard_code = None
+        self._selected = None
+        self.start_button.setEnabled(False)
+        self.stack.setCurrentIndex(0)
+        if message:
+            self.list_status.setText(message)
 
-        self.facts.setText("\n".join([
-            f"标准号：{overview['standard_code']}",
-            f"标准名称：{overview['standard_name']}",
-            f"状态：{overview['status'] or '—'}",
-            f"实施日期：{overview['effective_date'] or '—'}",
-            f"数据版本：{overview['data_version'] or '—'}",
-            f"评价日期说明：{overview['as_of_policy']}",
-        ]))
+    def open_detail(self, row):
+        if not 0 <= row < len(self._visible):
+            return
+        item = self._visible[row]
+        self.standard_code = item["standard_code"]
+        self._selected = item
+        self.detail_heading.setText(item["name"])
+        self.feedback.clear()
+        self.section_labels[0].setText("\n".join((
+            f"标准编号：{item['standard_code']}", f"标准名称：{item['name']}",
+            f"版本：{item.get('edition') or item['standard_code'].rsplit('-', 1)[-1]}",
+            f"标准状态：{LIFECYCLE_STATE_LABELS.get(item['lifecycle_state'], '未提供')}",
+            f"实施日期：{item.get('effective_date') or '未提供'}")))
+        self.section_labels[1].setText(item["scope"] or "当前元数据未提供适用范围，请查阅标准原文。")
+        # 这里只概述已有评价模型，不复制限值、公式或类别选表规则。
+        code = item["standard_code"].replace("—", "-")
+        if item.get("requirements_text"):
+            text = item["requirements_text"]
+        elif code == "GB 19762-2025":
+            text = "按产品类别及适用条件评价泵效率（%），划分1级、2级、3级。输入流量（m³/h）、扬程（m）、转速（r/min）、泵效率（%）及适用类别条件。所选类别的具体等级限值与关键参数可在分析结果中查看。"
+        elif code == "GB 20052-2024":
+            text = "按适用型式、额定参数及标准条件查取空载损耗与负载损耗限值（W），分别比较并给出最终等级。不同类别采用相应表格与条件，具体限值在分析结果和保存的计算依据中查看。"
+        elif code == "GB 18613-2020":
+            text = "按电动机类别及适用额定参数采用表1至表6的效率限值（%），评价1级、2级、3级。实测效率口径与额定参数须符合所选类别条件；具体限值可在分析结果中查看。"
+        else:
+            text = "当前元数据未提供标准要求摘要，请查阅标准原文。"
+        self.section_labels[2].setText(text)
+        self.stack.setCurrentIndex(1)
+        self.start_button.setEnabled(True)
+        self.detail_scroll.verticalScrollBar().setValue(0)
 
-        lines: list[str] = []
-        lines.append("支持类别：" + "、".join(overview["supported_categories"]))
-        if overview["special_categories"]:
-            lines.append("其他可选项：" + "、".join(overview["special_categories"]))
-        lines.append("")
-        for scope in overview["scopes"]:
-            status = support_status_text(scope["support_status"])
-            hint = _SUPPORT_STATUS_HINT.get(str(scope["support_status"]), "")
-            categories = "、".join(scope["categories"]) or "—"
-            lines.append(f"{categories}：{status}" + (f"（{hint}）" if hint else ""))
-        self.scopes.setText("\n".join(lines))
+    def _open_source(self):
+        item = getattr(self, "_selected", None) or {}
+        # source_file 是来源证据，不等于可打开文件；不猜本机路径或打包原件。
+        location = item.get("document_url") or item.get("document_path")
+        if not location:
+            self.feedback.setText("当前没有可打开的标准原文。")
+            return
+        url = QUrl(location) if str(location).startswith(("https://", "http://")) else QUrl.fromLocalFile(str(Path(location).resolve()))
+        if not url.isLocalFile() or Path(url.toLocalFile()).is_file():
+            if QDesktopServices.openUrl(url):
+                self.feedback.clear()
+                return
+        self.feedback.setText("标准原文未能打开，请检查文件位置或链接是否可用。")
 
-        lines = [
-            f"标准数据来源：{overview['source_file'] or '—'}",
-            f"替代关系：{overview['supersession_note']}",
-            f"生命周期状态：{LIFECYCLE_STATE_LABELS.get(overview['lifecycle_state'], '—')}",
-        ]
-        # 生命周期提示由**真实日期**推导；无提示时不显示占位文字。
-        if overview["lifecycle_warning"]:
-            lines.append(f"提示：{overview['lifecycle_warning']}（仅提示，不阻止计算）")
-        self.source.setText("\n".join(lines))
-
-    def _render_transformer(self, overview) -> None:
-        self.standard_code = overview["standard_code"]
-        self.source_group.setVisible(False)
-        self.intro.setText(
-            "本标准已接入当前软件实现；软件支持状态与标准正式发布状态分别管理。")
-        self.facts.setText("\n".join((
-            f"标准号：{overview['standard_code']}",
-            f"标准名称：{overview['name']}",
-            f"版本：{overview['edition']}",
-            f"实施日期：{overview.get('effective_date') or '—'}",
-        )))
-        status = overview.get("support_status")
-        status_text = ("已接入，尚待正式支持验收"
-                       if status == "IMPLEMENTED" else "当前状态以软件记录为准")
-        lines = [f"软件状态：{status_text}"]
-        scope = str(overview.get("scope_text") or "").strip()
-        if scope:
-            lines.append(f"适用范围：{scope}")
-        notes = str(overview.get("notes") or "").strip()
-        if notes:
-            lines.append(f"说明：{notes}")
-        self.scopes.setText("\n".join(lines))
-
-    # -- 动作 ---------------------------------------------------------------
-
-    def _start_analysis(self) -> None:
-        if self.navigator is not None:
+    def _start_analysis(self):
+        if self.navigator and self.standard_code:
             self.navigator.open_analysis(standard_code=self.standard_code)
