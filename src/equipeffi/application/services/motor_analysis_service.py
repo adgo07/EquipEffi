@@ -22,6 +22,21 @@ def get_motor_input_contract():
     return MOTOR_INPUT_CONTRACT
 
 
+def motor_numeric_text_issue(field_id: str, text: str) -> str | None:
+    """Read-only lexical adapter; reuse the calculator's exact input parser.
+
+    This does not evaluate, choose a standard branch or create a record.
+    """
+    from ...domain.devices.motor.calculator import _Scaled, _ValueError, _is_frequency_text
+    try:
+        _Scaled.parse(text, field_id)
+    except _ValueError as error:
+        if field_id == "rated_frequency_hz" and _is_frequency_text(text):
+            return None
+        return str(error)
+    return None
+
+
 NUMERIC_PROFILE = "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1"
 RESULT_CONTRACT_VERSION = "motor-result.v1"
 RULE_PROFILE = "motor_lv"

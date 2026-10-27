@@ -1,6 +1,7 @@
 """专业表单的展示辅助，不选择业务类别或修改输入值。"""
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QComboBox, QCompleter, QFormLayout, QLabel
+from .numeric_input import numeric_container
 
 
 def searchable_categories(combo):
@@ -29,7 +30,7 @@ def field_row(form, text, control):
     label = QLabel(text)
     label.setWordWrap(True)
     label.setMinimumWidth(190)
-    form.addRow(label, control)
+    form.addRow(label, numeric_container(control) if hasattr(control, "numeric_error") else control)
 
 
 def responsive_forms(forms, width):

@@ -11,7 +11,7 @@ from __future__ import annotations
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QComboBox, QHBoxLayout, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout,
-    QWidget, QStackedWidget, QScrollArea, QTableWidget, QTableWidgetItem, QHeaderView,
+    QWidget, QStackedWidget, QScrollArea, QTableWidgetItem,
     QAbstractItemView, QGridLayout, QButtonGroup, QSizePolicy, QLayout,
 )
 
@@ -19,6 +19,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
     CentrifugalPumpAnalysisService,
 )
 from ..tokens import TOKENS
+from ..widgets.compact_table import CompactTable
 from ..style import heading, icon
 from ....application.services.centrifugal_pump_analysis_service import (
     PUMP_ANALYSIS_DETAIL_METRIC_IDS,
@@ -238,16 +239,14 @@ class RecordsPage(QWidget):
 
     @staticmethod
     def _table(headers, widths):
-        table = QTableWidget(0, len(headers))
+        compact = [110, 140, 120, 68, 92, 62] if len(headers) == 6 else [100, 85, 66, 66, 115, 118, 62]
+        table = CompactTable(headers, widths, compact)
         table.setHorizontalHeaderLabels(headers)
         table.verticalHeader().hide()
         table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         table.setAlternatingRowColors(True)
-        table.setWordWrap(True)
-        table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
-        for index, width in enumerate(widths):
-            table.setColumnWidth(index, width)
+        table.setWordWrap(False)
         table.verticalHeader().setMinimumSectionSize(40)
         return table
 

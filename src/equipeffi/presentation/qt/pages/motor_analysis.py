@@ -6,6 +6,8 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout, QLabel, QHBoxL
 from ....application.services.motor_analysis_service import MotorAnalysisRequest
 from ....application.services.motor_basis_formatter import format_motor_basis_lines
 from ..tokens import TOKENS
+from ..widgets.choice_combo import ChoiceComboBox
+from ..widgets.numeric_input import numeric_field, validate_numeric_fields, rejected_states, restore_rejection
 from ..widgets.form_fields import (searchable_categories, selected_category, field_form,
                                   field_row, responsive_forms, primary_action)
 
@@ -17,6 +19,7 @@ class MotorAnalysisPage(QWidget):
         self.navigator = navigator
         self.last_saved_record_id = None
         self._category_values = {}
+        self._category_rejections = {}
         self._editing_category = None
         self.contract = service.input_contract
         self.field_inputs = {}
@@ -40,7 +43,7 @@ class MotorAnalysisPage(QWidget):
         layout.setSpacing(TOKENS.section_gap)
         category_group = QGroupBox("产品类别与适用条件")
         category_layout = QVBoxLayout(category_group)
-        self.category = QComboBox()
+        self.category = ChoiceComboBox()
         self.category.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
         self.category.setMinimumContentsLength(12)
         self.category.setObjectName("motorCategory")
@@ -115,6 +118,7 @@ class MotorAnalysisPage(QWidget):
 
     def _on_category_changed(self, *_):
         if self._editing_category:
+            self._category_rejections[self._editing_category] = rejected_states(self.field_inputs)
             self._category_values[self._editing_category] = {
                 key: control.currentData() if isinstance(control, QComboBox) else control.text()
                 for key, control in self.field_inputs.items()}
@@ -138,7 +142,7 @@ class MotorAnalysisPage(QWidget):
                 label += f"（{field.unit}）"
             options = self.contract.options(category, field.field_id)
             if options:
-                widget = QComboBox()
+                widget = ChoiceComboBox()
                 widget.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
                 widget.setMinimumContentsLength(12)
                 widget.addItem("请选择…" if field.required else "按字段要求填报（可留空）", None)
@@ -146,6 +150,10 @@ class MotorAnalysisPage(QWidget):
                     widget.addItem(text, value)
             else:
                 widget = QLineEdit()
+                if field.field_id != "user_note":
+                    mode = {"measured_efficiency_pct": "motor_percent", "poles": "even",
+                            "rated_frequency_hz": "frequency"}.get(field.field_id, "positive")
+                    numeric_field(widget, field.label, mode, motor_field=field.field_id)
                 widget.setPlaceholderText("请输入" if field.required else "可选")
                 if field.field_id == "rated_frequency_hz":
                     widget.setPlaceholderText("如50或5～120；范围文本按不在范围处理")
@@ -160,6 +168,7 @@ class MotorAnalysisPage(QWidget):
                     widget.setCurrentIndex(max(widget.findData(previous), 0))
                 else:
                     widget.setText(previous)
+            restore_rejection(widget, self._category_rejections.get(category, {}).get(field.field_id, False))
             (widget.currentIndexChanged if isinstance(widget, QComboBox) else widget.textChanged).connect(self._mark_stale)
             self.field_inputs[field.field_id] = widget
         self.fields_group.setVisible(self.fields_form.rowCount() > 0)
@@ -187,6 +196,9 @@ class MotorAnalysisPage(QWidget):
         for label in (self.summary, self.thresholds_label, self.explanation, self.record_label):
             label.clear()
         try:
+            if not validate_numeric_fields(self.field_inputs.values()):
+                self.conclusion.setText("请修正标出的数值输入。此次未形成分析记录。")
+                return None
             values = self._collect_values()
         except ValueError as error:
             self.conclusion.setText(str(error))

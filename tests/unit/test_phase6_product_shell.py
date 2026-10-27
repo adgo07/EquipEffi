@@ -363,7 +363,7 @@ class HomePageTests(ProductShellTestCase):
 
     def test_home_lists_recent_records_from_existing_capabilities(self):
         home = self.window().home_page
-        self.assertEqual(home.records.count(), 0)
+        self.assertEqual(home.records.rowCount(), 0)
         self.assertIn("尚无分析记录", home.record_status.text())
 
     def test_home_has_no_draft_surface(self):

@@ -126,8 +126,8 @@ class UiFamilyStage1Tests(unittest.TestCase):
         self.assertTrue(page.stale_label.isHidden())
         self.assertEqual(len(self.service.list_records()), 2)
         self.window.open_home()
-        self.assertEqual(self.window.home_page.records.count(), 2)
-        self.assertIn("测试项目", self.window.home_page.records.item(0).text())
+        self.assertEqual(self.window.home_page.records.rowCount(), 2)
+        self.assertIn("测试项目", self.window.home_page.records.item(0, 0).text())
 
     def test_category_search_is_not_a_new_business_value(self):
         page = self.window.analysis_page

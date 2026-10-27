@@ -17,6 +17,8 @@ from ....application.services.transformer_analysis_service import (
 from ..labels import format_metric, user_grade_text
 from ..tokens import TOKENS
 from ..style import heading
+from ..widgets.choice_combo import ChoiceComboBox
+from ..widgets.numeric_input import numeric_field, validate_numeric_fields, rejected_states, restore_rejection
 from ..widgets.form_fields import (searchable_categories, selected_category, field_form,
                                   field_row, responsive_forms, primary_action)
 
@@ -40,6 +42,7 @@ class TransformerAnalysisPage(QWidget):
         self.service = service
         self.navigator = navigator
         self._category_values = {}
+        self._category_rejections = {}
         self._editing_category = None
         self.last_saved_record_id = None
         self.contract = service.input_contract
@@ -94,7 +97,7 @@ class TransformerAnalysisPage(QWidget):
 
         category_box = QGroupBox("产品类别")
         category_layout = QVBoxLayout(category_box)
-        self.category = QComboBox()
+        self.category = ChoiceComboBox()
         self.category.setObjectName("transformerCategory")
         self.category.addItem("请选择产品类别…", None)
         for option in self.category_options:
@@ -108,7 +111,7 @@ class TransformerAnalysisPage(QWidget):
 
         self.fields_group = QGroupBox("额定参数")
         self.fields_form = field_form(self.fields_group)
-        self.conditions_group = QGroupBox("标准条件")
+        self.conditions_group = QGroupBox("铁芯材质和绝缘等级")
         self.conditions_form = field_form(self.conditions_group)
         layout.addWidget(self.conditions_group)
         layout.addWidget(self.fields_group)
@@ -182,6 +185,7 @@ class TransformerAnalysisPage(QWidget):
 
     def _on_category_changed(self, *_args) -> None:
         if self._editing_category:
+            self._category_rejections[self._editing_category] = rejected_states(self.field_inputs)
             self._category_values[self._editing_category] = {
                 key: control.currentData() if isinstance(control, QComboBox) else control.text()
                 for key, control in self.field_inputs.items()}
@@ -204,18 +208,22 @@ class TransformerAnalysisPage(QWidget):
             marker = "（必填）" if field.required else (
                 "（适用时必填）" if field.required_when else "")
             label = field.label + marker
+            if field.field_id == "standard_conditions":
+                label = "铁芯材质和绝缘等级" + marker
             if field.unit:
                 label += f"（{field.unit}）"
             if field.field_id == "standard_conditions":
-                control = QComboBox()
+                control = ChoiceComboBox()
                 control.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
                 control.setMinimumContentsLength(10)
                 control.setObjectName("transformerStandardConditions")
-                control.addItem("请选择标准条件…", None)
+                control.addItem("请选择铁芯材质和绝缘等级等适用条件…", None)
                 for option in options:
                     control.addItem(option.label, option.condition_id)
             else:
                 control = QLineEdit()
+                numeric_field(control, field.label,
+                              "nonnegative" if field.field_id in {"no_load_loss_w", "load_loss_w"} else "positive")
                 control.setObjectName(f"transformerField_{field.field_id}")
                 if field.required:
                     control.setPlaceholderText("请输入")
@@ -233,6 +241,7 @@ class TransformerAnalysisPage(QWidget):
                     control.setCurrentIndex(max(control.findData(previous), 0))
                 else:
                     control.setText(previous)
+            restore_rejection(control, self._category_rejections.get(category_id, {}).get(field.field_id, False))
             (control.currentIndexChanged if isinstance(control, QComboBox) else control.textChanged).connect(self._mark_stale)
         if not fields:
             note = QLabel("此类别没有可填写的额定参数。")
@@ -275,6 +284,9 @@ class TransformerAnalysisPage(QWidget):
         self.thresholds_label.setText("")
         self.explanation.setText("")
         try:
+            if not validate_numeric_fields(self.field_inputs.values()):
+                self._show_error("请修正标出的数值输入。此次未形成分析记录。")
+                return None
             values = self._collect_values()
         except ValueError as error:
             self._show_error(str(error))
@@ -378,7 +390,7 @@ class DeviceAnalysisPage(QWidget):
         selector_row = QHBoxLayout()
         selector_row.setSpacing(12)
         selector_row.addWidget(QLabel("分析设备"))
-        self.device_selector = QComboBox()
+        self.device_selector = ChoiceComboBox()
         self.device_selector.setObjectName("analysisDeviceSelector")
         self.device_selector.setMaximumWidth(300)
         self.device_selector.addItem("离心泵", "centrifugal_pump")

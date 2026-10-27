@@ -68,6 +68,9 @@ from ..labels import (
 
 _LOGGER = logging.getLogger("equipeffi.qt.analysis")
 
+from ..widgets.choice_combo import ChoiceComboBox
+from ..widgets.numeric_input import numeric_field, numeric_container, validate_numeric_fields
+
 #: 设备参数字段（用户可见标签 + 内部字段名 + 单位）。
 #:
 #: Owner Phase 8 R1 / UI01：普通界面不用「规定点」这类术语，也不显示
@@ -182,6 +185,8 @@ class AnalysisPage(QWidget):
             caption.setWordWrap(True)
             layout.addWidget(caption)
             layout.addWidget(control)
+            if hasattr(control, "numeric_error"):
+                layout.addWidget(control.numeric_error)
             widgets.append(widget)
             grid.addWidget(widget, len(widgets) - 1, 0)
         self._responsive_grids.append((grid, widgets))
@@ -213,7 +218,7 @@ class AnalysisPage(QWidget):
     def _category_group(self) -> QGroupBox:
         group = QGroupBox("产品类别")
         layout = QVBoxLayout(group)
-        self.category = QComboBox()
+        self.category = ChoiceComboBox()
         # 不预选任何正式类别：软件不得替用户猜泵型（猜错会把用户导向错误规则）。
         self.category.addItem("请选择产品类别…", None)
         group_labels = dict(PUMP_CATEGORY_GROUPS)
@@ -249,6 +254,7 @@ class AnalysisPage(QWidget):
         fields = []
         for key, label, unit in POINT_FIELDS:
             edit = QLineEdit()
+            numeric_field(edit, label, "pump_percent" if key == "efficiency" else "positive")
             edit.setPlaceholderText("请输入设备参数数值")
             fields.append((f"{label}（{unit}）", edit))
             self.point_inputs[key] = edit
@@ -278,7 +284,8 @@ class AnalysisPage(QWidget):
         grid.addWidget(radios, 0, 1)
         grid.addWidget(QLabel("级数"), 1, 0)
         self.stages = QLineEdit()
-        grid.addWidget(self.stages, 1, 1)
+        numeric_field(self.stages, "级数", "integer")
+        grid.addWidget(numeric_container(self.stages), 1, 1)
         # 类别锁定说明：让用户知道该值由泵型唯一决定，不是软件随意填的。
         self.locked_hint = QLabel("")
         self.locked_hint.setWordWrap(True)
@@ -420,6 +427,10 @@ class AnalysisPage(QWidget):
         category = self.current_category()
         if not category:
             self._show_error("请先选择产品类别。")
+            return None
+        if not validate_numeric_fields([*self.point_inputs.values(), self.stages]):
+            self.last_record_status = "NOT_RECORDED"
+            self._show_error("请修正标出的数值输入。此次未形成分析记录。")
             return None
         values = {key: (edit.text().strip() or None)
                   for key, edit in self.point_inputs.items()}

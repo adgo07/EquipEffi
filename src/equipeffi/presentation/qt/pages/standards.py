@@ -5,10 +5,11 @@ from pathlib import Path
 from PySide6.QtCore import Qt, QUrl, QEvent, QTimer
 from PySide6.QtGui import QDesktopServices, QColor
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel,
-    QLineEdit, QComboBox, QPushButton, QTableWidget, QTableWidgetItem, QHeaderView,
+    QLineEdit, QComboBox, QPushButton, QTableWidgetItem,
     QAbstractItemView, QStackedWidget, QScrollArea, QGroupBox)
 from ..style import heading, icon
 from ..tokens import TOKENS
+from ..widgets.compact_table import CompactTable
 
 LIFECYCLE_STATE_LABELS = {
     "EFFECTIVE": "已实施", "NOT_YET_EFFECTIVE": "尚未实施", "UNKNOWN": "未提供实施日期"}
@@ -51,7 +52,8 @@ class StandardsPage(QWidget):
         filters.addWidget(self.status_filter, 0, 1)
         filters.setColumnStretch(0, 1)
         layout.addLayout(filters)
-        self.table = QTableWidget(0, 5)
+        self.table = CompactTable(["标准编号", "标准名称", "标准状态", "实施日期", "软件支持"],
+                                  [160, 300, 115, 120, 220], [122, 200, 78, 92, 148])
         self._column_timer = QTimer(self)
         self._column_timer.setSingleShot(True)
         self._column_timer.timeout.connect(self._resize_columns)
@@ -60,13 +62,9 @@ class StandardsPage(QWidget):
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.setAlternatingRowColors(True)
-        self.table.setWordWrap(True)
+        self.table.setWordWrap(False)
         self.table.verticalHeader().hide()
         self.table.verticalHeader().setMinimumSectionSize(40)
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
-        for index, width in enumerate((160, 300, 115, 120, 220)):
-            self.table.setColumnWidth(index, width)
-        self.table.horizontalHeader().setMinimumSectionSize(100)
         self.table.cellClicked.connect(lambda row, column: self.open_detail(row) if column in (0, 1) else None)
         self.table.cellActivated.connect(lambda row, column: self.open_detail(row))
         layout.addWidget(self.table, 1)
@@ -211,11 +209,7 @@ class StandardsPage(QWidget):
     def _resize_columns(self):
         if not self.table.isVisible():
             return
-        available = self.table.viewport().width() - sum(self.table.columnWidth(i) for i in (0, 2, 3, 4))
-        width = max(300, available)
-        if self.table.columnWidth(1) != width:
-            self.table.setColumnWidth(1, width)
-            self.table.resizeRowsToContents()
+        self.table.fit_columns()
 
     def show_list(self, message=None):
         self.standard_code = None

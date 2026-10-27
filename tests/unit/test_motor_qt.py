@@ -44,7 +44,9 @@ class MotorQtTests(unittest.TestCase):
                 self.assertEqual(page.evaluate().ui_conclusion, "不在范围")
                 self.assertEqual(page.last_record_status, "SAVED")
                 page.field_inputs["poles"].setText("3")
-                self.assertEqual(page.evaluate().evaluation_status, "INVALID_INPUT")
+                self.assertIsNone(page.evaluate())
+                self.assertIsNone(page.last_saved_record_id)
+                self.assertIn("正偶数", page.field_inputs["poles"].numeric_error.text())
                 self.assertNotEqual(page.last_record_status, "SAVED")
             finally:
                 _dispose_widget(page)

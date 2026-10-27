@@ -8,7 +8,7 @@ from tempfile import TemporaryDirectory
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
-TOOLS = ("ui_stage1_capture", "ui_final_capture", "ui_records_layout_capture")
+TOOLS = ("ui_stage1_capture", "ui_final_capture", "ui_records_layout_capture", "ui_r4_capture")
 
 
 class CaptureToolTests(unittest.TestCase):
@@ -55,12 +55,19 @@ class CaptureToolTests(unittest.TestCase):
                             self.assertEqual(batch["single_ids_before"], batch["single_ids_after"])
                             self.assertEqual(batch["batch_count_after"] - batch["batch_count_before"], 1)
                             self.assertTrue(batch["wait_completed"])
-                        else:
+                        elif name == TOOLS[2]:
                             self.assertTrue(all(c["complete_row_visible"] for c in captures))
                             for operation in evidence["roundtrips"]:
                                 self.assertTrue(operation["detail_opened"])
                                 self.assertEqual(operation["before"], operation["after"])
                                 self.assertEqual(len(operation["detail"]["tabs"]), 2)
+                        else:
+                            self.assertTrue(evidence["record_id"])
+                            self.assertTrue(evidence["batch_record_id"])
+                            self.assertIsNone(evidence["numeric_feedback"]["saved_id"])
+                            self.assertTrue(evidence["numeric_feedback"]["error"])
+                            fitted = [c for c in captures if "horizontal_max" in c and c["logical_size"][0] >= 1000]
+                            self.assertTrue(all(c["horizontal_max"] == 0 for c in fitted))
                 self.assertEqual(*outcomes)
 
     def test_startup_action_save_and_early_close_fail_with_evidence(self):

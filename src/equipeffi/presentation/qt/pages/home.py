@@ -2,11 +2,12 @@
 import logging
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
-                              QLabel, QPushButton, QListWidget, QListWidgetItem, QScrollArea,
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QFrame,
+                              QLabel, QPushButton, QTableWidgetItem, QScrollArea, QAbstractItemView,
                               QStyleOptionButton, QStyle, QStylePainter, QSizePolicy)
 from ....application.services.centrifugal_pump_analysis_service import user_conclusion_from_snapshot
 from ..style import brand, icon
+from ..widgets.compact_table import CompactTable
 
 
 class TaskCard(QPushButton):
@@ -20,12 +21,12 @@ class TaskCard(QPushButton):
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         self.setAccessibleName(name)
         self.setAccessibleDescription(description)
-        layout = QHBoxLayout(self)
-        layout.setContentsMargins(22, 22, 22, 22)
-        layout.setSpacing(14)
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(16, 20, 16, 20)
+        layout.setSpacing(12)
         symbol_label = QLabel()
-        symbol_label.setPixmap(icon(symbol, "#FFFFFF" if primary else "#197CC2").pixmap(28, 28))
-        layout.addWidget(symbol_label)
+        symbol_label.setPixmap(icon(symbol, "#FFFFFF" if primary else "#197CC2").pixmap(36, 36))
+        layout.addWidget(symbol_label, alignment=Qt.AlignmentFlag.AlignHCenter)
         text = QVBoxLayout()
         text.setSpacing(10)
         title = QLabel(name)
@@ -34,13 +35,14 @@ class TaskCard(QPushButton):
         description_label.setObjectName("taskDescription")
         for label in (title, description_label):
             label.setWordWrap(True)
+            label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             text.addWidget(label)
-        layout.addLayout(text, 1)
+        layout.addLayout(text)
         for label in self.findChildren(QLabel):
             label.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
 
     def sizeHint(self):
-        return QSize(260, 180)
+        return QSize(200, 172)
 
     def minimumSizeHint(self):
         return QSize(0, 150)
@@ -68,21 +70,30 @@ class HomePage(QWidget):
         layout.setContentsMargins(32, 24, 32, 24)
         layout.setSpacing(24)
         bar = QHBoxLayout()
-        bar.addWidget(brand())
-        bar.addStretch()
+        self.brand = brand()
+        self.brand.setFixedWidth(200)
+        bar.addWidget(self.brand)
+        divider = QFrame()
+        divider.setFixedSize(1, 60)
+        divider.setStyleSheet("background:#BAD0E0;")
+        bar.addWidget(divider)
+        titles = QVBoxLayout()
+        title = QLabel("设备能效分析工具")
+        title.setObjectName("homeHeading")
+        title.setWordWrap(True)
+        title.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
+        titles.addWidget(title)
+        subtitle = QLabel("查询标准，完成设备分析与批量评价")
+        subtitle.setObjectName("muted")
+        subtitle.setWordWrap(True)
+        subtitle.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
+        titles.addWidget(subtitle)
+        bar.addLayout(titles, 1)
         settings = QPushButton("设置")
         settings.setIcon(icon("settings"))
         settings.clicked.connect(lambda: navigator.open_settings() if navigator else None)
         bar.addWidget(settings)
         layout.addLayout(bar)
-        title = QLabel("设备能效分析工具")
-        title.setObjectName("homeHeading")
-        title.setWordWrap(True)
-        layout.addWidget(title)
-        subtitle = QLabel("查询标准，完成设备分析与批量评价")
-        subtitle.setObjectName("muted")
-        subtitle.setWordWrap(True)
-        layout.addWidget(subtitle)
         self.cards = QGridLayout()
         self.cards.setSpacing(14)
         self.task_buttons = []
@@ -96,23 +107,36 @@ class HomePage(QWidget):
             button.clicked.connect(action)
             self.task_buttons.append(button)
         layout.addLayout(self.cards)
+        self.recent_card = QFrame()
+        self.recent_card.setObjectName("homeRecent")
+        self.recent_card.setStyleSheet("QFrame#homeRecent {background:white; border:1px solid #DAE7F1; border-radius:12px;}")
+        recent = QVBoxLayout(self.recent_card)
+        recent.setContentsMargins(18, 16, 18, 16)
         row = QHBoxLayout()
-        row.addWidget(QLabel("最近分析记录"))
+        recent_title = QLabel("最近分析记录")
+        recent_title.setStyleSheet("font-size:17px; font-weight:600;")
+        row.addWidget(recent_title)
         row.addStretch()
         all_records = QPushButton("查看全部")
         all_records.clicked.connect(lambda: navigator.open_records() if navigator else None)
         row.addWidget(all_records)
-        layout.addLayout(row)
-        self.records = QListWidget()
-        self.records.setMinimumHeight(180)
-        self.records.itemActivated.connect(self._open_record_item)
-        layout.addWidget(self.records)
+        recent.addLayout(row)
+        self.records = CompactTable(["设备/项目", "采用标准", "结论", "评价日期", "操作"],
+                                    [210, 160, 100, 115, 68], [200, 180, 75, 110, 62])
+        self.records.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.records.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.records.cellActivated.connect(lambda row, column: self._open_record(row))
+        self.records.cellDoubleClicked.connect(lambda row, column: self._open_record(row))
+        recent.addWidget(self.records)
         self.record_status = QLabel()
         self.record_status.setWordWrap(True)
-        layout.addWidget(self.record_status)
+        self.record_status.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.record_status.setMinimumHeight(64)
+        recent.addWidget(self.record_status)
         self.retry_button = QPushButton("重试")
         self.retry_button.clicked.connect(self.refresh)
-        layout.addWidget(self.retry_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        recent.addWidget(self.retry_button, alignment=Qt.AlignmentFlag.AlignHCenter)
+        layout.addWidget(self.recent_card)
         layout.addStretch()
         scroll.setWidget(body)
         outer.addWidget(scroll)
@@ -120,17 +144,20 @@ class HomePage(QWidget):
         self.refresh()
 
     def resizeEvent(self, event):
-        columns = 4 if self.width() >= 1200 else 2 if self.width() >= 700 else 1
+        self.brand.setFixedWidth(200 if self.width() >= 800 else 140)
+        columns = 4 if self.width() >= 900 else 2 if self.width() >= 540 else 1
         if columns != self._columns:
             self._columns = columns
             for index, button in enumerate(self.task_buttons):
                 self.cards.addWidget(button, index // columns, index % columns)
             for column in range(4):
-                self.cards.setColumnStretch(column, (147 if column == 0 else 100) if column < columns else 0)
+                self.cards.setColumnStretch(column, 1 if column < columns else 0)
         super().resizeEvent(event)
 
     def refresh(self):
-        self.records.clear()
+        self.records.setRowCount(0)
+        self.records.hide()
+        self.record_status.show()
         self._record_ids = []
         try:
             records = self.service.list_records(limit=5)
@@ -140,17 +167,24 @@ class HomePage(QWidget):
             self.retry_button.show()
             return
         self.retry_button.hide()
+        self.records.setVisible(bool(records))
+        self.record_status.setVisible(not records)
+        self.records.setRowCount(len(records))
+        self.records.setFixedHeight(40 * len(records) + 42)
         self.record_status.setText("" if records else "尚无分析记录，可点击「新建分析」开始。")
-        for record in records:
+        for row, record in enumerate(records):
             values = getattr(record, "input_snapshot", None) or {}
             name = values.get("project_name") or values.get("equipment_no") or record.product_category
             conclusion = user_conclusion_from_snapshot(
                 {"grade": record.grade, "evaluation_status": record.evaluation_status}, record.ui_conclusion)
-            item = QListWidgetItem(f"{name}　 ·　{conclusion}　 ·　{record.as_of}")
-            item.setToolTip(record.record_id)
-            item.setSizeHint(QSize(0, 42))
-            self.records.addItem(item)
             self._record_ids.append(record.record_id)
+            for column, value in enumerate((name, record.standard_code, conclusion, record.as_of)):
+                item = QTableWidgetItem(str(value))
+                item.setData(Qt.ItemDataRole.UserRole, record.record_id)
+                self.records.setItem(row, column, item)
+            button = QPushButton("打开")
+            button.clicked.connect(lambda checked=False, index=row: self._open_record(index))
+            self.records.setCellWidget(row, 4, button)
 
     def _start_new_analysis(self):
         if self.navigator:
@@ -159,9 +193,6 @@ class HomePage(QWidget):
     def _open_standard(self):
         if self.navigator:
             self.navigator.open_standards()
-
-    def _open_record_item(self, item):
-        self._open_record(self.records.row(item))
 
     def _open_record(self, row):
         if self.navigator and 0 <= row < len(self._record_ids):
