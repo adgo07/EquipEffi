@@ -1,0 +1,215 @@
+{
+  "data_root": "D:\\project\\设备能效软件\\ui-review-20261027\\r4-final-data",
+  "captures": [
+    {
+      "file": "home-empty.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "dpr": 1.5
+    },
+    {
+      "file": "home-records.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "dpr": 1.5,
+      "viewport_width": 896,
+      "column_widths": [
+        315,
+        280,
+        87,
+        151,
+        63
+      ],
+      "horizontal_max": 0,
+      "row_height": 40,
+      "full_text": [
+        "R4隔离测试 · 超长企业与设备能效分析项目名称，完整保留供历史查询",
+        "GB 19762-2025",
+        "1级",
+        "2026-10-27",
+        null
+      ],
+      "tooltips": [
+        "R4隔离测试 · 超长企业与设备能效分析项目名称，完整保留供历史查询",
+        "GB 19762-2025",
+        "1级",
+        "2026-10-27",
+        null
+      ]
+    },
+    {
+      "file": "standards.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "dpr": 1.5,
+      "viewport_width": 708,
+      "column_widths": [
+        134,
+        230,
+        81,
+        98,
+        165
+      ],
+      "horizontal_max": 0,
+      "row_height": 40,
+      "full_text": [
+        "GB 19762-2025",
+        "离心泵能效限定值及能效等级",
+        "已实施",
+        "2026-03-01",
+        "正式支持"
+      ],
+      "tooltips": [
+        "GB 19762-2025",
+        "离心泵能效限定值及能效等级",
+        "已实施",
+        "2026-03-01",
+        "正式支持"
+      ]
+    },
+    {
+      "file": "single-records.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "dpr": 1.5,
+      "viewport_width": 708,
+      "column_widths": [
+        135,
+        180,
+        150,
+        72,
+        108,
+        63
+      ],
+      "horizontal_max": 0,
+      "row_height": 40,
+      "full_text": [
+        "R4隔离测试 · 超长企业与设备能效分析项目名称，完整保留供历史查询",
+        "单级单吸清水离心泵",
+        "GB 19762-2025",
+        "1级",
+        "2026-10-27",
+        null
+      ],
+      "tooltips": [
+        "R4隔离测试 · 超长企业与设备能效分析项目名称，完整保留供历史查询",
+        "单级单吸清水离心泵",
+        "GB 19762-2025",
+        "1级",
+        "2026-10-27",
+        null
+      ]
+    },
+    {
+      "file": "single-records-small.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "dpr": 1.5,
+      "viewport_width": 354,
+      "column_widths": [
+        230,
+        240,
+        160,
+        100,
+        120,
+        90
+      ],
+      "horizontal_max": 3,
+      "row_height": 40,
+      "full_text": [
+        "R4隔离测试 · 超长企业与设备能效分析项目名称，完整保留供历史查询",
+        "单级单吸清水离心泵",
+        "GB 19762-2025",
+        "1级",
+        "2026-10-27",
+        null
+      ],
+      "tooltips": [
+        "R4隔离测试 · 超长企业与设备能效分析项目名称，完整保留供历史查询",
+        "单级单吸清水离心泵",
+        "GB 19762-2025",
+        "1级",
+        "2026-10-27",
+        null
+      ]
+    },
+    {
+      "file": "batch-records.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "dpr": 1.5,
+      "viewport_width": 708,
+      "column_widths": [
+        120,
+        98,
+        69,
+        69,
+        142,
+        147,
+        63
+      ],
+      "horizontal_max": 0,
+      "row_height": 40,
+      "full_text": [
+        "R4隔离测试_很长的批量输入工作簿文件名称_结果必须另存为新文件.xlsx",
+        "GB 19762-2025",
+        "1",
+        "1",
+        "已评价 1 行；未形成结论 0 行",
+        "2026-10-27 08:12:23.082839+00:00 UTC",
+        null
+      ],
+      "tooltips": [
+        "R4隔离测试_很长的批量输入工作簿文件名称_结果必须另存为新文件.xlsx",
+        "GB 19762-2025",
+        "1",
+        "1",
+        "已评价 1 行；未形成结论 0 行",
+        "2026-10-27 08:12:23.082839+00:00 UTC",
+        null
+      ]
+    },
+    {
+      "file": "transformer-numeric-feedback.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "dpr": 1.5
+    }
+  ],
+  "failures": [],
+  "status": "completed",
+  "scale_factor_override": null,
+  "platform": "windows",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "native_windows": true,
+  "screens": [
+    {
+      "name": "\\\\.\\DISPLAY1",
+      "logical_dpi": 96.0,
+      "device_pixel_ratio": 1.5
+    }
+  ],
+  "mode": "Qt自动操作；platform=windows才表示原生，非人工DPI验收",
+  "record_id": "ANALYSIS-1ba43bb0e831",
+  "batch_record_id": "BATCH-eef3ceb5d093",
+  "numeric_feedback": {
+    "field_text": "0",
+    "error": "额定容量：必须大于0",
+    "saved_id": null,
+    "condition_group": "铁芯材质和绝缘等级"
+  }
+}
