@@ -26,7 +26,7 @@ class TaskCard(QPushButton):
         layout.setSpacing(12)
         symbol_label = QLabel()
         symbol_label.setPixmap(icon(symbol, "#FFFFFF" if primary else "#197CC2").pixmap(36, 36))
-        layout.addWidget(symbol_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+        layout.addWidget(symbol_label, alignment=Qt.AlignmentFlag.AlignLeft)
         text = QVBoxLayout()
         text.setSpacing(10)
         title = QLabel(name)
@@ -35,7 +35,7 @@ class TaskCard(QPushButton):
         description_label.setObjectName("taskDescription")
         for label in (title, description_label):
             label.setWordWrap(True)
-            label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             text.addWidget(label)
         layout.addLayout(text)
         for label in self.findChildren(QLabel):

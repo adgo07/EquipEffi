@@ -218,6 +218,69 @@ class R4Tests(unittest.TestCase):
         self.assertIsNotNone(page.evaluate())
         self.assertEqual(page.last_record_status, "SAVED")
 
+    def test_frequency_ranges_keep_each_keystroke_paste_and_saved_original(self):
+        self.window.open_analysis(standard_code="GB 18613-2020")
+        page = self.window.motor_analysis_page
+        page.category.setCurrentIndex(page.category.findData("three_phase_induction"))
+        self._fill(page, dict(rated_output_power_kw="0.14", rated_voltage_kv="0.38",
+                              poles="4", measured_efficiency_pct="71.43"))
+        edit = page.field_inputs["rated_frequency_hz"]
+        page.findChild(QScrollArea).ensureWidgetVisible(edit, 0, 20)
+        QTest.qWait(80)
+
+        def check_saved(original, analyze):
+            result = page.evaluate()
+            self.assertIsNotNone(result)
+            self.assertEqual(result.ui_conclusion, "不在范围")
+            self.assertEqual(analyze.call_args.args[0].values["rated_frequency_hz"], original)
+            self.assertEqual(page.last_record_status, "SAVED")
+            record = self.pump.open_record(page.last_saved_record_id)
+            self.assertEqual(record.input_snapshot["rated_frequency_hz"], original)
+
+        with patch.object(self.motor, "analyze_and_record", wraps=self.motor.analyze_and_record) as analyze:
+            for original in ("5-120", "5~120", "50/60 Hz", "1e-3"):
+                with self.subTest(method="keys", original=original):
+                    edit.clear()
+                    edit.setFocus()
+                    for index, character in enumerate(original):
+                        QTest.keyClicks(edit, character)
+                        self.assertEqual(edit.text(), original[:index + 1])
+                    check_saved(original, analyze)
+            for original in ("5-120", "5～120"):
+                with self.subTest(method="paste", original=original):
+                    edit.clear()
+                    edit.setFocus()
+                    self.app.clipboard().setText(original)
+                    QTest.qWait(40)
+                    QTest.keyClick(edit, Qt.Key.Key_V, Qt.KeyboardModifier.ControlModifier)
+                    QTest.qWait(20)
+                    self.assertEqual(edit.text(), original)
+                    check_saved(original, analyze)
+            edit.clear()
+            QTest.keyClicks(edit, "5-120")
+            for unused in range(3):
+                QTest.keyClick(edit, Qt.Key.Key_Backspace)
+            self.assertEqual(edit.text(), "5-")
+            self.assertFalse(edit.hasAcceptableInput())
+            before = [record.record_id for record in self.pump.list_records()]
+            analyze.reset_mock()
+            self.assertIsNone(page.evaluate())
+            analyze.assert_not_called()
+            self.assertIsNone(page.last_saved_record_id)
+            self.assertIn("未填写完整", edit.numeric_error.text())
+            self.assertEqual(before, [record.record_id for record in self.pump.list_records()])
+            QTest.keyClicks(edit, "60")
+            self.assertEqual(edit.text(), "5-60")
+            check_saved("5-60", analyze)
+        positive = self.window.transformer_analysis_page
+        self.window.open_analysis(standard_code="GB 20052-2024")
+        positive.category.setCurrentIndex(positive.category.findData("GB20052-T03"))
+        capacity = positive.field_inputs["capacity_kva"]
+        QTest.keyClicks(capacity, "-1")
+        self.assertEqual(capacity.text(), "-")
+        self.assertIsNone(positive.evaluate())
+        self.assertIsNone(positive.last_saved_record_id)
+
     def test_tables_fit_all_columns_compact_and_preserve_full_long_text(self):
         record = self._pump_record()
         long_name = "超长项目名称" * 35
@@ -264,6 +327,12 @@ class R4Tests(unittest.TestCase):
         QTest.qWait(40)
         self.assertEqual(home._columns, 4)
         self.assertEqual(len({button.y() for button in home.task_buttons}), 1)
+        for button in home.task_buttons:
+            from PySide6.QtWidgets import QLabel
+            labels = button.findChildren(QLabel)
+            lefts = [label.mapTo(button, QPoint()).x() for label in labels]
+            self.assertEqual(set(lefts), {16})
+            self.assertTrue(all(label.alignment() & Qt.AlignmentFlag.AlignLeft for label in labels))
         self.assertFalse(home.records.isVisible())
         self.assertTrue(home.record_status.isVisible())
         self.assertTrue(home.recent_card.isVisible())

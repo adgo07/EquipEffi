@@ -8,6 +8,8 @@ from shiboken6 import isValid
 from ....application.services.motor_analysis_service import motor_numeric_text_issue
 
 _EDIT = re.compile(r"\+?(?:[0-9]*(?:\.[0-9]*)?)(?:[eE][+-]?[0-9]*)?\Z")
+_FREQUENCY_RANGE_PREFIX = re.compile(
+    r"\+?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?\s*-\s*\Z")
 
 
 class NumericValidator(QValidator):
@@ -32,6 +34,8 @@ class NumericValidator(QValidator):
         value = text.strip()
         if not value:  # Missing data remains the original service's decision.
             return None
+        if self.mode == "frequency" and _FREQUENCY_RANGE_PREFIX.fullmatch(value):
+            return "频率范围未填写完整，请补充连字符后的频率"
         if self.motor_field:
             issue = motor_numeric_text_issue(self.motor_field, value)
             if issue:
@@ -69,6 +73,8 @@ class NumericValidator(QValidator):
             self.rejected_nonfinite = True
             return self.State.Invalid, text, position
         if value == "-":
+            return self.State.Intermediate, text, position
+        if self.mode == "frequency" and _FREQUENCY_RANGE_PREFIX.fullmatch(value):
             return self.State.Intermediate, text, position
         if self.mode == "frequency" and not motor_numeric_text_issue("rated_frequency_hz", value):
             try:

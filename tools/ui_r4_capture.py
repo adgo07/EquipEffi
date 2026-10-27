@@ -8,7 +8,7 @@ from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
 from equipeffi.presentation.qt.shell import MainWindow
 
 
-def perform(session):
+def perform(session, *, home_only=False):
     paths = AppDataPaths(session.args.data_root)
     settings, session.logger = create_settings_runtime(paths=paths)
     pump = create_pump_analysis_service(paths=paths)
@@ -56,6 +56,9 @@ def perform(session):
     session.evidence["record_id"] = page.last_saved_record_id
     window.open_home()
     capture("home-records", table=window.home_page.records)
+    if home_only:
+        session.evidence["scope"] = "home-only"
+        return
     window.open_standards()
     capture("standards", table=window.standards_page.table)
     window.open_records()
