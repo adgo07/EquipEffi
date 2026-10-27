@@ -98,11 +98,26 @@ class MotorQtTests(unittest.TestCase):
                 self.assertNotIn("three_phase_induction", restored)
                 self.assertNotIn("AS_DECLARED_BY_FIELD", restored)
                 self.assertIn("按字段要求填报", restored)
-                self.assertIn("软件状态：已接入，尚待正式支持验收。", restored)
+                self.assertNotIn("软件状态：已接入，尚待正式支持验收。", restored)
+                self.assertEqual(result.support_status, "SUPPORTED")
                 snapshot = default_history.service.open_record(page._last_outcome.record.record_id)
                 default_history._render_technical(snapshot, snapshot.result_snapshot)
-                self.assertIn("开发状态：已接入，尚待正式支持验收", default_history.technical.text())
+                self.assertIn("支持状态：正式支持", default_history.technical.text())
                 self.assertNotIn("支持状态：—", default_history.technical.text())
+                # Render an older immutable snapshot with the current product services.
+                from copy import deepcopy
+                from dataclasses import replace
+                from hashlib import sha256
+                old_result = deepcopy(snapshot.result_snapshot)
+                old_result["support_status"] = "IMPLEMENTED"
+                older = replace(snapshot, record_id="legacy-" + snapshot.record_id,
+                                result_snapshot=old_result)
+                service._records.append_record(older)
+                database_before = sha256(paths.records_db.read_bytes()).hexdigest()
+                restored = default_history.show_record(older.record_id)
+                self.assertIn("软件状态：已接入，尚待正式支持验收。", restored)
+                self.assertEqual(default_history.service.open_record(older.record_id), older)
+                self.assertEqual(sha256(paths.records_db.read_bytes()).hexdigest(), database_before)
             finally:
                 _dispose_widget(default_history)
                 _dispose_widget(records)
@@ -120,13 +135,14 @@ class MotorQtTests(unittest.TestCase):
                 window = MainWindow(settings, create_pump_analysis_service(paths=paths),
                                     transformer=create_transformer_analysis_service(paths=paths),
                                     motor=create_motor_analysis_service(paths=paths))
-                self.assertIn("验收候选", window.windowTitle())
+                self.assertIn("电动机能效分析", window.windowTitle())
+                self.assertNotIn("验收候选", window.windowTitle())
                 self.assertEqual(window.standards_page.table.item(2, 0).text(), "GB 18613-2020")
                 window.open_analysis(standard_code="GB 18613-2020")
                 self.assertIs(window.device_analysis_page.pages.currentWidget(), window.motor_analysis_page)
                 window.standards_page.open_detail(2)
                 self.assertIn("电动机能效", window.standards_page.section_labels[0].text())
-                self.assertEqual(window.standards_page.table.item(2, 4).text(), "验收候选")
+                self.assertEqual(window.standards_page.table.item(2, 4).text(), "正式支持")
             finally:
                 _dispose_widget(window)
                 close_logging(logger)

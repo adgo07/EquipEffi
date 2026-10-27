@@ -16,7 +16,7 @@ class MotorProductFlowTests(unittest.TestCase):
     def test_frequency_range_and_pole_scope_survive_excel_and_history(self):
         with tempfile.TemporaryDirectory() as directory:
             paths = AppDataPaths(Path(directory) / "data")
-            batch = create_batch_evaluation_service(paths=paths, motor_candidate=True)
+            batch = create_batch_evaluation_service(paths=paths)
             source = Path(directory) / "feedback.xlsx"
             batch.template_resource.download_to(source)
             workbook = load_workbook(source)
@@ -50,14 +50,16 @@ class MotorProductFlowTests(unittest.TestCase):
 
     def test_candidate_switch_alone_launches_desktop(self):
         from equipeffi.entrypoint import main
-        with patch.dict(os.environ, {}, clear=True), patch(
+        with patch.dict(os.environ, {"EQUIPEFFI_ENABLE_MOTOR_CANDIDATE": "0"}, clear=True), patch(
                 "equipeffi.composition.launch_qt", return_value=0) as launch:
             self.assertEqual(main(["--motor-candidate"]), 0)
             launch.assert_called_once_with()
             self.assertTrue(motor_candidate_enabled())
 
-    def test_candidate_is_opt_in(self):
+    def test_motor_defaults_on_and_legacy_environment_remains_compatible(self):
         with patch.dict(os.environ, {}, clear=True):
+            self.assertTrue(motor_candidate_enabled())
+        with patch.dict(os.environ, {"EQUIPEFFI_ENABLE_MOTOR_CANDIDATE": "0"}):
             self.assertFalse(motor_candidate_enabled())
         with patch.dict(os.environ, {"EQUIPEFFI_ENABLE_MOTOR_CANDIDATE": "1"}):
             self.assertTrue(motor_candidate_enabled())
@@ -65,7 +67,7 @@ class MotorProductFlowTests(unittest.TestCase):
     def test_only_unconnected_sheet_does_not_create_successful_batch(self):
         with tempfile.TemporaryDirectory() as directory:
             paths = AppDataPaths(Path(directory) / "data")
-            batch = create_batch_evaluation_service(paths=paths, motor_candidate=True)
+            batch = create_batch_evaluation_service(paths=paths)
             source = Path(directory) / "unsupported.xlsx"
             destination = Path(directory) / "result.xlsx"
             batch.template_resource.download_to(source)
@@ -82,7 +84,7 @@ class MotorProductFlowTests(unittest.TestCase):
     def test_three_device_batch_and_reimport_preserve_exact_result(self):
         with tempfile.TemporaryDirectory() as directory:
             paths = AppDataPaths(Path(directory) / "data")
-            batch = create_batch_evaluation_service(paths=paths, motor_candidate=True)
+            batch = create_batch_evaluation_service(paths=paths)
             source = Path(directory) / "input.xlsx"
             batch.template_resource.download_to(source)
             workbook = load_workbook(source)

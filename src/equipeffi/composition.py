@@ -90,7 +90,7 @@ def create_pump_analysis_service(*, paths=None, with_persistence: bool = True):
 
 
 def create_transformer_analysis_service(*, paths=None, with_persistence: bool = True):
-    """下一版本GB20052同核入口；只读取派生包，不依赖标准原件。"""
+    """GB20052正式同核入口；只读取派生包，不依赖标准原件。"""
     from . import __version__
     from .application.services.transformer_analysis_service import TransformerAnalysisService
     from .domain.devices.transformer.calculator import TransformerCalculator
@@ -103,9 +103,9 @@ def create_transformer_analysis_service(*, paths=None, with_persistence: bool = 
 
 
 def motor_candidate_enabled() -> bool:
-    """验收候选的显式装配开关；默认发布配置不开放电机。"""
+    """兼容旧开关；默认开放电机，显式 0 保留旧版关闭行为。"""
     import os
-    return os.environ.get("EQUIPEFFI_ENABLE_MOTOR_CANDIDATE", "") == "1"
+    return os.environ.get("EQUIPEFFI_ENABLE_MOTOR_CANDIDATE", "1") == "1"
 
 
 def create_motor_analysis_service(*, paths=None, with_persistence: bool = True):

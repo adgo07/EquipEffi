@@ -403,12 +403,12 @@ class DeviceAnalysisPage(QWidget):
         self.pages.addWidget(transformer_page)
         self.motor_page = motor_page
         if motor_page is not None:
-            self.device_selector.addItem("电动机（验收候选）", "motor_lv")
+            self.device_selector.addItem("电动机", "motor_lv")
             self.pages.addWidget(motor_page)
         else:
             self.device_selector.addItem("电动机（尚未开放）", "motor_lv")
             self.device_selector.model().item(self.device_selector.count() - 1).setEnabled(False)
-            self.device_selector.setToolTip("电动机仅在显式装配的验收候选构建中开放。")
+            self.device_selector.setToolTip("当前配置未开放电动机分析。")
         layout.addWidget(self.pages, 1)
         self.device_selector.currentIndexChanged.connect(self.pages.setCurrentIndex)
         self.device_selector.setCurrentIndex(0)

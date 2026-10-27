@@ -58,7 +58,7 @@ class TransformerAnalysisResult:
     raw_values: dict[str, Any]
     references: dict[str, Any]
     standard_code: str = STANDARD_CODE
-    support_status: str = "IMPLEMENTED"
+    support_status: str = "SUPPORTED"
     reason_codes: tuple[str, ...] = ()
 
     @property
@@ -134,9 +134,9 @@ class TransformerAnalysisService:
             "name": self._pack.get("standard_name", "电力变压器能效限定值及能效等级"),
             "edition": "2024",
             "effective_date": self._pack.get("effective_date", ""),
-            "support_status": "IMPLEMENTED",
+            "support_status": "SUPPORTED",
             "scope_text": "按GB 20052—2024适用型式选择类别，包含普通与新能源变压器。",
-            "notes": "已接入本版实现，正式支持状态以验收结论为准。",
+            "notes": "本版本正式支持GB 20052-2024适用型式。",
         }
 
     def analyze_and_record(self, request: TransformerAnalysisRequest) -> TransformerAnalysisOutcome:

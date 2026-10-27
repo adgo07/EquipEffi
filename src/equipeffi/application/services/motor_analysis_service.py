@@ -95,7 +95,7 @@ class MotorAnalysisResult:
     raw_values: dict[str, Any]
     references: dict[str, Any]
     standard_code: str = STANDARD_CODE
-    support_status: str = "IMPLEMENTED"
+    support_status: str = "SUPPORTED"
     reason_codes: tuple[str, ...] = ()
     invalid_fields: tuple[str, ...] = ()
 
@@ -197,9 +197,9 @@ class MotorAnalysisService:
             "name": self._pack.get("standard_name", "电动机能效限定值及能效等级"),
             "edition": "2020",
             "effective_date": self._pack.get("effective_date", "2021-06-01"),
-            "support_status": "IMPLEMENTED",
+            "support_status": "SUPPORTED",
             "scope_text": "按GB 18613-2020规定的电动机类别评价表1至表6。",
-            "notes": "已接入本版实现；正式支持状态以独立验收结论为准。",
+            "notes": "本版本正式支持GB 18613-2020表1至表6。",
         }
 
     def analyze_and_record(self, request: MotorAnalysisRequest) -> MotorAnalysisOutcome:

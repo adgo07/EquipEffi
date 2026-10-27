@@ -49,7 +49,7 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         if not any(sheet.rows for sheet in workbook.sheets.values()):
             raise ValueError("没有可评价数据；未接通Sheet的内容未评价。")
         if self.motor is None and getattr(workbook.sheets.get("电动机"), "rows", ()):
-            raise ValueError("本构建未启用电动机接入验收候选，不能评价电动机Sheet。")
+            raise ValueError("本配置未启用电动机分析，不能评价电动机Sheet。")
         total = WorkbookEvaluationSummary(unprocessed_sheets=workbook.unprocessed_sheets)
         by_sheet = {}
         for name, sheet in workbook.sheets.items():

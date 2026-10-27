@@ -89,7 +89,7 @@ def _directory_tree(root: ET.Element, relative_dirs: Iterable[str]) -> dict[str,
     return mapping
 
 
-def generate_wix_source(native_dir: Path, wix_source: Path, *, version: str = "0.2.1") -> dict[str, Any]:
+def generate_wix_source(native_dir: Path, wix_source: Path, *, version: str = "0.2.2") -> dict[str, Any]:
     """为已构建的 Windows onedir 目录生成 WiX v4 XML 源文件。"""
 
     native_dir = Path(native_dir).resolve()
@@ -175,7 +175,7 @@ def build_msi(
     *,
     wix_source: Path | None = None,
     report: Path | None = None,
-    version: str = "0.2.1",
+    version: str = "0.2.2",
     wix_executable: str = "wix",
     dry_run: bool = False,
 ) -> MsiBuildResult:
@@ -229,7 +229,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, required=True, help="MSI输出路径")
     parser.add_argument("--wxs-output", type=Path, help="可选：WXS源输出路径")
     parser.add_argument("--report", type=Path, help="可选：构建报告路径")
-    parser.add_argument("--version", default="0.2.1")
+    parser.add_argument("--version", default="0.2.2")
     parser.add_argument("--wix", default="wix", help="WiX v4命令路径或名称")
     parser.add_argument("--dry-run", action="store_true", help="只生成WXS和报告，不调用WiX")
     args = parser.parse_args(argv)
