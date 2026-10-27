@@ -1,0 +1,519 @@
+{
+  "data_root": "D:\\project\\设备能效软件\\ui-review-20261027\\r3-final-data",
+  "captures": [
+    {
+      "file": "home-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": false
+    },
+    {
+      "file": "standards-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "standard-detail-1440x1000.png",
+      "logical_size": [
+        1440,
+        1000
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "pump-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "transformer-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "transformer-result-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "transformer-other-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "transformer-uncertain-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "motor-candidate-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "motor-candidate-small-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "motor-result-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "batch-check-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "batch-result-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "single-records-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true,
+      "history": {
+        "stack_index": 0,
+        "classification": 0,
+        "selected_row": -1,
+        "selected_column": -1,
+        "search": "",
+        "batch_search": "",
+        "date": "",
+        "category": "",
+        "conclusion": 0,
+        "single_record_ids": [
+          "MO-1d9b186e055247a4b31f954ebf178a8e",
+          "TR-b54d312b795949a9b2a8296d26bbc6e8",
+          "ANALYSIS-ce5dd3b85090"
+        ],
+        "batch_record_ids": [
+          "BATCH-468ca0c4bc5d"
+        ],
+        "tabs": [
+          "基本信息与结果",
+          "输入数据与计算依据"
+        ],
+        "current_tab": 0,
+        "detail_text": null
+      }
+    },
+    {
+      "file": "single-detail-result-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true,
+      "history": {
+        "stack_index": 1,
+        "classification": 0,
+        "selected_row": 1,
+        "selected_column": 0,
+        "search": "",
+        "batch_search": "",
+        "date": "",
+        "category": "",
+        "conclusion": 0,
+        "single_record_ids": [
+          "MO-1d9b186e055247a4b31f954ebf178a8e",
+          "TR-b54d312b795949a9b2a8296d26bbc6e8",
+          "ANALYSIS-ce5dd3b85090"
+        ],
+        "batch_record_ids": [
+          "BATCH-468ca0c4bc5d"
+        ],
+        "tabs": [
+          "基本信息与结果",
+          "输入数据与计算依据"
+        ],
+        "current_tab": 0,
+        "detail_text": "采用标准：GB 20052-2024\n设备类别：35kV油浸式三相双绕组无励磁调压电力变压器\n评价日期：2026-10-27\n评价结论：1级\n企业/项目名称：测试数据 · 变压器项目\n设备编号：测试变压器 T-001\n保存时软件状态：已接入，尚待正式支持验收\n判定说明：空载损耗与负载损耗均不高于1级对应限值。\n空载损耗限值（1级）：1700 W\n负载损耗限值（1级）：20700 W\n空载损耗限值（2级）：2000 W\n负载损耗限值（2级）：20700 W\n空载损耗限值（3级）：2400 W\n负载损耗限值（3级）：21900 W\n空载损耗：1700 W\n负载损耗：20700 W\n保存时间：2026-10-27T05:03:15.395712+00:00"
+      }
+    },
+    {
+      "file": "single-detail-basis-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true,
+      "history": {
+        "stack_index": 1,
+        "classification": 0,
+        "selected_row": 1,
+        "selected_column": 0,
+        "search": "",
+        "batch_search": "",
+        "date": "",
+        "category": "",
+        "conclusion": 0,
+        "single_record_ids": [
+          "MO-1d9b186e055247a4b31f954ebf178a8e",
+          "TR-b54d312b795949a9b2a8296d26bbc6e8",
+          "ANALYSIS-ce5dd3b85090"
+        ],
+        "batch_record_ids": [
+          "BATCH-468ca0c4bc5d"
+        ],
+        "tabs": [
+          "基本信息与结果",
+          "输入数据与计算依据"
+        ],
+        "current_tab": 1,
+        "detail_text": "采用标准：GB 20052-2024\n设备类别：35kV油浸式三相双绕组无励磁调压电力变压器\n评价日期：2026-10-27\n评价结论：1级\n企业/项目名称：测试数据 · 变压器项目\n设备编号：测试变压器 T-001\n保存时软件状态：已接入，尚待正式支持验收\n判定说明：空载损耗与负载损耗均不高于1级对应限值。\n空载损耗限值（1级）：1700 W\n负载损耗限值（1级）：20700 W\n空载损耗限值（2级）：2000 W\n负载损耗限值（2级）：20700 W\n空载损耗限值（3级）：2400 W\n负载损耗限值（3级）：21900 W\n空载损耗：1700 W\n负载损耗：20700 W\n保存时间：2026-10-27T05:03:15.395712+00:00"
+      }
+    },
+    {
+      "file": "batch-records-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true,
+      "history": {
+        "stack_index": 0,
+        "classification": 1,
+        "selected_row": -1,
+        "selected_column": -1,
+        "search": "",
+        "batch_search": "",
+        "date": "",
+        "category": "",
+        "conclusion": 0,
+        "single_record_ids": [
+          "MO-1d9b186e055247a4b31f954ebf178a8e",
+          "TR-b54d312b795949a9b2a8296d26bbc6e8",
+          "ANALYSIS-ce5dd3b85090"
+        ],
+        "batch_record_ids": [
+          "BATCH-468ca0c4bc5d"
+        ],
+        "tabs": [
+          "基本信息与结果",
+          "输入数据与计算依据"
+        ],
+        "current_tab": 1,
+        "detail_text": null
+      }
+    },
+    {
+      "file": "batch-detail-result-1180x800.png",
+      "logical_size": [
+        1180,
+        800
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true,
+      "history": {
+        "stack_index": 1,
+        "classification": 1,
+        "selected_row": 0,
+        "selected_column": 0,
+        "search": "",
+        "batch_search": "",
+        "date": "",
+        "category": "",
+        "conclusion": 0,
+        "single_record_ids": [
+          "MO-1d9b186e055247a4b31f954ebf178a8e",
+          "TR-b54d312b795949a9b2a8296d26bbc6e8",
+          "ANALYSIS-ce5dd3b85090"
+        ],
+        "batch_record_ids": [
+          "BATCH-468ca0c4bc5d"
+        ],
+        "tabs": [
+          "基本信息与结果",
+          "输入数据与计算依据"
+        ],
+        "current_tab": 0,
+        "detail_text": "采用标准：GB 20052-2024、GB 18613-2020、GB 19762-2025\n工作表：变压器、电动机、离心泵\n评价日期：2026-10-27\n输入工作簿：测试数据_三设备输入.xlsx\n结果工作簿：测试数据_三设备输入_评价结果_20261027_130319.xlsx\n设备数量总计：9 台\n完成正式评价数量：9 台\n数据行数：3\n完成正式评价行数：3 行\n未形成正式结论行数：0 行\n变压器：共 3 台（数据 1 行）\n1级 3 台；2级 0 台；3级 0 台；未达3级 0 台；不在范围 0 台；无法判定 0 台\n电动机：共 4 台（数据 1 行）\n1级 0 台；2级 0 台；3级 4 台；未达3级 0 台；不在范围 0 台；无法判定 0 台\n离心泵：共 2 台（数据 1 行）\n1级 0 台；2级 0 台；3级 0 台；未达3级 0 台；不在范围 2 台；无法判定 0 台\n未处理工作表：空压机、离心通风机、轴流通风机、鼓风机、潜水电泵、工业锅炉、热处理设备、热泵和冷水机组、热泵热水机、风管送风式空调、单元式空调、多联式空调\n输入错误行数：0 行\n执行失败行数：0 行\n正式结论分布：1级 3 台；3级 4 台；不在范围 2 台\n保存时间：2026-10-27T05:03:22.052829+00:00"
+      }
+    },
+    {
+      "file": "batch-detail-basis-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true,
+      "history": {
+        "stack_index": 1,
+        "classification": 1,
+        "selected_row": 0,
+        "selected_column": 0,
+        "search": "",
+        "batch_search": "",
+        "date": "",
+        "category": "",
+        "conclusion": 0,
+        "single_record_ids": [
+          "MO-1d9b186e055247a4b31f954ebf178a8e",
+          "TR-b54d312b795949a9b2a8296d26bbc6e8",
+          "ANALYSIS-ce5dd3b85090"
+        ],
+        "batch_record_ids": [
+          "BATCH-468ca0c4bc5d"
+        ],
+        "tabs": [
+          "基本信息与结果",
+          "输入数据与计算依据"
+        ],
+        "current_tab": 1,
+        "detail_text": "采用标准：GB 20052-2024、GB 18613-2020、GB 19762-2025\n工作表：变压器、电动机、离心泵\n评价日期：2026-10-27\n输入工作簿：测试数据_三设备输入.xlsx\n结果工作簿：测试数据_三设备输入_评价结果_20261027_130319.xlsx\n设备数量总计：9 台\n完成正式评价数量：9 台\n数据行数：3\n完成正式评价行数：3 行\n未形成正式结论行数：0 行\n变压器：共 3 台（数据 1 行）\n1级 3 台；2级 0 台；3级 0 台；未达3级 0 台；不在范围 0 台；无法判定 0 台\n电动机：共 4 台（数据 1 行）\n1级 0 台；2级 0 台；3级 4 台；未达3级 0 台；不在范围 0 台；无法判定 0 台\n离心泵：共 2 台（数据 1 行）\n1级 0 台；2级 0 台；3级 0 台；未达3级 0 台；不在范围 2 台；无法判定 0 台\n未处理工作表：空压机、离心通风机、轴流通风机、鼓风机、潜水电泵、工业锅炉、热处理设备、热泵和冷水机组、热泵热水机、风管送风式空调、单元式空调、多联式空调\n输入错误行数：0 行\n执行失败行数：0 行\n正式结论分布：1级 3 台；3级 4 台；不在范围 2 台\n保存时间：2026-10-27T05:03:22.052829+00:00"
+      }
+    },
+    {
+      "file": "batch-detail-small-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true,
+      "history": {
+        "stack_index": 1,
+        "classification": 1,
+        "selected_row": 0,
+        "selected_column": 0,
+        "search": "",
+        "batch_search": "",
+        "date": "",
+        "category": "",
+        "conclusion": 0,
+        "single_record_ids": [
+          "MO-1d9b186e055247a4b31f954ebf178a8e",
+          "TR-b54d312b795949a9b2a8296d26bbc6e8",
+          "ANALYSIS-ce5dd3b85090"
+        ],
+        "batch_record_ids": [
+          "BATCH-468ca0c4bc5d"
+        ],
+        "tabs": [
+          "基本信息与结果",
+          "输入数据与计算依据"
+        ],
+        "current_tab": 1,
+        "detail_text": "采用标准：GB 20052-2024、GB 18613-2020、GB 19762-2025\n工作表：变压器、电动机、离心泵\n评价日期：2026-10-27\n输入工作簿：测试数据_三设备输入.xlsx\n结果工作簿：测试数据_三设备输入_评价结果_20261027_130319.xlsx\n设备数量总计：9 台\n完成正式评价数量：9 台\n数据行数：3\n完成正式评价行数：3 行\n未形成正式结论行数：0 行\n变压器：共 3 台（数据 1 行）\n1级 3 台；2级 0 台；3级 0 台；未达3级 0 台；不在范围 0 台；无法判定 0 台\n电动机：共 4 台（数据 1 行）\n1级 0 台；2级 0 台；3级 4 台；未达3级 0 台；不在范围 0 台；无法判定 0 台\n离心泵：共 2 台（数据 1 行）\n1级 0 台；2级 0 台；3级 0 台；未达3级 0 台；不在范围 2 台；无法判定 0 台\n未处理工作表：空压机、离心通风机、轴流通风机、鼓风机、潜水电泵、工业锅炉、热处理设备、热泵和冷水机组、热泵热水机、风管送风式空调、单元式空调、多联式空调\n输入错误行数：0 行\n执行失败行数：0 行\n正式结论分布：1级 3 台；3级 4 台；不在范围 2 台\n保存时间：2026-10-27T05:03:22.052829+00:00"
+      }
+    },
+    {
+      "file": "settings-1000x700.png",
+      "logical_size": [
+        1000,
+        700
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    },
+    {
+      "file": "settings-small-560x420.png",
+      "logical_size": [
+        560,
+        420
+      ],
+      "device_pixel_ratio": 1.5,
+      "sample": "隔离测试数据",
+      "business_sidebar": true
+    }
+  ],
+  "failures": [],
+  "status": "completed",
+  "scale_factor_override": null,
+  "platform": "windows",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "native_windows": true,
+  "screens": [
+    {
+      "name": "\\\\.\\DISPLAY1",
+      "logical_dpi": 96.0,
+      "device_pixel_ratio": 1.5
+    }
+  ],
+  "mode": "Qt自动操作；原生平台见platform，非人工桌面验收",
+  "motor_candidate": true,
+  "template_version": "V6.2",
+  "operations": [
+    {
+      "action": "泵单台鼠标点击分析并自动记录",
+      "record_id": "ANALYSIS-ce5dd3b85090",
+      "record_status": "RECORDED",
+      "saved": true
+    },
+    {
+      "action": "变压器单台鼠标点击分析并自动记录",
+      "record_id": "TR-b54d312b795949a9b2a8296d26bbc6e8",
+      "record_status": "SAVED",
+      "saved": true
+    },
+    {
+      "action": "特殊类别提示",
+      "category": "OTHER_CATEGORY",
+      "label": "其他类别",
+      "note": "此类别没有可填写的额定参数。",
+      "group_visible": true,
+      "note_visible": true,
+      "field_ids": []
+    },
+    {
+      "action": "特殊类别提示",
+      "category": "UNCERTAIN_CATEGORY",
+      "label": "不确定类别",
+      "note": "此类别没有可填写的额定参数。",
+      "group_visible": true,
+      "note_visible": true,
+      "field_ids": []
+    },
+    {
+      "action": "切回普通类别",
+      "category": "GB20052-T03",
+      "field_ids": [
+        "capacity_kva",
+        "no_load_loss_w",
+        "load_loss_w"
+      ]
+    },
+    {
+      "action": "候选电机单台鼠标点击分析并自动记录",
+      "record_id": "MO-1d9b186e055247a4b31f954ebf178a8e",
+      "record_status": "SAVED",
+      "saved": true
+    },
+    {
+      "action": "选文件自动检查",
+      "recognized_sheets": [
+        "变压器",
+        "电动机",
+        "离心泵"
+      ]
+    },
+    {
+      "action": "后台三设备批量评价完成并线程退出",
+      "data_rows": 3,
+      "total_quantity": 9,
+      "single_records_unchanged": true,
+      "one_batch_record": true,
+      "single_ids_before": [
+        "MO-1d9b186e055247a4b31f954ebf178a8e",
+        "TR-b54d312b795949a9b2a8296d26bbc6e8",
+        "ANALYSIS-ce5dd3b85090"
+      ],
+      "single_ids_after": [
+        "MO-1d9b186e055247a4b31f954ebf178a8e",
+        "TR-b54d312b795949a9b2a8296d26bbc6e8",
+        "ANALYSIS-ce5dd3b85090"
+      ],
+      "single_count_before": 3,
+      "single_count_after": 3,
+      "batch_ids_before": [],
+      "batch_ids_after": [
+        "BATCH-468ca0c4bc5d"
+      ],
+      "batch_count_before": 0,
+      "batch_count_after": 1,
+      "batch_record_id": "BATCH-468ca0c4bc5d",
+      "wait_completed": true,
+      "input_sha256_before": "9062ad60022149159be26f5158fce1cd994a5deade823ef348ddab0a8bed1827",
+      "input_sha256_after": "9062ad60022149159be26f5158fce1cd994a5deade823ef348ddab0a8bed1827",
+      "input": "D:\\project\\设备能效软件\\ui-review-20261027\\r3-final-data\\测试数据_三设备输入.xlsx",
+      "output": "D:\\project\\设备能效软件\\ui-review-20261027\\r3-final-data\\测试数据_三设备输入_评价结果_20261027_130319.xlsx",
+      "separate_output": true,
+      "worker_present": false
+    },
+    {
+      "action": "取消保留结果；重新选择同一源也使旧结果失效",
+      "cancel_preserved": true,
+      "selection_cleared": true,
+      "last_result_id": null,
+      "open_result_enabled": false,
+      "passed": true
+    },
+    {
+      "action": "打开单台与批次两页签独立详情",
+      "detail_tabs": [
+        "基本信息与结果",
+        "输入数据与计算依据"
+      ]
+    }
+  ]
+}
