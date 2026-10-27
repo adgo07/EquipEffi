@@ -8,7 +8,7 @@
 - 开工前核对工作树根、`origin`、分支、HEAD、工作区状态，并同步远端；`origin` 不符时停止。路径只表示本机环境，不代表仓库身份。
 - 当前 Phase 状态见 [`TASK_STATE.md`](TASK_STATE.md)；Windows V1 Profile 范围唯一权威为 [`V1_SCOPE.md`](V1_SCOPE.md)；QA 唯一状态源为 [`QA_BACKLOG.md`](QA_BACKLOG.md)。旧任务卡、HANDOFF 和报告无自动调度权。
 - Phase 1–7 已通过独立验收；Phase 8 已执行并合并 PR #16（`64b656ee`），仅为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`。不得自行声明 `PHASE_8_PASS` 或进入 Phase 9。
-- Owner 于2026-10-23明确纳入变压器并确认25列输入方案，2026-10-27授权v0.2.1正式发布后要求收口泵、变压器、电机。实际发布与候选边界见 [`V1_SCOPE.md`](V1_SCOPE.md)；旧“下一版本实施中”文字不覆盖已完成实现，也不自动提升SUPPORTED或开放电机正式入口。
+- Owner 于2026-10-23明确纳入变压器并确认25列输入方案，2026-10-27授权v0.2.1正式发布后要求收口泵、变压器、电机。实际发布与候选边界见 [`V1_SCOPE.md`](V1_SCOPE.md)；旧“下一版本实施中”文字不覆盖已完成实现。本轮0.2.2收尾按V1_SCOPE记录的后续授权推进变压器／电机正式支持、电机默认开放和已有V6.2切换；其余设备不自动提升或开放。
 
 ## Owner 决策边界
 
