@@ -150,6 +150,9 @@ class StandardsPage(QWidget):
             row = dict(overview)
             row["name"] = overview.get("standard_name") or overview.get("name") or "未提供"
             row["scope"] = overview.get("scope_text") or "、".join(overview.get("supported_categories", ()))
+            special = overview.get("special_categories", ())
+            if special:
+                row["scope"] += "\n其他可选项（不表示正式支持类别）：" + "、".join(special)
             state = overview.get("lifecycle_state")
             if not state:
                 effective = overview.get("effective_date")
@@ -237,12 +240,17 @@ class StandardsPage(QWidget):
             f"实施日期：{item.get('effective_date') or '未提供'}")))
         self.section_labels[1].setText(item["scope"] or "当前元数据未提供适用范围，请查阅标准原文。")
         # 这里只概述已有评价模型，不复制限值、公式或类别选表规则。
-        if "19762" in item["standard_code"]:
+        code = item["standard_code"].replace("—", "-")
+        if item.get("requirements_text"):
+            text = item["requirements_text"]
+        elif code == "GB 19762-2025":
             text = "按产品类别及适用条件评价泵效率（%），划分1级、2级、3级。输入流量（m³/h）、扬程（m）、转速（r/min）、泵效率（%）及适用类别条件。所选类别的具体等级限值与关键参数可在分析结果中查看。"
-        elif "20052" in item["standard_code"]:
+        elif code == "GB 20052-2024":
             text = "按适用型式、额定参数及标准条件查取空载损耗与负载损耗限值（W），分别比较并给出最终等级。不同类别采用相应表格与条件，具体限值在分析结果和保存的计算依据中查看。"
-        else:
+        elif code == "GB 18613-2020":
             text = "按电动机类别及适用额定参数采用表1至表6的效率限值（%），评价1级、2级、3级。实测效率口径与额定参数须符合所选类别条件；具体限值可在分析结果中查看。"
+        else:
+            text = "当前元数据未提供标准要求摘要，请查阅标准原文。"
         self.section_labels[2].setText(text)
         self.stack.setCurrentIndex(1)
         self.start_button.setEnabled(True)

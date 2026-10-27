@@ -134,11 +134,13 @@ class UiFamilyStage2Tests(unittest.TestCase):
         batch_repository = SqliteBatchRecordRepository(self.paths.records_db)
         for index in range(61):
             batch_repository.append_batch_record(_snapshot(index))
-        batch_repository.append_batch_record(replace(_snapshot(99), batch_record_id="BATCH-MIX",
+        batch_repository.append_batch_record(replace(_snapshot(1), batch_record_id="BATCH-MIX",
+            created_at_utc="2026-10-20T00:00:00+00:00",
             source_file_name="UI_100%.xlsx", standard_code="MULTI", sheet_name="MULTI",
             summary={"sheets": [{"sheet_name": "变压器", "standard_code": "GB 20052-2024"}]}))
         page.refresh_batch_records()
         self.assertEqual(page.batch_list.rowCount(), 50)
+        self.assertNotIn("BATCH-MIX", [r.batch_record_id for r in page._batch_visible])
         page.batch_button.click()
         for keyword in ("20052", "UI_", "%"):
             page.batch_search.setText(keyword)
@@ -218,6 +220,7 @@ class UiFamilyStage2Tests(unittest.TestCase):
         QTest.qWait(20)
         row = table.visualItemRect(table.item(0, 0))
         self.assertGreaterEqual(table.viewport().height(), table.rowHeight(0))
+
         self.assertTrue(table.viewport().rect().contains(row), (table.viewport().rect(), row))
         visible_row = QRect(table.viewport().mapTo(scroll.viewport(), row.topLeft()), row.size())
         self.assertTrue(scroll.viewport().rect().contains(visible_row), (scroll.viewport().rect(), visible_row))
@@ -242,3 +245,73 @@ class UiFamilyStage2Tests(unittest.TestCase):
         QTest.qWait(20)
         self.assertEqual(scroll.verticalScrollBar().maximum(), 0)
         self.assertGreaterEqual(table.viewport().height(), table.rowHeight(0))
+
+    def test_transformer_special_category_note_visible_and_regular_return(self):
+        from PySide6.QtWidgets import QLabel
+        self.window.open_analysis(standard_code="GB 20052-2024")
+        page = self.window.transformer_analysis_page
+        for label in ("其他类别", "不确定类别"):
+            index = page.category.findText(label)
+            self.assertGreaterEqual(index, 0)
+            page.category.setCurrentIndex(index)
+            self.app.processEvents()
+            notes = [w for w in page.fields_group.findChildren(QLabel) if "没有可填写" in w.text()]
+            self.assertEqual(len(notes), 1)
+            self.assertTrue(notes[0].isVisibleTo(page))
+            self.assertTrue(page.fields_group.isVisibleTo(page))
+            self.assertFalse(page.field_inputs)
+            result = page.evaluate()
+            self.assertIsNotNone(result)
+            if label == "其他类别":
+                record = self.pump.open_record(page.last_saved_record_id)
+                self.assertEqual(record.evaluation_status, "OUT_OF_STANDARD_SCOPE")
+            else:
+                self.assertEqual(result.ui_conclusion, "无法判定")
+                self.assertEqual(page.last_record_status, "NOT_ELIGIBLE")
+                self.assertIsNone(page.last_saved_record_id)
+            page.category.setCurrentIndex(page.category.findData("GB20052-T03"))
+            self.assertIn("capacity_kva", page.field_inputs)
+            self.assertFalse(any("没有可填写" in w.text() for w in page.fields_group.findChildren(QLabel)))
+
+    def test_names_search_entire_history_with_consistent_count(self):
+        record = self._pump_record()
+        repository = create_records_runtime(paths=self.paths)[1]
+        for index in range(105):
+            repository.append_record(replace(record, record_id=f"NAME-{index:03d}",
+                input_snapshot=dict(record.input_snapshot, project_name="共同名称", equipment_no=f"设备-{index}"),
+                finalized_at_utc=f"2026-10-26T01:{index // 60:02d}:{index % 60:02d}Z"))
+        repository.append_record(replace(record, record_id="NAME-OLD",
+            input_snapshot=dict(record.input_snapshot, project_name="旧项目唯一名称", equipment_no="旧设备"),
+            finalized_at_utc="2020-01-01T00:00:00Z"))
+        repository.append_record(replace(record, record_id="EQUIPMENT-OLD",
+            input_snapshot=dict(record.input_snapshot, project_name=None, equipment_no="设备唯一名称"),
+            finalized_at_utc="2020-01-01T00:00:01Z"))
+        self.window.open_records()
+        page = self.window.records_page
+        self.assertNotIn("NAME-OLD", [r.record_id for r in page._visible])
+        for keyword, expected in (("旧项目唯一名称", "NAME-OLD"), ("设备唯一名称", "EQUIPMENT-OLD")):
+            page.search.setText(keyword)
+            self.assertEqual(page._total, 1)
+            self.assertEqual([r.record_id for r in page._visible], [expected])
+        page.search.setText("共同名称")
+        self.assertEqual(page._total, 105)
+        self.assertEqual(page.list.rowCount(), 100)
+        page.load_more_button.click()
+        self.assertEqual(page.list.rowCount(), 105)
+
+    def test_pump_tooltip_resets_on_change_clear_and_failure(self):
+        self._pump_record()
+        page = self.window.analysis_page
+        self.assertTrue(page.evaluate_button.toolTip())
+        self.assertIs(page.suction.parent(), page)
+        page.point_inputs["efficiency"].setText("91")
+        self.assertEqual(page.evaluate_button.toolTip(), "")
+        page.evaluate()
+        self.assertTrue(page.evaluate_button.toolTip())
+        page.project_name.clear()
+        self.assertEqual(page.evaluate_button.toolTip(), "")
+        page.evaluate()
+        with patch.object(page.service, "analyze_and_record", side_effect=OSError("test failure")):
+            page.evaluate()
+        self.assertEqual(page.evaluate_button.text(), "分析")
+        self.assertEqual(page.evaluate_button.toolTip(), "")

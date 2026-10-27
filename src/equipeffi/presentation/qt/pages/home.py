@@ -1,4 +1,5 @@
 """无侧栏任务首页，最近记录来自正式服务。"""
+import logging
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
@@ -134,6 +135,7 @@ class HomePage(QWidget):
         try:
             records = self.service.list_records(limit=5)
         except Exception:
+            logging.getLogger("equipeffi.qt.home").exception("最近分析记录读取失败")
             self.record_status.setText("暂时无法读取记录")
             self.retry_button.show()
             return

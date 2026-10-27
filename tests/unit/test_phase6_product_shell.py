@@ -434,8 +434,36 @@ class StandardsPageTests(ProductShellTestCase):
 
     def test_standard_page_does_not_keep_a_second_standard_table(self):
         source = (SRC / "equipeffi" / "presentation" / "qt" / "pages" / "standards.py").read_text(encoding="utf-8")
-        for forbidden in ("read_text", "sqlite", "GB 19762", "GB 20052"):
+        for forbidden in ("read_text", "sqlite"):
             self.assertNotIn(forbidden, source)
+
+    def test_special_options_are_searchable_and_separate_from_supported_categories(self):
+        page = self.window().standards_page
+        original = page.service.standard_overview()
+        overview = dict(original, special_categories=["仅供分类的特殊选项"])
+        with patch.object(page.service, "standard_overview", return_value=overview):
+            page.refresh()
+        page.search.setText("仅供分类的特殊选项")
+        self.assertEqual(page.table.rowCount(), 1)
+        page.open_detail(0)
+        self.assertIn("其他可选项（不表示正式支持类别）：仅供分类的特殊选项", page.section_labels[1].text())
+
+    def test_unknown_and_similar_number_codes_do_not_inherit_known_requirements(self):
+        page = self.window().standards_page
+        original = page.service.standard_overview()
+        for code in ("UNKNOWN", "OTHER 19762-2025", "OTHER 20052-2024", "GB 18613-2099"):
+            with self.subTest(code=code), patch.object(page.service, "standard_overview", return_value=dict(original, standard_code=code)):
+                page.refresh()
+                page.open_detail(0)
+                text = page.section_labels[2].text()
+                self.assertIn("未提供标准要求摘要", text)
+                self.assertNotIn("表1至表6", text)
+                self.assertNotIn("泵效率", text)
+                self.assertNotIn("空载损耗", text)
+        with patch.object(page.service, "standard_overview", return_value=dict(original, standard_code="UNKNOWN", requirements_text="来自现有展示投影的摘要")):
+            page.refresh()
+            page.open_detail(0)
+            self.assertEqual(page.section_labels[2].text(), "来自现有展示投影的摘要")
 
     def test_standard_page_reports_missing_original_truthfully(self):
         page = self.window().standards_page

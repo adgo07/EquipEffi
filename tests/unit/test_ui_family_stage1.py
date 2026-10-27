@@ -140,8 +140,9 @@ class UiFamilyStage1Tests(unittest.TestCase):
     def test_recent_read_failure_is_distinct_from_empty(self):
         home = self.window.home_page
         self.assertIn("尚无分析记录", home.record_status.text())
-        with patch.object(self.service, "list_records", side_effect=OSError("unavailable")):
+        with patch.object(self.service, "list_records", side_effect=OSError("unavailable")), self.assertLogs("equipeffi.qt.home", level="ERROR") as logs:
             home.refresh()
+        self.assertIn("unavailable", "\n".join(logs.output))
         self.assertEqual(home.record_status.text(), "暂时无法读取记录")
         self.assertFalse(home.retry_button.isHidden())
         home.retry_button.click()

@@ -10,18 +10,9 @@ from __future__ import annotations
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QComboBox,
-    QGroupBox,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
-    QListWidget,
-    QListWidgetItem,
-    QPushButton,
-    QTabWidget,
-    QVBoxLayout,
-    QWidget, QStackedWidget, QScrollArea, QTableWidget, QTableWidgetItem,
-    QHeaderView, QAbstractItemView, QGridLayout, QButtonGroup, QSizePolicy, QLayout,
+    QComboBox, QHBoxLayout, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout,
+    QWidget, QStackedWidget, QScrollArea, QTableWidget, QTableWidgetItem, QHeaderView,
+    QAbstractItemView, QGridLayout, QButtonGroup, QSizePolicy, QLayout,
 )
 
 from ....application.services.centrifugal_pump_analysis_service import (
@@ -146,7 +137,7 @@ class RecordsPage(QWidget):
         single.setContentsMargins(0, 0, 0, 0)
         filters = QGridLayout()
         self.search = QLineEdit()
-        self.search.setPlaceholderText("搜索记录编号、设备类别、标准或结论")
+        self.search.setPlaceholderText("搜索设备/项目名称、记录编号、类别、标准或结论")
         self.search.setClearButtonEnabled(True)
         self.search.textChanged.connect(self._apply_filters)
         filters.addWidget(self.search, 0, 0, 1, 2)

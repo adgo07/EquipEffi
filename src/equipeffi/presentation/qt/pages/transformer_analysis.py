@@ -4,19 +4,9 @@ from __future__ import annotations
 import logging
 from datetime import date
 
-from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QComboBox,
-    QFormLayout,
-    QGroupBox,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
-    QPushButton,
-    QScrollArea,
-    QStackedWidget,
-    QVBoxLayout,
-    QWidget,
+    QComboBox, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QPushButton, QScrollArea,
+    QStackedWidget, QVBoxLayout, QWidget,
 )
 
 from ....application.services.transformer_analysis_service import (
@@ -244,13 +234,12 @@ class TransformerAnalysisPage(QWidget):
                 else:
                     control.setText(previous)
             (control.currentIndexChanged if isinstance(control, QComboBox) else control.textChanged).connect(self._mark_stale)
-        for group, form in ((self.conditions_group, self.conditions_form), (self.fields_group, self.fields_form), (self.loss_group, self.loss_form)):
-            group.setVisible(form.rowCount() > 0)
-
         if not fields:
             note = QLabel("此类别没有可填写的额定参数。")
             note.setWordWrap(True)
             self.fields_form.addRow(note)
+        for group, form in ((self.conditions_group, self.conditions_form), (self.fields_group, self.fields_form), (self.loss_group, self.loss_form)):
+            group.setVisible(form.rowCount() > 0)
 
     def _collect_values(self) -> dict:
         category_id = selected_category(self.category)

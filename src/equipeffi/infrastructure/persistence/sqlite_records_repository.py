@@ -240,13 +240,14 @@ class SqliteRecordRepository:
 
         keyword = (query.keyword or "").strip().lower()
         if keyword:
-            # 关键字匹配范围与旧界面行为一致：记录编号 / 设备类别 / 标准号 / 结论。
+            # list/count共用条件，同时匹配列表实际展示的名称投影。
             pattern = f"%{keyword}%"
             clauses.append(
                 "(LOWER(record_id) LIKE ? OR LOWER(product_category) LIKE ?"
-                " OR LOWER(standard_code) LIKE ? OR LOWER(ui_conclusion) LIKE ?)"
+                " OR LOWER(standard_code) LIKE ? OR LOWER(ui_conclusion) LIKE ?"
+                f" OR LOWER({_DISPLAY_NAME_SQL}) LIKE ?)"
             )
-            params.extend([pattern] * 4)
+            params.extend([pattern] * 5)
 
         category = (query.product_category or "").strip()
         if category:
@@ -290,11 +291,13 @@ _RECORD_COLUMNS = (
 
 
 #: 列表仅传输标量投影；名称由SQLite从已保存输入提取，不装载完整快照对象。
-_SUMMARY_COLUMNS = (
-    "record_id, standard_code, product_category, as_of, evaluation_status, "
-    "grade, ui_conclusion, finalized_at_utc, "
+_DISPLAY_NAME_SQL = (
     "COALESCE(NULLIF(json_extract(input_snapshot_json, '$.project_name'), ''), "
     "NULLIF(json_extract(input_snapshot_json, '$.equipment_no'), ''), product_category)"
+)
+_SUMMARY_COLUMNS = (
+    "record_id, standard_code, product_category, as_of, evaluation_status, "
+    "grade, ui_conclusion, finalized_at_utc, " + _DISPLAY_NAME_SQL
 )
 
 
