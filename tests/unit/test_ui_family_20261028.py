@@ -11,7 +11,18 @@ from equipeffi.presentation.qt.style import icon
 
 
 class UiFamily20261028Tests(unittest.TestCase):
-    setUpClass = classmethod(fixtures.UiFamilyStage2Tests.setUpClass.__func__)
+    @classmethod
+    def setUpClass(cls):
+        fixtures.UiFamilyStage2Tests.setUpClass.__func__(cls)
+        # Offscreen Windows does not enumerate system CJK fonts. Use the same
+        # available font as the representative captures, rather than box glyphs.
+        import os
+        from pathlib import Path
+        from PySide6.QtGui import QFontDatabase
+        font = Path(os.environ.get("WINDIR", "")) / "Fonts/msyh.ttc"
+        if font.is_file():
+            QFontDatabase.addApplicationFont(str(font))
+
     setUp = fixtures.UiFamilyStage2Tests.setUp
     tearDown = fixtures.UiFamilyStage2Tests.tearDown
     _pump_record = fixtures.UiFamilyStage2Tests._pump_record
@@ -71,20 +82,46 @@ class UiFamily20261028Tests(unittest.TestCase):
             self.assertEqual(self.window.pos(), position)
 
     def test_long_chinese_table_rows_grow_and_keep_actions(self):
-        record = self._pump_record()
-        self.window.open_records()
-        table = self.window.records_page.list
+        # Use persisted records and the real first-entry/load-more path. Editing
+        # an already visible item emits itemChanged and missed the insertion bug.
         self.window.resize(1280, 800)
-        QTest.qWait(30)
-        table.item(0, 0).setText("这是需要完整保留的长中文项目名称" * 16)
+        self.window.open_analysis(standard_code="GB 19762-2025")
+        page = self.window.analysis_page
+        page.category.setCurrentIndex(page.category.findData("单级单吸清水离心泵"))
+        for key, value in dict(QBEP="100", HBEP="50", speed="2900", efficiency="90").items():
+            page.point_inputs[key].setText(value)
+        name = "长中文行高验收：设备能效分析项目名称完整保留，不截断正文。" * 5
+        for index in range(2):
+            page.project_name.setText(f"{name}{index}")
+            self.assertIsNotNone(page.evaluate())
+        record_id = page.last_saved_record_id
+        records = self.window.records_page
+        table = records.list
+        with patch("equipeffi.presentation.qt.pages.records.PAGE_SIZE", 1):
+            self.window.open_records()
+            self.assertGreater(table.rowHeight(0), 48, "插入后不得依赖再次编辑或缩放修正行高")
+            QTest.qWait(50)
+            self.assertEqual(table.rowCount(), 1)
+            self.assertGreater(table.rowHeight(0), 48, "首次载入不能截断长中文")
+            records.load_more_button.click()
+            QTest.qWait(50)
+            self.assertEqual(table.rowCount(), 2)
+            self.assertTrue(all(table.rowHeight(row) > 48 for row in range(2)))
+        self.window.resize(960, 800)
         QTest.qWait(50)
-        self.assertGreater(table.rowHeight(0), 48)
+        narrow = table.rowHeight(0)
+        self.window.resize(1900, 800)
+        QTest.qWait(50)
+        self.assertGreater(narrow, table.rowHeight(0), "按实际列宽重新计算行高")
+        records.refresh()
+        QTest.qWait(50)
+        self.assertTrue(all(table.rowHeight(row) > 48 for row in range(2)))
         self.assertTrue(table.wordWrap())
         self.assertEqual(table.textElideMode(), Qt.TextElideMode.ElideNone)
         self.assertTrue(table.cellWidget(0, table.columnCount()-1).isEnabled())
-        self.window.records_page.show_record(record.record_id)
-        self.assertEqual(self.window.records_page.detail_tabs.count(), 2)
-        self.assertIn("评价结论", self.window.records_page.detail.text())
+        records.show_record(record_id)
+        self.assertEqual(records.detail_tabs.count(), 2)
+        self.assertIn(name, records.detail.text())
 
     def test_brand_original_ratio_dpr_and_svg_scale(self):
         brand = self.window.home_page.brand

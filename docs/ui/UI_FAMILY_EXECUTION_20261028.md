@@ -45,3 +45,16 @@ $env:PYTHONPATH='src'
 
 Knowledge capture：无。
 
+
+## 协调者复验修复：首次加载长中文（2026-10-28）
+
+最终截图复验发现首次载入真实长中文记录时，列表仍为48 DIP并截断。原因是列表加载后仍调用Qt默认`resizeRowsToContents()`，与自定义测量并存；原测试仅在已显示单元格上修改文本，触发了`itemChanged`后的重算，未验证首次插入的即时状态。
+
+将`CompactTable.resizeRowsToContents()`统一为实际列宽/已polish字体的换行测量；初次setItem显式排队重算，列宽/字体/样式变化也重算。页面首显、刷新和加载更多沿用既有调用，无截图脚本强制改行高。未改Application、记录或数据库。
+
+原长中文测试改走正式分析保存两条记录、首次进入、加载更多、窄宽窗口切换和刷新；离屏Windows使用系统可用中文字体以匹配截图条件。新增首插入即时断言在修复前确认失败1项；修复后最相关4项通过，fail/error/skip=0，exit=0（7.19秒）。未追加全量回归。
+
+```powershell
+$env:QT_QPA_PLATFORM='offscreen'; $env:PYTHONPATH='src'
+& 'G:/Python Project/EquipEffi/.venv/Scripts/python.exe' -m pytest tests/unit/test_ui_family_20261028.py::UiFamily20261028Tests::test_long_chinese_table_rows_grow_and_keep_actions tests/unit/test_ui_family_r4.py::R4Tests::test_tables_fit_all_columns_compact_and_preserve_full_long_text tests/unit/test_ui_family_stage2.py::UiFamilyStage2Tests::test_small_record_list_has_complete_row_and_mouse_keyboard_roundtrips tests/unit/test_ui_family_stage2.py::UiFamilyStage2Tests::test_single_older_than_100_and_batch_global_search_older_than_50 -q --tb=short
+```

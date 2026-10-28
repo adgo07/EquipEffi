@@ -30,10 +30,18 @@ class CompactTable(QTableWidget):
         self.viewport().installEventFilter(self)
         self.fit_columns()
         self.itemChanged.connect(lambda *_: self._fit_timer.start(0))
+        self.horizontalHeader().sectionResized.connect(lambda *_: self._fit_timer.start(0))
 
     def setItem(self, row, column, item):
         item.setToolTip(item.text())
         super().setItem(row, column, item)
+        # Initial insertion need not emit itemChanged on every Qt/model path.
+        self._fit_timer.start(0)
+
+    def changeEvent(self, event):
+        super().changeEvent(event)
+        if hasattr(self, "_fit_timer") and event.type() in (QEvent.Type.FontChange, QEvent.Type.StyleChange):
+            self._fit_timer.start(0)
 
     def eventFilter(self, watched, event):
         if watched is self.viewport() and event.type() in (QEvent.Type.Resize, QEvent.Type.Show):
@@ -54,6 +62,11 @@ class CompactTable(QTableWidget):
         for index, width in enumerate(widths):
             if self.columnWidth(index) != width:
                 self.setColumnWidth(index, width)
+        self.resizeRowsToContents()
+
+    def resizeRowsToContents(self):
+        """所有列表加载路径都使用同一测量，不能再被Qt默认测量覆盖。"""
+        self.ensurePolished()
         # Qt's stock sizeHintForRow may ignore wrapping under a stylesheet.
         # Measure against the final column width, including Chinese breakpoints.
         metrics = QFontMetrics(self.font())
