@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "equipeffi"
-version = "0.2.1"
+version = "0.2.2"
 description = "设备能效分析工具"
 requires-python = ">=3.12,<3.13"
 # 判定核心和标准资源使用Python标准库；桌面界面依赖由可选desktop组提供。

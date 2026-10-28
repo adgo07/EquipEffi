@@ -37,7 +37,7 @@ class MainWindow(QMainWindow):
             if transformer is not None
             else "设备能效分析工具 · GB 19762—2025 离心泵能效分析")
         if motor is not None:
-            self.setWindowTitle("设备能效分析工具 · 电动机接入验收候选")
+            self.setWindowTitle("设备能效分析工具 · 离心泵、变压器与电动机能效分析")
         self.resize(1000, 700)
         # 允许用户把窗口缩小；页面内容由各自的滚动区域承载，
         # 不得让内容的最小宽度把窗口锁在大尺寸上。

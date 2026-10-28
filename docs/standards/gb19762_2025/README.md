@@ -13,7 +13,7 @@
 | Golden及批准证据 | [water](../../../specs/equipment_efficiency/golden/pump_water/)、[chemical](../../../specs/equipment_efficiency/golden/pump_chemical/)、[批准记录](../../../specs/equipment_efficiency/golden/owner_approvals/) |
 | 软件支持与范围 | [V1_SCOPE](../../../V1_SCOPE.md)、[ROADMAP](../../../V1_SCOPE.md) |
 | 验收证据 | [Phase 3](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/docs/phase3_acceptance_record.md)、[Phase 5](https://github.com/adgo07/EquipEffi/blob/332d79c7d999feb4047c920ecb4359655bf9440e/docs/phase5_acceptance_record.md) |
-| 问题与解释 | [根台账](../../../STANDARD_ISSUES_REGISTER.md)：`EQP-STD-GB19762-001`；日期规则同时读取[AGENTS §2.7/2.8](../../../AGENTS.md) |
+| 问题与解释 | [根台账](../../../STANDARD_ISSUES_REGISTER.md)：`EQP-STD-GB19762-001`、`002`；附录A.2.2的2960已由Owner于2026-10-27确认误写，项目修正为2950并注明，见[主映射修正说明](STANDARD_MAPPING.md)；日期规则同时读取[AGENTS §2.7/2.8](../../../AGENTS.md) |
 
 ## 原文与数据边界
 

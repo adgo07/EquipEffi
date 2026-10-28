@@ -88,3 +88,35 @@ Owner提供只读验收结论，确认PR35代码与工程验收已达到可合�
 最新受验代码55d66f6d30df52e699a22f22bfb5da79e1da9178的Windows Core run40183041126成功：1191项，977.973秒，FAIL=0/ERROR=0/SKIP=0，Qt shutdown到达after、真实进程退出码0；Whitespace与Package/resource smoke均通过。此节取代前文“新Head CI待结果”的当前状态表述；后续本次收口提交只修改QA/实施记录/TASK_STATE，不修改任何运行代码或资产，运行验证证据继续锚定55d66f6d。
 
 交付要求：必须从PR35最终合并代码重新构建候选ZIP，并单独记录新包SHA、启动、批量输出及历史打开的实际检查。旧d03fe1cf候选不含本轮修复，不作为本轮交付成品。其Owner原生/WPS人工证据继续保留于原版本，不声称本次只读验收重新操作了窗口。最终候选检查不冒充干净Windows或正式发布；无干净Windows限制沿用已接受决定。构建清单/自检结果为产物旁车数据，不新增验收文档。
+
+
+## 三标准正式配置的源指纹修复（2026-10-28，PR #37）
+
+主会话回传0967694的完整Windows CI run40535623955：1228项、803.406秒，唯一失败为泵受审源码指纹常量未随共享注册元数据更新，Whitespace通过；此处不把失败CI登记为通过。
+
+独立按现有12文件、路径加NUL分隔、CRLF规范为LF的原规则对比已发布e140283与0967694：旧聚合值为`064c91cd346d6aff9c522f01c6ca3422392391807af6054cca93b6e574d56da0`，新值为`9877ee571463ade9169f48a40ec1dbcece6ef5b5e1fc6eed4b22dfaa196ba092`。唯一变化文件`domain/evaluation/evaluator_registry.py`仅将GB18613适配器的support_status由IMPLEMENTED提升SUPPORTED，符合本轮Owner授权；它被既有泵源码身份清单覆盖，因此泵来源身份也改变，不代表泵数值算法变化。
+
+清单其余11项逐文件字节一致（均相对`src/equipeffi/`）：`application/services/centrifugal_pump_analysis_service.py`、`application/result_projection.py`、`domain/common/enums.py`、`domain/common/models.py`、`domain/evaluation/decimal_math.py`、`domain/evaluation/device_evaluators.py`、`domain/evaluation/device_types.py`、`domain/evaluation/evaluators/pump.py`、`domain/evaluation/evaluators/shared.py`、`domain/evaluation/grading.py`、`application/services/pump_release_gate.py`。逐文件规范化SHA与唯一差异保存在`outputs/pr37-pump-fingerprint-20261028/source-fingerprint-review.json`。
+
+最小修复仅更新pump_calculator_version.py常量；不删注册依赖、不改散列规则、业务算法、Frozen/Canonical/Golden、模板、迁移或锁。新增真实隔离数据库测试：新记录保存新版本；旧064c91cd版本的顶层字段、references及完整快照重开均不改，不调用evaluate，重开前后数据库SHA相同。
+
+验证命令：`.venv/Scripts/python.exe tools/run_test_log.py outputs/pr37-pump-fingerprint-20261028/targeted.log .venv/Scripts/python.exe -m pytest -q tests/unit/test_simplification_c_service_integrity.py tests/unit/test_pump_numeric_contract_v2.py tests/unit/test_phase3_golden_and_boundaries.py tests/unit/test_phase4_fingerprint_decoupling.py`。TEMP/TMP置于该outputs目录下temp，QT_QPA_PLATFORM=offscreen；56项、134子测试通过，10.32秒，真实exit0。包含既有受审指纹断言、数值契约和Approved Golden回放，不删除或降低原断言。
+
+该修复属于生产来源元数据变更，之前构建的0.2.2候选须按新提交重建；新Head完整CI、合并和候选交付由主会话独立复核后推进。本轮仅本地提交，不推送或发布。125%缩放及干净Windows未验证的限制保持。
+
+主设计会话随后对07738c5独立复核：12文件逐项比较仅共享registry的电机支持状态一行变化，重新散列与新常量一致；独立运行`test_simplification_c_service_integrity`、`test_pump_numeric_contract_v2`、`test_phase2_approved_golden`、`test_three_standards_release`，35项、47子测试通过，19.94秒，真实exit0。日志为`D:/project/设备能效软件/EquipEffi_build_0.2.2_20261028/independent-fix-review.log`，逐文件指纹证据为同目录`fingerprint-review.json`。此补记仅追加既有记录，代码保持07738c5；新Head完整CI和候选重建由主会话继续，不据定向复验声明完整CI通过。
+
+## PR37合并前审查修复（2026-10-28）
+
+基线212d2a82615fd72c269454739eceb066a0e8d9de，origin已核实为adgo07/EquipEffi，默认master为e140283b；locked central SHA仍为ee5feb0cc34dbd99790500fadd0c4c932e202a20。按中央当前GUIDE_INDEX普通Bug路由，本任务不涉及中央公共Contract。不改Frozen/数值/单位/记录语义；适用MUST为保留兼容开关、如实区分候选与发布、异常形成审计诊断；MUST NOT为改标准解释/映射/Golden/模板字节/数据库或伪造源码身份。冲突分类LOCAL DEFECT，无需中央Contract变更。无新增Standard Issue，不改变EQP-STD-GB18613-009等既有解释；QA沿用QA-MOTOR-006。
+
+核实与处理：
+- AGENTS与标准总入口确实混用v0.2.1与0.2.2状态；改为发布时IMPLEMENTED、当前候选SUPPORTED且尚未发布，默认V6.2与旧模板兼容分开表达。TASK_STATE同步已取得的212d2a82 CI证据，不另建验收文档。
+- 先以外部EQUIPEFFI_ENABLE_MOTOR_CANDIDATE=0复现test_entrypoint原测试失败（V6.1 != V6.2，1 fail）。两组测试setUp只移除目标开关并在结束恢复完整环境，保留Windows系统变量；关闭开关用例覆盖真实status、V6.1下载、泵/变压器输出与历史，以及拒绝电机且不生成结果或新增批次。既有--motor-candidate覆盖显式0的兼容用例保留。
+- V6.1构造/validate并入独立异常捕获，错误写入JSON审计errors且继续检查旧V6；新增异常回归，旧测试名改为v62。
+- MSI三个默认版本字面量移除，统一从pyproject.toml读取，保留显式--version覆盖；测试核对实际WiX XML的版本。
+- motor_candidate_enabled名称与环境变量作为兼容入口暂不重命名，精确字符串1启用、0关闭的行为保持原样。本轮不扩充true/on等新解析规则；这不是已确认的业务缺陷。V1_SCOPE历史段落与泵源码身份覆盖范围按非阻断建议留待对应任务，不为维持旧哈希改散列规则。
+
+本轮运行时代码src及资源不变，既有候选包运行内容不因测试/审计工具修复而变化；新测试与旧包人工证据分别记录，不声称本轮重新进行Windows/WPS人工验收或正式发布。
+
+验证结果：外部开关0时，入口/真实批次/MSI/发布审计/三标准发布回归35项、14子测试通过（110.09秒，exit0）；开关未设置和1时，入口与真实批次各17项、12子测试通过（24.24秒、24.58秒，均exit0）。FAIL/ERROR/SKIP均0；三个运行各有1条pytest缓存目录权限警告，不影响测试结果。日志在outputs/pr37-review/{env0,unset,env1}.log，PYTHONPATH指向本工作树src与根，QT_QPA_PLATFORM=offscreen，TEMP/TMP为独立outputs临时目录。首次新增关闭回归把泵输出列写成V（限值）而非X（等级），该中间运行19通过/1失败；核对模板清单修正测试定位后，上述最终三组均通过，未更改产品写回逻辑。完整新Head CI须推送后独立核实，不套用212d2a82的1229项成功结果。

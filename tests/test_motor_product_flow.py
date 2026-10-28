@@ -13,10 +13,60 @@ from equipeffi.infrastructure.persistence.sqlite_batch_record_repository import 
 
 
 class MotorProductFlowTests(unittest.TestCase):
+    def setUp(self):
+        environment = patch.dict(os.environ)
+        environment.start()
+        self.addCleanup(environment.stop)
+        os.environ.pop("EQUIPEFFI_ENABLE_MOTOR_CANDIDATE", None)
+
+    def test_environment_disabled_batch_keeps_pump_transformer_and_rejects_motor(self):
+        from equipeffi.infrastructure.excel.template_resource import V62MotorTemplateResource
+
+        with tempfile.TemporaryDirectory() as directory, patch.dict(
+                os.environ, {"EQUIPEFFI_ENABLE_MOTOR_CANDIDATE": "0"}):
+            paths = AppDataPaths(Path(directory) / "data")
+            batch = create_batch_evaluation_service(paths=paths)
+            source = Path(directory) / "legacy.xlsx"
+            batch.template_resource.download_to(source)
+            self.assertEqual(batch.template_resource.validate().identity["template_version"], "V6.1")
+            workbook = load_workbook(source)
+            for sheet, quantity in (("离心泵", 2), ("变压器", 3)):
+                workbook[sheet]["D4"] = quantity
+                workbook[sheet]["F4"] = "其他类别"
+            workbook.save(source)
+            workbook.close()
+            result = batch.evaluate_workbook(source)
+            self.assertEqual(result.summary.total_quantity, 5)
+            self.assertEqual(result.summary.conclusion_quantities, {"不在范围": 5})
+            self.assertEqual(result.batch_record_error, "")
+            output = load_workbook(result.result_workbook, data_only=True)
+            self.assertEqual(output["离心泵"]["X4"].value, "不在范围")
+            self.assertEqual(output["变压器"]["R4"].value, "不在范围")
+            output.close()
+            saved = batch.batch_repository.list_batch_records()
+            self.assertEqual(len(saved), 1)
+            record = batch.batch_repository.load_batch_record(result.batch_record_id)
+            self.assertEqual(record.summary["total_quantity"], 5)
+
+            motor_source = Path(directory) / "motor.xlsx"
+            V62MotorTemplateResource().download_to(motor_source)
+            workbook = load_workbook(motor_source)
+            workbook["电动机"]["D4"] = 1
+            workbook["电动机"]["F4"] = "其他类别"
+            workbook.save(motor_source)
+            workbook.close()
+            before = motor_source.read_bytes()
+            destination = Path(directory) / "rejected.xlsx"
+            with self.assertRaisesRegex(ValueError, "未启用"):
+                batch.evaluate_workbook(motor_source, destination=destination)
+            self.assertFalse(destination.exists())
+            self.assertEqual(motor_source.read_bytes(), before)
+            self.assertEqual(len(batch.batch_repository.list_batch_records()), 1)
+
     def test_frequency_range_and_pole_scope_survive_excel_and_history(self):
         with tempfile.TemporaryDirectory() as directory:
             paths = AppDataPaths(Path(directory) / "data")
-            batch = create_batch_evaluation_service(paths=paths, motor_candidate=True)
+            batch = create_batch_evaluation_service(paths=paths)
             source = Path(directory) / "feedback.xlsx"
             batch.template_resource.download_to(source)
             workbook = load_workbook(source)
@@ -50,14 +100,15 @@ class MotorProductFlowTests(unittest.TestCase):
 
     def test_candidate_switch_alone_launches_desktop(self):
         from equipeffi.entrypoint import main
-        with patch.dict(os.environ, {}, clear=True), patch(
+        with patch.dict(os.environ, {"EQUIPEFFI_ENABLE_MOTOR_CANDIDATE": "0"}), patch(
                 "equipeffi.composition.launch_qt", return_value=0) as launch:
             self.assertEqual(main(["--motor-candidate"]), 0)
             launch.assert_called_once_with()
             self.assertTrue(motor_candidate_enabled())
 
-    def test_candidate_is_opt_in(self):
-        with patch.dict(os.environ, {}, clear=True):
+    def test_motor_defaults_on_and_legacy_environment_remains_compatible(self):
+        self.assertTrue(motor_candidate_enabled())
+        with patch.dict(os.environ, {"EQUIPEFFI_ENABLE_MOTOR_CANDIDATE": "0"}):
             self.assertFalse(motor_candidate_enabled())
         with patch.dict(os.environ, {"EQUIPEFFI_ENABLE_MOTOR_CANDIDATE": "1"}):
             self.assertTrue(motor_candidate_enabled())
@@ -65,7 +116,7 @@ class MotorProductFlowTests(unittest.TestCase):
     def test_only_unconnected_sheet_does_not_create_successful_batch(self):
         with tempfile.TemporaryDirectory() as directory:
             paths = AppDataPaths(Path(directory) / "data")
-            batch = create_batch_evaluation_service(paths=paths, motor_candidate=True)
+            batch = create_batch_evaluation_service(paths=paths)
             source = Path(directory) / "unsupported.xlsx"
             destination = Path(directory) / "result.xlsx"
             batch.template_resource.download_to(source)
@@ -82,7 +133,7 @@ class MotorProductFlowTests(unittest.TestCase):
     def test_three_device_batch_and_reimport_preserve_exact_result(self):
         with tempfile.TemporaryDirectory() as directory:
             paths = AppDataPaths(Path(directory) / "data")
-            batch = create_batch_evaluation_service(paths=paths, motor_candidate=True)
+            batch = create_batch_evaluation_service(paths=paths)
             source = Path(directory) / "input.xlsx"
             batch.template_resource.download_to(source)
             workbook = load_workbook(source)
