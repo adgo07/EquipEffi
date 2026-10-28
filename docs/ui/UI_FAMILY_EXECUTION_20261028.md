@@ -1,6 +1,6 @@
 # Qt 家族界面统一执行说明（2026-10-28）
 
-状态：实现候选，等待协调者独立验收；未创建PR、未合并、未发布，不改变Phase状态。
+状态：协调者有限范围源码UI终验通过；本轮仅提交PR，不自动合并或发布，不改变Phase状态。
 
 - 基线：`origin/master@e140283b110e77992099836fddcb34f018e01009`，已fetch并用远端HEAD核对默认分支master。原项目脏目录未修改。
 - 分支：`codex/ui-family-20261028`；隔离worktree由本任务创建，路径见交付消息（路径仅表示本机环境）。
@@ -60,3 +60,12 @@ $env:QT_QPA_PLATFORM='offscreen'; $env:PYTHONPATH='src'
 ```
 
 同轮收口：表内“查看”按钮改为32内容高度+上下各2边框，最终36 DIP，48 DIP普通行可容纳。现有长中文用例新增实际按钮高度断言；上述4项再验证全部通过，fail/error/skip=0，exit=0（18.42秒）。首显截图已验证长中文行自动增高至219 DIP，未在脚本中调用行高调整。
+
+
+## 有限范围源码终验结论（2026-10-28）
+
+协调者已审`709f90dea0ede4a184b5f21c664c0d49f1918eeb`差异及最终记录列表图，确认长中文全文完整、行内按钮36 DIP，授权push并创建PR，不合并。原定向125项/127子测试通过；协调者先前独立9项/4子测试通过；本次4项相关回归通过。协调者对最新长中文路径另独立复验：`python -m pytest tests/unit/test_ui_family_20261028.py -k long_chinese_table_rows -q --tb=short -p no:cacheprovider`，1 passed、8 deselected、77.70秒。以上为各次验证事实，不相加或冒称最终Head全量复验。
+
+最终四个离屏代表页为首页/记录列表/新建分析/记录详情，均1280×800、DPR=1，源代码Head为`709f90de`，生成于2026-10-28 18:08（北京时间）；长中文首显219 DIP、查看36 DIP、导航46 DIP、输入40 DIP、页签36 DIP。四图及SHA256元数据由协调会话保存：`C:/Users/WANGWEI/.codex/visualizations/2026/10/28/01a181a8-1c62-7070-88a6-067f02faf807/final-head-offscreen.json`。2×DPR证据仍为前述7项抽查，不声称四图是原生高DPI桌面截图。
+
+Astra曾成功启动可见EquipEffi窗口，但CU读取挂起，未实际完成交互；真实跨屏/掉屏操作和EXE未验。终验仅覆盖源码差异、相关离屏测试与代表图，不构成正式发布、支持状态提升或Phase 8 PASS。本节之后的提交仅更新该验收说明。
