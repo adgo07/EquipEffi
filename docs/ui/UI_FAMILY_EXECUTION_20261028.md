@@ -69,3 +69,9 @@ $env:QT_QPA_PLATFORM='offscreen'; $env:PYTHONPATH='src'
 最终四个离屏代表页为首页/记录列表/新建分析/记录详情，均1280×800、DPR=1，源代码Head为`709f90de`，生成于2026-10-28 18:08（北京时间）；长中文首显219 DIP、查看36 DIP、导航46 DIP、输入40 DIP、页签36 DIP。四图及SHA256元数据由协调会话保存：`C:/Users/WANGWEI/.codex/visualizations/2026/10/28/01a181a8-1c62-7070-88a6-067f02faf807/final-head-offscreen.json`。2×DPR证据仍为前述7项抽查，不声称四图是原生高DPI桌面截图。
 
 Astra曾成功启动可见EquipEffi窗口，但CU读取挂起，未实际完成交互；真实跨屏/掉屏操作和EXE未验。终验仅覆盖源码差异、相关离屏测试与代表图，不构成正式发布、支持状态提升或Phase 8 PASS。本节之后的提交仅更新该验收说明。
+
+## PR38 CI展示测试收口（2026-10-28）
+
+Windows Core run40670165514/job122754606813在ea61693c运行1234项，结果2 FAIL、1 ERROR（1096.228秒）：旧设置页替身缺header_row、批次详情仍断言Qt PlainText格式、变压器仍断言旧支持文案。只修两个测试文件，不改产品或业务代码：设置页替身补齐页头接口；批次详情解析实际QLabel HTML，验证文件名`<img src=x>.xlsx`按字面显示且无图片格式片段；变压器确认IMPLEMENTED、中文“已实现，待验收”、非正式支持并仍正确导航。批次历史、加载更多、刷新与数量语义断言全部保留。
+
+定向`python -m unittest tests.unit.test_batch_records_history tests.unit.test_transformer_qt -v`：14项通过，fail/error/skip=0，exit=0，17.867秒；git diff --check通过。更新同PR重触发既有CI；不得以这次本地14项冒称完整CI已通过。不增加截图或测试矩阵。

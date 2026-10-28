@@ -7,7 +7,8 @@ from unittest.mock import patch
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-from PySide6.QtWidgets import QApplication, QWidget
+from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout
+from PySide6.QtGui import QTextDocument
 
 from equipeffi.application.lifecycle import (
     AnalysisError,
@@ -64,6 +65,15 @@ def _snapshot(index: int) -> BatchRecordSnapshot:
 class _BarePage(QWidget):
     def __init__(self, *_args, **_kwargs):
         super().__init__()
+
+
+class _SettingsPageStub(_BarePage):
+    """设置页在新版Shell中提供标题/动作行，批次导航测试只替换其内容。"""
+    def __init__(self, *_args, **_kwargs):
+        super().__init__()
+        layout = QVBoxLayout(self)
+        self.header_row = QHBoxLayout()
+        layout.addLayout(self.header_row)
 
 
 class _SettingsStub:
@@ -145,9 +155,10 @@ class BatchRecordHistoryShellTests(unittest.TestCase):
         batch = _BatchServiceStub([_snapshot(1)])
         launch_context = object()
         patches = (
-            "HomePage", "StandardsPage", "AnalysisPage", "SettingsPage")
+            "HomePage", "StandardsPage", "AnalysisPage")
         with patch.multiple(
-                shell_module, **{name: _BarePage for name in patches}):
+                shell_module, SettingsPage=_SettingsPageStub,
+                **{name: _BarePage for name in patches}):
             window = MainWindow(
                 _SettingsStub(), _AnalysisServiceStub(), batch=batch,
                 external_launch_context=launch_context)
@@ -207,9 +218,21 @@ class BatchRecordHistoryPageTests(unittest.TestCase):
         self.assertIn("设备数量总计：2 台", detail)
         self.assertIn("完成正式评价数量：2 台", detail)
         self.assertIn("正式结论分布：1级 2 台", detail)
-        self.assertEqual(
-            page.batch_detail.textFormat().name, "PlainText")
+        self.assertEqual(page.batch_detail.textFormat().name, "RichText")
         self.assertIn("<img src=x>.xlsx", detail)
+        # ReadableDetail formats paragraphs, but the source filename must still
+        # display literally. Parse the actual QLabel HTML, not its plain API.
+        document = QTextDocument()
+        document.setHtml(QLabel.text(page.batch_detail))
+        self.assertIn("<img src=x>.xlsx", document.toPlainText())
+        block = document.begin()
+        while block.isValid():
+            fragment = block.begin()
+            while not fragment.atEnd():
+                self.assertFalse(fragment.fragment().charFormat().isImageFormat(),
+                                 "历史文件名不得被解释为HTML图片")
+                fragment += 1
+            block = block.next()
 
     def test_refresh_reloads_batch_records_without_changing_single_record_query(self):
         batch = _BatchServiceStub([_snapshot(index) for index in range(2)])
