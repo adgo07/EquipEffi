@@ -59,7 +59,7 @@ class UiFamilyStage1Tests(unittest.TestCase):
         self.window.open_home()
         self.assertTrue(self.window.sidebar.isHidden())
         self.window.open_settings()
-        self.assertFalse(self.window.sidebar.isHidden())
+        self.assertTrue(self.window.sidebar.isHidden())
         self.assertTrue(self.window.navigation.item(5).isHidden())
 
     def test_search_ime_filter_keyboard_and_back_preserve_context(self):
@@ -162,7 +162,7 @@ class UiFamilyStage1Tests(unittest.TestCase):
         self.window.open_analysis(standard_code="GB 19762-2025")
         self.app.processEvents()
         self.assertEqual(self.window.width(), 560)
-        self.assertEqual(self.window.sidebar.width(), 144)
+        self.assertEqual(self.window.sidebar.width(), 242)
         self.assertTrue(self.window.navigation.isVisible())
         scroll = self.window.analysis_page.findChild(QScrollArea)
         self.assertGreater(scroll.verticalScrollBar().maximum(), 0)

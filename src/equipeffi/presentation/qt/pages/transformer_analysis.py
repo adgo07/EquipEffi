@@ -16,6 +16,7 @@ from ....application.services.transformer_analysis_service import (
 )
 from ..labels import format_metric, user_grade_text
 from ..tokens import TOKENS
+from ..widgets.page_layout import page_gutter
 from ..style import heading
 from ..widgets.choice_combo import ChoiceComboBox
 from ..widgets.numeric_input import numeric_field, validate_numeric_fields, rejected_states, restore_rejection
@@ -57,16 +58,12 @@ class TransformerAnalysisPage(QWidget):
 
     def _build(self) -> None:
         outer = QVBoxLayout(self)
-        outer.setContentsMargins(*(TOKENS.page_margin,) * 4)
+        page_gutter(outer)
         outer.setSpacing(TOKENS.section_gap)
 
         heading = QLabel("新建分析")
         self.heading = heading
         heading.setObjectName("pageHeading")
-        font = heading.font()
-        font.setPixelSize(TOKENS.title_font_size)
-        font.setBold(True)
-        heading.setFont(font)
         outer.addWidget(heading)
         standard = self.service.standard_overview()
         standard_label = QLabel(
@@ -361,13 +358,13 @@ class TransformerAnalysisPage(QWidget):
         status = outcome.record_status
         if status == "SAVED":
             text = "本次分析已自动保存到分析记录。再次分析会生成新记录。"
-            color = "#1f6f3f"
+            color = "#168268"
         elif status == "SAVE_FAILED":
             text = "计算结果已产生，但历史记录保存失败，本次结果未被记录。"
-            color = "#a03020"
+            color = "#B9484A"
         else:
             text = "本次未形成可保存的正式结论。"
-            color = "#8a6d00"
+            color = "#956420"
         self.record_label.setText(text)
         self.record_label.setStyleSheet(f"color: {color};")
 
@@ -381,12 +378,13 @@ class DeviceAnalysisPage(QWidget):
         self.pump_page = pump_page
         self.transformer_page = transformer_page
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(*(TOKENS.page_margin,) * 4)
+        page_gutter(layout)
         layout.addWidget(heading("新建分析"))
         for page in (pump_page, transformer_page, motor_page):
             if page is not None and hasattr(page, "heading"):
                 page.heading.hide()
                 page.layout().setContentsMargins(0, 0, 0, 0)
+                page.removeEventFilter(page._page_gutter)
         selector_row = QHBoxLayout()
         selector_row.setSpacing(12)
         selector_row.addWidget(QLabel("分析设备"))
@@ -408,7 +406,7 @@ class DeviceAnalysisPage(QWidget):
         else:
             self.device_selector.addItem("电动机（尚未开放）", "motor_lv")
             self.device_selector.model().item(self.device_selector.count() - 1).setEnabled(False)
-            self.device_selector.setToolTip("电动机仅在显式装配的验收候选构建中开放。")
+            self.device_selector.setToolTip("当前暂未开放：电动机仅在显式装配的验收候选构建中开放。")
         layout.addWidget(self.pages, 1)
         self.device_selector.currentIndexChanged.connect(self.pages.setCurrentIndex)
         self.device_selector.setCurrentIndex(0)

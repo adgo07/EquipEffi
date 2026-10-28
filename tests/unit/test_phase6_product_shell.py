@@ -351,7 +351,7 @@ class HomePageTests(ProductShellTestCase):
         codes = [page.table.item(row, 0).text() for row in range(page.table.rowCount())]
         self.assertEqual(codes, [self.service.standard_overview()["standard_code"],
                                  transformer.standard_overview()["standard_code"]])
-        self.assertEqual(page.table.item(1, 4).text(), "已接入，待正式支持验收")
+        self.assertEqual(page.table.item(1, 4).text(), "已实现，待验收")
         page.open_detail(1)
         page.start_button.click()
         self.assertEqual(window.device_analysis_page.device_selector.currentData(), "transformer")

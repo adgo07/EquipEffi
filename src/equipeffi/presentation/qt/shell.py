@@ -5,7 +5,8 @@ import base64
 import binascii
 import logging
 
-from PySide6.QtCore import QByteArray, QTimer, QSize, Qt
+from PySide6.QtCore import QByteArray, QTimer, QSize, Qt, QRect
+from PySide6.QtGui import QGuiApplication, QCursor
 from PySide6.QtWidgets import (QHBoxLayout, QVBoxLayout, QListWidget, QMainWindow,
                               QStackedWidget, QWidget, QFrame, QLabel, QPushButton)
 
@@ -38,7 +39,10 @@ class MainWindow(QMainWindow):
             else "设备能效分析工具 · GB 19762—2025 离心泵能效分析")
         if motor is not None:
             self.setWindowTitle("设备能效分析工具 · 电动机接入验收候选")
-        self.resize(1000, 700)
+        self.resize(1280, 800)
+        self._settings_from_home = False
+        self._first_show = True
+        self._geometry_restored = False
         # 允许用户把窗口缩小；页面内容由各自的滚动区域承载，
         # 不得让内容的最小宽度把窗口锁在大尺寸上。
         self.setMinimumSize(560, 420)
@@ -75,7 +79,9 @@ class MainWindow(QMainWindow):
         self.settings_button = QPushButton("设置")
         self.settings_button.setCheckable(True)
         self.settings_button.setIcon(icon("settings"))
-        self.settings_button.clicked.connect(self.open_settings)
+        self.settings_button.setIconSize(QSize(18, 18))
+        self.settings_button.setObjectName("sidebarSettings")
+        self.settings_button.clicked.connect(lambda: self.open_settings(from_home=False))
         sidebar_layout.addWidget(self.settings_button)
         self.pages = QStackedWidget()
 
@@ -129,19 +135,31 @@ class MainWindow(QMainWindow):
             if widget is None and title != "首页":
                 self.navigation.item(PAGES.index(title)).setFlags(
                     self.navigation.item(PAGES.index(title)).flags() & ~Qt.ItemFlag.ItemIsEnabled)
+                self.navigation.item(PAGES.index(title)).setToolTip("当前暂未开放：此构建未装配对应服务。")
 
         layout.addWidget(self.sidebar)
         layout.addWidget(self.pages, 1)
         self.setCentralWidget(container)
         self.navigation.currentRowChanged.connect(self._on_navigation_changed)
         self.navigation.setCurrentRow(0)
-        self._restore("window.geometry", self.restoreGeometry)
+        self._geometry_restored = self._restore("window.geometry", self.restoreGeometry)
         self._restore("window.state", self.restoreState)
+        self.settings_home_button = QPushButton("返回首页")
+        self.settings_home_button.setProperty("role", "light")
+        self.settings_home_button.setIcon(icon("back"))
+        self.settings_home_button.clicked.connect(self.open_home)
+        self.settings_home_button.hide()
+        self.settings_page.header_row.addWidget(self.settings_home_button)
+        for screen in QGuiApplication.screens():
+            screen.availableGeometryChanged.connect(self._ensure_on_screen)
+        QGuiApplication.instance().screenRemoved.connect(self._ensure_on_screen)
 
     # -- 最小导航契约 -------------------------------------------------------
 
     def _on_navigation_changed(self, row: int) -> None:
-        self.sidebar.setVisible(row != 0)
+        self.sidebar.setVisible(row != 0 and not (row == 5 and self._settings_from_home))
+        if hasattr(self, "settings_home_button"):
+            self.settings_home_button.setVisible(row == 5 and self._settings_from_home)
         self.settings_button.setChecked(row == 5)
         self.pages.setCurrentIndex(row)
         widget = self.pages.currentWidget()
@@ -197,7 +215,7 @@ class MainWindow(QMainWindow):
 
     def resizeEvent(self, event):
         if hasattr(self, "sidebar"):
-            self.sidebar.setFixedWidth(144 if self.width() < 760 else TOKENS.navigation_width)
+            self.sidebar.setFixedWidth(TOKENS.navigation_width)
         super().resizeEvent(event)
 
     def open_records(self, record_id: str | None = None) -> None:
@@ -213,8 +231,11 @@ class MainWindow(QMainWindow):
         if self.records_page is not None:
             self.records_page.show_batch_record(batch_record_id)
 
-    def open_settings(self) -> None:
+    def open_settings(self, *, from_home=None) -> None:
+        self._settings_from_home = (self.navigation.currentRow() == 0 if from_home is None else from_home)
         self._show_page("设置")
+        self.sidebar.setVisible(not self._settings_from_home)
+        self.settings_home_button.setVisible(self._settings_from_home)
 
     # -- 窗口状态 -----------------------------------------------------------
 
@@ -227,8 +248,51 @@ class MainWindow(QMainWindow):
         except (ValueError, binascii.Error):
             logging.getLogger("equipeffi.qt").warning("窗口设置无效，使用默认窗口布局")
             return
-        if not restore(QByteArray(data)):
+        restored = restore(QByteArray(data))
+        if not restored:
             logging.getLogger("equipeffi.qt").warning("窗口设置无法恢复，使用默认窗口布局")
+
+        return bool(restored)
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        if self._first_show:
+            self._first_show = False
+            if self.windowHandle() is not None:
+                self.windowHandle().screenChanged.connect(self._ensure_on_screen)
+            # Native frame margins are reliable only after the first show.
+            QTimer.singleShot(0, self, self._ensure_on_screen)
+
+    def _ensure_on_screen(self, *_):
+        screens = QGuiApplication.screens()
+        if not screens:
+            return
+        current = QGuiApplication.screenAt(QCursor.pos()) or QGuiApplication.primaryScreen()
+        frame = self.frameGeometry()
+        screen = max(screens, key=lambda item: frame.intersected(item.availableGeometry()).width()
+                     * frame.intersected(item.availableGeometry()).height())
+        if not any(frame.intersects(item.availableGeometry()) for item in screens):
+            screen = current
+        if not self._geometry_restored:
+            screen = current
+        available = screen.availableGeometry()
+        extra_w = max(0, frame.width() - self.width())
+        extra_h = max(0, frame.height() - self.height())
+        self.setMinimumSize(min(560, max(1, available.width() - extra_w)),
+                            min(420, max(1, available.height() - extra_h)))
+        if self.isMaximized():
+            # Keep maximized restoration; Qt chooses the available work area.
+            return
+        desired = QRect(frame)
+        desired.setWidth(min(frame.width(), available.width()))
+        desired.setHeight(min(frame.height(), available.height()))
+        if not self._geometry_restored:
+            desired.moveCenter(available.center())
+        desired.moveLeft(max(available.left(), min(desired.left(), available.right() - desired.width() + 1)))
+        desired.moveTop(max(available.top(), min(desired.top(), available.bottom() - desired.height() + 1)))
+        self.resize(max(1, desired.width() - extra_w), max(1, desired.height() - extra_h))
+        self.move(desired.topLeft())
+        self._geometry_restored = True
 
     def _finish_deferred_close(self) -> None:
         """后台批量线程真正退出后，完成此前被拒绝的窗口关闭请求。"""

@@ -302,8 +302,8 @@ class R4Tests(unittest.TestCase):
                         break
                 self.assertEqual(table.horizontalScrollBar().maximum(), 0, (width, table.columnCount()))
                 self.assertEqual(sum(table.columnWidth(i) for i in range(table.columnCount())), table.viewport().width())
-                self.assertEqual(table.rowHeight(0), 40)
-                self.assertFalse(table.wordWrap())
+                self.assertGreaterEqual(table.rowHeight(0), 48)
+                self.assertTrue(table.wordWrap())
                 for column in range(table.columnCount()):
                     header = table.horizontalHeaderItem(column).text()
                     self.assertLessEqual(table.horizontalHeader().fontMetrics().horizontalAdvance(header) + 8,
@@ -318,7 +318,8 @@ class R4Tests(unittest.TestCase):
         index = next(i for i, row in enumerate(records._visible) if row.record_id == record.record_id)
         self.assertEqual(records.list.item(index, 0).text(), long_name)
         self.assertEqual(records.list.item(index, 0).toolTip(), long_name)
-        self.assertIn("…", records.list.fontMetrics().elidedText(long_name, Qt.TextElideMode.ElideRight, records.list.columnWidth(0) - 12))
+        self.assertEqual(records.list.textElideMode(), Qt.TextElideMode.ElideNone)
+        self.assertGreater(records.list.rowHeight(index), 48)
 
     def test_home_four_vertical_cards_empty_recent_table_and_navigation(self):
         self.window.resize(1000, 700)

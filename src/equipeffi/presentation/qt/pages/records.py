@@ -19,8 +19,10 @@ from ....application.services.centrifugal_pump_analysis_service import (
     CentrifugalPumpAnalysisService,
 )
 from ..tokens import TOKENS
+from ..widgets.page_layout import page_gutter
 from ..widgets.compact_table import CompactTable
 from ..style import heading, icon
+from ..widgets.readable_detail import ReadableDetail
 from ....application.services.centrifugal_pump_analysis_service import (
     PUMP_ANALYSIS_DETAIL_METRIC_IDS,
     PUMP_LEVEL_LIMIT_METRIC_IDS,
@@ -105,7 +107,7 @@ class RecordsPage(QWidget):
 
     def _build(self) -> None:
         outer = QVBoxLayout(self)
-        outer.setContentsMargins(*(TOKENS.page_margin,) * 4)
+        page_gutter(outer)
         self.stack = QStackedWidget()
         outer.addWidget(self.stack)
         listing = QWidget()
@@ -162,7 +164,6 @@ class RecordsPage(QWidget):
         single.addLayout(filters)
         self.filter_summary = QLabel()
         self.filter_summary.setWordWrap(True)
-        single.addWidget(self.filter_summary)
         self.list = self._table(["设备/项目", "设备类别", "采用标准", "结论", "评价日期", "操作"], [230, 240, 160, 100, 120, 90])
         self.list.setMinimumHeight(220)
         self.list.cellActivated.connect(lambda row, column: self._on_selected(row))
@@ -170,7 +171,10 @@ class RecordsPage(QWidget):
         single.addWidget(self.list, 1)
         self.load_more_button = QPushButton("加载更多")
         self.load_more_button.clicked.connect(self.load_more)
-        single.addWidget(self.load_more_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        footer = QHBoxLayout()
+        footer.addWidget(self.filter_summary, 1)
+        footer.addWidget(self.load_more_button)
+        single.addLayout(footer)
         self.lists.addWidget(self.single_tab)
         self.batch_tab = QWidget()
         batch_layout = QVBoxLayout(self.batch_tab)
@@ -182,7 +186,6 @@ class RecordsPage(QWidget):
         batch_layout.addWidget(self.batch_search)
         self.batch_summary = QLabel()
         self.batch_summary.setWordWrap(True)
-        batch_layout.addWidget(self.batch_summary)
         self.batch_list = self._table(["输入文件", "标准/设备", "数据行数", "设备台数", "处理摘要", "保存时间", "操作"], [220, 200, 100, 100, 210, 200, 90])
         self.batch_list.setMinimumHeight(220)
         self.batch_list.cellActivated.connect(lambda row, column: self._on_batch_selected(row))
@@ -190,7 +193,10 @@ class RecordsPage(QWidget):
         batch_layout.addWidget(self.batch_list, 1)
         self.batch_load_more_button = QPushButton("加载更多批次")
         self.batch_load_more_button.clicked.connect(self.load_more_batch_records)
-        batch_layout.addWidget(self.batch_load_more_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        batch_footer = QHBoxLayout()
+        batch_footer.addWidget(self.batch_summary, 1)
+        batch_footer.addWidget(self.batch_load_more_button)
+        batch_layout.addLayout(batch_footer)
         self.lists.addWidget(self.batch_tab)
         self.classification.idClicked.connect(self.lists.setCurrentIndex)
         layout.addWidget(self.lists, 1)
@@ -205,10 +211,13 @@ class RecordsPage(QWidget):
         detail_layout.setContentsMargins(0, 0, 0, 0)
         self.back_button = QPushButton("返回分析记录")
         self.back_button.setIcon(icon("back"))
+        self.back_button.setProperty("role", "light")
         self.back_button.clicked.connect(lambda: self.stack.setCurrentIndex(0))
-        detail_layout.addWidget(self.back_button, alignment=Qt.AlignmentFlag.AlignLeft)
         self.detail_heading = heading("记录详情")
-        detail_layout.addWidget(self.detail_heading)
+        detail_header = QHBoxLayout()
+        detail_header.addWidget(self.detail_heading, 1)
+        detail_header.addWidget(self.back_button)
+        detail_layout.addLayout(detail_header)
         self.detail_tabs = QTabWidget()
         self._detail_scrolls = []
         labels = []
@@ -217,10 +226,8 @@ class RecordsPage(QWidget):
             scroll.setWidgetResizable(True)
             body = QWidget()
             content = QVBoxLayout(body)
-            label = QLabel("请选择一条记录。")
+            label = ReadableDetail("请选择一条记录。")
             label.setWordWrap(True)
-            label.setTextFormat(Qt.TextFormat.PlainText)
-            label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
             label.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
             content.addWidget(label)
             content.addStretch()
@@ -246,8 +253,8 @@ class RecordsPage(QWidget):
         table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         table.setAlternatingRowColors(True)
-        table.setWordWrap(False)
-        table.verticalHeader().setMinimumSectionSize(40)
+        table.setWordWrap(True)
+        table.verticalHeader().setMinimumSectionSize(48)
         return table
 
     def _enter_detail(self, title):
