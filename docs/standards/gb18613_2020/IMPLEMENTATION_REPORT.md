@@ -103,3 +103,5 @@ Owner提供只读验收结论，确认PR35代码与工程验收已达到可合�
 验证命令：`.venv/Scripts/python.exe tools/run_test_log.py outputs/pr37-pump-fingerprint-20261028/targeted.log .venv/Scripts/python.exe -m pytest -q tests/unit/test_simplification_c_service_integrity.py tests/unit/test_pump_numeric_contract_v2.py tests/unit/test_phase3_golden_and_boundaries.py tests/unit/test_phase4_fingerprint_decoupling.py`。TEMP/TMP置于该outputs目录下temp，QT_QPA_PLATFORM=offscreen；56项、134子测试通过，10.32秒，真实exit0。包含既有受审指纹断言、数值契约和Approved Golden回放，不删除或降低原断言。
 
 该修复属于生产来源元数据变更，之前构建的0.2.2候选须按新提交重建；新Head完整CI、合并和候选交付由主会话独立复核后推进。本轮仅本地提交，不推送或发布。125%缩放及干净Windows未验证的限制保持。
+
+主设计会话随后对07738c5独立复核：12文件逐项比较仅共享registry的电机支持状态一行变化，重新散列与新常量一致；独立运行`test_simplification_c_service_integrity`、`test_pump_numeric_contract_v2`、`test_phase2_approved_golden`、`test_three_standards_release`，35项、47子测试通过，19.94秒，真实exit0。日志为`D:/project/设备能效软件/EquipEffi_build_0.2.2_20261028/independent-fix-review.log`，逐文件指纹证据为同目录`fingerprint-review.json`。此补记仅追加既有记录，代码保持07738c5；新Head完整CI和候选重建由主会话继续，不据定向复验声明完整CI通过。
