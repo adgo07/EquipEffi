@@ -154,7 +154,7 @@ class ReleaseAuditTests(unittest.TestCase):
         self.assertEqual(result.checks["pump_integer_stage_validation"], {"pump_water": "INVALID_INPUT", "pump_chemical": "INVALID_INPUT"})
         self.assertEqual(result.checks["pump_range_miss_context"], {"pump_water": True, "pump_chemical": True})
 
-    def test_current_template_gate_requires_v61_and_keeps_legacy_v6_pump_readable(self):
+    def test_current_template_gate_requires_v62_and_keeps_legacy_v6_pump_readable(self):
         warnings: list[str] = []
         checks: dict[str, object] = {}
         template_dir = ROOT / "src" / "equipeffi" / "resources" / "templates"
@@ -177,6 +177,17 @@ class ReleaseAuditTests(unittest.TestCase):
                          template_dir / DEFAULT_V6_TEMPLATE)
         self.assertTrue(any("V6.2产品版本" in error for error in legacy_errors))
         self.assertTrue(legacy_checks["legacy_v6_pump_template"]["is_valid"])
+
+    def test_legacy_v61_exception_is_reported_and_v6_audit_continues(self):
+        errors = []
+        checks = {}
+        template = ROOT / "src/equipeffi/resources/templates" / DEFAULT_V62_TEMPLATE
+        with patch("tools.audit_release.V61TransformerTemplateResource",
+                   side_effect=OSError("unreadable legacy template")):
+            _audit_workbooks(errors, [], checks, template)
+        self.assertTrue(any("旧V6.1变压器模板兼容检查异常: OSError" in error for error in errors))
+        self.assertTrue(checks["legacy_v6_pump_template"]["is_valid"])
+        json.dumps({"errors": errors, "checks": checks}, ensure_ascii=False)
 
     def test_transformer_release_audit_rejects_threshold_count_drift(self):
         pack, digest = load_transformer_pack()

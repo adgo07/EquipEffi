@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import tempfile
+import tomllib
 import unittest
 import xml.etree.ElementTree as ET
 
@@ -26,6 +27,10 @@ class MsiBuilderTests(unittest.TestCase):
             self.assertEqual(a["wix_source_sha256"], b["wix_source_sha256"])
             self.assertEqual(first.read_bytes(), second.read_bytes())
             root = ET.parse(first).getroot()
+            with (Path(__file__).resolve().parents[2] / "pyproject.toml").open("rb") as stream:
+                version = tomllib.load(stream)["project"]["version"]
+            self.assertEqual(a["version"], version)
+            self.assertEqual(root.find("{http://wixtoolset.org/schemas/v4/wxs}Package").get("Version"), version)
             self.assertEqual(sum(1 for item in root.iter() if item.tag.endswith("Component")), 2)
             self.assertIn("INSTALLFOLDER", first.read_text(encoding="utf-8"))
 

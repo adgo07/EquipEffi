@@ -445,11 +445,14 @@ def _audit_workbooks(
     except Exception as exc:
         errors.append(f"当前V6.2模板检查异常: {type(exc).__name__}: {exc}")
 
-    legacy_v61 = V61TransformerTemplateResource()
-    legacy_validation = legacy_v61.validate()
-    checks["legacy_v61_transformer_template"] = asdict(legacy_validation)
-    if not legacy_validation.is_valid:
-        errors.append("旧V6.1变压器模板契约校验失败")
+    try:
+        legacy_v61 = V61TransformerTemplateResource()
+        legacy_validation = legacy_v61.validate()
+        checks["legacy_v61_transformer_template"] = asdict(legacy_validation)
+        if not legacy_validation.is_valid:
+            errors.append("旧V6.1变压器模板契约校验失败")
+    except Exception as exc:
+        errors.append(f"旧V6.1变压器模板兼容检查异常: {type(exc).__name__}: {exc}")
 
     # The previously published pump-only workbook remains a readable input.
     # Keep this check separate from the current mixed-device template contract.

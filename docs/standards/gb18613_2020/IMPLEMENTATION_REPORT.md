@@ -105,3 +105,18 @@ Owner提供只读验收结论，确认PR35代码与工程验收已达到可合�
 该修复属于生产来源元数据变更，之前构建的0.2.2候选须按新提交重建；新Head完整CI、合并和候选交付由主会话独立复核后推进。本轮仅本地提交，不推送或发布。125%缩放及干净Windows未验证的限制保持。
 
 主设计会话随后对07738c5独立复核：12文件逐项比较仅共享registry的电机支持状态一行变化，重新散列与新常量一致；独立运行`test_simplification_c_service_integrity`、`test_pump_numeric_contract_v2`、`test_phase2_approved_golden`、`test_three_standards_release`，35项、47子测试通过，19.94秒，真实exit0。日志为`D:/project/设备能效软件/EquipEffi_build_0.2.2_20261028/independent-fix-review.log`，逐文件指纹证据为同目录`fingerprint-review.json`。此补记仅追加既有记录，代码保持07738c5；新Head完整CI和候选重建由主会话继续，不据定向复验声明完整CI通过。
+
+## PR37合并前审查修复（2026-10-28）
+
+基线212d2a82615fd72c269454739eceb066a0e8d9de，origin已核实为adgo07/EquipEffi，默认master为e140283b；locked central SHA仍为ee5feb0cc34dbd99790500fadd0c4c932e202a20。按中央当前GUIDE_INDEX普通Bug路由，本任务不涉及中央公共Contract。不改Frozen/数值/单位/记录语义；适用MUST为保留兼容开关、如实区分候选与发布、异常形成审计诊断；MUST NOT为改标准解释/映射/Golden/模板字节/数据库或伪造源码身份。冲突分类LOCAL DEFECT，无需中央Contract变更。无新增Standard Issue，不改变EQP-STD-GB18613-009等既有解释；QA沿用QA-MOTOR-006。
+
+核实与处理：
+- AGENTS与标准总入口确实混用v0.2.1与0.2.2状态；改为发布时IMPLEMENTED、当前候选SUPPORTED且尚未发布，默认V6.2与旧模板兼容分开表达。TASK_STATE同步已取得的212d2a82 CI证据，不另建验收文档。
+- 先以外部EQUIPEFFI_ENABLE_MOTOR_CANDIDATE=0复现test_entrypoint原测试失败（V6.1 != V6.2，1 fail）。两组测试setUp只移除目标开关并在结束恢复完整环境，保留Windows系统变量；关闭开关用例覆盖真实status、V6.1下载、泵/变压器输出与历史，以及拒绝电机且不生成结果或新增批次。既有--motor-candidate覆盖显式0的兼容用例保留。
+- V6.1构造/validate并入独立异常捕获，错误写入JSON审计errors且继续检查旧V6；新增异常回归，旧测试名改为v62。
+- MSI三个默认版本字面量移除，统一从pyproject.toml读取，保留显式--version覆盖；测试核对实际WiX XML的版本。
+- motor_candidate_enabled名称与环境变量作为兼容入口暂不重命名，精确字符串1启用、0关闭的行为保持原样。本轮不扩充true/on等新解析规则；这不是已确认的业务缺陷。V1_SCOPE历史段落与泵源码身份覆盖范围按非阻断建议留待对应任务，不为维持旧哈希改散列规则。
+
+本轮运行时代码src及资源不变，既有候选包运行内容不因测试/审计工具修复而变化；新测试与旧包人工证据分别记录，不声称本轮重新进行Windows/WPS人工验收或正式发布。
+
+验证结果：外部开关0时，入口/真实批次/MSI/发布审计/三标准发布回归35项、14子测试通过（110.09秒，exit0）；开关未设置和1时，入口与真实批次各17项、12子测试通过（24.24秒、24.58秒，均exit0）。FAIL/ERROR/SKIP均0；三个运行各有1条pytest缓存目录权限警告，不影响测试结果。日志在outputs/pr37-review/{env0,unset,env1}.log，PYTHONPATH指向本工作树src与根，QT_QPA_PLATFORM=offscreen，TEMP/TMP为独立outputs临时目录。首次新增关闭回归把泵输出列写成V（限值）而非X（等级），该中间运行19通过/1失败；核对模板清单修正测试定位后，上述最终三组均通过，未更改产品写回逻辑。完整新Head CI须推送后独立核实，不套用212d2a82的1229项成功结果。

@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
+import tomllib
 from typing import Any, Iterable, Sequence
 import xml.etree.ElementTree as ET
 
@@ -21,6 +22,11 @@ ROOT = Path(__file__).resolve().parents[1]
 WIX_NS = "http://wixtoolset.org/schemas/v4/wxs"
 ET.register_namespace("", WIX_NS)
 UPGRADE_CODE = "{6B2F0B7D-7B89-4B0C-9B0E-0CC9E7F1B3A8}"
+
+
+def _project_version() -> str:
+    with (ROOT / "pyproject.toml").open("rb") as stream:
+        return tomllib.load(stream)["project"]["version"]
 
 
 def _tag(name: str) -> str:
@@ -89,9 +95,10 @@ def _directory_tree(root: ET.Element, relative_dirs: Iterable[str]) -> dict[str,
     return mapping
 
 
-def generate_wix_source(native_dir: Path, wix_source: Path, *, version: str = "0.2.2") -> dict[str, Any]:
+def generate_wix_source(native_dir: Path, wix_source: Path, *, version: str | None = None) -> dict[str, Any]:
     """为已构建的 Windows onedir 目录生成 WiX v4 XML 源文件。"""
 
+    version = _project_version() if version is None else version
     native_dir = Path(native_dir).resolve()
     files = _safe_files(native_dir)
     root = ET.Element(_tag("Wix"))
@@ -175,7 +182,7 @@ def build_msi(
     *,
     wix_source: Path | None = None,
     report: Path | None = None,
-    version: str = "0.2.2",
+    version: str | None = None,
     wix_executable: str = "wix",
     dry_run: bool = False,
 ) -> MsiBuildResult:
@@ -229,7 +236,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, required=True, help="MSI输出路径")
     parser.add_argument("--wxs-output", type=Path, help="可选：WXS源输出路径")
     parser.add_argument("--report", type=Path, help="可选：构建报告路径")
-    parser.add_argument("--version", default="0.2.2")
+    parser.add_argument("--version", help="默认读取pyproject.toml中的项目版本")
     parser.add_argument("--wix", default="wix", help="WiX v4命令路径或名称")
     parser.add_argument("--dry-run", action="store_true", help="只生成WXS和报告，不调用WiX")
     args = parser.parse_args(argv)
