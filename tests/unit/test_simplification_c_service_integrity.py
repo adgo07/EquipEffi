@@ -344,6 +344,35 @@ class UserDisplayProjectionTests(unittest.TestCase):
 
 
 class PumpCalculatorVersionTests(unittest.TestCase):
+    def test_new_fingerprint_does_not_rewrite_saved_calculator_versions(self):
+        from equipeffi.composition import create_pump_analysis_service, create_records_runtime
+        from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
+
+        old_version = "pump-calculator:sha256:064c91cd346d6aff9c522f01c6ca3422392391807af6054cca93b6e574d56da0"
+        with tempfile.TemporaryDirectory() as directory:
+            paths = AppDataPaths(Path(directory))
+            service = create_pump_analysis_service(paths=paths)
+            request = PumpAnalysisRequest("单级单吸清水离心泵", date(2026, 10, 28),
+                QBEP="100", HBEP="50", speed="2900", efficiency="90", suction="单吸", stages="1")
+            current = service.analyze_and_record(request).record
+            self.assertIsNotNone(current)
+            self.assertEqual(current.calculator_version, PUMP_CALCULATOR_VERSION)
+            self.assertEqual(current.reference_snapshot["calculator_version"], PUMP_CALCULATOR_VERSION)
+            old_result = deepcopy(current.result_snapshot)
+            old_result["references"]["calculator_version"] = old_version
+            old_references = deepcopy(current.reference_snapshot)
+            old_references["calculator_version"] = old_version
+            older = replace(current, record_id="legacy-" + current.record_id,
+                            calculator_version=old_version, result_snapshot=old_result,
+                            reference_snapshot=old_references)
+            create_records_runtime(paths=paths)[1].append_record(older)
+            reopened_service = create_pump_analysis_service(paths=paths)
+            database_before = hashlib.sha256(paths.records_db.read_bytes()).hexdigest()
+            with patch.object(reopened_service, "evaluate", side_effect=AssertionError("history must not recalculate")):
+                for saved in (older, current):
+                    self.assertEqual(reopened_service.open_record(saved.record_id), saved)
+            self.assertEqual(hashlib.sha256(paths.records_db.read_bytes()).hexdigest(), database_before)
+
     def test_source_fingerprint_declares_grading_numeric_and_range_dependencies(self):
         required_sources = {
             "src/equipeffi/application/result_projection.py",

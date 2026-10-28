@@ -88,3 +88,18 @@ Owner提供只读验收结论，确认PR35代码与工程验收已达到可合�
 最新受验代码55d66f6d30df52e699a22f22bfb5da79e1da9178的Windows Core run40183041126成功：1191项，977.973秒，FAIL=0/ERROR=0/SKIP=0，Qt shutdown到达after、真实进程退出码0；Whitespace与Package/resource smoke均通过。此节取代前文“新Head CI待结果”的当前状态表述；后续本次收口提交只修改QA/实施记录/TASK_STATE，不修改任何运行代码或资产，运行验证证据继续锚定55d66f6d。
 
 交付要求：必须从PR35最终合并代码重新构建候选ZIP，并单独记录新包SHA、启动、批量输出及历史打开的实际检查。旧d03fe1cf候选不含本轮修复，不作为本轮交付成品。其Owner原生/WPS人工证据继续保留于原版本，不声称本次只读验收重新操作了窗口。最终候选检查不冒充干净Windows或正式发布；无干净Windows限制沿用已接受决定。构建清单/自检结果为产物旁车数据，不新增验收文档。
+
+
+## 三标准正式配置的源指纹修复（2026-10-28，PR #37）
+
+主会话回传0967694的完整Windows CI run40535623955：1228项、803.406秒，唯一失败为泵受审源码指纹常量未随共享注册元数据更新，Whitespace通过；此处不把失败CI登记为通过。
+
+独立按现有12文件、路径加NUL分隔、CRLF规范为LF的原规则对比已发布e140283与0967694：旧聚合值为`064c91cd346d6aff9c522f01c6ca3422392391807af6054cca93b6e574d56da0`，新值为`9877ee571463ade9169f48a40ec1dbcece6ef5b5e1fc6eed4b22dfaa196ba092`。唯一变化文件`domain/evaluation/evaluator_registry.py`仅将GB18613适配器的support_status由IMPLEMENTED提升SUPPORTED，符合本轮Owner授权；它被既有泵源码身份清单覆盖，因此泵来源身份也改变，不代表泵数值算法变化。
+
+清单其余11项逐文件字节一致（均相对`src/equipeffi/`）：`application/services/centrifugal_pump_analysis_service.py`、`application/result_projection.py`、`domain/common/enums.py`、`domain/common/models.py`、`domain/evaluation/decimal_math.py`、`domain/evaluation/device_evaluators.py`、`domain/evaluation/device_types.py`、`domain/evaluation/evaluators/pump.py`、`domain/evaluation/evaluators/shared.py`、`domain/evaluation/grading.py`、`application/services/pump_release_gate.py`。逐文件规范化SHA与唯一差异保存在`outputs/pr37-pump-fingerprint-20261028/source-fingerprint-review.json`。
+
+最小修复仅更新pump_calculator_version.py常量；不删注册依赖、不改散列规则、业务算法、Frozen/Canonical/Golden、模板、迁移或锁。新增真实隔离数据库测试：新记录保存新版本；旧064c91cd版本的顶层字段、references及完整快照重开均不改，不调用evaluate，重开前后数据库SHA相同。
+
+验证命令：`.venv/Scripts/python.exe tools/run_test_log.py outputs/pr37-pump-fingerprint-20261028/targeted.log .venv/Scripts/python.exe -m pytest -q tests/unit/test_simplification_c_service_integrity.py tests/unit/test_pump_numeric_contract_v2.py tests/unit/test_phase3_golden_and_boundaries.py tests/unit/test_phase4_fingerprint_decoupling.py`。TEMP/TMP置于该outputs目录下temp，QT_QPA_PLATFORM=offscreen；56项、134子测试通过，10.32秒，真实exit0。包含既有受审指纹断言、数值契约和Approved Golden回放，不删除或降低原断言。
+
+该修复属于生产来源元数据变更，之前构建的0.2.2候选须按新提交重建；新Head完整CI、合并和候选交付由主会话独立复核后推进。本轮仅本地提交，不推送或发布。125%缩放及干净Windows未验证的限制保持。
