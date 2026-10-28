@@ -21,9 +21,15 @@ from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
 
 
 class ThreeStandardsReleaseTests(unittest.TestCase):
+    def setUp(self):
+        environment = patch.dict(os.environ)
+        environment.start()
+        self.addCleanup(environment.stop)
+        os.environ.pop('EQUIPEFFI_ENABLE_MOTOR_CANDIDATE', None)
+
     def test_default_desktop_assembles_all_three_services_and_v62(self):
         from equipeffi.composition import launch_qt
-        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {}, clear=True), patch(
+        with tempfile.TemporaryDirectory() as directory, patch(
                 'equipeffi.presentation.qt.app.run', return_value=0) as run:
             self.assertEqual(launch_qt(paths=AppDataPaths(Path(directory))), 0)
             self.assertEqual(run.call_count, 1)
@@ -35,7 +41,7 @@ class ThreeStandardsReleaseTests(unittest.TestCase):
             self.assertIsNotNone(services['batch'].motor)
 
     def test_formal_singles_mixed_batch_reimport_and_old_snapshots(self):
-        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {}, clear=True):
+        with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             paths = AppDataPaths(root / 'data')
             pump = create_pump_analysis_service(paths=paths)
@@ -103,7 +109,7 @@ class ThreeStandardsReleaseTests(unittest.TestCase):
             self.assertEqual(pump.list_records(), before)
 
     def test_default_service_evaluates_legacy_v6_and_v61_without_changing_input(self):
-        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {}, clear=True):
+        with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             batch = create_batch_evaluation_service(paths=AppDataPaths(root / 'data'))
             for index, resource in enumerate((V6TemplateResource(), V61TransformerTemplateResource())):
