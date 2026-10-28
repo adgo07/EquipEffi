@@ -119,6 +119,7 @@ class UiFamily20261028Tests(unittest.TestCase):
         self.assertTrue(table.wordWrap())
         self.assertEqual(table.textElideMode(), Qt.TextElideMode.ElideNone)
         self.assertTrue(table.cellWidget(0, table.columnCount()-1).isEnabled())
+        self.assertEqual(table.cellWidget(0, table.columnCount()-1).height(), 36)
         records.show_record(record_id)
         self.assertEqual(records.detail_tabs.count(), 2)
         self.assertIn(name, records.detail.text())

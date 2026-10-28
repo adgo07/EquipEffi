@@ -58,3 +58,5 @@ Knowledge capture：无。
 $env:QT_QPA_PLATFORM='offscreen'; $env:PYTHONPATH='src'
 & 'G:/Python Project/EquipEffi/.venv/Scripts/python.exe' -m pytest tests/unit/test_ui_family_20261028.py::UiFamily20261028Tests::test_long_chinese_table_rows_grow_and_keep_actions tests/unit/test_ui_family_r4.py::R4Tests::test_tables_fit_all_columns_compact_and_preserve_full_long_text tests/unit/test_ui_family_stage2.py::UiFamilyStage2Tests::test_small_record_list_has_complete_row_and_mouse_keyboard_roundtrips tests/unit/test_ui_family_stage2.py::UiFamilyStage2Tests::test_single_older_than_100_and_batch_global_search_older_than_50 -q --tb=short
 ```
+
+同轮收口：表内“查看”按钮改为32内容高度+上下各2边框，最终36 DIP，48 DIP普通行可容纳。现有长中文用例新增实际按钮高度断言；上述4项再验证全部通过，fail/error/skip=0，exit=0（18.42秒）。首显截图已验证长中文行自动增高至219 DIP，未在脚本中调用行高调整。

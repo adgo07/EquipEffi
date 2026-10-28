@@ -22,7 +22,7 @@ class CompactTable(QTableWidget):
             self.horizontalHeaderItem(index).setToolTip(title)
         self.setStyleSheet("QTableWidget {font-size:13px;} QTableWidget::item {padding:5px;} "
             "QHeaderView::section {padding:7px 4px; font-size:13px;} "
-            "QPushButton {min-height:24px; max-height:24px; padding:0 6px; font-size:13px;}")
+            "QPushButton {min-height:32px; max-height:32px; padding:0 6px; font-size:13px;}")
         self.fit_content_height = False
         self._fit_timer = QTimer(self)
         self._fit_timer.setSingleShot(True)
