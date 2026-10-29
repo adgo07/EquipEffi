@@ -61,6 +61,8 @@ class UiFamily20261028Tests(unittest.TestCase):
             self.assertFalse([m for m in messages if "setMaximumSize" in m], messages)
             for card in self.window.home_page.task_buttons:
                 self.assertGreaterEqual(card.height(), 150)
+                self.assertGreater(card.maximumHeight(), 150)
+                self.assertLess(card.geometry().bottom(), self.window.home_page.recent_card.geometry().top())
         finally:
             qInstallMessageHandler(previous)
 

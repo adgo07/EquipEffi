@@ -122,7 +122,8 @@ QPushButton[role="danger"]:pressed { background:#F7DCDC; }
 QPushButton:focus, QPushButton[primary="true"]:focus, QPushButton[role="light"]:focus, QPushButton[role="danger"]:focus { border:2px solid #298CCB; }
 QPushButton:disabled, QPushButton[primary="true"]:disabled, QPushButton[role="light"]:disabled, QPushButton[role="danger"]:disabled { color:#698198; background:#F0F4F8; border-color:#DAE7F1; }
 QPushButton#sidebarSettings { min-height:42px; max-height:42px; text-align:left; font-size:13px; font-weight:600; border-radius:9px; }
-QPushButton#taskCard { text-align:left; background:white; border-radius:14px; padding:0; min-height:150px; }
+/* Override the ordinary button cap; leave room for borders below Qt's size limit. */
+QPushButton#taskCard { text-align:left; background:white; border-radius:14px; padding:0; min-height:150px; max-height:100000px; }
 QPushButton#taskCard:hover { background:#EDF6FD; }
 QPushButton#taskCard:pressed { background:#D6EBF9; }
 QPushButton#taskCard[primary="true"] { background:qlineargradient(x1:0,y1:0,x2:1,y2:1,stop:0 #174E7C,stop:1 #116FAE); color:white; }
