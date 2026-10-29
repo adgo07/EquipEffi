@@ -53,7 +53,7 @@ class MotorAnalysisPage(QWidget):
             self.category.addItem(item.label, item.category_id)
         searchable_categories(self.category)
         category_layout.addWidget(self.category)
-        hint = QLabel("效率填写1～100的百分数点值，如85%填85。请填额定输出功率下实测效率；铭牌效率不能替代实测值。")
+        hint = QLabel("按额定效率评价。效率填写1～100的百分数点值，如85%填85；额定电压以V填写，如380。")
         hint.setWordWrap(True)
         category_layout.addWidget(hint)
         self.scope_hint = QLabel()
@@ -65,9 +65,6 @@ class MotorAnalysisPage(QWidget):
         self.fields_form.setRowWrapPolicy(QFormLayout.RowWrapPolicy.WrapLongRows)
         self.fields_form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
         layout.addWidget(self.fields_group)
-        self.efficiency_group = QGroupBox("实测效率与口径")
-        self.efficiency_form = field_form(self.efficiency_group)
-        layout.addWidget(self.efficiency_group)
         self.evaluate_button = QPushButton("分析")
         self.evaluate_button.setProperty("primary", True)
         self.evaluate_button.clicked.connect(self.evaluate)
@@ -106,8 +103,8 @@ class MotorAnalysisPage(QWidget):
         self._on_category_changed()
 
     def resizeEvent(self, event):
-        if hasattr(self, "efficiency_form"):
-            responsive_forms([self.fields_form, self.efficiency_form], self.width())
+        if hasattr(self, "fields_form"):
+            responsive_forms([self.fields_form], self.width())
         super().resizeEvent(event)
 
     def _mark_stale(self, *_):
@@ -123,7 +120,7 @@ class MotorAnalysisPage(QWidget):
             self._category_values[self._editing_category] = {
                 key: control.currentData() if isinstance(control, QComboBox) else control.text()
                 for key, control in self.field_inputs.items()}
-        for form in (self.fields_form, self.efficiency_form):
+        for form in (self.fields_form,):
             while form.rowCount():
                 form.removeRow(0)
         self.field_inputs.clear()
@@ -133,10 +130,8 @@ class MotorAnalysisPage(QWidget):
         if not category:
             self.scope_hint.clear()
             self.fields_group.hide()
-            self.efficiency_group.hide()
             return
-        self.scope_hint.setText("\n".join((f"已选类别：{self.category.currentText()}", self.contract.scope_hint(category),
-                                           self.contract.efficiency_basis_hint(category))))
+        self.scope_hint.setText("\n".join((f"已选类别：{self.category.currentText()}", self.contract.scope_hint(category))))
         for field in self.contract.visible_fields(category):
             label = field.label + ("（必填）" if field.required else "")
             if field.unit:
@@ -152,7 +147,7 @@ class MotorAnalysisPage(QWidget):
             else:
                 widget = QLineEdit()
                 if field.field_id != "user_note":
-                    mode = {"measured_efficiency_pct": "motor_percent", "poles": "even",
+                    mode = {"rated_efficiency_pct": "motor_percent", "poles": "even",
                             "rated_frequency_hz": "frequency"}.get(field.field_id, "positive")
                     numeric_field(widget, field.label, mode, motor_field=field.field_id)
                 widget.setPlaceholderText("请输入" if field.required else "可选")
@@ -161,8 +156,7 @@ class MotorAnalysisPage(QWidget):
                 elif field.field_id == "poles":
                     widget.setPlaceholderText("正偶数，如2、4、10；表外极数按不在范围处理")
             widget.setObjectName(f"motorField_{field.field_id}")
-            form = self.efficiency_form if field.field_id in {"measured_efficiency_pct", "efficiency_basis_status"} else self.fields_form
-            field_row(form, label, widget)
+            field_row(self.fields_form, label, widget)
             previous = self._category_values.get(category, {}).get(field.field_id)
             if previous is not None:
                 if isinstance(widget, QComboBox):
@@ -173,13 +167,12 @@ class MotorAnalysisPage(QWidget):
             (widget.currentIndexChanged if isinstance(widget, QComboBox) else widget.textChanged).connect(self._mark_stale)
             self.field_inputs[field.field_id] = widget
         self.fields_group.setVisible(self.fields_form.rowCount() > 0)
-        self.efficiency_group.setVisible(self.efficiency_form.rowCount() > 0)
 
     def _collect_values(self):
         category = selected_category(self.category)
         if not category:
             raise ValueError("请先选择设备类别。")
-        values = {"category_id": category}
+        values = {"category_id": category, "input_contract_revision": "motor-input.v3"}
         for key, widget in self.field_inputs.items():
             value = widget.currentData() if isinstance(widget, QComboBox) else widget.text()
             if value is not None and str(value).strip():

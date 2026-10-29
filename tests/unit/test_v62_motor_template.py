@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import posixpath
 from pathlib import Path
+import runpy
 import tempfile
 import unittest
 from xml.etree import ElementTree as ET
@@ -14,7 +15,7 @@ from equipeffi.domain.devices.motor.input_contract import (
     MOTOR_CATEGORIES,
     scope_hint,
     efficiency_basis_hint,
-    visible_fields,
+    legacy_visible_fields,
 )
 from equipeffi.domain.devices.motor.calculator import Gb18613MotorCalculator
 from equipeffi.infrastructure.excel.ooxml_reader import OOXMLReadError, OOXMLWorkbook
@@ -249,7 +250,7 @@ class V62MotorTemplateTests(unittest.TestCase):
         field_map = {field["field_id"]: field for field in motor["fields"]
                      if field.get("field_id")}
         for category in MOTOR_CATEGORIES:
-            visible = {field.field_id for field in visible_fields(category.category_id)}
+            visible = {field.field_id for field in legacy_visible_fields(category.category_id)}
             self.assertEqual(
                 category.category_id in field_map["rated_voltage_kv"]["required_for_categories"],
                 "rated_voltage_kv" in visible)
@@ -273,6 +274,15 @@ class V62MotorTemplateTests(unittest.TestCase):
         self.assertEqual([label for _code, label in BASIS_OPTIONS],
                          ["按上述口径填报", "仅有铭牌效率", "已知试验工况不符合",
                           "驱动不可分离但仅有电机本体效率（仅表6）", "效率口径不确定"])
+
+    def test_legacy_v62_builder_replays_registered_asset_after_domain_v3(self):
+        builder = runpy.run_path(str(ROOT / "tools" / "build_v62_motor_template.py"))
+        with tempfile.TemporaryDirectory(prefix="equipeffi-v62-replay-") as directory:
+            digest, size = builder["build"](
+                output=Path(directory) / DEFAULT_V62_TEMPLATE,
+                update_manifest=False)
+        self.assertEqual(digest, V62_TEMPLATE_ENTRY["asset_sha256"])
+        self.assertEqual(size, V62_TEMPLATE_ENTRY["asset_size_bytes"])
 
     def test_frequency_and_poles_use_free_entry_controls(self):
         with ZipFile(self.template) as archive:

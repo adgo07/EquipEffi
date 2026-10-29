@@ -62,7 +62,7 @@ class NumericValidator(QValidator):
         if self.mode in {"pump_percent", "motor_percent"} and number > 100:
             return "不能超过100%"
         if self.mode == "motor_percent" and number < 1:
-            return "实测效率须为1%至100%"
+            return "额定效率须为1%至100%"
         return None
 
     def validate(self, text, position):

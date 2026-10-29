@@ -1,5 +1,9 @@
 # EquipEffi QA_BACKLOG
 
+### QA-MOTOR-004：额定效率与V单位输入（OPEN，2026-10-29）
+
+Owner明确软件不负责实测，电机新评价采用额定效率，Qt删除实测口径组，效率并入额定参数，额定电压用V。影响Qt、新派生V6.3和同核输入；旧V6.2继续按kV及原实测口径解析，历史只读不重算。先登记EQP-STD-MOTOR-009软件决定，再实现新旧字段显式区分、精确V/kV换算及边界回归；不改批准映射/阈值/Golden/数据库/锁。高压和永磁只开展Stage B设计。
+
 本页仅登记当前仍需跟踪的工程风险与已登记偏差；详细历史处置不在这里重复归档。
 
 **当前状态：** Phase 1–7 保持已记录的独立验收状态；Phase 8 为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`，不得自行标为 PASS。Phase 0B = `NOT_EXECUTED`；当前无获准的 Phase 1 Hotfix。

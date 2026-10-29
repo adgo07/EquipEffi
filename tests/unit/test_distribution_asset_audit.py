@@ -156,6 +156,7 @@ class DistributionAssetAuditTests(unittest.TestCase):
             (package / "resources" / "templates" / "设备能效分析空白模板_重构版V6_20261005.xlsx").write_bytes(b"v6")
             (package / "resources" / "templates" / "设备能效分析空白模板_重构版V6_1.xlsx").write_bytes(b"v61")
             (package / "resources" / "templates" / "设备能效分析空白模板_重构版V6_2.xlsx").write_bytes(b"v62")
+            (package / "resources" / "templates" / "设备能效分析空白模板_重构版V6_3.xlsx").write_bytes(b"v63")
             (package / "resources" / "knowledge" / "README.md").write_text("draft", encoding="utf-8")
             output = build_zipapp(root, root / "dist" / "test.pyz")
             with zipfile.ZipFile(output) as archive:
@@ -164,6 +165,7 @@ class DistributionAssetAuditTests(unittest.TestCase):
         self.assertIn("equipeffi/resources/standards/gb20052_2024_v21.json", names)
         self.assertIn("equipeffi/resources/standards/gb18613_2020.json", names)
         self.assertIn("equipeffi/resources/templates/设备能效分析空白模板_重构版V6_2.xlsx", names)
+        self.assertIn("equipeffi/resources/templates/设备能效分析空白模板_重构版V6_3.xlsx", names)
         self.assertIn("equipeffi/resources/templates/设备能效分析空白模板_重构版V6_1.xlsx", names)
         self.assertIn("equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx", names)
         self.assertNotIn("equipeffi/resources/templates/设备能效分析空白模板_重构版V4_20260825.xlsx", names)

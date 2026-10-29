@@ -82,15 +82,15 @@ class UiFamilyStage2Tests(unittest.TestCase):
         self.window.open_analysis(standard_code="GB 18613-2020")
         motor = self.window.motor_analysis_page
         motor.category.setCurrentIndex(motor.category.findData("three_phase_induction"))
-        self._fill(motor, dict(rated_voltage_kv="0.38", rated_frequency_hz="50",
-            rated_output_power_kw="0.14", poles="4", measured_efficiency_pct="71.43"))
-        self.assertIsNone(motor.field_inputs["efficiency_basis_status"].currentData())
+        self._fill(motor, dict(rated_voltage_v="380", rated_frequency_hz="50",
+            rated_output_power_kw="0.14", poles="4", rated_efficiency_pct="71.43"))
+        self.assertNotIn("efficiency_basis_status", motor.field_inputs)
         motor.evaluate()
         self.assertEqual(motor.last_record_status, "SAVED")
         self.window.records_page.show_record(motor.last_saved_record_id)
         self.assertNotIn("AS_DECLARED_BY_FIELD", self.window.records_page.inputs_detail.text())
-        self.assertIn("按字段要求填报", self.window.records_page.inputs_detail.text())
-        motor.field_inputs["measured_efficiency_pct"].setText("72")
+        self.assertIn("额定效率（%）：71.43", self.window.records_page.inputs_detail.text())
+        motor.field_inputs["rated_efficiency_pct"].setText("72")
         self.assertFalse(motor.stale_label.isHidden())
         self.assertTrue(motor.view_record_button.isHidden())
         self.window.open_analysis(standard_code="GB 20052-2024")

@@ -222,8 +222,8 @@ class R4Tests(unittest.TestCase):
         self.window.open_analysis(standard_code="GB 18613-2020")
         page = self.window.motor_analysis_page
         page.category.setCurrentIndex(page.category.findData("three_phase_induction"))
-        self._fill(page, dict(rated_output_power_kw="0.14", rated_voltage_kv="0.38",
-                              poles="4", measured_efficiency_pct="71.43"))
+        self._fill(page, dict(rated_output_power_kw="0.14", rated_voltage_v="380",
+                              poles="4", rated_efficiency_pct="71.43"))
         edit = page.field_inputs["rated_frequency_hz"]
         page.findChild(QScrollArea).ensureWidgetVisible(edit, 0, 20)
         QTest.qWait(80)

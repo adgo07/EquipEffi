@@ -5,7 +5,8 @@ import tempfile
 import unittest
 from pathlib import Path
 from PySide6.QtCore import QCoreApplication, QEvent
-from PySide6.QtWidgets import QApplication, QComboBox, QLineEdit
+from PySide6.QtWidgets import QApplication, QComboBox, QLineEdit, QGroupBox
+from equipeffi.application.services.motor_analysis_service import MotorAnalysisRequest
 from equipeffi.composition import create_motor_analysis_service, create_pump_analysis_service
 from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
 from equipeffi.presentation.qt.pages.motor_analysis import MotorAnalysisPage
@@ -33,9 +34,9 @@ class MotorQtTests(unittest.TestCase):
             try:
                 page.category.setCurrentIndex(page.category.findData("three_phase_induction"))
                 self.assertIsInstance(page.field_inputs["poles"], QLineEdit)
-                for key, value in dict(rated_voltage_kv="0.38", rated_frequency_hz="5～120",
+                for key, value in dict(rated_voltage_v="380", rated_frequency_hz="5～120",
                                        rated_output_power_kw="0.14", poles="4",
-                                       measured_efficiency_pct="71.43").items():
+                                       rated_efficiency_pct="71.43").items():
                     page.field_inputs[key].setText(value)
                 self.assertEqual(page.evaluate().ui_conclusion, "不在范围")
                 self.assertEqual(page.last_record_status, "SAVED")
@@ -71,9 +72,9 @@ class MotorQtTests(unittest.TestCase):
                 for condition in ("单速", "封闭自扇冷", "N设计", "连续工作制"):
                     self.assertIn(condition, page.scope_hint.text())
                 self.assertFalse(page.scope_hint.isHidden())
-                for key, value in dict(rated_voltage_kv="0.38", rated_frequency_hz="50",
+                for key, value in dict(rated_voltage_v="380", rated_frequency_hz="50",
                                        rated_output_power_kw="0.14", poles="4",
-                                       measured_efficiency_pct="71.43").items():
+                                       rated_efficiency_pct="71.43").items():
                     widget = page.field_inputs[key]
                     if isinstance(widget, QComboBox):
                         index = next(i for i in range(widget.count()) if str(widget.itemData(i)) == value)
@@ -97,7 +98,11 @@ class MotorQtTests(unittest.TestCase):
                 self.assertIn("三相异步电动机", restored)
                 self.assertNotIn("three_phase_induction", restored)
                 self.assertNotIn("AS_DECLARED_BY_FIELD", restored)
-                self.assertIn("按字段要求填报", restored)
+                self.assertIn("额定效率", restored)
+                self.assertIn("额定电压（V）：380", restored)
+                self.assertNotIn("efficiency_basis_status", page.field_inputs)
+                self.assertNotIn("实测效率与口径", [group.title() for group in page.findChildren(QGroupBox)])
+                self.assertTrue(page.fields_group.isAncestorOf(page.field_inputs["rated_efficiency_pct"]))
                 self.assertNotIn("软件状态：已接入，尚待正式支持验收。", restored)
                 self.assertEqual(result.support_status, "SUPPORTED")
                 snapshot = default_history.service.open_record(page._last_outcome.record.record_id)
@@ -123,6 +128,23 @@ class MotorQtTests(unittest.TestCase):
                 _dispose_widget(records)
                 _dispose_widget(page)
 
+    def test_legacy_record_keeps_measured_label_and_kv_without_recalculation(self):
+        from hashlib import sha256
+        with tempfile.TemporaryDirectory() as directory:
+            paths = AppDataPaths(Path(directory))
+            service = create_motor_analysis_service(paths=paths)
+            outcome = service.analyze_and_record(MotorAnalysisRequest(dict(
+                category_id="three_phase_induction", rated_voltage_kv="0.38", rated_frequency_hz="50",
+                rated_output_power_kw="0.14", poles="4", measured_efficiency_pct="71.43")))
+            page = RecordsPage(create_pump_analysis_service(paths=paths), motor=service)
+            try:
+                before = sha256(paths.records_db.read_bytes()).hexdigest()
+                text = page.show_record(outcome.record.record_id)
+                self.assertIn("额定电压（kV）：0.38", text)
+                self.assertIn("实测效率", text)
+                self.assertEqual(sha256(paths.records_db.read_bytes()).hexdigest(), before)
+            finally:
+                _dispose_widget(page)
     def test_candidate_shell_routes_motor_and_displays_standard(self):
         from equipeffi.composition import create_settings_runtime, create_transformer_analysis_service
         from equipeffi.presentation.qt.shell import MainWindow

@@ -11,6 +11,38 @@
   "acceptance_policy": "Exact business outputs; no business epsilon. Threshold display rounding is presentation-only.",
   "vectors": [
     {
+      "case_id": "MOTOR-NUM-RATED-V-TO-KV",
+      "category": "unit_conversion",
+      "numeric_contract_version": "v1",
+      "numeric_profile_id": "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1",
+      "authority_scope": "motor_lv",
+      "inputs": {
+        "category_id": "three_phase_induction",
+        "input_contract_revision": "motor-input.v3",
+        "rated_output_power_kw": "0.12",
+        "rated_voltage_v": "380",
+        "rated_frequency_hz": "50",
+        "poles": "2",
+        "rated_efficiency_pct": "71.4"
+      },
+      "provenance": {
+        "source_id": "GB 18613-2020 / EQP-STD-MOTOR-009",
+        "source_path": "STANDARD_ISSUES_REGISTER.md",
+        "locator": "Owner rated-input decision 2026-10-29; table 1 B6; 380 V = 0.380 kV exactly"
+      },
+      "expected_business_result": {
+        "evaluation_status": "SUCCESS",
+        "grade": "1",
+        "ui_conclusion": "1级",
+        "table_id": "GB18613-T01",
+        "branch_id": "poles_2",
+        "method": "DIRECT",
+        "normalized_power_w": "120",
+        "normalized_voltage_kv": "0.380",
+        "grade_1_exact": {"numerator": "357", "denominator": "5", "unit": "percent_point"}
+      }
+    },
+    {
       "case_id": "MOTOR-NUM-DIRECT-EQUALITY",
       "category": "exact_comparison",
       "numeric_contract_version": "v1",

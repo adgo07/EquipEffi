@@ -1,4 +1,4 @@
-"""统一V6/V6.1/V6.2工作簿Reader；只读正式输入列，不解释标准阈值。"""
+"""统一V6/V6.1/V6.2/V6.3工作簿Reader；只读输入列，不解释标准阈值。"""
 from __future__ import annotations
 
 from pathlib import Path
@@ -21,6 +21,7 @@ from .ooxml_reader import OOXMLReadError, OOXMLWorkbook
 from .pump_workbook_reader import V6PumpWorkbookReader
 from .template_resource import (
     MOTOR_SHEET_CONTRACT,
+    MOTOR_V63_SHEET_CONTRACT,
     TEMPLATE_MANIFEST,
     TRANSFORMER_SHEET_CONTRACT,
     validate_v6_template,
@@ -39,6 +40,11 @@ _TRANSFORMER_INPUT_FIELDS = {
 _MOTOR_INPUT_FIELDS = {
     str(field["column"]): field
     for field in MOTOR_SHEET_CONTRACT["fields"]
+    if field.get("role") == "input"
+}
+_MOTOR_V63_INPUT_FIELDS = {
+    str(field["column"]): field
+    for field in MOTOR_V63_SHEET_CONTRACT["fields"]
     if field.get("role") == "input"
 }
 _DATE_SENSITIVE_INPUT_COLUMNS = frozenset({
@@ -172,6 +178,29 @@ def _motor_values(row: list[Any]) -> dict[str, Any]:
     }
 
 
+def _motor_v63_values(row: list[Any]) -> dict[str, Any]:
+    raw_category = _cell(row, "F")
+    category = _MOTOR_CATEGORY_BY_LABEL.get(str(raw_category)) if raw_category else None
+    category_id = category.category_id if category else raw_category
+    return {
+        "device_name": _cell(row, "B"),
+        "model": _cell(row, "C"),
+        "quantity": _cell(row, "D"),
+        "location": _cell(row, "E"),
+        "category_id": category_id,
+        "rated_voltage_v": _cell(row, "G"),
+        "rated_frequency_hz": _cell(row, "H"),
+        "efficiency_basis_status": "RATED_NAMEPLATE",
+        "input_contract_revision": "motor-input.v3",
+        "rated_output_power_kw": _cell(row, "J"),
+        "poles": _cell(row, "K"),
+        "max_nameplate_speed_rpm": _cell(row, "L"),
+        "rated_efficiency_pct": _cell(row, "M"),
+        "photo": _cell(row, "R"),
+        "user_note": _cell(row, "S"),
+    }
+
+
 def _motor_source_input_errors_by_row(cell_metadata) -> dict[int, tuple[tuple[str, str], ...]]:
     grouped: dict[int, list[tuple[str, str]]] = {}
     for reference, metadata in cell_metadata.items():
@@ -181,6 +210,47 @@ def _motor_source_input_errors_by_row(cell_metadata) -> dict[int, tuple[tuple[st
         column = match.group(1)
         row_number = int(match.group(2))
         field = _MOTOR_INPUT_FIELDS.get(column)
+        if field is None:
+            continue
+        label = str(field.get("label") or column)
+        address = f"{column}{row_number}（{label}）"
+        if metadata.has_formula:
+            grouped.setdefault(row_number, []).append(
+                (column, f"{address}含有公式，请填写固定输入值后重试。"))
+        if metadata.cell_type == "e":
+            detail = f"（{metadata.raw_value}）" if metadata.raw_value else ""
+            grouped.setdefault(row_number, []).append(
+                (column, f"{address}含有Excel错误值{detail}，请修正后重试。"))
+        if (metadata.is_date and column in _MOTOR_DATE_SENSITIVE_INPUT_COLUMNS
+                and metadata.raw_value != ""):
+            grouped.setdefault(row_number, []).append(
+                (column, f"{address}被识别为日期或时间格式，请填写固定业务值后重试。"))
+        if (column == "M" and metadata.is_percentage
+                and metadata.raw_value != ""):
+            grouped.setdefault(row_number, []).append((
+                column,
+                f"{address}使用了百分比单元格格式，请取消该格式并按普通数值填写"
+                "（例如90，不要输入90%）。"))
+    return {row: tuple(errors) for row, errors in grouped.items()}
+
+
+def _motor_v63_source_input_errors_by_row(
+        cell_metadata) -> dict[int, tuple[tuple[str, str], ...]]:
+    grouped: dict[int, list[tuple[str, str]]] = {}
+    for reference, metadata in cell_metadata.items():
+        match = re.fullmatch(r"([A-Z]+)([1-9][0-9]*)", reference)
+        if match is None:
+            continue
+        column = match.group(1)
+        row_number = int(match.group(2))
+        if column == "I":
+            if metadata.has_formula or metadata.cell_type == "e":
+                grouped.setdefault(row_number, []).append((
+                    column,
+                    f"I{row_number}（已停用字段）在V6.3中必须留空；"
+                    "若该值是旧版效率口径信息，请改用V6.2模板导入后再整理。"))
+            continue
+        field = _MOTOR_V63_INPUT_FIELDS.get(column)
         if field is None:
             continue
         label = str(field.get("label") or column)
@@ -217,6 +287,14 @@ def _motor_value_key_for_column(column: str) -> tuple[str, ...]:
     return (key,)
 
 
+def _motor_v63_value_key_for_column(column: str) -> tuple[str, ...]:
+    field = _MOTOR_V63_INPUT_FIELDS.get(column)
+    if field is None:
+        return ()
+    key = str(field.get("field_id") or "")
+    return (key,) if key else ()
+
+
 class TransformerWorkbookReader:
     """读取已登记统一模板的「变压器」Sheet为Application批量输入行。"""
 
@@ -226,8 +304,9 @@ class TransformerWorkbookReader:
         validation = validate_v6_template(source, check_pump_sheet=False)
         if not validation.is_valid:
             raise OOXMLReadError(validation.message)
-        if validation.identity.get("template_version") not in {"V6.1", "V6.2"}:
-            raise OOXMLReadError("当前工作簿的变压器Sheet尚未接入；请使用V6.1或V6.2模板")
+        if validation.identity.get("template_version") not in {"V6.1", "V6.2", "V6.3"}:
+            raise OOXMLReadError(
+                "当前工作簿的变压器Sheet尚未接入；请使用V6.1、V6.2或V6.3模板")
 
         contract = TRANSFORMER_SHEET_CONTRACT
         input_columns = set(_TRANSFORMER_INPUT_FIELDS)
@@ -271,7 +350,7 @@ class TransformerWorkbookReader:
 
 
 class MotorWorkbookReader:
-    """读取V6.2「电动机」输入，不根据型号或残留列推断类别。"""
+    """读取V6.2旧口径或V6.3铭牌额定「电动机」输入。"""
 
     def read(self, source: Path, *, template_identity: dict[str, str] | None = None
              ) -> BatchSourceWorkbook:
@@ -279,16 +358,27 @@ class MotorWorkbookReader:
         validation = validate_v6_template(source, check_pump_sheet=False)
         if not validation.is_valid:
             raise OOXMLReadError(validation.message)
-        if validation.identity.get("template_version") != "V6.2":
-            raise OOXMLReadError("电动机Sheet仅在V6.2模板中接通")
+        version = (validation.identity or {}).get("template_version")
+        if version == "V6.2":
+            contract = MOTOR_SHEET_CONTRACT
+            values_from_row = _motor_values
+            errors_from_cells = _motor_source_input_errors_by_row
+            key_for_column = _motor_value_key_for_column
+        elif version == "V6.3":
+            contract = MOTOR_V63_SHEET_CONTRACT
+            values_from_row = _motor_v63_values
+            errors_from_cells = _motor_v63_source_input_errors_by_row
+            key_for_column = _motor_v63_value_key_for_column
+        else:
+            raise OOXMLReadError("电动机Sheet仅在V6.2或V6.3模板中接通")
 
-        contract = MOTOR_SHEET_CONTRACT
-        input_columns = set(_MOTOR_INPUT_FIELDS)
+        input_columns = set(_MOTOR_INPUT_FIELDS if version == "V6.2"
+                            else _MOTOR_V63_INPUT_FIELDS) | {"I"}
         with OOXMLWorkbook(source) as workbook:
             grid = workbook.rows(str(contract["sheet_name"]))
             cell_metadata = workbook.cell_metadata(
                 str(contract["sheet_name"]), columns=input_columns)
-        source_errors_by_row = _motor_source_input_errors_by_row(cell_metadata)
+        source_errors_by_row = errors_from_cells(cell_metadata)
         header_index = int(contract["header_row"]) - 1
         if header_index < 0 or header_index >= len(grid):
             raise OOXMLReadError("「电动机」Sheet缺少正式表头行")
@@ -297,12 +387,24 @@ class MotorWorkbookReader:
         blank = 0
         for row_number, raw in enumerate(grid[header_index + 1:],
                                          start=header_index + 2):
-            values = _motor_values(raw)
-            source_errors = source_errors_by_row.get(row_number, ())
+            values = values_from_row(raw)
+            source_errors = list(source_errors_by_row.get(row_number, ()))
+            if (version == "V6.3" and _cell(raw, "I") not in (None, "")
+                    and not any(column == "I" for column, _message in source_errors)):
+                source_errors.append((
+                    "I",
+                    f"I{row_number}（已停用字段）在V6.3中必须留空；"
+                    "若该值是旧版效率口径信息，请改用V6.2模板导入后再整理。"))
             for column, _message in source_errors:
-                for key in _motor_value_key_for_column(column):
+                for key in key_for_column(column):
                     values[key] = ""
-            if _is_blank(values) and not source_errors:
+            blank_values = values
+            if version == "V6.3":
+                blank_values = {
+                    key: value for key, value in values.items()
+                    if key not in {"efficiency_basis_status", "input_contract_revision"}
+                }
+            if _is_blank(blank_values) and not source_errors:
                 blank += 1
                 continue
             rows.append(BatchSourceRow(

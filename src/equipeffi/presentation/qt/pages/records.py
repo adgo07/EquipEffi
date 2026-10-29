@@ -679,7 +679,7 @@ class RecordsPage(QWidget):
                  f"评价结论：{result.get('ui_conclusion') or snapshot.ui_conclusion}"]
         if result.get("support_status") == "IMPLEMENTED":
             lines.append("软件状态：已接入，尚待正式支持验收。")
-        for field in contract.visible_fields(category):
+        for field in contract.snapshot_fields(category, inputs):
             value = inputs.get(field.field_id)
             if value is None or value == "":
                 continue
@@ -818,7 +818,8 @@ class RecordsPage(QWidget):
             known = next((item for item in contract.categories if item.category_id == category), None)
             if known:
                 basic[1] = f"设备类别：{known.label}"
-                for field in contract.visible_fields(category):
+                display_fields = contract.snapshot_fields(category, inputs) if device == "motor_lv" else contract.visible_fields(category)
+                for field in display_fields:
                     value = inputs.get(field.field_id)
                     if value not in (None, ""):
                         if field.field_id == "standard_conditions":
@@ -846,7 +847,9 @@ class RecordsPage(QWidget):
                         basic.append(f"{key[-1]}级效率限值：{threshold.get('display_text', absent)}%")
                     elif isinstance(threshold, dict) and threshold.get("state") == "NO_INDICATOR":
                         basic.append(f"{key[-1]}级效率限值：—（标准无指标）")
-                if inputs.get("measured_efficiency_pct") is not None:
+                if inputs.get("rated_efficiency_pct") is not None:
+                    basic.append(f"额定效率：{inputs['rated_efficiency_pct']}%")
+                elif inputs.get("measured_efficiency_pct") is not None:
                     basic.append(f"实测效率：{inputs['measured_efficiency_pct']}%")
                 basis = format_motor_basis_lines(result.get("trace", ()))
         else:
