@@ -351,7 +351,7 @@ class HomePageTests(ProductShellTestCase):
         codes = [page.table.item(row, 0).text() for row in range(page.table.rowCount())]
         self.assertEqual(codes, [self.service.standard_overview()["standard_code"],
                                  transformer.standard_overview()["standard_code"]])
-        self.assertEqual(page.table.item(1, 4).text(), "已实现，待验收")
+        self.assertEqual(page.table.item(1, 4).text(), "正式支持")
         page.open_detail(1)
         page.start_button.click()
         self.assertEqual(window.device_analysis_page.device_selector.currentData(), "transformer")
@@ -731,10 +731,10 @@ class SettingsPageTests(ProductShellTestCase):
         self.assertIn(pump["standard_name"], about)
         self.assertIn(transformer_overview["standard_code"], about)
         self.assertIn(transformer_overview["name"], about)
-        self.assertEqual(transformer_overview["support_status"], "IMPLEMENTED")
-        self.assertIn("已接入，尚待正式支持验收", about)
+        self.assertEqual(transformer_overview["support_status"], "SUPPORTED")
+        self.assertNotIn("已接入，尚待正式支持验收", about)
         self.assertNotIn("IMPLEMENTED", about)
-        self.assertNotIn("本版本已正式支持", about)
+        self.assertIn("本版本已正式支持", about)
         self.assertNotIn("草稿", page.runtime.text())
 
     def test_settings_content_is_reachable_in_a_small_window(self):
@@ -758,7 +758,7 @@ class SettingsPageTests(ProductShellTestCase):
             scroll.horizontalScrollBar().maximum(), 0,
             "小窗口应换行显示内容，不应依赖水平滚动来读完整文本",
         )
-        self.assertIn("尚待正式支持验收", page.about.text())
+        self.assertIn("本版本已正式支持", page.about.text())
         self.assertIn("运行日志存放于 logs 子目录", page.runtime.text())
         self.assertFalse(page.runtime_section.is_expanded())
         page.runtime_section.set_expanded(True)

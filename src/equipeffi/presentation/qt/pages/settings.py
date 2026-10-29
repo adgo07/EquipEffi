@@ -205,7 +205,7 @@ class SettingsPage(QWidget):
                 status_text = "当前状态以软件记录为准"
             lines.append(f"电力变压器软件状态：{status_text}")
         if self.motor_service is not None:
-            lines.append("电动机：GB 18613-2020（接入验收候选）")
+            lines.append("电动机：GB 18613-2020（本版本已正式支持）")
         self.about.setText("\n".join(lines))
 
         # 普通用户不得看到内部机器键名（last.directory / window.geometry /

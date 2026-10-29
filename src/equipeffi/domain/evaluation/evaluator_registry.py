@@ -67,7 +67,7 @@ class Gb18613EvaluatorAdapter:
             explanation=result.explanation,
             public_device_type="motor",
             internal_device_type="motor_lv",
-            support_status="IMPLEMENTED",
+            support_status="SUPPORTED",
             evaluation_status=result.evaluation_status,
             grade=result.grade,
             issue_codes=list(result.reason_codes),

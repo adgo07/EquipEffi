@@ -10,7 +10,7 @@ UI 只显示中文文案，不泄露内部英文枚举值。
 `NOT_IN_RELEASE_SCOPE` 枚举**继续保留**：它仍用于
 
 - Phase 3/4 期间已固化的历史 Record（快照里存的就是当时的值，显示即为当时事实）；
-- 其他未发布 Profile（如 `transformer`）；
+- 其他未发布 Profile（如高压、永磁电动机）；
 - 已登记的发布表面 deviation（遗留 JSON / Web / V4 等非正式入口）。
 """
 from __future__ import annotations

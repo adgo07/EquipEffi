@@ -28,8 +28,8 @@ from tools.build_portable_bundle import BundleResult
 from tools.check_distribution_assets import runtime_asset_members
 from equipeffi.infrastructure.excel.template_resource import (
     DEFAULT_V6_TEMPLATE,
-    DEFAULT_V61_TEMPLATE,
-    V61_TEMPLATE_IDENTITY,
+    DEFAULT_V62_TEMPLATE,
+    V62_TEMPLATE_IDENTITY,
 )
 from equipeffi.infrastructure.standards.transformer_repository import load_transformer_pack
 
@@ -136,35 +136,35 @@ class ReleaseAuditTests(unittest.TestCase):
         self.assertTrue(result.checks["wheel_distribution_asset_audit"]["is_valid"])
         self.assertEqual(
             result.checks["wheel_headless_stdout"],
-            "headless-pumps-v6.1-transformer-v2.1-ok",
+            "headless-pumps-v6.2-transformer-v2.1-motor-ok",
         )
         self.assertTrue(result.checks["wheel_status"]["ready"])
         self.assertTrue(result.checks["wheel_status"]["desktop"]["available"])
-        self.assertEqual(result.checks["wheel_status"]["template"]["template_version"], "V6.1")
-        self.assertEqual(result.checks["wheel_status"]["transformer"]["support_status"], "IMPLEMENTED")
+        self.assertEqual(result.checks["wheel_status"]["template"]["template_version"], "V6.2")
+        self.assertEqual(result.checks["wheel_status"]["transformer"]["support_status"], "SUPPORTED")
         self.assertEqual(
             result.checks["transformer_pack"]["counts"],
             {"tables": 35, "threshold_rows": 589, "threshold_values": 3534},
         )
-        self.assertEqual(result.checks["transformer_implementation"]["support_status"], "IMPLEMENTED")
+        self.assertEqual(result.checks["transformer_implementation"]["support_status"], "SUPPORTED")
         self.assertTrue(result.checks["template"]["is_valid"])
-        self.assertEqual(result.checks["template_identity"], V61_TEMPLATE_IDENTITY)
+        self.assertEqual(result.checks["template_identity"], V62_TEMPLATE_IDENTITY)
         self.assertTrue(result.checks["legacy_v6_pump_template"]["is_valid"])
         self.assertEqual(result.checks["pump_profiles"].keys(), {"pump_water", "pump_chemical"})
         self.assertEqual(result.checks["pump_integer_stage_validation"], {"pump_water": "INVALID_INPUT", "pump_chemical": "INVALID_INPUT"})
         self.assertEqual(result.checks["pump_range_miss_context"], {"pump_water": True, "pump_chemical": True})
 
-    def test_current_template_gate_requires_v61_and_keeps_legacy_v6_pump_readable(self):
+    def test_current_template_gate_requires_v62_and_keeps_legacy_v6_pump_readable(self):
         warnings: list[str] = []
         checks: dict[str, object] = {}
         template_dir = ROOT / "src" / "equipeffi" / "resources" / "templates"
         errors: list[str] = []
 
-        _audit_workbooks(errors, warnings, checks, template_dir / DEFAULT_V61_TEMPLATE)
+        _audit_workbooks(errors, warnings, checks, template_dir / DEFAULT_V62_TEMPLATE)
 
         self.assertEqual(errors, [])
-        self.assertEqual(checks["template_identity"]["template_version"], "V6.1")
-        self.assertEqual(set(checks["template_unified_sheets"]), {"离心泵", "变压器"})
+        self.assertEqual(checks["template_identity"]["template_version"], "V6.2")
+        self.assertEqual(set(checks["template_unified_sheets"]), {"离心泵", "变压器", "电动机"})
         self.assertTrue(checks["legacy_v6_pump_template"]["is_valid"])
         self.assertEqual(
             checks["legacy_v6_pump_template"]["identity"]["template_version"],
@@ -175,8 +175,19 @@ class ReleaseAuditTests(unittest.TestCase):
         legacy_checks: dict[str, object] = {}
         _audit_workbooks(legacy_errors, warnings, legacy_checks,
                          template_dir / DEFAULT_V6_TEMPLATE)
-        self.assertTrue(any("V6.1产品版本" in error for error in legacy_errors))
+        self.assertTrue(any("V6.2产品版本" in error for error in legacy_errors))
         self.assertTrue(legacy_checks["legacy_v6_pump_template"]["is_valid"])
+
+    def test_legacy_v61_exception_is_reported_and_v6_audit_continues(self):
+        errors = []
+        checks = {}
+        template = ROOT / "src/equipeffi/resources/templates" / DEFAULT_V62_TEMPLATE
+        with patch("tools.audit_release.V61TransformerTemplateResource",
+                   side_effect=OSError("unreadable legacy template")):
+            _audit_workbooks(errors, [], checks, template)
+        self.assertTrue(any("旧V6.1变压器模板兼容检查异常: OSError" in error for error in errors))
+        self.assertTrue(checks["legacy_v6_pump_template"]["is_valid"])
+        json.dumps({"errors": errors, "checks": checks}, ensure_ascii=False)
 
     def test_transformer_release_audit_rejects_threshold_count_drift(self):
         pack, digest = load_transformer_pack()

@@ -1,4 +1,4 @@
-"""GB18613验收候选单台页面；输入和选项来自Application契约。"""
+"""GB18613正式单台页面；输入和选项来自Application契约。"""
 from datetime import date
 import logging
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout, QLabel, QHBoxLayout,
@@ -28,7 +28,7 @@ class MotorAnalysisPage(QWidget):
         self.last_record_status = None
         outer = QVBoxLayout(self)
         page_gutter(outer)
-        heading = QLabel("电动机分析 · 接入验收候选")
+        heading = QLabel("电动机分析")
         self.heading = heading
         heading.setObjectName("pageHeading")
         outer.addWidget(heading)
@@ -214,7 +214,7 @@ class MotorAnalysisPage(QWidget):
         self._last_result, self._last_outcome = result, outcome
         self.last_record_status = outcome.record_status
         self.conclusion.setText(result.ui_conclusion)
-        self.summary.setText("电动机接入验收候选，尚未宣布正式支持。")
+        self.summary.setText("本版本正式支持GB 18613-2020表1至表6。")
         lines = []
         for grade in (1, 2, 3):
             threshold = result.thresholds.get(f"grade_{grade}", {})

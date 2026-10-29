@@ -3,6 +3,7 @@ from __future__ import annotations
 from contextlib import redirect_stdout
 from io import StringIO
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -12,6 +13,25 @@ from equipeffi.entrypoint import main
 
 
 class EntrypointTests(unittest.TestCase):
+    def setUp(self):
+        environment = patch.dict(os.environ)
+        environment.start()
+        self.addCleanup(environment.stop)
+        os.environ.pop("EQUIPEFFI_ENABLE_MOTOR_CANDIDATE", None)
+
+    def test_explicit_motor_disable_reports_v61_and_other_devices_available(self):
+        output = StringIO()
+        with patch.dict(os.environ, {"EQUIPEFFI_ENABLE_MOTOR_CANDIDATE": "0"}), redirect_stdout(output):
+            result = main(["--status"])
+        status = json.loads(output.getvalue())
+        self.assertEqual(result, 0)
+        self.assertTrue(status["ready"])
+        self.assertFalse(status["motor"]["enabled"])
+        self.assertEqual(status["template"]["template_version"], "V6.1")
+        self.assertTrue(status["template"]["available"])
+        self.assertTrue(status["transformer"]["available"])
+        self.assertTrue(all(p["available"] for p in status["pump_profiles"].values()))
+
     def test_no_arguments_launch_qt(self):
         with patch("equipeffi.composition.launch_qt", return_value=0) as launch:
             self.assertEqual(main([]), 0)
@@ -43,9 +63,12 @@ class EntrypointTests(unittest.TestCase):
         self.assertTrue(status["template"]["template_id"])
         self.assertTrue(status["template"]["template_version"])
         self.assertTrue(status["template"]["available"], status["template"]["issues"])
-        self.assertEqual(status["template"]["template_version"], "V6.1")
+        self.assertEqual(status["template"]["template_version"], "V6.2")
         self.assertTrue(status["transformer"]["available"])
-        self.assertEqual(status["transformer"]["support_status"], "IMPLEMENTED")
+        self.assertEqual(status["transformer"]["support_status"], "SUPPORTED")
+        self.assertTrue(status["motor"]["enabled"])
+        self.assertTrue(status["motor"]["available"])
+        self.assertEqual(status["motor"]["support_status"], "SUPPORTED")
         for name in ("pump_water", "pump_chemical"):
             with self.subTest(profile=name):
                 profile = status["pump_profiles"][name]

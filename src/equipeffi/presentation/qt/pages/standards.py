@@ -162,8 +162,8 @@ class StandardsPage(QWidget):
                 except (ValueError, TypeError):
                     state = "UNKNOWN"
             row["lifecycle_state"] = state
-            if service is self.motor_service:
-                row["support"] = "验收候选"
+            if overview.get("support_status") == "SUPPORTED":
+                row["support"] = "正式支持"
             elif overview.get("support_status") == "IMPLEMENTED":
                 row["support"] = "已实现，待验收"
             else:

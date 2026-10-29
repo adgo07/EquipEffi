@@ -84,7 +84,7 @@ def _runtime_status() -> dict[str, object]:
         for profile in profiles.values():
             profile["error"] = f"{type(exc).__name__}: {exc}"
 
-    transformer = {"available": False, "support_status": "IMPLEMENTED"}
+    transformer = {"available": False, "support_status": "SUPPORTED"}
     try:
         from .composition import create_transformer_analysis_service
         service = create_transformer_analysis_service(with_persistence=False)
@@ -93,7 +93,7 @@ def _runtime_status() -> dict[str, object]:
     except Exception as exc:
         transformer["error"] = f"{type(exc).__name__}: {exc}"
 
-    motor = {"enabled": motor_enabled, "available": False, "support_status": "IMPLEMENTED"}
+    motor = {"enabled": motor_enabled, "available": False, "support_status": "SUPPORTED"}
     if motor_enabled:
         try:
             from .composition import create_motor_analysis_service
@@ -126,7 +126,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         description="EquipEffi 设备能效分析桌面程序"
     )
     parser.add_argument("--motor-candidate", action="store_true",
-                        help="启用GB18613电动机接入验收候选（非正式发布能力）")
+                        help="兼容旧入口，启用GB18613电动机（本版本默认启用）")
     parser.add_argument("--qt", action="store_true", help="启动 PySide6 Qt 桌面程序")
     parser.add_argument("--gui", action="store_true", help="启动 PySide6 Qt 桌面程序（--qt 别名）")
     parser.add_argument("--status", action="store_true", help="无界面检查 Qt、统一模板和设备标准包可用性")
