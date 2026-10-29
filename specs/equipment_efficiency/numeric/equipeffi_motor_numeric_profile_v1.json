@@ -1,7 +1,7 @@
 {
   "profile_schema_version": "numeric-profile-adoption-1.0",
   "numeric_profile_id": "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1",
-  "profile_version": "1.0.0",
+  "profile_version": "1.1.0",
   "numeric_contract_version": "v1",
   "numeric_contract_status": "FROZEN",
   "numeric_contract_source": {
@@ -39,7 +39,7 @@
     "thousands_separators": "REJECT",
     "implicit_units": "REJECT"
   },
-  "normalization_policy": "exact integer-scale conversion of rated output power from kW to W; preserve rated voltage in kV for exact range comparison; use category-selected table and branch; interpolate only adjacent power endpoints in the same table/branch/grade",
+  "normalization_policy": "exact integer-scale conversion of rated output power from kW to W; motor-input.v3 converts declared voltage V to internal kV by increasing the integer decimal scale by 3, without ambient Decimal arithmetic or rounding; legacy motor-input.v2 retains declared kV; rated and legacy measured efficiency remain distinct input/trace fields; use category-selected table and branch; interpolate only adjacent power endpoints in the same table/branch/grade",
   "trace_reference": {
     "profile_declaration": "specs/equipment_efficiency/numeric/equipeffi_motor_numeric_profile_v1.json",
     "standard_pack": "src/equipeffi/resources/standards/gb18613_2020.json",

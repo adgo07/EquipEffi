@@ -1,5 +1,15 @@
 # GB 18613—2020 接入实施记录
 
+## 2026-10-29 额定效率与V输入修订（实施中）
+
+Owner明确本软件不负责实测，默认以额定效率评价。修订依据为EQP-STD-MOTOR-009 / QA-MOTOR-004；最新输入设计见INTEGRATION_DESIGN.md顶部。新Qt额定参数与V6.3使用 `rated_efficiency_pct`、`rated_voltage_v`，旧V6.2及旧Record保留原实测/kV语义。V→kV采用整数scale转换，Numeric Profile数学机制不变，版本1.1补充归一化声明，Calculator升至2.1.0；标准包、批准映射、Golden、migrations和锁不修改。
+
+平台预检查：本仓cc0b0735，中央locked SHA ee5feb0cc34dbd99790500fadd0c4c932e202a20；已读当前GUIDE_INDEX及UI规格/指南/验收清单、Product Delivery Policy，Numeric按locked Contract v1 §2/4/5/6/7/12/17。MUST：十进制无损、显式单位、环境独立、完整值比较和历史不重算；MUST NOT：隐式浮点、显示值回流、伪造试验认证或修改冻结资产。分类ALLOWED PROJECT DIFFERENCE（Owner输入决定）及LOCAL DEFECT（旧UI/Excel不符当前产品职责）；无需中央Contract/锁升级。
+
+首轮核心与既有全表回归32通过、1项测试失败（正确转换值0.380与测试字符串0.38形式不同），改为精确Decimal等值断言。后续核心/Qt历史回归37通过、3540子用例通过；中途一次新增测试插入位置导致收集语法错误已修正。模板兼容定向测试：V6.2 10项、V6.3 5项、电机产品流程7项、分发资源审计10项均通过；独立只读复核20项及10子用例通过，未发现阻断。V6.2 builder重放SHA不变，V6.3实际资产SHA A184DAE19312606EAC9D7539E9E632A8780FEC3907EC7BD5ADABFAA7794F30E6。compileall通过；Qt源代码页面截图已核对额定参数、额定效率和V布局。独立复核的额外Qt测试中止，未计为通过。集成首轮49通过/107子用例通过，1项旧口径展示断言未同步已修正，12个发布审计用例因同一个离线wheel准备180秒超时未执行；普通本机环境复跑：UI家族9项全部通过，12个发布审计仍因共用离线wheel元数据准备180秒超时而ERROR，未计为通过；退出时遗留构建占用临时目录亦已记录，不以延长超时掩盖，等待Windows CI独立结果。最终CI结果继续补记；本轮尚未重建原生包或执行Excel/WPS人工验收，旧包和旧人工证据不冒称本次验收。
+
+补记（2026-10-29）：PR #40 Head `168e1057416d4f79e38bb077af4a0dee2c146d52` 的 Windows Core CI run `40850814281` 与 Whitespace check 均通过；本机全量 pytest 复验通过（1255 passed、1 warning、77635 subtests），此前12个发布审计用例因离线 wheel 超时未执行仅为当时状态。原生包重建及 Excel/WPS 人工验收仍为 NOT_RUN。
+
 日期：2026-10-25。当前结论：Owner确认代码与工程验收通过，授权合并并重建最终代码候选包；不声明SUPPORTED、正式发布或Phase PASS。最新证据见末节，前文失败与待验证文字仅记录当时历史。
 
 ## 授权、基线及平台预检查

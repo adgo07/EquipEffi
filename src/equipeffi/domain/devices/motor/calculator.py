@@ -8,15 +8,22 @@ from math import gcd
 import re
 from typing import Any, Mapping
 
-from .input_contract import MOTOR_CATEGORIES, MotorInputError, normalize_motor_input, speed_band_label
+from .input_contract import MOTOR_CATEGORIES, MotorInputError, normalize_motor_input, speed_band_label, is_rated_input
 
 DECIMAL_PROFILE_ID = "EQUIPEFFI_MOTOR_EXACT_LINEAR_V1"
-CALCULATOR_VERSION = "gb18613-motor-gb18613_2020-v2.0.2"
+CALCULATOR_VERSION = "gb18613-motor-gb18613_2020-v2.1.0"
 PACK_SCHEMA_VERSION = "equipeffi.motor-standard-pack.v1"
 PACK_ID = "gb18613_2020_v2"
 STANDARD_CODE = "GB 18613-2020"
 _NUMERIC_FIELDS = ("rated_output_power_kw", "rated_voltage_kv", "rated_frequency_hz", "poles", "max_nameplate_speed_rpm", "measured_efficiency_pct")
 _FIELD_LABELS = {"category_id": "设备类别", "rated_output_power_kw": "额定输出功率(kW)", "rated_voltage_kv": "额定电压(kV)", "rated_frequency_hz": "额定频率(Hz)", "poles": "极数", "max_nameplate_speed_rpm": "铭牌标称最高转速(r/min)", "measured_efficiency_pct": "实测效率(%)"}
+_FIELD_LABELS.update(rated_voltage_v="额定电压(V)", rated_efficiency_pct="额定效率(%)")
+
+
+def _input_field(field_id: str, values: Mapping[str, Any]) -> str:
+    if is_rated_input(values):
+        return {"rated_voltage_kv": "rated_voltage_v", "measured_efficiency_pct": "rated_efficiency_pct"}.get(field_id, field_id)
+    return field_id
 _DECIMAL_PATTERN = re.compile(r"^(?P<sign>[+-]?)(?P<int>\d*)(?:\.(?P<frac>\d*))?(?:[eE](?P<exp>[+-]?\d+))?$")
 
 
@@ -191,7 +198,7 @@ class Gb18613MotorCalculator:
         if scope:
             labels = {"OUTSIDE_TABLE_POWER_RANGE": "额定输出功率超出类别表格范围", "RATED_VOLTAGE_OUT_OF_SCOPE": "额定电压超出类别适用范围", "RATED_FREQUENCY_OUT_OF_SCOPE": "额定频率不符合类别适用范围", "POLE_COUNT_OUT_OF_SCOPE": "极数不属于类别允许范围"}
             return self._result("OUT_OF_STANDARD_SCOPE", None, "不在范围", "；".join(labels[x] for x in scope) + "，不在GB 18613-2020相应评价范围。", thresholds=_empty_thresholds("OUT_OF_STANDARD_SCOPE"), reason_codes=tuple(scope), conclusion="OUT_OF_SCOPE", references=references)
-        missing = tuple(field_id for field_id in self._required_route_fields(table_no) if parsed[field_id] is None)
+        missing = tuple(_input_field(field_id, normalized) for field_id in self._required_route_fields(table_no) if parsed[field_id] is None)
         if missing:
             labels = "、".join(_field_label(x) for x in missing)
             return self._result("INSUFFICIENT_DATA", None, "无法判定", f"资料不足，请补充：{labels}。", thresholds=_empty_thresholds("MISSING_REQUIRED_INPUT"), missing_fields=missing, reason_codes=("MISSING_FIELD",), conclusion="UNABLE_TO_JUDGE", references=references)
@@ -207,18 +214,20 @@ class Gb18613MotorCalculator:
         if any(thresholds[f"grade_{n}"]["state"] != "AVAILABLE" for n in (1, 2, 3)):
             return self._result("INSUFFICIENT_DATA", None, "无法判定", "所选表格、极数/转速组或相邻功率端点存在无可用指标，不能跨缺值补算。", thresholds=thresholds, trace=(trace,), reason_codes=("NO_INDICATOR",), conclusion="UNABLE_TO_JUDGE", references=references)
         if efficiency is None:
-            return self._result("INSUFFICIENT_DATA", None, "无法判定", "资料不足，请补充：实测效率(%)。", thresholds=thresholds, trace=(trace,), missing_fields=("measured_efficiency_pct",), reason_codes=("MISSING_FIELD",), conclusion="UNABLE_TO_JUDGE", references=references)
+            efficiency_field = _input_field("measured_efficiency_pct", normalized)
+            return self._result("INSUFFICIENT_DATA", None, "无法判定", f"资料不足，请补充：{_field_label(efficiency_field)}。", thresholds=thresholds, trace=(trace,), missing_fields=(efficiency_field,), reason_codes=("MISSING_FIELD",), conclusion="UNABLE_TO_JUDGE", references=references)
         basis = normalized["efficiency_basis_status"]
         reason = self._basis_block(basis)
         if reason:
             code, message = reason
             return self._result("INSUFFICIENT_DATA", None, "无法判定", message, thresholds=_empty_thresholds(code), reason_codes=(code,), conclusion="UNABLE_TO_JUDGE", references=references, trace=(trace,))
         grade = self._classify(efficiency, thresholds)
+        efficiency_label = "额定效率" if is_rated_input(normalized) else "实测效率"
         if grade is None:
-            ui, conclusion, message = "未达3级", "NOT_COMPLIANT", "实测效率低于该表3级限值，未达到3级。"
+            ui, conclusion, message = "未达3级", "NOT_COMPLIANT", f"{efficiency_label}低于该表3级限值，未达到3级。"
         else:
-            ui, conclusion, message = f"{grade}级", f"LEVEL_{grade}", f"实测效率达到该表{grade}级限值。"
-        trace["comparison"] = {"measured_efficiency_pct": efficiency.plain(), "grade": grade, "policy": "FULL_VALUE_EXACT"}
+            ui, conclusion, message = f"{grade}级", f"LEVEL_{grade}", f"{efficiency_label}达到该表{grade}级限值。"
+        trace["comparison"] = {_input_field("measured_efficiency_pct", normalized): efficiency.plain(), "grade": grade, "policy": "FULL_VALUE_EXACT"}
         trace["grade"] = grade
         return self._result("SUCCESS", grade, ui, message, thresholds=thresholds, trace=(trace,), conclusion=conclusion, references=references)
 
@@ -245,7 +254,8 @@ class Gb18613MotorCalculator:
         out: dict[str, _Scaled | str | None] = {}
         errors: dict[str, str] = {}
         for field_id in _NUMERIC_FIELDS:
-            raw = values.get(field_id)
+            source_field = _input_field(field_id, values)
+            raw = values.get(source_field)
             if field_id == "rated_frequency_hz" and isinstance(raw, str) and len(raw) > 128:
                 out[field_id] = None
                 errors[field_id] = "额定频率文本不能超过128个字符。"
@@ -254,12 +264,14 @@ class Gb18613MotorCalculator:
                 out[field_id] = None
                 continue
             try:
-                out[field_id] = _Scaled.parse(raw, field_id)
+                out[field_id] = _Scaled.parse(raw, source_field)
+                if source_field == "rated_voltage_v":
+                    out[field_id] = out[field_id].times_power_of_ten(-3)
             except _ValueError as exc:
                 if field_id == "rated_frequency_hz" and isinstance(raw, str) and _is_frequency_text(raw):
                     out[field_id] = raw
                     continue
-                errors[field_id] = f"{_field_label(field_id)}{exc}"
+                errors[source_field] = f"{_field_label(source_field)}{exc}"
         if errors:
             return out, errors
         active: set[str] = set()
@@ -291,6 +303,9 @@ class Gb18613MotorCalculator:
                     errors["poles"] = "极数必须为正偶数。"
             except _ValueError as exc:
                 errors["poles"] = f"极数{exc}"
+        if is_rated_input(values):
+            errors = {_input_field(key, values): message.replace("实测效率", "额定效率").replace("额定电压(kV)", "额定电压(V)")
+                      for key, message in errors.items()}
         return out, errors
 
     @staticmethod
@@ -476,7 +491,10 @@ class Gb18613MotorCalculator:
                 "method": selected["method"], "rated_output_power_kw": power.plain() if power else None,
                 "normalized_power_w": selected["power_w"], "power_endpoints": endpoints,
                 "source_rows": [row["source_row_id"] for row in source_rows], "sources": sources,
-                "thresholds": selected["thresholds"], "measured_efficiency_pct": efficiency.plain() if efficiency else None,
+                "thresholds": selected["thresholds"], _input_field("measured_efficiency_pct", normalized): efficiency.plain() if efficiency else None,
+                "input_contract_revision": normalized.get("input_contract_revision", "motor-input.v2"),
+                "rated_voltage_v_raw": normalized.get("rated_voltage_v"),
+                "normalized_voltage_kv": parsed["rated_voltage_kv"].plain() if isinstance(parsed.get("rated_voltage_kv"), _Scaled) else None,
                 "efficiency_basis_status": normalized.get("efficiency_basis_status"),
                 "efficiency_basis_raw": normalized.get("efficiency_basis_raw", ""),
                 "required_test_basis": table_basis, "comparison": None, "grade": None,

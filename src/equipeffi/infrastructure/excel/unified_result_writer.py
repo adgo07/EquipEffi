@@ -1,4 +1,4 @@
-"""一次ZIP补丁写出泵与变压器结果，保留所有输入和非目标OOXML部件。"""
+"""一次ZIP补丁写出泵、变压器和V6.2/V6.3电机结果，保留非目标部件。"""
 from __future__ import annotations
 
 import os
@@ -821,7 +821,7 @@ class UnifiedResultWorkbookWriter:
                         f"工作表「{name}」尚未接通，不能写入结果")
                 continue
             supported_sheet_ids = {"centrifugal_pump", "transformer"}
-            if version == "V6.2":
+            if version in {"V6.2", "V6.3"}:
                 supported_sheet_ids.add("motor")
             if contract.get("sheet_id") not in supported_sheet_ids:
                 if outcomes:
@@ -878,7 +878,7 @@ class UnifiedResultWorkbookWriter:
                     for row_number, outcome in outcomes.items()
                     for column, payload in _transformer_cell_payloads(outcome).items()
                 }
-            elif name == MOTOR_SHEET and version == "V6.2":
+            elif name == MOTOR_SHEET and version in {"V6.2", "V6.3"}:
                 threshold_style_map = _motor_threshold_style_map(
                     by_part["xl/styles.xml"], by_part[part])
                 result_xml = patch_motor_sheet_xml(

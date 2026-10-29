@@ -27,7 +27,7 @@ class ThreeStandardsReleaseTests(unittest.TestCase):
         self.addCleanup(environment.stop)
         os.environ.pop('EQUIPEFFI_ENABLE_MOTOR_CANDIDATE', None)
 
-    def test_default_desktop_assembles_all_three_services_and_v62(self):
+    def test_default_desktop_assembles_all_three_services_and_v63(self):
         from equipeffi.composition import launch_qt
         with tempfile.TemporaryDirectory() as directory, patch(
                 'equipeffi.presentation.qt.app.run', return_value=0) as run:
@@ -37,7 +37,7 @@ class ThreeStandardsReleaseTests(unittest.TestCase):
             services = run.call_args.kwargs
             self.assertEqual(services['transformer'].standard_overview()['support_status'], 'SUPPORTED')
             self.assertEqual(services['motor'].standard_overview()['support_status'], 'SUPPORTED')
-            self.assertEqual(services['batch'].template_identity['template_version'], 'V6.2')
+            self.assertEqual(services['batch'].template_identity['template_version'], 'V6.3')
             self.assertIsNotNone(services['batch'].motor)
 
     def test_formal_singles_mixed_batch_reimport_and_old_snapshots(self):
@@ -48,7 +48,7 @@ class ThreeStandardsReleaseTests(unittest.TestCase):
             transformer = create_transformer_analysis_service(paths=paths)
             motor = create_motor_analysis_service(paths=paths)
             batch = create_batch_evaluation_service(paths=paths)
-            self.assertEqual(batch.template_identity['template_version'], 'V6.2')
+            self.assertEqual(batch.template_identity['template_version'], 'V6.3')
             self.assertIsNotNone(batch.motor)
             singles = [pump.analyze_and_record(PumpAnalysisRequest(
                 '单级单吸清水离心泵', date(2026, 10, 27), QBEP='100', HBEP='50',
@@ -56,8 +56,8 @@ class ThreeStandardsReleaseTests(unittest.TestCase):
                 transformer.analyze_and_record(TransformerAnalysisRequest(dict(
                     category_id='GB20052-T03', capacity_kva='3150', no_load_loss_w='1700', load_loss_w='20700'))),
                 motor.analyze_and_record(MotorAnalysisRequest(dict(category_id='three_phase_induction',
-                    rated_voltage_kv='0.38', rated_frequency_hz='50', rated_output_power_kw='0.14',
-                    poles='4', measured_efficiency_pct='71.43')))]
+                    rated_voltage_v='380', rated_frequency_hz='50', rated_output_power_kw='0.14',
+                    poles='4', rated_efficiency_pct='71.43')))]
             for outcome in singles:
                 self.assertIsNotNone(outcome.record)
                 self.assertEqual(outcome.result.evaluation_status, 'SUCCESS')
@@ -88,7 +88,7 @@ class ThreeStandardsReleaseTests(unittest.TestCase):
             for name, values in (
                 ('离心泵', {'D4':2, 'F4':'单级单吸清水离心泵', 'G4':100, 'H4':50, 'I4':2900, 'K4':'单吸', 'L4':1, 'M4':90}),
                 ('变压器', {'D4':3, 'F4':transformer_label, 'G4':3150, 'J4':1700, 'K4':20700}),
-                ('电动机', {'D4':4, 'F4':motor_label, 'G4':0.38, 'H4':50, 'J4':0.14, 'K4':4, 'M4':71.43})):
+                ('电动机', {'D4':4, 'F4':motor_label, 'G4':380, 'H4':50, 'J4':0.14, 'K4':4, 'M4':71.43})):
                 for cell, value in values.items():
                     book[name][cell] = value
             book.save(source)

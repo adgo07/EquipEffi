@@ -23,9 +23,9 @@ sys.path.insert(0, str(ROOT / "tools"))
 from equipeffi.domain.devices.motor.input_contract import (  # noqa: E402
     BASIS_OPTIONS,
     MOTOR_CATEGORIES,
+    legacy_visible_fields,
     scope_hint,
     efficiency_basis_hint,
-    visible_fields,
 )
 from equipeffi.infrastructure.excel.template_resource import (  # noqa: E402
     TEMPLATE_MANIFEST,
@@ -177,7 +177,10 @@ def _motor_sheet_contract() -> dict[str, Any]:
     }
     domain_fields: dict[str, Any] = {}
     for category_id in category_ids:
-        for field in visible_fields(category_id):
+        # V6.2 is a frozen v2 input contract. Keep its reproducible builder
+        # bound to the legacy field projection even after Domain adds newer
+        # rated-nameplate contracts.
+        for field in legacy_visible_fields(category_id):
             domain_fields.setdefault(field.field_id, field)
     for field_id in _all_motor_field_ids():
         if field_id not in domain_fields and field_id != "user_note":
@@ -186,7 +189,7 @@ def _motor_sheet_contract() -> dict[str, Any]:
         required_categories = [
             category_id for category_id in category_ids
             if any(item.field_id == field_id and item.required
-                   for item in visible_fields(category_id))
+                   for item in legacy_visible_fields(category_id))
         ]
         if field_id == "user_note":
             label, unit = "填表备注", None

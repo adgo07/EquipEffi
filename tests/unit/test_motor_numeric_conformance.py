@@ -145,6 +145,7 @@ class MotorNumericConformanceTests(unittest.TestCase):
                     "branch_id",
                     "method",
                     "normalized_power_w",
+                    "normalized_voltage_kv",
                     "speed_band_label",
                 ):
                     if field in expected:

@@ -75,7 +75,7 @@ class MotorProductFlowTests(unittest.TestCase):
                          if c.category_id == "three_phase_induction")
             for row, quantity, frequency, poles in ((4, 2, 50, 4), (5, 3, "5~120", 4),
                                                      (6, 4, 50, 10), (7, 5, 50, 3)):
-                for column, value in {"D": quantity, "F": label, "G": 0.38,
+                for column, value in {"D": quantity, "F": label, "G": 380,
                                       "H": frequency, "J": 0.14, "K": poles, "M": 71.43}.items():
                     workbook["电动机"][f"{column}{row}"] = value
             workbook.save(source)
@@ -140,7 +140,7 @@ class MotorProductFlowTests(unittest.TestCase):
             motor = create_motor_analysis_service(with_persistence=False)
             category = next(c for c in motor.input_contract.categories
                             if c.category_id == "three_phase_induction")
-            for cell, value in {"D4": 2, "F4": category.label, "G4": 0.38,
+            for cell, value in {"D4": 2, "F4": category.label, "G4": 380,
                                 "H4": 50, "J4": 0.14, "K4": 4, "M4": 71.43}.items():
                 workbook["电动机"][cell] = value
             workbook["离心泵"]["D4"] = 3

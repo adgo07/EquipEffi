@@ -21,18 +21,18 @@ class MotorInputContractTests(unittest.TestCase):
 
     def test_conditional_fields_follow_table_routes(self) -> None:
         expected = {
-            "three_phase_induction": {"rated_voltage_kv", "rated_frequency_hz", "poles"},
-            "capacitor_start": {"rated_voltage_kv", "rated_frequency_hz", "poles"},
-            "capacitor_run": {"rated_voltage_kv", "rated_frequency_hz", "poles"},
-            "two_value_capacitor": {"rated_voltage_kv", "rated_frequency_hz", "poles"},
+            "three_phase_induction": {"rated_voltage_v", "rated_frequency_hz", "poles"},
+            "capacitor_start": {"rated_voltage_v", "rated_frequency_hz", "poles"},
+            "capacitor_run": {"rated_voltage_v", "rated_frequency_hz", "poles"},
+            "two_value_capacitor": {"rated_voltage_v", "rated_frequency_hz", "poles"},
             "ac_fan_capacitor_run": {"poles"},
             "ac_fan_brushless_dc": {"max_nameplate_speed_rpm"},
         }
         for category_id, route_fields in expected.items():
             with self.subTest(category=category_id):
                 fields = {field.field_id for field in visible_fields(category_id)}
-                self.assertTrue({"rated_output_power_kw", "measured_efficiency_pct", "efficiency_basis_status", "user_note"} <= fields)
-                self.assertEqual(fields & {"rated_voltage_kv", "rated_frequency_hz", "poles", "max_nameplate_speed_rpm"}, route_fields)
+                self.assertTrue({"rated_output_power_kw", "rated_efficiency_pct", "user_note"} <= fields)
+                self.assertEqual(fields & {"rated_voltage_v", "rated_frequency_hz", "poles", "max_nameplate_speed_rpm"}, route_fields)
         self.assertEqual(visible_fields("OTHER_CATEGORY"), ())
         self.assertEqual(visible_fields("UNCERTAIN_CATEGORY"), ())
 

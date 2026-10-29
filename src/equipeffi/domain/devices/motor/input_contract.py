@@ -115,7 +115,7 @@ def _resolve_category(value: str | None) -> MotorCategoryOption | None:
     return option
 
 
-def category_fields(category_id: str | None) -> tuple[MotorInputField, ...]:
+def legacy_category_fields(category_id: str | None) -> tuple[MotorInputField, ...]:
     """Return conditional fields for one category, excluding common fields."""
     category = _resolve_category(category_id)
     if category is None or category.table_no is None:
@@ -131,12 +131,37 @@ def category_fields(category_id: str | None) -> tuple[MotorInputField, ...]:
     return tuple(fields)
 
 
-def visible_fields(category_id: str | None) -> tuple[MotorInputField, ...]:
+def legacy_visible_fields(category_id: str | None) -> tuple[MotorInputField, ...]:
     """Return fields needed to enter one explicitly selected standard type."""
     category = _resolve_category(category_id)
     if category is None or category.table_no is None:
         return ()
-    return _COMMON_FIELDS + category_fields(category.category_id)
+    return _COMMON_FIELDS + legacy_category_fields(category.category_id)
+
+
+def visible_fields(category_id: str | None) -> tuple[MotorInputField, ...]:
+    """Current rated-input surface; legacy snapshots retain their own labels."""
+    replacements = {
+        "measured_efficiency_pct": MotorInputField("rated_efficiency_pct", "额定效率", "%", True),
+        "rated_voltage_kv": MotorInputField("rated_voltage_v", "额定电压", "V", True),
+    }
+    return tuple(replacements.get(f.field_id, f) for f in legacy_visible_fields(category_id)
+                 if f.field_id != "efficiency_basis_status")
+
+
+def category_fields(category_id: str | None) -> tuple[MotorInputField, ...]:
+    return tuple(f for f in visible_fields(category_id)
+                 if f.field_id not in {"rated_output_power_kw", "rated_efficiency_pct"})
+
+
+def is_rated_input(values: Mapping[str, Any]) -> bool:
+    return (values.get("input_contract_revision") == "motor-input.v3"
+            or values.get("efficiency_basis_status") == "RATED_NAMEPLATE"
+            or "rated_efficiency_pct" in values or "rated_voltage_v" in values)
+
+
+def snapshot_fields(category_id: str | None, values: Mapping[str, Any]) -> tuple[MotorInputField, ...]:
+    return visible_fields(category_id) if is_rated_input(values) else legacy_visible_fields(category_id)
 
 
 def options(category_id: str | None, field_id: str) -> tuple[tuple[str, str], ...]:
@@ -181,6 +206,17 @@ def normalize_motor_input(values: Mapping[str, Any]) -> dict[str, Any]:
     category = by_id or by_label
     normalized["category_id"] = category.category_id if category is not None else None
 
+    if is_rated_input(values):
+        for key in ("measured_efficiency_pct", "rated_voltage_kv"):
+            if values.get(key) not in (None, ""):
+                raise MotorInputError(key, "额定输入不得混用旧实测效率或kV字段，请按当前字段单位填写。")
+        if values.get("efficiency_basis_status") not in (None, "", "RATED_NAMEPLATE"):
+            raise MotorInputError("efficiency_basis_status", "额定效率评价不接受旧试验口径选项。")
+        normalized["input_contract_revision"] = "motor-input.v3"
+        normalized["efficiency_basis_status"] = "RATED_NAMEPLATE"
+        normalized["efficiency_basis_raw"] = ""
+        return normalized
+
     raw_basis = values.get("efficiency_basis_status")
     basis_text = raw_basis.strip() if isinstance(raw_basis, str) else raw_basis
     if basis_text in (None, ""):
@@ -206,6 +242,8 @@ class MotorInputContract:
     basis_options = BASIS_OPTIONS
     category_fields = staticmethod(category_fields)
     visible_fields = staticmethod(visible_fields)
+    snapshot_fields = staticmethod(snapshot_fields)
+    legacy_visible_fields = staticmethod(legacy_visible_fields)
     options = staticmethod(options)
     normalize = staticmethod(normalize_motor_input)
     scope_hint = staticmethod(scope_hint)

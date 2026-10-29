@@ -149,8 +149,8 @@ def perform(session):
         window.open_analysis(standard_code="GB 18613-2020")
         page = window.motor_analysis_page
         page.category.setCurrentIndex(page.category.findData("three_phase_induction"))
-        fill(page, dict(rated_voltage_kv="0.38", rated_frequency_hz="50", rated_output_power_kw="0.14",
-                        poles="4", measured_efficiency_pct="71.43"))
+        fill(page, dict(rated_voltage_v="380", rated_frequency_hz="50", rated_output_power_kw="0.14",
+                        poles="4", rated_efficiency_pct="71.43"))
         click(page.evaluate_button)
         require(page.last_record_status == "SAVED", 'page.last_record_status == "SAVED"')
         records["motor"] = page.last_saved_record_id

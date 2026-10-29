@@ -17,6 +17,7 @@ from ...domain.devices.motor.input_contract import (
     MOTOR_CATEGORIES,
     scope_hint as motor_scope_hint,
     efficiency_basis_hint as motor_efficiency_basis_hint,
+    legacy_visible_fields as motor_legacy_visible_fields,
     visible_fields as motor_visible_fields,
 )
 from .ooxml_reader import OOXMLReadError, OOXMLWorkbook
@@ -112,6 +113,32 @@ REQUIRED_V62_SHEETS: tuple[str, ...] = tuple(
 )
 MOTOR_SHEET_CONTRACT: dict[str, Any] = next(
     sheet for sheet in V62_TEMPLATE_ENTRY["sheets"]
+    if sheet.get("sheet_id") == "motor")
+V63_TEMPLATE_ID = "equipeffi.device-efficiency.V6.3"
+V63_TEMPLATE_ENTRY: dict[str, Any] = next(
+    entry for entry in TEMPLATE_MANIFEST["templates"]
+    if entry.get("template_version") == "V6.3"
+)
+if V63_TEMPLATE_ENTRY.get("template_id") != V63_TEMPLATE_ID:
+    raise RuntimeError("V6.3模板身份必须使用独立template_id")
+V63_TEMPLATE_IDENTITY: dict[str, str] = {
+    "template_id": str(V63_TEMPLATE_ENTRY["template_id"]),
+    "template_version": str(V63_TEMPLATE_ENTRY["template_version"]),
+    "template_kind": str(V63_TEMPLATE_ENTRY.get("template_kind", "")),
+    "template_contract_revision": str(
+        V63_TEMPLATE_ENTRY.get("template_contract_revision", "")),
+    "filename": str(V63_TEMPLATE_ENTRY.get("filename", "")),
+    "asset_sha256": str(V63_TEMPLATE_ENTRY.get("asset_sha256", "")),
+    "source_filename": str(V63_TEMPLATE_ENTRY.get("source_filename", "")),
+    "source_sha256": str(V63_TEMPLATE_ENTRY.get("source_sha256", "")),
+    "source_provenance": str(V63_TEMPLATE_ENTRY.get("source_provenance", "")),
+}
+DEFAULT_V63_TEMPLATE = V63_TEMPLATE_IDENTITY["filename"]
+REQUIRED_V63_SHEETS: tuple[str, ...] = tuple(
+    sheet["sheet_name"] for sheet in V63_TEMPLATE_ENTRY["sheets"]
+)
+MOTOR_V63_SHEET_CONTRACT: dict[str, Any] = next(
+    sheet for sheet in V63_TEMPLATE_ENTRY["sheets"]
     if sheet.get("sheet_id") == "motor")
 PUMP_SHEET_CONTRACT: dict[str, Any] = next(
     sheet for sheet in V6_TEMPLATE_ENTRY["sheets"]
@@ -400,8 +427,10 @@ def _motor_config_issues(path: Path, contract_entry: dict[str, Any]) -> list[str
     return issues
 
 
-def _motor_manifest_contract_issues(contract: dict[str, Any]) -> list[str]:
-    """Check V6.2 field routing and category choices against Domain contract."""
+def _motor_manifest_contract_issues(
+        contract: dict[str, Any], *,
+        fields_for_category=motor_legacy_visible_fields) -> list[str]:
+    """Check one motor template revision against its matching Domain projection."""
     issues: list[str] = []
     categories = tuple(MOTOR_CATEGORIES)
     expected_ids = [item.category_id for item in categories]
@@ -421,7 +450,7 @@ def _motor_manifest_contract_issues(contract: dict[str, Any]) -> list[str]:
     }
     domain_fields: dict[str, Any] = {}
     for category_id in expected_ids:
-        for field in motor_visible_fields(category_id):
+        for field in fields_for_category(category_id):
             domain_fields.setdefault(field.field_id, field)
     for field_id, descriptor in domain_fields.items():
         manifest_field = fields.get(field_id)
@@ -436,7 +465,7 @@ def _motor_manifest_contract_issues(contract: dict[str, Any]) -> list[str]:
         required_categories = [
             category_id for category_id in expected_ids
             if any(item.field_id == field_id and item.required
-                   for item in motor_visible_fields(category_id))
+                   for item in fields_for_category(category_id))
         ]
         if manifest_field.get("required_for_categories") != required_categories:
             issues.append(f"电动机字段{field_id}条件必填与Domain契约不一致")
@@ -987,6 +1016,266 @@ class V62MotorTemplateResource(V6TemplateResource):
             issues=tuple(issues))
 
 
+def _motor_config_issues_v63(path: Path,
+                             contract_entry: dict[str, Any]) -> list[str]:
+    """Check only the active V6.3 motor choices; the old basis cells stay inert."""
+    configuration = contract_entry.get("configuration_contract", {})
+    category_cfg = configuration.get("motor_category_enum", {})
+    excel_validation_cfg = configuration.get("motor_excel_validations", {})
+    try:
+        configuration_name = next(
+            sheet["sheet_name"] for sheet in contract_entry["sheets"]
+            if sheet.get("sheet_id") == "configuration")
+        with OOXMLWorkbook(path) as workbook:
+            rows = workbook.rows(configuration_name)
+        names = _defined_name_expressions(path)
+    except (OOXMLReadError, TemplateResourceError, KeyError, StopIteration) as exc:
+        return [f"无法核对V6.3电动机配置契约：{exc}"]
+
+    issues: list[str] = []
+    motor_contract = next((sheet for sheet in contract_entry.get("sheets", ())
+                           if sheet.get("sheet_id") == "motor"), {})
+    field_validations = {
+        str(field.get("field_id")): field.get("excel_validation")
+        for field in motor_contract.get("fields", ())
+        if field.get("field_id") and field.get("excel_validation")
+    }
+    if excel_validation_cfg != field_validations:
+        issues.append("V6.3 Manifest电动机字段校验与模板配置不一致")
+
+    first_row = int(category_cfg.get("first_row", 2))
+    label_col = str(category_cfg.get("column", "EW"))
+    id_col = str(category_cfg.get("category_ids_column", "EX"))
+
+    def cell(column: str, row_number: int) -> Any:
+        row_index = row_number - 1
+        column_index = _column_index(column)
+        return (rows[row_index][column_index]
+                if row_index < len(rows) and column_index < len(rows[row_index]) else "")
+
+    for offset, category in enumerate(MOTOR_CATEGORIES):
+        row_number = first_row + offset
+        if cell(label_col, row_number) != category.label:
+            issues.append(f"配置!{label_col}{row_number}V6.3类别名称与Domain契约不一致")
+        if cell(id_col, row_number) != category.category_id:
+            issues.append(f"配置!{id_col}{row_number}V6.3类别ID与Domain契约不一致")
+    for column in (label_col, id_col):
+        if any(cell(column, row_number) not in (None, "")
+               for row_number in range(first_row + len(MOTOR_CATEGORIES), len(rows) + 1)):
+            issues.append(f"配置!{column}含有Domain之外的V6.3电动机类别选项")
+
+    expected_names = {
+        str(category_cfg.get("defined_name", "")):
+        f"'配置'!${label_col}${first_row}:${label_col}${first_row + len(MOTOR_CATEGORIES) - 1}",
+        str(category_cfg.get("category_ids_defined_name", "")):
+        f"'配置'!${id_col}${first_row}:${id_col}${first_row + len(MOTOR_CATEGORIES) - 1}",
+    }
+    for name, expected in expected_names.items():
+        expressions = names.get(name, ())
+        if (len(expressions) != 1
+                or expressions[0].replace("$", "") != expected.replace("$", "")):
+            issues.append(f"V6.3电动机命名范围 {name} 与配置契约不一致")
+    stale = sorted(name for name in names
+                    if name.startswith("EV_MOTOR_V62_")
+                    or name == "EV_MOTOR_V63_BASIS")
+    if stale:
+        issues.append("V6.3仍含有效的旧版电动机选择命名范围：" + "、".join(stale))
+    return issues
+
+
+class V63MotorTemplateResource(V6TemplateResource):
+    """Candidate V6.3 rated-nameplate template with a versioned reader contract."""
+
+    def __init__(self, resource_dir: Path | None = None,
+                 *, template_name: str = DEFAULT_V63_TEMPLATE):
+        super().__init__(resource_dir, template_name=template_name)
+
+    @property
+    def identity(self) -> dict[str, str]:
+        return dict(V63_TEMPLATE_IDENTITY)
+
+    def validate(self, path: Path | None = None, *,
+                 check_pump_sheet: bool = True) -> TemplateValidationResult:
+        base = V6TemplateResource.validate(
+            self, path, check_pump_sheet=check_pump_sheet)
+        if not base.is_valid:
+            return base
+        if base.identity.get("template_version") != "V6.3":
+            return _version_mismatch(base, "V6.3")
+
+        candidate = Path(path) if path is not None else self.template_path
+        issues = list(base.issues)
+        transformer_contract = next(
+            (sheet for sheet in V63_TEMPLATE_ENTRY["sheets"]
+             if sheet.get("sheet_id") == "transformer"), None)
+        if transformer_contract is None:
+            issues.append("V6.3清单缺少变压器Sheet契约")
+        else:
+            issues.extend(_transformer_sheet_issues(candidate, transformer_contract))
+        motor_contract = MOTOR_V63_SHEET_CONTRACT
+        issues.extend(_motor_manifest_contract_issues(
+            motor_contract, fields_for_category=motor_visible_fields))
+
+        try:
+            with OOXMLWorkbook(candidate) as workbook:
+                grid = workbook.rows(str(motor_contract["sheet_name"]))
+                merged_ranges = workbook.merged_ranges(str(motor_contract["sheet_name"]))
+                motor_part = workbook._sheets[str(motor_contract["sheet_name"])]
+                motor_xml = workbook.archive.read(motor_part)
+                notes_contract = next(
+                    sheet for sheet in V63_TEMPLATE_ENTRY["sheets"]
+                    if sheet.get("sheet_id") == "template_notes")
+                notes = workbook.rows(str(notes_contract["sheet_name"]))
+                instructions_contract = next(
+                    sheet for sheet in V63_TEMPLATE_ENTRY["sheets"]
+                    if sheet.get("sheet_id") == "instructions")
+                instructions = workbook.rows(str(instructions_contract["sheet_name"]))
+                configuration_contract = next(
+                    sheet for sheet in V63_TEMPLATE_ENTRY["sheets"]
+                    if sheet.get("sheet_id") == "configuration")
+                configuration_name = str(configuration_contract["sheet_name"])
+                config_rows = workbook.rows(configuration_name)
+                config_part = workbook._sheets[configuration_name]
+            issues.extend(sheet_data_layout_issues(merged_ranges, motor_contract))
+            header_index = int(motor_contract["header_row"]) - 1
+            if header_index < 0 or header_index >= len(grid):
+                issues.append("「电动机」Sheet缺少正式表头行")
+            else:
+                for field in motor_contract["fields"]:
+                    column = str(field["column"])
+                    index = _column_index(column)
+                    value = grid[header_index][index] if index < len(grid[header_index]) else ""
+                    label, unit, extra = _header_parts(value)
+                    expected_label = str(field.get("label") or "")
+                    expected_unit = str(field.get("unit") or "")
+                    if label != expected_label or unit != expected_unit or extra:
+                        expected = expected_label + (f" ({expected_unit})" if expected_unit else "")
+                        actual = label + (f" ({unit})" if unit else "")
+                        issues.append(f"V6.3电动机 {column} 列期望「{expected}」，实际为「{actual}」")
+
+            motor_root = ElementTree.fromstring(motor_xml)
+            namespace = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+            formulas_in_t = [
+                cell.attrib.get("r", "")
+                for cell in motor_root.findall(
+                    f"{{{namespace}}}sheetData/{{{namespace}}}row/{{{namespace}}}c")
+                if re.fullmatch(r"T(?:[4-9]|[1-9][0-9]+)", cell.attrib.get("r", ""))
+                and cell.find(f"{{{namespace}}}f") is not None
+            ]
+            if formulas_in_t:
+                issues.append("V6.3电动机T列仍含有已退役自动业务公式")
+
+            expected_validation_columns = {"D", "F", "G", "H", "J", "K", "L", "M"}
+            validations = motor_root.findall(
+                f"{{{namespace}}}dataValidations/{{{namespace}}}dataValidation")
+            by_column: dict[str, list[ElementTree.Element]] = {}
+            for validation in validations:
+                reference = str(validation.attrib.get("sqref", ""))
+                match = re.fullmatch(r"([A-Z]+)4:\1(?:[1-9][0-9]*)", reference)
+                if match:
+                    by_column.setdefault(match.group(1), []).append(validation)
+            if set(by_column) != expected_validation_columns or any(
+                    len(nodes) != 1 for nodes in by_column.values()):
+                issues.append("V6.3电动机输入校验列不是D、F、G、H、J、K、L、M")
+            else:
+                def validation_for(column: str) -> ElementTree.Element | None:
+                    return by_column[column][0] if len(by_column.get(column, ())) == 1 else None
+
+                def formula_for(node: ElementTree.Element | None, child: str) -> str:
+                    if node is None:
+                        return ""
+                    found = node.find(f"{{{namespace}}}{child}")
+                    return (found.text or "") if found is not None else ""
+
+                requirements = {
+                    "D": ("whole", "greaterThan", "0", ""),
+                    "F": ("list", "", "EV_MOTOR_V63_CATEGORY", ""),
+                    "G": ("decimal", "greaterThanOrEqual", "0", ""),
+                    "M": ("decimal", "between", "1", "100"),
+                }
+                for column, (kind, operator, first, second) in requirements.items():
+                    node = validation_for(column)
+                    actual = (
+                        node.attrib.get("type", "") if node is not None else "",
+                        node.attrib.get("operator", "") if node is not None else "",
+                        formula_for(node, "formula1"), formula_for(node, "formula2"))
+                    if actual != (kind, operator, first, second):
+                        issues.append(f"V6.3电动机{column}列数据验证与输入契约不一致")
+                for column in ("J", "L"):
+                    node = validation_for(column)
+                    expected_operator = "greaterThan" if column == "J" else "greaterThanOrEqual"
+                    if (node is None or node.attrib.get("type") != "decimal"
+                            or node.attrib.get("operator") != expected_operator
+                            or formula_for(node, "formula1") not in {"0", "0.0"}):
+                        issues.append(f"V6.3电动机{column}列数据验证不是有效数值输入")
+                for field_id in ("rated_frequency_hz", "poles"):
+                    field = next((item for item in motor_contract["fields"]
+                                  if item.get("field_id") == field_id), {})
+                    rule = field.get("excel_validation") or {}
+                    column = str(rule.get("column") or field.get("column") or "")
+                    node = validation_for(column) if column else None
+                    actual = {
+                        "type": node.attrib.get("type", "") if node is not None else "",
+                        "formula1": formula_for(node, "formula1"),
+                        "error_title": node.attrib.get("errorTitle", "") if node is not None else "",
+                        "error": node.attrib.get("error", "") if node is not None else "",
+                        "prompt_title": node.attrib.get("promptTitle", "") if node is not None else "",
+                        "prompt": node.attrib.get("prompt", "") if node is not None else "",
+                    }
+                    expected = {
+                        key: rule.get(key)
+                        for key in ("type", "formula1", "error_title", "error",
+                                    "prompt_title", "prompt")
+                    }
+                    if actual != expected:
+                        issues.append(f"V6.3电动机{column}列数据验证与输入契约不一致")
+
+            fixed_labels = (
+                "本次批量处理说明", "模板版本", "处理时间", "已评价Sheet",
+                "未评价Sheet", "统计口径", "未评价提示", "软件区域标识",
+            )
+            for offset, expected_label in enumerate(fixed_labels, start=27):
+                row_index = offset - 1
+                actual = notes[row_index][0] if row_index < len(notes) and notes[row_index] else ""
+                if actual != expected_label:
+                    issues.append(f"V6.3模板说明!A{offset}固定批次说明标签不一致")
+            template_detail = (
+                notes[20][1] if len(notes) > 20 and len(notes[20]) > 1 else "")
+            instruction_summary = (
+                instructions[13][7]
+                if len(instructions) > 13 and len(instructions[13]) > 7 else "")
+            for category in MOTOR_CATEGORIES:
+                if category.table_no is None:
+                    continue
+                scope = motor_scope_hint(category.category_id)
+                if scope and scope not in str(template_detail):
+                    issues.append(f"V6.3模板说明!B21缺少{category.label}适用范围提示")
+                if scope and scope not in str(instruction_summary):
+                    issues.append(f"V6.3注意事项!H14缺少{category.label}范围摘要")
+            if "按kV填写" in str(template_detail) or "实测效率口径" in str(template_detail):
+                issues.append("V6.3模板说明仍保留已退役的单位或效率口径输入说明")
+            if "按kV填写" in str(instruction_summary) or "实测效率口径" in str(instruction_summary):
+                issues.append("V6.3注意事项仍保留已退役的单位或效率口径输入说明")
+            if not config_rows or not config_part:
+                issues.append("配置Sheet为空或部件缺失，无法验证V6.3电动机契约")
+            issues.extend(_motor_config_issues_v63(candidate, V63_TEMPLATE_ENTRY))
+        except (OOXMLReadError, KeyError, TypeError, ValueError,
+                ElementTree.ParseError) as exc:
+            issues.append(f"无法验证V6.3电动机Sheet契约：{exc}")
+
+        is_valid = not issues and not base.missing_sheets
+        message = ("V6.3模板结构检查通过" if is_valid else
+                   "V6.3模板不兼容：" + "；".join(issues or ["模板结构无效"]))
+        return TemplateValidationResult(
+            path=base.path, sha256=base.sha256, sheet_names=base.sheet_names,
+            missing_sheets=base.missing_sheets, is_valid=is_valid,
+            message=message, identity=base.identity,
+            sheet_contracts=base.sheet_contracts,
+            identity_source=base.identity_source,
+            pump_sheet_contract=base.pump_sheet_contract,
+            issues=tuple(issues))
+
+
 def validate_v6_template(path: Path, *, check_pump_sheet: bool = True
                          ) -> TemplateValidationResult:
     """Validate any accepted unified V6 generation with its own Sheet contracts."""
@@ -997,5 +1286,8 @@ def validate_v6_template(path: Path, *, check_pump_sheet: bool = True
             path, check_pump_sheet=check_pump_sheet)
     if version == "V6.2":
         return V62MotorTemplateResource().validate(
+            path, check_pump_sheet=check_pump_sheet)
+    if version == "V6.3":
+        return V63MotorTemplateResource().validate(
             path, check_pump_sheet=check_pump_sheet)
     return base

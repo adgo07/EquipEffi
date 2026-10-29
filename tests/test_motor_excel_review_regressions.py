@@ -1,4 +1,4 @@
-"""PR 35 regressions for motor percent input formats and sparse V6.2 rows."""
+"""PR 35 regressions for motor percent input formats and sparse V6.3 rows."""
 from __future__ import annotations
 
 import tempfile
@@ -28,7 +28,7 @@ class MotorExcelReviewRegressionTests(unittest.TestCase):
                   number_format: str | None = None) -> None:
         for column, value in {
             "D": 1, "F": MotorExcelReviewRegressionTests._label(),
-            "G": 0.38, "H": 50, "J": power, "K": 4, "M": efficiency,
+            "G": 380, "H": 50, "J": power, "K": 4, "M": efficiency,
         }.items():
             sheet[f"{column}{row}"] = value
         if number_format is not None:
@@ -75,13 +75,13 @@ class MotorExcelReviewRegressionTests(unittest.TestCase):
             for number in (4, 5, 6):
                 with self.subTest(row=number):
                     self.assertTrue(rows[number].input_errors)
-                    self.assertEqual(rows[number].values["measured_efficiency_pct"], "")
+                    self.assertEqual(rows[number].values["rated_efficiency_pct"], "")
                     self.assertTrue(any("普通数值" in message
                                         for message in rows[number].input_errors))
             for number in (7, 8):
                 with self.subTest(row=number):
                     self.assertFalse(rows[number].input_errors)
-                    self.assertEqual(rows[number].values["measured_efficiency_pct"], 1)
+                    self.assertEqual(rows[number].values["rated_efficiency_pct"], 1)
 
     def test_percent_conflict_and_plain_100_through_batch_and_history(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -125,11 +125,11 @@ class MotorExcelReviewRegressionTests(unittest.TestCase):
             self.assertEqual(record.summary["conclusion_quantities"],
                              result.summary.conclusion_quantities)
 
-    def test_sparse_v62_rows_write_direct_interpolation_and_reimport(self):
+    def test_sparse_v63_rows_write_direct_interpolation_and_reimport(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             batch, paths = self._batch(root)
-            source = root / "sparse-v62.xlsx"
+            source = root / "sparse-v63.xlsx"
             batch.template_resource.download_to(source)
             workbook = load_workbook(source)
             sheet = workbook["电动机"]
