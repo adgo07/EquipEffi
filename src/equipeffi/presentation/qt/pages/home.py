@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, Q
                               QStyleOptionButton, QStyle, QStylePainter, QSizePolicy)
 from ....application.services.centrifugal_pump_analysis_service import user_conclusion_from_snapshot
 from ..style import brand, icon
+from ..widgets.page_layout import page_gutter
 from ..widgets.compact_table import CompactTable
 
 
@@ -31,8 +32,10 @@ class TaskCard(QPushButton):
         text.setSpacing(10)
         title = QLabel(name)
         title.setObjectName("taskTitle")
+        title.setProperty("onPrimary", primary)
         description_label = QLabel(description)
         description_label.setObjectName("taskDescription")
+        description_label.setProperty("onPrimary", primary)
         for label in (title, description_label):
             label.setWordWrap(True)
             label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
@@ -67,11 +70,11 @@ class HomePage(QWidget):
         scroll.setWidgetResizable(True)
         body = QWidget()
         layout = QVBoxLayout(body)
-        layout.setContentsMargins(32, 24, 32, 24)
+        page_gutter(layout, scroll.viewport())
         layout.setSpacing(24)
         bar = QHBoxLayout()
         self.brand = brand()
-        self.brand.setFixedWidth(200)
+        self.brand.setFixedWidth(180)
         bar.addWidget(self.brand)
         divider = QFrame()
         divider.setFixedSize(1, 60)
@@ -114,7 +117,7 @@ class HomePage(QWidget):
         recent.setContentsMargins(18, 16, 18, 16)
         row = QHBoxLayout()
         recent_title = QLabel("最近分析记录")
-        recent_title.setStyleSheet("font-size:17px; font-weight:600;")
+        recent_title.setStyleSheet("font-size:16px; font-weight:600;")
         row.addWidget(recent_title)
         row.addStretch()
         all_records = QPushButton("查看全部")
@@ -144,7 +147,7 @@ class HomePage(QWidget):
         self.refresh()
 
     def resizeEvent(self, event):
-        self.brand.setFixedWidth(200 if self.width() >= 800 else 140)
+        self.brand.setFixedWidth(180)
         columns = 4 if self.width() >= 900 else 2 if self.width() >= 540 else 1
         if columns != self._columns:
             self._columns = columns
@@ -170,7 +173,7 @@ class HomePage(QWidget):
         self.records.setVisible(bool(records))
         self.record_status.setVisible(not records)
         self.records.setRowCount(len(records))
-        self.records.setFixedHeight(40 * len(records) + 42)
+        self.records.fit_content_height = True
         self.record_status.setText("" if records else "尚无分析记录，可点击「新建分析」开始。")
         for row, record in enumerate(records):
             values = getattr(record, "input_snapshot", None) or {}

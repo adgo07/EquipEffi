@@ -59,7 +59,7 @@ class UiFamilyStage1Tests(unittest.TestCase):
         self.window.open_home()
         self.assertTrue(self.window.sidebar.isHidden())
         self.window.open_settings()
-        self.assertFalse(self.window.sidebar.isHidden())
+        self.assertTrue(self.window.sidebar.isHidden())
         self.assertTrue(self.window.navigation.item(5).isHidden())
 
     def test_search_ime_filter_keyboard_and_back_preserve_context(self):
@@ -162,7 +162,7 @@ class UiFamilyStage1Tests(unittest.TestCase):
         self.window.open_analysis(standard_code="GB 19762-2025")
         self.app.processEvents()
         self.assertEqual(self.window.width(), 560)
-        self.assertEqual(self.window.sidebar.width(), 144)
+        self.assertEqual(self.window.sidebar.width(), 242)
         self.assertTrue(self.window.navigation.isVisible())
         scroll = self.window.analysis_page.findChild(QScrollArea)
         self.assertGreater(scroll.verticalScrollBar().maximum(), 0)
@@ -239,21 +239,37 @@ class UiFamilyStage1Tests(unittest.TestCase):
                 self.assertEqual(page.search.text(), "变压器")
 
     def test_standard_columns_fill_on_first_show_and_viewport_resize(self):
+        from time import monotonic
+
+        def wait_for_layout(predicate):
+            deadline = monotonic() + 10
+            stable = 0
+            previous = None
+            while monotonic() < deadline:
+                QTest.qWait(5)
+                geometry = (table.viewport().width(), tuple(table.columnWidth(i) for i in range(5)))
+                stable = stable + 1 if predicate() and geometry == previous else 0
+                if stable >= 3:
+                    return
+                previous = geometry
+            self.fail(f"标准库布局未稳定: {previous}")
+
         self.window.resize(1440, 1000)
         self.app.processEvents()
         self.window.open_standards()
-        QTest.qWait(10)
         page = self.window.standards_page
         table = page.table
+        wait_for_layout(lambda: sum(table.columnWidth(i) for i in range(5)) == table.viewport().width())
         self.assertEqual(sum(table.columnWidth(i) for i in range(5)), table.viewport().width())
         self.assertGreater(table.columnWidth(1), 300)
         table.setFixedWidth(table.width() - 90)
-        QTest.qWait(10)
+        wait_for_layout(lambda: sum(table.columnWidth(i) for i in range(5)) == table.viewport().width())
         self.assertEqual(sum(table.columnWidth(i) for i in range(5)), table.viewport().width())
         table.setMinimumWidth(0)
         table.setMaximumWidth(16777215)
         self.window.resize(560, 420)
-        QTest.qWait(10)
+        wait_for_layout(lambda: sum(table.columnWidth(i) for i in range(5)) > table.viewport().width()
+                        and table.horizontalScrollBar().maximum() > 0)
         self.assertGreaterEqual(table.columnWidth(1), 300)
         self.assertGreater(sum(table.columnWidth(i) for i in range(5)), table.viewport().width())
         self.assertGreater(table.horizontalScrollBar().maximum(), 0)

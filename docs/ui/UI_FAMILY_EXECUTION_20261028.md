@@ -1,0 +1,93 @@
+# Qt 家族界面统一执行说明（2026-10-28）
+
+状态：协调者有限范围源码UI终验通过；本轮仅提交PR，不自动合并或发布，不改变Phase状态。
+
+- 基线：`origin/master@e140283b110e77992099836fddcb34f018e01009`，已fetch并用远端HEAD核对默认分支master。原项目脏目录未修改。
+- 分支：`codex/ui-family-20261028`；隔离worktree由本任务创建，路径见交付消息（路径仅表示本机环境）。
+- 实施依据：本轮Owner授权及中央候选 `e1486fb20c1dda33b7344ca860ff8f303c2183ee`；候选尚未合并，不称为已发布指南。中央已合并导航/指南核查于 `a389ac1de63c4f331f3b04e5e7b7a17ef02ed111`。
+- 平台预检查：locked central SHA `ee5feb0cc34dbd99790500fadd0c4c932e202a20` 未变。本任务不涉及中央公共 Contract。适用边界：Presentation经现有Application调用；展示不得改变Decimal、标准解释、算法、支持范围、历史快照、保存规则或数据库。冲突：无；无需改中央Contract。
+- 标准问题：未产生新Issue，不改变既有软件解释。生命周期保留“已实施/尚未实施/未提供实施日期”，未凭实施日推断“现行”；变压器列表基于IMPLEMENTED显示“已实现，待验收”，电机仍显式“验收候选”；当前正式支持范围依V1_SCOPE。
+
+## 本轮变更
+
+窗口首次客户区目标1280×800、非最大化并居中，显示后按真实系统边框约束工作区；保留geometry/state恢复，屏幕工作区变化/移除/切换后收回可用区。启动首页及业务数据恢复规则不变。业务侧栏242，导航/底部设置46，图标18；首页设置保持无侧栏，返回首页可达，业务设置保留侧栏。
+
+统一40 DIP普通输入/按钮、36 DIP页签、字体/配色/按钮状态与2px稳定焦点；修复primary禁用覆盖。QGroupBox标题放入卡片内部独立留白；统一页头与动态外边距，实际正文最多1440，无设备子页嵌套外边距。已有运行信息折叠和设置能力保留，未新增备份能力。
+
+表格默认48 DIP、长中文动态增高并保留全文；记录的两个页签以转义后的可读段落展示原快照，字段信息不删，加载更多保留，计数和加载控制放底部。导入四区域统一名称，无文件处理禁用，忙碌/失败后依前置条件恢复。未增加确认框或改系统选择器。
+
+首页/侧栏Logo180 DIP，从3060×759原图按当前DPR生成，SVG按目标DPR绘制；原始PNG和15图形SVG字节均未变。来源与哈希见assets/README.md。没有改冻结资源、标准模板、Contract、Golden、持久化或版本号。
+
+## 实际验证
+
+Python3.12.14 / PySide6 6.11.2，全部Qt检查使用offscreen与独立临时数据库，不操作真实桌面。
+
+- 最终相关回归：125 passed，127 subtests passed，fail/error/skip=0，exit=0（141.28秒）。
+- 2×DPR抽查：本轮7项定向测试通过，fail/error/skip=0（覆盖Logo实际DPR、SVG物理尺寸、输入文本、窗口/控件/长中文与批量状态）；其后新增的颜色/最大化2项在普通DPR覆盖。
+- 实测最终外框：普通输入/按钮40；导航46；侧栏设置46且图标18；页签36。SVG `QIcon.pixmap(QSize(18,18),2.0)`=36×36物理像素、18×18 DIP。2000业务可用宽下实际正文1440。
+- compileall与git diff --check通过，fail/error=0。未跑全量业务回归或性能基线，未改算法；未构建/验收EXE。
+- 首页/标准库/新建/记录详情四个离屏代表视图已自查，offscreen测试显式加载本机中文字体，仅用于该测试进程。真实桌面外框、系统字体、跨物理DPI屏与掉屏操作由协调者验收，不以离屏图冒称通过。
+- 初轮曾出现旧尺寸/设置上下文/纯文本格式断言失败，以及长中文行高实测失败；已更新已授权行为断言、验证HTML转义，并修复实际行高问题。最终结果以下方命令为准。
+
+最终命令：
+
+```powershell
+$env:QT_QPA_PLATFORM='offscreen'
+$env:PYTHONPATH='src'
+& 'G:/Python Project/EquipEffi/.venv/Scripts/python.exe' -m pytest tests/unit/test_ui_family_20261028.py tests/unit/test_ui_family_stage1.py tests/unit/test_ui_family_stage2.py tests/unit/test_ui_family_r4.py tests/unit/test_phase2_qt.py tests/unit/test_phase6_product_shell.py tests/unit/test_phase8r4_qt_background.py tests/unit/test_phase8r5_qt_batch_feedback.py -q --tb=short
+```
+
+## 协调者源码验收
+
+提供了必须显式注入数据目录的`tools/launch_ui_review.py`，复用正式装配链。首次用全新`--data-root`验证默认窗口；关闭后复用同一目录核对恢复。`--motor-candidate`只启用现有候选开关，删去它即正常默认构建，不提升软件支持状态。
+
+操作：确认无侧栏首页→右上设置→返回首页→标准库及三分区详情→新建分析（泵100/50/2900/90，合法分析自动记录）→分析记录及两页签→业务侧栏设置→表格导入（无文件禁用、取消选择、失败恢复）。正文滚动及主要动作可达；按需检查已实现的变压器/显式电机候选，不扩大范围。
+
+Knowledge capture：无。
+
+
+## 协调者复验修复：首次加载长中文（2026-10-28）
+
+最终截图复验发现首次载入真实长中文记录时，列表仍为48 DIP并截断。原因是列表加载后仍调用Qt默认`resizeRowsToContents()`，与自定义测量并存；原测试仅在已显示单元格上修改文本，触发了`itemChanged`后的重算，未验证首次插入的即时状态。
+
+将`CompactTable.resizeRowsToContents()`统一为实际列宽/已polish字体的换行测量；初次setItem显式排队重算，列宽/字体/样式变化也重算。页面首显、刷新和加载更多沿用既有调用，无截图脚本强制改行高。未改Application、记录或数据库。
+
+原长中文测试改走正式分析保存两条记录、首次进入、加载更多、窄宽窗口切换和刷新；离屏Windows使用系统可用中文字体以匹配截图条件。新增首插入即时断言在修复前确认失败1项；修复后最相关4项通过，fail/error/skip=0，exit=0（7.19秒）。未追加全量回归。
+
+```powershell
+$env:QT_QPA_PLATFORM='offscreen'; $env:PYTHONPATH='src'
+& 'G:/Python Project/EquipEffi/.venv/Scripts/python.exe' -m pytest tests/unit/test_ui_family_20261028.py::UiFamily20261028Tests::test_long_chinese_table_rows_grow_and_keep_actions tests/unit/test_ui_family_r4.py::R4Tests::test_tables_fit_all_columns_compact_and_preserve_full_long_text tests/unit/test_ui_family_stage2.py::UiFamilyStage2Tests::test_small_record_list_has_complete_row_and_mouse_keyboard_roundtrips tests/unit/test_ui_family_stage2.py::UiFamilyStage2Tests::test_single_older_than_100_and_batch_global_search_older_than_50 -q --tb=short
+```
+
+同轮收口：表内“查看”按钮改为32内容高度+上下各2边框，最终36 DIP，48 DIP普通行可容纳。现有长中文用例新增实际按钮高度断言；上述4项再验证全部通过，fail/error/skip=0，exit=0（18.42秒）。首显截图已验证长中文行自动增高至219 DIP，未在脚本中调用行高调整。
+
+
+## 有限范围源码终验结论（2026-10-28）
+
+协调者已审`709f90dea0ede4a184b5f21c664c0d49f1918eeb`差异及最终记录列表图，确认长中文全文完整、行内按钮36 DIP，授权push并创建PR，不合并。原定向125项/127子测试通过；协调者先前独立9项/4子测试通过；本次4项相关回归通过。协调者对最新长中文路径另独立复验：`python -m pytest tests/unit/test_ui_family_20261028.py -k long_chinese_table_rows -q --tb=short -p no:cacheprovider`，1 passed、8 deselected、77.70秒。以上为各次验证事实，不相加或冒称最终Head全量复验。
+
+最终四个离屏代表页为首页/记录列表/新建分析/记录详情，均1280×800、DPR=1，源代码Head为`709f90de`，生成于2026-10-28 18:08（北京时间）；长中文首显219 DIP、查看36 DIP、导航46 DIP、输入40 DIP、页签36 DIP。四图及SHA256元数据由协调会话保存：`C:/Users/WANGWEI/.codex/visualizations/2026/10/28/01a181a8-1c62-7070-88a6-067f02faf807/final-head-offscreen.json`。2×DPR证据仍为前述7项抽查，不声称四图是原生高DPI桌面截图。
+
+Astra曾成功启动可见EquipEffi窗口，但CU读取挂起，未实际完成交互；真实跨屏/掉屏操作和EXE未验。终验仅覆盖源码差异、相关离屏测试与代表图，不构成正式发布、支持状态提升或Phase 8 PASS。本节之后的提交仅更新该验收说明。
+
+## PR38 CI展示测试收口（2026-10-28）
+
+Windows Core run40670165514/job122754606813在ea61693c运行1234项，结果2 FAIL、1 ERROR（1096.228秒）：旧设置页替身缺header_row、批次详情仍断言Qt PlainText格式、变压器仍断言旧支持文案。只修两个测试文件，不改产品或业务代码：设置页替身补齐页头接口；批次详情解析实际QLabel HTML，验证文件名`<img src=x>.xlsx`按字面显示且无图片格式片段；变压器确认IMPLEMENTED、中文“已实现，待验收”、非正式支持并仍正确导航。批次历史、加载更多、刷新与数量语义断言全部保留。
+
+定向`python -m unittest tests.unit.test_batch_records_history tests.unit.test_transformer_qt -v`：14项通过，fail/error/skip=0，exit=0，17.867秒；git diff --check通过。更新同PR重触发既有CI；不得以这次本地14项冒称完整CI已通过。不增加截图或测试矩阵。
+
+## PR38合并前修复（2026-10-29）
+
+基线c05d1ca6，origin已核实为adgo07/EquipEffi；本轮master已为PR37合并46ed7a92，合并前需验证集成后的配置。locked central SHA仍为ee5feb0cc34dbd99790500fadd0c4c932e202a20；按当前GUIDE_INDEX读取UI v0.2、家族规格及验收清单。MUST：中文可读、布局稳定、历史只读；MUST NOT：改变业务算法、正式结果、数据库/快照或锁。分类LOCAL DEFECT；本任务不涉及中央公共Contract，无需中央修改。未涉及Standard Issue，不改变既有标准解释。
+
+已核实：本机原始用例出现915!=1114，固定10ms不足以跨越页边距和表格定时布局；现同步激活页边距并在标准库viewport尺寸变化时立即适配列宽，保留后续布局复核，防止重入。测试改为轮询连续稳定并限定超时；首轮2秒超时虽已得到正确1114宽度但未收集足够稳定样本，调整为10秒上限，未降低列宽与窄屏滚动断言。
+
+移除两处16777215px样式声明。截图发现任务卡若直接删除max-height会继承普通按钮36 DIP限制、与最近记录区重叠，因此保留安全的100000px角色覆盖；下拉内嵌输入框直接删除该声明。回归同时验证无setMaximumSize警告、卡片最小高度及不重叠，普通输入按钮仍40 DIP。记录单台/批次列表与详情用统一显示函数将UTC时间转换成本机时区、去掉微秒并注明本地时间；兼容Z/显式偏移/既有无时区UTC字段，非法旧值原样保留。真实保存/打开回归验证原始快照与数据库SHA均不变。
+
+用户提及的两项error来自现有artifacts/acceptance/full_suite.log：截图子进程45秒超时，以及其后assertEqual参数不足的二次错误。修复二次错误而保留原始失败，截图工具另行实测；不以CI绿色推断真实屏幕钳制原因已被证明。UI技能检索未命中Qt专属条目，仅以通用布局稳定建议辅助，Qt事件机制以源码和复验为据。
+
+原10ms观察点独立重复10次均为1114/1114（10/10）；首轮固定10ms原用例已复现915/1114失败。追加诊断发现本机长等待发生在隔离SQLite迁移/设置提交，而非列宽仍错误；不据此修改生产数据库同步设置或放宽正式结果。
+
+最终代码本地验证：8个UI模块127 passed / 127 subtests，70.52秒；样式与普通控件2 passed / 4 subtests，24.01秒。扩展截图工具/批次历史/变压器Qt/三标准发布测试首轮20 passed / 56 subtests、1 failed（批次列表断言仍要求旧UTC文案），已改为按运行机器时区独立计算预期；该批次历史模块复验5 passed，2.52秒。截图工具45秒限制原样保留，普通及优化解释器执行均通过，原始超时和后继TypeError本轮未再发生。所有上述完成轮次error/skip=0；中途因G盘临时库等待而停止的诊断运行不计通过。
+
+最终离屏图核验标准库铺满、首页任务卡154 DIP且底277低于最近记录区顶302、记录详情为本地时间；未新增原生Windows跨屏或安装包验收。合并master 46ed7a92后保留PR37三设备正式入口与支持状态，未修改标准映射、业务计算、正式模板或锁文件。新增批次显示断言后再次提交同PR触发最终CI，合并以该Head门禁结果为准；CI及合并SHA同步记在PR38，避免将旧Head结果冒称新Head结果。

@@ -43,6 +43,7 @@ from ....application.services.pump_batch_evaluation_service import (
 )
 from ..labels import user_facing_issue_kind
 from ..tokens import TOKENS
+from ..widgets.page_layout import page_gutter
 from ..style import heading, icon
 
 SYSTEM_FAILURE_TEXT = "批量评价未能完成，请检查工作簿或联系技术人员。"
@@ -120,7 +121,7 @@ class BatchPage(QWidget):
         scroll.setWidgetResizable(True)
         body = QWidget()
         layout = QVBoxLayout(body)
-        layout.setContentsMargins(*(TOKENS.page_margin,) * 4)
+        page_gutter(layout, scroll.viewport())
         layout.setSpacing(TOKENS.section_gap)
         layout.addWidget(heading("表格导入"))
         template_box = QGroupBox("模板与说明")
@@ -134,7 +135,7 @@ class BatchPage(QWidget):
         self.template_button.clicked.connect(self.export_blank_template)
         template_layout.addWidget(self.template_button, alignment=Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(template_box)
-        picker = QGroupBox("选择文件")
+        picker = QGroupBox("文件选择")
         picker_layout = QVBoxLayout(picker)
         self.source_edit = QLineEdit()
         self.source_edit.setReadOnly(True)
@@ -163,7 +164,7 @@ class BatchPage(QWidget):
         self.target_row_widget.hide()
         picker_layout.addWidget(self.target_row_widget)
         layout.addWidget(picker)
-        check = QGroupBox("数据检查与预览")
+        check = QGroupBox("数据预览与检查")
         check_layout = QVBoxLayout(check)
         self.check_label = QLabel("选择文件后自动检查结构及数据行；字段问题以正式评价结果为准。")
         self.check_label.setWordWrap(True)
@@ -207,12 +208,17 @@ class BatchPage(QWidget):
         scroll.setWidget(body)
         outer.addWidget(scroll)
         self.last_check = None
+        self._update_run_enabled()
+
+    def _update_run_enabled(self):
+        self.run_button.setEnabled(bool(self.source_edit.text().strip()) and not self.busy and self._thread is None)
 
     def _invalidate_source(self, *_):
         had_previous = self.last_result is not None or self.last_check is not None
         self.last_result = None
         self.last_check = None
         self._reset_quick_actions()
+        self._update_run_enabled()
         self.summary_label.setText("已更换文件，原检查与结果已失效。请重新评价。" if had_previous else "尚未开始。")
         self.conclusion_label.clear()
         self.issue_label.clear()
@@ -299,6 +305,7 @@ class BatchPage(QWidget):
         self.source_edit.blockSignals(True)
         self.source_edit.setText(str(path))
         self.source_edit.blockSignals(False)
+        self._update_run_enabled()
         self._remember_directory(path)
         # 输出路径**不在选中时预填**：留空即表示"自动生成"，运行时才计算。
         # 这样用户手动设置过的位置永远不会被静默覆盖。
@@ -495,7 +502,8 @@ class BatchPage(QWidget):
 
     def _set_busy(self, busy: bool, message: str = "") -> None:
         self.busy = busy
-        self.run_button.setEnabled(not busy and self._thread is None)
+        self._update_run_enabled()
+        self.run_button.setText("正在评价…" if busy else "批量评价")
         for control in (self.source_button, self.target_button, self.target_edit, self.target_toggle, self.template_button):
             control.setEnabled(not busy)
         self.progress.setVisible(busy)

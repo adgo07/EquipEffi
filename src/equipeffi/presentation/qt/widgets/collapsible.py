@@ -29,7 +29,7 @@ class CollapsibleSection(QWidget):
         self.toggle_button.setCheckable(True)
         self.toggle_button.setChecked(expanded)
         self.toggle_button.clicked.connect(self._on_toggled)
-        self.toggle_button.setStyleSheet("text-align: left; padding: 4px;")
+        self.toggle_button.setStyleSheet("text-align: left; padding: 0 14px;")
         layout.addWidget(self.toggle_button)
 
         self.content = QFrame()

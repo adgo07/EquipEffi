@@ -58,6 +58,7 @@ from ....application.services.centrifugal_pump_analysis_service import (
     category_field_constraints,
 )
 from ..tokens import TOKENS
+from ..widgets.page_layout import page_gutter
 from ..style import icon
 from ..labels import (
     format_metric,
@@ -122,15 +123,12 @@ class AnalysisPage(QWidget):
 
     def _build(self) -> None:
         outer = QVBoxLayout(self)
-        outer.setContentsMargins(*(TOKENS.page_margin,) * 4)
+        page_gutter(outer)
         outer.setSpacing(TOKENS.section_gap)
 
         heading = QLabel("新建分析")
         self.heading = heading
-        font = heading.font()
-        font.setPixelSize(TOKENS.title_font_size)
-        font.setBold(True)
-        heading.setFont(font)
+        heading.setObjectName("pageHeading")
         outer.addWidget(heading)
 
         standard = QLabel("适用标准：GB 19762—2025《离心泵能效限定值及能效等级》")
@@ -330,7 +328,7 @@ class AnalysisPage(QWidget):
         self.warning_label = QLabel("")
         self.warning_label.setWordWrap(True)
         self.warning_label.setTextFormat(Qt.TextFormat.PlainText)
-        self.warning_label.setStyleSheet("color: #8a6d00;")
+        self.warning_label.setStyleSheet("color: #956420;")
         self.warning_label.setVisible(False)
         layout.addWidget(self.warning_label)
 
@@ -521,16 +519,16 @@ class AnalysisPage(QWidget):
             self.record_label.setText(
                 f"已自动保存为历史记录：{outcome.record.record_id}"
                 f"（可在「分析记录」中打开查看）。再次分析会生成新记录。")
-            self.record_label.setStyleSheet("color: #1f6f3f;")
+            self.record_label.setStyleSheet("color: #168268;")
         elif outcome.save_failed:
             self.record_label.setText(
                 "计算结果已产生，但历史记录保存失败，本次结果未被记录。"
                 "请检查数据存储是否可写，或联系技术人员。")
-            self.record_label.setStyleSheet("color: #a03020;")
+            self.record_label.setStyleSheet("color: #B9484A;")
         else:
             reason = outcome.record_error or "当前结果不构成正式评价结论"
             self.record_label.setText(f"本次未形成历史记录：{reason}")
-            self.record_label.setStyleSheet("color: #8a6d00;")
+            self.record_label.setStyleSheet("color: #956420;")
 
     def _render(self, result: PumpAnalysisResult) -> None:
         """按产品信息层级渲染：结论 → 实际值与限值 → 解释 → 标准依据。

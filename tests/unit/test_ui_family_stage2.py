@@ -150,7 +150,9 @@ class UiFamilyStage2Tests(unittest.TestCase):
         self.assertEqual(page.batch_list.rowCount(), 1)
         self.assertEqual(page.batch_list.item(0, 0).text(), "<img src=x>.xlsx")
         page.batch_list.cellActivated.emit(0, 0)
-        self.assertEqual(page.detail.textFormat(), Qt.TextFormat.PlainText)
+        self.assertEqual(page.detail.textFormat(), Qt.TextFormat.RichText)
+        from PySide6.QtWidgets import QLabel
+        self.assertIn("&lt;img src=x&gt;", QLabel.text(page.detail))
         self.assertIn("未保存逐行完整输入", page.inputs_detail.text())
         page.back_button.click()
         self.assertEqual(page.lists.currentIndex(), 1)

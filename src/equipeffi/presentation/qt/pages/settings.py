@@ -14,6 +14,7 @@ from pathlib import Path
 from PySide6.QtCore import QEvent, QTimer, Qt
 from PySide6.QtWidgets import (
     QComboBox,
+    QHBoxLayout,
     QGroupBox,
     QLabel,
     QLayout,
@@ -25,6 +26,7 @@ from PySide6.QtWidgets import (
 )
 
 from ..tokens import TOKENS
+from ..widgets.page_layout import page_gutter
 from ..widgets.collapsible import CollapsibleSection
 
 #: 普通用户**不得**出现的设置项（机械门禁会检查它们不出现在本页）。
@@ -82,17 +84,15 @@ class SettingsPage(QWidget):
         self.scroll_area.setWidgetResizable(True)
         content = QWidget()
         layout = QVBoxLayout(content)
-        layout.setContentsMargins(*(TOKENS.page_margin,) * 4)
+        page_gutter(layout, self.scroll_area.viewport())
         layout.setSpacing(TOKENS.section_gap)
         layout.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
 
         heading = QLabel("设置")
         heading.setObjectName("pageHeading")
-        font = heading.font()
-        font.setPixelSize(TOKENS.title_font_size)
-        font.setBold(True)
-        heading.setFont(font)
-        layout.addWidget(heading)
+        self.header_row = QHBoxLayout()
+        self.header_row.addWidget(heading, 1)
+        layout.addLayout(self.header_row)
 
         preferences = QGroupBox("应用设置")
         preferences_layout = QVBoxLayout(preferences)

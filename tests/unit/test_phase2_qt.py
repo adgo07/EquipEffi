@@ -103,7 +103,7 @@ class QtShellTests(unittest.TestCase):
         with self.assertLogs("equipeffi.qt", level="WARNING"):
             window = MainWindow(self.service)
         self.addCleanup(window.close)
-        self.assertEqual(window.width(), 1000)
+        self.assertEqual(window.width(), 1280)
 
     def test_save_failure_is_logged_and_close_still_succeeds(self):
         """M2：窗口布局保存失败只记日志，**不再**阻止退出。

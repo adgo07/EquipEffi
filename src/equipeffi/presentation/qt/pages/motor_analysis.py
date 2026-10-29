@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout, QLabel, QHBoxL
 from ....application.services.motor_analysis_service import MotorAnalysisRequest
 from ....application.services.motor_basis_formatter import format_motor_basis_lines
 from ..tokens import TOKENS
+from ..widgets.page_layout import page_gutter
 from ..widgets.choice_combo import ChoiceComboBox
 from ..widgets.numeric_input import numeric_field, validate_numeric_fields, rejected_states, restore_rejection
 from ..widgets.form_fields import (searchable_categories, selected_category, field_form,
@@ -26,7 +27,7 @@ class MotorAnalysisPage(QWidget):
         self._last_result = self._last_outcome = None
         self.last_record_status = None
         outer = QVBoxLayout(self)
-        outer.setContentsMargins(*(TOKENS.page_margin,) * 4)
+        page_gutter(outer)
         heading = QLabel("电动机分析")
         self.heading = heading
         heading.setObjectName("pageHeading")

@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, Q
     QAbstractItemView, QStackedWidget, QScrollArea, QGroupBox)
 from ..style import heading, icon
 from ..tokens import TOKENS
+from ..widgets.page_layout import page_gutter
 from ..widgets.compact_table import CompactTable
 
 LIFECYCLE_STATE_LABELS = {
@@ -26,7 +27,7 @@ class StandardsPage(QWidget):
         self._visible = []
         self._load_error = False
         outer = QVBoxLayout(self)
-        outer.setContentsMargins(TOKENS.page_margin, TOKENS.page_margin, TOKENS.page_margin, TOKENS.page_margin)
+        page_gutter(outer)
         self.stack = QStackedWidget()
         outer.addWidget(self.stack)
         listing = QWidget()
@@ -62,9 +63,9 @@ class StandardsPage(QWidget):
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.setAlternatingRowColors(True)
-        self.table.setWordWrap(False)
+        self.table.setWordWrap(True)
         self.table.verticalHeader().hide()
-        self.table.verticalHeader().setMinimumSectionSize(40)
+        self.table.verticalHeader().setMinimumSectionSize(48)
         self.table.cellClicked.connect(lambda row, column: self.open_detail(row) if column in (0, 1) else None)
         self.table.cellActivated.connect(lambda row, column: self.open_detail(row))
         layout.addWidget(self.table, 1)
@@ -82,9 +83,11 @@ class StandardsPage(QWidget):
         self.back_button = QPushButton("返回标准库")
         self.back_button.setIcon(icon("back"))
         self.back_button.clicked.connect(self.show_list)
-        layout.addWidget(self.back_button, alignment=Qt.AlignmentFlag.AlignLeft)
         self.detail_heading = heading("")
-        layout.addWidget(self.detail_heading)
+        detail_header = QHBoxLayout()
+        detail_header.addWidget(self.detail_heading, 1)
+        detail_header.addWidget(self.back_button)
+        layout.addLayout(detail_header)
         actions = QHBoxLayout()
         self.source_button = QPushButton("查看标准原文")
         self.source_button.setIcon(icon("book"))
@@ -162,10 +165,10 @@ class StandardsPage(QWidget):
             if overview.get("support_status") == "SUPPORTED":
                 row["support"] = "正式支持"
             elif overview.get("support_status") == "IMPLEMENTED":
-                row["support"] = "已接入，待正式支持验收"
+                row["support"] = "已实现，待验收"
             else:
                 statuses = [s.get("support_status") for s in overview.get("scopes", ())]
-                row["support"] = "正式支持" if statuses and all(s == "SUPPORTED" for s in statuses) else "尚未开放"
+                row["support"] = "正式支持" if statuses and all(s == "SUPPORTED" for s in statuses) else "未开放"
             catalog.append(row)
         return catalog
 
@@ -202,14 +205,20 @@ class StandardsPage(QWidget):
 
     def eventFilter(self, watched, event):
         if watched is self.table.viewport() and event.type() in (QEvent.Type.Resize, QEvent.Type.Show):
-            # 首次进入堆叠页也会改变viewport；等待本轮布局完成后分配剩余宽度。
+            # The viewport already has its new geometry. Fit before painting,
+            # then retain the deferred pass for scrollbar/layout follow-ups.
+            self._resize_columns()
             self._column_timer.start(0)
         return super().eventFilter(watched, event)
 
     def _resize_columns(self):
-        if not self.table.isVisible():
+        if not self.table.isVisible() or getattr(self, "_fitting_columns", False):
             return
-        self.table.fit_columns()
+        self._fitting_columns = True
+        try:
+            self.table.fit_columns()
+        finally:
+            self._fitting_columns = False
 
     def show_list(self, message=None):
         self.standard_code = None
