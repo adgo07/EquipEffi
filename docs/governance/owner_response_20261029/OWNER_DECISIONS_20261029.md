@@ -8,7 +8,7 @@
 
 **原话（仓库已有记录）：**“高压电机标准已没问题，确定批准”。该批准对应GB 30254—2024主映射、配套6表及已登记的001/002项目解释；不自动提升软件支持状态，也不代表发布机构解释。
 
-对应条目：[GB 30254主映射](../../standards/gb30254_2024/STANDARD_MAPPING.md)、[修订说明](../motor_mapping_confirmation_20261029.md)、[EQP-STD-GB30254-001](../../../STANDARD_ISSUES_REGISTER.md#L694)、[EQP-STD-GB30254-002](../../../STANDARD_ISSUES_REGISTER.md#L714)。
+对应条目：[GB 30254主映射](../../standards/gb30254_2024/STANDARD_MAPPING.md)、[修订说明](../motor_mapping_confirmation_20261029.md)、[EQP-STD-GB30254-001](../../../STANDARD_ISSUES_REGISTER.md#eqp-std-gb30254-001--gbt-755-容差的判定语义建议前缀-eqp-std-gb30254-)、[EQP-STD-GB30254-002](../../../STANDARD_ISSUES_REGISTER.md#eqp-std-gb30254-002--总范围与极数分支表值范围的差异)。
 
 ## EQP-STD-GB30253-004
 
@@ -16,7 +16,7 @@
 
 **原话（仓库已有记录）：**“采用精确双线性插值，缺端点不计算”。该项目软件解释仅用于003特殊区域以外、同表同等级同分支且四个相邻有效数值端点齐全的双轴插值；缺角不补、不外推。它不是标准官方公式。
 
-对应条目：[EQP-STD-GB30253-004](../../../STANDARD_ISSUES_REGISTER.md#L773)、[GB30253接入设计（§4.3）](../../standards/gb30253_2024/INTEGRATION_DESIGN.md)。
+对应条目：[EQP-STD-GB30253-004](../../../STANDARD_ISSUES_REGISTER.md#eqp-std-gb30253-004--同时未列功率与转速的通用双轴插值)、[GB30253接入设计（§4.3）](../../standards/gb30253_2024/INTEGRATION_DESIGN.md)。
 
 ## EQP-STD-MOTOR-009
 
@@ -26,7 +26,7 @@
 
 **TODO(Owner 原话)：**当前可核实材料仅有上述转述，未找到本决定的Owner逐字原话；取得原文后再补录，不将转述改写成引语。
 
-对应条目：[EQP-STD-MOTOR-009](../../../STANDARD_ISSUES_REGISTER.md#L654)、[QA-MOTOR-004](../../../QA_BACKLOG.md#L3)、[V1_SCOPE](../../../V1_SCOPE.md)。
+对应条目：[EQP-STD-MOTOR-009](../../../STANDARD_ISSUES_REGISTER.md#eqp-std-motor-009--额定效率评价与输入单位2026-10-29)、[QA-MOTOR-004](../../../QA_BACKLOG.md#qa-motor-004额定效率与v单位输入open2026-10-29)、[V1_SCOPE](../../../V1_SCOPE.md)。
 
 ## 与既有记录的关系
 
