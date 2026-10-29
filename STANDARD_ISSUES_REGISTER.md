@@ -692,11 +692,12 @@ EQP-STD-GB19762-001
 |支持证据|[`请求 1`](docs/governance/standard_archive_20261024/gb30254_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|
 |确认程度|Owner回复等级a；批准依据为用户指定回复文件及本轮授权，不冒称本轮独立核验外部资料或官方解释。|
 |状态|`RESOLVED`|
-|首次发现日期/最后更新日期|2026-10-13 / 2026-10-23|
+|首次发现日期/最后更新日期|2026-10-13 / 2026-10-29|
 |Owner回复及落实依据|[2026-10-14回复快照](docs/governance/owner_response_20261023/OWNER_REPLY_SNAPSHOT.md)，原编号对应条目；2026-10-23授权落实。|
 |未决边界|本项项目处理口径已明确；不表示官方勘误或软件已经实现。|
 |映射/候选联动|`docs/standards/gb30254_2024/STANDARD_MAPPING.md`的“2026-10-23 Owner回复落实”；同目录边界候选同步，Approved Golden和历史记录未改。|
 
+2026-10-29：Owner明确批准高压电机标准映射及配套6表，既有项目口径继续有效；本次补“按表分支判定”的说明，问题状态不变，不冒称官方解释或软件已SUPPORTED。 详见[2026-10-29复核与修订](docs/governance/motor_mapping_confirmation_20261029.md)。
 
 ### EQP-STD-GB30254-002 — 总范围与极数分支表值范围的差异
 
@@ -711,11 +712,12 @@ EQP-STD-GB19762-001
 |支持证据|[`请求 2`](docs/governance/standard_archive_20261024/gb30254_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|
 |确认程度|Owner回复等级a；批准依据为用户指定回复文件及本轮授权，不冒称本轮独立核验外部资料或官方解释。|
 |状态|`RESOLVED`|
-|首次发现日期/最后更新日期|2026-10-13 / 2026-10-23|
+|首次发现日期/最后更新日期|2026-10-13 / 2026-10-29|
 |Owner回复及落实依据|[2026-10-14回复快照](docs/governance/owner_response_20261023/OWNER_REPLY_SNAPSHOT.md)，原编号对应条目；2026-10-23授权落实。|
 |未决边界|本项项目处理口径已明确；不表示官方勘误或软件已经实现。|
 |映射/候选联动|`docs/standards/gb30254_2024/STANDARD_MAPPING.md`的“2026-10-23 Owner回复落实”；同目录边界候选同步，Approved Golden和历史记录未改。|
 
+2026-10-29：Owner明确批准高压电机标准映射及配套6表，既有项目口径继续有效；本次补“按表分支判定”的说明，问题状态不变，不冒称官方解释或软件已SUPPORTED。 详见[2026-10-29复核与修订](docs/governance/motor_mapping_confirmation_20261029.md)。
 
 ### EQP-STD-GB30253-001 — 表1的55 kW、12极、2级为0.0
 
@@ -730,11 +732,12 @@ EQP-STD-GB19762-001
 |支持证据|[`R1`](docs/governance/standard_archive_20261024/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|
 |确认程度|Owner回复等级b；批准依据为用户指定回复文件及本轮授权，不冒称本轮独立核验外部资料或官方解释。|
 |状态|`RESOLVED`|
-|首次发现日期/最后更新日期|2026-10-13 / 2026-10-23|
+|首次发现日期/最后更新日期|2026-10-13 / 2026-10-29|
 |Owner回复及落实依据|[2026-10-14回复快照](docs/governance/owner_response_20261023/OWNER_REPLY_SNAPSHOT.md)，原编号对应条目；2026-10-23授权落实。|
 |未决边界|本项项目处理口径已明确；不表示官方勘误或软件已经实现。|
 |映射/候选联动|`docs/standards/gb30253_2024/STANDARD_MAPPING.md`的“2026-10-23 Owner回复落实”；同目录边界候选同步，Approved Golden和历史记录未改。|
 
+2026-10-29：补明表1低压异步起动12极分支的有效功率上限为45 kW；>45 kW无合法上端点，不能使用被排除的55 kW原0.0作阈值。此为既有001的边界展开，不改变全标准范围或原表值。 详见[2026-10-29复核与修订](docs/governance/motor_mapping_confirmation_20261029.md)。
 
 ### EQP-STD-GB30253-002 — 实测效率容差引用GB/T 755，当前未取得引用原文
 
@@ -768,11 +771,12 @@ EQP-STD-GB19762-001
 |支持证据|[`R3`](docs/governance/standard_archive_20261024/gb30253_2024/ISSUE_REGISTRATION_REQUEST.md)；具体PDF原页、原件SHA与候选见该请求及其配套证据。|
 |确认程度|Owner回复等级c；批准依据为用户指定回复文件及本轮授权，不冒称本轮独立核验外部资料或官方解释。|
 |状态|`PROVISIONAL`|
-|首次发现日期/最后更新日期|2026-10-13 / 2026-10-23|
+|首次发现日期/最后更新日期|2026-10-13 / 2026-10-29|
 |Owner回复及落实依据|[2026-10-14回复快照](docs/governance/owner_response_20261023/OWNER_REPLY_SNAPSHOT.md)，原编号对应条目；2026-10-23授权落实。|
 |未决边界|待最终确认区间衔接解释；当前可临时使用，不因c级标签阻断有合法端点的评价。|
 |映射/候选联动|`docs/standards/gb30253_2024/STANDARD_MAPPING.md`的“2026-10-23 Owner回复落实”；同目录边界候选同步，Approved Golden和历史记录未改。|
 
+2026-10-29：按Owner授权综合判断后沿用600锚值临时口径，保持PROVISIONAL。未列功率的600边两角分别取相邻两行区间列值；同一四角的逐轴插值在精确算术下等价，中间不作业务修约，具体有限精度留Stage B。查表用额定550而非试验495；仅500/600衔接连续，不平滑900边界。84行差值统计只作相容性证据，不证明唯一解释或真实曲线误差界。 详见[2026-10-29复核与修订](docs/governance/motor_mapping_confirmation_20261029.md)。
 
 ### EQP-STD-GB19153-001 — R01
 
