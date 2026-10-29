@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+from datetime import datetime
 import unittest
 from unittest.mock import patch
 
@@ -195,7 +196,8 @@ class BatchRecordHistoryPageTests(unittest.TestCase):
             ["单台分析", "批量评价"])
         self.assertEqual(page.batch_list.rowCount(), 50)
         self.assertIn("输入-060.xlsx", page.batch_list.item(0, 0).text())
-        self.assertIn("2026-10-21 00:01:00+00:00 UTC", page.batch_list.item(0, 5).text())
+        expected_time = datetime.fromisoformat("2026-10-21T00:01:00+00:00").astimezone().strftime("%Y-%m-%d %H:%M:%S") + "（本地时间）"
+        self.assertEqual(expected_time, page.batch_list.item(0, 5).text())
         self.assertEqual(batch.opened, [], "列表只查询，不自动打开详情")
         self.assertTrue(page.batch_load_more_button.isEnabled())
         self.assertEqual(batch.requested_limits, [51])

@@ -82,7 +82,7 @@ PR31 最终验收发现，artifact-tool 导出的合法 XLSX 可被 `UnifiedWork
 
 ## PR38 UI审查（2026-10-29）
 
-QA-UI-038：OPEN。标准库首显列宽延后适配、QSS最大高度警告、记录时间本地化，以及截图测试失败后的二次TypeError。仅修Presentation与测试，保持历史UTC快照、业务结果和支持状态；验证与合并记录沿用docs/ui/UI_FAMILY_EXECUTION_20261028.md。
+QA-UI-038：修复及本地复验完成，最终Head CI待确认。标准库首显列宽延后适配、QSS最大高度警告、记录时间本地化，以及截图测试失败后的二次TypeError。仅修Presentation与测试，保持历史UTC快照、业务结果和支持状态；验证与合并记录沿用docs/ui/UI_FAMILY_EXECUTION_20261028.md。
 
 ## 三标准默认发布配置收口（2026-10-27）
 
