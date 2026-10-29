@@ -8,6 +8,8 @@ Phase 6 补齐搜索与筛选。筛选只作用于**快照里已有的字段**�
 """
 from __future__ import annotations
 
+from datetime import datetime, timezone
+
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QComboBox, QHBoxLayout, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout,
@@ -23,6 +25,8 @@ from ..widgets.page_layout import page_gutter
 from ..widgets.compact_table import CompactTable
 from ..style import heading, icon
 from ..widgets.readable_detail import ReadableDetail
+
+
 from ....application.services.centrifugal_pump_analysis_service import (
     PUMP_ANALYSIS_DETAIL_METRIC_IDS,
     PUMP_LEVEL_LIMIT_METRIC_IDS,
@@ -51,6 +55,19 @@ CONCLUSION_FILTERS: tuple[tuple[str, tuple[str, ...]], ...] = (
 #: 每页条数（保持简单，不做复杂分页框架）。
 PAGE_SIZE = 100
 BATCH_RECORD_PAGE_SIZE = 50
+
+
+def format_saved_time(value: str) -> str:
+    """仅转换显示；UTC快照保留原值，无法解析的旧记录不猜测。"""
+    if not value:
+        return "未记录"
+    try:
+        stamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if stamp.tzinfo is None:
+            stamp = stamp.replace(tzinfo=timezone.utc)
+        return stamp.astimezone().strftime("%Y-%m-%d %H:%M:%S") + "（本地时间）"
+    except (ValueError, OverflowError, OSError):
+        return value
 
 
 def _batch_standard_label(standard_code: str | None, summary) -> str:
@@ -317,7 +334,7 @@ class RecordsPage(QWidget):
                       _batch_standard_label(record.standard_code, summary),
                       str(record.data_row_count), str(record.total_quantity),
                       f"已评价 {record.evaluated_count} 行；未形成结论 {record.unevaluated_count} 行",
-                      record.created_at_utc.replace("T", " ") + " UTC")
+                      format_saved_time(record.created_at_utc))
             for column, value in enumerate(values):
                 self.batch_list.setItem(row, column, QTableWidgetItem(value))
             button = QPushButton("查看")
@@ -393,7 +410,7 @@ class RecordsPage(QWidget):
                 for name, quantity in conclusion_quantities.items())
             lines.append(f"正式结论分布：{distribution}")
         if snapshot.created_at_utc:
-            lines.append(f"保存时间：{snapshot.created_at_utc}")
+            lines.append(f"保存时间：{format_saved_time(snapshot.created_at_utc)}")
         text = "\n".join(lines)
         self.batch_detail.setText(text)
         for row, record in enumerate(self._batch_visible):
@@ -637,7 +654,7 @@ class RecordsPage(QWidget):
         # 标准依据：只展示快照里**真实存在**的依据，不伪造。
         # Phase 3～6 的旧 Record 可能未冻结这些字段，此时降级说明而不是编造。
         lines.extend(self._basis_lines(snapshot, result))
-        lines.append(f"保存时间：{snapshot.finalized_at_utc}")
+        lines.append(f"保存时间：{format_saved_time(snapshot.finalized_at_utc)}")
         text = "\n".join(lines)
         self._display_record(snapshot, result)
         self._render_technical(snapshot, result)
@@ -682,7 +699,7 @@ class RecordsPage(QWidget):
         if result.get("explanation"):
             lines.append(result["explanation"])
         lines.extend(format_motor_basis_lines(result.get("trace", ())))
-        lines.append(f"保存时间：{snapshot.finalized_at_utc}")
+        lines.append(f"保存时间：{format_saved_time(snapshot.finalized_at_utc)}")
         text = "\n".join(lines)
         self._display_record(snapshot, result)
         return text
@@ -750,7 +767,7 @@ class RecordsPage(QWidget):
         if result.get("support_status") == "IMPLEMENTED":
             lines.append("软件状态：已接入，尚待正式支持验收。")
         if snapshot.finalized_at_utc:
-            lines.append(f"保存时间：{snapshot.finalized_at_utc}")
+            lines.append(f"保存时间：{format_saved_time(snapshot.finalized_at_utc)}")
         text = "\n".join(lines)
         self._display_record(snapshot, result)
         return text
@@ -853,7 +870,7 @@ class RecordsPage(QWidget):
             if not any(metric_id in metrics for metric_id in PUMP_ANALYSIS_DETAIL_METRIC_IDS):
                 for key, value in ((result.get("calculation_trace") or {}).get("derived") or {}).items():
                     basis.append(f"{key}：{format_metric(value, name=str(key))}")
-        basic.append(f"保存时间：{snapshot.finalized_at_utc or absent}")
+        basic.append(f"保存时间：{format_saved_time(snapshot.finalized_at_utc) if snapshot.finalized_at_utc else absent}")
         self.detail.setText("\n".join(basic))
         self.inputs_detail.setText("保存时输入数据\n" + "\n".join(input_lines or [absent])
                                   + "\n\n计算依据\n" + "\n".join(basis or ["该记录未保存完整计算依据。未使用当前标准补齐。 "]))

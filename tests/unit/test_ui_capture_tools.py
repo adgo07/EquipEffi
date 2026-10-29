@@ -68,7 +68,10 @@ class CaptureToolTests(unittest.TestCase):
                             self.assertTrue(evidence["numeric_feedback"]["error"])
                             fitted = [c for c in captures if "horizontal_max" in c and c["logical_size"][0] >= 1000]
                             self.assertTrue(all(c["horizontal_max"] == 0 for c in fitted))
-                self.assertEqual(*outcomes)
+                # A failed subtest already reports its original error. Do not
+                # replace it with a secondary argument-count TypeError.
+                if len(outcomes) == 2:
+                    self.assertEqual(*outcomes)
 
     def test_startup_action_save_and_early_close_fail_with_evidence(self):
         injections = {

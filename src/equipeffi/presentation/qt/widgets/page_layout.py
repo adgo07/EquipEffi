@@ -16,6 +16,8 @@ class PageGutter(QObject):
         margins = self.layout.contentsMargins()
         if (margins.left(), margins.top(), margins.right(), margins.bottom()) != (horizontal, 22, horizontal, 22):
             self.layout.setContentsMargins(horizontal, 22, horizontal, 22)
+            # Commit the new gutter before descendants handle their first show.
+            self.layout.activate()
 
     def eventFilter(self, watched, event):
         if event.type() in (QEvent.Type.Resize, QEvent.Type.Show):

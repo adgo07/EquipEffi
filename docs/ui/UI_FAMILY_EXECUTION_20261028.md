@@ -75,3 +75,13 @@ Astra曾成功启动可见EquipEffi窗口，但CU读取挂起，未实际完成�
 Windows Core run40670165514/job122754606813在ea61693c运行1234项，结果2 FAIL、1 ERROR（1096.228秒）：旧设置页替身缺header_row、批次详情仍断言Qt PlainText格式、变压器仍断言旧支持文案。只修两个测试文件，不改产品或业务代码：设置页替身补齐页头接口；批次详情解析实际QLabel HTML，验证文件名`<img src=x>.xlsx`按字面显示且无图片格式片段；变压器确认IMPLEMENTED、中文“已实现，待验收”、非正式支持并仍正确导航。批次历史、加载更多、刷新与数量语义断言全部保留。
 
 定向`python -m unittest tests.unit.test_batch_records_history tests.unit.test_transformer_qt -v`：14项通过，fail/error/skip=0，exit=0，17.867秒；git diff --check通过。更新同PR重触发既有CI；不得以这次本地14项冒称完整CI已通过。不增加截图或测试矩阵。
+
+## PR38合并前修复（2026-10-29）
+
+基线c05d1ca6，origin已核实为adgo07/EquipEffi；本轮master已为PR37合并46ed7a92，合并前需验证集成后的配置。locked central SHA仍为ee5feb0cc34dbd99790500fadd0c4c932e202a20；按当前GUIDE_INDEX读取UI v0.2、家族规格及验收清单。MUST：中文可读、布局稳定、历史只读；MUST NOT：改变业务算法、正式结果、数据库/快照或锁。分类LOCAL DEFECT；本任务不涉及中央公共Contract，无需中央修改。未涉及Standard Issue，不改变既有标准解释。
+
+已核实：本机原始用例出现915!=1114，固定10ms不足以跨越页边距和表格定时布局；现同步激活页边距并在标准库viewport尺寸变化时立即适配列宽，保留后续布局复核，防止重入。测试改为轮询连续稳定并限定超时；首轮2秒超时虽已得到正确1114宽度但未收集足够稳定样本，调整为10秒上限，未降低列宽与窄屏滚动断言。
+
+删除两处16777215px样式声明，验证重新polish无setMaximumSize警告且首页任务卡保持至少150 DIP。记录单台/批次列表与详情用统一显示函数将UTC时间转换成本机时区、去掉微秒并注明本地时间；兼容Z/显式偏移/既有无时区UTC字段，非法旧值原样保留。真实保存/打开回归验证原始快照与数据库SHA均不变。
+
+用户提及的两项error来自现有artifacts/acceptance/full_suite.log：截图子进程45秒超时，以及其后assertEqual参数不足的二次错误。修复二次错误而保留原始失败，截图工具另行实测；不以CI绿色推断真实屏幕钳制原因已被证明。UI技能检索未命中Qt专属条目，仅以通用布局稳定建议辅助，Qt事件机制以源码和复验为据。

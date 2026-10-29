@@ -205,14 +205,20 @@ class StandardsPage(QWidget):
 
     def eventFilter(self, watched, event):
         if watched is self.table.viewport() and event.type() in (QEvent.Type.Resize, QEvent.Type.Show):
-            # 首次进入堆叠页也会改变viewport；等待本轮布局完成后分配剩余宽度。
+            # The viewport already has its new geometry. Fit before painting,
+            # then retain the deferred pass for scrollbar/layout follow-ups.
+            self._resize_columns()
             self._column_timer.start(0)
         return super().eventFilter(watched, event)
 
     def _resize_columns(self):
-        if not self.table.isVisible():
+        if not self.table.isVisible() or getattr(self, "_fitting_columns", False):
             return
-        self.table.fit_columns()
+        self._fitting_columns = True
+        try:
+            self.table.fit_columns()
+        finally:
+            self._fitting_columns = False
 
     def show_list(self, message=None):
         self.standard_code = None

@@ -26,6 +26,44 @@ class UiFamily20261028Tests(unittest.TestCase):
     setUp = fixtures.UiFamilyStage2Tests.setUp
     tearDown = fixtures.UiFamilyStage2Tests.tearDown
     _pump_record = fixtures.UiFamilyStage2Tests._pump_record
+
+    def test_saved_time_is_local_display_without_rewriting_snapshot(self):
+        from datetime import datetime
+        from dataclasses import replace
+        from hashlib import sha256
+        from equipeffi.presentation.qt.pages.records import format_saved_time
+        raw = "2026-10-28T14:13:24.929878+00:00"
+        expected = datetime.fromisoformat(raw).astimezone().strftime("%Y-%m-%d %H:%M:%S") + "（本地时间）"
+        for value in (raw, "2026-10-28T14:13:24Z", "2026-10-28T14:13:24",
+                      "2026-10-28T22:13:24+08:00"):
+            self.assertEqual(format_saved_time(value), expected)
+        self.assertEqual(format_saved_time(""), "未记录")
+        self.assertEqual(format_saved_time("legacy-invalid"), "legacy-invalid")
+        record = replace(self._pump_record(), record_id="local-time-display", finalized_at_utc=raw)
+        self.pump._records.append_record(record)
+        before = sha256(self.paths.records_db.read_bytes()).hexdigest()
+        self.window.open_records()
+        self.window.records_page.show_record(record.record_id)
+        self.assertIn(expected, self.window.records_page.detail.text())
+        self.assertNotIn(raw, self.window.records_page.detail.text())
+        self.assertEqual(self.pump.open_record(record.record_id).finalized_at_utc, raw)
+        self.assertEqual(sha256(self.paths.records_db.read_bytes()).hexdigest(), before)
+
+    def test_style_repolish_has_no_maximum_size_warning(self):
+        from PySide6.QtCore import qInstallMessageHandler
+        messages = []
+        previous = qInstallMessageHandler(lambda kind, context, message: messages.append(message))
+        try:
+            stylesheet = self.window.styleSheet()
+            self.window.setStyleSheet("")
+            self.window.setStyleSheet(stylesheet)
+            self.app.processEvents()
+            self.assertFalse([m for m in messages if "setMaximumSize" in m], messages)
+            for card in self.window.home_page.task_buttons:
+                self.assertGreaterEqual(card.height(), 150)
+        finally:
+            qInstallMessageHandler(previous)
+
     def test_settings_keeps_origin_context_and_safe_home_exit(self):
         self.window.open_home()
         self.window.open_settings()
