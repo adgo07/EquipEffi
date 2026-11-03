@@ -171,7 +171,7 @@ def perform(session):
         transformer_values = {"B4": "测试数据·变压器", "D4": 3, "F4": transformer.input_contract.categories[2].label,
                                "G4": 3150, "J4": 1700, "K4": 20700}
         motor_values = {"B4": "测试数据·电机", "D4": 4, "F4": next(c.label for c in motor.input_contract.categories if c.category_id == "three_phase_induction"),
-                        "G4": 0.38, "H4": 50, "J4": 0.14, "K4": 4, "M4": 71.43}
+                        "G4": 380, "H4": 50, "J4": 0.14, "K4": 4, "M4": 71.43}
         for sheet, values in (("离心泵", pump_values), ("变压器", transformer_values), ("电动机", motor_values)):
             for cell, value in values.items():
                 workbook[sheet][cell] = value
@@ -192,6 +192,14 @@ def perform(session):
         require(waited, "批量任务未按时结束")
         result = page.last_result
         require(result and result.batch_record_saved, 'result and result.batch_record_saved')
+        output_book = load_workbook(result.result_workbook, read_only=True, data_only=True)
+        try:
+            motor_conclusion = output_book["电动机"]["Q4"].value
+        finally:
+            output_book.close()
+        require(motor_conclusion == "3级", f"电机380 V额定效率样例结论异常：{motor_conclusion}")
+        evidence["operations"].append({"action": "核验V6.3电机批量样例结论",
+            "rated_voltage_v": 380, "conclusion": motor_conclusion})
         result_id = result.batch_record_id
         single_ids_after = [r.record_id for r in pump.list_records()]
         batch_ids_after = [r.batch_record_id for r in batch.list_batch_records()]
