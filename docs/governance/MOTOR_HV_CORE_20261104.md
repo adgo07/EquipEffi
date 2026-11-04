@@ -1,0 +1,56 @@
+# GB 30254 高压电机候选内核实施记录
+
+日期：2026-11-04。状态：Stage C第一段，完整产品接入未完成，未作Stage D验收。
+
+## 授权与边界
+
+Owner要求暂跳过PR #41验收并继续后续，随后确认“先高压电机，再永磁电机”。本轮按已存在的[接入设计](../standards/gb30254_2024/INTEGRATION_DESIGN.md)实现六表候选内核。PR #41保持待验收，Phase 8仍为EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE；不进入Phase 9。高压、永磁范围和支持投影不变，未正式发布。
+
+## 平台预检查
+
+- 实际origin：`https://github.com/adgo07/EquipEffi.git`；默认分支master；主线及工作分支基线`e596ee33546ce340b01e0bb83a76c5fd6d782c6c`。独立worktree分支`codex/motor-hv-core-20261104`，开始时干净。常规fetch无输出挂起后中断；定向`git -c fetch.recurseSubmodules=false fetch --no-tags origin master`退出0，`ls-remote --symref origin HEAD`及origin/master核验一致。原工作树用户改动未处理。
+- locked central SHA：`ee5feb0cc34dbd99790500fadd0c4c932e202a20`，不升级。
+- Frozen读取：Numeric Contract v1、Numeric Profiles v1、Numeric Conformance Vector v1。遵循确定十进制语义、独立有效Profile、ambient independence、全值精确比较、显示/比较隔离、拒绝未声明float入口、Profile/Calculator追溯。测试沿用已校验的Frozen Common Core Schema，SHA-256 `bf7e5a4c2723376d3b20921c12298dbd42ab7e4ca46326b78df6bdf9697d4629`。
+- ACTIVE依据：中央GUIDE_INDEX路由的Standard Development Guide，按Stage A→B→C→D推进；未以实现完成宣称SUPPORTED。未涉及公共Contract变更；独立exact rational Profile分类为`ALLOWED PROJECT DIFFERENCE`，无中央Contract修改需求。
+- 相关Issue：EQP-STD-GB30254-001/002（RESOLVED）及EQP-STD-MOTOR-009。沿用容差仅作知识、无有效表分支不在范围、额定效率/V输入的软件决定；没有新解释或Approved Golden变更。先登记QA-HV-001，再实施。
+
+## 资产与实现
+
+|资产|处理|
+|---|---|
+|A.3主映射及六表校对工作簿|KEEP，只读，不重存；只作为经批准的本标准事实来源|
+|旧`domain/evaluation/evaluators/motor.py`及device registry设备名|KEEP，既有开发/兼容资产；未作为本轮六表正确性Oracle，未替换或删除|
+|GB18613独立Calculator、Profile、V6.3|KEEP，不修改|
+|本轮候选包|新增到`specs/equipment_efficiency/standards/gb30254_2024_candidate.json`，未注册到产品标准目录、不随resources标准包提供|
+|新Calculator|`domain/devices/motor_hv`，调用方明确传入候选包；未接Application/Qt/Excel|
+
+构建器`python -m tools.build_gb30254_motor_pack`通过zip/XML只读源格，复用既有XML读取机制，拒绝公式、源SHA变化、清单不符和显示格式隐含修约。204行、3093个效率数值、285个明确破折号；保存源格、XML数值词法和单元格显示精度。不是重新宣称标准PDF逐格独立验收。
+
+计算按明确类别、电压、冷却、极数选表列；只在同表/极数/等级的相邻有效行插值，横杠、缺列和越界均不补值/外推。独立`EQUIPEFFI_MOTOR_HV_EXACT_LINEAR_V1`使用精确有理数，拒绝float与非有限输入，不受Decimal全局上下文影响。等级比较无epsilon、无预舍入；直接阈值保留原表精度，插值展示两位小数。结果记录包SHA、表号、极数、端点源格、精确分子分母、Profile和Calculator版本；破损包或Profile不匹配抛执行异常。
+
+## 资源基线
+
+|资源|SHA-256|
+|---|---|
+|A.3 `STANDARD_MAPPING.md`（前后相同）|`6d208c61176461f32a5076dbf8d367b1afd0efab315bf1aad8a8e48e6e5819ba`|
+|`GB30254_2024_标准表值.xlsx`（前后相同）|`b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912`|
+|新包规范内容哈希（sorted compact UTF-8，排除integrity_sha256）|`99940b38c87b3fe15337694979ad3cf94d7c6732f84d468b6fc8c0d0e071b144`|
+
+包身份固定于`pack_identity.py`；不仅检查自报哈希，重算哈希后的非批准内容也拒绝。旧资产、模板、Golden、用户数据、锁文件和数据库均未改。
+
+## 验证
+
+最终定向回归：6个测试模块，41项，pass 41 / fail 0 / error 0 / skip 0，41.773s，exit 0。覆盖高压9项（含8条Frozen Common Core向量）、既有GB18613 Numeric、Calculator、pack builder、rated input、input contract。高压全表回归逐一检查1126个表/极数/功率组合、3093个数值门槛等号、1094个相邻中点；仍为候选回归，不冒称Approved Golden。
+
+新增代码compileall退出0；`git diff --check`退出0。全仓Windows Core由PR门禁执行，提交时尚待结果，不将定向测试写作全仓通过。日志在独立worktree的`artifacts/motor-hv-core/targeted.log`、`targeted-r2.log`和`regression.log`。
+
+首轮7项：pass 6 / fail 1 / error 0 / skip 0，exit 1。失败来自测试把半整数功率中点截成整数；修正测试为精确`.5`词法，未改变计算公式。第二轮高压及既有电机Numeric测试12项：pass 12 / fail 0 / error 0 / skip 0，38.905s，exit 0。此后补强展示隔离向量，用211kW的精确94.055与显示94.06区分业务比较，纳入最终复验。
+
+## 后续交接
+
+1. 本轮完成度仅为候选数据包与内核。QA-HV-001保持OPEN，待完整产品链与Stage D证据；不得把单元测试升级成支持状态。
+2. 高压下一段接共享Application/Rule、Qt及不可变Record，再派生V6.4 / motor-input.v4；不改V6.3、V6.2旧语义，不新增数据库migration。
+3. 端到端检查明确标准类别、冷却、单位、同核批量结果、新Workbook、历史快照与异常不保存；之后进行独立验收。永磁在高压之后，沿用既有Stage B设计及问题状态。
+4. 本轮未做Windows包构建/GUI交互/性能基线/完整高压产品验收；这些为NOT_RUN，不以源内核测试冒充。
+
+Knowledge capture：无新增条目。

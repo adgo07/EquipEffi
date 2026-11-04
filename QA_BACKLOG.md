@@ -12,6 +12,12 @@ Owner明确软件不负责实测，电机新评价采用额定效率，Qt删除�
 
 PR40已合并e596ee33，固定主线Windows Core 40886169616成功。本轮额定输入、V/kV边界、旧口径兼容及历史回归通过；Windows Qt自动流程核验380 V/71.43%单台与V6.3批量均为3级；解压EXE状态为三设备SUPPORTED/V6.3。按输入修复工程范围关闭；候选未正式发布，干净Windows、实际EXE交互截图及系统125%缩放限制仍见[收口记录](docs/governance/THREE_DEVICE_CANDIDATE_20261103.md)，不以本项关闭替代这些验证或Phase验收。
 
+### QA-HV-001：GB 30254 候选计算内核（OPEN，2026-11-04）
+
+当时Owner要求暂跳过PR #41验收、继续后续；PR #41随后于2026-11-04由Owner确认验收并合并（f93525d），本分支已rebase到该基线。本轮依据既有接入设计推进高压电机Stage C第一段：从A.3批准映射及六表只读生成候选包，独立精确数值Profile、计算内核与回归。依据EQP-STD-GB30254-001/002及EQP-STD-MOTOR-009，不改变既有解释。此前无本轮六表候选内核；本轮新增独立调用路径，不接入产品装配、不改变三设备结果、范围或支持状态。验收与Qt/Excel接入另行留痕；不扩大PR #41已记录的验证覆盖。
+
+内核及既有电机定向回归41项通过，详见[实施记录](docs/governance/MOTOR_HV_CORE_20261104.md)。本项保持OPEN，后续接Application/Qt/Record/Excel并提供完整产品验收证据。
+
 本页仅登记当前仍需跟踪的工程风险与已登记偏差；详细历史处置不在这里重复归档。
 
 **当前状态：** Phase 1–7 保持已记录的独立验收状态；Phase 8 为 `EXECUTION_COMPLETE / READY_FOR_INDEPENDENT_ACCEPTANCE`，不得自行标为 PASS。Phase 0B = `NOT_EXECUTED`；当前无获准的 Phase 1 Hotfix。

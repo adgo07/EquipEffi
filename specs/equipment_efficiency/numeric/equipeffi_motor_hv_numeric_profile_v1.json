@@ -1,0 +1,27 @@
+{
+  "numeric_profile_id": "EQUIPEFFI_MOTOR_HV_EXACT_LINEAR_V1",
+  "profile_version": "1.0.0",
+  "numeric_contract_version": "v1",
+  "authoritative_scopes": ["motor_hv"],
+  "representation": "decimal lexemes / exact reduced rational arithmetic",
+  "working_precision": "exact_for_business_operations",
+  "rounding_mode": "none_for_business_comparison",
+  "comparison_policy": "full-value exact comparison",
+  "explicit_rounding_policy": "none",
+  "transcendental_policy": "not_applicable",
+  "tolerance_policy": "none; no business epsilon; conformance requires exact equality",
+  "ingress_policy": {
+    "accepted": ["decimal lexical string", "Python int excluding bool", "finite Decimal"],
+    "python_float": "REJECT",
+    "non_finite": "REJECT",
+    "maximum_text_characters": 128,
+    "maximum_mantissa_digits": 30,
+    "maximum_absolute_exponent": 30,
+    "units": {"rated_voltage_v": "V", "rated_output_power_kw": "kW", "rated_frequency_hz": "Hz", "rated_efficiency_pct": "percent_point"},
+    "implicit_units": "REJECT"
+  },
+  "display_policy": {"interpolated_places": 2, "rounding_mode": "ROUND_HALF_UP", "direct_thresholds": "preserve source display precision", "authority": "presentation only"},
+  "normalization_policy": "No inferred unit conversion. Exact adjacent-row interpolation within one table/pole/grade. No crossing dashes or extrapolation.",
+  "source": {"repository": "https://github.com/adgo07/Qingzhou-contracts.git", "commit_sha": "ee5feb0cc34dbd99790500fadd0c4c932e202a20", "path": "contracts/numeric/NUMERIC_CONTRACT_V1_FROZEN.md"},
+  "platform_default": false
+}
