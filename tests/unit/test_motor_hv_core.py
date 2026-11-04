@@ -6,9 +6,15 @@ import hashlib
 import json
 from pathlib import Path
 import unittest
+from unittest.mock import patch
+import tempfile
+import shutil
+import zipfile
+import xml.etree.ElementTree as ET
 
 from equipeffi.domain.devices.motor_hv.calculator import Gb30254MotorCalculator, HvPackError, PROFILE_ID
 from tools.build_gb30254_motor_pack import build_pack, OUTPUT, WORKBOOK, WORKBOOK_SHA, MAPPING, MAPPING_SHA
+from tools import build_gb30254_motor_pack as builder
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = dict(category_id="gb30254_cage_induction", rated_voltage_v="3000", rated_frequency_hz="50",
@@ -29,6 +35,69 @@ class MotorHvCoreTests(unittest.TestCase):
         for path, digest in ((WORKBOOK, WORKBOOK_SHA), (MAPPING, MAPPING_SHA)):
             self.assertEqual(hashlib.sha256((ROOT / path).read_bytes()).hexdigest(), digest)
         self.assertEqual(self.pack["counts"], dict(numeric=3093, horizontal_dash=285, rows=204))
+
+    def _source_copy(self, directory):
+        root = Path(directory)
+        for path in (MAPPING, WORKBOOK):
+            (root / path).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / path, root / path)
+        return root
+
+    def test_builder_rejects_changed_source_hash(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self._source_copy(directory)
+            with (root / WORKBOOK).open("ab") as stream:
+                stream.write(b"changed fixture")
+            with self.assertRaisesRegex(ValueError, "批准源资产哈希不一致"):
+                build_pack(root)
+
+    def _assert_invalid_workbook(self, member, mutate, message):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self._source_copy(directory)
+            path = root / WORKBOOK
+            with zipfile.ZipFile(path) as source:
+                entries = {item.filename: source.read(item.filename) for item in source.infolist()}
+            xml = ET.fromstring(entries[member])
+            mutate(xml)
+            entries[member] = ET.tostring(xml, encoding="utf-8")
+            with zipfile.ZipFile(path, "w") as target:
+                for name, content in entries.items():
+                    target.writestr(name, content)
+            # 仅将测试副本的哈希注入测试，以到达哈希门禁后的结构校验。
+            # 生产常量和批准原件均不修改。
+            with patch.object(builder, "WORKBOOK_SHA", hashlib.sha256(path.read_bytes()).hexdigest()):
+                with self.assertRaisesRegex(ValueError, message):
+                    build_pack(root)
+
+    def test_builder_rejects_unreviewed_display_format(self):
+        def mutate(xml):
+            for element in xml.iter():
+                if element.get("numFmtId") == "201" and "formatCode" in element.attrib:
+                    element.set("formatCode", "0.00")
+        self._assert_invalid_workbook("xl/styles.xml", mutate, "未经核验的显示格式：表1!B8")
+
+    def test_builder_rejects_missing_threshold_cell(self):
+        def mutate(xml):
+            for parent in xml.iter():
+                for child in list(parent):
+                    if child.get("r") == "B8":
+                        parent.remove(child)
+        self._assert_invalid_workbook("xl/worksheets/sheet1.xml", mutate, "效率格缺失或为空：表1!B8")
+
+    def test_profile_adoption_metadata_and_trace_targets(self):
+        path = ROOT / "specs/equipment_efficiency/numeric/equipeffi_motor_hv_numeric_profile_v1.json"
+        profile = json.loads(path.read_text(encoding="utf-8"))
+        lock = json.loads((ROOT / "platform-lock.json").read_text(encoding="utf-8"))
+        self.assertEqual(profile["profile_schema_version"], "numeric-profile-adoption-1.0")
+        self.assertEqual(profile["numeric_contract_status"], "FROZEN")
+        self.assertEqual(profile["numeric_contract_source"]["commit_sha"], lock["commit_sha"])
+        self.assertEqual(profile["numeric_contract_source"]["path"], lock["numeric_contract"]["path"])
+        self.assertEqual(profile["numeric_profile_id"], PROFILE_ID)
+        self.assertEqual(profile["authoritative_scopes"], ["motor_hv"])
+        self.assertFalse(profile["platform_default"])
+        self.assertTrue(profile["other_device_policy"])
+        for key in ("profile_declaration", "standard_pack", "calculator"):
+            self.assertTrue((ROOT / profile["trace_reference"][key]).is_file())
 
     def test_c01_to_c07_and_no_display_rounding_feedback(self):
         for efficiency, grade in (("94", "1"), ("93.999", "2"), ("93.1", "2"), ("92.3", "3"), ("92.299", None)):

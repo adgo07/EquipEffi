@@ -49,6 +49,8 @@ def build_pack(root: Path = ROOT) -> dict:
                     for grade in range(3):
                         address = f"{_column(2 + 3 * index + grade)}{row}"
                         text = _cell_text(cells.get(address), strings)
+                        if not text:
+                            raise ValueError(f"效率格缺失或为空：{sheet}!{address}")
                         if text == "—":
                             dashes += 1
                             value = None
