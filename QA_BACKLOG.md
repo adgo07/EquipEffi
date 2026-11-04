@@ -1,8 +1,16 @@
 # EquipEffi QA_BACKLOG
 
-### QA-MOTOR-004：额定效率与V单位输入（OPEN，2026-10-29）
+### QA-CAND-001：截图工具三设备样例电压仍沿用kV（CLOSED，2026-11-03）
+
+本轮候选验证发现 `tools/ui_final_capture.py` 已使用V6.3，但电机Excel样例G4仍为0.38（旧kV写法），且只断言批次保存成功，未核验电机行结论。生产输入契约和现有产品回归已使用380 V。本项只修正验证工具样例为380并核验电机行3级，避免把非法样例的批次保存当成正常电机评价证据；不改生产、业务真值或模板。
+
+修正后完整Qt自动操作复验通过、exit0：电机行3级，三设备3行/9台，仅追加一条batch_record，单台记录不增加，输入哈希不变且输出另存。证据见[候选收口记录](docs/governance/THREE_DEVICE_CANDIDATE_20261103.md)。
+
+### QA-MOTOR-004：额定效率与V单位输入（CLOSED，2026-11-03）
 
 Owner明确软件不负责实测，电机新评价采用额定效率，Qt删除实测口径组，效率并入额定参数，额定电压用V。影响Qt、新派生V6.3和同核输入；旧V6.2继续按kV及原实测口径解析，历史只读不重算。先登记EQP-STD-MOTOR-009软件决定，再实现新旧字段显式区分、精确V/kV换算及边界回归；不改批准映射/阈值/Golden/数据库/锁。高压和永磁只开展Stage B设计。
+
+PR40已合并e596ee33，固定主线Windows Core 40886169616成功。本轮额定输入、V/kV边界、旧口径兼容及历史回归通过；Windows Qt自动流程核验380 V/71.43%单台与V6.3批量均为3级；解压EXE状态为三设备SUPPORTED/V6.3。按输入修复工程范围关闭；候选未正式发布，干净Windows、实际EXE交互截图及系统125%缩放限制仍见[收口记录](docs/governance/THREE_DEVICE_CANDIDATE_20261103.md)，不以本项关闭替代这些验证或Phase验收。
 
 本页仅登记当前仍需跟踪的工程风险与已登记偏差；详细历史处置不在这里重复归档。
 
@@ -34,6 +42,8 @@ PR31 最终验收发现，artifact-tool 导出的合法 XLSX 可被 `UnifiedWork
 
 2026-10-27状态收口：PR29—31既有实现、独立复核和Owner人工证据继续有效；v0.2.1正式默认装配变压器并保持IMPLEMENTED，不能继续把它描述为尚未实现。当前本项保留OPEN仅用于正式支持提升及既有未验证环境的收尾，不重新打开已关闭工程缺陷，不重做冻结映射审批。具体发布状态与本轮25项定向复核见V1_SCOPE；125%系统缩放和干净Windows限制仍保留。
 
+2026-11-03更新：主线PR37已完成既有授权的SUPPORTED配置，本轮解压候选EXE状态检查与资源审计通过。QA-TR-001保留OPEN仅跟踪干净Windows/真实125%系统缩放等剩余环境验证，不再把支持配置提升描述为尚未实现；v0.2.1历史发布状态保持不变。
+
 | issue_id | 原状态 | 当前表面 / 目标 | 当前风险与证据边界 |
 |---|---|---|---|
 | QA-RET-001 | CLOSED | Qt 批量评价验收 | Owner 实测结果 Workbook 正常但完成文案残留、批次历史不可见、打开 WPS 崩溃及文件夹 ShellExecute error 5。已修复完成/失败状态与可复制的打开失败提示；接通既有 batch_record 只读历史、加载更多；真实旧批次 2 行/4台/1级可见且原库哈希不变。补充 frozen Windows 外部启动的 DLL/PATH/Qt 插件路径清理并恢复（PyInstaller 官方说明），69 项集成定向检查通过。Owner 在普通用户目录正常解压 ZIP 后反馈功能正常，完成本机交互复验；不能将之前受限构建目录的失败归为 DLL 污染已证实。无标准解释、算法、Golden 或数据库 schema 变更。 |
@@ -55,12 +65,12 @@ PR31 最终验收发现，artifact-tool 导出的合法 XLSX 可被 `UnifiedWork
 | QA-AUD-032 | OPEN | DEV_ONLY / Future | `src/equipeffi/__init__.py`、`pyproject.toml` 与构建入口仍有版本声明分散，可能造成追溯漂移。 |
 | QA-AUD-038 | OPEN | V1_RUNTIME / Future | Writer / JSON repository 的异常路径可能丢失底层根因；诊断质量风险，不把执行错误转成业务不可判定。 |
 | QA-AUD-041 | OPEN | V1_RUNTIME / VERIFY_BEFORE_PHASE9 | `json_repository.py` 缺键可能抛裸 `KeyError`，缺文件语义与线性查找仍需发布前给出结论；现有发布审计检查只构成部分缓解。 |
-| QA-AUD-042 | OPEN | V1_RUNTIME / VERIFY_BEFORE_PHASE9 | V6 批量 Workbook 的高峰内存历史测量需要在最终发布候选复测。基线记录的 10,000 行结果曾达 952.0 MB、266.357 / 287.861 s；固定参考为 [332d79c](https://github.com/adgo07/EquipEffi/commit/332d79c7d999feb4047c920ecb4359655bf9440e)。旧测量不代替当前候选测量。 |
+| QA-AUD-042 | OPEN | V1_RUNTIME / VERIFY_BEFORE_PHASE9 | V6 批量 Workbook 的高峰内存历史测量需要在最终发布候选复测。基线记录的 10,000 行结果曾达 952.0 MB、266.357 / 287.861 s；固定参考为 [332d79c](https://github.com/adgo07/EquipEffi/commit/332d79c7d999feb4047c920ecb4359655bf9440e)。旧测量不代替当前候选测量。2026-11-03源码候选复测10000行275.609秒、tracemalloc峰值1000.7 MB且无丢行/输入错误/执行错误；不等同打包EXE整机峰值，条目保持OPEN，详见本轮候选收口记录。 |
 | QA-AUD-047 | OPEN | DEV_ONLY / Future | 仓库发布文档仍缺正式 LICENSE / CHANGELOG 或存在交接式说明，作为发布与维护资料风险跟踪。 |
 | QA-AUD-049 | OPEN | DEV_ONLY / Future | `tools/extract_*.py` 中仍有本机 G 盘路径，换环境可能误读本地资料；通用人工校对工具未因 V4 退役而自动删除。 |
 | QA-AUD-053 | OPEN | DEV_ONLY / Future | `application/ports/__init__.py` 的导出策略与子端口模块不完全一致；保留具体差异待统一。 |
 | QA-P3-002 | OPEN | V1_RUNTIME / 标准映射 | Canonical pack 目前提供 `effective_date`，未提供 `superseded_by` / 废止日期等生命周期字段；软件不应私造标准生命周期规则。补齐须走标准映射流程。 |
-| QA-P5-005 | OPEN | Phase 9 | 正式安装包、代码签名与正式发布产物尚未完成；本轮不宣称可发布。 |
+| QA-P5-005 | OPEN | Phase 9 | v0.2.1免安装ZIP已发布；安装器、签名及新版正式发布仍未完成。本轮仅构建未发布候选，不推进Phase 9。 |
 | QA-P7-001 | REGISTERED_DEVIATION | RECORD_VERSION_FIELDS | 存量历史记录中的版本字段不一定能追溯到真实源指纹；当前泵版本指纹由 pump_calculator_version.py 提供。不得为历史记录编造或回填版本，沿用既有降级展示。 |
 | QA-P7-002 | REGISTERED_DEVIATION | LEGACY_RECORD_BASIS | 较早历史记录缺少完整标准依据字段。不得回填当前版本、重算或追溯改写；按既有降级文案展示。 |
 | QA-P1-008 | OPEN | V1_RUNTIME / Owner 决定是否进入 M4 | `get_pack` 每次仍对整包 dict 执行 `deepcopy`；10,000 行实测约 5.759 s、约占端到端 13.6%。在审计调用方不修改返回值之前不得移除复制；固定性能参考同 [332d79c](https://github.com/adgo07/EquipEffi/commit/332d79c7d999feb4047c920ecb4359655bf9440e)。 |
