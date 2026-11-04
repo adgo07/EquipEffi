@@ -16,6 +16,21 @@ _NUMERIC = ("rated_voltage_v", "rated_frequency_hz", "rated_output_power_kw", "p
 _COOLING = (("IC01", "IC11", "IC21", "IC31", "IC81W"), ("IC611", "IC616", "IC511", "IC516"), ("IC411",))
 
 
+def _frequency_evidence(raw: Any) -> bool:
+    if not isinstance(raw, str) or len(raw) > 128:
+        return False
+    text = raw.strip()
+    if not text or text.startswith(("=", "#", "@")):
+        return False
+    if text.casefold() in {"nan", "+nan", "-nan", "inf", "+inf", "-inf", "infinity", "+infinity", "-infinity"}:
+        return False
+    if _LEXEME.fullmatch(text) or text.startswith("+") and re.search(r"[A-Za-z(]", text):
+        return False
+    if re.fullmatch(r"[\s+\-0-9.,eE]+", text):
+        return bool(re.fullmatch(r"[0-9]+(?:\.[0-9]+)?\s*-\s*[0-9]+(?:\.[0-9]+)?", text))
+    return True
+
+
 class HvPackError(RuntimeError):
     """标准资产或数值配置错误；不转换为合法业务终态。"""
 
@@ -107,8 +122,8 @@ class Gb30254MotorCalculator:
                     raise ValueError("极数必须为正偶数")
                 parsed[name] = value
             except ValueError:
-                # 明确频率范围是有效证据，但不属于50Hz；非有限/非法词法仍拒绝。
-                if name == "rated_frequency_hz" and isinstance(raw, str) and len(raw) <= 128 and re.fullmatch(r"[0-9]+(?:\.[0-9]+)?\s*[-~～]\s*[0-9]+(?:\.[0-9]+)?", raw.strip()):
+                # 原始频率文字/范围只作证据，不推断为50Hz；非有限/非法词法仍拒绝。
+                if name == "rated_frequency_hz" and _frequency_evidence(raw):
                     parsed[name] = raw.strip()
                 else:
                     invalid.append(name)

@@ -67,6 +67,7 @@ class MotorHvCoreTests(unittest.TestCase):
             dict(rated_output_power_kw="199"), dict(rated_output_power_kw="25001", poles="4"),
             dict(rated_voltage_v="10000", cooling_method="IC411", rated_output_power_kw="2800.1"),
             dict(rated_frequency_hz="60"), dict(rated_frequency_hz="5～120"), dict(rated_voltage_v="3000.1"),
+            dict(rated_frequency_hz="变频"), dict(rated_frequency_hz="50/60"), dict(rated_frequency_hz="50 Hz"),
             dict(rated_voltage_v="3"), dict(cooling_method="IC999"),
         ):
             with self.subTest(changes=changes):
@@ -89,6 +90,8 @@ class MotorHvCoreTests(unittest.TestCase):
                 self.assertEqual(self.evaluate(rated_efficiency_pct=value).evaluation_status, "INVALID_INPUT")
         for value in ("3", "2.1", "0"):
             self.assertEqual(self.evaluate(poles=value).evaluation_status, "INVALID_INPUT")
+        for value in ("NaN", "Infinity", "1e+", "=50", "#VALUE!", "1,000", "1e999", True, 50.0):
+            self.assertEqual(self.evaluate(rated_frequency_hz=value).evaluation_status, "INVALID_INPUT")
         self.assertEqual(self.evaluate(category_id="three_phase_induction").evaluation_status, "INVALID_INPUT")
         self.assertEqual(self.evaluate(category_id="OTHER_CATEGORY").evaluation_status, "OUT_OF_STANDARD_SCOPE")
         self.assertEqual(self.evaluate(category_id="UNCERTAIN_CATEGORY").evaluation_status, "INSUFFICIENT_DATA")

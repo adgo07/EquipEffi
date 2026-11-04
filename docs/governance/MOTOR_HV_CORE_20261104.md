@@ -44,6 +44,8 @@ Owner要求暂跳过PR #41验收并继续后续，随后确认“先高压电机
 
 新增代码compileall退出0；`git diff --check`退出0。全仓Windows Core由PR门禁执行，提交时尚待结果，不将定向测试写作全仓通过。日志在独立worktree的`artifacts/motor-hv-core/targeted.log`、`targeted-r2.log`和`regression.log`。
 
+提交前设计复核补齐原始频率文字语义：`变频`、`50/60`、`50 Hz`保留为非50Hz适用证据，返回不在范围，不猜测单位；公式、非有限值和非法数值仍拒绝。受影响2项追加复验pass 2 / fail 0 / error 0 / skip 0，0.697s，exit 0，见`frequency-review.log`。
+
 首轮7项：pass 6 / fail 1 / error 0 / skip 0，exit 1。失败来自测试把半整数功率中点截成整数；修正测试为精确`.5`词法，未改变计算公式。第二轮高压及既有电机Numeric测试12项：pass 12 / fail 0 / error 0 / skip 0，38.905s，exit 0。此后补强展示隔离向量，用211kW的精确94.055与显示94.06区分业务比较，纳入最终复验。
 
 ## 后续交接
