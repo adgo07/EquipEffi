@@ -13,7 +13,7 @@ from ..widgets.page_layout import page_gutter
 from ..widgets.compact_table import CompactTable
 
 LIFECYCLE_STATE_LABELS = {
-    "EFFECTIVE": "已实施", "NOT_YET_EFFECTIVE": "尚未实施", "UNKNOWN": "未提供实施日期"}
+    "EFFECTIVE": "已实施", "NOT_YET_EFFECTIVE": "尚未实施", "UNKNOWN": "状态未提供"}
 
 
 class StandardsPage(QWidget):
@@ -35,10 +35,6 @@ class StandardsPage(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(16)
         layout.addWidget(heading("标准库"))
-        subtitle = QLabel("查询标准与适用范围，选择标准后开始设备分析")
-        subtitle.setWordWrap(True)
-        subtitle.setObjectName("muted")
-        layout.addWidget(subtitle)
         filters = QGridLayout()
         self.search = QLineEdit()
         self.search.setPlaceholderText("搜索标准编号、名称或适用对象")
@@ -76,6 +72,10 @@ class StandardsPage(QWidget):
         self.retry_button.clicked.connect(self.refresh)
         self.retry_button.hide()
         layout.addWidget(self.retry_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.clear_filters_button = QPushButton("清除筛选")
+        self.clear_filters_button.clicked.connect(self.clear_filters)
+        self.clear_filters_button.hide()
+        layout.addWidget(self.clear_filters_button, alignment=Qt.AlignmentFlag.AlignLeft)
         self.stack.addWidget(listing)
         detail = QWidget()
         layout = QVBoxLayout(detail)
@@ -177,8 +177,10 @@ class StandardsPage(QWidget):
         if self._load_error:
             self._visible = []
             self.table.setRowCount(0)
+            self.clear_filters_button.hide()
             self.list_status.setText("暂时无法读取标准目录，请重试。")
             return
+        self.clear_filters_button.hide()
         keyword = self.search.text().strip().casefold().replace("—", "-")
         state = self.status_filter.currentData()
         selected = self.table.currentRow()
@@ -202,6 +204,12 @@ class StandardsPage(QWidget):
         self.table.resizeRowsToContents()
         self.table.verticalScrollBar().setValue(scroll)
         self.list_status.setText(f"共 {len(self._visible)} 项标准" if self._visible else "没有匹配的标准，请调整关键词或标准状态。")
+
+        self.clear_filters_button.setVisible(not self._visible and bool(keyword or state))
+
+    def clear_filters(self):
+        self.search.clear()
+        self.status_filter.setCurrentIndex(0)
 
     def eventFilter(self, watched, event):
         if watched is self.table.viewport() and event.type() in (QEvent.Type.Resize, QEvent.Type.Show):
@@ -251,7 +259,7 @@ class StandardsPage(QWidget):
         elif code == "GB 20052-2024":
             text = "按适用型式、额定参数及标准条件查取空载损耗与负载损耗限值（W），分别比较并给出最终等级。不同类别采用相应表格与条件，具体限值在分析结果和保存的计算依据中查看。"
         elif code == "GB 18613-2020":
-            text = "按电动机类别及适用额定参数采用表1至表6的效率限值（%），评价1级、2级、3级。实测效率口径与额定参数须符合所选类别条件；具体限值可在分析结果中查看。"
+            text = "按电动机类别及适用额定参数采用表1至表6的效率限值（%），评价1级、2级、3级。新分析按额定效率评价，效率填写1～100的百分数点值，额定电压以V填写；具体限值可在分析结果中查看。历史记录保留保存时口径。"
         else:
             text = "当前元数据未提供标准要求摘要，请查阅标准原文。"
         self.section_labels[2].setText(text)

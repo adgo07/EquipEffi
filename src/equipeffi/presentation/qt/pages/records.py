@@ -113,12 +113,14 @@ class RecordsPage(QWidget):
         self._total = 0
         #: 下一页偏移量
         self._offset = 0
+        self._retry_reset = True
         #: 已加载条数上限（供测试与提示使用）
         self._records: list = []
         #: 批次列表按需递增加载；每次多取一条作为“还有更早记录”的哨兵。
         self._batch_limit = BATCH_RECORD_PAGE_SIZE
         self._batch_visible: list = []
         self._batch_has_more = False
+        self._batch_retry_reset = True
         self._build()
         self.refresh()
 
@@ -186,6 +188,12 @@ class RecordsPage(QWidget):
         self.list.cellActivated.connect(lambda row, column: self._on_selected(row))
         self.list.cellDoubleClicked.connect(lambda row, column: self._on_selected(row))
         single.addWidget(self.list, 1)
+        self.empty_status = QLabel()
+        self.empty_status.setWordWrap(True)
+        single.addWidget(self.empty_status)
+        self.empty_action = QPushButton()
+        self.empty_action.clicked.connect(self._empty_action)
+        single.addWidget(self.empty_action, alignment=Qt.AlignmentFlag.AlignLeft)
         self.load_more_button = QPushButton("加载更多")
         self.load_more_button.clicked.connect(self.load_more)
         footer = QHBoxLayout()
@@ -208,6 +216,12 @@ class RecordsPage(QWidget):
         self.batch_list.cellActivated.connect(lambda row, column: self._on_batch_selected(row))
         self.batch_list.cellDoubleClicked.connect(lambda row, column: self._on_batch_selected(row))
         batch_layout.addWidget(self.batch_list, 1)
+        self.batch_empty_status = QLabel()
+        self.batch_empty_status.setWordWrap(True)
+        batch_layout.addWidget(self.batch_empty_status)
+        self.batch_empty_action = QPushButton()
+        self.batch_empty_action.clicked.connect(self._batch_empty_action)
+        batch_layout.addWidget(self.batch_empty_action, alignment=Qt.AlignmentFlag.AlignLeft)
         self.batch_load_more_button = QPushButton("加载更多批次")
         self.batch_load_more_button.clicked.connect(self.load_more_batch_records)
         batch_footer = QHBoxLayout()
@@ -296,7 +310,7 @@ class RecordsPage(QWidget):
         if self.batch_service is None:
             return
         self._batch_limit = BATCH_RECORD_PAGE_SIZE
-        self._load_batch_records()
+        self._load_batch_records(reset=True)
 
     def load_more_batch_records(self) -> None:
         """递增读取上限，使列表中的更早批次始终可继续访问。"""
@@ -304,9 +318,9 @@ class RecordsPage(QWidget):
         if self.batch_service is None or not self._batch_has_more:
             return
         self._batch_limit += BATCH_RECORD_PAGE_SIZE
-        self._load_batch_records()
+        self._load_batch_records(reset=False)
 
-    def _load_batch_records(self) -> None:
+    def _load_batch_records(self, *, reset=False) -> None:
         try:
             keyword = self.batch_search.text().strip()
             records = list(self.batch_service.list_batch_records(limit=self._batch_limit + 1, **({"keyword": keyword} if keyword else {})))
@@ -315,9 +329,13 @@ class RecordsPage(QWidget):
 
             logging.getLogger("equipeffi.qt.records").exception(
                 "查询批量评价记录失败")
-            self._batch_visible = []
-            self.batch_list.setRowCount(0)
-            self.batch_summary.setText("读取批量评价记录失败，请点击刷新重试。")
+            self._batch_retry_reset = reset
+            if reset:
+                self._batch_visible = []
+                self.batch_list.setRowCount(0)
+            self.batch_summary.setText("读取失败")
+            self._set_empty_state(True,
+                "读取批量评价记录失败，请重试。" if reset else "更早批次读取失败，已加载记录仍可查看。", "重试")
             self.batch_load_more_button.setEnabled(False)
             return
 
@@ -343,12 +361,13 @@ class RecordsPage(QWidget):
             if record.batch_record_id == selected_id:
                 self.batch_list.selectRow(row)
         self.batch_list.resizeRowsToContents()
-        if not self._batch_visible and self.stack.currentIndex() == 0:
-            self.batch_detail.setText("尚无批量评价记录。")
+        self._set_empty_state(True,
+            "没有符合筛选条件的批次记录。" if self.batch_search.text().strip() else "暂无批量评价记录。",
+            "清除筛选" if self.batch_search.text().strip() else "表格导入",
+            visible=not self._batch_visible)
         if self._batch_has_more:
             self.batch_summary.setText(
-                f"已显示最近 {len(self._batch_visible)} 条批次记录；"
-                "还有更早记录，可继续加载。")
+                f"已显示 {len(self._batch_visible)} 条批次记录，可继续加载。")
         else:
             self.batch_summary.setText(
                 f"已显示 {len(self._batch_visible)} 条批次记录，"
@@ -483,8 +502,11 @@ class RecordsPage(QWidget):
             if reset:
                 self._visible = []
                 self.list.setRowCount(0)
+            self._retry_reset = reset
             self.load_more_button.setEnabled(False)
-            self.filter_summary.setText("读取历史记录失败，请点击刷新重试。")
+            self.filter_summary.setText("读取失败")
+            self._set_empty_state(False,
+                "读取分析记录失败，请重试。" if reset else "更早记录读取失败，已加载记录仍可查看。", "重试")
             return
         self._total = page.total
         self._visible = list(page.records) if reset else [*self._visible,
@@ -511,20 +533,46 @@ class RecordsPage(QWidget):
         if 0 <= selected < len(self._visible):
             self.list.selectRow(selected)
         self.list.verticalScrollBar().setValue(scroll)
-        if not self._visible and self.stack.currentIndex() == 0:
-            self.detail.setText("没有符合条件的记录。" if self._total or self.search.text()
-                                else "尚无正式记录。完成一次分析并保存后会显示在这里。")
-            if self.technical is not None:
-                self.technical.setText("")
+        filtered = bool(self.search.text().strip() or self.category_filter.currentData()
+                        or self.conclusion_filter.currentIndex() or self.date_filter.text().strip())
+        self._set_empty_state(False,
+            "没有符合筛选条件的分析记录。" if filtered else "暂无分析记录",
+            "清除筛选" if filtered else "新建分析", visible=not self._visible)
+
+    def _set_empty_state(self, batch, text, action, *, visible=True):
+        label = self.batch_empty_status if batch else self.empty_status
+        button = self.batch_empty_action if batch else self.empty_action
+        label.setText(text)
+        button.setText(action)
+        button.setEnabled(action in ("重试", "清除筛选") or bool(self.navigator))
+        label.setVisible(visible)
+        button.setVisible(visible)
+
+    def _empty_action(self):
+        action = self.empty_action.text()
+        if action == "重试":
+            self._load_page(reset=self._retry_reset)
+        elif action == "清除筛选":
+            self.clear_filters()
+        elif self.navigator:
+            self.navigator.open_analysis()
+
+    def _batch_empty_action(self):
+        action = self.batch_empty_action.text()
+        if action == "重试":
+            self._load_batch_records(reset=self._batch_retry_reset)
+        elif action == "清除筛选":
+            self.batch_search.clear()
+        elif self.navigator:
+            self.navigator.open_batch()
 
     def _update_summary(self) -> None:
         shown = len(self._visible)
         if shown < self._total:
             self.filter_summary.setText(
-                f"符合条件的记录共 {self._total} 条，已显示最近 {shown} 条"
-                "（可点「加载更多」继续）。")
+                f"已显示 {shown} / {self._total} 条记录，可继续加载。")
         else:
-            self.filter_summary.setText(f"符合条件的记录共 {self._total} 条，已全部显示。")
+            self.filter_summary.setText(f"已显示 {shown} / {self._total} 条记录，已全部显示。")
         self.load_more_button.setEnabled(shown < self._total)
 
     def _apply_filters(self, *_args) -> None:

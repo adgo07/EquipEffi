@@ -468,7 +468,8 @@ class RecordsPageTests(unittest.TestCase):
     def test_empty_history_is_explained(self):
         self.page.refresh()
         self.assertEqual(self.page.list.rowCount(), 0)
-        self.assertIn("尚无正式记录", self.page.detail.text())
+        self.assertEqual("暂无分析记录", self.page.empty_status.text())
+        self.assertEqual("新建分析", self.page.empty_action.text())
 
 
 if __name__ == "__main__":

@@ -71,7 +71,7 @@ class HomePage(QWidget):
         body = QWidget()
         layout = QVBoxLayout(body)
         page_gutter(layout, scroll.viewport())
-        layout.setSpacing(24)
+        layout.setSpacing(18)
         bar = QHBoxLayout()
         self.brand = brand()
         self.brand.setFixedWidth(180)
@@ -86,11 +86,6 @@ class HomePage(QWidget):
         title.setWordWrap(True)
         title.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
         titles.addWidget(title)
-        subtitle = QLabel("查询标准，完成设备分析与批量评价")
-        subtitle.setObjectName("muted")
-        subtitle.setWordWrap(True)
-        subtitle.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
-        titles.addWidget(subtitle)
         bar.addLayout(titles, 1)
         settings = QPushButton("设置")
         settings.setIcon(icon("settings"))
@@ -101,10 +96,10 @@ class HomePage(QWidget):
         self.cards.setSpacing(14)
         self.task_buttons = []
         for name, description, symbol, action in (
-            ("标准库", "查询标准与适用范围", "book", self._open_standard),
-            ("新建分析", "填写设备参数并分析", "plus", self._start_new_analysis),
+            ("标准库", "标准要求与适用范围", "book", self._open_standard),
+            ("新建分析", "单台设备能效评价", "plus", self._start_new_analysis),
             ("表格导入", "统一工作簿批量评价", "excel", lambda: navigator.open_batch() if navigator else None),
-            ("分析记录", "查看已保存的分析结果", "records", lambda: navigator.open_records() if navigator else None),
+            ("分析记录", "单台与批量评价结果", "records", lambda: navigator.open_records() if navigator else None),
         ):
             button = TaskCard(name, description, symbol, primary=not self.task_buttons)
             button.clicked.connect(action)
@@ -139,6 +134,10 @@ class HomePage(QWidget):
         self.retry_button = QPushButton("重试")
         self.retry_button.clicked.connect(self.refresh)
         recent.addWidget(self.retry_button, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.new_analysis_button = QPushButton("新建分析")
+        self.new_analysis_button.clicked.connect(self._start_new_analysis)
+        self.new_analysis_button.setEnabled(navigator is not None)
+        recent.addWidget(self.new_analysis_button, alignment=Qt.AlignmentFlag.AlignHCenter)
         layout.addWidget(self.recent_card)
         layout.addStretch()
         scroll.setWidget(body)
@@ -162,6 +161,7 @@ class HomePage(QWidget):
         self.records.hide()
         self.record_status.show()
         self._record_ids = []
+        self.new_analysis_button.hide()
         try:
             records = self.service.list_records(limit=5)
         except Exception:
@@ -174,7 +174,8 @@ class HomePage(QWidget):
         self.record_status.setVisible(not records)
         self.records.setRowCount(len(records))
         self.records.fit_content_height = True
-        self.record_status.setText("" if records else "尚无分析记录，可点击「新建分析」开始。")
+        self.record_status.setText("" if records else "暂无分析记录")
+        self.new_analysis_button.setVisible(not records)
         for row, record in enumerate(records):
             values = getattr(record, "input_snapshot", None) or {}
             name = values.get("project_name") or values.get("equipment_no") or record.product_category

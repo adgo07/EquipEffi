@@ -127,7 +127,7 @@ class BatchPage(QWidget):
         template_box = QGroupBox("模板与说明")
         template_layout = QVBoxLayout(template_box)
         version = getattr(self.batch, "template_identity", {}).get("template_version") or "当前构建模板"
-        self.template_label = QLabel(f"统一工作簿 · {version}\n按需填写行数，保留各设备工作表；结果另存为新文件。")
+        self.template_label = QLabel(f"统一工作簿 · {version}\n按需填写行数，保留各设备工作表。")
         self.template_label.setWordWrap(True)
         template_layout.addWidget(self.template_label)
         self.template_button = QPushButton("下载空白模板")
@@ -179,6 +179,9 @@ class BatchPage(QWidget):
         self.run_button = QPushButton("批量评价")
         self.run_button.setProperty("primary", True)
         self.run_button.clicked.connect(self.start_run)
+        record_notice = QLabel("每个工作簿生成一条批次记录，不为每行生成单台记录；记录保存失败会在处理结果中提示。")
+        record_notice.setWordWrap(True)
+        check_layout.addWidget(record_notice)
         check_layout.addWidget(self.run_button, alignment=Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(check)
         result_box = QGroupBox("处理结果")

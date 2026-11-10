@@ -64,7 +64,6 @@ from ..labels import (
     format_metric,
     issue_code_texts,
     user_conclusion_text,
-    user_grade_text,
 )
 
 _LOGGER = logging.getLogger("equipeffi.qt.analysis")
@@ -145,6 +144,9 @@ class AnalysisPage(QWidget):
         layout.addWidget(self._category_group())
         layout.addWidget(self._points_group())
         layout.addWidget(self._conditions_group())
+        self.record_notice = QLabel("完成分析后自动生成记录；再次分析会新增记录。输入校验或系统执行失败不生成记录。")
+        self.record_notice.setWordWrap(True)
+        layout.addWidget(self.record_notice)
         layout.addWidget(self._actions())
         layout.addWidget(self._result_group())
         layout.addStretch()
@@ -300,7 +302,7 @@ class AnalysisPage(QWidget):
         self.evaluate_button.clicked.connect(self.evaluate)
         layout.addWidget(self.evaluate_button)
         self.view_record_button = QPushButton("查看记录")
-        self.view_record_button.setProperty("primary", True)
+        self.view_record_button.setProperty("role", "secondary")
         self.view_record_button.setIcon(icon("records"))
         self.view_record_button.clicked.connect(lambda: self.navigator.open_records(record_id=self.last_saved_record_id) if self.navigator and self.last_saved_record_id else None)
         self.view_record_button.hide()
@@ -388,7 +390,7 @@ class AnalysisPage(QWidget):
         category = self.current_category()
         entry = next((c for c in PUMP_CATEGORIES if c.visible_name == category), None)
         self.category_help.setText(
-            f"已选类别：{entry.visible_name}\n{entry.help_text}" if entry is not None
+            entry.help_text if entry is not None
             else "请选择产品类别。若无法判断，可选“不确定类别”查看判断说明。")
 
         constraints = category_field_constraints(category)
@@ -544,9 +546,6 @@ class AnalysisPage(QWidget):
         self.conclusion.setText(user_conclusion_text(result))
         first = [f"设备类别：{result.product_category}",
                  f"评价日期：{result.as_of.isoformat()}"]
-        grade_text = user_grade_text(result.grade)
-        if grade_text:
-            first.append(f"能效等级：{grade_text}")
         if result.missing_fields:
             first.append("缺失信息：" + "、".join(result.missing_fields))
         # 普通结果区只显示用户可读的中文说明；内部 `issue_codes` 是审计标识，

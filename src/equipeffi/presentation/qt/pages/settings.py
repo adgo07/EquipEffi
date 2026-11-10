@@ -28,6 +28,7 @@ from PySide6.QtWidgets import (
 from ..tokens import TOKENS
 from ..widgets.page_layout import page_gutter
 from ..widgets.collapsible import CollapsibleSection
+from ..widgets.supplementary_info import SupplementaryInfo
 
 #: 普通用户**不得**出现的设置项（机械门禁会检查它们不出现在本页）。
 FORBIDDEN_SETTING_TOKENS: tuple[str, ...] = (
@@ -94,9 +95,9 @@ class SettingsPage(QWidget):
         self.header_row.addWidget(heading, 1)
         layout.addLayout(self.header_row)
 
-        preferences = QGroupBox("应用设置")
+        preferences = QGroupBox("数据位置")
         preferences_layout = QVBoxLayout(preferences)
-        preferences_layout.addWidget(QLabel("日志级别（记录运行信息时使用）"))
+
         self.log_level = QComboBox()
         # Owner Phase 8 R1 / UI04：普通界面全部显示中文，不展示英文枚举值。
         # 内部保存值仍是现有正式枚举字符串，**不迁移 settings schema**。
@@ -106,33 +107,43 @@ class SettingsPage(QWidget):
         index = self.log_level.findData(current)
         self.log_level.setCurrentIndex(index if index >= 0 else 0)
         self.log_level.currentIndexChanged.connect(self._save_log_level)
-        preferences_layout.addWidget(self.log_level)
+
 
         self.last_directory = QLabel()
         self.last_directory.setWordWrap(True)
         self.last_directory.setTextFormat(Qt.TextFormat.PlainText)
         self.last_directory.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.data_location_label = QLabel()
+        self.data_location_label.setWordWrap(True)
+        self.data_location_label.setTextFormat(Qt.TextFormat.PlainText)
+        self.data_location_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        preferences_layout.addWidget(self.data_location_label)
         preferences_layout.addWidget(self.last_directory)
 
         self.notice = QLabel("")
         self.notice.setWordWrap(True)
-        preferences_layout.addWidget(self.notice)
-        settings_note = QLabel("设置会自动保存；上次使用的目录仅用于文件选择。")
+
+        settings_note = QLabel("上次使用的目录仅用于文件选择。")
         settings_note.setWordWrap(True)
         preferences_layout.addWidget(settings_note)
         layout.addWidget(preferences)
 
-        about = QGroupBox("关于")
+        about = QGroupBox("应用信息")
         about_layout = QVBoxLayout(about)
         self.about = QLabel()
         self.about.setWordWrap(True)
         self.about.setTextFormat(Qt.TextFormat.PlainText)
         about_layout.addWidget(self.about)
-        layout.addWidget(about)
+        layout.insertWidget(1, about)
 
-        self.runtime_section = CollapsibleSection("运行信息")
+        self.runtime_section = CollapsibleSection("高级运行信息")
         runtime = self.runtime_section.content
         runtime_layout = QVBoxLayout(runtime)
+        runtime_layout.addWidget(QLabel("日志级别（自动保存）"))
+        runtime_layout.addWidget(self.log_level)
+        runtime_layout.addWidget(SupplementaryInfo("日志级别说明",
+            "调试级别会记录更详细的运行过程，便于排查问题；日志级别不影响能效分析结果。"))
+        runtime_layout.addWidget(self.notice)
         self.runtime = QLabel()
         self.runtime.setWordWrap(True)
         self.runtime.setTextFormat(Qt.TextFormat.PlainText)
@@ -147,7 +158,7 @@ class SettingsPage(QWidget):
         self.scroll_area.setWidget(content)
         page_layout.addWidget(self.scroll_area)
         self._wrapped_labels = (
-            self.last_directory, self.notice, settings_note, self.about, self.runtime)
+            self.data_location_label, self.last_directory, self.notice, settings_note, self.about, self.runtime)
         for label in self._wrapped_labels:
             # 标签按视口宽度换行，避免长路径把内容区撑出水平滚动范围。
             label.setSizePolicy(
@@ -211,10 +222,9 @@ class SettingsPage(QWidget):
         # 普通用户不得看到内部机器键名（last.directory / window.geometry /
         # window.state / log.level 等）。只展示业务中文名称与真实路径。
         location = str(self.data_location) if self.data_location else "（未能确定，请检查安装）"
-        self.runtime.setText("\n".join([
-            f"数据存储位置：{location}",
-            "历史记录存放于该目录下的 records.sqlite；运行日志存放于 logs 子目录。",
-        ]))
+        self.data_location_label.setText(f"数据存储位置：{location}\n历史记录保存在此目录。")
+        self.runtime.setText(f"运行日志位置：{self.data_location / 'logs'}"
+                             if self.data_location else "运行日志位置：未能确定，请检查安装。")
 
         last = self.settings.get("last.directory", "")
         self.last_directory.setText(
