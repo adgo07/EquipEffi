@@ -74,6 +74,9 @@ class MotorHvAnalysisService(MotorAnalysisService):
             explanation += " 缺少：" + "、".join(labels.get(key, key) for key in evaluated.missing_fields)
         if evaluated.invalid_fields:
             explanation += " 请核对：" + "、".join(labels.get(key, key) for key in evaluated.invalid_fields)
+        if (evaluated.evaluation_status == "SUCCESS" and thresholds
+                and refs.get("method") == "LINEAR_INTERPOLATION"):
+            explanation += "插值限值显示为两位小数，等级按未修约值比较。"
         return MotorAnalysisResult(
             product_category=next((item.label for item in self.input_contract.categories
                 if item.category_id == normalized.get("category_id")), str(normalized.get("category_id") or "")), as_of=request.as_of,

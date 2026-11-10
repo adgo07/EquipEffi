@@ -15,6 +15,7 @@ from equipeffi.infrastructure.excel.template_resource import (
 from equipeffi.infrastructure.excel.ooxml_reader import OOXMLWorkbook
 from equipeffi.infrastructure.persistence.app_data_paths import AppDataPaths
 from equipeffi.domain.devices.motor_hv.input_contract import HV_CATEGORY
+from tools.build_v61_transformer_template import _sheet_table_target
 
 
 def fill(sheet, row=4, **overrides):
@@ -29,14 +30,22 @@ class HvExcelTests(unittest.TestCase):
         self.assertEqual(sha256(old.template_path.read_bytes()).hexdigest().upper(), V63_TEMPLATE_ENTRY["asset_sha256"])
         with OOXMLWorkbook(old.template_path) as before, OOXMLWorkbook(current.template_path) as after:
             self.assertEqual(before.sheet_names, after.sheet_names)
-            allowed = {before._sheets[s] for s in ("电动机", "配置", "注意事项", "模板说明")} | {"xl/workbook.xml", "xl/tables/table2.xml"}
+            motor_table = _sheet_table_target(before.archive, before._sheets["电动机"], "TblMotor")
+            allowed = {before._sheets[s] for s in ("电动机", "配置", "注意事项", "模板说明")} | {"xl/workbook.xml", motor_table}
             changed = {name for name in before.archive.namelist() if before.archive.read(name) != after.archive.read(name)}
-            # The motor table target is discovered rather than assumed.
-            self.assertEqual(len(changed - {n for n in changed if n.startswith("xl/tables/")}), 5)
-            for name in changed:
-                self.assertTrue(name in allowed or name.startswith("xl/tables/"), name)
+            self.assertEqual(changed, allowed)
             for sheet in ("离心泵", "变压器"):
                 self.assertEqual(before.archive.read(before._sheets[sheet]), after.archive.read(after._sheets[sheet]))
+            def config_cells(workbook):
+                root = ET.fromstring(workbook.archive.read(workbook._sheets["配置"]))
+                return {c.get("r"): ET.tostring(c) for c in root.iter()
+                        if c.tag.endswith("}c")}
+            old_cells, new_cells = config_cells(before), config_cells(after)
+            owned = {f"{col}{row}" for col in ("EW", "EX") for row in range(2, 11)} | {
+                f"FA{row}" for row in range(2, 12)}
+            for reference in old_cells.keys() | new_cells.keys():
+                if reference not in owned:
+                    self.assertEqual(old_cells.get(reference), new_cells.get(reference), reference)
 
     def test_hidden_contract_and_output_formula_negative_cases(self):
         ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
@@ -76,6 +85,7 @@ class HvExcelTests(unittest.TestCase):
             output = load_workbook(result.result_workbook, data_only=True)
             self.assertEqual(output["电动机"]["N4"].value, 94.06)
             self.assertEqual(output["电动机"]["Q5"].value, "2级")
+            self.assertIn("等级按未修约值比较", output["电动机"]["T4"].value)
             self.assertEqual(output["电动机"]["M4"].value, "94.055")
             output.close()
 

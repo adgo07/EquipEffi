@@ -41,6 +41,7 @@ class HvApplicationTests(unittest.TestCase):
                 self.assertEqual(result.standard_code, HV_STANDARD)
                 self.assertEqual(result.support_status, "IMPLEMENTED")
                 self.assertEqual(tuple(result.thresholds_display.values()), thresholds)
+                self.assertNotIn("等级按未修约值比较", result.explanation)
 
     def test_exact_boundary_display_and_record_identity(self):
         records = Records()
@@ -50,6 +51,7 @@ class HvApplicationTests(unittest.TestCase):
                 rated_output_power_kw="211", rated_efficiency_pct=efficiency)))
             self.assertEqual(result.result.grade, grade)
             self.assertEqual(result.result.thresholds_display["grade_1"], "94.06")
+            self.assertIn("插值限值显示为两位小数，等级按未修约值比较。", result.result.explanation)
             self.assertEqual(result.result.thresholds["grade_1"]["exact"]["numerator"], "18811")
             self.assertEqual(result.record.standard_code, HV_STANDARD)
             self.assertEqual(result.record.standard_version, "2024")
@@ -108,6 +110,13 @@ class HvApplicationTests(unittest.TestCase):
         for code in ("GB 18613-2020", "UNKNOWN"):
             with self.assertRaises(ValueError):
                 self.service.evaluate(MotorAnalysisRequest(values(), standard_code=code))
+
+    def test_missing_threshold_does_not_claim_interpolated_display(self):
+        result = self.service.evaluate(MotorAnalysisRequest(values(
+            rated_output_power_kw="6000", poles="12")))
+        self.assertEqual(result.evaluation_status, "OUT_OF_STANDARD_SCOPE")
+        self.assertEqual(result.thresholds, {})
+        self.assertNotIn("等级按未修约值比较", result.explanation)
 
 
 if __name__ == "__main__":

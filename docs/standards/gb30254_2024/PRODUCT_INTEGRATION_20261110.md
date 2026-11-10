@@ -52,3 +52,12 @@
 - 尚未验证：Excel/WPS真实追加行/下拉/保护/保存重开，真实125%系统DPI、跨屏、另一台干净Windows；离屏自动Qt测试不替代这些事项。原生候选实际窗口由主会话指定人员验收，实施者不自行声称通过。当前全量及构建证据待最终补记。
 
 Knowledge capture：无。
+
+
+### 2026-11-11 工程复验
+
+首轮Windows完整发现实际执行1277项、1905.311s、exit1：3个架构子例失败（历史页直接导入Domain，已改经Application静态契约）；4个构建锁ERROR（msvcrt.locking errno13，构建与测试并行冲突）；另1个发布审计模块导入ERROR（缺少DEFAULT_V64_TEMPLATE出口，已补齐）。原日志保留于`artifacts/hv-integration/full-suite.log`，不声明该轮通过；发布审计导入失败使该模块当轮未执行，最终CI数量应重新统计。
+
+上述4锁错模块、完整发布审计模块、架构边界以及最新高压Application/Qt/Excel已串行复验：50 passed、5344 subtests passed、1 deselected（仅本地已测容量项）、211.20s、exit0，日志`artifacts/hv-integration/targeted-final.log`。包含wheel真实高压1级/IMPLEMENTED烟测、旧V6.3必需资产、N10公式拒绝、旧contract粘贴高压拒绝、失败批次标准身份与非电机配置保护。成功插值结果增加简短显示精度说明，直查及C16无阈值不加，旧历史不追改。
+
+完整套件未缩减、未新增skip；按主会话安排不重复启动第二份本地全量，最新HEAD的最终全量复验由PR Windows Core CI完成，绿灯前不宣称完整门禁通过。最终Qt关闭时的窗口偏好SQLite错误来自未改动的closeEvent在测试临时目录已清理后关闭残留窗口，既有catch记录后正常退出；Qt线程已quiescent、QApplication已删除，不将该噪声写成高压业务记录失败。

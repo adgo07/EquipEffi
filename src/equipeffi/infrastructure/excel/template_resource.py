@@ -145,6 +145,7 @@ V64_TEMPLATE_ENTRY = next(entry for entry in TEMPLATE_MANIFEST["templates"]
 V64_TEMPLATE_IDENTITY = {key: str(V64_TEMPLATE_ENTRY.get(key, "")) for key in (
     "template_id", "template_version", "template_kind", "template_contract_revision",
     "filename", "asset_sha256", "source_filename", "source_sha256", "source_provenance")}
+DEFAULT_V64_TEMPLATE = V64_TEMPLATE_IDENTITY["filename"]
 MOTOR_V64_SHEET_CONTRACT = next(sheet for sheet in V64_TEMPLATE_ENTRY["sheets"]
                                 if sheet.get("sheet_id") == "motor")
 PUMP_SHEET_CONTRACT: dict[str, Any] = next(
