@@ -29,3 +29,7 @@
 `e1ecb49` 的完整CI（run42828130822）执行1275项，4项失败均为本轮已批准UI变更对应的旧断言。本次只调整测试：类别由实际下拉选中值验证并保留50 Hz直接可见提示；首页空态验证“暂无分析记录”和新建动作真实跳转；设置分别验证数据位置正文、高级默认收起与展开后的真实日志路径和日志级别，640×480小窗继续检查换行及滚动可达。生产代码未变，未删除或跳过测试。
 
 定向重跑 `tests/test_transformer_basis_projection.py`、`tests/unit/test_phase6_product_shell.py`、`tests/unit/test_ui_local_polish.py`：82 passed、91 subtests passed，27.53秒，exit0；使用独立TEMP及离屏Qt。完整CI和实际窗口验收由主会话另行确认。
+
+主会话独立审查上述测试差异并复验相同3模块：82 passed、91 subtests passed，20.14秒，exit0（`UI_review_20261110/ci-fix-independent.log`）。没有降低业务依据、历史只读、小窗滚动或实际路径断言。
+
+Owner随后授权“窗口验收没问题就合并”。本次GPT-6-astra medium重试：独立候选EXE成功启动；sky通道报告 `Computer Use helper already has an active request`，正式备用cua桌面状态调用20秒超时。未取得截图或执行UI输入，原生验收仍OPEN，因此尚不满足此次条件性合并授权。过程见本机 `UI_review_20261110/native-review-retry/steps.md`；不把启动成功或离屏证据作为窗口验收通过。
