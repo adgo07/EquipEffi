@@ -123,11 +123,14 @@ class TransformerAnalysisPage(QWidget):
         action_row = QHBoxLayout()
         action_row.addWidget(self.evaluate_button)
         self.view_record_button = QPushButton("查看记录")
-        self.view_record_button.setProperty("primary", True)
+        self.view_record_button.setProperty("role", "secondary")
         self.view_record_button.clicked.connect(lambda: self.navigator.open_records(record_id=self.last_saved_record_id) if self.navigator and self.last_saved_record_id else None)
         self.view_record_button.hide()
         action_row.addWidget(self.view_record_button)
         action_row.addStretch()
+        self.record_notice = QLabel("完成分析后自动生成记录；再次分析会新增记录。输入校验或系统执行失败不生成记录。")
+        self.record_notice.setWordWrap(True)
+        layout.addWidget(self.record_notice)
         layout.addLayout(action_row)
 
         self.result_group = QGroupBox("分析结果")
@@ -193,7 +196,7 @@ class TransformerAnalysisPage(QWidget):
         category_id = selected_category(self.category)
         self._editing_category = category_id
         self._mark_stale()
-        self.category_help.setText((f"已选类别：{self._category_by_id[category_id].label}\n" if category_id else "") + TRANSFORMER_SCOPE_HINT)
+        self.category_help.setText(TRANSFORMER_SCOPE_HINT)
         if not category_id:
             for group in (self.conditions_group, self.fields_group, self.loss_group):
                 group.hide()

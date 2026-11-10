@@ -176,7 +176,16 @@ class TransformerBasisProjectionTests(unittest.TestCase):
             page.category.setCurrentIndex(
                 page.category.findData("GB20052-T32"))
             self.assertIn(TRANSFORMER_SCOPE_HINT, page.category_help.text())
-            self.assertIn("已选类别：", page.category_help.text())
+            self.assertEqual(page.category.currentData(), "GB20052-T32")
+            category = next(option for option in transformer.input_contract.categories
+                            if option.category_id == "GB20052-T32")
+            self.assertEqual(page.category.currentText(), category.label)
+            self.assertNotIn("已选类别：", page.category_help.text())
+            self.assertIn("额定频率50 Hz", page.category_help.text())
+            page.show()
+            self.app.processEvents()
+            self.assertTrue(page.category.isVisible())
+            self.assertTrue(page.category_help.isVisible())
             condition = next(option for option in
                              transformer.input_contract.condition_options("GB20052-T32")
                              if option.values.get("thermal_class") == "F")

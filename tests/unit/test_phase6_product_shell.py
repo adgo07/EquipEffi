@@ -362,9 +362,14 @@ class HomePageTests(ProductShellTestCase):
         self.assertEqual(window.device_analysis_page.device_selector.currentData(), "centrifugal_pump")
 
     def test_home_lists_recent_records_from_existing_capabilities(self):
-        home = self.window().home_page
+        window = self.window()
+        home = window.home_page
         self.assertEqual(home.records.rowCount(), 0)
-        self.assertIn("尚无分析记录", home.record_status.text())
+        self.assertEqual("暂无分析记录", home.record_status.text())
+        self.assertEqual("新建分析", home.new_analysis_button.text())
+        self.assertTrue(home.new_analysis_button.isEnabled())
+        home.new_analysis_button.click()
+        self.assertIs(window.pages.currentWidget(), window.analysis_page)
 
     def test_home_has_no_draft_surface(self):
         """Phase 7：普通界面没有「分析草稿」概念，首页也不提供草稿入口。"""
@@ -693,12 +698,24 @@ class RecordsPageTests(ProductShellTestCase):
 
 class SettingsPageTests(ProductShellTestCase):
     def test_settings_exposes_only_real_configurable_items(self):
-        page = self.window().settings_page
-        text = _visible_text(page) + page.about.text() + page.runtime.text()
-        self.assertIn("日志级别", text)
+        window = self.window()
+        window.show()
+        window.open_settings()
+        self.app.processEvents()
+        page = window.settings_page
         self.assertIn("应用版本", page.about.text())
-        self.assertIn("数据存储位置", page.runtime.text())
-        self.assertIn(str(self.paths.root), page.runtime.text())
+        self.assertIn("数据存储位置", page.data_location_label.text())
+        self.assertIn(str(self.paths.root), page.data_location_label.text())
+        self.assertTrue(page.data_location_label.isVisible())
+        self.assertFalse(page.runtime_section.is_expanded())
+        self.assertFalse(page.log_level.isVisible())
+        page.runtime_section.toggle_button.click()
+        self.app.processEvents()
+        self.assertTrue(page.runtime_section.is_expanded())
+        self.assertTrue(page.runtime.isVisible())
+        self.assertTrue(page.log_level.isVisible())
+        self.assertIn("日志级别", _visible_text(page.runtime_section))
+        self.assertEqual(f"运行日志位置：{self.paths.logs_dir}", page.runtime.text())
 
     def test_settings_does_not_expose_algorithm_contracts_as_user_options(self):
         page = self.window().settings_page
@@ -759,9 +776,14 @@ class SettingsPageTests(ProductShellTestCase):
             "小窗口应换行显示内容，不应依赖水平滚动来读完整文本",
         )
         self.assertIn("本版本已正式支持", page.about.text())
-        self.assertIn("运行日志存放于 logs 子目录", page.runtime.text())
+        self.assertEqual(f"运行日志位置：{self.paths.logs_dir}", page.runtime.text())
+        self.assertIn(str(self.paths.root), page.data_location_label.text())
+        self.assertTrue(page.data_location_label.isVisible())
         self.assertFalse(page.runtime_section.is_expanded())
-        page.runtime_section.set_expanded(True)
+        page.runtime_section.toggle_button.click()
+        self.assertTrue(page.runtime_section.is_expanded())
+        self.assertTrue(page.log_level.isVisible())
+        self.assertTrue(page.runtime.isVisible())
         QTest.qWait(10)  # 折叠区展开后的换行高度由页面定时器更新。
 
         long_directory = self.paths.root.joinpath(*(["nested"] * 8))
@@ -775,7 +797,8 @@ class SettingsPageTests(ProductShellTestCase):
             "刷新长目录后，标签高度应覆盖自动换行所需高度",
         )
 
-        for label in (page.about, page.runtime):
+        for label in (page.about, page.data_location_label,
+                      page.last_directory, page.runtime):
             with self.subTest(label=label.objectName() or label.text()[:12]):
                 required_height = label.heightForWidth(label.width())
                 if required_height >= 0:

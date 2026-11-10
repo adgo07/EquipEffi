@@ -71,11 +71,14 @@ class MotorAnalysisPage(QWidget):
         actions = QHBoxLayout()
         actions.addWidget(self.evaluate_button)
         self.view_record_button = QPushButton("查看记录")
-        self.view_record_button.setProperty("primary", True)
+        self.view_record_button.setProperty("role", "secondary")
         self.view_record_button.clicked.connect(lambda: self.navigator.open_records(record_id=self.last_saved_record_id) if self.navigator and self.last_saved_record_id else None)
         self.view_record_button.hide()
         actions.addWidget(self.view_record_button)
         actions.addStretch()
+        self.record_notice = QLabel("完成分析后自动生成记录；再次分析会新增记录。输入校验或系统执行失败不生成记录。")
+        self.record_notice.setWordWrap(True)
+        layout.addWidget(self.record_notice)
         layout.addLayout(actions)
         result = QGroupBox("分析结果")
         result_layout = QVBoxLayout(result)
@@ -131,7 +134,7 @@ class MotorAnalysisPage(QWidget):
             self.scope_hint.clear()
             self.fields_group.hide()
             return
-        self.scope_hint.setText("\n".join((f"已选类别：{self.category.currentText()}", self.contract.scope_hint(category))))
+        self.scope_hint.setText(self.contract.scope_hint(category))
         for field in self.contract.visible_fields(category):
             label = field.label + ("（必填）" if field.required else "")
             if field.unit:
@@ -207,7 +210,7 @@ class MotorAnalysisPage(QWidget):
         self._last_result, self._last_outcome = result, outcome
         self.last_record_status = outcome.record_status
         self.conclusion.setText(result.ui_conclusion)
-        self.summary.setText("本版本正式支持GB 18613-2020表1至表6。")
+        self.summary.clear()
         lines = []
         for grade in (1, 2, 3):
             threshold = result.thresholds.get(f"grade_{grade}", {})
