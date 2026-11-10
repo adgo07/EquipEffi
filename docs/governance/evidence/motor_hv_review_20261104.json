@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-04",
+  "scope": "PR42 review fixes; targeted regression, not full product acceptance",
+  "base_sha": "f93525d675a3122f6af43aadacc95fed7c759ce9",
+  "modules": [
+    "tests.unit.test_motor_hv_core",
+    "tests.unit.test_motor_numeric_conformance",
+    "tests.unit.test_motor_calculator",
+    "tests.unit.test_motor_pack_builder",
+    "tests.unit.test_motor_rated_input",
+    "tests.unit.test_motor_input_contract"
+  ],
+  "tests": {
+    "run": 45,
+    "pass": 45,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "exit_code": 0,
+    "duration_seconds": 47.4
+  },
+  "compileall_exit_code": 0,
+  "log": {
+    "path": "artifacts/motor-hv-core/review-fixes.log",
+    "sha256": "81934d362adffb443dc766719ad7c5aecde700f98f0586d7c7f8021ad4e76f39",
+    "storage": "local worktree; raw log not committed"
+  },
+  "files": {
+    "tools/build_gb30254_motor_pack.py": "67d6b21484b7003599620766720b1b14f425faab9f7a2f1e714126f27b14b2c0",
+    "tests/unit/test_motor_hv_core.py": "d6fc1ac8ca48a33b19bfdc1a3d9dafa95081b2ce25767ca49b28991b65c3d872",
+    "src/equipeffi/domain/devices/motor_hv/calculator.py": "7256c60020b453a0be849c6df12bdc74de78ed525e2b6bb200388a5aa28b0eb8",
+    "specs/equipment_efficiency/numeric/equipeffi_motor_hv_numeric_profile_v1.json": "f15b75b00a6ca934b9522e98804920eb9b998008e3157fe3ad43f690a21fab5b",
+    "specs/equipment_efficiency/standards/gb30254_2024_candidate.json": "97dc1f732426d8b9ba69bf28a268e01293972667e0621f019cd538800d9a83e7",
+    "docs/standards/gb30254_2024/STANDARD_MAPPING.md": "6d208c61176461f32a5076dbf8d367b1afd0efab315bf1aad8a8e48e6e5819ba",
+    "docs/standards/gb30254_2024/data/GB30254_2024_标准表值.xlsx": "b3755111a4f20a7f4cf1a6e37e48a4e17d4e0dcb8cea2ab88211fc67cf822912"
+  },
+  "prior_head_ci": {
+    "head_sha": "6585dce236bde50225c5fedc5bac2aef81745e0b",
+    "run_url": "https://github.com/adgo07/EquipEffi/actions/runs/41775604314",
+    "conclusion": "success",
+    "applies_to_revised_head": false
+  },
+  "not_run": [
+    "Windows binary interaction",
+    "clean Windows host",
+    "full HV product acceptance"
+  ]
+}
