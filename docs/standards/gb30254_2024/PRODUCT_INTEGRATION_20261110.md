@@ -61,3 +61,25 @@ Knowledge capture：无。
 上述4锁错模块、完整发布审计模块、架构边界以及最新高压Application/Qt/Excel已串行复验：50 passed、5344 subtests passed、1 deselected（仅本地已测容量项）、211.20s、exit0，日志`artifacts/hv-integration/targeted-final.log`。包含wheel真实高压1级/IMPLEMENTED烟测、旧V6.3必需资产、N10公式拒绝、旧contract粘贴高压拒绝、失败批次标准身份与非电机配置保护。成功插值结果增加简短显示精度说明，直查及C16无阈值不加，旧历史不追改。
 
 完整套件未缩减、未新增skip；按主会话安排不重复启动第二份本地全量，最新HEAD的最终全量复验由PR Windows Core CI完成，绿灯前不宣称完整门禁通过。最终Qt关闭时的窗口偏好SQLite错误来自未改动的closeEvent在测试临时目录已清理后关闭残留窗口，既有catch记录后正常退出；Qt线程已quiescent、QApplication已删除，不将该噪声写成高压业务记录失败。
+
+
+### 最终独立Windows候选（2026-11-11）
+
+- 固定生产源码HEAD：`9e90c7da2cc467e337cb0c1bb7ec6eefca1e7e36`；随后仅追加本段文档，不改生产代码。构建exit0、`status_ready=true`、Qt和运行资源审计通过，真实原生交互验收由主会话另记，不以该自检替代。
+- EXE：`D:\project\设备能效软件\EquipEffi-hv-integration\dist\hv-integration-9e90c7d\dist\equipeffi-hv-candidate\equipeffi-hv-candidate.exe`；SHA-256：`2f81d2c26e43ecd92088661bc7ba3cbaec3f814e4ebbb1db63f476188a2742ae`。
+- ZIP：`D:\project\设备能效软件\EquipEffi-hv-integration\dist\EquipEffi-hv-candidate-9e90c7d.zip`；SHA-256：`3e83ebc57d0a3fe2352f766cfc6ad9865e1d52e47f0bf02ef00b71fe9a83733c`。首个049f373构建因后续架构补丁已过时，不作最终验收包；没有覆盖旧包。
+- 实际启动恢复：默认受限环境的Start-Process无PID返回（session51225已取消、exit1）；非提升Popen的PID17384已确认退出，未创建数据库。随后按已授权的候选测试，在可见用户环境以提升Popen、`DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP`启动最终EXE，PID25080，已创建独立user.sqlite/records.sqlite；是否窗口交互通过以主会话原生验收为准。没有关闭任何用户或旧程序。
+- 可双击独立入口：`D:\project\设备能效软件\HV_review_20261110\启动高压候选_9e90c7d.cmd`（UTF-8/CRLF，先切65001）。它引用上述EXE绝对路径，以系统PATH、Qt windows启动，清空外部Python/Qt插件路径；LOCALAPPDATA固定为`D:\project\设备能效软件\HV_review_20261110\native-9e90c7d-data`，实际数据在其`EquipEffi`子目录，仅供本候选测试，保留该候选历史，不读写原用户数据。此cmd不依赖源码Python，也不复制候选包；双击交互待原生验收。
+- 构建报告：`artifacts/hv-integration/native-build-9e90c7d.json`；构建日志同名`.log`；实际启动详情`native-launch-9e90c7d.json`及启动stderr `native-startup-9e90c7d.log`同目录。本机工程证据保留，不捆绑标准原件。
+
+可复现构建（仓库根目录执行，Windows Python 3.12，输出使用新的独立目录，不能覆盖正在验收的包）：
+
+```powershell
+$env:PYTHONPATH = 'D:/project/设备能效软件/EquipEffi-hv-integration/src'
+$env:PYTHONIOENCODING = 'utf-8'
+$env:TEMP = 'D:/project/设备能效软件/EquipEffi-hv-integration/.test-temp'
+$env:TMP = $env:TEMP
+& 'D:/project/设备能效软件/EquipEffi/.venv/Scripts/python.exe' tools/build_native.py --output-dir dist/hv-integration-9e90c7d-rebuild --name equipeffi-hv-candidate --python 'D:/project/设备能效软件/EquipEffi/.venv/Scripts/python.exe' --report artifacts/hv-integration/native-build-9e90c7d-rebuild.json --zip-output dist/EquipEffi-hv-candidate-9e90c7d-rebuild.zip --timeout 1200
+```
+
+最终未验证事项仍包括真实Excel/WPS追加行/下拉/保护/保存重开、真实125%系统DPI/跨屏、另一台干净Windows及最新HEAD的完整PR CI。LibreOffice不能替代Excel/WPS。本轮保持IMPLEMENTED、QA-HV-001 OPEN，不发布、不合并、不自行推送。
