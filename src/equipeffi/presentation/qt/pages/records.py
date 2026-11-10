@@ -103,8 +103,8 @@ class RecordsPage(QWidget):
         self.service = service
         self.transformer_service = transformer
         self.motor_service = motor
-        from ....domain.devices.motor_hv.input_contract import MOTOR_PRODUCT_INPUT_CONTRACT
-        self.motor_contract = MOTOR_PRODUCT_INPUT_CONTRACT
+        from ....application.services.motor_analysis_service import get_motor_product_input_contract
+        self.motor_contract = get_motor_product_input_contract()
         self.transformer_contract = (transformer.input_contract
                                      if transformer is not None else get_transformer_input_contract())
         self._transformer_categories = {
@@ -724,8 +724,8 @@ class RecordsPage(QWidget):
         contract = self.motor_contract
         if contract is None:
             # 仅读取静态字段标签，不加载标准包或重新运行算法。
-            from ....domain.devices.motor_hv.input_contract import MOTOR_PRODUCT_INPUT_CONTRACT
-            contract = MOTOR_PRODUCT_INPUT_CONTRACT
+            from ....application.services.motor_analysis_service import get_motor_product_input_contract
+            contract = get_motor_product_input_contract()
         label = next((item.label for item in contract.categories
                       if item.category_id == category), snapshot.product_category)
         lines = [f"采用标准：{snapshot.standard_code}",
@@ -867,8 +867,8 @@ class RecordsPage(QWidget):
                     contract = get_transformer_input_contract()
                     self.transformer_contract = contract
                 else:
-                    from ....domain.devices.motor_hv.input_contract import MOTOR_PRODUCT_INPUT_CONTRACT
-                    contract = MOTOR_PRODUCT_INPUT_CONTRACT
+                    from ....application.services.motor_analysis_service import get_motor_product_input_contract
+                    contract = get_motor_product_input_contract()
             known = next((item for item in contract.categories if item.category_id == category), None)
             if known:
                 basic[1] = f"设备类别：{known.label}"

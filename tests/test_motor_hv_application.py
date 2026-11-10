@@ -73,6 +73,9 @@ class HvApplicationTests(unittest.TestCase):
             (dict(rated_voltage_v="3"), "OUT_OF_STANDARD_SCOPE")):
             result = self.service.evaluate(MotorAnalysisRequest(values(**changes)))
             self.assertEqual(result.evaluation_status, status)
+            if changes.get("cooling_method") == "":
+                self.assertIn("缺少：冷却方式", result.explanation)
+                self.assertNotIn("cooling_method", result.explanation)
         self.service.high_voltage._pack["numeric_profile_id"] = "WRONG"
         with self.assertRaises(HvPackError):
             self.service.analyze_and_record(MotorAnalysisRequest(values()))

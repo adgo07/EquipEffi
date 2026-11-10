@@ -22,6 +22,12 @@ def get_motor_input_contract():
     return MOTOR_INPUT_CONTRACT
 
 
+def get_motor_product_input_contract():
+    """Static shared labels for immutable history, without loading a pack."""
+    from ...domain.devices.motor_hv.input_contract import MOTOR_PRODUCT_INPUT_CONTRACT
+    return MOTOR_PRODUCT_INPUT_CONTRACT
+
+
 def motor_numeric_text_issue(field_id: str, text: str) -> str | None:
     """Read-only lexical adapter; reuse the calculator's exact input parser.
 
