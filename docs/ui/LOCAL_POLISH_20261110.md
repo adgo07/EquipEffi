@@ -23,3 +23,9 @@
 本机独立证据位于仓库父目录 `UI_review_20261110`：`final-independent.log`、`native-build.json`、`native-audit.json`、`candidate-status.json`及`offscreen-review`；路径仅用于本机定位。候选目录为同级 `EquipEffi_UI候选版_20261110`，运行“开始测试.cmd”。
 
 本地验证：首轮4模块33项通过；最终9模块组合96项中唯一失败为首页旧文案断言（“尚无”改为“暂无”），修正后该模块与新增回归共19项通过，新增7项独立运行也通过；git diff --check通过。失败场景测试主动记录异常日志，未触碰真实用户数据。
+
+## PR43完整CI后的断言修正
+
+`e1ecb49` 的完整CI（run42828130822）执行1275项，4项失败均为本轮已批准UI变更对应的旧断言。本次只调整测试：类别由实际下拉选中值验证并保留50 Hz直接可见提示；首页空态验证“暂无分析记录”和新建动作真实跳转；设置分别验证数据位置正文、高级默认收起与展开后的真实日志路径和日志级别，640×480小窗继续检查换行及滚动可达。生产代码未变，未删除或跳过测试。
+
+定向重跑 `tests/test_transformer_basis_projection.py`、`tests/unit/test_phase6_product_shell.py`、`tests/unit/test_ui_local_polish.py`：82 passed、91 subtests passed，27.53秒，exit0；使用独立TEMP及离屏Qt。完整CI和实际窗口验收由主会话另行确认。
