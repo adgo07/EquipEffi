@@ -83,3 +83,26 @@ $env:TMP = $env:TEMP
 ```
 
 最终未验证事项仍包括真实Excel/WPS追加行/下拉/保护/保存重开、真实125%系统DPI/跨屏、另一台干净Windows及最新HEAD的完整PR CI。LibreOffice不能替代Excel/WPS。本轮保持IMPLEMENTED、QA-HV-001 OPEN，不发布、不合并、不自行推送。
+
+### 主会话独立复核（2026-11-11）
+
+- 按实现前从A.3 Mapping C01—C28挑选的独立预期复验Application：699项检查通过、exit0，涵盖12组路由/边界、8组范围外、阈值等号上下、精确分数及不可变记录；预期不从被测实现反推。源码固定为9e90c7d生产内容。
+- 独立Qt产品链21项检查通过、exit0：标准路由、冷却不默选、211kW/94.055%为1级而显示94.06、历史不重算、再次分析新增记录、切回低压标题。此项为离屏Qt，不算原生Windows验收。
+- 独立新目录15行高低压混合Workbook通过、exit0：12行1级、1行高压2级、1行低压3级、1行非法输入（Q空白、T错误说明）；原输入SHA不变、输出另存、1条批次/0条逐行单台记录。
+- 检查Mapping、源表、原候选真值、数值Profile/Conformance、计算内核和platform-lock相对基线无差异；旧模板保留。最终ZIP实际SHA与构建报告一致，差异空白检查通过。
+- 本机独立原始证据在`D:/project/设备能效软件/HV_review_20261110/`的`application-review-final.log`、`qt-review-final.log`、`excel-review-final.log`及`independent-excel-final-r3/`；这些是工程证据，不作为标准原文或正式支持声明。
+### 原生候选验收结论（2026-11-11）
+
+GPT-6-astra medium按指定最终EXE完成真实Windows交互，主会话独立查看以下3张截图并只读核验实际输出与隔离数据库，已验证的候选产品流程通过：
+
+- GB30254标准库待验收状态、显式高压路由、冷却不默选；实际键盘字母/负数拒绝，整框展开及滚轮不误改。
+- 211kW、94.055%为1级，94.054999%为2级，显示94.06%并解释未修约值比较；历史首条仍保留原输入/等级，切回低压标题恢复GB18613。
+- 15行混合原生导入输出与预选期望一致，原输入SHA为`ff0fae4351fa819131a6cfd3c8fad6a27d4d4a4520e859f9d97154e2d786debc`且未改变；最终数据库3条单台/1条批次，批量未增加逐行记录，非法负值后点击分析没有新增。
+- 其中第3条单台为主动清空效率后提交的INSUFFICIENT_DATA/无法判定。按既有Application及INTEGRATION_DESIGN语义属于可保存的合法终态；不等同INVALID_INPUT。未为通过验收改变原业务状态或保存规则。
+- 实际窗口1280×673和623×673完成主要操作、历史两页签及小窗滚动可达。最终停在1级历史详情，未关闭用户/旧程序。
+
+![精确边界与不可变历史](evidence-20261111/exact-boundary-history.png)
+![原生混合批量结果](evidence-20261111/batch-result.png)
+![623×673小窗低压切回](evidence-20261111/small-low-voltage.png)
+
+完整本机操作记录：`D:/project/设备能效软件/HV_review_20261110/native-review/steps.md`。首次截图响应缓慢后恢复成功。Excel/WPS真实下拉/追加/保护/保存重开、125%系统DPI、跨屏及干净Windows均NOT_RUN，不以文件解析或离屏截图代替。独立候选验收不等同SUPPORTED或正式发布授权；QA-HV-001保持OPEN。最终全量门禁以PR固定最新HEAD的Windows Core和Whitespace结果为准，不把首轮失败描述为通过。
