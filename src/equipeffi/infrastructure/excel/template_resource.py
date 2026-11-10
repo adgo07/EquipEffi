@@ -140,6 +140,13 @@ REQUIRED_V63_SHEETS: tuple[str, ...] = tuple(
 MOTOR_V63_SHEET_CONTRACT: dict[str, Any] = next(
     sheet for sheet in V63_TEMPLATE_ENTRY["sheets"]
     if sheet.get("sheet_id") == "motor")
+V64_TEMPLATE_ENTRY = next(entry for entry in TEMPLATE_MANIFEST["templates"]
+                          if entry.get("template_version") == "V6.4")
+V64_TEMPLATE_IDENTITY = {key: str(V64_TEMPLATE_ENTRY.get(key, "")) for key in (
+    "template_id", "template_version", "template_kind", "template_contract_revision",
+    "filename", "asset_sha256", "source_filename", "source_sha256", "source_provenance")}
+MOTOR_V64_SHEET_CONTRACT = next(sheet for sheet in V64_TEMPLATE_ENTRY["sheets"]
+                                if sheet.get("sheet_id") == "motor")
 PUMP_SHEET_CONTRACT: dict[str, Any] = next(
     sheet for sheet in V6_TEMPLATE_ENTRY["sheets"]
     if sheet.get("sheet_id") == "centrifugal_pump"
@@ -1290,4 +1297,93 @@ def validate_v6_template(path: Path, *, check_pump_sheet: bool = True
     if version == "V6.3":
         return V63MotorTemplateResource().validate(
             path, check_pump_sheet=check_pump_sheet)
+    if version == "V6.4":
+        return V64MotorTemplateResource().validate(path, check_pump_sheet=check_pump_sheet)
     return base
+
+
+class V64MotorTemplateResource(V6TemplateResource):
+    """Versioned shared motor contract; the old assets keep their own validators."""
+    def __init__(self, resource_dir=None, *, template_name=V64_TEMPLATE_IDENTITY["filename"]):
+        super().__init__(resource_dir, template_name=template_name)
+
+    @property
+    def identity(self):
+        return dict(V64_TEMPLATE_IDENTITY)
+
+    def validate(self, path=None, *, check_pump_sheet=True):
+        from dataclasses import replace
+        from ...domain.devices.motor_hv.input_contract import MOTOR_PRODUCT_INPUT_CONTRACT as contract, COOLING_CODES
+        base = V6TemplateResource.validate(self, path, check_pump_sheet=check_pump_sheet)
+        if not base.is_valid:
+            return base
+        if base.identity.get("template_version") != "V6.4":
+            return _version_mismatch(base, "V6.4")
+        candidate = Path(path) if path is not None else self.template_path
+        issues = list(base.issues)
+        transformer = next(s for s in V64_TEMPLATE_ENTRY["sheets"] if s["sheet_id"] == "transformer")
+        issues.extend(_transformer_sheet_issues(candidate, transformer))
+        motor = MOTOR_V64_SHEET_CONTRACT
+        try:
+            with OOXMLWorkbook(candidate) as workbook:
+                grid = workbook.rows("电动机")
+                config = workbook.rows("配置")
+                root = ElementTree.fromstring(workbook.archive.read(workbook._sheets["电动机"]))
+                issues.extend(sheet_data_layout_issues(workbook.merged_ranges("电动机"), motor))
+            for field in motor["fields"]:
+                index = _column_index(field["column"])
+                label, unit, extra = _header_parts(grid[2][index])
+                if (label, unit, extra) != (field.get("label", ""), field.get("unit", ""), ()):
+                    issues.append(f"V6.4电动机{field['column']}列表头与契约不一致")
+                field_id = field.get("field_id")
+                if field_id:
+                    required = [c.category_id for c in contract.categories if any(
+                        f.field_id == field_id and f.required for f in contract.visible_fields(c.category_id))]
+                    if field.get("required_for_categories", []) != required:
+                        issues.append(f"V6.4字段{field_id}必填条件与Application不一致")
+            expected = [(c.category_id, c.label) for c in contract.categories]
+            if [(c["category_id"], c["label"]) for c in motor["categories"]] != expected:
+                issues.append("V6.4类别Manifest与Application不一致")
+            for n, category in enumerate(contract.categories, 1):
+                if (str(config[n][_column_index("EW")]), str(config[n][_column_index("EX")])) != (category.label, category.category_id):
+                    issues.append("V6.4配置类别与Application不一致")
+            for n, code in enumerate(COOLING_CODES, 1):
+                if str(config[n][_column_index("FA")]) != code:
+                    issues.append("V6.4配置冷却代码与Application不一致")
+            names = _workbook_defined_names(candidate)
+            for name, expression in {"EV_MOTOR_V64_CATEGORY": "'配置'!$EW$2:$EW$10",
+                "EV_MOTOR_V64_CATEGORY_IDS": "'配置'!$EX$2:$EX$10",
+                "EV_MOTOR_V64_COOLING": "'配置'!$FA$2:$FA$11"}.items():
+                if names.get(name) != (expression,):
+                    issues.append(f"V6.4命名范围{name}不一致")
+            ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+            validations = root.findall(f"{ns}dataValidations/{ns}dataValidation")
+            by_column = {n.attrib.get("sqref", "").split("4:")[0]: n for n in validations}
+            if len(by_column) != len(validations) or set(by_column) != {"D","F","G","H","I","J","K","L","M"}:
+                issues.append("V6.4输入校验列不一致")
+            for column, formula in (("F", "EV_MOTOR_V64_CATEGORY"), ("I", "EV_MOTOR_V64_COOLING")):
+                node = by_column.get(column)
+                if node is None or node.get("type") != "list" or node.findtext(f"{ns}formula1") != formula:
+                    issues.append(f"V6.4{column}列下拉与Application不一致")
+            for node in root.findall(f"{ns}sheetData/{ns}row/{ns}c"):
+                reference = re.fullmatch(r"([N-QT])([1-9][0-9]*)", node.get("r", ""))
+                if reference and int(reference.group(2)) >= 4 and node.find(f"{ns}f") is not None:
+                    issues.append("V6.4电机输出区不得含业务公式")
+            for field in motor["fields"]:
+                rule = field.get("excel_validation")
+                if not rule:
+                    continue
+                node = by_column.get(field["column"])
+                if node is None:
+                    continue
+                for key, attr in (("type", "type"), ("operator", "operator"), ("prompt", "prompt"),
+                                  ("error", "error"), ("prompt_title", "promptTitle"), ("error_title", "errorTitle")):
+                    if key in rule and node.get(attr) != rule[key]:
+                        issues.append(f"V6.4{field['column']}列{key}与契约不一致")
+                for key in ("formula1", "formula2"):
+                    if key in rule and node.findtext(f"{ns}{key}") != rule[key]:
+                        issues.append(f"V6.4{field['column']}列{key}与契约不一致")
+        except (OOXMLReadError, ValueError, KeyError, IndexError, TypeError) as error:
+            issues.append(f"V6.4契约读取失败：{error}")
+        return replace(base, is_valid=not issues, issues=tuple(issues),
+                       message="V6.4模板结构检查通过" if not issues else "V6.4模板不兼容："+"；".join(issues))

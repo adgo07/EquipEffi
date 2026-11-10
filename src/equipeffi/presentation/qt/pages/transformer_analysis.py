@@ -417,8 +417,12 @@ class DeviceAnalysisPage(QWidget):
     def select_standard(self, standard_code: str | None) -> bool:
         if standard_code is None:
             return True
-        if standard_code == "GB 18613-2020" and self.motor_page is not None:
+        if standard_code in {"GB 18613-2020", "GB 30254-2024"} and self.motor_page is not None:
             self.device_selector.setCurrentIndex(2)
+            if standard_code == "GB 30254-2024":
+                self.motor_page.category.setCurrentIndex(self.motor_page.category.findData("gb30254_cage_induction"))
+            elif self.motor_page.category.currentData() == "gb30254_cage_induction":
+                self.motor_page.category.setCurrentIndex(0)
         elif standard_code == "GB 20052-2024":
             self.device_selector.setCurrentIndex(1)
         elif standard_code == "GB 19762-2025":

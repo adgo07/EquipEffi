@@ -116,8 +116,15 @@ def create_motor_analysis_service(*, paths=None, with_persistence: bool = True):
 
     pack, digest = load_motor_pack()
     records = create_records_runtime(paths=paths)[1] if with_persistence else None
-    return MotorAnalysisService(pack, Gb18613MotorCalculator(), records=records,
-                                pack_sha256=digest, app_version=__version__)
+    from .application.services.motor_product_service import MotorHvAnalysisService, MotorProductService
+    from .domain.devices.motor_hv.calculator import Gb30254MotorCalculator
+    from .infrastructure.standards.motor_hv_repository import load_motor_hv_pack
+    hv_pack, hv_digest = load_motor_hv_pack()
+    return MotorProductService(
+        MotorAnalysisService(pack, Gb18613MotorCalculator(), records=records,
+                             pack_sha256=digest, app_version=__version__),
+        MotorHvAnalysisService(hv_pack, Gb30254MotorCalculator(), records=records,
+                               pack_sha256=hv_digest, app_version=__version__))
 
 
 def create_batch_evaluation_service(*, paths=None, motor_candidate: bool | None = None):
@@ -142,9 +149,9 @@ def create_batch_evaluation_service(*, paths=None, motor_candidate: bool | None 
     template_identity = V61_TEMPLATE_IDENTITY
     template_resource = V61TransformerTemplateResource()
     if enabled:
-        from .infrastructure.excel.template_resource import V63_TEMPLATE_IDENTITY, V63MotorTemplateResource
-        template_identity = V63_TEMPLATE_IDENTITY
-        template_resource = V63MotorTemplateResource()
+        from .infrastructure.excel.template_resource import V64_TEMPLATE_IDENTITY, V64MotorTemplateResource
+        template_identity = V64_TEMPLATE_IDENTITY
+        template_resource = V64MotorTemplateResource()
     # 载体端口在装配层注入：Application 只认识 Protocol，不认识 Excel。
     return WorkbookEvaluationService(
         analysis,

@@ -34,6 +34,7 @@ class MotorAnalysisPage(QWidget):
         outer.addWidget(heading)
         overview = service.standard_overview()
         title = QLabel(f"{overview['standard_code']}《{overview['name']}》")
+        self.standard_title = title
         title.setWordWrap(True)
         outer.addWidget(title)
         scroll = QScrollArea()
@@ -131,9 +132,12 @@ class MotorAnalysisPage(QWidget):
         self._editing_category = category
         self._mark_stale()
         if not category:
+            self.standard_title.setText("GB 18613-2020《电动机能效限定值及能效等级》")
             self.scope_hint.clear()
             self.fields_group.hide()
             return
+        high = category == "gb30254_cage_induction"
+        self.standard_title.setText("GB 30254-2024《高压三相笼型异步电动机能效限定值及能效等级》 · 已实现，待验收" if high else "GB 18613-2020《电动机能效限定值及能效等级》")
         self.scope_hint.setText(self.contract.scope_hint(category))
         for field in self.contract.visible_fields(category):
             label = field.label + ("（必填）" if field.required else "")
@@ -175,7 +179,7 @@ class MotorAnalysisPage(QWidget):
         category = selected_category(self.category)
         if not category:
             raise ValueError("请先选择设备类别。")
-        values = {"category_id": category, "input_contract_revision": "motor-input.v3"}
+        values = {"category_id": category, "input_contract_revision": "motor-input.v4" if category == "gb30254_cage_induction" else "motor-input.v3"}
         for key, widget in self.field_inputs.items():
             value = widget.currentData() if isinstance(widget, QComboBox) else widget.text()
             if value is not None and str(value).strip():

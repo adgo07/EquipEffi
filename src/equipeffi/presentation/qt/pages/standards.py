@@ -147,30 +147,35 @@ class StandardsPage(QWidget):
     def _read_catalog(self):
         catalog = []
         for service in self.services:
-            overview = service.standard_overview()
-            row = dict(overview)
-            row["name"] = overview.get("standard_name") or overview.get("name") or "未提供"
-            row["scope"] = overview.get("scope_text") or "、".join(overview.get("supported_categories", ()))
-            special = overview.get("special_categories", ())
-            if special:
-                row["scope"] += "\n其他可选项（不表示正式支持类别）：" + "、".join(special)
-            state = overview.get("lifecycle_state")
-            if not state:
-                effective = overview.get("effective_date")
-                try:
-                    state = "EFFECTIVE" if date.today() >= date.fromisoformat(effective) else "NOT_YET_EFFECTIVE"
-                except (ValueError, TypeError):
-                    state = "UNKNOWN"
-            row["lifecycle_state"] = state
-            if overview.get("support_status") == "SUPPORTED":
-                row["support"] = "正式支持"
-            elif overview.get("support_status") == "IMPLEMENTED":
-                row["support"] = "已实现，待验收"
-            else:
-                statuses = [s.get("support_status") for s in overview.get("scopes", ())]
-                row["support"] = "正式支持" if statuses and all(s == "SUPPORTED" for s in statuses) else "未开放"
-            catalog.append(row)
+            overviews = getattr(service, "standard_overviews", lambda: [service.standard_overview()])()
+            for overview in overviews:
+                catalog.append(self._catalog_row(overview))
         return catalog
+
+    def _catalog_row(self, overview):
+        row = dict(overview)
+        row["name"] = overview.get("standard_name") or overview.get("name") or "未提供"
+        row["scope"] = overview.get("scope_text") or "、".join(overview.get("supported_categories", ()))
+        special = overview.get("special_categories", ())
+        if special:
+            row["scope"] += "\n其他可选项（不表示正式支持类别）：" + "、".join(special)
+        state = overview.get("lifecycle_state")
+        if not state:
+            effective = overview.get("effective_date")
+            try:
+                state = "EFFECTIVE" if date.today() >= date.fromisoformat(effective) else "NOT_YET_EFFECTIVE"
+            except (ValueError, TypeError):
+                state = "UNKNOWN"
+        row["lifecycle_state"] = state
+        if overview.get("support_status") == "SUPPORTED":
+            row["support"] = "正式支持"
+        elif overview.get("support_status") == "IMPLEMENTED":
+            row["support"] = "已实现，待验收"
+        else:
+            statuses = [s.get("support_status") for s in overview.get("scopes", ())]
+            row["support"] = "正式支持" if statuses and all(s == "SUPPORTED" for s in statuses) else "未开放"
+        return row
+
 
     def _filter(self, *_):
         # 不重建输入控件，中文预编辑、焦点和光标保持 Qt 原生行为。
@@ -260,6 +265,8 @@ class StandardsPage(QWidget):
             text = "按适用型式、额定参数及标准条件查取空载损耗与负载损耗限值（W），分别比较并给出最终等级。不同类别采用相应表格与条件，具体限值在分析结果和保存的计算依据中查看。"
         elif code == "GB 18613-2020":
             text = "按电动机类别及适用额定参数采用表1至表6的效率限值（%），评价1级、2级、3级。新分析按额定效率评价，效率填写1～100的百分数点值，额定电压以V填写；具体限值可在分析结果中查看。历史记录保留保存时口径。"
+        elif code == "GB 30254-2024":
+            text = "按明确高压类别、额定电压、50 Hz、冷却IC代码、功率和极数查取六表效率限值，以额定效率评价1至3级；候选已实现，待独立验收。"
         else:
             text = "当前元数据未提供标准要求摘要，请查阅标准原文。"
         self.section_labels[2].setText(text)
