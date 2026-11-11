@@ -1,0 +1,244 @@
+[
+  {
+    "case_id": "PMSM-EQUALITY",
+    "category": "exact_comparison",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_MOTOR_PMSM_EXACT_LINEAR_V1",
+    "authority_scope": "motor_pmsm",
+    "inputs": {
+      "category_id": "gb30253_lv_async_start",
+      "rated_voltage_v": "380",
+      "rated_frequency_hz": "50",
+      "rated_output_power_kw": "0.55",
+      "poles": "2",
+      "rated_efficiency_pct": "85.9"
+    },
+    "provenance": {
+      "source_id": "GB30253-2024 A.2 and Owner decisions",
+      "source_path": "docs/standards/gb30253_2024/INTEGRATION_DESIGN.md",
+      "locator": "C01–C03; table 1 B7/I7/P7; Issue 002"
+    },
+    "expected_business_result": {
+      "evaluation_status": "SUCCESS",
+      "grade": "1"
+    },
+    "operator": "gte",
+    "comparison_value": "85.9",
+    "threshold": "85.9",
+    "expected_reference_value": {
+      "numerator": "859",
+      "denominator": "10",
+      "unit": "percent_point"
+    }
+  },
+  {
+    "case_id": "PMSM-LOWER-BOUNDARY",
+    "category": "business_boundary",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_MOTOR_PMSM_EXACT_LINEAR_V1",
+    "authority_scope": "motor_pmsm",
+    "inputs": {
+      "category_id": "gb30253_lv_async_start",
+      "rated_voltage_v": "380",
+      "rated_frequency_hz": "50",
+      "rated_output_power_kw": "0.55",
+      "poles": "2",
+      "rated_efficiency_pct": "81.4999999999999999999999999"
+    },
+    "provenance": {
+      "source_id": "GB30253-2024 A.2 and Owner decisions",
+      "source_path": "docs/standards/gb30253_2024/INTEGRATION_DESIGN.md",
+      "locator": "C03; table 1 P7; Issue 002"
+    },
+    "expected_business_result": {
+      "evaluation_status": "SUCCESS",
+      "grade": null
+    },
+    "operator": "gte",
+    "comparison_value": "81.4999999999999999999999999",
+    "threshold": "81.5"
+  },
+  {
+    "case_id": "PMSM-DISPLAY",
+    "category": "display_separation",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_MOTOR_PMSM_EXACT_LINEAR_V1",
+    "authority_scope": "motor_pmsm",
+    "inputs": {
+      "category_id": "gb30253_lv_vfd",
+      "rated_voltage_v": "380",
+      "rated_output_power_kw": "0.65",
+      "rated_speed_rpm": "550",
+      "rated_efficiency_pct": "82.125"
+    },
+    "provenance": {
+      "source_id": "GB30253-2024 A.2 and Owner decisions",
+      "source_path": "docs/standards/gb30253_2024/INTEGRATION_DESIGN.md",
+      "locator": "C24; tables 8–10 F7/E7/F8/E8; PROVISIONAL Issue 003"
+    },
+    "expected_business_result": {
+      "evaluation_status": "SUCCESS",
+      "grade": "1"
+    },
+    "operator": "gte",
+    "comparison_value": "82.125",
+    "threshold": "82.125",
+    "calculation_value": "82.125",
+    "display_value": "82.13",
+    "rounding": {
+      "stage": "display",
+      "mode": "ROUND_HALF_UP",
+      "places": 2,
+      "purpose": "display"
+    },
+    "expected_reference_value": {
+      "numerator": "657",
+      "denominator": "8",
+      "unit": "percent_point"
+    }
+  },
+  {
+    "case_id": "PMSM-BILINEAR",
+    "category": "ambient_independence",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_MOTOR_PMSM_EXACT_LINEAR_V1",
+    "authority_scope": "motor_pmsm",
+    "inputs": {
+      "category_id": "gb30253_hv_vfd",
+      "rated_voltage_v": "3000",
+      "rated_output_power_kw": "207",
+      "rated_speed_rpm": "2000",
+      "cooling_method": "IC81W",
+      "rated_efficiency_pct": "93.7033333333333"
+    },
+    "provenance": {
+      "source_id": "GB30253-2024 A.2 and Owner decisions",
+      "source_path": "docs/standards/gb30253_2024/INTEGRATION_DESIGN.md",
+      "locator": "Table 11 B7:C8; Owner Issue 004; 7/20 power weight, 1/3 speed weight; either order gives 28111/300"
+    },
+    "expected_business_result": {
+      "evaluation_status": "SUCCESS",
+      "grade": "2"
+    },
+    "requested_profile": "EQUIPEFFI_MOTOR_PMSM_EXACT_LINEAR_V1",
+    "effective_profile": "EQUIPEFFI_MOTOR_PMSM_EXACT_LINEAR_V1",
+    "ambient_profile": {
+      "precision": 2,
+      "rounding": "ROUND_UP"
+    },
+    "expected_reference_value": {
+      "numerator": "28111",
+      "denominator": "300",
+      "unit": "percent_point"
+    }
+  },
+  {
+    "case_id": "PMSM-NORMALIZE",
+    "category": "parse_normalization",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_MOTOR_PMSM_EXACT_LINEAR_V1",
+    "authority_scope": "motor_pmsm",
+    "inputs": {
+      "category_id": "gb30253_lv_async_start",
+      "rated_voltage_v": " 3.8e2 ",
+      "rated_frequency_hz": "050.0",
+      "rated_output_power_kw": "0.55",
+      "poles": "2",
+      "rated_efficiency_pct": "085.900"
+    },
+    "provenance": {
+      "source_id": "GB30253-2024 A.2 and Owner decisions",
+      "source_path": "docs/standards/gb30253_2024/INTEGRATION_DESIGN.md",
+      "locator": "Section 2.2; lexical ingress and canonical voltage in V"
+    },
+    "expected_business_result": {
+      "evaluation_status": "SUCCESS",
+      "grade": "1"
+    },
+    "normalized_value": {
+      "rated_voltage_v": {
+        "numerator": "380",
+        "denominator": "1"
+      }
+    }
+  },
+  {
+    "case_id": "PMSM-FLOAT-REJECT",
+    "category": "input_rejection",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_MOTOR_PMSM_EXACT_LINEAR_V1",
+    "authority_scope": "motor_pmsm",
+    "inputs": {
+      "category_id": "gb30253_lv_async_start",
+      "rated_voltage_v": "380",
+      "rated_frequency_hz": "50",
+      "rated_output_power_kw": "0.55",
+      "poles": "2",
+      "rated_efficiency_pct": 85.9
+    },
+    "provenance": {
+      "source_id": "GB30253-2024 A.2 and Owner decisions",
+      "source_path": "docs/standards/gb30253_2024/INTEGRATION_DESIGN.md",
+      "locator": "Section 5; reject implicit binary float"
+    },
+    "expected_business_result": {
+      "evaluation_status": "INVALID_INPUT",
+      "grade": null
+    },
+    "expected_error": {
+      "code": "INPUT_INVALID"
+    }
+  },
+  {
+    "case_id": "PMSM-EXCLUDED-CELL",
+    "category": "business_boundary",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_MOTOR_PMSM_EXACT_LINEAR_V1",
+    "authority_scope": "motor_pmsm",
+    "inputs": {
+      "category_id": "gb30253_lv_async_start",
+      "rated_voltage_v": "380",
+      "rated_frequency_hz": "50",
+      "rated_output_power_kw": "55",
+      "poles": "12",
+      "rated_efficiency_pct": "85.9"
+    },
+    "provenance": {
+      "source_id": "GB30253-2024 A.2 and Owner decisions",
+      "source_path": "docs/standards/gb30253_2024/INTEGRATION_DESIGN.md",
+      "locator": "C05/C25; table 1 G23/N23/U23; Issue 001"
+    },
+    "expected_business_result": {
+      "evaluation_status": "INSUFFICIENT_DATA",
+      "grade": null
+    },
+    "expected_error": {
+      "code": "NO_THRESHOLD"
+    }
+  },
+  {
+    "case_id": "PMSM-WRONG-PROFILE",
+    "category": "profile_mismatch_rejection",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_MOTOR_PMSM_EXACT_LINEAR_V1",
+    "authority_scope": "motor_pmsm",
+    "inputs": {
+      "category_id": "gb30253_lv_async_start",
+      "rated_voltage_v": "380",
+      "rated_frequency_hz": "50",
+      "rated_output_power_kw": "0.55",
+      "poles": "2",
+      "rated_efficiency_pct": "85.9"
+    },
+    "provenance": {
+      "source_id": "GB30253-2024 A.2 and Owner decisions",
+      "source_path": "docs/standards/gb30253_2024/INTEGRATION_DESIGN.md",
+      "locator": "Section 5; independent GB30253 authority"
+    },
+    "requested_profile": "EQUIPEFFI_MOTOR_HV_EXACT_LINEAR_V1",
+    "conflicting_profile": "EQUIPEFFI_MOTOR_HV_EXACT_LINEAR_V1",
+    "expected_error": {
+      "code": "PMSM_PROFILE_MISMATCH"
+    }
+  }
+]

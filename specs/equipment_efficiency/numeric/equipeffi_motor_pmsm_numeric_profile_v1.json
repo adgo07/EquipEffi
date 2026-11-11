@@ -1,0 +1,58 @@
+{
+  "profile_schema_version": "numeric-profile-adoption-1.0",
+  "numeric_profile_id": "EQUIPEFFI_MOTOR_PMSM_EXACT_LINEAR_V1",
+  "profile_version": "1.0.0",
+  "numeric_contract_version": "v1",
+  "numeric_contract_status": "FROZEN",
+  "authoritative_scopes": [
+    "motor_pmsm"
+  ],
+  "representation": "decimal lexemes / exact reduced rational arithmetic",
+  "working_precision": "exact_for_business_operations",
+  "rounding_mode": "none_for_business_comparison",
+  "comparison_policy": "full-value exact comparison",
+  "explicit_rounding_policy": "none",
+  "transcendental_policy": "not_applicable",
+  "tolerance_policy": "Exact conformance. GB/T 755 tolerance is knowledge only (EQP-STD-GB30253-002).",
+  "ingress_policy": {
+    "accepted": [
+      "decimal lexical string",
+      "Python int excluding bool",
+      "finite Decimal"
+    ],
+    "python_float": "REJECT",
+    "non_finite": "REJECT",
+    "maximum_text_characters": 128,
+    "maximum_mantissa_digits": 30,
+    "maximum_absolute_exponent": 30,
+    "implicit_units": "REJECT",
+    "units": {
+      "rated_voltage_v": "V",
+      "rated_frequency_hz": "Hz",
+      "rated_output_power_kw": "kW",
+      "rated_speed_rpm": "r/min",
+      "poles": "count",
+      "rated_efficiency_pct": "percent_point"
+    }
+  },
+  "display_policy": {
+    "interpolated_places": 2,
+    "rounding_mode": "ROUND_HALF_UP",
+    "direct_thresholds": "preserve source display precision",
+    "authority": "presentation only"
+  },
+  "normalization_policy": "Preserve source intervals. Require all adjacent numeric corners for exact bilinear interpolation. The PROVISIONAL 600 r/min anchor is limited to tables 8–10 at 500 < n <= 600.",
+  "numeric_contract_source": {
+    "repository": "https://github.com/adgo07/Qingzhou-contracts.git",
+    "commit_sha": "ee5feb0cc34dbd99790500fadd0c4c932e202a20",
+    "path": "contracts/numeric/NUMERIC_CONTRACT_V1_FROZEN.md"
+  },
+  "trace_reference": {
+    "profile_declaration": "specs/equipment_efficiency/numeric/equipeffi_motor_pmsm_numeric_profile_v1.json",
+    "standard_pack": "src/equipeffi/resources/standards/gb30253_2024_candidate.json",
+    "calculator": "src/equipeffi/domain/devices/motor_pmsm/calculator.py",
+    "threshold_trace": "PmsmEvaluation.thresholds / references.grade_lookups"
+  },
+  "platform_default": false,
+  "other_device_policy": "Authority is scoped to GB 30253 motor_pmsm."
+}
