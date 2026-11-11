@@ -39,7 +39,7 @@
 - 共享电动机 Application 只按显式类别选择 GB30253。标准库“按此标准分析”保留原电动机页面，展示五项永磁分支及占位，要求用户选择分支。通用入口提供完整类别。高压笼型入口仍预选其唯一类别。按分支显示频率、极数、冷却或额定转速。不适用字段不进入评价或快照。
 - 终态快照保存有效原词法与单位、精确值、逐级源格与 Issue 状态，Qt 只投影已保存证据。延用自动保存合法终态、两页签只读历史。旧记录和数据库结构沿用现有逻辑。
 - 源码 Qt、Application、历史和架构边界联合复验28项及5849个子测试通过。首次运行系统临时目录权限阻止 SQLite 创建测试记录，改用工作树内独立测试临时目录。早期新增的 Qt 契约导入已收口到现有 Application 入口。测试 SQLite 连接已在清理前关闭。
-- 主会话中途独立 Application 复验427项检查通过，证据 `PMSM_review_20261111/application-r1.log`。该轮核对31个精确阈值、旧输入拒绝、非法输入、资料不足、保存失败、原词法和不可变历史。最终 HEAD 待再次核对。
+- 主会话中途独立 Application 复验427项检查通过，证据 `PMSM_review_20261111/application-r1.log`。该轮核对31个精确阈值、旧输入拒绝、非法输入、资料不足、保存失败、原词法和不可变历史。最终固定源 `c22301f` 已按下节独立复验。
 
 ## 第二段 V6.5 与批次快照
 
@@ -56,7 +56,26 @@
 
 - 最新定向187项、9531个子测试通过，195.33s、真实exit0，日志 `outputs/pmsm-integration-20261111/targeted-final-r2.log`。覆盖所有电机内核/产品回归、旧V6.2/V6.3模板、同核批次、不可变历史、架构边界、入口状态及实际wheel构建/资源审计。仅排除已独立执行的2个容量测试，完整CI套件未减项或加skip。
 - 本地完整发现未重新执行。按主会话安排，最终最新HEAD的全量回归由PR Windows Core及Whitespace门禁执行，本轮候选记录在其完成前保持待验收。
-- 下步将固定本阶段源码提交后，串行构建新的独立Windows候选。原高压包及启动器保留。原生窗口交互交主会话指定的独立验收者。
+- 本阶段固定生产源码 `c22301f36278919a798552a800b34f8e2dbafd19` 后已串行构建独立Windows候选，包身份见下节。原高压包及启动器保留。原生窗口交互交主会话指定的独立验收者。
 - 尚未验证Excel/WPS真实下拉、追加行、保护及保存重开，实际125%系统DPI、跨屏和另一台干净Windows。文件解析及离屏Qt通过仅按实际覆盖记录。
+
+### 主会话固定源独立回执
+
+主会话按生产源码 `c22301f36278919a798552a800b34f8e2dbafd19` 再次独立复验，全部真实exit0。内核15650项断言、3960次评价，独立中点和四角插值7827次评价，Application427项、Qt27项、批次行证据497项检查均通过。保护资产及生产差异审阅通过。证据文件保存在 `D:/project/设备能效软件/PMSM_review_20261111/`。
+
+- `independent_core-final-c22301f.log`
+- `independent_interpolation-final-c22301f.log`
+- `independent_application-final-c22301f.log`
+- `independent_qt-final-c22301f.log`
+- `independent_batch_evidence-final-c22301f.log`
+
+## 独立Windows候选
+
+- 固定生产源码 `c22301f36278919a798552a800b34f8e2dbafd19`。此后提交仅补执行记录。原生构建及包资源审计真实exit0，`qt_capable=true`、`status_ready=true`。新EXE再次独立执行 `--status`，默认V6.5、GB18613为SUPPORTED、高压与永磁均IMPLEMENTED。实际文件SHA已与构建报告重新比对。
+- EXE为 `D:/project/设备能效软件/EquipEffi-pmsm-integration/dist/pmsm-integration-c22301f/dist/equipeffi-pmsm-candidate/equipeffi-pmsm-candidate.exe`，SHA-256 `81a58bf39a45e7df0150781fbb30c04a3986a8986f67fc3c569693ade4ac0a80`。
+- ZIP为 `D:/project/设备能效软件/EquipEffi-pmsm-integration/dist/EquipEffi-pmsm-candidate-c22301f.zip`，SHA-256 `48be66b32ff9c5cd72d3ea0b205be42d399b75789a5c8221a8511f99ddb37368`。
+- 可双击启动器为 `outputs/pmsm-integration-20261111/启动永磁候选_c22301f.cmd`。以系统PATH、清空外部Python/Qt插件路径、Qt windows环境启动。独立LOCALAPPDATA为 `outputs/pmsm-integration-20261111/native-c22301f-data`，实际测试数据在其 `EquipEffi` 子目录。
+- 已在可见用户环境用已授权的提升Popen启动，PID15828。用户环境只读核对路径及窗口标题正确，`Responding=true`，独立user.sqlite和records.sqlite已创建。受限进程清单未显示此PID，用户环境清单及主会话CU均确认窗口存活。只启动一份新候选，保留用户和旧高压程序。
+- 构建报告/日志为 `outputs/pmsm-integration-20261111/native-build-c22301f.json` / `.log`，独立状态为 `native-status-c22301f.json`，启动记录为 `native-launch-c22301f.json`，启动日志为 `native-startup-c22301f.log`。主会话指定的独立验收者正在验证实际窗口，本段仅记录构建及启动事实。
 
 Knowledge capture：无。
