@@ -106,3 +106,11 @@ GPT-6-astra medium按指定最终EXE完成真实Windows交互，主会话独立�
 ![623×673小窗低压切回](evidence-20261111/small-low-voltage.png)
 
 完整本机操作记录：`D:/project/设备能效软件/HV_review_20261110/native-review/steps.md`。首次截图响应缓慢后恢复成功。Excel/WPS真实下拉/追加/保护/保存重开、125%系统DPI、跨屏及干净Windows均NOT_RUN，不以文件解析或离屏截图代替。独立候选验收不等同SUPPORTED或正式发布授权；QA-HV-001保持OPEN。最终全量门禁以PR固定最新HEAD的Windows Core和Whitespace结果为准，不把首轮失败描述为通过。
+
+## PR #44 / #45独立验收整改
+
+- Owner已批准将高压候选JSON的工作树字节固定为LF。在 `.gitattributes` 精确声明 `src/equipeffi/resources/standards/gb30254_2024_candidate.json text eol=lf`，Git blob仍为 `8b9a4e3b25eb71fa76700b3bd1238c58775597c7`，运行文件SHA-256为 `1137696E9990ABD6F302BA4A45E6B141FFF325A7CE253B7CA1C507B0B2F2D2AF`。
+- `canonical_package_hash` 继续保存实际加载文件的原始字节SHA，包内语义哈希继续单独验证。新增回归将原Git blob与完整换行配置放入隔离仓库，分别在 `core.autocrlf=true/false` 的全新clone中首次checkout，验证文件字节及SHA与原blob一致，并实际加载及生成对应Record。
+- 另以合法历史CRLF资源生成真实SQLite记录，按其原文件校验原hash。后续LF资源评价只追加新记录，旧Record全列及原hash保持。原有包、Profile、数值内核和历史记录含义沿用既有契约。
+- 变压器Reader的版本错误提示补齐V6.4，电动机Reader类说明覆盖V6.2至V6.4。
+- 高压身份、Application、六表内核、Excel及统一工作簿适配定向37项、56个子测试通过，78.04s、真实exit0。已独立验证的容量项本次未重复执行，日志为 `artifacts/hv-integration/identity-fix-r2.log`。初轮日志 `identity-fix-r1.log` 保留，包含测试夹具漏传明确标准号及受限Git子进程权限失败。已修正夹具请求，在用户环境中以同一隔离目录完整重跑上述定向。

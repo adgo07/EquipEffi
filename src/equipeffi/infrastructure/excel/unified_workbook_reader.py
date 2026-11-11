@@ -328,7 +328,7 @@ class TransformerWorkbookReader:
             raise OOXMLReadError(validation.message)
         if validation.identity.get("template_version") not in {"V6.1", "V6.2", "V6.3", "V6.4"}:
             raise OOXMLReadError(
-                "当前工作簿的变压器Sheet尚未接入；请使用V6.1、V6.2或V6.3模板")
+                "当前工作簿的变压器Sheet尚未接入；请使用V6.1至V6.4模板")
 
         contract = TRANSFORMER_SHEET_CONTRACT
         input_columns = set(_TRANSFORMER_INPUT_FIELDS)
@@ -372,7 +372,7 @@ class TransformerWorkbookReader:
 
 
 class MotorWorkbookReader:
-    """读取V6.2旧口径或V6.3铭牌额定「电动机」输入。"""
+    """读取V6.2旧口径、V6.3铭牌额定及V6.4高压候选电动机输入。"""
 
     def read(self, source: Path, *, template_identity: dict[str, str] | None = None
              ) -> BatchSourceWorkbook:
