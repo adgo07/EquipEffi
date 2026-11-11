@@ -13,7 +13,7 @@ from xml.etree import ElementTree as ET
 from openpyxl import load_workbook
 
 from equipeffi.application.services.motor_analysis_service import MotorAnalysisRequest
-from equipeffi.composition import create_batch_evaluation_service, create_records_runtime
+from equipeffi.composition import create_batch_evaluation_service, create_motor_analysis_service, create_records_runtime
 from equipeffi.domain.devices.motor_pmsm.calculator import ISSUE_003
 from equipeffi.domain.devices.motor_pmsm.input_contract import BRANCHES, STANDARD_CODE
 from equipeffi.infrastructure.excel.ooxml_reader import OOXMLWorkbook
@@ -101,7 +101,7 @@ class PmsmExcelTests(unittest.TestCase):
             service.template_resource.download_to(source)
             workbook = load_workbook(source)
             motor = workbook["电动机"]
-            fill(motor, H="60", K="12", I="IC01")
+            fill(motor, H="60", K="12")
             fill(motor, 5, M="82.12499999")
             fill(motor, 6, F="gb30254_cage_induction", G="3000", H="50", I="IC01", J="200", K="2", L=None, M="94")
             fill(motor, 7, F="three_phase_induction", G="380", H="50", I=None, J="0.14", K="4", L=None, M="71.43")
@@ -171,6 +171,100 @@ class PmsmExcelTests(unittest.TestCase):
                 self.assertIn("临时解释", output["电动机"]["T4"].value)
             finally:
                 output.close()
+
+    def test_cooling_column_rejects_low_voltage_values_and_keeps_high_voltage_routing(self):
+        cases = []
+        for category, fields in (
+            ("gb30253_lv_async_start", {"H": "50", "K": "2", "L": None}),
+            ("gb30253_lv_vfd", {}),
+            ("gb30253_elevator", {}),
+        ):
+            for cooling in ("IC81W", "IC01", "not-a-code", " ", 0):
+                cases.append((fields | {"F": category, "I": cooling}, "INVALID_INPUT"))
+            cases.append((fields | {"F": category, "I": ""}, "SUCCESS"))
+        for category, fields in (
+            ("gb30253_hv_async_start", {"H": "50", "K": "4", "L": None}),
+            ("gb30253_hv_vfd", {"L": "3000"}),
+        ):
+            for cooling, expected in (("IC81W", "SUCCESS"), ("IC01", "OUT_OF_STANDARD_SCOPE")):
+                cases.append((fields | {"F": category, "G": "3000", "J": "200", "I": cooling}, expected))
+        low_voltage = {"F": "three_phase_induction", "G": "380", "H": "50", "J": "0.14", "K": "4", "L": None}
+        cases.extend(((low_voltage | {"I": "IC81W"}, "INVALID_INPUT"), (low_voltage | {"I": ""}, "SUCCESS")))
+
+        with tempfile.TemporaryDirectory() as directory:
+            paths = AppDataPaths(Path(directory) / "data")
+            service = create_batch_evaluation_service(paths=paths)
+            source = Path(directory) / "cooling.xlsx"
+            service.template_resource.download_to(source)
+            workbook = load_workbook(source)
+            for row, (fields, _expected) in enumerate(cases, 4):
+                fill(workbook["电动机"], row, **(fields | {"M": "100"}))
+            workbook.save(source)
+            workbook.close()
+            digest = sha256(source.read_bytes()).hexdigest()
+            parsed = {row.row_number: row for row in MotorWorkbookReader().read(source).rows}
+            with patch.object(service.motor, "evaluate", wraps=service.motor.evaluate) as evaluate:
+                result = service.evaluate_workbook(source)
+            self.assertEqual(evaluate.call_count, 8)
+            self.assertEqual(result.batch_record_error, "")
+            self.assertEqual(result.summary.input_error_rows, 16)
+            self.assertEqual(result.summary.conclusion_rows, {"1级": 6, "不在范围": 2})
+            self.assertEqual(sha256(source.read_bytes()).hexdigest(), digest)
+            self.assertEqual(len(service.batch_repository.list_batch_records()), 1)
+            self.assertEqual(create_records_runtime(paths=paths)[1].list_records(), [])
+            saved = service.batch_repository.load_batch_record(result.batch_record_id)
+            evidence = {row["row"]: row for row in saved.summary["motor_pmsm_row_evidence"]}
+            outcomes = {item["outcome"].row_number: item["outcome"] for item in result.outcomes}
+            output = load_workbook(result.result_workbook, data_only=True)
+            try:
+                for row, (fields, expected) in enumerate(cases, 4):
+                    with self.subTest(row=row, category=fields["F"], cooling=fields["I"]):
+                        outcome = outcomes[row]
+                        self.assertEqual(outcome.evaluation_status, expected)
+                        if fields["I"] != "":
+                            self.assertEqual(output["电动机"][f"I{row}"].value, fields["I"])
+                        if expected == "INVALID_INPUT":
+                            self.assertTrue(outcome.is_input_error)
+                            self.assertTrue(any(f"I{row}" in message for message in parsed[row].input_errors))
+                            self.assertIn(output["电动机"][f"Q{row}"].value, (None, ""))
+                            self.assertIn(f"I{row}", output["电动机"][f"T{row}"].value)
+                            self.assertFalse(outcome.thresholds)
+                            if row in evidence:
+                                self.assertNotIn("grade_lookups", evidence[row])
+                        elif expected == "OUT_OF_STANDARD_SCOPE":
+                            self.assertFalse(parsed[row].input_errors)
+                            self.assertEqual(evidence[row]["reason_codes"], ["COOLING_OUT_OF_SCOPE"])
+                        else:
+                            self.assertFalse(parsed[row].input_errors)
+                            self.assertEqual(outcome.grade, "1")
+            finally:
+                output.close()
+
+    def test_rejected_cooling_batch_keeps_existing_single_record_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            paths = AppDataPaths(Path(directory) / "data")
+            motor = create_motor_analysis_service(paths=paths)
+            record = motor.analyze_and_record(MotorAnalysisRequest({
+                "category_id": "gb30253_lv_vfd", "rated_voltage_v": "380", "rated_output_power_kw": "0.65",
+                "rated_speed_rpm": "550", "rated_efficiency_pct": "82.125",
+            })).record
+            with closing(sqlite3.connect(paths.records_db)) as connection:
+                before = connection.execute("SELECT * FROM record WHERE record_id=?", (record.record_id,)).fetchone()
+            batch = create_batch_evaluation_service(paths=paths)
+            source = Path(directory) / "rejected.xlsx"
+            batch.template_resource.download_to(source)
+            workbook = load_workbook(source)
+            fill(workbook["电动机"], I="IC81W")
+            workbook.save(source)
+            workbook.close()
+            result = batch.evaluate_workbook(source)
+            self.assertEqual(result.summary.input_error_rows, 1)
+            self.assertEqual(result.summary.concluded_rows, 0)
+            self.assertEqual(result.batch_record_error, "")
+            self.assertEqual(len(batch.batch_repository.list_batch_records()), 1)
+            with closing(sqlite3.connect(paths.records_db)) as connection:
+                self.assertEqual(connection.execute("SELECT * FROM record WHERE record_id=?", (record.record_id,)).fetchone(), before)
+                self.assertEqual(connection.execute("SELECT count(*) FROM record").fetchone()[0], 1)
 
     def test_capacity_1_100_1000_10000_and_persisted_bytes(self):
         measurements = []

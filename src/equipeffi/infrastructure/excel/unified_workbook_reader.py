@@ -459,7 +459,9 @@ class MotorWorkbookReader:
                 source_errors.append(("F", f"F{row_number}类别不属于该模板契约；高压电动机请使用V6.4明确选择。"))
             elif version == "V6.5" and category not in (None, "") and supplied_category not in _MOTOR_V65_CATEGORY_IDS:
                 source_errors.append(("F", f"F{row_number}类别不属于V6.5模板契约，请从类别列表选择。"))
-            if (version in {"V6.4", "V6.5"} and category != HV_CATEGORY_ID and category not in BRANCHES
+            branch = BRANCHES.get(category) if version == "V6.5" else None
+            cooling_allowed = category == HV_CATEGORY_ID or branch is not None and branch.high_voltage
+            if (version in {"V6.4", "V6.5"} and not cooling_allowed
                     and _cell(raw, "I") not in (None, "")):
                 source_errors.append(("I", f"I{row_number}冷却方式仅用于明确高压类别；低压类别请留空。"))
             if (version == "V6.3" and _cell(raw, "I") not in (None, "")

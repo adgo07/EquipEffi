@@ -97,4 +97,16 @@
 
 - 主会话逐行审阅`9182ab0`的测试修正，并使用独立TEMP/TMP以unittest复验上述25项，13.481s、OK、真实exit0，证据为`PMSM_review_20261111/ci-fix-independent-9182ab0.log`。相对固定构建源码仅测试、文档和截图有变化，无生产改动；原候选包继续适用。最终最新HEAD的完整门禁以PR结果为准。
 
+## PR #44 / #45独立验收整改
+
+- Owner批准整改后，高压分支先以 `906138742061486573fc09f75de2e6a9956c55a4` 固定高压候选LF签出及补齐V6.4提示。永磁分支随后正常merge，提交为 `ba1733bbde3402be26fa43ab2e1ebd6d40b0e192`。合并时保留永磁已有V6.5版本提示，Reader类说明覆盖V6.2至V6.5。
+- 在高压精确规则基础上，另为 `src/equipeffi/resources/standards/gb30253_2024_candidate.json` 声明 `text eol=lf`。两候选JSON的Git blob和语义哈希保持，`canonical_package_hash` 继续表示实际加载文件的原始字节SHA。LF文件SHA分别为高压 `1137696E9990ABD6F302BA4A45E6B141FFF325A7CE253B7CA1C507B0B2F2D2AF`、永磁 `44114BBDB6C831CF4271B60AF7935934E65786A9B0D3A1087199721C40E70CFA`。
+- 身份回归对两包分别在 `core.autocrlf=true/false` 的全新clone中首次checkout，校验实际文件字节、装载及新增记录。历史CRLF资源按当时原文件验证，新增LF记录后旧记录的全列和原hash保持。
+- V6.5低压永磁A/C/E的I列非空值现在明确形成行级输入错误，包含有效但不适用的冷却码、错码、空格和数字0。原输入及输出I单元格原值保留，错误说明定位I列行号。B/D合法冷却仍按原规则计算，来自GB30254等其它分支的错码沿用 `COOLING_OUT_OF_SCOPE`。H/K/L及旧V6.2/V6.3/V6.4校验沿用原契约。
+- 新回归覆盖24行混合冷却输入，预期16行输入错误、6行1级、2行不在范围，另验证拒绝批次不改写已有单台记录。旧混合夹具中的低压I改为空，继续验证不适用H/K字段不进入有效输入。模板README补齐V6.5五分支及I/L说明，并把原V6单Sheet接入表述限定为历史基线。
+- `standard_manifest.json` 的17包目录服务于现有 `JsonStandardRepository` 及其兼容审计。桌面候选由 `composition.py` 显式装配高压/永磁资源及同核服务。运行文件集由 `pyproject.toml` 声明，`check_distribution_assets.py` 和 `audit_release.py` 校验实际分发物及候选烟测。本轮保留17包目录及原审计语义。
+- 主会话独立18行批次54项检查通过，覆盖10行输入错误、6行1级、2行不在范围，原I值保留、源SHA不变、1批次零单台及历史只读，证据 `PMSM_review_20261111/remediation-after/result.json`。主会话另完成身份及产品14项、14个子测试，2.70s、真实exit0。
+- 最终整改定向76项、60个子测试通过，132.62s、真实exit0，日志 `outputs/pmsm-integration-20261111/remediation-targeted-r1.log`。覆盖两包首次checkout/装载/新旧Record、永磁输入及内核、旧高压/低压Application/Excel、统一批次及V6.2/V6.3兼容。2个已验证容量项未重复执行，完整CI套件无删减。
+- 现有源码发行审计通过、真实exit0，17包目录完整，日志及JSON为 `remediation-release-audit.log` / `remediation-release-audit.json`。保留既有motor_lv来源定位的非阻断提示。主会话另独立复验36行、169项既有Excel真值回归，证据目录 `PMSM_review_20261111/remediation-excel-review/`。
+
 Knowledge capture：无。
