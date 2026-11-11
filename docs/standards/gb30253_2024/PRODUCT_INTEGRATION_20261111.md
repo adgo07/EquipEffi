@@ -89,4 +89,10 @@
 - 本轮已测范围的独立工程复核通过。Excel/WPS实际下拉、追加行、输出保护和保存重开，125%系统DPI、跨屏及另一台干净Windows仍为NOT_RUN。没有用离屏或文件解析代替这些项目。用户尚未进行最终联合验收，不合并、不发布、不提升SUPPORTED；最新PR完整Windows Core与Whitespace结果在PR上记录。
 - 供用户联合验收的便捷入口为`D:/project/设备能效软件/PMSM_review_20261111/启动永磁候选_c22301f.cmd`，新包包含高压及永磁候选。原高压PR #44、包、启动器和数据均保留。
 
+## PR #45 首轮CI及标准库回归修正
+
+- PR #45的 `62f4e4b129b66a9c62f428c369c4f680f92a8f09` 在[首轮Windows Core](https://github.com/adgo07/EquipEffi/actions/runs/42941843039)执行1309项，929.238s，1项失败、真实exit1。Whitespace通过。唯一失败为 `LocalPolishTests.test_standard_no_match_clear_retry_and_rated_summary` 的旧四行预期，实际已加入GB30253，标准库五条均为已装配标准。
+- 测试改为独立列明GB19762、GB20052、GB18613、GB30254、GB30253五个完整标准号，核对集合及无重复。另检查搜索GB30253后只保留该标准，清除搜索和读取失败重试后恢复完整五条。保留原读取失败提示、重试操作及GB18613“额定效率”“1～100”摘要断言。
+- 使用工作树内独立TEMP/TMP，完整执行local_polish、UI family stage2、新永磁产品及既有高压/低压Qt回归，25项通过，22.79s、真实exit0。日志为 `outputs/pmsm-integration-20261111/ci45-standard-catalog-r1.log`。本次修改限该测试与本实施记录，实际候选继续使用固定生产源 `c22301f` 的既有构建和原生验收证据。最新PR完整CI等待主会话独立复验及提交后执行。
+
 Knowledge capture：无。

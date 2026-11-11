@@ -88,15 +88,33 @@ class LocalPolishTests(unittest.TestCase):
     def test_standard_no_match_clear_retry_and_rated_summary(self):
         self.window.open_standards()
         page = self.window.standards_page
+        expected_codes = (
+            "GB 19762-2025", "GB 20052-2024", "GB 18613-2020",
+            "GB 30254-2024", "GB 30253-2024",
+        )
         page.search.setText("no match")
         self.assertTrue(page.clear_filters_button.isVisible())
         page.clear_filters_button.click()
-        self.assertEqual(page.table.rowCount(), 4)
+        codes = [page.table.item(row, 0).text() for row in range(page.table.rowCount())]
+        self.assertCountEqual(codes, expected_codes)
+        self.assertEqual(len(codes), len(set(codes)))
+        page.search.setText("30253")
+        self.assertEqual(page.table.rowCount(), 1)
+        self.assertEqual(page.table.item(0, 0).text(), "GB 30253-2024")
+        page.search.clear()
+        self.assertCountEqual(
+            [page.table.item(row, 0).text() for row in range(page.table.rowCount())],
+            expected_codes,
+        )
         with patch.object(self.pump, "standard_overview", side_effect=OSError("read failure")):
             page.refresh()
         self.assertTrue(page.retry_button.isVisible())
         self.assertTrue(page.clear_filters_button.isHidden())
         page.retry_button.click()
+        self.assertCountEqual(
+            [page.table.item(row, 0).text() for row in range(page.table.rowCount())],
+            expected_codes,
+        )
         page.search.setText("18613")
         page.open_detail(0)
         text = page.section_labels[2].text()
