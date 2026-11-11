@@ -76,8 +76,13 @@ def _batch_standard_label(standard_code: str | None, summary) -> str:
     if standard_code != "MULTI":
         return standard_code or "未记录"
     sheets = summary.get("sheets", ()) if isinstance(summary, dict) else ()
-    codes = list(dict.fromkeys(str(item.get("standard_code") or "")
-                               for item in sheets if item.get("standard_code")))
+    codes = []
+    for item in sheets:
+        candidates = (item.get("requested_standard_codes") or [ref.get("standard_code") for ref in item.get("evaluation_provenance", ())]
+                      if item.get("standard_code") == "MULTI" else [item.get("standard_code")])
+        for code in candidates:
+            if code and code != "MULTI" and code not in codes:
+                codes.append(str(code))
     return "、".join(codes) if codes else "多个标准"
 
 
@@ -98,7 +103,8 @@ class RecordsPage(QWidget):
         self.service = service
         self.transformer_service = transformer
         self.motor_service = motor
-        self.motor_contract = motor.input_contract if motor is not None else get_motor_input_contract()
+        from ....application.services.motor_analysis_service import get_motor_product_input_contract
+        self.motor_contract = get_motor_product_input_contract()
         self.transformer_contract = (transformer.input_contract
                                      if transformer is not None else get_transformer_input_contract())
         self._transformer_categories = {
@@ -617,7 +623,7 @@ class RecordsPage(QWidget):
         result = snapshot.result_snapshot
         input_snapshot = snapshot.input_snapshot
 
-        if getattr(snapshot, "device_type", "") == "motor_lv":
+        if getattr(snapshot, "device_type", "") in ("motor_lv", "motor_hv"):
             return self._show_motor_record(snapshot, result, input_snapshot)
         if getattr(snapshot, "device_type", "") == "transformer":
             return self._show_transformer_record(snapshot, result, input_snapshot)
@@ -718,8 +724,8 @@ class RecordsPage(QWidget):
         contract = self.motor_contract
         if contract is None:
             # 仅读取静态字段标签，不加载标准包或重新运行算法。
-            from ....application.services.motor_analysis_service import get_motor_input_contract
-            contract = get_motor_input_contract()
+            from ....application.services.motor_analysis_service import get_motor_product_input_contract
+            contract = get_motor_product_input_contract()
         label = next((item.label for item in contract.categories
                       if item.category_id == category), snapshot.product_category)
         lines = [f"采用标准：{snapshot.standard_code}",
@@ -842,7 +848,7 @@ class RecordsPage(QWidget):
                  f"评价日期：{snapshot.as_of or absent}",
                  f"评价结论：{user_conclusion_from_snapshot(result, snapshot.ui_conclusion)}"]
         for label, key in (("企业/项目名称", "project_name"), ("设备编号", "equipment_no")):
-            if device != "motor_lv":
+            if device not in ("motor_lv", "motor_hv"):
                 basic.append(f"{label}：{inputs.get(key) or absent}")
         status = result.get("support_status")
         basic.append("保存时软件状态：" + ("已接入，尚待正式支持验收" if status == "IMPLEMENTED"
@@ -853,7 +859,7 @@ class RecordsPage(QWidget):
             basic.append("本次存在缺失信息，详见输入数据。")
         input_lines = []
         basis = []
-        if device in ("transformer", "motor_lv"):
+        if device in ("transformer", "motor_lv", "motor_hv"):
             contract = self.transformer_contract if device == "transformer" else self.motor_contract
             if contract is None:
                 if device == "transformer":
@@ -861,18 +867,18 @@ class RecordsPage(QWidget):
                     contract = get_transformer_input_contract()
                     self.transformer_contract = contract
                 else:
-                    from ....application.services.motor_analysis_service import get_motor_input_contract
-                    contract = get_motor_input_contract()
+                    from ....application.services.motor_analysis_service import get_motor_product_input_contract
+                    contract = get_motor_product_input_contract()
             known = next((item for item in contract.categories if item.category_id == category), None)
             if known:
                 basic[1] = f"设备类别：{known.label}"
-                display_fields = contract.snapshot_fields(category, inputs) if device == "motor_lv" else contract.visible_fields(category)
+                display_fields = contract.snapshot_fields(category, inputs) if device in ("motor_lv", "motor_hv") else contract.visible_fields(category)
                 for field in display_fields:
                     value = inputs.get(field.field_id)
                     if value not in (None, ""):
                         if field.field_id == "standard_conditions":
                             value = self._condition_label(category, value)
-                        elif device == "motor_lv":
+                        elif device in ("motor_lv", "motor_hv"):
                             choices = dict(contract.options(category, field.field_id))
                             if field.field_id == "efficiency_basis_status":
                                 choices["AS_DECLARED_BY_FIELD"] = "按字段要求填报"

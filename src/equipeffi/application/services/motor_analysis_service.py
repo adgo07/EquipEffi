@@ -22,6 +22,12 @@ def get_motor_input_contract():
     return MOTOR_INPUT_CONTRACT
 
 
+def get_motor_product_input_contract():
+    """Static shared labels for immutable history, without loading a pack."""
+    from ...domain.devices.motor_hv.input_contract import MOTOR_PRODUCT_INPUT_CONTRACT
+    return MOTOR_PRODUCT_INPUT_CONTRACT
+
+
 def motor_numeric_text_issue(field_id: str, text: str) -> str | None:
     """Read-only lexical adapter; reuse the calculator's exact input parser.
 
@@ -78,7 +84,7 @@ def _threshold_display_projection(thresholds: Mapping[str, Any]) -> dict[str, st
 class MotorAnalysisRequest:
     values: dict[str, Any]
     as_of: date = field(default_factory=date.today)
-    standard_code: str = STANDARD_CODE
+    standard_code: str | None = None
 
 
 @dataclass(frozen=True)
@@ -126,6 +132,11 @@ class MotorAnalysisOutcome:
 class MotorAnalysisService:
     """Injects the GB18613 pack/calculator and persists only legal results."""
 
+    standard_code = STANDARD_CODE
+    standard_version = "2020"
+    rule_profile = RULE_PROFILE
+    ruleset_version = "GB18613-A.2"
+
     def __init__(self, pack: Mapping[str, Any], calculator: Any, *, records=None,
                  pack_sha256: str = "", app_version: str = ""):
         self._pack = deepcopy(dict(pack))
@@ -139,7 +150,7 @@ class MotorAnalysisService:
         return MOTOR_INPUT_CONTRACT
 
     def evaluate(self, request: MotorAnalysisRequest) -> MotorAnalysisResult:
-        if request.standard_code != STANDARD_CODE:
+        if request.standard_code not in (None, STANDARD_CODE):
             raise ValueError("电动机请求标准与GB 18613-2020不一致")
         values = deepcopy(request.values)
         evaluated = self._calculator.evaluate(values, self._pack)
@@ -212,16 +223,16 @@ class MotorAnalysisService:
         references = result.references
         inputs = deepcopy(result.raw_values)
         inputs["request_fingerprint"] = stable_fingerprint(
-            inputs | {"standard_code": STANDARD_CODE, "as_of": request.as_of.isoformat()})
+            inputs | {"standard_code": self.standard_code, "as_of": request.as_of.isoformat()})
         record = RecordSnapshot(
             record_id=f"MO-{uuid4().hex}", workspace_id=None,
-            standard_code=STANDARD_CODE, standard_version="2020",
-            device_type=RULE_PROFILE, product_category=result.product_category,
-            rule_profile=RULE_PROFILE, as_of=request.as_of.isoformat(),
+            standard_code=self.standard_code, standard_version=self.standard_version,
+            device_type=self.rule_profile, product_category=result.product_category,
+            rule_profile=self.rule_profile, as_of=request.as_of.isoformat(),
             evaluation_status=str(result.evaluation_status), grade=result.grade,
             ui_conclusion=result.ui_conclusion, input_snapshot=inputs,
             result_snapshot=result.as_snapshot(), reference_snapshot=deepcopy(references),
-            ruleset_version=str(self._pack.get("mapping_revision", "GB18613-A.2")),
+            ruleset_version=str(self._pack.get("mapping_revision", self.ruleset_version)),
             calculator_version=str(references["calculator_version"]),
             numeric_profile_id=str(references["numeric_profile_id"]),
             canonical_version=str(references["canonical_version"]),

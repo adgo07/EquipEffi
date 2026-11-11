@@ -1,5 +1,6 @@
 # 派生包的文件SHA跨Windows/Linux保持一致，不改变既有标准资产。
 src/equipeffi/resources/standards/gb20052_2024_v21.json text eol=lf
+src/equipeffi/resources/standards/gb30254_2024_candidate.json text eol=lf
 
 # Standard evidence hashes require byte-preserving checkout.
 docs/standards/gb18613_2020/** -text whitespace=cr-at-eol

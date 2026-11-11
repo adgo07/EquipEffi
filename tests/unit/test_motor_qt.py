@@ -165,6 +165,13 @@ class MotorQtTests(unittest.TestCase):
                 window.standards_page.open_detail(2)
                 self.assertIn("电动机能效", window.standards_page.section_labels[0].text())
                 self.assertEqual(window.standards_page.table.item(2, 4).text(), "正式支持")
+                window.open_analysis(standard_code="GB 30254-2024")
+                self.assertIs(window.device_analysis_page.pages.currentWidget(), window.motor_analysis_page)
+                self.assertEqual(window.motor_analysis_page.category.currentData(), "gb30254_cage_induction")
+                window.open_analysis(standard_code="UNKNOWN")
+                self.assertEqual(window.pages.currentWidget(), window.standards_page)
+                window.open_analysis(standard_code="GB 18613-2020")
+                self.assertIn("GB 18613", window.motor_analysis_page.standard_title.text())
             finally:
                 _dispose_widget(window)
                 close_logging(logger)

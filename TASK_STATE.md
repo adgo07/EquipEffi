@@ -1,6 +1,12 @@
 # 当前任务状态
 
-## 当前任务：三设备 Windows 候选包收口（2026-11-03）
+## 当前任务：高压电机产品接入候选（2026-11-10）
+
+Owner授权GB30254从已合并内核接入同一Application、Qt、不可变Record与Excel；永磁后续。基线`725d91db9ba2c668e14288662f0dbd1ca114e08a`，工作分支`codex/motor-hv-integration-20261110`。本轮高压真实状态为`IMPLEMENTED`，开发候选可操作；不提升SUPPORTED、不发布、不合并，不升级中央锁。
+
+已接明确高压类别与IC冷却契约、固定SHA派生运行资源、共享MotorProductService、标准库/Qt及只读历史两页签；新增V6.4 / motor-input.v4派生模板、同核Excel Reader/Writer与批次标准身份。旧V6/V6.1/V6.2/V6.3资产及原契约保留，旧contract拒绝新增高压类别；未改内核算法、批准Mapping/源表/Golden或migrations。QA-HV-001继续OPEN，待独立验收。验证、候选与限制持续记录在[接入实施方案](docs/standards/gb30254_2024/PRODUCT_INTEGRATION_20261110.md)。Phase 8状态不变。
+
+## 历史任务：三设备 Windows 候选包收口（2026-11-03）
 
 > 以下保留2026-11-03收口记录；PR #41现已验收合并，高压后续进展见2026-11-04段。
 

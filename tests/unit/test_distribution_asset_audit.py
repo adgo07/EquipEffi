@@ -150,6 +150,7 @@ class DistributionAssetAuditTests(unittest.TestCase):
             (package / "resources" / "standards" / "pump.json").write_text("{}", encoding="utf-8")
             (package / "resources" / "standards" / "gb20052_2024_v21.json").write_text("{}", encoding="utf-8")
             (package / "resources" / "standards" / "gb18613_2020.json").write_text("{}", encoding="utf-8")
+            (package / "resources" / "standards" / "gb30254_2024_candidate.json").write_text("{}", encoding="utf-8")
             (package / "resources" / "TEMPLATE_MANIFEST.json").write_text("{}", encoding="utf-8")
             (package / "resources" / "standards" / "developer-notes.md").write_text("source notes", encoding="utf-8")
             (package / "resources" / "standards" / "scan.png").write_bytes(b"\x89PNG\r\n\x1a\n")
@@ -157,6 +158,7 @@ class DistributionAssetAuditTests(unittest.TestCase):
             (package / "resources" / "templates" / "设备能效分析空白模板_重构版V6_1.xlsx").write_bytes(b"v61")
             (package / "resources" / "templates" / "设备能效分析空白模板_重构版V6_2.xlsx").write_bytes(b"v62")
             (package / "resources" / "templates" / "设备能效分析空白模板_重构版V6_3.xlsx").write_bytes(b"v63")
+            (package / "resources" / "templates" / "设备能效分析空白模板_重构版V6_4.xlsx").write_bytes(b"v64")
             (package / "resources" / "knowledge" / "README.md").write_text("draft", encoding="utf-8")
             output = build_zipapp(root, root / "dist" / "test.pyz")
             with zipfile.ZipFile(output) as archive:

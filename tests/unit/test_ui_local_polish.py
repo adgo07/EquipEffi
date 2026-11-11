@@ -91,7 +91,7 @@ class LocalPolishTests(unittest.TestCase):
         page.search.setText("no match")
         self.assertTrue(page.clear_filters_button.isVisible())
         page.clear_filters_button.click()
-        self.assertEqual(page.table.rowCount(), 3)
+        self.assertEqual(page.table.rowCount(), 4)
         with patch.object(self.pump, "standard_overview", side_effect=OSError("read failure")):
             page.refresh()
         self.assertTrue(page.retry_button.isVisible())

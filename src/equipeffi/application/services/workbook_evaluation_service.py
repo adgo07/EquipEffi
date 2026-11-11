@@ -102,6 +102,18 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
                 "template": sheet.template_identity,
                 "evaluation_provenance": references,
             })
+            if name == "电动机":
+                from ...domain.devices.motor.input_contract import MOTOR_CATEGORIES
+                low_categories = {c.category_id for c in MOTOR_CATEGORIES}
+                requested_codes = ["GB 30254-2024" if row.values.get("category_id") == "gb30254_cage_induction"
+                    else "GB 18613-2020" if row.values.get("category_id") in low_categories else ""
+                    for row in sheet.rows]
+                codes = list(dict.fromkeys(code for code in requested_codes if code))
+                total.sheets[-1]["standard_code"] = codes[0] if len(codes) == 1 else "MULTI" if codes else ""
+                total.sheets[-1]["requested_standard_codes"] = codes
+                total.sheets[-1]["unidentified_category_rows"] = requested_codes.count("")
+                total.sheets[-1]["device_type"] = ("motor_hv" if codes == ["GB 30254-2024"] else
+                    "motor_lv" if codes == ["GB 18613-2020"] else "MULTI" if codes else "motor")
         destination = destination or self.writer.default_destination(source)
         result_path = self.writer.write(source, by_sheet, Path(destination),
                                         batch_summary=total.as_dict())
@@ -196,7 +208,7 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         single = active[0] if len(active) == 1 else None
         refs = single["evaluation_provenance"] if single else []
         reference = refs[0] if len(refs) == 1 else {}
-        mixed = len(active) > 1
+        mixed = len(active) > 1 or bool(single and single["standard_code"] == "MULTI")
         payload = summary.as_dict() | {"template": dict(identity)}
         if single:
             payload["evaluation_provenance"] = reference

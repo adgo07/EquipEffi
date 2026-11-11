@@ -39,10 +39,10 @@ def _runtime_status() -> dict[str, object]:
         template["template_version"] = V61_TEMPLATE_IDENTITY["template_version"]
         resource = V61TransformerTemplateResource()
         if motor_enabled:
-            from .infrastructure.excel.template_resource import V63_TEMPLATE_IDENTITY, V63MotorTemplateResource
-            template.update(template_id=V63_TEMPLATE_IDENTITY["template_id"],
-                            template_version=V63_TEMPLATE_IDENTITY["template_version"])
-            resource = V63MotorTemplateResource()
+            from .infrastructure.excel.template_resource import V64_TEMPLATE_IDENTITY, V64MotorTemplateResource
+            template.update(template_id=V64_TEMPLATE_IDENTITY["template_id"],
+                            template_version=V64_TEMPLATE_IDENTITY["template_version"])
+            resource = V64MotorTemplateResource()
         validation = resource.validate()
         template["available"] = validation.is_valid
         template["issues"] = list(validation.issues)
@@ -99,6 +99,7 @@ def _runtime_status() -> dict[str, object]:
             from .composition import create_motor_analysis_service
             service = create_motor_analysis_service(with_persistence=False)
             motor.update(service.standard_overview())
+            motor["standards"] = service.standard_overviews()
             motor["available"] = bool(service.input_contract.categories)
         except Exception as exc:
             motor["error"] = f"{type(exc).__name__}: {exc}"

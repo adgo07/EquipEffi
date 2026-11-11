@@ -202,7 +202,9 @@ class MainWindow(QMainWindow):
             if self.transformer_analysis_page is not None:
                 available.add(self.transformer_analysis_page.service.standard_overview()["standard_code"])
             if self.motor_analysis_page is not None:
-                available.add(self.motor_analysis_page.service.standard_overview()["standard_code"])
+                motor_service = self.motor_analysis_page.service
+                overviews = getattr(motor_service, "standard_overviews", lambda: [motor_service.standard_overview()])()
+                available.update(overview["standard_code"] for overview in overviews)
             if standard_code not in available:
                 # 未知或未装配的标准不允许沿用上次设备。
                 self._show_page("标准库")
