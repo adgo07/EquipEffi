@@ -208,6 +208,7 @@ class Gb30253MotorCalculator:
         if branch.code == "A" and dimension == 12:
             refs["standard_issues"][ISSUE_001] = "RESOLVED"
             refs["effective_max_power_kw"] = "45"
+            refs["above_effective_max_power"] = power > 45
 
         thresholds = {}
         exact = {}

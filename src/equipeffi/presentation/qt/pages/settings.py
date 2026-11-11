@@ -216,7 +216,13 @@ class SettingsPage(QWidget):
                 status_text = "当前状态以软件记录为准"
             lines.append(f"电力变压器软件状态：{status_text}")
         if self.motor_service is not None:
-            lines.append("电动机：GB 18613-2020（正式支持）；GB 30254-2024（候选已实现，待验收）")
+            overviews = getattr(self.motor_service, "standard_overviews",
+                                lambda: [self.motor_service.standard_overview()])()
+            status_labels = {"SUPPORTED": "正式支持", "IMPLEMENTED": "已实现，待验收"}
+            standards = [f"{entry['standard_code']}（{status_labels[entry['support_status']]}）"
+                         for entry in overviews if entry.get("support_status") in status_labels]
+            if standards:
+                lines.append("电动机：" + "；".join(standards))
         self.about.setText("\n".join(lines))
 
         # 普通用户不得看到内部机器键名（last.directory / window.geometry /

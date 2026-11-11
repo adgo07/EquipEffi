@@ -1,9 +1,13 @@
-"""GB18613正式单台页面；输入和选项来自Application契约。"""
+"""Shared single motor page. The Application contract supplies its fields."""
 from datetime import date
 import logging
+from PySide6.QtCore import QSignalBlocker
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout, QLabel, QHBoxLayout,
     QComboBox, QLineEdit, QPushButton, QScrollArea, QGroupBox)
-from ....application.services.motor_analysis_service import MotorAnalysisRequest
+from ....application.services.motor_analysis_service import (
+    HV_CATEGORY_ID, HV_STANDARD, PMSM_STANDARD, is_pmsm_category, motor_input_revision,
+    MotorAnalysisRequest, STANDARD_CODE as LV_STANDARD,
+)
 from ....application.services.motor_basis_formatter import format_motor_basis_lines
 from ..tokens import TOKENS
 from ..widgets.page_layout import page_gutter
@@ -22,6 +26,7 @@ class MotorAnalysisPage(QWidget):
         self._category_values = {}
         self._category_rejections = {}
         self._editing_category = None
+        self._pmsm_standard_selected = False
         self.contract = service.input_contract
         self.field_inputs = {}
         self._last_result = self._last_outcome = None
@@ -33,6 +38,12 @@ class MotorAnalysisPage(QWidget):
         heading.setObjectName("pageHeading")
         outer.addWidget(heading)
         overview = service.standard_overview()
+        overviews = getattr(service, "standard_overviews", lambda: [overview])()
+        self._standard_titles = {
+            item["standard_code"]: f"{item['standard_code']}《{item['name']}》" + (
+                " · 已实现，待验收" if item.get("support_status") == "IMPLEMENTED" else "")
+            for item in overviews
+        }
         title = QLabel(f"{overview['standard_code']}《{overview['name']}》")
         self.standard_title = title
         title.setWordWrap(True)
@@ -49,9 +60,7 @@ class MotorAnalysisPage(QWidget):
         self.category.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
         self.category.setMinimumContentsLength(12)
         self.category.setObjectName("motorCategory")
-        self.category.addItem("请选择设备类别…", None)
-        for item in self.contract.categories:
-            self.category.addItem(item.label, item.category_id)
+        self._populate_categories()
         searchable_categories(self.category)
         category_layout.addWidget(self.category)
         hint = QLabel("按额定效率评价。效率填写1～100的百分数点值，如85%填85；额定电压以V填写，如380。")
@@ -106,6 +115,28 @@ class MotorAnalysisPage(QWidget):
         self.category.editTextChanged.connect(self._mark_stale)
         self._on_category_changed()
 
+    def _populate_categories(self, selected=None):
+        with QSignalBlocker(self.category):
+            self.category.clear()
+            self.category.addItem("请选择永磁电动机类别…" if self._pmsm_standard_selected else "请选择设备类别…", None)
+            for item in self.contract.categories:
+                if not self._pmsm_standard_selected or is_pmsm_category(item.category_id):
+                    self.category.addItem(item.label, item.category_id)
+            self.category.setCurrentIndex(max(0, self.category.findData(selected)) if selected is not None else 0)
+
+    def select_standard(self, standard_code):
+        """The PMSM standard starts with an explicit branch choice."""
+        current = selected_category(self.category)
+        pmsm = standard_code == PMSM_STANDARD
+        if pmsm or self._pmsm_standard_selected:
+            self._pmsm_standard_selected = pmsm
+            self._populate_categories(None if pmsm else current)
+            self._on_category_changed()
+        if standard_code == HV_STANDARD:
+            self.category.setCurrentIndex(self.category.findData(HV_CATEGORY_ID))
+        elif standard_code == LV_STANDARD and (current == HV_CATEGORY_ID or is_pmsm_category(current)):
+            self.category.setCurrentIndex(0)
+
     def resizeEvent(self, event):
         if hasattr(self, "fields_form"):
             responsive_forms([self.fields_form], self.width())
@@ -131,13 +162,14 @@ class MotorAnalysisPage(QWidget):
         category = selected_category(self.category)
         self._editing_category = category
         self._mark_stale()
+        pmsm = is_pmsm_category(category)
+        standard = (PMSM_STANDARD if pmsm or self._pmsm_standard_selected else
+                    HV_STANDARD if category == HV_CATEGORY_ID else LV_STANDARD)
+        self.standard_title.setText(self._standard_titles.get(standard, standard))
         if not category:
-            self.standard_title.setText("GB 18613-2020《电动机能效限定值及能效等级》")
             self.scope_hint.clear()
             self.fields_group.hide()
             return
-        high = category == "gb30254_cage_induction"
-        self.standard_title.setText("GB 30254-2024《高压三相笼型异步电动机能效限定值及能效等级》 · 已实现，待验收" if high else "GB 18613-2020《电动机能效限定值及能效等级》")
         self.scope_hint.setText(self.contract.scope_hint(category))
         for field in self.contract.visible_fields(category):
             label = field.label + ("（必填）" if field.required else "")
@@ -154,14 +186,14 @@ class MotorAnalysisPage(QWidget):
             else:
                 widget = QLineEdit()
                 if field.field_id != "user_note":
-                    mode = {"rated_efficiency_pct": "motor_percent", "poles": "even",
+                    mode = {"rated_efficiency_pct": "motor_percent", "poles": "integer" if pmsm else "even",
                             "rated_frequency_hz": "frequency"}.get(field.field_id, "positive")
-                    numeric_field(widget, field.label, mode, motor_field=field.field_id)
+                    numeric_field(widget, field.label, mode, motor_field=field.field_id, permanent_magnet=pmsm)
                 widget.setPlaceholderText("请输入" if field.required else "可选")
                 if field.field_id == "rated_frequency_hz":
                     widget.setPlaceholderText("如50或5～120；范围文本按不在范围处理")
                 elif field.field_id == "poles":
-                    widget.setPlaceholderText("正偶数，如2、4、10；表外极数按不在范围处理")
+                    widget.setPlaceholderText("请输入铭牌极数" if pmsm else "正偶数，如2、4、10；表外极数按不在范围处理")
             widget.setObjectName(f"motorField_{field.field_id}")
             field_row(self.fields_form, label, widget)
             previous = self._category_values.get(category, {}).get(field.field_id)
@@ -179,7 +211,7 @@ class MotorAnalysisPage(QWidget):
         category = selected_category(self.category)
         if not category:
             raise ValueError("请先选择设备类别。")
-        values = {"category_id": category, "input_contract_revision": "motor-input.v4" if category == "gb30254_cage_induction" else "motor-input.v3"}
+        values = {"category_id": category, "input_contract_revision": motor_input_revision(category)}
         for key, widget in self.field_inputs.items():
             value = widget.currentData() if isinstance(widget, QComboBox) else widget.text()
             if value is not None and str(value).strip():

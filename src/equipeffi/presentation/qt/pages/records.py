@@ -39,7 +39,7 @@ from ....application.services.transformer_analysis_service import (
     format_transformer_basis_lines,
     get_transformer_input_contract,
 )
-from ....application.services.motor_analysis_service import get_motor_input_contract
+from ....application.services.motor_analysis_service import is_product_motor_record
 from ..labels import format_metric, support_status_text, user_grade_text
 
 #: 结论筛选项 → 匹配的 `evaluation_status` 集合（"全部" 不筛选）。
@@ -623,7 +623,7 @@ class RecordsPage(QWidget):
         result = snapshot.result_snapshot
         input_snapshot = snapshot.input_snapshot
 
-        if getattr(snapshot, "device_type", "") in ("motor_lv", "motor_hv"):
+        if is_product_motor_record(getattr(snapshot, "device_type", ""), input_snapshot):
             return self._show_motor_record(snapshot, result, input_snapshot)
         if getattr(snapshot, "device_type", "") == "transformer":
             return self._show_transformer_record(snapshot, result, input_snapshot)
@@ -843,12 +843,13 @@ class RecordsPage(QWidget):
         absent = "该记录未保存此信息"
         category = inputs.get("category_id") or snapshot.product_category
         device = getattr(snapshot, "device_type", "")
+        motor_record = is_product_motor_record(device, inputs)
         basic = [f"采用标准：{snapshot.standard_code or absent}",
                  f"设备类别：{self._category_label(category)}",
                  f"评价日期：{snapshot.as_of or absent}",
                  f"评价结论：{user_conclusion_from_snapshot(result, snapshot.ui_conclusion)}"]
         for label, key in (("企业/项目名称", "project_name"), ("设备编号", "equipment_no")):
-            if device not in ("motor_lv", "motor_hv"):
+            if not motor_record:
                 basic.append(f"{label}：{inputs.get(key) or absent}")
         status = result.get("support_status")
         basic.append("保存时软件状态：" + ("已接入，尚待正式支持验收" if status == "IMPLEMENTED"
@@ -859,7 +860,7 @@ class RecordsPage(QWidget):
             basic.append("本次存在缺失信息，详见输入数据。")
         input_lines = []
         basis = []
-        if device in ("transformer", "motor_lv", "motor_hv"):
+        if device == "transformer" or motor_record:
             contract = self.transformer_contract if device == "transformer" else self.motor_contract
             if contract is None:
                 if device == "transformer":
@@ -872,13 +873,13 @@ class RecordsPage(QWidget):
             known = next((item for item in contract.categories if item.category_id == category), None)
             if known:
                 basic[1] = f"设备类别：{known.label}"
-                display_fields = contract.snapshot_fields(category, inputs) if device in ("motor_lv", "motor_hv") else contract.visible_fields(category)
+                display_fields = contract.snapshot_fields(category, inputs) if motor_record else contract.visible_fields(category)
                 for field in display_fields:
                     value = inputs.get(field.field_id)
                     if value not in (None, ""):
                         if field.field_id == "standard_conditions":
                             value = self._condition_label(category, value)
-                        elif device in ("motor_lv", "motor_hv"):
+                        elif motor_record:
                             choices = dict(contract.options(category, field.field_id))
                             if field.field_id == "efficiency_basis_status":
                                 choices["AS_DECLARED_BY_FIELD"] = "按字段要求填报"

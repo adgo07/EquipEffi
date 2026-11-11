@@ -214,6 +214,25 @@ def _line(trace: Mapping[str, Any]) -> str | None:
     return "查表依据：" + "；".join(parts) + "。"
 
 
+def _pmsm_line(trace: Mapping[str, Any]) -> tuple[str, ...]:
+    tables = trace.get("table_numbers") or ()
+    if not tables:
+        return ()
+    parts = ["、".join(f"表{table}" for table in tables)]
+    poles = _number_text(trace.get("poles"))
+    speed = _number_text(trace.get("rated_speed_rpm"))
+    if poles:
+        parts.append(f"{poles}极")
+    elif speed:
+        parts.append(f"额定转速{speed} r/min")
+    labels = {"DIRECT": "直接查表", "INTERVAL": "按原区间查表",
+              "LINEAR_INTERPOLATION": "线性插值", "BILINEAR_INTERPOLATION": "双线性插值"}
+    methods = dict.fromkeys(lookup.get("method") for lookup in trace.get("grade_lookups", {}).values()
+                            if "reason" not in lookup)
+    parts.extend(labels[method] for method in methods if method in labels)
+    return ("查表依据：" + "；".join(parts) + "。",)
+
+
 def format_motor_basis_lines(trace: Any) -> tuple[str, ...]:
     """Format only table, branch dimension, interpolation and source facts.
 
@@ -221,6 +240,8 @@ def format_motor_basis_lines(trace: Any) -> tuple[str, ...]:
     guesses are omitted. Missing legacy trace remains missing.
     """
     if isinstance(trace, Mapping):
+        if trace.get("standard_id") == "GB30253-2024":
+            return _pmsm_line(trace)
         candidates = trace.get("steps")
         if candidates is None:
             candidates = trace.get("lookups")

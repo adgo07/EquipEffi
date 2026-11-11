@@ -39,7 +39,7 @@ def _branch(code: str, suffix: str, label: str, *, high_voltage: bool,
     fields = (_VOLTAGE,) + ((_FREQUENCY,) if pole_axis else ()) + ((_COOLING,) if high_voltage else ())
     fields += (_POWER, _POLES if pole_axis else _SPEED, _EFFICIENCY, _NOTE)
     return PmsmBranch(code, category, fields, high_voltage, pole_axis,
-                      f"适用于连续工作制的{label}永磁同步电动机。{scope_hint}")
+                      f"适用于连续工作制、一般用途或防爆用途的{label}永磁同步电动机。{scope_hint}")
 
 
 BRANCHES = MappingProxyType({branch.category.category_id: branch for branch in (

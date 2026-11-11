@@ -13,10 +13,14 @@ _FREQUENCY_RANGE_PREFIX = re.compile(
 
 
 class NumericValidator(QValidator):
-    def __init__(self, mode="positive", *, motor_field=None, parent=None):
+    def __init__(self, mode="positive", *, motor_field=None, permanent_magnet=False, parent=None):
         super().__init__(parent)
         self.mode, self.motor_field = mode, motor_field
+        self.permanent_magnet = permanent_magnet
         self.rejected_nonfinite = False
+
+    def _motor_issue(self, field, text):
+        return motor_numeric_text_issue(field, text, permanent_magnet=self.permanent_magnet)
 
     def eventFilter(self, watched, event):
         # During native form removal Qt can deliver FocusOut after the editor
@@ -37,13 +41,13 @@ class NumericValidator(QValidator):
         if self.mode == "frequency" and _FREQUENCY_RANGE_PREFIX.fullmatch(value):
             return "频率范围未填写完整，请补充连字符后的频率"
         if self.motor_field:
-            issue = motor_numeric_text_issue(self.motor_field, value)
+            issue = self._motor_issue(self.motor_field, value)
             if issue:
                 return issue
         try:
             number = Decimal(value)
         except InvalidOperation:
-            if self.mode == "frequency" and not motor_numeric_text_issue("rated_frequency_hz", value):
+            if self.mode == "frequency" and not self._motor_issue("rated_frequency_hz", value):
                 return None
             return "请输入完整的十进制数值"
         if not number.is_finite():
@@ -76,14 +80,14 @@ class NumericValidator(QValidator):
             return self.State.Intermediate, text, position
         if self.mode == "frequency" and _FREQUENCY_RANGE_PREFIX.fullmatch(value):
             return self.State.Intermediate, text, position
-        if self.mode == "frequency" and not motor_numeric_text_issue("rated_frequency_hz", value):
+        if self.mode == "frequency" and not self._motor_issue("rated_frequency_hz", value):
             try:
                 Decimal(value)
             except InvalidOperation:
                 return self.State.Acceptable, text, position
         if value.startswith("-"):
             return self.State.Invalid, text, position
-        if self.mode == "frequency" and not motor_numeric_text_issue("rated_frequency_hz", value):
+        if self.mode == "frequency" and not self._motor_issue("rated_frequency_hz", value):
             return self.State.Acceptable if self.issue(value) is None else self.State.Intermediate, text, position
         if not _EDIT.fullmatch(value):
             return self.State.Invalid, text, position
@@ -91,8 +95,8 @@ class NumericValidator(QValidator):
         return (self.State.Acceptable if self.issue(value) is None else self.State.Intermediate), text, position
 
 
-def numeric_field(edit, label, mode="positive", *, motor_field=None):
-    validator = NumericValidator(mode, motor_field=motor_field, parent=edit)
+def numeric_field(edit, label, mode="positive", *, motor_field=None, permanent_magnet=False):
+    validator = NumericValidator(mode, motor_field=motor_field, permanent_magnet=permanent_magnet, parent=edit)
     edit.setValidator(validator)
     # QLineEdit's default 32767 length must not truncate valid Decimal input.
     edit.setMaxLength(2147483647)

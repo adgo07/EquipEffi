@@ -1,11 +1,13 @@
 """Explicit standard routing for the shared Qt/Excel motor product flow."""
 from dataclasses import replace
 from copy import deepcopy
-from .motor_analysis_service import MotorAnalysisService, MotorAnalysisResult, snapshot_value
-from ...domain.devices.motor_hv.input_contract import HV_CATEGORY_ID, HV_CATEGORY, MOTOR_PRODUCT_INPUT_CONTRACT
-from ...domain.devices.motor_hv.input_contract import HV_FIELDS
+from .motor_analysis_service import (
+    HV_STANDARD, PMSM_STANDARD, MotorAnalysisService, MotorAnalysisResult, is_pmsm_category, snapshot_value,
+)
+from ...domain.devices.motor.product_input_contract import MOTOR_PRODUCT_INPUT_CONTRACT, MOTOR_V5_REVISION
+from ...domain.devices.motor_hv.input_contract import HV_CATEGORY_ID, HV_FIELDS
 
-HV_STANDARD = "GB 30254-2024"
+
 _REASONS = {
     "MISSING_FIELD": "缺少必要参数，请补充所列字段。", "INPUT_INVALID": "输入数值无效，请核对字段范围和单位。",
     "CATEGORY_INVALID": "请选择已登记的高压电动机类别。", "OTHER_CATEGORY": "所选类别不在本标准范围。",
@@ -30,8 +32,8 @@ class MotorHvAnalysisService(MotorAnalysisService):
         if request.standard_code != HV_STANDARD:
             raise ValueError("高压电动机请求标准不一致")
         values = deepcopy(request.values)
-        if values.get("input_contract_revision") not in (None, "", "motor-input.v4"):
-            raise ValueError("高压电动机仅接受motor-input.v4契约")
+        if values.get("input_contract_revision") not in (None, "", "motor-input.v4", MOTOR_V5_REVISION):
+            raise ValueError("高压电动机仅接受motor-input.v4或motor-input.v5契约")
         for key in ("rated_voltage_kv", "measured_efficiency_pct"):
             if values.get(key) not in (None, ""):
                 raise ValueError("高压额定输入不得混用旧kV或实测效率字段")
@@ -64,7 +66,7 @@ class MotorHvAnalysisService(MotorAnalysisService):
                 except ValueError:
                     pass  # Text frequency and rejected input retain their raw evidence.
         normalized["normalized_numeric_values"] = exact_inputs
-        normalized["input_contract_revision"] = "motor-input.v4"
+        normalized["input_contract_revision"] = values.get("input_contract_revision") or "motor-input.v4"
         normalized["input_units"] = {"rated_voltage_v": "V", "rated_frequency_hz": "Hz",
             "rated_output_power_kw": "kW", "poles": "count", "rated_efficiency_pct": "percent_point"}
         normalized["raw_input"] = deepcopy(values)
@@ -96,14 +98,19 @@ class MotorHvAnalysisService(MotorAnalysisService):
 
 
 class MotorProductService:
-    def __init__(self, low_voltage, high_voltage):
-        self.low_voltage, self.high_voltage = low_voltage, high_voltage
+    def __init__(self, low_voltage, high_voltage, permanent_magnet):
+        self.low_voltage, self.high_voltage, self.permanent_magnet = low_voltage, high_voltage, permanent_magnet
         self.input_contract = MOTOR_PRODUCT_INPUT_CONTRACT
         self.app_version = low_voltage.app_version
         self._records = low_voltage._records
 
     def _route(self, request):
-        high = request.values.get("category_id") == HV_CATEGORY_ID
+        category = request.values.get("category_id")
+        if is_pmsm_category(category) or request.standard_code == PMSM_STANDARD:
+            if request.standard_code not in (None, PMSM_STANDARD):
+                raise ValueError("明确选择的标准与永磁电动机类别不一致")
+            return self.permanent_magnet, replace(request, standard_code=PMSM_STANDARD)
+        high = category == HV_CATEGORY_ID
         if request.standard_code == HV_STANDARD:
             return self.high_voltage, request
         if high:
@@ -124,4 +131,4 @@ class MotorProductService:
         return self.low_voltage.standard_overview()
 
     def standard_overviews(self):
-        return [self.low_voltage.standard_overview(), self.high_voltage.standard_overview()]
+        return [service.standard_overview() for service in (self.low_voltage, self.high_voltage, self.permanent_magnet)]

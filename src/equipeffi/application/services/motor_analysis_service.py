@@ -12,10 +12,30 @@ from uuid import uuid4
 from ...domain.devices.motor.input_contract import (
     MOTOR_CATEGORIES, MOTOR_INPUT_CONTRACT, MotorInputError, normalize_motor_input
 )
+from ...domain.devices.motor.product_input_contract import MOTOR_V5_REVISION
+from ...domain.devices.motor_hv.input_contract import HV_CATEGORY_ID
+from ...domain.devices.motor_pmsm.input_contract import BRANCHES, STANDARD_CODE as PMSM_STANDARD
 from ..lifecycle import RecordSnapshot, stable_fingerprint
 
 
 STANDARD_CODE = "GB 18613-2020"
+HV_STANDARD = "GB 30254-2024"
+
+
+def is_pmsm_category(category):
+    return isinstance(category, str) and category in BRANCHES
+
+
+def motor_input_revision(category):
+    if is_pmsm_category(category):
+        return MOTOR_V5_REVISION
+    return "motor-input.v4" if category == HV_CATEGORY_ID else "motor-input.v3"
+
+
+def is_product_motor_record(device, inputs):
+    return device in {"motor_lv", "motor_hv"} or (
+        device == "motor_pmsm" and inputs.get("input_contract_revision") == MOTOR_V5_REVISION)
+
 
 def get_motor_input_contract():
     """Return the shared GB 18613 input contract for Application consumers."""
@@ -24,15 +44,24 @@ def get_motor_input_contract():
 
 def get_motor_product_input_contract():
     """Static shared labels for immutable history, without loading a pack."""
-    from ...domain.devices.motor_hv.input_contract import MOTOR_PRODUCT_INPUT_CONTRACT
+    from ...domain.devices.motor.product_input_contract import MOTOR_PRODUCT_INPUT_CONTRACT
     return MOTOR_PRODUCT_INPUT_CONTRACT
 
 
-def motor_numeric_text_issue(field_id: str, text: str) -> str | None:
+def motor_numeric_text_issue(field_id: str, text: str, *, permanent_magnet: bool = False) -> str | None:
     """Read-only lexical adapter; reuse the calculator's exact input parser.
 
     This does not evaluate, choose a standard branch or create a record.
     """
+    if permanent_magnet:
+        from ...domain.devices.motor_pmsm.numeric import exact_decimal, frequency_evidence
+        try:
+            exact_decimal(text)
+        except ValueError as error:
+            if field_id == "rated_frequency_hz" and frequency_evidence(text):
+                return None
+            return str(error)
+        return None
     from ...domain.devices.motor.calculator import _Scaled, _ValueError, _is_frequency_text
     try:
         _Scaled.parse(text, field_id)
@@ -213,6 +242,9 @@ class MotorAnalysisService:
             "notes": "本版本正式支持GB 18613-2020表1至表6。",
         }
 
+    def _record_ruleset_version(self) -> str:
+        return str(self._pack.get("mapping_revision", self.ruleset_version))
+
     def analyze_and_record(self, request: MotorAnalysisRequest) -> MotorAnalysisOutcome:
         result = self.evaluate(request)
         if not result.finalizable:
@@ -232,7 +264,7 @@ class MotorAnalysisService:
             evaluation_status=str(result.evaluation_status), grade=result.grade,
             ui_conclusion=result.ui_conclusion, input_snapshot=inputs,
             result_snapshot=result.as_snapshot(), reference_snapshot=deepcopy(references),
-            ruleset_version=str(self._pack.get("mapping_revision", self.ruleset_version)),
+            ruleset_version=self._record_ruleset_version(),
             calculator_version=str(references["calculator_version"]),
             numeric_profile_id=str(references["numeric_profile_id"]),
             canonical_version=str(references["canonical_version"]),
