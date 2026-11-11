@@ -14,6 +14,7 @@ from ....application.services.transformer_analysis_service import (
     TRANSFORMER_SCOPE_HINT,
     format_transformer_basis_lines,
 )
+from ....application.services.motor_analysis_service import PMSM_STANDARD
 from ..labels import format_metric, user_grade_text
 from ..tokens import TOKENS
 from ..widgets.page_layout import page_gutter
@@ -416,13 +417,12 @@ class DeviceAnalysisPage(QWidget):
 
     def select_standard(self, standard_code: str | None) -> bool:
         if standard_code is None:
+            if self.motor_page is not None:
+                self.motor_page.select_standard(None)
             return True
-        if standard_code in {"GB 18613-2020", "GB 30254-2024"} and self.motor_page is not None:
+        if standard_code in {"GB 18613-2020", "GB 30254-2024", PMSM_STANDARD} and self.motor_page is not None:
             self.device_selector.setCurrentIndex(2)
-            if standard_code == "GB 30254-2024":
-                self.motor_page.category.setCurrentIndex(self.motor_page.category.findData("gb30254_cage_induction"))
-            elif self.motor_page.category.currentData() == "gb30254_cage_induction":
-                self.motor_page.category.setCurrentIndex(0)
+            self.motor_page.select_standard(standard_code)
         elif standard_code == "GB 20052-2024":
             self.device_selector.setCurrentIndex(1)
         elif standard_code == "GB 19762-2025":

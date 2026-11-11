@@ -1,4 +1,4 @@
-"""统一V6/V6.1/V6.2/V6.3工作簿Reader；只读输入列，不解释标准阈值。"""
+"""Unified V6 through V6.5 workbook input adapter."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -17,12 +17,16 @@ from ...domain.devices.transformer.input_contract import (
 from ...domain.devices.motor.input_contract import (
     MOTOR_CATEGORIES,
 )
+from ...domain.devices.motor.product_input_contract import MOTOR_PRODUCT_INPUT_CONTRACT, MOTOR_V5_REVISION
+from ...domain.devices.motor_hv.input_contract import HV_CATEGORY_ID
+from ...domain.devices.motor_pmsm.input_contract import BRANCHES
 from .ooxml_reader import OOXMLReadError, OOXMLWorkbook
 from .pump_workbook_reader import V6PumpWorkbookReader
 from .template_resource import (
     MOTOR_SHEET_CONTRACT,
     MOTOR_V63_SHEET_CONTRACT,
     MOTOR_V64_SHEET_CONTRACT,
+    MOTOR_V65_SHEET_CONTRACT,
     TEMPLATE_MANIFEST,
     TRANSFORMER_SHEET_CONTRACT,
     validate_v6_template,
@@ -32,6 +36,10 @@ TRANSFORMER_SHEET = str(TRANSFORMER_SHEET_CONTRACT["sheet_name"])
 _CATEGORY_BY_LABEL = {item.label: item for item in TRANSFORMER_CATEGORIES}
 _CATEGORY_BY_ID = {item.category_id: item for item in TRANSFORMER_CATEGORIES}
 _MOTOR_CATEGORY_BY_LABEL = {item.label: item for item in MOTOR_CATEGORIES}
+_MOTOR_V65_CATEGORY_IDS = {value: category.category_id for category in MOTOR_PRODUCT_INPUT_CONTRACT.categories
+                           for value in (category.category_id, category.label)}
+_PMSM_CATEGORY_INPUTS = {"H": "rated_frequency_hz", "I": "cooling_method", "K": "poles",
+                         "L": "rated_speed_rpm"}
 _NON_DEVICE_SHEET_IDS = {"configuration", "instructions", "template_notes"}
 _TRANSFORMER_INPUT_FIELDS = {
     str(field["column"]): field
@@ -213,6 +221,26 @@ def _motor_v64_values(row):
     return result
 
 
+def _motor_v65_values(row):
+    values = _motor_v63_values(row)
+    raw_category = _cell(row, "F")
+    category = _MOTOR_V65_CATEGORY_IDS.get(raw_category, raw_category)
+    values.update(category_id=category, cooling_method=_cell(row, "I"),
+                  input_contract_revision=MOTOR_V5_REVISION)
+    branch = BRANCHES.get(category)
+    if branch:
+        values["category_raw"] = raw_category
+        values.pop("efficiency_basis_status")
+        values.pop("max_nameplate_speed_rpm")
+        if not branch.pole_axis:
+            values["rated_speed_rpm"] = _cell(row, "L")
+        allowed = {field.field_id for field in branch.fields}
+        for field_id in _PMSM_CATEGORY_INPUTS.values():
+            if field_id not in allowed:
+                values.pop(field_id, None)
+    return values
+
+
 def _motor_v64_source_input_errors_by_row(metadata):
     ordinary = {key: value for key, value in metadata.items() if not key.startswith("I")}
     grouped = _motor_v63_source_input_errors_by_row(ordinary)
@@ -326,9 +354,9 @@ class TransformerWorkbookReader:
         validation = validate_v6_template(source, check_pump_sheet=False)
         if not validation.is_valid:
             raise OOXMLReadError(validation.message)
-        if validation.identity.get("template_version") not in {"V6.1", "V6.2", "V6.3", "V6.4"}:
+        if validation.identity.get("template_version") not in {"V6.1", "V6.2", "V6.3", "V6.4", "V6.5"}:
             raise OOXMLReadError(
-                "当前工作簿的变压器Sheet尚未接入；请使用V6.1至V6.4模板")
+                "当前工作簿的变压器Sheet尚未接入；请使用V6.1至V6.5模板")
 
         contract = TRANSFORMER_SHEET_CONTRACT
         input_columns = set(_TRANSFORMER_INPUT_FIELDS)
@@ -372,7 +400,7 @@ class TransformerWorkbookReader:
 
 
 class MotorWorkbookReader:
-    """读取V6.2旧口径、V6.3铭牌额定及V6.4高压候选电动机输入。"""
+    """读取V6.2旧口径、V6.3铭牌额定、V6.4高压及V6.5永磁候选电动机输入。"""
 
     def read(self, source: Path, *, template_identity: dict[str, str] | None = None
              ) -> BatchSourceWorkbook:
@@ -391,13 +419,19 @@ class MotorWorkbookReader:
             values_from_row = _motor_v64_values
             errors_from_cells = _motor_v64_source_input_errors_by_row
             key_for_column = lambda col: ("cooling_method",) if col == "I" else _motor_v63_value_key_for_column(col)
+        elif version == "V6.5":
+            contract = MOTOR_V65_SHEET_CONTRACT
+            values_from_row = _motor_v65_values
+            errors_from_cells = _motor_v64_source_input_errors_by_row
+            key_for_column = lambda col: (("cooling_method",) if col == "I" else
+                ("max_nameplate_speed_rpm", "rated_speed_rpm") if col == "L" else _motor_v63_value_key_for_column(col))
         elif version == "V6.3":
             contract = MOTOR_V63_SHEET_CONTRACT
             values_from_row = _motor_v63_values
             errors_from_cells = _motor_v63_source_input_errors_by_row
             key_for_column = _motor_v63_value_key_for_column
         else:
-            raise OOXMLReadError("电动机Sheet仅在V6.2、V6.3或V6.4模板中接通")
+            raise OOXMLReadError("电动机Sheet仅在V6.2至V6.5模板中接通")
 
         input_columns = set(_MOTOR_INPUT_FIELDS if version == "V6.2"
                             else _MOTOR_V63_INPUT_FIELDS) | {"I"}
@@ -416,9 +450,19 @@ class MotorWorkbookReader:
                                          start=header_index + 2):
             values = values_from_row(raw)
             source_errors = list(source_errors_by_row.get(row_number, ()))
-            if version in {"V6.2", "V6.3"} and values.get("category_id") not in (None, "") and values["category_id"] not in {c.category_id for c in MOTOR_CATEGORIES}:
+            category = values.get("category_id")
+            source_values = dict(values) if version == "V6.5" and category in BRANCHES else None
+            supplied_category = _cell(raw, "F")
+            if version != "V6.5" and _MOTOR_V65_CATEGORY_IDS.get(supplied_category) in BRANCHES:
+                source_errors.append(("F", f"F{row_number}永磁电动机类别需要V6.5模板。"))
+            elif version in {"V6.2", "V6.3"} and category not in (None, "") and category not in {c.category_id for c in MOTOR_CATEGORIES}:
                 source_errors.append(("F", f"F{row_number}类别不属于该模板契约；高压电动机请使用V6.4明确选择。"))
-            if version == "V6.4" and values.get("category_id") != "gb30254_cage_induction" and _cell(raw, "I") not in (None, ""):
+            elif version == "V6.5" and category not in (None, "") and supplied_category not in _MOTOR_V65_CATEGORY_IDS:
+                source_errors.append(("F", f"F{row_number}类别不属于V6.5模板契约，请从类别列表选择。"))
+            branch = BRANCHES.get(category) if version == "V6.5" else None
+            cooling_allowed = category == HV_CATEGORY_ID or branch is not None and branch.high_voltage
+            if (version in {"V6.4", "V6.5"} and not cooling_allowed
+                    and _cell(raw, "I") not in (None, "")):
                 source_errors.append(("I", f"I{row_number}冷却方式仅用于明确高压类别；低压类别请留空。"))
             if (version == "V6.3" and _cell(raw, "I") not in (None, "")
                     and not any(column == "I" for column, _message in source_errors)):
@@ -428,9 +472,10 @@ class MotorWorkbookReader:
                     "若该值是旧版效率口径信息，请改用V6.2模板导入后再整理。"))
             for column, _message in source_errors:
                 for key in key_for_column(column):
-                    values[key] = ""
+                    if version != "V6.5" or key in values:
+                        values[key] = ""
             blank_values = values
-            if version in {"V6.3", "V6.4"}:
+            if version in {"V6.3", "V6.4", "V6.5"}:
                 blank_values = {
                     key: value for key, value in values.items()
                     if key not in {"efficiency_basis_status", "input_contract_revision"}
@@ -440,7 +485,7 @@ class MotorWorkbookReader:
                 continue
             rows.append(BatchSourceRow(
                 row_number=row_number, values=values,
-                input_errors=tuple(message for _column, message in source_errors)))
+                input_errors=tuple(message for _column, message in source_errors), source_values=source_values))
 
         identity = dict(template_identity or validation.identity or {})
         identity.update({

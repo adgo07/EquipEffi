@@ -821,7 +821,7 @@ class UnifiedResultWorkbookWriter:
                         f"工作表「{name}」尚未接通，不能写入结果")
                 continue
             supported_sheet_ids = {"centrifugal_pump", "transformer"}
-            if version in {"V6.2", "V6.3", "V6.4"}:
+            if version in {"V6.2", "V6.3", "V6.4", "V6.5"}:
                 supported_sheet_ids.add("motor")
             if contract.get("sheet_id") not in supported_sheet_ids:
                 if outcomes:
@@ -878,7 +878,7 @@ class UnifiedResultWorkbookWriter:
                     for row_number, outcome in outcomes.items()
                     for column, payload in _transformer_cell_payloads(outcome).items()
                 }
-            elif name == MOTOR_SHEET and version in {"V6.2", "V6.3", "V6.4"}:
+            elif name == MOTOR_SHEET and version in {"V6.2", "V6.3", "V6.4", "V6.5"}:
                 threshold_style_map = _motor_threshold_style_map(
                     by_part["xl/styles.xml"], by_part[part])
                 result_xml = patch_motor_sheet_xml(

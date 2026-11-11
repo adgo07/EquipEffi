@@ -148,6 +148,11 @@ V64_TEMPLATE_IDENTITY = {key: str(V64_TEMPLATE_ENTRY.get(key, "")) for key in (
 DEFAULT_V64_TEMPLATE = V64_TEMPLATE_IDENTITY["filename"]
 MOTOR_V64_SHEET_CONTRACT = next(sheet for sheet in V64_TEMPLATE_ENTRY["sheets"]
                                 if sheet.get("sheet_id") == "motor")
+V65_TEMPLATE_ENTRY = next(entry for entry in TEMPLATE_MANIFEST["templates"]
+                          if entry.get("template_version") == "V6.5")
+V65_TEMPLATE_IDENTITY = {key: str(V65_TEMPLATE_ENTRY.get(key, "")) for key in V64_TEMPLATE_IDENTITY}
+DEFAULT_V65_TEMPLATE = V65_TEMPLATE_IDENTITY["filename"]
+MOTOR_V65_SHEET_CONTRACT = next(sheet for sheet in V65_TEMPLATE_ENTRY["sheets"] if sheet.get("sheet_id") == "motor")
 PUMP_SHEET_CONTRACT: dict[str, Any] = next(
     sheet for sheet in V6_TEMPLATE_ENTRY["sheets"]
     if sheet.get("sheet_id") == "centrifugal_pump"
@@ -1300,6 +1305,8 @@ def validate_v6_template(path: Path, *, check_pump_sheet: bool = True
             path, check_pump_sheet=check_pump_sheet)
     if version == "V6.4":
         return V64MotorTemplateResource().validate(path, check_pump_sheet=check_pump_sheet)
+    if version == "V6.5":
+        return V65MotorTemplateResource().validate(path, check_pump_sheet=check_pump_sheet)
     return base
 
 
@@ -1313,18 +1320,28 @@ class V64MotorTemplateResource(V6TemplateResource):
         return dict(V64_TEMPLATE_IDENTITY)
 
     def validate(self, path=None, *, check_pump_sheet=True):
-        from dataclasses import replace
         from ...domain.devices.motor_hv.input_contract import MOTOR_PRODUCT_INPUT_CONTRACT as contract, COOLING_CODES
+        return self._validate_motor(path, check_pump_sheet, V64_TEMPLATE_ENTRY,
+                                    MOTOR_V64_SHEET_CONTRACT, contract, COOLING_CODES)
+
+    def _validate_motor(self, path, check_pump_sheet, entry, motor, contract, cooling_codes):
+        from dataclasses import replace
         base = V6TemplateResource.validate(self, path, check_pump_sheet=check_pump_sheet)
         if not base.is_valid:
             return base
-        if base.identity.get("template_version") != "V6.4":
-            return _version_mismatch(base, "V6.4")
+        version = entry["template_version"]
+        if base.identity.get("template_version") != version:
+            return _version_mismatch(base, version)
         candidate = Path(path) if path is not None else self.template_path
         issues = list(base.issues)
-        transformer = next(s for s in V64_TEMPLATE_ENTRY["sheets"] if s["sheet_id"] == "transformer")
+        transformer = next(s for s in entry["sheets"] if s["sheet_id"] == "transformer")
         issues.extend(_transformer_sheet_issues(candidate, transformer))
-        motor = MOTOR_V64_SHEET_CONTRACT
+        config_contract = entry["configuration_contract"]
+        category_names = config_contract["motor_category_enum"]
+        cooling_names = config_contract["motor_cooling_enum"]
+        category_name = category_names["defined_name"]
+        category_ids = category_names["category_ids_defined_name"]
+        cooling_name = cooling_names["defined_name"]
         try:
             with OOXMLWorkbook(candidate) as workbook:
                 grid = workbook.rows("电动机")
@@ -1335,41 +1352,45 @@ class V64MotorTemplateResource(V6TemplateResource):
                 index = _column_index(field["column"])
                 label, unit, extra = _header_parts(grid[2][index])
                 if (label, unit, extra) != (field.get("label", ""), field.get("unit", ""), ()):
-                    issues.append(f"V6.4电动机{field['column']}列表头与契约不一致")
+                    issues.append(f"{version}电动机{field['column']}列表头与契约不一致")
                 field_id = field.get("field_id")
                 if field_id:
                     required = [c.category_id for c in contract.categories if any(
-                        f.field_id == field_id and f.required for f in contract.visible_fields(c.category_id))]
+                        f.field_id == field.get("category_field_ids", {}).get(c.category_id, field_id)
+                        and f.required for f in contract.visible_fields(c.category_id))]
                     if field.get("required_for_categories", []) != required:
-                        issues.append(f"V6.4字段{field_id}必填条件与Application不一致")
+                        issues.append(f"{version}字段{field_id}必填条件与Application不一致")
             expected = [(c.category_id, c.label) for c in contract.categories]
             if [(c["category_id"], c["label"]) for c in motor["categories"]] != expected:
-                issues.append("V6.4类别Manifest与Application不一致")
+                issues.append(f"{version}类别Manifest与Application不一致")
             for n, category in enumerate(contract.categories, 1):
                 if (str(config[n][_column_index("EW")]), str(config[n][_column_index("EX")])) != (category.label, category.category_id):
-                    issues.append("V6.4配置类别与Application不一致")
-            for n, code in enumerate(COOLING_CODES, 1):
+                    issues.append(f"{version}配置类别与Application不一致")
+            for n, code in enumerate(cooling_codes, 1):
                 if str(config[n][_column_index("FA")]) != code:
-                    issues.append("V6.4配置冷却代码与Application不一致")
+                    issues.append(f"{version}配置冷却代码与Application不一致")
+            if version == "V6.5":
+                issues.extend(_v65_category_config_issues(config, motor, contract))
             names = _workbook_defined_names(candidate)
-            for name, expression in {"EV_MOTOR_V64_CATEGORY": "'配置'!$EW$2:$EW$10",
-                "EV_MOTOR_V64_CATEGORY_IDS": "'配置'!$EX$2:$EX$10",
-                "EV_MOTOR_V64_COOLING": "'配置'!$FA$2:$FA$11"}.items():
+            last_category, last_cooling = len(contract.categories) + 1, len(cooling_codes) + 1
+            for name, expression in {category_name: f"'配置'!$EW$2:$EW${last_category}",
+                category_ids: f"'配置'!$EX$2:$EX${last_category}",
+                cooling_name: f"'配置'!$FA$2:$FA${last_cooling}"}.items():
                 if names.get(name) != (expression,):
-                    issues.append(f"V6.4命名范围{name}不一致")
+                    issues.append(f"{version}命名范围{name}不一致")
             ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
             validations = root.findall(f"{ns}dataValidations/{ns}dataValidation")
             by_column = {n.attrib.get("sqref", "").split("4:")[0]: n for n in validations}
             if len(by_column) != len(validations) or set(by_column) != {"D","F","G","H","I","J","K","L","M"}:
-                issues.append("V6.4输入校验列不一致")
-            for column, formula in (("F", "EV_MOTOR_V64_CATEGORY"), ("I", "EV_MOTOR_V64_COOLING")):
+                issues.append(f"{version}输入校验列不一致")
+            for column, formula in (("F", category_name), ("I", cooling_name)):
                 node = by_column.get(column)
                 if node is None or node.get("type") != "list" or node.findtext(f"{ns}formula1") != formula:
-                    issues.append(f"V6.4{column}列下拉与Application不一致")
+                    issues.append(f"{version}{column}列下拉与Application不一致")
             for node in root.findall(f"{ns}sheetData/{ns}row/{ns}c"):
                 reference = re.fullmatch(r"([N-QT])([1-9][0-9]*)", node.get("r", ""))
                 if reference and int(reference.group(2)) >= 4 and node.find(f"{ns}f") is not None:
-                    issues.append("V6.4电机输出区不得含业务公式")
+                    issues.append(f"{version}电机输出区不得含业务公式")
             for field in motor["fields"]:
                 rule = field.get("excel_validation")
                 if not rule:
@@ -1380,11 +1401,58 @@ class V64MotorTemplateResource(V6TemplateResource):
                 for key, attr in (("type", "type"), ("operator", "operator"), ("prompt", "prompt"),
                                   ("error", "error"), ("prompt_title", "promptTitle"), ("error_title", "errorTitle")):
                     if key in rule and node.get(attr) != rule[key]:
-                        issues.append(f"V6.4{field['column']}列{key}与契约不一致")
+                        issues.append(f"{version}{field['column']}列{key}与契约不一致")
                 for key in ("formula1", "formula2"):
                     if key in rule and node.findtext(f"{ns}{key}") != rule[key]:
-                        issues.append(f"V6.4{field['column']}列{key}与契约不一致")
-        except (OOXMLReadError, ValueError, KeyError, IndexError, TypeError) as error:
-            issues.append(f"V6.4契约读取失败：{error}")
+                        issues.append(f"{version}{field['column']}列{key}与契约不一致")
+        except (OOXMLReadError, ValueError, KeyError, IndexError, TypeError, ElementTree.ParseError) as error:
+            issues.append(f"{version}契约读取失败：{error}")
         return replace(base, is_valid=not issues, issues=tuple(issues),
-                       message="V6.4模板结构检查通过" if not issues else "V6.4模板不兼容："+"；".join(issues))
+                       message=f"{version}模板结构检查通过" if not issues else f"{version}模板不兼容：" + "；".join(issues))
+
+
+def _v65_category_config_issues(config, motor, contract):
+    from ...domain.devices.motor_hv.input_contract import HV_CATEGORY_ID
+    from ...domain.devices.motor_pmsm.input_contract import BRANCHES
+    issues = []
+    expected_speed = {}
+    for index, category in enumerate(contract.categories, 1):
+        category_id = category.category_id
+        fields = contract.visible_fields(category_id)
+        branch = BRANCHES.get(category_id)
+        speed_field = next((field.field_id for field in fields if field.field_id in
+                            {"rated_speed_rpm", "max_nameplate_speed_rpm"}), "")
+        if speed_field == "rated_speed_rpm":
+            expected_speed[category_id] = speed_field
+        expected = (
+            "、".join(f"{field.label}（{field.unit}）" if field.unit else field.label for field in fields if field.required),
+            speed_field,
+            branch.code if branch else "GB30254" if category_id == HV_CATEGORY_ID else
+            f"GB18613 表{category.table_no}" if category.table_no is not None else "",
+        )
+        stored = tuple(str(config[index][_column_index(column)] or "") for column in ("FB", "FC", "FD"))
+        if stored != expected:
+            issues.append(f"V6.5配置{category.label}的必填字段、转速或标准分支与Application不一致")
+    speed = next(field for field in motor["fields"] if field["column"] == "L")
+    if speed.get("category_field_ids") != expected_speed:
+        issues.append("V6.5类别转速映射与Application不一致")
+    return issues
+
+
+class V65MotorTemplateResource(V64MotorTemplateResource):
+    """Same motor sheet with the explicit GB30253 branches in its own contract."""
+
+    def __init__(self, resource_dir=None, *, template_name=DEFAULT_V65_TEMPLATE):
+        super().__init__(resource_dir, template_name=template_name)
+
+    @property
+    def identity(self):
+        return dict(V65_TEMPLATE_IDENTITY)
+
+    def validate(self, path=None, *, check_pump_sheet=True):
+        from ...domain.devices.motor.product_input_contract import MOTOR_PRODUCT_INPUT_CONTRACT
+        from ...domain.devices.motor_hv.input_contract import COOLING_CODES as hv_codes
+        from ...domain.devices.motor_pmsm.input_contract import COOLING_CODES as pmsm_codes
+        cooling = tuple(dict.fromkeys((*hv_codes, *pmsm_codes)))
+        return self._validate_motor(path, check_pump_sheet, V65_TEMPLATE_ENTRY,
+                                    MOTOR_V65_SHEET_CONTRACT, MOTOR_PRODUCT_INPUT_CONTRACT, cooling)
