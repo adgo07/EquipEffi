@@ -400,7 +400,7 @@ class TransformerWorkbookReader:
 
 
 class MotorWorkbookReader:
-    """读取V6.2旧口径或V6.3铭牌额定「电动机」输入。"""
+    """读取V6.2旧口径、V6.3铭牌额定、V6.4高压及V6.5永磁候选电动机输入。"""
 
     def read(self, source: Path, *, template_identity: dict[str, str] | None = None
              ) -> BatchSourceWorkbook:
