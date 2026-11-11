@@ -109,4 +109,12 @@
 - 最终整改定向76项、60个子测试通过，132.62s、真实exit0，日志 `outputs/pmsm-integration-20261111/remediation-targeted-r1.log`。覆盖两包首次checkout/装载/新旧Record、永磁输入及内核、旧高压/低压Application/Excel、统一批次及V6.2/V6.3兼容。2个已验证容量项未重复执行，完整CI套件无删减。
 - 现有源码发行审计通过、真实exit0，17包目录完整，日志及JSON为 `remediation-release-audit.log` / `remediation-release-audit.json`。保留既有motor_lv来源定位的非阻断提示。主会话另独立复验36行、169项既有Excel真值回归，证据目录 `PMSM_review_20261111/remediation-excel-review/`。
 
+### 整改后的固定联合候选
+
+- 固定生产源码为 `9706781eb8693be8b90bc7963d3ed8c708d1d47e`，此后仅追加本执行记录。按既有 `tools/build_native.py` 串行构建，真实exit0，`qt_capable=true`、`status_ready=true`。再次执行新EXE的 `--status`，默认V6.5、GB18613为SUPPORTED、高压和永磁为IMPLEMENTED。实际ZIP中的两候选JSON逐字节等于当前LF工作文件，主会话已独立核对其SHA与固定Git检出一致。
+- EXE为 `D:/project/设备能效软件/EquipEffi-pmsm-integration/dist/motor-remediation-9706781/dist/equipeffi-motor-candidate/equipeffi-motor-candidate.exe`，SHA-256 `d51328ff802f129e2a9f649c0689bc590fa5fb264bd3375d0b4fea46f20d7a7d`。
+- ZIP为 `D:/project/设备能效软件/EquipEffi-pmsm-integration/dist/EquipEffi-motor-candidate-9706781.zip`，SHA-256 `1cec3cd038b601af61793836ea5ce966ec87c1a8ab5cc7bfa0d30478a77139bb`。实际EXE及ZIP哈希已与构建报告重新比较。
+- 新启动器为 `outputs/pmsm-integration-20261111/启动联合电机候选_9706781.cmd`。独立LOCALAPPDATA为 `outputs/pmsm-integration-20261111/native-9706781-data`，实际数据位于其 `EquipEffi` 子目录。用户环境以系统PATH和清理后的Python/Qt环境启动，Popen PID23228，已只读确认精确新EXE路径、窗口标题及 `Responding=true`，新user.sqlite/records.sqlite已创建。
+- 构建报告及日志为 `outputs/pmsm-integration-20261111/native-build-9706781.json` / `.log`，独立状态为 `native-status-9706781.json`，启动回执为 `native-launch-9706781.json`。原c223候选包、原高压包、旧测试数据及用户程序均保留。实际窗口整改复验和最新完整CI由主会话继续记录。
+
 Knowledge capture：无。
