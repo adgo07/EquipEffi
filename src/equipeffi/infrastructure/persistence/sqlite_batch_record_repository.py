@@ -6,8 +6,8 @@
 
 语义边界
 --------
-- `batch_record` 记录"一次 Excel 批量评价发生了什么"：载体文件与哈希、行数统计、
-  结论分布、不合法行。**不**逐设备复制结果，**不**建通用 lineage / audit 框架。
+- `batch_record` 保存一次批量评价的文件身份、行数、结论分布和错误行。V6.5永磁行的
+  计算依据也在同一快照内保存，批次列表只读取摘要。
 - 只追加：不提供 update / delete；重复写入同一 `batch_record_id` 会被显式拒绝。
 - **不触碰** 既有 `record` 表：单台 Record 的语义完全不变。
 """
@@ -57,6 +57,9 @@ _COLUMNS = ("batch_record_id, standard_code, device_type, source_workbook, "
             "template_id, template_version, template_sha256, data_row_count, "
             "total_quantity, evaluated_quantity, app_version, "
             "canonical_version, numeric_profile_id")
+_LIST_COLUMNS = _COLUMNS.replace(
+    "summary_json", "CASE WHEN template_version = 'V6.5' THEN "
+    "json_remove(summary_json, '$.motor_pmsm_row_evidence') ELSE summary_json END")
 
 
 class SqliteBatchRecordRepository:
@@ -123,7 +126,7 @@ class SqliteBatchRecordRepository:
         try:
             with closing(sqlite3.connect(self.database)) as connection:
                 rows = connection.execute(
-                    f"SELECT {_COLUMNS} FROM batch_record "
+                    f"SELECT {_LIST_COLUMNS} FROM batch_record "
                     + where + "ORDER BY created_at_utc DESC, batch_record_id ASC LIMIT ?",
                     (*params, max(int(limit), 1)),
                 ).fetchall()

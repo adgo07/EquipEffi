@@ -39,10 +39,10 @@ def _runtime_status() -> dict[str, object]:
         template["template_version"] = V61_TEMPLATE_IDENTITY["template_version"]
         resource = V61TransformerTemplateResource()
         if motor_enabled:
-            from .infrastructure.excel.template_resource import V64_TEMPLATE_IDENTITY, V64MotorTemplateResource
-            template.update(template_id=V64_TEMPLATE_IDENTITY["template_id"],
-                            template_version=V64_TEMPLATE_IDENTITY["template_version"])
-            resource = V64MotorTemplateResource()
+            from .infrastructure.excel.template_resource import V65_TEMPLATE_IDENTITY, V65MotorTemplateResource
+            template.update(template_id=V65_TEMPLATE_IDENTITY["template_id"],
+                            template_version=V65_TEMPLATE_IDENTITY["template_version"])
+            resource = V65MotorTemplateResource()
         validation = resource.validate()
         template["available"] = validation.is_valid
         template["issues"] = list(validation.issues)

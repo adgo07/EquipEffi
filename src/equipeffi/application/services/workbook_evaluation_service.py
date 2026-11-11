@@ -15,6 +15,24 @@ from .pump_batch_evaluation_service import (
 )
 from .transformer_analysis_service import TransformerAnalysisRequest, snapshot_value
 from .transformer_basis_formatter import format_transformer_basis_lines
+from .motor_analysis_service import HV_CATEGORY_ID, HV_STANDARD, PMSM_STANDARD, is_pmsm_category
+from .motor_pmsm_analysis_service import pmsm_input_units
+
+_PMSM_BATCH_IDENTITY = (
+    "standard_id", "standard_code", "standard_year", "canonical_version", "canonical_package_hash", "pack_id",
+    "pack_sha256", "source_identity", "numeric_contract_version", "numeric_profile_id", "numeric_profile_version",
+    "calculator_version", "rule_version", "ruleset_version", "result_contract_version",
+)
+_PMSM_SOURCE_FACTS = ("source_cell", "source_text", "power_kw", "axis", "pdf_page", "excluded_by_issue")
+
+
+def _pmsm_lookup_snapshot(lookup):
+    facts = {key: value for key, value in lookup.items() if key != "source_cells"}
+    cells = lookup.get("source_cells")
+    if cells:
+        facts["source_sheet"] = cells[0]["source_sheet"]
+        facts["source_cells"] = [{key: cell[key] for key in _PMSM_SOURCE_FACTS if key in cell} for cell in cells]
+    return facts
 
 
 @dataclass
@@ -52,6 +70,7 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
             raise ValueError("本配置未启用电动机分析，不能评价电动机Sheet。")
         total = WorkbookEvaluationSummary(unprocessed_sheets=workbook.unprocessed_sheets)
         by_sheet = {}
+        pmsm_evidence = [] if persist and self.batch_repository is not None else None
         for name, sheet in workbook.sheets.items():
             summary = BatchEvaluationSummary(data_row_count=len(sheet.rows))
             provenance = _BatchProvenance()
@@ -65,7 +84,7 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
                     rows[row.row_number] = self._transformer_row(
                         row, as_of, summary, references)
                 elif name == "电动机":
-                    rows[row.row_number] = self._motor_row(row, as_of, summary, references)
+                    rows[row.row_number] = self._motor_row(row, as_of, summary, references, pmsm_evidence)
                 else:
                     raise ValueError(f"未登记的批量处理设备：{name}")
             by_sheet[name] = rows
@@ -105,15 +124,18 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
             if name == "电动机":
                 from ...domain.devices.motor.input_contract import MOTOR_CATEGORIES
                 low_categories = {c.category_id for c in MOTOR_CATEGORIES}
-                requested_codes = ["GB 30254-2024" if row.values.get("category_id") == "gb30254_cage_induction"
-                    else "GB 18613-2020" if row.values.get("category_id") in low_categories else ""
-                    for row in sheet.rows]
+                requested_codes = []
+                for row in sheet.rows:
+                    category = (row.source_values or row.values).get("category_id")
+                    code = (PMSM_STANDARD if is_pmsm_category(category) else HV_STANDARD if category == HV_CATEGORY_ID
+                            else "GB 18613-2020" if category in low_categories else "")
+                    requested_codes.append(code)
                 codes = list(dict.fromkeys(code for code in requested_codes if code))
                 total.sheets[-1]["standard_code"] = codes[0] if len(codes) == 1 else "MULTI" if codes else ""
                 total.sheets[-1]["requested_standard_codes"] = codes
                 total.sheets[-1]["unidentified_category_rows"] = requested_codes.count("")
-                total.sheets[-1]["device_type"] = ("motor_hv" if codes == ["GB 30254-2024"] else
-                    "motor_lv" if codes == ["GB 18613-2020"] else "MULTI" if codes else "motor")
+                device_types = {HV_STANDARD: "motor_hv", "GB 18613-2020": "motor_lv", PMSM_STANDARD: "motor_pmsm"}
+                total.sheets[-1]["device_type"] = device_types[codes[0]] if len(codes) == 1 else "MULTI" if codes else "motor"
         destination = destination or self.writer.default_destination(source)
         result_path = self.writer.write(source, by_sheet, Path(destination),
                                         batch_summary=total.as_dict())
@@ -126,7 +148,7 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
                       for name, rows in by_sheet.items() for outcome in rows.values()])
         if persist and self.batch_repository is not None:
             try:
-                self._persist_workbook(result, workbook.template_identity)
+                self._persist_workbook(result, workbook.template_identity, pmsm_evidence)
             except Exception as error:
                 result.batch_record_error = f"{type(error).__name__}: {error}"
         return result
@@ -135,13 +157,27 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         return self._device_row(row, as_of, summary, references, self.transformer,
                                 TransformerAnalysisRequest, format_transformer_basis_lines)
 
-    def _motor_row(self, row, as_of, summary, references):
+    def _motor_row(self, row, as_of, summary, references, pmsm_evidence=None):
         from .motor_analysis_service import MotorAnalysisRequest
         from .motor_basis_formatter import format_motor_basis_lines
-        return self._device_row(row, as_of, summary, references, self.motor,
-                                MotorAnalysisRequest, format_motor_basis_lines)
+        evidence = None
+        source = row.source_values or row.values
+        category = source.get("category_id")
+        if pmsm_evidence is not None and is_pmsm_category(category):
+            evidence = {"row": row.row_number, "category_id": category, "raw_input": snapshot_value(source),
+                        "input_units": pmsm_input_units(category), "standard_code": PMSM_STANDARD}
+        outcome = self._device_row(row, as_of, summary, references, self.motor,
+                                   MotorAnalysisRequest, format_motor_basis_lines, evidence=evidence)
+        if evidence is not None:
+            evidence.update(evaluation_status=outcome.evaluation_status, conclusion=outcome.conclusion,
+                            grade=outcome.grade, quantity=outcome.quantity,
+                            is_input_error=outcome.is_input_error, is_execution_error=outcome.is_execution_error)
+            if outcome.is_input_error or outcome.is_execution_error:
+                evidence["messages"] = list(outcome.messages)
+            pmsm_evidence.append(evidence)
+        return outcome
 
-    def _device_row(self, row, as_of, summary, references, service, request_type, basis_formatter):
+    def _device_row(self, row, as_of, summary, references, service, request_type, basis_formatter, *, evidence=None):
         quantity, error = parse_quantity(row.values.get("quantity"))
         if row.input_errors:
             summary.input_error_rows += 1
@@ -169,6 +205,8 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
             return BatchRowOutcome(row.row_number, False, "执行失败", None, None,
                                    messages=(reason,), quantity=quantity, is_execution_error=True)
         status = result.evaluation_status
+        if evidence is not None:
+            evidence["reason_codes"] = list(result.reason_codes)
         if status == "INVALID_INPUT":
             summary.input_error_rows += 1
             summary.input_error_quantity += quantity
@@ -192,8 +230,21 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         finalizable = getattr(
             result, "finalizable",
             status in {"SUCCESS", "OUT_OF_STANDARD_SCOPE", "INSUFFICIENT_DATA"})
-        if finalizable and result.references and result.references not in references:
-            references.append(result.references)
+        reference = result.references
+        if reference.get("standard_code") == PMSM_STANDARD:
+            reference = {key: reference[key] for key in _PMSM_BATCH_IDENTITY}
+            if evidence is not None:
+                evidence.update(
+                    pack_sha256=reference["pack_sha256"], branch=result.references.get("branch"),
+                    table_numbers=result.references.get("table_numbers", []),
+                    thresholds={key: {"exact": value["exact"], "display": value["display_text"]}
+                                for key, value in result.thresholds.items()},
+                    standard_issues=result.references["standard_issues"],
+                    grade_lookups={key: _pmsm_lookup_snapshot(lookup)
+                                   for key, lookup in result.references.get("grade_lookups", {}).items()},
+                )
+        if finalizable and reference and reference not in references:
+            references.append(reference)
         messages = tuple(message for message in (
             result.explanation, *basis_formatter(result.trace))
             if message)
@@ -202,7 +253,7 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
             messages=messages,
             thresholds=result.thresholds, quantity=quantity)
 
-    def _persist_workbook(self, result, identity):
+    def _persist_workbook(self, result, identity, pmsm_evidence=None):
         summary = result.summary
         active = [sheet for sheet in summary.sheets if sheet["data_row_count"]]
         single = active[0] if len(active) == 1 else None
@@ -210,6 +261,8 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         reference = refs[0] if len(refs) == 1 else {}
         mixed = len(active) > 1 or bool(single and single["standard_code"] == "MULTI")
         payload = summary.as_dict() | {"template": dict(identity)}
+        if pmsm_evidence:
+            payload["motor_pmsm_row_evidence"] = pmsm_evidence
         if single:
             payload["evaluation_provenance"] = reference
         self.batch_repository.append_batch_record(BatchRecordSnapshot(

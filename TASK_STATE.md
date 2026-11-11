@@ -1,5 +1,11 @@
 # 当前任务状态
 
+## 当前任务：永磁同步电动机产品接入候选（2026-11-11）
+
+Owner授权先完成GB30253候选，高压与永磁随后一并人工验收。分支 `codex/motor-pmsm-integration-20261111`，基于高压PR #44的 `03ade251868c9f750822d58368114ae10cc8f656`。五个永磁分支已接入共享Application、标准库、Qt、不可变记录和默认V6.5批量模板，候选状态 `IMPLEMENTED / 已实现，待验收`。
+
+候选运行数据由A.2批准工作簿29表只读派生，独立精确Numeric Profile；按001排除异常0.0，002容差不参与，003临时600 r/min解释保持 `PROVISIONAL`，004执行已批准的精确双线性。保留旧输入模板、正式发布范围、已保存记录、批准Mapping/表值/Golden、中央锁和数据库迁移。验证、构建、待验收事项统一见[永磁接入实施记录](docs/standards/gb30253_2024/PRODUCT_INTEGRATION_20261111.md)和QA-PMSM-001。Phase 8状态沿用既有决定。
+
 ## 当前任务：高压电机产品接入候选（2026-11-10）
 
 Owner授权GB30254从已合并内核接入同一Application、Qt、不可变Record与Excel；永磁后续。基线`725d91db9ba2c668e14288662f0dbd1ca114e08a`，工作分支`codex/motor-hv-integration-20261110`。本轮高压真实状态为`IMPLEMENTED`，开发候选可操作；不提升SUPPORTED、不发布、不合并，不升级中央锁。

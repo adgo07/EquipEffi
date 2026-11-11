@@ -154,9 +154,9 @@ def create_batch_evaluation_service(*, paths=None, motor_candidate: bool | None 
     template_identity = V61_TEMPLATE_IDENTITY
     template_resource = V61TransformerTemplateResource()
     if enabled:
-        from .infrastructure.excel.template_resource import V64_TEMPLATE_IDENTITY, V64MotorTemplateResource
-        template_identity = V64_TEMPLATE_IDENTITY
-        template_resource = V64MotorTemplateResource()
+        from .infrastructure.excel.template_resource import V65_TEMPLATE_IDENTITY, V65MotorTemplateResource
+        template_identity = V65_TEMPLATE_IDENTITY
+        template_resource = V65MotorTemplateResource()
     # 载体端口在装配层注入：Application 只认识 Protocol，不认识 Excel。
     return WorkbookEvaluationService(
         analysis,

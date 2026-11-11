@@ -29,6 +29,11 @@ _NUMERIC_UNITS = {
 _BRANCH_INPUTS = frozenset(_NUMERIC_UNITS) | {"cooling_method", "max_nameplate_speed_rpm"}
 
 
+def pmsm_input_units(category_id):
+    return {field.field_id: _NUMERIC_UNITS[field.field_id] for field in BRANCHES[category_id].fields
+            if field.field_id in _NUMERIC_UNITS}
+
+
 class MotorPmsmAnalysisService(MotorAnalysisService):
     standard_code = STANDARD_CODE
     standard_version = "2024"
@@ -73,7 +78,7 @@ class MotorPmsmAnalysisService(MotorAnalysisService):
             input_contract_revision=MOTOR_V5_REVISION,
             raw_input=values,
             normalized_numeric_values=snapshot_value(evaluated.normalized_numbers),
-            input_units={key: unit for key, unit in _NUMERIC_UNITS.items() if key in fields},
+            input_units=pmsm_input_units(category) if branch else {},
         )
         explanation = " ".join(_REASONS[code] for code in evaluated.reason_codes)
         for prefix, keys in (("缺少", evaluated.missing_fields), ("请核对", evaluated.invalid_fields)):
