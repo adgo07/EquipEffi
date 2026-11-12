@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-12",
+  "task": "GB19153 Stage B design only",
+  "base_sha": "35b198156586d8a032fdabc2e53793d192aa3abf",
+  "central_active_sha": "829853a943c421e0b9864d84f3d94970d2ddf688",
+  "protected_assets": [
+    {
+      "path": "platform-lock.json",
+      "after_sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53",
+      "unchanged": true,
+      "git_blob_sha256": "87a8786f9d630609204b240a496f92bdcbc75904ffc2db71f6f318b596e2c3f4",
+      "before_sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53",
+      "note": "Git blob uses LF; existing Windows checkout uses CRLF. Content matches after newline normalization; worktree preflight and final hashes match."
+    },
+    {
+      "path": "docs/standards/gb19153_2019/data/GB19153_2019_标准表值.xlsx",
+      "before_sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+      "after_sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+      "unchanged": true
+    },
+    {
+      "path": "src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_5.xlsx",
+      "before_sha256": "11f767efcf03d362ed1cfcf7fdfc17ed3909dbd4bc21c48971762ffa0a5cf059",
+      "after_sha256": "11f767efcf03d362ed1cfcf7fdfc17ed3909dbd4bc21c48971762ffa0a5cf059",
+      "unchanged": true
+    }
+  ],
+  "mapping": {
+    "before_sha256": "9a016a4ea6ce4c7ed534135ba3c4c6533144d2bdbaed8e8c5ecab16bc7f7b028",
+    "after_sha256": "f26c7df16344618a7c006e5faef9e388a40c0a9f83835b118fe31d2117aa157d",
+    "business_body_unchanged": true
+  },
+  "local_links_checked": 155,
+  "broken_links": [],
+  "whitespace": "PASS",
+  "checks": {
+    "pass": 6,
+    "fail": 0,
+    "error": 0,
+    "skip": 0
+  },
+  "not_run": [
+    "standard numerical/PDF re-verification: existing independent evidence reused",
+    "runtime unittest/compileall/smoke/performance: no runtime changes",
+    "Windows build/UI acceptance: Stage B only"
+  ],
+  "owner_decisions_pending": [
+    "D01",
+    "D02"
+  ],
+  "check_note": "Initial raw Git-blob versus checkout comparison flagged lock newline conversion; corrected by retaining both hashes and checking preflight worktree hash plus normalized Git content."
+}

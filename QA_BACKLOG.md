@@ -1,5 +1,9 @@
 # EquipEffi QA_BACKLOG
 
+### QA-COMP-001：空压机Stage B设计及后续接入追踪（OPEN，2026-11-12）
+
+本轮为设计追踪项：六表事实核验沿用既有证据，映射入口已区分首次抽核与后续全量验收。设计稿已完成，待Owner决定比功率等级/整机条件输出边界（EQP-STD-GB19153-005）及无可用指标的终态口径（001）。决定清单、实施顺序及后续核心/Qt/Excel/历史记录测试见[接入设计](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)。尚未实施，不将旧表1—4评价器或Legacy Regression视为六表业务真值，不提升支持状态。
+
 ### QA-PMSM-001：GB 30253候选产品接入（OPEN，2026-11-11）
 
 已按A.2批准资料、EQP-STD-GB30253-001—004及MOTOR-009接通五分支，包含29表只读派生、独立精确Numeric Profile、Qt与历史、V6.5派生及同核批量。重点复验异常0.0排除、临时600锚、精确四角及区间边界、旧输入拒绝、原文件保真和批次不可变证据。003保持 `PROVISIONAL`，候选支持状态 `IMPLEMENTED`。完整回归、独立候选与实机验收证据见[永磁接入实施记录](docs/standards/gb30253_2024/PRODUCT_INTEGRATION_20261111.md)。待Owner人工验收及正式支持决定。
