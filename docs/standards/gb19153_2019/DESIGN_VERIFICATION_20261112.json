@@ -55,8 +55,9 @@
   },
   "stage_c_authorized": true,
   "stage_b_recheck": {
-    "mapping_sha256": "8de363d68c30dbb8ffdcfb32a0ffc003019d66501458f8ab650ae23d173cb690",
+    "mapping_sha256": "56d917c672a371cbc058e912e9a7dac767cfc0ab998c6fa7efe843f4a06f72d6",
     "decision_sha256": "e95102e36d9ba868688dec56d00fa8ca8ebf6f66b53be129df940c7d8e8fdd00",
     "source_workbook_unchanged": true
-  }
+  },
+  "stage_scope_note": "此文件记录Stage B设计时检查与出口，不代表Stage C当前not_run；Stage C另见IMPLEMENTATION_VERIFICATION_20261112.json"
 }

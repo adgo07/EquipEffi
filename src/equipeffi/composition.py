@@ -132,6 +132,17 @@ def create_motor_analysis_service(*, paths=None, with_persistence: bool = True):
                                  app_version=__version__))
 
 
+def create_compressor_analysis_service(*, paths=None, with_persistence: bool = True):
+    from . import __version__
+    from .application.services.compressor_analysis_service import CompressorAnalysisService
+    from .domain.devices.compressor.calculator import Gb19153CompressorCalculator
+    from .infrastructure.standards.compressor_repository import load_compressor_pack
+    pack, digest = load_compressor_pack()
+    records = create_records_runtime(paths=paths)[1] if with_persistence else None
+    return CompressorAnalysisService(pack, Gb19153CompressorCalculator(), records=records,
+                                     pack_sha256=digest, app_version=__version__)
+
+
 def create_batch_evaluation_service(*, paths=None, motor_candidate: bool | None = None):
     """创建正式 Excel 批量评价服务，与单台分析复用同一个分析服务。"""
 
@@ -154,14 +165,15 @@ def create_batch_evaluation_service(*, paths=None, motor_candidate: bool | None 
     template_identity = V61_TEMPLATE_IDENTITY
     template_resource = V61TransformerTemplateResource()
     if enabled:
-        from .infrastructure.excel.template_resource import V65_TEMPLATE_IDENTITY, V65MotorTemplateResource
-        template_identity = V65_TEMPLATE_IDENTITY
-        template_resource = V65MotorTemplateResource()
+        from .infrastructure.excel.template_resource import V66_TEMPLATE_IDENTITY, V66CompressorTemplateResource
+        template_identity = V66_TEMPLATE_IDENTITY
+        template_resource = V66CompressorTemplateResource()
     # 载体端口在装配层注入：Application 只认识 Protocol，不认识 Excel。
     return WorkbookEvaluationService(
         analysis,
         create_transformer_analysis_service(with_persistence=False),
         motor=create_motor_analysis_service(with_persistence=False) if enabled else None,
+        compressor=create_compressor_analysis_service(with_persistence=False),
         reader=UnifiedWorkbookReader(),
         writer=UnifiedResultWorkbookWriter(),
         batch_repository=SqliteBatchRecordRepository(paths.records_db),
@@ -189,7 +201,7 @@ def launch_qt(*, paths=None) -> int:
     previous = install_exception_hook(logger)
     try:
         return run(service, logger, analysis, batch=batch,
-                   transformer=transformer, motor=motor,
+                   transformer=transformer, motor=motor, compressor=create_compressor_analysis_service(paths=resolved),
                    data_location=resolved.root,
                    external_launch_context=external_launch_environment)
     finally:

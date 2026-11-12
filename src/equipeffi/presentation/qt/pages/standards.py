@@ -17,10 +17,10 @@ LIFECYCLE_STATE_LABELS = {
 
 
 class StandardsPage(QWidget):
-    def __init__(self, service, navigator=None, parent=None, *, transformer=None, motor=None):
+    def __init__(self, service, navigator=None, parent=None, *, transformer=None, motor=None, compressor=None):
         super().__init__(parent)
         self.service, self.navigator = service, navigator
-        self.services = [s for s in (service, transformer, motor) if s is not None]
+        self.services = [s for s in (service, transformer, motor, compressor) if s is not None]
         self.motor_service = motor
         self.standard_code = None
         self._catalog = []
@@ -267,6 +267,8 @@ class StandardsPage(QWidget):
             text = "按电动机类别及适用额定参数采用表1至表6的效率限值（%），评价1级、2级、3级。新分析按额定效率评价，效率填写1～100的百分数点值，额定电压以V填写；具体限值可在分析结果中查看。历史记录保留保存时口径。"
         elif code == "GB 30254-2024":
             text = "按明确高压类别、额定电压、50 Hz、冷却IC代码、功率和极数查取六表效率限值，以额定效率评价1至3级；候选已实现，待独立验收。"
+        elif code == "GB 19153-2019":
+            text = "按所选空压机类别、额定功率、排气表压、必要冷却方式及有效比功率采用表1至表6评价等级。直联便携类别填写机组额定输入功率，其他类别填写电动机额定输出功率。"
         elif code == "GB 30253-2024":
             text = "按永磁同步电动机的类别及额定参数查取表1至表29，以额定效率评价1至3级。变频调速和电梯用类别按额定转速查表。"
         else:

@@ -2,7 +2,7 @@
 
 ## 本轮授权设计：空压机Stage B（2026-11-12）
 
-Owner已批准空压机D01直接等级、D02=A及18列Excel，并授权Stage B出口后继续Stage C。[设计](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)出口完成，候选成熟度READY_FOR_IMPLEMENTATION；正式发布scope仍POST_V1，不提升SUPPORTED，不正式发布。
+Owner已批准空压机D01直接等级、D02=A及18列Excel，并授权Stage B出口后继续Stage C。[设计](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)出口完成，候选核心及Application/Qt/Record/V6.6批量已实现，候选成熟度IMPLEMENTED（验证进行中）；正式发布scope仍POST_V1，不提升SUPPORTED，不正式发布。
 
 ## 本轮授权候选：永磁同步电动机产品接入（2026-11-11）
 

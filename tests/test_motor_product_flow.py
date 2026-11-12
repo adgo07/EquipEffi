@@ -121,8 +121,8 @@ class MotorProductFlowTests(unittest.TestCase):
             destination = Path(directory) / "result.xlsx"
             batch.template_resource.download_to(source)
             workbook = load_workbook(source)
-            workbook["空压机"]["B4"] = "保留未接通设备"
-            workbook["空压机"]["D4"] = 1
+            workbook["工业锅炉"]["B4"] = "保留未接通设备"
+            workbook["工业锅炉"]["D4"] = 1
             workbook.save(source)
             workbook.close()
             with self.assertRaisesRegex(ValueError, "没有可评价数据"):
