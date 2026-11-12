@@ -1491,6 +1491,7 @@ class V66CompressorTemplateResource(V65MotorTemplateResource):
             config = book.rows("配置")
             root = ElementTree.fromstring(book.archive.read(book._sheets["空压机"]))
         issues.extend(_v65_category_config_issues(config, motor, MOTOR_PRODUCT_INPUT_CONTRACT))
+        issues.extend(_compressor_capacity_issues(candidate))
         contract = COMPRESSOR_SHEET_CONTRACT
         if contract["contract_revision"] != REVISION or contract["category_ids"] != [c.category_id for c in CONTRACT.categories]:
             issues.append("空压机Manifest类别或契约与Application不一致")
@@ -1536,3 +1537,46 @@ class V66CompressorTemplateResource(V65MotorTemplateResource):
             if match and int(match.group(2)) >= 4 and cell.find(f"{ns}f") is not None:
                 issues.append("空压机结果列含退役业务公式")
         return replace(base, is_valid=not issues, issues=tuple(issues))
+
+
+def _compressor_capacity_issues(path):
+    """验证全列输入保护策略，不把XML可写等同用户可填写。"""
+    ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+    with OOXMLWorkbook(path) as book:
+        root = ElementTree.fromstring(book.archive.read(book._sheets["空压机"]))
+        styles = ElementTree.fromstring(book.archive.read("xl/styles.xml"))
+    xfs = styles.find(f"{ns}cellXfs")
+    columns = {}
+    for col in root.findall(f"{ns}cols/{ns}col"):
+        for number in range(int(col.get("min")), min(int(col.get("max")), 18) + 1):
+            columns[chr(64 + number)] = int(col.get("style", "0"))
+    cells = {c.get("r"): c for c in root.findall(f"{ns}sheetData/{ns}row/{ns}c")}
+    input_columns = set("BCDEFGHIJKPQ")
+    result_columns = set("LMNOR")
+    issues = []
+
+    def locked(index):
+        if not 0 <= index < len(xfs):
+            raise ValueError("空压机保护样式索引无效")
+        protection = xfs[index].find(f"{ns}protection")
+        return protection is None or protection.get("locked", "1") != "0"
+
+    protection = root.find(f"{ns}sheetProtection")
+    if protection is None or protection.get("sheet", "0") != "1":
+        issues.append("空压机Sheet保护未启用")
+    for col in input_columns | result_columns:
+        if locked(columns.get(col, 0)) != (col in result_columns):
+            issues.append(f"空压机{col}列默认保护不符合统一容量策略")
+        for row in (4, 14, 103, 1003, 10003, 1048576):
+            cell = cells.get(f"{col}{row}")
+            index = int(cell.get("s", str(columns.get(col, 0)))) if cell is not None else columns.get(col, 0)
+            if locked(index) != (col in result_columns):
+                issues.append(f"空压机{col}{row}保护不符合统一容量策略")
+    for col in "ABCDEFGHIJKLMNOPQR":
+        header = cells.get(f"{col}3")
+        if header is None or "s" not in header.attrib or not locked(int(header.get("s"))):
+            issues.append(f"空压机{col}3表头未显式锁定")
+    total = cells.get("Q1")
+    if total is None or total.findtext(f"{ns}f") != "SUM(D4:D1048576)":
+        issues.append("空压机便利数量合计未覆盖完整输入范围")
+    return issues

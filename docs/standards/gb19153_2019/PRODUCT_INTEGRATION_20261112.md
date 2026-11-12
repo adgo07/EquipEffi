@@ -30,3 +30,12 @@ Owner批准D01仅评价比功率、正常结果直接等级，D02=A及18列统�
 候选不是正式Release，不创建标签或发布产物。真实Windows EXE、实际Excel/WPS以及独立复验状态分别落证据；离屏Qt测试不当作实机验收。另一台干净Windows、125%系统缩放未取得本轮证据，不据此宣布Stage D通过。
 
 Knowledge capture：无新增成熟专业知识；证据与已批准解释已在Mapping/决定落档。
+
+
+## 2026-11-13容量复核修复
+
+独立复核发现初稿保护Sheet仅4—13行可填写，列默认样式锁定，Q1便利数量合计仅覆盖Table十行。此前直接写XML的10000行读算写/持久化证据仍证明软件数据链，但不能证明Excel用户可填写，旧包不作为最终候选。
+
+已在QA-COMP-001登记后修正：只追加共享styles保护变体、既有XF逐项保持；空压机B:K/P:Q默认及既有输入格解锁，所有表头和L:O/R锁定，新增结果格使用锁定结果列样式。Q1使用SUM(D4:D1048576)；容量依赖全列解锁+全范围Validation+Reader全行识别，不依赖受保护Sheet自动扩Table。父agent已独立核对保护和既有XF追加语义，定向产品7tests通过；又增加第14/10003行输入和新结果锁定回归。修复版仍需固定SHA的CI、完整10000行流程及新包验证；实际Excel/WPS引擎操作若未运行明确NOT_RUN。
+
+此修复不改变Calculator、Numeric Profile、源Canonical、Compressor Application/Record业务文件。c27c3532下独立core 20177断言和Application45检查保留原SHA，以这些生产文件字节一致证明复用，不改写成新SHA重跑。跨设备Excel与保护修复另行复验。首次c27原生构建状态烟测因继承外部环境45秒超时，清Python/Qt环境与系统PATH后0.875秒ready=true；该旧包仍被本次容量修复取代，不混作最终交付。

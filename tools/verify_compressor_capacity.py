@@ -14,8 +14,10 @@ from tools.build_v61_transformer_template import _tag, _set_inline
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def verify(counts=(2, 100, 1000, 10000), *, persist=False):
+def verify(counts=(2, 100, 1000, 10000), *, persist=False, run_id=""):
     output = ROOT/"outputs/compressor-implementation"/("capacity-persist" if persist else "capacity")
+    if run_id:
+        output = output.with_name(output.name + "-" + run_id)
     output.mkdir(parents=True, exist_ok=True)
     template = V66CompressorTemplateResource().template_path
     with OOXMLWorkbook(template) as book:
@@ -48,12 +50,16 @@ def verify(counts=(2, 100, 1000, 10000), *, persist=False):
         assert before == sha256(source.read_bytes()).hexdigest()
         assert result.summary.data_row_count == count
         assert result.summary.conclusion_rows == {"1级": count}
+        from equipeffi.infrastructure.excel.template_resource import _compressor_capacity_issues
+        assert not _compressor_capacity_issues(source)
+        assert not _compressor_capacity_issues(Path(result.result_workbook))
         with OOXMLWorkbook(Path(result.result_workbook)) as book:
             grid = book.rows("空压机")
             assert grid[count+2][14] == "1级"
             assert len(book.sheet_names) == 18
-        entry = dict(rows=count, seconds=round(seconds, 3), pass_count=5, fail=0, error=0, skip=0,
+        entry = dict(rows=count, seconds=round(seconds, 3), pass_count=7, fail=0, error=0, skip=0,
                      input_sha256=before, result_sha256=result.result_workbook_sha256,
+                     template_sha256=sha256(template.read_bytes()).hexdigest(), protected_capacity_mechanically_verified=True,
                      no_software_capacity_setting=True, persist=persist)
         if persist:
             import sqlite3
@@ -71,7 +77,7 @@ def verify(counts=(2, 100, 1000, 10000), *, persist=False):
             assert evidence[-1]["grade"] == "1" and evidence[-1]["assessment_scope"] == "SPECIFIC_POWER_GRADE_ONLY"
             assert before_list == sha256(service.batch_repository.database.read_bytes()).hexdigest()
             entry.update(persist=True, batch_records=batches, single_records=singles, row_evidence=len(evidence),
-                         list_omits_row_evidence=True, full_detail_preserved=True, database_unchanged_by_reads=True, pass_count=11)
+                         list_omits_row_evidence=True, full_detail_preserved=True, database_unchanged_by_reads=True, pass_count=13)
         results.append(entry)
         (output/"capacity-results.json").write_text(json.dumps(results,
                                                                ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
@@ -84,5 +90,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--persist", action="store_true")
     parser.add_argument("--rows", type=int, nargs="+", default=[2, 100, 1000, 10000])
+    parser.add_argument("--run-id", default="")
     args = parser.parse_args()
-    verify(args.rows, persist=args.persist)
+    verify(args.rows, persist=args.persist, run_id=args.run_id)

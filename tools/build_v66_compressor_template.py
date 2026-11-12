@@ -1,7 +1,4 @@
 """V6.5只读ZIP派生V6.6；只改空压机及其配置和身份。"""
-from tools.build_v61_transformer_template import _parse_xml, _xml_bytes, _set_inline, _tag, _sheet_target, _sheet_table_target
-from equipeffi.infrastructure.excel.template_resource import V65_TEMPLATE_ENTRY, identity_defined_names
-from equipeffi.domain.devices.compressor.input_contract import CONTRACT, REVISION
 from copy import deepcopy
 from hashlib import sha256
 from pathlib import Path
@@ -12,6 +9,11 @@ from zipfile import ZipFile
 from xml.etree import ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
+from tools.build_v61_transformer_template import _parse_xml, _xml_bytes, _set_inline, _tag, _sheet_target, _sheet_table_target
+from equipeffi.infrastructure.excel.template_resource import V65_TEMPLATE_ENTRY, identity_defined_names
+from equipeffi.domain.devices.compressor.input_contract import CONTRACT, REVISION
+
 MANIFEST = ROOT / "src/equipeffi/resources/TEMPLATE_MANIFEST.json"
 FILENAME = "设备能效分析空白模板_重构版V6_6.xlsx"
 CATEGORY_NAME = "EV_COMPRESSOR_V66_CATEGORY"
@@ -33,6 +35,69 @@ COLUMNS = (
      "result"), ("O", "等级", "", "conclusion", "result"),
     ("P", "铭牌照片", "", "photo", "input"), ("Q", "填表备注", "", "user_note", "input"), ("R", "自动备注", "", "messages", "result"))
 
+
+
+INPUT_COLUMNS = frozenset("BCDEFGHIJKPQ")
+RESULT_COLUMNS = frozenset("LMNOR")
+
+
+def _capacity_styles(root, styles_data):
+    """只追加保护样式，原XF索引与内容不变；列默认覆盖整张表。"""
+    styles = _parse_xml(styles_data)
+    xfs = styles.find(_tag("cellXfs"))
+    variants = {}
+
+    def protection_style(index, locked):
+        key = (int(index), locked)
+        if key in variants:
+            return variants[key]
+        cloned = deepcopy(xfs[key[0]])
+        node = cloned.find(_tag("protection"))
+        if node is None:
+            node = ET.SubElement(cloned, _tag("protection"))
+        node.set("locked", "1" if locked else "0")
+        cloned.set("applyProtection", "1")
+        raw = ET.tostring(cloned)
+        found = next((n for n, existing in enumerate(xfs) if ET.tostring(existing) == raw), None)
+        if found is None:
+            found = len(xfs)
+            xfs.append(cloned)
+        variants[key] = str(found)
+        return str(found)
+
+    cols = root.find(_tag("cols"))
+    original_cols = list(cols)
+    expanded = []
+    for old in original_cols:
+        first, last = int(old.get("min")), int(old.get("max"))
+        for number in range(first, min(last, 18) + 1):
+            col = deepcopy(old)
+            col.set("min", str(number)); col.set("max", str(number))
+            letter = chr(64 + number)
+            if letter in INPUT_COLUMNS | RESULT_COLUMNS:
+                col.set("style", protection_style(col.get("style", "0"), letter in RESULT_COLUMNS))
+            expanded.append(col)
+        if last > 18:
+            tail = deepcopy(old); tail.set("min", str(max(first, 19)))
+            expanded.append(tail)
+    cols[:] = expanded
+    for row in root.find(_tag("sheetData")):
+        number = int(row.get("r"))
+        for cell in row:
+            letter = re.match(r"[A-Z]+", cell.get("r")).group()
+            if number <= 3 or letter in RESULT_COLUMNS:
+                cell.set("s", protection_style(cell.get("s", "0"), True))
+            elif letter in INPUT_COLUMNS:
+                cell.set("s", protection_style(cell.get("s", "0"), False))
+    total = root.find(f".//{_tag('c')}[@r='Q1']")
+    if total is None:
+        raise ValueError("空压机数量合计格Q1缺失")
+    for child in list(total):
+        total.remove(child)
+    total.attrib.pop("t", None)
+    ET.SubElement(total, _tag("f")).text = "SUM(D4:D1048576)"
+    xfs.set("count", str(len(xfs)))
+    return _xml_bytes(styles)
 
 def build():
     source = MANIFEST.parent / "templates" / V65_TEMPLATE_ENTRY["filename"]
@@ -67,7 +132,7 @@ def build():
     entry["compressor_capacity_strategy"] = {
         "first_row": 4,
         "last_row": 1048576,
-        "user_action_required": "无；继续填写或粘贴。"}
+        "user_action_required": "无；输入列全列解锁并校验，继续填写或粘贴，无需扩展Table。", "mechanism": "full-column-unlocked-input + full-range-validation + all-row-reader", "quantity_sum": "SUM(D4:D1048576)", "manual_engine_validation": "NOT_RUN"}
     with ZipFile(source) as z:
         parts = [(info, z.read(info.filename)) for info in z.infolist()]
         part = _sheet_target(z, "空压机")
@@ -172,7 +237,9 @@ def build():
             names,
             _tag("definedName"),
             name=name).text = f'"{value}"'
+    styles_xml = _capacity_styles(root, data["xl/styles.xml"])
     replacements = {
+        "xl/styles.xml": styles_xml,
         part: _xml_bytes(root),
         config_part: _xml_bytes(config),
         "xl/workbook.xml": _xml_bytes(workbook)}

@@ -996,6 +996,32 @@ def patch_compressor_sheet_xml(xml, outcomes):
     for number, outcome in sorted(outcomes.items()):
         edits.extend(_row_edits(patch, int(number), compressor_cell_payloads(outcome), plan))
     result = _normalise_main_namespace(patch.apply(sorted(edits)))
+    # 新行的结果格不能继承同行输入格的解锁样式；按结果列的锁定默认样式写入。
+    root = ElementTree.fromstring(xml)
+    ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+    styles = {col: "0" for col in ("L", "M", "N", "O", "R")}
+    for column in root.findall(f"{ns}cols/{ns}col"):
+        for number in range(int(column.get("min")), min(int(column.get("max")), 18) + 1):
+            letter = chr(64 + number)
+            if letter in styles:
+                styles[letter] = column.get("style", "0")
+    result_patch = WorksheetPatch(result)
+    style_edits = []
+    for number in outcomes:
+        for cell in result_patch.rows[number].cells:
+            reference = cell.reference or ""
+            match = re.fullmatch(r"([LMNOR])[0-9]+", reference)
+            if match is None:
+                continue
+            previous = next((item for item in patch.rows[number].cells if item.reference == reference), None)
+            target = previous.style if previous is not None and previous.style is not None else styles[match.group(1)]
+            attribute = cell.element.attribute("s")
+            if attribute is not None:
+                style_edits.append((attribute.start, attribute.end, f"s={attribute.quote}{target}{attribute.quote}"))
+            else:
+                position = cell.element.attribute("r").end
+                style_edits.append((position, position, f' s="{target}"'))
+    result = result_patch.apply(sorted(style_edits))
     assert_non_main_elements_preserved(xml, result)
     assert_unique_references(result)
     assert_main_namespace_semantics(result)

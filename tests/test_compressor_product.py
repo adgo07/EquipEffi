@@ -61,7 +61,7 @@ class CompressorProductTests(unittest.TestCase):
         with OOXMLWorkbook(old.template_path) as a, OOXMLWorkbook(new.template_path) as b:
             self.assertEqual(a.sheet_names, b.sheet_names)
             self.assertEqual(len(b.sheet_names), 18)
-            allowed = {a._sheets["空压机"], a._sheets["配置"], "xl/workbook.xml"}
+            allowed = {a._sheets["空压机"], a._sheets["配置"], "xl/workbook.xml", "xl/styles.xml"}
             changed = {name for name in a.archive.namelist() if a.archive.read(name) != b.archive.read(name)}
             self.assertTrue(changed <= allowed | {
                             name for name in a.archive.namelist() if name == "xl/tables/table3.xml"})
@@ -73,6 +73,49 @@ class CompressorProductTests(unittest.TestCase):
             self.assertFalse(validate_v6_template(source).is_valid)
             with self.assertRaises(ValueError):
                 CompressorWorkbookReader().read(old.template_path)
+
+    def test_protected_capacity_defaults_far_rows_and_existing_xfs(self):
+        from equipeffi.infrastructure.excel.template_resource import _compressor_capacity_issues
+        template = V66CompressorTemplateResource().template_path
+        self.assertEqual(_compressor_capacity_issues(template), [])
+        ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+        with OOXMLWorkbook(V65MotorTemplateResource().template_path) as before, OOXMLWorkbook(template) as after:
+            old = ET.fromstring(before.archive.read("xl/styles.xml")).find(f"{ns}cellXfs")
+            new = ET.fromstring(after.archive.read("xl/styles.xml")).find(f"{ns}cellXfs")
+            self.assertGreaterEqual(len(new), len(old))
+            for index in range(len(old)):
+                self.assertEqual(ET.tostring(old[index]), ET.tostring(new[index]))
+        with tempfile.TemporaryDirectory() as d:
+            source=Path(d)/"坏保护.xlsx"
+            book=load_workbook(template)
+            from openpyxl.styles import Protection
+            book["空压机"].column_dimensions["B"].protection = Protection(locked=True)
+            book.save(source)
+            self.assertFalse(validate_v6_template(source).is_valid)
+
+    def test_far_row_results_stay_locked_and_quantity_sum_covers_range(self):
+        from copy import copy
+        from equipeffi.infrastructure.excel.template_resource import _compressor_capacity_issues
+        with tempfile.TemporaryDirectory() as d:
+            source=Path(d)/"远行.xlsx"
+            book=load_workbook(V66CompressorTemplateResource().template_path)
+            sheet=book["空压机"]
+            for row in (14,10003):
+                for col,value in {"B":"远行设备","D":1,"F":"一般用喷油回转空气压缩机","G":"1.5","I":"0.3","J":"风冷","K":"5.8"}.items():
+                    sheet[f"{col}{row}"]=value
+                    sheet[f"{col}{row}"]._style=copy(sheet[f"{col}4"]._style)
+            book.save(source)
+            batch=create_batch_evaluation_service(paths=AppDataPaths(Path(d)/"数据"))
+            result=batch.evaluate_workbook(source,destination=Path(d)/"结果.xlsx")
+            self.assertEqual(result.summary.total_quantity,2)
+            self.assertEqual(result.summary.conclusion_rows,{"1级":2})
+            self.assertEqual(_compressor_capacity_issues(Path(result.result_workbook)),[])
+            out=load_workbook(result.result_workbook)
+            for row in (14,10003):
+                self.assertFalse(out["空压机"][f"B{row}"].protection.locked)
+                for col in "LMNOR":
+                    self.assertTrue(out["空压机"][f"{col}{row}"].protection.locked)
+            self.assertEqual(out["空压机"]["Q1"].value,"=SUM(D4:D1048576)")
 
     def test_old_compressor_upgrade_message_without_blocking_existing_devices(self):
         with tempfile.TemporaryDirectory() as d:
