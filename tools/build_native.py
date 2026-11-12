@@ -223,8 +223,9 @@ def build_native(
         status_environment["PYTHONIOENCODING"] = "utf-8"
         # windowed executable 的 sys.stdout/sys.stderr 为 None；状态通过专用文件
         # 回传，避免构建核验依赖控制台管道。
+        # 状态子进程使用本次输出目录，避免系统Temp的外部执行/写入策略阻断windowed程序；上下文结束即清理。
         with tempfile.TemporaryDirectory(
-                prefix="equipeffi-native-status-"
+                prefix="equipeffi-native-status-", dir=executable.parent
             ) as status_dir:
             status_file = Path(status_dir) / "status.json"
             status = subprocess.run(
