@@ -131,6 +131,26 @@ class CompressorProductTests(unittest.TestCase):
                 result.batch_record_id).summary["compressor_row_evidence"]), 5)
             self.assertEqual(original_db, sha256(paths.records_db.read_bytes()).hexdigest())
 
+    def test_shell_capabilities_include_compressor_without_claiming_support(self):
+        from equipeffi.composition import create_settings_runtime, create_transformer_analysis_service, create_motor_analysis_service
+        from equipeffi.infrastructure.runtime_logging import close_logging
+        from equipeffi.presentation.qt.shell import MainWindow
+        with tempfile.TemporaryDirectory() as d:
+            paths=AppDataPaths(Path(d))
+            settings,logger=create_settings_runtime(paths=paths)
+            window=None
+            try:
+                window=MainWindow(settings,create_pump_analysis_service(paths=paths),
+                    transformer=create_transformer_analysis_service(paths=paths),
+                    motor=create_motor_analysis_service(paths=paths),
+                    compressor=create_compressor_analysis_service(paths=paths))
+                self.assertIn("空压机",window.windowTitle())
+                self.assertIn("空压机：GB 19153-2019（已实现，待验收）",window.settings_page.about.text())
+                codes={entry["standard_code"] for entry in window.standards_page._catalog}
+                self.assertEqual(codes,{"GB 19762-2025","GB 20052-2024","GB 18613-2020","GB 30254-2024","GB 30253-2024","GB 19153-2019"})
+            finally:
+                _dispose_widget(window);close_logging(logger)
+
     def test_qt_fields_record_history_and_no_motor_routing(self):
         with tempfile.TemporaryDirectory() as d:
             paths = AppDataPaths(Path(d))

@@ -39,6 +39,14 @@ class MainWindow(QMainWindow):
             else "设备能效分析工具 · GB 19762—2025 离心泵能效分析")
         if motor is not None:
             self.setWindowTitle("设备能效分析工具 · 离心泵、变压器与电动机能效分析")
+        if compressor is not None:
+            devices = ["离心泵"]
+            if transformer is not None:
+                devices.append("变压器")
+            if motor is not None:
+                devices.append("电动机")
+            devices.append("空压机")
+            self.setWindowTitle("设备能效分析工具 · " + "、".join(devices) + "能效分析")
         self.resize(1280, 800)
         self._settings_from_home = False
         self._first_show = True
@@ -121,7 +129,7 @@ class MainWindow(QMainWindow):
             if analysis is not None else None)
         self.settings_page = SettingsPage(settings, analysis, app_version=self.app_version,
                                          data_location=data_location, navigator=self,
-                                         transformer=transformer, motor=motor)
+                                         transformer=transformer, motor=motor, compressor=compressor)
 
         self._page_widgets = {
             "首页": self.home_page,
