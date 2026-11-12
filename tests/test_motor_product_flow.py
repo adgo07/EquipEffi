@@ -121,8 +121,8 @@ class MotorProductFlowTests(unittest.TestCase):
             destination = Path(directory) / "result.xlsx"
             batch.template_resource.download_to(source)
             workbook = load_workbook(source)
-            workbook["空压机"]["B4"] = "保留未接通设备"
-            workbook["空压机"]["D4"] = 1
+            workbook["工业锅炉"]["B4"] = "保留未接通设备"
+            workbook["工业锅炉"]["D4"] = 1
             workbook.save(source)
             workbook.close()
             with self.assertRaisesRegex(ValueError, "没有可评价数据"):
@@ -162,7 +162,15 @@ class MotorProductFlowTests(unittest.TestCase):
             output.close()
             record = SqliteBatchRecordRepository(paths.records_db).load_batch_record(result.batch_record_id)
             self.assertEqual(record.standard_code, "MULTI")
-            self.assertEqual(len(record.summary["sheets"]), 3)
+            self.assertEqual({sheet["sheet_name"] for sheet in record.summary["sheets"]},
+                             {"离心泵", "变压器", "电动机", "空压机"})
+            compressor = next(sheet for sheet in record.summary["sheets"] if sheet["sheet_name"] == "空压机")
+            self.assertEqual(compressor["data_row_count"], 0)
+            self.assertEqual(compressor["total_quantity"], 0)
+            self.assertEqual(compressor["evaluated_quantity"], 0)
+            self.assertEqual(compressor["conclusion_quantities"], {})
+            self.assertEqual(compressor["conclusion_rows"], {})
+            self.assertEqual(compressor["evaluation_provenance"], [])
             from equipeffi.application.services.batch_summary_formatter import format_device_summary_lines
             device_lines = format_device_summary_lines(record.summary["sheets"])
             self.assertEqual(device_lines, format_device_summary_lines(result.summary.sheets))

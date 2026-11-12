@@ -1,5 +1,13 @@
 # EquipEffi QA_BACKLOG
 
+### QA-COMP-001：空压机Stage B设计及后续接入追踪（OPEN，2026-11-12）
+
+Owner已批准D01正常直接等级、内部保留比功率评价范围，D02=A及统一18列Excel，并授权完成Stage B出口后继续Stage C。QA-COMP-001跟踪六表只读派生、精确查表、Application/Qt/Record/V6.6同核Excel与Windows候选。规则证据为GB19153-001—005、[决定落档](docs/standards/gb19153_2019/OWNER_DECISIONS.md)和[设计](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)。不覆盖源表/原模板/Golden；不以旧评价器结果作真值；独立验收前保持OPEN。
+
+2026-11-12独立复核发现P1容量缺陷：V6.6初稿仅4—13行输入解锁，列默认样式仍锁定；保护Sheet上第14行及以后不能可靠填写。Q1仍SUM(TblCompressor[数量])只覆盖10行。此前XML容量测试只证明读算写，不证明真实可填写；旧候选包不作为最终交付。修复限定空压机：追加保护样式变体，输入列默认/既有数据格解锁、表头与结果锁定，便利数量合计覆盖D4:D1048576；增加机械保护/远行/输出锁定回归，Excel/WPS实机若未执行明确NOT_RUN。原模板、源表、既有XF和其他Sheet业务不变。
+
+2026-11-13候选构建复核：windowed EXE向系统Temp输出--status时两次45秒超时；四组合定位显示系统Temp在两种cwd均超时，而工作树状态路径两种cwd均<1秒exit0。未据此定位单一外部策略或业务缺陷；构建工具临时状态目录改为本次native输出目录并自动清理，加定向路径回归，保留失败报告及诊断矩阵，重建最终候选。
+
 ### QA-PMSM-001：GB 30253候选产品接入（OPEN，2026-11-11）
 
 已按A.2批准资料、EQP-STD-GB30253-001—004及MOTOR-009接通五分支，包含29表只读派生、独立精确Numeric Profile、Qt与历史、V6.5派生及同核批量。重点复验异常0.0排除、临时600锚、精确四角及区间边界、旧输入拒绝、原文件保真和批次不可变证据。003保持 `PROVISIONAL`，候选支持状态 `IMPLEMENTED`。完整回归、独立候选与实机验收证据见[永磁接入实施记录](docs/standards/gb30253_2024/PRODUCT_INTEGRATION_20261111.md)。待Owner人工验收及正式支持决定。

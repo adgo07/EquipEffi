@@ -1,0 +1,15 @@
+{
+  "scope": "Three actual e900 CI failures, fixed as stale test fixture/expectation only",
+  "pass": 3,
+  "fail": 0,
+  "error": 0,
+  "skip": 0,
+  "seconds": 11.343,
+  "runtime_src_changed": false,
+  "changes": [
+    "temporary zipapp fixture adds declared compressor canonical/V6.6 assets; exclusion assertions retained",
+    "mixed three-device input now asserts four summaries and explicit empty compressor summary; original quantities and grades unchanged",
+    "selected pressure expectation preserves approved decimal source lexeme 0.7 rather than rational 7/10"
+  ],
+  "log": "outputs/compressor-implementation/ci-fixture-three-tests.log"
+}

@@ -1,0 +1,25 @@
+{
+  "production_sha": "c27c3532c29a0efb0e6df32564ff659e7a05fb27",
+  "batch_record_id": "BATCH-74611dd3c673",
+  "expected_counts": {
+    "data_row_count": 23,
+    "concluded_rows": 19,
+    "total_quantity": 24,
+    "evaluated_quantity": 21,
+    "input_error_rows": 4,
+    "input_error_quantity": 3,
+    "execution_error_rows": 0
+  },
+  "actual_counts": {
+    "data_row_count": 23,
+    "concluded_rows": 19,
+    "total_quantity": 24,
+    "evaluated_quantity": 21,
+    "input_error_rows": 4,
+    "input_error_quantity": 3,
+    "execution_error_rows": 0
+  },
+  "checks": 8,
+  "fail": 0,
+  "invalid_rows_have_no_stale_lookup": true
+}

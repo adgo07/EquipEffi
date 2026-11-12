@@ -39,23 +39,27 @@ def _pmsm_lookup_snapshot(lookup):
 class WorkbookEvaluationSummary(BatchEvaluationSummary):
     sheets: list[dict[str, Any]] = field(default_factory=list)
     unprocessed_sheets: tuple[str, ...] = ()
+    compatibility_messages: tuple[str, ...] = ()
 
     def as_dict(self):
         return super().as_dict() | {
             "schema_version": 2, "sheets": snapshot_value(self.sheets),
-            "unprocessed_sheets": list(self.unprocessed_sheets)}
+            "unprocessed_sheets": list(self.unprocessed_sheets),
+            "compatibility_messages": list(self.compatibility_messages)}
 
 
 class WorkbookEvaluationService(PumpBatchEvaluationService):
     """保留泵逐行评价行为；变压器通过独立的同核应用服务评价。"""
 
-    def __init__(self, analysis, transformer, *, motor=None, **kwargs):
+    def __init__(self, analysis, transformer, *, motor=None, compressor=None, **kwargs):
         super().__init__(analysis, **kwargs)
         self.transformer = transformer
         self.motor = motor
+        self.compressor = compressor
         self._devices = {
             "离心泵": ("centrifugal_pump", "GB 19762-2025", "离心泵"),
             "变压器": ("transformer", "GB 20052-2024", "transformer"),
+            "空压机": ("compressor", "GB 19153-2019", "compressor"),
             "电动机": ("motor", "GB 18613-2020", "motor_lv"),
         }
 
@@ -65,12 +69,13 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         as_of = as_of or date.today()
         workbook = self.reader.read(source)
         if not any(sheet.rows for sheet in workbook.sheets.values()):
-            raise ValueError("没有可评价数据；未接通Sheet的内容未评价。")
+            raise ValueError("没有可评价数据；未接通Sheet的内容未评价。" + " ".join(workbook.compatibility_messages))
         if self.motor is None and getattr(workbook.sheets.get("电动机"), "rows", ()):
             raise ValueError("本配置未启用电动机分析，不能评价电动机Sheet。")
-        total = WorkbookEvaluationSummary(unprocessed_sheets=workbook.unprocessed_sheets)
+        total = WorkbookEvaluationSummary(unprocessed_sheets=workbook.unprocessed_sheets, compatibility_messages=workbook.compatibility_messages)
         by_sheet = {}
         pmsm_evidence = [] if persist and self.batch_repository is not None else None
+        compressor_evidence = [] if persist and self.batch_repository is not None else None
         for name, sheet in workbook.sheets.items():
             summary = BatchEvaluationSummary(data_row_count=len(sheet.rows))
             provenance = _BatchProvenance()
@@ -83,6 +88,8 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
                 elif name == "变压器":
                     rows[row.row_number] = self._transformer_row(
                         row, as_of, summary, references)
+                elif name == "空压机":
+                    rows[row.row_number] = self._compressor_row(row, as_of, summary, references, compressor_evidence)
                 elif name == "电动机":
                     rows[row.row_number] = self._motor_row(row, as_of, summary, references, pmsm_evidence)
                 else:
@@ -148,10 +155,22 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
                       for name, rows in by_sheet.items() for outcome in rows.values()])
         if persist and self.batch_repository is not None:
             try:
-                self._persist_workbook(result, workbook.template_identity, pmsm_evidence)
+                self._persist_workbook(result, workbook.template_identity, pmsm_evidence, compressor_evidence)
             except Exception as error:
                 result.batch_record_error = f"{type(error).__name__}: {error}"
         return result
+
+    def _compressor_row(self, row, as_of, summary, references, row_evidence=None):
+        from .compressor_analysis_service import CompressorAnalysisRequest
+        evidence = {"row": row.row_number, "raw_input": snapshot_value(row.source_values or row.values)} if row_evidence is not None else None
+        outcome = self._device_row(row, as_of, summary, references, self.compressor,
+                                   CompressorAnalysisRequest, lambda trace: [], evidence=evidence)
+        if evidence is not None:
+            evidence.update(evaluation_status=outcome.evaluation_status, conclusion=outcome.conclusion,
+                grade=outcome.grade, quantity=outcome.quantity, is_input_error=outcome.is_input_error,
+                is_execution_error=outcome.is_execution_error, messages=list(outcome.messages))
+            row_evidence.append(evidence)
+        return outcome
 
     def _transformer_row(self, row, as_of, summary, references):
         return self._device_row(row, as_of, summary, references, self.transformer,
@@ -231,6 +250,14 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
             result, "finalizable",
             status in {"SUCCESS", "OUT_OF_STANDARD_SCOPE", "INSUFFICIENT_DATA"})
         reference = result.references
+        if reference.get("standard_code") == "GB 19153-2019":
+            if evidence is not None:
+                evidence.update(normalized_input=result.raw_values, thresholds=result.thresholds,
+                    lookup={key: reference[key] for key in ("table_number", "selected_power_kw", "selected_pressure_mpa", "cooling_method", "source_cells") if key in reference},
+                    pack_sha256=reference["pack_sha256"], assessment_scope=reference["assessment_scope"])
+            reference = {key: reference[key] for key in ("standard_code", "standard_year", "canonical_version", "canonical_package_hash",
+                "pack_id", "pack_sha256", "numeric_contract_version", "numeric_profile_id", "calculator_version", "rule_version",
+                "result_contract_version", "source_identity", "assessment_scope")}
         if reference.get("standard_code") == PMSM_STANDARD:
             reference = {key: reference[key] for key in _PMSM_BATCH_IDENTITY}
             if evidence is not None:
@@ -253,7 +280,7 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
             messages=messages,
             thresholds=result.thresholds, quantity=quantity)
 
-    def _persist_workbook(self, result, identity, pmsm_evidence=None):
+    def _persist_workbook(self, result, identity, pmsm_evidence=None, compressor_evidence=None):
         summary = result.summary
         active = [sheet for sheet in summary.sheets if sheet["data_row_count"]]
         single = active[0] if len(active) == 1 else None
@@ -263,6 +290,8 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         payload = summary.as_dict() | {"template": dict(identity)}
         if pmsm_evidence:
             payload["motor_pmsm_row_evidence"] = pmsm_evidence
+        if compressor_evidence:
+            payload["compressor_row_evidence"] = compressor_evidence
         if single:
             payload["evaluation_provenance"] = reference
         self.batch_repository.append_batch_record(BatchRecordSnapshot(

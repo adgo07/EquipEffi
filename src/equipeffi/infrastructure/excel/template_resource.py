@@ -152,6 +152,11 @@ V65_TEMPLATE_ENTRY = next(entry for entry in TEMPLATE_MANIFEST["templates"]
                           if entry.get("template_version") == "V6.5")
 V65_TEMPLATE_IDENTITY = {key: str(V65_TEMPLATE_ENTRY.get(key, "")) for key in V64_TEMPLATE_IDENTITY}
 DEFAULT_V65_TEMPLATE = V65_TEMPLATE_IDENTITY["filename"]
+V66_TEMPLATE_ENTRY = next(entry for entry in TEMPLATE_MANIFEST["templates"] if entry.get("template_version") == "V6.6")
+V66_TEMPLATE_IDENTITY = {key: str(V66_TEMPLATE_ENTRY.get(key, "")) for key in V65_TEMPLATE_IDENTITY}
+DEFAULT_V66_TEMPLATE = V66_TEMPLATE_IDENTITY["filename"]
+COMPRESSOR_SHEET_CONTRACT = next(sheet for sheet in V66_TEMPLATE_ENTRY["sheets"] if sheet.get("sheet_id") == "compressor")
+
 MOTOR_V65_SHEET_CONTRACT = next(sheet for sheet in V65_TEMPLATE_ENTRY["sheets"] if sheet.get("sheet_id") == "motor")
 PUMP_SHEET_CONTRACT: dict[str, Any] = next(
     sheet for sheet in V6_TEMPLATE_ENTRY["sheets"]
@@ -1305,6 +1310,8 @@ def validate_v6_template(path: Path, *, check_pump_sheet: bool = True
             path, check_pump_sheet=check_pump_sheet)
     if version == "V6.4":
         return V64MotorTemplateResource().validate(path, check_pump_sheet=check_pump_sheet)
+    if version == "V6.6":
+        return V66CompressorTemplateResource().validate(path, check_pump_sheet=check_pump_sheet)
     if version == "V6.5":
         return V65MotorTemplateResource().validate(path, check_pump_sheet=check_pump_sheet)
     return base
@@ -1456,3 +1463,120 @@ class V65MotorTemplateResource(V64MotorTemplateResource):
         cooling = tuple(dict.fromkeys((*hv_codes, *pmsm_codes)))
         return self._validate_motor(path, check_pump_sheet, V65_TEMPLATE_ENTRY,
                                     MOTOR_V65_SHEET_CONTRACT, MOTOR_PRODUCT_INPUT_CONTRACT, cooling)
+
+
+class V66CompressorTemplateResource(V65MotorTemplateResource):
+    def __init__(self, resource_dir=None, *, template_name=V66_TEMPLATE_IDENTITY["filename"]):
+        super().__init__(resource_dir, template_name=template_name)
+
+    @property
+    def identity(self):
+        return dict(V66_TEMPLATE_IDENTITY)
+
+    def validate(self, path=None, *, check_pump_sheet=True):
+        from dataclasses import replace
+        from ...domain.devices.compressor.input_contract import CONTRACT, REVISION
+        from ...domain.devices.motor.product_input_contract import MOTOR_PRODUCT_INPUT_CONTRACT
+        from ...domain.devices.motor_hv.input_contract import COOLING_CODES as hv_codes
+        from ...domain.devices.motor_pmsm.input_contract import COOLING_CODES as pmsm_codes
+        motor = next(s for s in V66_TEMPLATE_ENTRY["sheets"] if s["sheet_id"] == "motor")
+        cooling = tuple(dict.fromkeys((*hv_codes, *pmsm_codes)))
+        base = self._validate_motor(path, check_pump_sheet, V66_TEMPLATE_ENTRY, motor, MOTOR_PRODUCT_INPUT_CONTRACT, cooling)
+        if not base.is_valid:
+            return base
+        candidate = Path(path) if path is not None else self.template_path
+        issues = list(base.issues)
+        with OOXMLWorkbook(candidate) as book:
+            grid = book.rows("空压机")
+            config = book.rows("配置")
+            root = ElementTree.fromstring(book.archive.read(book._sheets["空压机"]))
+        issues.extend(_v65_category_config_issues(config, motor, MOTOR_PRODUCT_INPUT_CONTRACT))
+        issues.extend(_compressor_capacity_issues(candidate))
+        contract = COMPRESSOR_SHEET_CONTRACT
+        if contract["contract_revision"] != REVISION or contract["category_ids"] != [c.category_id for c in CONTRACT.categories]:
+            issues.append("空压机Manifest类别或契约与Application不一致")
+        for descriptor in contract["fields"]:
+            index = _column_index(descriptor["column"])
+            actual = _header_parts(grid[2][index] if index < len(grid[2]) else "")
+            if actual != (descriptor.get("label", ""), descriptor.get("unit", ""), ()):
+                issues.append(f"空压机{descriptor['column']}列表头不一致")
+        for n, category in enumerate(CONTRACT.categories, 1):
+            expected = (category.label, category.category_id,
+                ",".join(f.field_id for f in CONTRACT.visible_fields(category.category_id) if f.required),
+                next((f.field_id for f in CONTRACT.visible_fields(category.category_id) if f.unit == "kW"), ""))
+            actual = tuple(str(config[n][_column_index(col)]) for col in ("FG", "FH", "FI", "FJ"))
+            if actual != expected:
+                issues.append("空压机配置类别、必填或功率语义与Application不一致")
+            if category.table_no:
+                expected_power = "rated_input_power_kw" if category.table_no >= 5 else "rated_motor_output_power_kw"
+                power = next(f for f in contract["fields"] if f["column"] == "G")
+                if power["category_field_ids"].get(category.category_id) != expected_power:
+                    issues.append("空压机功率映射不一致")
+        names = _workbook_defined_names(candidate)
+        for name, col, count in (("EV_COMPRESSOR_V66_CATEGORY", "FG", len(CONTRACT.categories)),
+                                  ("EV_COMPRESSOR_V66_CATEGORY_IDS", "FH", len(CONTRACT.categories)),
+                                  ("EV_COMPRESSOR_V66_COOLING", "FK", 2)):
+            if names.get(name) != (f"'配置'!${col}$2:${col}${count + 1}",):
+                issues.append("空压机命名范围不一致")
+        if tuple(str(config[n][_column_index("FK")]) for n in (1, 2)) != ("风冷", "液冷"):
+            issues.append("空压机冷却字典不一致")
+        ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+        validations = root.findall(f"{ns}dataValidations/{ns}dataValidation")
+        rules = {node.get("sqref", "").split("4:")[0]: node for node in validations}
+        expected_rules = {"D": ("whole", "greaterThan", "0"), "F": ("list", "", "EV_COMPRESSOR_V66_CATEGORY"),
+            "G": ("decimal", "greaterThan", "0"), "H": ("decimal", "greaterThan", "0"),
+            "I": ("decimal", "greaterThan", "0"), "J": ("list", "", "EV_COMPRESSOR_V66_COOLING"), "K": ("decimal", "greaterThan", "0")}
+        if len(validations) != len(rules) or set(rules) != set(expected_rules):
+            issues.append("空压机验证列不一致")
+        for col, expected in expected_rules.items():
+            node = rules.get(col)
+            if node is None or (node.get("type", ""), node.get("operator", ""), node.findtext(f"{ns}formula1")) != expected or node.get("sqref") != f"{col}4:{col}1048576":
+                issues.append(f"空压机{col}列验证或容量范围不一致")
+        for cell in root.findall(f"{ns}sheetData/{ns}row/{ns}c"):
+            match = re.fullmatch(r"([LMNOR])([0-9]+)", cell.get("r", ""))
+            if match and int(match.group(2)) >= 4 and cell.find(f"{ns}f") is not None:
+                issues.append("空压机结果列含退役业务公式")
+        return replace(base, is_valid=not issues, issues=tuple(issues))
+
+
+def _compressor_capacity_issues(path):
+    """验证全列输入保护策略，不把XML可写等同用户可填写。"""
+    ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+    with OOXMLWorkbook(path) as book:
+        root = ElementTree.fromstring(book.archive.read(book._sheets["空压机"]))
+        styles = ElementTree.fromstring(book.archive.read("xl/styles.xml"))
+    xfs = styles.find(f"{ns}cellXfs")
+    columns = {}
+    for col in root.findall(f"{ns}cols/{ns}col"):
+        for number in range(int(col.get("min")), min(int(col.get("max")), 18) + 1):
+            columns[chr(64 + number)] = int(col.get("style", "0"))
+    cells = {c.get("r"): c for c in root.findall(f"{ns}sheetData/{ns}row/{ns}c")}
+    input_columns = set("BCDEFGHIJKPQ")
+    result_columns = set("LMNOR")
+    issues = []
+
+    def locked(index):
+        if not 0 <= index < len(xfs):
+            raise ValueError("空压机保护样式索引无效")
+        protection = xfs[index].find(f"{ns}protection")
+        return protection is None or protection.get("locked", "1") != "0"
+
+    protection = root.find(f"{ns}sheetProtection")
+    if protection is None or protection.get("sheet", "0") != "1":
+        issues.append("空压机Sheet保护未启用")
+    for col in input_columns | result_columns:
+        if locked(columns.get(col, 0)) != (col in result_columns):
+            issues.append(f"空压机{col}列默认保护不符合统一容量策略")
+        for row in (4, 14, 103, 1003, 10003, 1048576):
+            cell = cells.get(f"{col}{row}")
+            index = int(cell.get("s", str(columns.get(col, 0)))) if cell is not None else columns.get(col, 0)
+            if locked(index) != (col in result_columns):
+                issues.append(f"空压机{col}{row}保护不符合统一容量策略")
+    for col in "ABCDEFGHIJKLMNOPQR":
+        header = cells.get(f"{col}3")
+        if header is None or "s" not in header.attrib or not locked(int(header.get("s"))):
+            issues.append(f"空压机{col}3表头未显式锁定")
+    total = cells.get("Q1")
+    if total is None or total.findtext(f"{ns}f") != "SUM(D4:D1048576)":
+        issues.append("空压机便利数量合计未覆盖完整输入范围")
+    return issues

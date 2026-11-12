@@ -66,6 +66,7 @@ class ArchitectureBoundaryTests(unittest.TestCase):
             "equipeffi.application.services.pump_batch_evaluation_service",
             "equipeffi.application.services.transformer_analysis_service",
             "equipeffi.application.services.motor_analysis_service",
+            "equipeffi.application.services.compressor_analysis_service",
             "equipeffi.application.services.motor_basis_formatter",
             "equipeffi.application.services.batch_summary_formatter",
         )

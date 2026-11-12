@@ -4670,6 +4670,1234 @@
         "business_row_limit": "none",
         "manual_engine_validation": "NOT_RUN；Excel/WPS新增行、保存重开需单独记录。"
       }
+    },
+    {
+      "template_id": "equipeffi.device-efficiency.V6.6",
+      "template_version": "V6.6",
+      "template_kind": "unified-multi-device-blank-template",
+      "template_contract_revision": "unified-v6.v6",
+      "status": "CANDIDATE",
+      "input_compatibility": "ACCEPTED",
+      "legacy_import_compatibility": false,
+      "filename": "设备能效分析空白模板_重构版V6_6.xlsx",
+      "asset_sha256": "6B85EDCCF4690D7878A277FD7648C77B20A4BFD277EBD80C9BD8127ACF5587CC",
+      "asset_size_bytes": 371282,
+      "source_filename": "设备能效分析空白模板_重构版V6_5.xlsx",
+      "source_sha256": "11F767EFCF03D362ED1CFCF7FDFC17ED3909DBD4BC21C48971762FFA0A5CF059",
+      "source_size_bytes": 374299,
+      "source_provenance": "Owner批准从V6.5只读派生；只修改空压机及专属配置、身份。",
+      "sheets": [
+        {
+          "sheet_id": "transformer",
+          "sheet_name": "变压器",
+          "contract_revision": "transformer-input.v1",
+          "status": "CONNECTED",
+          "header_row": 3,
+          "table": {
+            "name": "TblTransformer",
+            "ref": "A3:Y103"
+          },
+          "fields": [
+            {
+              "column": "A",
+              "role": "index",
+              "label": "序号"
+            },
+            {
+              "column": "B",
+              "role": "input",
+              "field_id": "device_name",
+              "label": "设备名称"
+            },
+            {
+              "column": "C",
+              "role": "input",
+              "field_id": "model",
+              "label": "型号"
+            },
+            {
+              "column": "D",
+              "role": "input",
+              "field_id": "quantity",
+              "label": "数量"
+            },
+            {
+              "column": "E",
+              "role": "input",
+              "field_id": "location",
+              "label": "安装位置"
+            },
+            {
+              "column": "F",
+              "role": "input",
+              "field_id": "category_id",
+              "label": "设备类别"
+            },
+            {
+              "column": "G",
+              "role": "input",
+              "field_id": "capacity_kva",
+              "label": "额定容量",
+              "unit": "kVA"
+            },
+            {
+              "column": "H",
+              "role": "input",
+              "field_id": "standard_conditions",
+              "label": "标准条件"
+            },
+            {
+              "column": "I",
+              "role": "input",
+              "field_id": "uk_rated_percent",
+              "label": "额定阻抗",
+              "unit": "%"
+            },
+            {
+              "column": "J",
+              "role": "input",
+              "field_id": "no_load_loss_w",
+              "label": "空载损耗",
+              "unit": "W"
+            },
+            {
+              "column": "K",
+              "role": "input",
+              "field_id": "load_loss_w",
+              "label": "负载损耗",
+              "unit": "W"
+            },
+            {
+              "column": "L",
+              "role": "result",
+              "label": "空载损耗-1级",
+              "unit": "W",
+              "threshold_key": "no_load_loss_1"
+            },
+            {
+              "column": "M",
+              "role": "result",
+              "label": "空载损耗-2级",
+              "unit": "W",
+              "threshold_key": "no_load_loss_2"
+            },
+            {
+              "column": "N",
+              "role": "result",
+              "label": "空载损耗-3级",
+              "unit": "W",
+              "threshold_key": "no_load_loss_3"
+            },
+            {
+              "column": "O",
+              "role": "result",
+              "label": "负载损耗-1级",
+              "unit": "W",
+              "threshold_key": "load_loss_1"
+            },
+            {
+              "column": "P",
+              "role": "result",
+              "label": "负载损耗-2级",
+              "unit": "W",
+              "threshold_key": "load_loss_2"
+            },
+            {
+              "column": "Q",
+              "role": "result",
+              "label": "负载损耗-3级",
+              "unit": "W",
+              "threshold_key": "load_loss_3"
+            },
+            {
+              "column": "R",
+              "role": "result",
+              "label": "能效结论",
+              "result_key": "conclusion"
+            },
+            {
+              "column": "S",
+              "role": "input",
+              "field_id": "photo",
+              "label": "铭牌照片"
+            },
+            {
+              "column": "T",
+              "role": "input",
+              "field_id": "fill_note",
+              "label": "填表备注"
+            },
+            {
+              "column": "U",
+              "role": "result",
+              "label": "自动备注",
+              "result_key": "messages"
+            },
+            {
+              "column": "V",
+              "role": "input",
+              "field_id": "hv_rated_voltage_kv",
+              "label": "高压额定电压",
+              "unit": "kV"
+            },
+            {
+              "column": "W",
+              "role": "input",
+              "field_id": "lv_rated_voltage_kv",
+              "label": "低压额定电压",
+              "unit": "kV"
+            },
+            {
+              "column": "X",
+              "role": "input",
+              "field_id": "uk_hl_rated_percent",
+              "label": "额定阻抗高—低",
+              "unit": "%"
+            },
+            {
+              "column": "Y",
+              "role": "input",
+              "field_id": "uk_ml_rated_percent",
+              "label": "额定阻抗中—低",
+              "unit": "%"
+            }
+          ]
+        },
+        {
+          "sheet_id": "motor",
+          "sheet_name": "电动机",
+          "contract_revision": "motor-input.v5",
+          "status": "CONNECTED",
+          "header_row": 3,
+          "table": {
+            "name": "TblMotor",
+            "ref": "A3:T103"
+          },
+          "fields": [
+            {
+              "column": "A",
+              "role": "index",
+              "label": "序号"
+            },
+            {
+              "column": "B",
+              "role": "input",
+              "field_id": "device_name",
+              "label": "设备名称",
+              "required_for_categories": []
+            },
+            {
+              "column": "C",
+              "role": "input",
+              "field_id": "model",
+              "label": "型号",
+              "required_for_categories": []
+            },
+            {
+              "column": "D",
+              "role": "input",
+              "field_id": "quantity",
+              "label": "数量",
+              "required_for_categories": []
+            },
+            {
+              "column": "E",
+              "role": "input",
+              "field_id": "location",
+              "label": "安装位置",
+              "required_for_categories": []
+            },
+            {
+              "column": "F",
+              "role": "input",
+              "field_id": "category_id",
+              "label": "设备类别",
+              "category_enum": "EV_MOTOR_V65_CATEGORY",
+              "required_for_categories": []
+            },
+            {
+              "column": "G",
+              "role": "input",
+              "field_id": "rated_voltage_v",
+              "label": "额定电压",
+              "required_for_categories": [
+                "three_phase_induction",
+                "capacitor_start",
+                "capacitor_run",
+                "two_value_capacitor",
+                "gb30254_cage_induction",
+                "gb30253_lv_async_start",
+                "gb30253_hv_async_start",
+                "gb30253_lv_vfd",
+                "gb30253_hv_vfd",
+                "gb30253_elevator"
+              ],
+              "unit": "V",
+              "excel_validation": {
+                "column": "G",
+                "type": "decimal",
+                "operator": "greaterThanOrEqual",
+                "formula1": "0",
+                "error_title": "额定电压",
+                "error": "额定电压请按V填写非负数值。",
+                "prompt_title": "额定电压",
+                "prompt": "按铭牌电压的V数值填写。"
+              }
+            },
+            {
+              "column": "H",
+              "role": "input",
+              "field_id": "rated_frequency_hz",
+              "label": "额定频率",
+              "required_for_categories": [
+                "three_phase_induction",
+                "capacitor_start",
+                "capacitor_run",
+                "two_value_capacitor",
+                "gb30254_cage_induction",
+                "gb30253_lv_async_start",
+                "gb30253_hv_async_start"
+              ],
+              "excel_validation": {
+                "column": "H",
+                "type": "custom",
+                "formula1": "OR(H4=\"\",ISNUMBER(H4),ISTEXT(H4))",
+                "error_title": "额定频率",
+                "error": "额定频率可填写数字或文本范围，请保留原始文本。",
+                "prompt_title": "额定频率",
+                "prompt": "永磁和高压笼型异步起动填50 Hz；永磁变频及电梯用留空。GB18613按类别填报。"
+              },
+              "unit": "Hz"
+            },
+            {
+              "column": "I",
+              "role": "input",
+              "field_id": "cooling_method",
+              "label": "冷却方式（仅高压）",
+              "locked": false,
+              "hidden": false,
+              "required_for_categories": [
+                "gb30254_cage_induction",
+                "gb30253_hv_async_start",
+                "gb30253_hv_vfd"
+              ],
+              "excel_validation": {
+                "column": "I",
+                "type": "list",
+                "formula1": "EV_MOTOR_V65_COOLING"
+              }
+            },
+            {
+              "column": "J",
+              "role": "input",
+              "field_id": "rated_output_power_kw",
+              "label": "额定输出功率",
+              "required_for_categories": [
+                "three_phase_induction",
+                "capacitor_start",
+                "capacitor_run",
+                "two_value_capacitor",
+                "ac_fan_capacitor_run",
+                "ac_fan_brushless_dc",
+                "gb30254_cage_induction",
+                "gb30253_lv_async_start",
+                "gb30253_hv_async_start",
+                "gb30253_lv_vfd",
+                "gb30253_hv_vfd",
+                "gb30253_elevator"
+              ],
+              "unit": "kW"
+            },
+            {
+              "column": "K",
+              "role": "input",
+              "field_id": "poles",
+              "label": "极数",
+              "required_for_categories": [
+                "three_phase_induction",
+                "capacitor_start",
+                "capacitor_run",
+                "two_value_capacitor",
+                "ac_fan_capacitor_run",
+                "gb30254_cage_induction",
+                "gb30253_lv_async_start",
+                "gb30253_hv_async_start"
+              ],
+              "excel_validation": {
+                "column": "K",
+                "type": "custom",
+                "formula1": "OR(K4=\"\",AND(ISNUMBER(K4),K4>0,MOD(K4,1)=0,OR(MOD(K4,2)=0,LEFT(F4,8)=\"GB 30253\",LEFT(F4,8)=\"gb30253_\")))",
+                "error_title": "极数",
+                "error": "极数应为正整数；GB18613及GB30254需填正偶数。",
+                "prompt_title": "极数",
+                "prompt": "永磁异步起动填正整数；其他需要极数的类别填正偶数；永磁变频及电梯用留空。"
+              },
+              "unit": "极"
+            },
+            {
+              "column": "L",
+              "role": "input",
+              "field_id": "max_nameplate_speed_rpm",
+              "label": "转速（按类别填写）",
+              "required_for_categories": [
+                "ac_fan_brushless_dc",
+                "gb30253_lv_vfd",
+                "gb30253_hv_vfd",
+                "gb30253_elevator"
+              ],
+              "unit": "r/min",
+              "category_field_ids": {
+                "gb30253_lv_vfd": "rated_speed_rpm",
+                "gb30253_hv_vfd": "rated_speed_rpm",
+                "gb30253_elevator": "rated_speed_rpm"
+              },
+              "excel_validation": {
+                "column": "L",
+                "type": "decimal",
+                "operator": "greaterThanOrEqual",
+                "formula1": "0",
+                "prompt": "永磁变频及电梯用填额定转速；GB18613表6填铭牌标称最高转速；其余按类别留空。"
+              }
+            },
+            {
+              "column": "M",
+              "role": "input",
+              "field_id": "rated_efficiency_pct",
+              "label": "额定效率",
+              "required_for_categories": [
+                "three_phase_induction",
+                "capacitor_start",
+                "capacitor_run",
+                "two_value_capacitor",
+                "ac_fan_capacitor_run",
+                "ac_fan_brushless_dc",
+                "gb30254_cage_induction",
+                "gb30253_lv_async_start",
+                "gb30253_hv_async_start",
+                "gb30253_lv_vfd",
+                "gb30253_hv_vfd",
+                "gb30253_elevator"
+              ],
+              "unit": "%",
+              "excel_validation": {
+                "column": "M",
+                "type": "decimal",
+                "operator": "between",
+                "formula1": "1",
+                "formula2": "100",
+                "error_title": "额定效率",
+                "error": "请输入1至100之间的百分数点值，例如85.9；不要输入0.859或百分比格式。",
+                "prompt_title": "额定效率",
+                "prompt": "按电动机铭牌额定效率填写百分数点值，保留小数。"
+              }
+            },
+            {
+              "column": "N",
+              "role": "result",
+              "label": "1级效率阈值",
+              "unit": "%",
+              "threshold_key": "grade_1"
+            },
+            {
+              "column": "O",
+              "role": "result",
+              "label": "2级效率阈值",
+              "unit": "%",
+              "threshold_key": "grade_2"
+            },
+            {
+              "column": "P",
+              "role": "result",
+              "label": "3级效率阈值",
+              "unit": "%",
+              "threshold_key": "grade_3"
+            },
+            {
+              "column": "Q",
+              "role": "result",
+              "label": "能效等级",
+              "result_key": "conclusion"
+            },
+            {
+              "column": "R",
+              "role": "input",
+              "field_id": "photo",
+              "label": "铭牌照片",
+              "required_for_categories": []
+            },
+            {
+              "column": "S",
+              "role": "input",
+              "field_id": "user_note",
+              "label": "备注",
+              "required_for_categories": []
+            },
+            {
+              "column": "T",
+              "role": "result",
+              "label": "评价说明",
+              "result_key": "messages"
+            }
+          ],
+          "categories": [
+            {
+              "category_id": "three_phase_induction",
+              "label": "三相异步电动机（一般用途或一般用途防爆）",
+              "table_no": 1
+            },
+            {
+              "category_id": "capacitor_start",
+              "label": "电容起动异步电动机（一般用途）",
+              "table_no": 2
+            },
+            {
+              "category_id": "capacitor_run",
+              "label": "电容运转异步电动机（一般用途）",
+              "table_no": 3
+            },
+            {
+              "category_id": "two_value_capacitor",
+              "label": "双值电容异步电动机（一般用途）",
+              "table_no": 4
+            },
+            {
+              "category_id": "ac_fan_capacitor_run",
+              "label": "空调器风扇用电容运转电动机",
+              "table_no": 5
+            },
+            {
+              "category_id": "ac_fan_brushless_dc",
+              "label": "空调器风扇用无刷直流电动机",
+              "table_no": 6
+            },
+            {
+              "category_id": "gb30254_cage_induction",
+              "label": "GB 30254—2024 高压三相笼型异步电动机",
+              "table_no": null
+            },
+            {
+              "category_id": "gb30253_lv_async_start",
+              "label": "GB 30253—2024 永磁同步电动机—低压异步起动",
+              "table_no": null
+            },
+            {
+              "category_id": "gb30253_hv_async_start",
+              "label": "GB 30253—2024 永磁同步电动机—高压异步起动",
+              "table_no": null
+            },
+            {
+              "category_id": "gb30253_lv_vfd",
+              "label": "GB 30253—2024 永磁同步电动机—低压变频调速",
+              "table_no": null
+            },
+            {
+              "category_id": "gb30253_hv_vfd",
+              "label": "GB 30253—2024 永磁同步电动机—高压变频调速",
+              "table_no": null
+            },
+            {
+              "category_id": "gb30253_elevator",
+              "label": "GB 30253—2024 永磁同步电动机—电梯用",
+              "table_no": null
+            },
+            {
+              "category_id": "OTHER_CATEGORY",
+              "label": "其他类别",
+              "table_no": null
+            },
+            {
+              "category_id": "UNCERTAIN_CATEGORY",
+              "label": "不确定类别",
+              "table_no": null
+            }
+          ],
+          "category_ids": [
+            "three_phase_induction",
+            "capacitor_start",
+            "capacitor_run",
+            "two_value_capacitor",
+            "ac_fan_capacitor_run",
+            "ac_fan_brushless_dc",
+            "gb30254_cage_induction",
+            "gb30253_lv_async_start",
+            "gb30253_hv_async_start",
+            "gb30253_lv_vfd",
+            "gb30253_hv_vfd",
+            "gb30253_elevator",
+            "OTHER_CATEGORY",
+            "UNCERTAIN_CATEGORY"
+          ]
+        },
+        {
+          "sheet_id": "compressor",
+          "sheet_name": "空压机",
+          "contract_revision": "compressor-input.v1",
+          "status": "CONNECTED",
+          "header_row": 3,
+          "first_data_row": 4,
+          "category_ids": [
+            "oil_injected_rotary",
+            "variable_speed_oil_injected_rotary",
+            "reciprocating",
+            "oil_free_reciprocating",
+            "portable_lubricated",
+            "portable_oil_free",
+            "OTHER_CATEGORY",
+            "UNCERTAIN_CATEGORY"
+          ],
+          "categories": [
+            {
+              "category_id": "oil_injected_rotary",
+              "label": "一般用喷油回转空气压缩机",
+              "table_no": 1
+            },
+            {
+              "category_id": "variable_speed_oil_injected_rotary",
+              "label": "一般用变转速喷油回转空气压缩机",
+              "table_no": 2
+            },
+            {
+              "category_id": "reciprocating",
+              "label": "一般用往复活塞空气压缩机",
+              "table_no": 3
+            },
+            {
+              "category_id": "oil_free_reciprocating",
+              "label": "全无油润滑往复活塞空气压缩机",
+              "table_no": 4
+            },
+            {
+              "category_id": "portable_lubricated",
+              "label": "直联便携式润滑往复活塞空气压缩机",
+              "table_no": 5
+            },
+            {
+              "category_id": "portable_oil_free",
+              "label": "直联便携式无油往复活塞空气压缩机",
+              "table_no": 6
+            },
+            {
+              "category_id": "OTHER_CATEGORY",
+              "label": "其他类别",
+              "table_no": null
+            },
+            {
+              "category_id": "UNCERTAIN_CATEGORY",
+              "label": "不确定类别",
+              "table_no": null
+            }
+          ],
+          "fields": [
+            {
+              "column": "A",
+              "label": "序号",
+              "unit": "",
+              "role": "convenience"
+            },
+            {
+              "column": "B",
+              "label": "名称",
+              "unit": "",
+              "role": "input",
+              "field_id": "device_name"
+            },
+            {
+              "column": "C",
+              "label": "型号",
+              "unit": "",
+              "role": "input",
+              "field_id": "model"
+            },
+            {
+              "column": "D",
+              "label": "数量",
+              "unit": "台",
+              "role": "input",
+              "field_id": "quantity"
+            },
+            {
+              "column": "E",
+              "label": "位置",
+              "unit": "",
+              "role": "input",
+              "field_id": "location"
+            },
+            {
+              "column": "F",
+              "label": "类别",
+              "unit": "",
+              "role": "input",
+              "field_id": "category_id"
+            },
+            {
+              "column": "G",
+              "label": "额定功率（按类别）",
+              "unit": "kW",
+              "role": "input",
+              "field_id": "rated_power_by_category",
+              "category_field_ids": {
+                "oil_injected_rotary": "rated_motor_output_power_kw",
+                "variable_speed_oil_injected_rotary": "rated_motor_output_power_kw",
+                "reciprocating": "rated_motor_output_power_kw",
+                "oil_free_reciprocating": "rated_motor_output_power_kw",
+                "portable_lubricated": "rated_input_power_kw",
+                "portable_oil_free": "rated_input_power_kw"
+              }
+            },
+            {
+              "column": "H",
+              "label": "容积流量",
+              "unit": "m³/min",
+              "role": "input",
+              "field_id": "volume_flow_m3_min"
+            },
+            {
+              "column": "I",
+              "label": "额定排气压力（表压）",
+              "unit": "MPa",
+              "role": "input",
+              "field_id": "rated_discharge_pressure_mpa"
+            },
+            {
+              "column": "J",
+              "label": "冷却方式",
+              "unit": "",
+              "role": "input",
+              "field_id": "cooling_method"
+            },
+            {
+              "column": "K",
+              "label": "有效比功率",
+              "unit": "kW/(m³/min)",
+              "role": "input",
+              "field_id": "specific_power_kw_per_m3_min"
+            },
+            {
+              "column": "L",
+              "label": "1级限值",
+              "unit": "kW/(m³/min)",
+              "role": "result",
+              "threshold_key": "grade_1"
+            },
+            {
+              "column": "M",
+              "label": "2级限值",
+              "unit": "kW/(m³/min)",
+              "role": "result",
+              "threshold_key": "grade_2"
+            },
+            {
+              "column": "N",
+              "label": "3级限值",
+              "unit": "kW/(m³/min)",
+              "role": "result",
+              "threshold_key": "grade_3"
+            },
+            {
+              "column": "O",
+              "label": "等级",
+              "unit": "",
+              "role": "result",
+              "result_key": "conclusion"
+            },
+            {
+              "column": "P",
+              "label": "铭牌照片",
+              "unit": "",
+              "role": "input",
+              "field_id": "photo"
+            },
+            {
+              "column": "Q",
+              "label": "填表备注",
+              "unit": "",
+              "role": "input",
+              "field_id": "user_note"
+            },
+            {
+              "column": "R",
+              "label": "自动备注",
+              "unit": "",
+              "role": "result",
+              "result_key": "messages"
+            }
+          ]
+        },
+        {
+          "sheet_id": "centrifugal_pump",
+          "sheet_name": "离心泵",
+          "contract_revision": "pump-input.v1",
+          "status": "CONNECTED",
+          "header_row": 3,
+          "table": {
+            "name": "TblPump",
+            "ref": "A3:AA103"
+          },
+          "fields": [
+            {
+              "column": "A",
+              "role": "index",
+              "label": "序号"
+            },
+            {
+              "column": "B",
+              "role": "input",
+              "field_id": "device_name",
+              "label": "设备名称"
+            },
+            {
+              "column": "C",
+              "role": "input",
+              "field_id": "model",
+              "label": "型号"
+            },
+            {
+              "column": "D",
+              "role": "input",
+              "field_id": "quantity",
+              "label": "数量"
+            },
+            {
+              "column": "E",
+              "role": "input",
+              "field_id": "location",
+              "label": "安装位置"
+            },
+            {
+              "column": "F",
+              "role": "input",
+              "field_id": "category",
+              "label": "设备类别"
+            },
+            {
+              "column": "G",
+              "role": "input",
+              "field_id": "flow",
+              "label": "流量",
+              "unit": "m³/h"
+            },
+            {
+              "column": "H",
+              "role": "input",
+              "field_id": "head",
+              "label": "扬程",
+              "unit": "m"
+            },
+            {
+              "column": "I",
+              "role": "input",
+              "field_id": "speed",
+              "label": "额定转速",
+              "unit": "r/min"
+            },
+            {
+              "column": "J",
+              "role": "input",
+              "field_id": "power",
+              "label": "额定功率",
+              "unit": "kW"
+            },
+            {
+              "column": "K",
+              "role": "input",
+              "field_id": "suction",
+              "label": "单吸/双吸",
+              "clear_template_formula": true
+            },
+            {
+              "column": "L",
+              "role": "input",
+              "field_id": "stages",
+              "label": "级数",
+              "unit": "级",
+              "clear_template_formula": true
+            },
+            {
+              "column": "M",
+              "role": "input",
+              "field_id": "efficiency",
+              "label": "泵效率",
+              "unit": "%"
+            },
+            {
+              "column": "N",
+              "role": "result",
+              "label": "比转速",
+              "metric_key": "specific_speed",
+              "metric_unit": "1",
+              "clear_template_formula": true
+            },
+            {
+              "column": "O",
+              "role": "result",
+              "label": "C1",
+              "metric_key": "c1",
+              "metric_unit": "%",
+              "clear_template_formula": true
+            },
+            {
+              "column": "P",
+              "role": "result",
+              "label": "C2",
+              "metric_key": "c2",
+              "metric_unit": "%",
+              "clear_template_formula": true
+            },
+            {
+              "column": "Q",
+              "role": "result",
+              "label": "C3",
+              "metric_key": "c3",
+              "metric_unit": "%",
+              "clear_template_formula": true
+            },
+            {
+              "column": "R",
+              "role": "result",
+              "label": "基准效率",
+              "unit": "%",
+              "metric_key": "base_efficiency",
+              "metric_unit": "%",
+              "clear_template_formula": true
+            },
+            {
+              "column": "S",
+              "role": "result",
+              "label": "效率修正值",
+              "unit": "%",
+              "metric_key": "efficiency_correction",
+              "metric_unit": "%",
+              "clear_template_formula": true
+            },
+            {
+              "column": "T",
+              "role": "result",
+              "label": "规定点效率",
+              "unit": "%",
+              "metric_key": "specified_efficiency",
+              "metric_unit": "%",
+              "clear_template_formula": true
+            },
+            {
+              "column": "U",
+              "role": "result",
+              "label": "1级效率",
+              "unit": "%",
+              "metric_key": "grade_1_efficiency_limit",
+              "metric_unit": "%",
+              "clear_template_formula": true
+            },
+            {
+              "column": "V",
+              "role": "result",
+              "label": "2级效率",
+              "unit": "%",
+              "metric_key": "grade_2_efficiency_limit",
+              "metric_unit": "%",
+              "clear_template_formula": true
+            },
+            {
+              "column": "W",
+              "role": "result",
+              "label": "3级效率",
+              "unit": "%",
+              "metric_key": "grade_3_efficiency_limit",
+              "metric_unit": "%",
+              "clear_template_formula": true
+            },
+            {
+              "column": "X",
+              "role": "result",
+              "label": "能效等级",
+              "clear_template_formula": true
+            },
+            {
+              "column": "Y",
+              "role": "input",
+              "field_id": "photo",
+              "label": "铭牌照片"
+            },
+            {
+              "column": "Z",
+              "role": "input",
+              "field_id": "fill_note",
+              "label": "备注/其他证明材料"
+            },
+            {
+              "column": "AA",
+              "role": "result",
+              "label": "自动备注",
+              "clear_template_formula": true
+            }
+          ]
+        },
+        {
+          "sheet_id": "centrifugal_fan",
+          "sheet_name": "离心通风机",
+          "contract_revision": "v6-preserved",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "axial_fan",
+          "sheet_name": "轴流通风机",
+          "contract_revision": "v6-preserved",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "blower",
+          "sheet_name": "鼓风机",
+          "contract_revision": "v6-preserved",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "submersible_pump",
+          "sheet_name": "潜水电泵",
+          "contract_revision": "v6-preserved",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "industrial_boiler",
+          "sheet_name": "工业锅炉",
+          "contract_revision": "v6-preserved",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "heat_treatment",
+          "sheet_name": "热处理设备",
+          "contract_revision": "v6-preserved",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "heat_pump_chiller",
+          "sheet_name": "热泵和冷水机组",
+          "contract_revision": "v6-preserved",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "heat_pump_water_heater",
+          "sheet_name": "热泵热水机",
+          "contract_revision": "v6-preserved",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "duct_ac",
+          "sheet_name": "风管送风式空调",
+          "contract_revision": "v6-preserved",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "unitary_ac",
+          "sheet_name": "单元式空调",
+          "contract_revision": "v6-preserved",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "multi_split_ac",
+          "sheet_name": "多联式空调",
+          "contract_revision": "v6-preserved",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "instructions",
+          "sheet_name": "注意事项",
+          "contract_revision": "unified-notes.v2",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "template_notes",
+          "sheet_name": "模板说明",
+          "contract_revision": "unified-notes.v2",
+          "status": "PRESERVED_ONLY"
+        },
+        {
+          "sheet_id": "configuration",
+          "sheet_name": "配置",
+          "contract_revision": "unified-config.v2",
+          "status": "CONNECTED"
+        }
+      ],
+      "authorized_modification": {
+        "sheet": "空压机及专属配置、身份",
+        "phase": "GB19153候选接入",
+        "changes": [
+          "18列输入输出同核契约",
+          "退出业务公式"
+        ]
+      },
+      "untouched_sheets": 14,
+      "untouched_verification": "tests/test_motor_pmsm_excel.py逐部件验证；旧模板字节保留",
+      "conformance_check": "tools/check_v6_pump_template.py",
+      "configuration_contract": {
+        "field_dictionary_table": "FieldDictionary",
+        "pump_category_enum": {
+          "column": "AE",
+          "first_row": 2,
+          "defined_name": "EV_PUMP_CATEGORY"
+        },
+        "transformer_category_enum": {
+          "column": "R",
+          "first_row": 2,
+          "defined_name": "EV_TRANSFORMER_CATEGORY"
+        },
+        "transformer_category_ids": {
+          "column": "DK",
+          "first_row": 2,
+          "defined_name": "EV_TRANSFORMER_CATEGORY_IDS"
+        },
+        "transformer_condition_lists": {
+          "first_column": "DL",
+          "first_row": 2,
+          "defined_name_prefix": "EV_TR_COND_"
+        },
+        "motor_category_enum": {
+          "column": "EW",
+          "first_row": 2,
+          "defined_name": "EV_MOTOR_V65_CATEGORY",
+          "category_ids_column": "EX",
+          "category_ids_defined_name": "EV_MOTOR_V65_CATEGORY_IDS"
+        },
+        "motor_excel_validations": {
+          "rated_voltage_v": {
+            "column": "G",
+            "type": "decimal",
+            "operator": "greaterThanOrEqual",
+            "formula1": "0",
+            "error_title": "额定电压",
+            "error": "额定电压请按V填写非负数值。",
+            "prompt_title": "额定电压",
+            "prompt": "按铭牌电压的V数值填写。"
+          },
+          "rated_frequency_hz": {
+            "column": "H",
+            "type": "custom",
+            "formula1": "OR(H4=\"\",ISNUMBER(H4),ISTEXT(H4))",
+            "error_title": "额定频率",
+            "error": "额定频率可填写数字或文本范围，请保留原始文本。",
+            "prompt_title": "额定频率",
+            "prompt": "永磁和高压笼型异步起动填50 Hz；永磁变频及电梯用留空。GB18613按类别填报。"
+          },
+          "poles": {
+            "column": "K",
+            "type": "custom",
+            "formula1": "OR(K4=\"\",AND(ISNUMBER(K4),K4>0,MOD(K4,1)=0,OR(MOD(K4,2)=0,LEFT(F4,8)=\"GB 30253\",LEFT(F4,8)=\"gb30253_\")))",
+            "error_title": "极数",
+            "error": "极数应为正整数；GB18613及GB30254需填正偶数。",
+            "prompt_title": "极数",
+            "prompt": "永磁异步起动填正整数；其他需要极数的类别填正偶数；永磁变频及电梯用留空。"
+          },
+          "rated_efficiency_pct": {
+            "column": "M",
+            "type": "decimal",
+            "operator": "between",
+            "formula1": "1",
+            "formula2": "100",
+            "error_title": "额定效率",
+            "error": "请输入1至100之间的百分数点值，例如85.9；不要输入0.859或百分比格式。",
+            "prompt_title": "额定效率",
+            "prompt": "按电动机铭牌额定效率填写百分数点值，保留小数。"
+          },
+          "cooling_method": {
+            "column": "I",
+            "type": "list",
+            "formula1": "EV_MOTOR_V65_COOLING"
+          },
+          "max_nameplate_speed_rpm": {
+            "column": "L",
+            "type": "decimal",
+            "operator": "greaterThanOrEqual",
+            "formula1": "0",
+            "prompt": "永磁变频及电梯用填额定转速；GB18613表6填铭牌标称最高转速；其余按类别留空。"
+          }
+        },
+        "motor_cooling_enum": {
+          "column": "FA",
+          "first_row": 2,
+          "defined_name": "EV_MOTOR_V65_COOLING",
+          "values": [
+            "IC01",
+            "IC11",
+            "IC21",
+            "IC31",
+            "IC81W",
+            "IC611",
+            "IC616",
+            "IC511",
+            "IC516",
+            "IC411",
+            "IC86W",
+            "IC71W(IC3W7)",
+            "IC416",
+            "IC666"
+          ]
+        },
+        "motor_category_requirements": {
+          "first_row": 2,
+          "required_fields_column": "FB",
+          "speed_field_column": "FC",
+          "branch_column": "FD"
+        },
+        "compressor_enum": {
+          "category_name": "EV_COMPRESSOR_V66_CATEGORY",
+          "category_ids_name": "EV_COMPRESSOR_V66_CATEGORY_IDS",
+          "cooling_name": "EV_COMPRESSOR_V66_COOLING",
+          "label_column": "FG",
+          "id_column": "FH",
+          "required_column": "FI",
+          "power_column": "FJ"
+        }
+      },
+      "capacity_strategy": {
+        "mechanism": "Excel Table（TblPump，27 列 × 100 数据行）+ 语义式 Reader",
+        "user_action_required": "无：用户直接在表内继续填写或粘贴，Excel 原生 Table 自动扩展；软件端不询问行数、不逐 Sheet 扩容。",
+        "business_row_limit": "none",
+        "measured": {
+          "rows_3": {
+            "file_size_bytes": 398216,
+            "read_seconds": 0.04,
+            "peak_memory_bytes": 1677721,
+            "truncated": false
+          },
+          "rows_100": {
+            "file_size_bytes": 398629,
+            "read_seconds": 0.051,
+            "peak_memory_bytes": 1992294,
+            "truncated": false
+          },
+          "rows_1000": {
+            "file_size_bytes": 454144,
+            "read_seconds": 0.325,
+            "peak_memory_bytes": 11429478,
+            "truncated": false
+          },
+          "rows_10000": {
+            "file_size_bytes": 1001062,
+            "read_seconds": 3.075,
+            "peak_memory_bytes": 104543436,
+            "truncated": false
+          }
+        },
+        "measured_by": "tools/measure_v6_capacity.py"
+      },
+      "generated_by": "tools/build_v66_compressor_template.py",
+      "transformer_capacity_strategy": {
+        "mechanism": "Excel Table（TblTransformer，25列×100条预置数据）+统一Reader",
+        "user_action_required": "无：在表内继续输入，目标验证至少10,000行可用。",
+        "business_row_limit": "none"
+      },
+      "motor_capacity_strategy": {
+        "mechanism": "Excel Table（TblMotor，20列×100条预置数据）+统一Reader",
+        "user_action_required": "无。继续填写或粘贴，H、I、K、L列按F的类别填写。",
+        "business_row_limit": "none",
+        "manual_engine_validation": "NOT_RUN；Excel/WPS新增行、保存重开需单独记录。"
+      },
+      "compressor_capacity_strategy": {
+        "first_row": 4,
+        "last_row": 1048576,
+        "user_action_required": "无；输入列全列解锁并校验，继续填写或粘贴，无需扩展Table。",
+        "mechanism": "full-column-unlocked-input + full-range-validation + all-row-reader",
+        "quantity_sum": "SUM(D4:D1048576)",
+        "manual_engine_validation": "NOT_RUN"
+      }
     }
   ]
 }

@@ -30,11 +30,13 @@ CORE_RUNTIME_ASSETS = frozenset(
         "resources/standards/gb18613_2020.json",
         "resources/standards/gb30254_2024_candidate.json",
         "resources/standards/gb30253_2024_candidate.json",
+        "resources/standards/gb19153_2019_candidate.json",
         "resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
         "resources/templates/设备能效分析空白模板_重构版V6_1.xlsx",
         "resources/templates/设备能效分析空白模板_重构版V6_2.xlsx",
         "resources/templates/设备能效分析空白模板_重构版V6_4.xlsx",
         "resources/templates/设备能效分析空白模板_重构版V6_5.xlsx",
+        "resources/templates/设备能效分析空白模板_重构版V6_6.xlsx",
     }
 )
 _SOURCE_PATH_PARTS = frozenset(
