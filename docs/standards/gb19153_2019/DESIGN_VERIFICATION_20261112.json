@@ -28,7 +28,8 @@
   "mapping": {
     "before_sha256": "9a016a4ea6ce4c7ed534135ba3c4c6533144d2bdbaed8e8c5ecab16bc7f7b028",
     "after_sha256": "f26c7df16344618a7c006e5faef9e388a40c0a9f83835b118fe31d2117aa157d",
-    "business_body_unchanged": true
+    "business_body_unchanged": true,
+    "note": "设计初稿时历史检查；当前Stage B哈希见stage_b_recheck，不冒称重做表值核验"
   },
   "local_links_checked": 155,
   "broken_links": [],
@@ -52,5 +53,10 @@
     "D02": "A",
     "excel": "approved 18 columns"
   },
-  "stage_c_authorized": true
+  "stage_c_authorized": true,
+  "stage_b_recheck": {
+    "mapping_sha256": "8de363d68c30dbb8ffdcfb32a0ffc003019d66501458f8ab650ae23d173cb690",
+    "decision_sha256": "e95102e36d9ba868688dec56d00fa8ca8ebf6f66b53be129df940c7d8e8fdd00",
+    "source_workbook_unchanged": true
+  }
 }

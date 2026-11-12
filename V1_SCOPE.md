@@ -2,7 +2,7 @@
 
 ## 本轮授权设计：空压机Stage B（2026-11-12）
 
-Owner授权空压机接入设计与映射状态更新；[设计稿](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)完成，待两个业务决定。compressor保持POST_V1，未进入Stage C，不提升READY_FOR_IMPLEMENTATION、IMPLEMENTED或SUPPORTED，不启用正式产品入口，不改变发布范围。
+Owner已批准空压机D01直接等级、D02=A及18列Excel，并授权Stage B出口后继续Stage C。[设计](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)出口完成，候选成熟度READY_FOR_IMPLEMENTATION；正式发布scope仍POST_V1，不提升SUPPORTED，不正式发布。
 
 ## 本轮授权候选：永磁同步电动机产品接入（2026-11-11）
 

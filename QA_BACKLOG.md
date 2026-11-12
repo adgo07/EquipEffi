@@ -2,7 +2,7 @@
 
 ### QA-COMP-001：空压机Stage B设计及后续接入追踪（OPEN，2026-11-12）
 
-本轮为设计追踪项：六表事实核验沿用既有证据，映射入口已区分首次抽核与后续全量验收。设计稿已完成，待Owner决定比功率等级/整机条件输出边界（EQP-STD-GB19153-005）及无可用指标的终态口径（001）。决定清单、实施顺序及后续核心/Qt/Excel/历史记录测试见[接入设计](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)。尚未实施，不将旧表1—4评价器或Legacy Regression视为六表业务真值，不提升支持状态。
+Owner已批准D01正常直接等级、内部保留比功率评价范围，D02=A及统一18列Excel，并授权完成Stage B出口后继续Stage C。QA-COMP-001跟踪六表只读派生、精确查表、Application/Qt/Record/V6.6同核Excel与Windows候选。规则证据为GB19153-001—005、[决定落档](docs/standards/gb19153_2019/OWNER_DECISIONS.md)和[设计](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)。不覆盖源表/原模板/Golden；不以旧评价器结果作真值；独立验收前保持OPEN。
 
 ### QA-PMSM-001：GB 30253候选产品接入（OPEN，2026-11-11）
 
@@ -131,10 +131,3 @@ QA-MOTOR-006进展：e0cf17a实现默认三设备及支持投影；执行者233�
 QA-MOTOR-006审查补记（2026-10-28）：PR37@212d2a82的状态文档混用已发布与候选事实，入口及批次测试未隔离外部电机开关，旧V6.1审计异常未结构化处理。登记后最小修正文档、测试环境与关闭路径回归、审计异常、MSI版本来源及过时测试名；不改变业务规则或兼容开关语义。验证结果追加到既有电机实施记录。
 
 本轮定向结果：开关0联合35项/14子测试通过，未设置及1各17项/12子测试通过，真实exit0；未变更产品src/模板/标准资产。QA-MOTOR-006整体保持OPEN，由PR37后续新Head CI与候选交付验收收口。
-
-## QA-COMP-001：GB19153六表候选接入
-
-- 状态：OPEN；2026-11-12 Owner授权Stage B出口及Stage C。
-- 范围：六表只读派生、精确查表、同核Application/Qt/Record/V6.6 Excel、Windows候选验证；不覆盖源表/原模板/Golden。
-- 规则证据：STANDARD_ISSUES_REGISTER中的GB19153-001—005、docs/standards/gb19153_2019/OWNER_DECISIONS.md及INTEGRATION_DESIGN.md。
-- 业务影响：新候选直接等级；范围内无指标无法判定；既有设备及历史记录语义不变。针对测试和实施证据在Stage C记录，独立验收前不关闭。
