@@ -44,9 +44,13 @@
     "runtime unittest/compileall/smoke/performance: no runtime changes",
     "Windows build/UI acceptance: Stage B only"
   ],
-  "owner_decisions_pending": [
-    "D01",
-    "D02"
-  ],
-  "check_note": "Initial raw Git-blob versus checkout comparison flagged lock newline conversion; corrected by retaining both hashes and checking preflight worktree hash plus normalized Git content."
+  "owner_decisions_pending": [],
+  "check_note": "Initial raw Git-blob versus checkout comparison flagged lock newline conversion; corrected by retaining both hashes and checking preflight worktree hash plus normalized Git content.",
+  "stage_b_exit": "READY_FOR_IMPLEMENTATION",
+  "owner_decisions": {
+    "D01": "SPECIFIC_POWER_GRADE_ONLY; direct grade; no extra UI/Excel scope explanation",
+    "D02": "A",
+    "excel": "approved 18 columns"
+  },
+  "stage_c_authorized": true
 }

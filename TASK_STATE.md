@@ -1,10 +1,8 @@
 # 当前任务状态
 
-## 当前任务：空压机Stage B接入设计（2026-11-12）
+## 当前任务：空压机Stage C候选接入（2026-11-12）
 
-基于最新master `35b19815`（已合并PR #44高压、PR #45永磁候选接入），在隔离分支 `codex/compressor-design-20261112` 完成[空压机接入设计](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)。沿用既有全表独立核验和最终复验，不重复标准数值核验。已更新映射状态说明，新增EQP-STD-GB19153-005，两个业务决定集中在[Owner决策清单](docs/standards/gb19153_2019/OWNER_DECISIONS.md)。
-
-当前为设计稿完成、待决定，未进入Stage C；compressor仍POST_V1，未提升READY_FOR_IMPLEMENTATION或SUPPORTED。未修改运行代码、模板、源表值、中央锁或数据库；未构建/发布新包。Phase 8状态不变。以下电机段落保留当次执行历史，是否合并以本段最新主线事实为准。
+Owner已明确批准D01仅评价比功率、正常结果直接显示等级、D02=A及统一18列Excel，并授权Stage B出口后继续Stage C。决定落档见[OWNER_DECISIONS](docs/standards/gb19153_2019/OWNER_DECISIONS.md)，设计见[INTEGRATION_DESIGN](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)。Stage B出口完成，成熟度READY_FOR_IMPLEMENTATION；QA-COMP-001跟踪实现及独立验收。尚未完成Stage C、不提升SUPPORTED、不正式发布；Phase 8状态不变。
 
 ## 当前任务：永磁同步电动机产品接入候选（2026-11-11）
 

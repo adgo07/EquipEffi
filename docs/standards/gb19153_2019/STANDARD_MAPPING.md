@@ -6,7 +6,7 @@
 
 整理稿A.1始于2026-10-13。首次独立验收为有条件通过、抽核86处，这是历史阶段；后续[全量独立验收](../../governance/device_full_acceptance_20261013/compressor_boiler/ACCEPTANCE_REPORT.md)已覆盖空压机2502个数值、417个横杠位置及表7六个比值，[最终复验](../../governance/device_full_acceptance_20261013/reverification/final_compressor_boiler/FINAL_REVERIFICATION.md)确认数值、结构与映射事实通过。两标准合计3004项包含锅炉，不应全部计为空压机。主映射继续与[标准表值工作簿](data/GB19153_2019_标准表值.xlsx)配套使用，原文优先；本轮直接复用已有证据，不重复数值核验。
 
-当前Stage B为设计稿完成、待业务决定，未进入Stage C，不等于READY_FOR_IMPLEMENTATION或SUPPORTED。问题001—003保持PROVISIONAL、004保持RESOLVED；新增005记录产品输出范围待决策。事实核验通过不代表解释全部关闭。下文开工预检查、早期验收与修订段保留历史语境，当前状态以本入口及根台账为准。源工作簿、既有业务正文、Profile/Golden和生产实现均未改变。
+当前Stage B出口完成，D01直接显示等级、D02=A及18列Excel已经Owner批准，允许进入Stage C。见[决定落档](OWNER_DECISIONS.md)。001—003保持PROVISIONAL、004及005为RESOLVED；新决定不改变源表或附加条件原文。源工作簿与Approved Golden保持原样。
 
 ## 1. 身份与平台预检查
 
