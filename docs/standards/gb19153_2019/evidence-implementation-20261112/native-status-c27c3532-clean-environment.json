@@ -1,0 +1,85 @@
+{
+  "ready": true,
+  "desktop": {
+    "surface": "PySide6 Qt",
+    "available": true
+  },
+  "template": {
+    "template_id": "equipeffi.device-efficiency.V6.6",
+    "template_version": "V6.6",
+    "available": true,
+    "issues": []
+  },
+  "pump_profiles": {
+    "pump_water": {
+      "available": true,
+      "support_status": "SUPPORTED",
+      "pack_id": "gb19762_2025_water_v1"
+    },
+    "pump_chemical": {
+      "available": true,
+      "support_status": "SUPPORTED",
+      "pack_id": "gb19762_2025_chemical_v1"
+    }
+  },
+  "transformer": {
+    "available": true,
+    "support_status": "SUPPORTED",
+    "standard_code": "GB 20052-2024",
+    "name": "电力变压器能效限定值及能效等级",
+    "edition": "2024",
+    "effective_date": "2025-02-01",
+    "scope_text": "按GB 20052—2024适用型式选择类别，包含普通与新能源变压器。",
+    "notes": "本版本正式支持GB 20052-2024适用型式。"
+  },
+  "motor": {
+    "enabled": true,
+    "available": true,
+    "support_status": "SUPPORTED",
+    "standard_code": "GB 18613-2020",
+    "name": "电动机能效限定值及能效等级",
+    "edition": "2020",
+    "effective_date": "2021-06-01",
+    "scope_text": "按GB 18613-2020规定的电动机类别评价表1至表6。",
+    "notes": "本版本正式支持GB 18613-2020表1至表6。",
+    "standards": [
+      {
+        "standard_code": "GB 18613-2020",
+        "name": "电动机能效限定值及能效等级",
+        "edition": "2020",
+        "effective_date": "2021-06-01",
+        "support_status": "SUPPORTED",
+        "scope_text": "按GB 18613-2020规定的电动机类别评价表1至表6。",
+        "notes": "本版本正式支持GB 18613-2020表1至表6。"
+      },
+      {
+        "standard_code": "GB 30254-2024",
+        "name": "高压三相笼型异步电动机能效限定值及能效等级",
+        "edition": "2024",
+        "effective_date": "2025-09-01",
+        "support_status": "IMPLEMENTED",
+        "scope_text": "高压三相笼型异步电动机；表1至表6，50 Hz，3000/3300/6000/10000 V。",
+        "notes": "候选已实现，待独立验收；尚未正式支持。"
+      },
+      {
+        "standard_code": "GB 30253-2024",
+        "name": "永磁同步电动机能效限定值及能效等级",
+        "edition": "2024",
+        "effective_date": "2025-10-01",
+        "support_status": "IMPLEMENTED",
+        "scope_text": "一般用途或防爆用途、连续工作制的永磁同步电动机，含低压/高压异步起动、低压/高压变频调速和电梯用。",
+        "notes": "候选已实现，待独立验收。"
+      }
+    ]
+  },
+  "compressor": {
+    "available": true,
+    "support_status": "IMPLEMENTED",
+    "standard_code": "GB 19153-2019",
+    "name": "容积式空气压缩机能效限定值及能效等级",
+    "edition": "2019",
+    "effective_date": "2020-07-01",
+    "scope_text": "六类容积式空气压缩机，表1至表6。",
+    "notes": "已实现，待验收"
+  }
+}

@@ -71,7 +71,7 @@ class CompressorCoreTests(unittest.TestCase):
             (r.references["selected_power_kw"],
              r.references["selected_pressure_mpa"]),
             ("4",
-             "7/10"))
+             "0.7"))
         for v, reason in ((self.values(cool="LIQUID"), "SOURCE_DASH"), (self.values(3, "2.2", "0.25", cool="LIQUID"), "COOLING_UNRESOLVED"), (self.values(
                 4, "2.2", "0.7", cool="LIQUID"), "COOLING_UNRESOLVED"), (self.values(q="0.25"), "NO_LOOKUP_BRANCH"), (self.values(q="1.3"), "NO_LOOKUP_BRANCH")):
             self.assertEqual(

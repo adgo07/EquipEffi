@@ -1,0 +1,438 @@
+{
+  "task": "GB19153 Stage B exit and Stage C implementation candidate",
+  "generated_at": "2026-11-13T00:39:04.449735+08:00",
+  "repository": "https://github.com/adgo07/EquipEffi.git",
+  "branch": "codex/compressor-design-20261112",
+  "status": "IMPLEMENTED; final HEAD full gate is PR #46 live checks; GUI_INTERACTION_NOT_RUN",
+  "support_status": "IMPLEMENTED",
+  "formal_scope_status": "POST_V1",
+  "source_shas": {
+    "master_base": "35b198156586d8a032fdabc2e53793d192aa3abf",
+    "stage_b_exit": "34b556ad",
+    "core": "48df69c0",
+    "independent_business_review": "c27c3532c29a0efb0e6df32564ff659e7a05fb27",
+    "final_runtime": "e900492349bbe1b6a4a8faac9851a499738a8e6e",
+    "native_build": "cb0a08bedcbcbc8f04540ae00c0b835b736c9faf"
+  },
+  "central_preflight": {
+    "locked_sha": "ee5feb0cc34dbd99790500fadd0c4c932e202a20",
+    "active_guides_sha": "829853a943c421e0b9864d84f3d94970d2ddf688",
+    "frozen_contracts": [
+      "Architecture V2.1",
+      "Numeric Contract v1",
+      "Numeric Profiles v1",
+      "Numeric Conformance Vector v1"
+    ],
+    "must": [
+      "exact decimal ingress",
+      "full-value comparison",
+      "declared profile propagation",
+      "immutable snapshots",
+      "Qt/Excel same Application core"
+    ],
+    "must_not": [
+      "business epsilon",
+      "display feedback to comparison",
+      "Domain depends on UI/Excel/SQLite",
+      "second Excel business algorithm",
+      "overwrite source assets or historical records",
+      "upgrade locked baseline"
+    ],
+    "conflict_classification": "ALLOWED PROJECT DIFFERENCE: compressor exact rational lookup profile; no central contract gap",
+    "central_contract_change": false
+  },
+  "owner_decisions": {
+    "D01": "SPECIFIC_POWER_GRADE_ONLY; direct user grade; no extra normal-result explanation; accurate internal scope",
+    "D02": "A: missing indicator within range is INSUFFICIENT_DATA; input errors and execution failures remain separate",
+    "excel": "approved 18 columns in the existing unified workbook"
+  },
+  "standard_issues": {
+    "EQP-STD-GB19153-001": "PROVISIONAL",
+    "EQP-STD-GB19153-002": "PROVISIONAL",
+    "EQP-STD-GB19153-003": "PROVISIONAL",
+    "EQP-STD-GB19153-004": "RESOLVED",
+    "EQP-STD-GB19153-005": "RESOLVED"
+  },
+  "canonical": {
+    "source_workbook_sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+    "numeric_count": 2502,
+    "dash_count": 417,
+    "candidate_file_sha256": "8aa735c69b19a1ce97e69b1cbb4c522c4d3588253192bb3d0b6fd9e2afb433cc",
+    "numeric_source_reaudit": false
+  },
+  "independent_review": {
+    "core": {
+      "source_sha": "c27c3532",
+      "groups": 973,
+      "evaluations": 5165,
+      "assertions": 20177,
+      "fail": 0,
+      "error": 0,
+      "seconds": 121.146,
+      "reuse_basis": "Four business production files unchanged; see reused-business-production-files.json"
+    },
+    "application": {
+      "source_sha": "c27c3532",
+      "checks": 45,
+      "records": 13,
+      "fail": 0,
+      "error": 0,
+      "reuse_basis": "Compressor Application and business production files unchanged"
+    },
+    "excel": {
+      "source_sha": "e9004923",
+      "checks": 41,
+      "rows": 23,
+      "fail": 0,
+      "error": 0,
+      "artifact": "parent-excel-e900.json"
+    },
+    "native_archive": {
+      "source_sha": "cb0a08be",
+      "checks": 5,
+      "fail": 0,
+      "error": 0,
+      "entries": 203,
+      "all_member_crc_ok": true
+    }
+  },
+  "targeted_tests": [
+    {
+      "scope": "product including protection remediation",
+      "pass": 7,
+      "fail": 0,
+      "error": 0,
+      "skip": 0,
+      "seconds": 17.123,
+      "log": "outputs/compressor-implementation/capacity-fix-directed.log"
+    },
+    {
+      "scope": "far row 14/10003 inputs and new locked result cells",
+      "pass": 1,
+      "fail": 0,
+      "error": 0,
+      "skip": 0,
+      "seconds": 6.988,
+      "source": "observed tool execution; included in full CI"
+    },
+    {
+      "scope": "native build status directory/packaging regression",
+      "pass": 7,
+      "fail": 0,
+      "error": 0,
+      "skip": 0,
+      "seconds": 0.142,
+      "source_sha": "cb0a08be"
+    }
+  ],
+  "capacity_final": {
+    "source_sha": "e9004923",
+    "template_sha256": "6b85edccf4690d7878a277fd7648c77b20a4bfd277ebd80c9bd8127acf5587cc",
+    "runs": [
+      {
+        "rows": 2,
+        "seconds": 4.265,
+        "pass_count": 13,
+        "fail": 0,
+        "error": 0,
+        "skip": 0,
+        "input_sha256": "de1089f986471ab0a468bd32a929a5b7dc8007a0045698471ef26240791354e8",
+        "result_sha256": "BEB623047AC4F97EDBB8FA61608733DB850DE96F30C60559F9BBC5659F02225F",
+        "template_sha256": "6b85edccf4690d7878a277fd7648c77b20a4bfd277ebd80c9bd8127acf5587cc",
+        "protected_capacity_mechanically_verified": true,
+        "no_software_capacity_setting": true,
+        "persist": true,
+        "batch_records": 1,
+        "single_records": 0,
+        "row_evidence": 2,
+        "list_omits_row_evidence": true,
+        "full_detail_preserved": true,
+        "database_unchanged_by_reads": true
+      },
+      {
+        "rows": 100,
+        "seconds": 6.922,
+        "pass_count": 13,
+        "fail": 0,
+        "error": 0,
+        "skip": 0,
+        "input_sha256": "55b3c216c33fbac68767b6dbd41ce7aaa45d710c7b6eab4d373d5a8d8a8c1499",
+        "result_sha256": "0EF99ACB9A1F9FE9D0A1C17C2AA03E1EDF8F860958D3286119616C3E1945B9BD",
+        "template_sha256": "6b85edccf4690d7878a277fd7648c77b20a4bfd277ebd80c9bd8127acf5587cc",
+        "protected_capacity_mechanically_verified": true,
+        "no_software_capacity_setting": true,
+        "persist": true,
+        "batch_records": 1,
+        "single_records": 0,
+        "row_evidence": 100,
+        "list_omits_row_evidence": true,
+        "full_detail_preserved": true,
+        "database_unchanged_by_reads": true
+      },
+      {
+        "rows": 1000,
+        "seconds": 33.375,
+        "pass_count": 13,
+        "fail": 0,
+        "error": 0,
+        "skip": 0,
+        "input_sha256": "80b59af9f9174ecf942a7178baa138911a4993619677206d0d58d2bc362f53aa",
+        "result_sha256": "C4454EC32E9417BE179E31D293F245398F82473035696160A7BC7C8AE35ED76C",
+        "template_sha256": "6b85edccf4690d7878a277fd7648c77b20a4bfd277ebd80c9bd8127acf5587cc",
+        "protected_capacity_mechanically_verified": true,
+        "no_software_capacity_setting": true,
+        "persist": true,
+        "batch_records": 1,
+        "single_records": 0,
+        "row_evidence": 1000,
+        "list_omits_row_evidence": true,
+        "full_detail_preserved": true,
+        "database_unchanged_by_reads": true
+      },
+      {
+        "rows": 10000,
+        "seconds": 314.547,
+        "pass_count": 13,
+        "fail": 0,
+        "error": 0,
+        "skip": 0,
+        "input_sha256": "c55d9b8a4d2eb00e5b6ef6a7e6f48a42f90f687162557c5175b9a3fbe02dfe9a",
+        "result_sha256": "D564D972092BD9CD729502772D2FEDD1A37B41869C8501652FE686B785B6D9DE",
+        "template_sha256": "6b85edccf4690d7878a277fd7648c77b20a4bfd277ebd80c9bd8127acf5587cc",
+        "protected_capacity_mechanically_verified": true,
+        "no_software_capacity_setting": true,
+        "persist": true,
+        "batch_records": 1,
+        "single_records": 0,
+        "row_evidence": 10000,
+        "list_omits_row_evidence": true,
+        "full_detail_preserved": true,
+        "database_unchanged_by_reads": true
+      }
+    ],
+    "checks_per_run": 13,
+    "total_checks": 52,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "proof_boundary": "Software read/evaluate/write/persist plus protection/default-style/far-row mechanics verified. Actual Excel/WPS entry, dropdown, paste, save/reopen NOT_RUN."
+  },
+  "native_candidate": {
+    "build_source_sha": "cb0a08bedcbcbc8f04540ae00c0b835b736c9faf",
+    "runtime_source_sha": "e900492349bbe1b6a4a8faac9851a499738a8e6e",
+    "executable": "G:\\Python Project\\EquipEffi\\_compressor_design_20261112\\dist\\compressor-cb0a08be\\dist\\equipeffi-compressor-cb0a08be\\equipeffi-compressor-cb0a08be.exe",
+    "executable_sha256": "a8b238af4e1eadf587f7da5868a5d9112eff9664029f85c11ed44031d4e5a3a4",
+    "zip_path": "G:\\Python Project\\EquipEffi\\_compressor_design_20261112\\dist\\EquipEffi-compressor-cb0a08be.zip",
+    "zip_sha256": "750dc8429d2be35bea480f459e2cf48ac6da2a32f6114199b44d511490551db3",
+    "entries": 203,
+    "qt_capable": true,
+    "status_ready": true,
+    "real_window_pid": 45852,
+    "real_window_handle": 4919298,
+    "real_window_title": "设备能效分析工具 · 离心泵、变压器、电动机、空压机能效分析",
+    "window_startup_confirmed": true,
+    "gui_interaction": "NOT_RUN",
+    "data_policy": "isolated review LOCALAPPDATA; normal user data not used"
+  },
+  "native_status_probe": {
+    "artifact": "native-status-matrix-e9004923.json",
+    "observed_results": {
+      "repo_cwd_system_temp": "TimeoutExpired after 12.031 s",
+      "exe_cwd_system_temp": "TimeoutExpired after 12.031 s",
+      "repo_cwd_workspace_file": "exit0 in 0.922 s",
+      "exe_cwd_workspace_file": "exit0 in 0.875 s"
+    },
+    "conclusion": "Observed association with status output path; no single external policy or root cause proven. Build tool uses an auto-cleaned temporary directory inside current native output."
+  },
+  "ci": {
+    "last_completed_source_sha": "e900492349bbe1b6a4a8faac9851a499738a8e6e",
+    "last_completed_run_id": 43254403940,
+    "url": "https://github.com/adgo07/EquipEffi/actions/runs/43254403940",
+    "status": "FAILURE",
+    "whitespace": "SUCCESS",
+    "compileall": "SUCCESS",
+    "full_unittest": "FAILURE",
+    "package_resource_smoke": "SKIPPED_AFTER_TEST_FAILURE",
+    "full_suite_counts": {
+      "tests_run": 1330,
+      "pass": 1327,
+      "fail": 2,
+      "error": 1,
+      "skip": 0,
+      "seconds": 1611.725
+    },
+    "three_test_fixture_regressions": {
+      "scope": "Three actual e900 CI failures, fixed as stale test fixture/expectation only",
+      "pass": 3,
+      "fail": 0,
+      "error": 0,
+      "skip": 0,
+      "seconds": 11.343,
+      "runtime_src_changed": false,
+      "changes": [
+        "temporary zipapp fixture adds declared compressor canonical/V6.6 assets; exclusion assertions retained",
+        "mixed three-device input now asserts four summaries and explicit empty compressor summary; original quantities and grades unchanged",
+        "selected pressure expectation preserves approved decimal source lexeme 0.7 rather than rational 7/10"
+      ],
+      "log": "outputs/compressor-implementation/ci-fixture-three-tests.log"
+    },
+    "final_head_gate": "Live checks on PR #46; this document does not claim completion of the later HEAD run. Runtime and candidate package bytes are unchanged by the three test fixes and final documentation.",
+    "native_tool_delta": "cb0 build tool and targeted assertion; 7 targeted tests passed; no runtime src diff",
+    "related_modules_recheck": {
+      "scope": "Three affected modules: distribution asset audit, motor product flow, compressor core",
+      "tests_run": 25,
+      "pass": 25,
+      "fail": 0,
+      "error": 0,
+      "skip": 0,
+      "seconds": 106.962,
+      "log": "outputs/compressor-implementation/ci-fixture-related-modules.log",
+      "runtime_src_changed": false,
+      "presentation_mode": "Offscreen Qt automated tests where applicable; no native GUI interaction claimed"
+    }
+  },
+  "interim_local_full_suite": {
+    "status": "NOT_COMPLETED",
+    "reason": "Started during active implementation and stopped to freeze source; stale V6.5/resource/unsupported-fixture assertions fixed. Not used as final complete regression."
+  },
+  "not_run": [
+    "Actual Excel/WPS final V6.6 business operations",
+    "Final native Qt content/interaction acceptance",
+    "Second clean Windows machine",
+    "125% system DPI / multi-monitor validation",
+    "Stage D formal support acceptance",
+    "Formal release"
+  ],
+  "release_boundary": {
+    "merged_by_this_task": false,
+    "release_created_by_this_task": false,
+    "tag_created_by_this_task": false,
+    "support_promoted_to_SUPPORTED": false,
+    "phase8_pass_announced": false,
+    "database_migrations_changed": false
+  },
+  "evidence_files": [
+    {
+      "filename": "capacity-data-only-original-template.json",
+      "sha256": "93987f59c55cbc969fc064f2c6b46a4bb1c63b96970574623699bef7993e33f6"
+    },
+    {
+      "filename": "capacity-persist-e9004923.json",
+      "sha256": "1247784be3a4fa33865b8e615c3e364999163b2205223967d2ae8292803323a0"
+    },
+    {
+      "filename": "capacity-persist-original-template.json",
+      "sha256": "292603145d4b78efec72fd71bb006d9a33552e408110d5d3496714400e87d683"
+    },
+    {
+      "filename": "ci-fixture-related-modules.json",
+      "sha256": "b09945c4bf40fdf673e73a7ead4c163eb10df1dd77c73e498faab80f64f1e431"
+    },
+    {
+      "filename": "ci-fixture-three-regressions.json",
+      "sha256": "13ed7adf9942bd95f7e1c1dcdc05c67f402026adc0e993856f1bfa2bf31b971b"
+    },
+    {
+      "filename": "independent-application-c27c3532.json",
+      "sha256": "d3c57ee24dc802caed9a2f76bd69ddaf89403be47715d57c67ad33a61ca5fc36"
+    },
+    {
+      "filename": "independent-batch-count-c27c3532.json",
+      "sha256": "e45d7b8e098d411055942abb4682a67c07fc5c0bd8e6803e5f6f98790e329157"
+    },
+    {
+      "filename": "independent-core-c27c3532.json",
+      "sha256": "592e865c4ef36f00f3208ae3c39d17b5101fc3eff1dfdaeba6bdd400baa599c3"
+    },
+    {
+      "filename": "independent-excel-c27c3532.json",
+      "sha256": "af1a60c31cc371b70b34be27ed9d7a87db512c265adb9fd2391972e497220f01"
+    },
+    {
+      "filename": "native-build-c27c3532-superseded.json",
+      "sha256": "2e0c2bd417980cda37b5e41b9e7e918b094339a87d8d861bd0c259fd34c53699"
+    },
+    {
+      "filename": "native-build-cb0a08be.json",
+      "sha256": "1b4a2b1ae736a41ce49a2cb044cd59e2bfc7c5de757e1deb36429e4c46223ac9"
+    },
+    {
+      "filename": "native-build-e9004923-superseded.json",
+      "sha256": "8bd34aee1222662738babe5e471d8fa0e27abdd6a95127889bbafdeb4a715e35"
+    },
+    {
+      "filename": "native-excel-final-not-run-cb0a08be.json",
+      "sha256": "7d95af6bd59b215f02b6da16ffdc105cab5870adf36424fb1ddc4acba1bef1a9"
+    },
+    {
+      "filename": "native-excel-not-run-original.json",
+      "sha256": "782e31f503cd75225d2252bd1c2c2ab3bceda968f68166fd81ed6df5d6dd32ce"
+    },
+    {
+      "filename": "native-launch-cb0a08be.json",
+      "sha256": "ceaa8b4c09fd97da48bb96142d79fc655e6d5e84f4289c777a776546e6cfc84e"
+    },
+    {
+      "filename": "native-qt-final-not-run.json",
+      "sha256": "29217d710ec8adb9164a6823ea623096ada032cc3a9e3058d89859ccfcdcd634"
+    },
+    {
+      "filename": "native-status-c27c3532-clean-environment.json",
+      "sha256": "63d3cecef5a4a3776e2a36a8f3b1c75d8eb0a84937ab1f0bdb4d31382c883834"
+    },
+    {
+      "filename": "native-status-cb0a08be.json",
+      "sha256": "63d3cecef5a4a3776e2a36a8f3b1c75d8eb0a84937ab1f0bdb4d31382c883834"
+    },
+    {
+      "filename": "native-status-matrix-e9004923.json",
+      "sha256": "fbfceed888d46ce0b718ce829c4e39f8f590e1276b4649bfc7fc2995135e5b7d"
+    },
+    {
+      "filename": "parent-ci-e900-failure.json",
+      "sha256": "b06e9dcfc8e7724fc103b945e4eda8d2a9e62a57d8c8912cc86d0026256a7f96"
+    },
+    {
+      "filename": "parent-excel-e900.json",
+      "sha256": "cc3ca8c6f10d18db4923769bcef529117b4166e1a158a7a054de293252048b73"
+    },
+    {
+      "filename": "parent-native-package-cb0a08be.json",
+      "sha256": "7fad3917dd37a7c12185c679170a471bf0bd4851d4e095ec02502d758f05f711"
+    },
+    {
+      "filename": "protected-assets-03ff5ded.json",
+      "sha256": "447462c1768aad7274fb6eb911efc798708581d4d47fadcd2811fb967c6514e7"
+    },
+    {
+      "filename": "protected-assets-final-recheck.json",
+      "sha256": "62ae7323f1269b4d5710d4499c69c62273dfdbe143f7851fd8d108a2b88fd99b"
+    },
+    {
+      "filename": "reused-business-production-files.json",
+      "sha256": "230e0ab1bf9f8e83fd5c8e9cae8c7d604c3c846a278216f0ce2dc5595a6e6e59"
+    },
+    {
+      "filename": "template-capacity-blocker-c27c3532.json",
+      "sha256": "a31a36f8e244668d2590f907a32c1f3524b861b54384e58aee1d11bebb8f545f"
+    },
+    {
+      "filename": "template-capacity-remediation-e9004923.json",
+      "sha256": "9716e57e5521b05bc552d88fab67f902759e0ababe4b8d05746c8ede5bb079c0"
+    }
+  ],
+  "knowledge_capture": "none",
+  "local_review_launcher": {
+    "cmd": "outputs/compressor-implementation/launch-compressor-review.cmd",
+    "powershell": "outputs/compressor-implementation/launch-compressor-review.ps1",
+    "readme": "outputs/compressor-implementation/README_候选独立验收.md",
+    "data_policy": "isolated review directory only; existing review data retained; normal user data not used",
+    "powershell_syntax_check": "PASS",
+    "script_relaunch_test": "NOT_RUN; final candidate is already running",
+    "hashes": {
+      "launch-compressor-review.cmd": "dc0f9df67fa8ea2d4ca1242d1dc48beaee55d42bb807d813ea20367eaaa63df2",
+      "launch-compressor-review.ps1": "202f596795a95d87abcd85034ce477f7a4cdb990f1d011d5824b67f164290100",
+      "README_候选独立验收.md": "240e117e5df3d6d0445e0fa3c76fbfba66dad1df931a1338181f80f1e3ed29e4"
+    }
+  }
+}

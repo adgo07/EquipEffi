@@ -1,0 +1,50 @@
+[
+  {
+    "rows": 2,
+    "seconds": 2.438,
+    "pass_count": 5,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "input_sha256": "1dd70a78a9317096771041cf0b79d1d1b4692f13eb02dcd4194ebb5bb4ea089d",
+    "result_sha256": "9E1C42F7B417A60C24DAC86D98A0D240B417CDE97B46D8CD170953F150B67EC4",
+    "no_software_capacity_setting": true,
+    "persist": false
+  },
+  {
+    "rows": 100,
+    "seconds": 4.593,
+    "pass_count": 5,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "input_sha256": "560623b9d2187a80c72062353da2f77b70231c48305f387a52a042c7de6742e5",
+    "result_sha256": "66048741BD2348A3C4AE2D8E0EB56B173FF49154F63B75A0ED3A36132434A877",
+    "no_software_capacity_setting": true,
+    "persist": false
+  },
+  {
+    "rows": 1000,
+    "seconds": 22.766,
+    "pass_count": 5,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "input_sha256": "aeaa2bd04c5a48f1aa901ce6f10cb0c73f884fdc2f3b7198fe6c883e6ee004af",
+    "result_sha256": "5881D6DFA59BA0CA8F1175D0EA07A25F6132CB06FBFE01EE62D8FB9E2020EBA2",
+    "no_software_capacity_setting": true,
+    "persist": false
+  },
+  {
+    "rows": 10000,
+    "seconds": 215.391,
+    "pass_count": 5,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "input_sha256": "0c942174d06042e8b24e5398587b06da3ad3b63c46d9efa40ea1a0266d73194b",
+    "result_sha256": "5793B9B47490D82DF166DC094A25DC00DB0FF5992E5DAA6E5A90C55D63BDBCB2",
+    "no_software_capacity_setting": true,
+    "persist": false
+  }
+]
