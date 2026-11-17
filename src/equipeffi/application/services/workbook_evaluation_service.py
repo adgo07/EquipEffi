@@ -184,7 +184,7 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
             grade=outcome.grade, quantity=outcome.quantity, is_input_error=outcome.is_input_error,
             is_execution_error=outcome.is_execution_error, messages=list(outcome.messages))
         row_evidence.append(evidence)
-        outcome.derived["boiler_o_source"] = dict(row.values.get("excel_o_source") or {})
+        outcome.derived["boiler_o_source"] = snapshot_value(row.values.get("excel_o_source") or {})
         outcome.derived["minimum_limit"] = evidence.get("minimum_limit", {})
         return outcome
 

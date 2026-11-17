@@ -114,7 +114,7 @@ class BoilerProductTests(unittest.TestCase):
             source=save_input(d/"in.xlsx")
             service.evaluate_workbook(source,destination=d/"result.xlsx",persist=False)
             row=BoilerWorkbookReader().read(d/"result.xlsx").rows[0]
-            self.assertFalse(row.input_errors);self.assertEqual(row.values["design_limit_pct"],90)
+            self.assertFalse(row.input_errors);self.assertEqual(str(row.values["design_limit_pct"]),"90")
             for column,value in (("J4",7999),("F4","固定式水介质热水锅炉／生物质"),("H4",11)):
                 book=load_workbook(d/"result.xlsx");book["工业锅炉"][column]=value;book.save(d/"changed.xlsx")
                 self.assertTrue(BoilerWorkbookReader().read(d/"changed.xlsx").rows[0].input_errors,column)
@@ -133,6 +133,23 @@ class BoilerProductTests(unittest.TestCase):
             # 新补录75不再是旧输出，许可为设计输入。
             book["工业锅炉"]["O4"]=75;book.save(d/"replenished.xlsx")
             self.assertFalse(BoilerWorkbookReader().read(d/"replenished.xlsx").rows[0].input_errors)
+
+    def test_decimal_o_and_xml_lexical_input_are_preserved(self):
+        from xml.etree import ElementTree as ET
+        with TemporaryDirectory() as d:
+            d=Path(d);f=save_input(d/"decimal.xlsx",{4:LOW_ROW|dict(O=90.5,I=0.1,L=88.5)})
+            row=BoilerWorkbookReader().read(f).rows[0]
+            self.assertEqual(row.values["design_limit_pct"],"90.5")
+            self.assertEqual(row.values["rated_pressure_mpa"],"0.1")
+            service=create_batch_evaluation_service(paths=AppDataPaths(d/"data"))
+            result=service.evaluate_workbook(f,destination=d/"out.xlsx")
+            self.assertFalse(result.batch_record_error)
+            again=BoilerWorkbookReader().read(d/"out.xlsx").rows[0]
+            self.assertFalse(again.input_errors);self.assertEqual(again.values["design_limit_pct"],"90.5")
+            with OOXMLWorkbook(f) as a,OOXMLWorkbook(d/"out.xlsx") as b:
+                ns="{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+                cell=lambda book: ET.fromstring(book.archive.read(book._sheets["工业锅炉"])).find(f".//{ns}c[@r='O4']")
+                self.assertEqual(ET.tostring(cell(a)),ET.tostring(cell(b)))
 
     def test_missing_o_quantity_formula_and_execution_failure(self):
         with TemporaryDirectory() as d:

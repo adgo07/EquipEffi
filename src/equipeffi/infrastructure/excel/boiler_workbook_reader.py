@@ -29,6 +29,14 @@ class BoilerWorkbookReader:
         for number, raw in enumerate(grid[3:], 4):
             values = {key: _cell(raw, col) for col, key in COLUMNS.items()}
             raw_o = _cell(raw, "O")
+            # 元数据保留XML原始词法，整数90.0也不被通用Reader折成90。
+            for col in "DHIJKLO":
+                meta = metadata.get(f"{col}{number}")
+                if meta and meta.cell_type in ("", "n") and meta.raw_value and not meta.has_formula:
+                    if col == "O":
+                        raw_o = meta.raw_value
+                    else:
+                        values[COLUMNS[col]] = meta.raw_value
             low = is_low_biomass(categories.get(values["category_id"]), values["qnet_kj_kg"])
             errors = []
             # O只在低热值分支是输入；普通输出不参与行启用或输入验证。
