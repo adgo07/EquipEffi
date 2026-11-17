@@ -377,14 +377,14 @@ class DeviceAnalysisPage(QWidget):
     """在泵和变压器页面间切换；默认保留原有泵流程。"""
 
     def __init__(self, pump_page: QWidget, transformer_page: TransformerAnalysisPage,
-                 parent: QWidget | None = None, *, motor_page=None, compressor_page=None):
+                 parent: QWidget | None = None, *, motor_page=None, compressor_page=None, boiler_page=None):
         super().__init__(parent)
         self.pump_page = pump_page
         self.transformer_page = transformer_page
         layout = QVBoxLayout(self)
         page_gutter(layout)
         layout.addWidget(heading("新建分析"))
-        for page in (pump_page, transformer_page, motor_page, compressor_page):
+        for page in (pump_page, transformer_page, motor_page, compressor_page, boiler_page):
             if page is not None and hasattr(page, "heading"):
                 page.heading.hide()
                 page.layout().setContentsMargins(0, 0, 0, 0)
@@ -415,9 +415,13 @@ class DeviceAnalysisPage(QWidget):
         if compressor_page is not None:
             self.device_selector.addItem("空压机", "compressor")
             self.pages.addWidget(compressor_page)
+        self.boiler_page = boiler_page
+        if boiler_page is not None:
+            self.device_selector.addItem("工业锅炉", "boiler")
+            self.pages.addWidget(boiler_page)
         layout.addWidget(self.pages, 1)
         self._device_pages = {"centrifugal_pump": pump_page, "transformer": transformer_page,
-                              "motor_lv": motor_page, "compressor": compressor_page}
+                              "motor_lv": motor_page, "compressor": compressor_page, "boiler": boiler_page}
         self.device_selector.currentIndexChanged.connect(self._select_device_page)
         self.device_selector.setCurrentIndex(0)
 
@@ -434,6 +438,8 @@ class DeviceAnalysisPage(QWidget):
         if standard_code in {"GB 18613-2020", "GB 30254-2024", PMSM_STANDARD} and self.motor_page is not None:
             self.device_selector.setCurrentIndex(2)
             self.motor_page.select_standard(standard_code)
+        elif standard_code == "GB 24500-2020" and self.boiler_page is not None:
+            self.device_selector.setCurrentIndex(self.device_selector.findData("boiler"))
         elif standard_code == "GB 19153-2019" and self.compressor_page is not None:
             self.device_selector.setCurrentIndex(self.device_selector.findData("compressor"))
         elif standard_code == "GB 20052-2024":

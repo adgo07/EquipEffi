@@ -354,7 +354,7 @@ class TransformerWorkbookReader:
         validation = validate_v6_template(source, check_pump_sheet=False)
         if not validation.is_valid:
             raise OOXMLReadError(validation.message)
-        if validation.identity.get("template_version") not in {"V6.1", "V6.2", "V6.3", "V6.4", "V6.5", "V6.6"}:
+        if validation.identity.get("template_version") not in {"V6.1", "V6.2", "V6.3", "V6.4", "V6.5", "V6.6", "V6.7"}:
             raise OOXMLReadError(
                 "当前工作簿的变压器Sheet尚未接入；请使用V6.1至V6.6模板")
 
@@ -419,7 +419,7 @@ class MotorWorkbookReader:
             values_from_row = _motor_v64_values
             errors_from_cells = _motor_v64_source_input_errors_by_row
             key_for_column = lambda col: ("cooling_method",) if col == "I" else _motor_v63_value_key_for_column(col)
-        elif version in {"V6.5", "V6.6"}:
+        elif version in {"V6.5", "V6.6", "V6.7"}:
             contract = MOTOR_V65_SHEET_CONTRACT
             values_from_row = _motor_v65_values
             errors_from_cells = _motor_v64_source_input_errors_by_row
@@ -451,17 +451,17 @@ class MotorWorkbookReader:
             values = values_from_row(raw)
             source_errors = list(source_errors_by_row.get(row_number, ()))
             category = values.get("category_id")
-            source_values = dict(values) if version in {"V6.5", "V6.6"} and category in BRANCHES else None
+            source_values = dict(values) if version in {"V6.5", "V6.6", "V6.7"} and category in BRANCHES else None
             supplied_category = _cell(raw, "F")
-            if version not in {"V6.5", "V6.6"} and _MOTOR_V65_CATEGORY_IDS.get(supplied_category) in BRANCHES:
+            if version not in {"V6.5", "V6.6", "V6.7"} and _MOTOR_V65_CATEGORY_IDS.get(supplied_category) in BRANCHES:
                 source_errors.append(("F", f"F{row_number}永磁电动机类别需要V6.5模板。"))
             elif version in {"V6.2", "V6.3"} and category not in (None, "") and category not in {c.category_id for c in MOTOR_CATEGORIES}:
                 source_errors.append(("F", f"F{row_number}类别不属于该模板契约；高压电动机请使用V6.4明确选择。"))
-            elif version in {"V6.5", "V6.6"} and category not in (None, "") and supplied_category not in _MOTOR_V65_CATEGORY_IDS:
+            elif version in {"V6.5", "V6.6", "V6.7"} and category not in (None, "") and supplied_category not in _MOTOR_V65_CATEGORY_IDS:
                 source_errors.append(("F", f"F{row_number}类别不属于V6.5模板契约，请从类别列表选择。"))
-            branch = BRANCHES.get(category) if version in {"V6.5", "V6.6"} else None
+            branch = BRANCHES.get(category) if version in {"V6.5", "V6.6", "V6.7"} else None
             cooling_allowed = category == HV_CATEGORY_ID or branch is not None and branch.high_voltage
-            if (version in {"V6.4", "V6.5", "V6.6"} and not cooling_allowed
+            if (version in {"V6.4", "V6.5", "V6.6", "V6.7"} and not cooling_allowed
                     and _cell(raw, "I") not in (None, "")):
                 source_errors.append(("I", f"I{row_number}冷却方式仅用于明确高压类别；低压类别请留空。"))
             if (version == "V6.3" and _cell(raw, "I") not in (None, "")
@@ -472,10 +472,10 @@ class MotorWorkbookReader:
                     "若该值是旧版效率口径信息，请改用V6.2模板导入后再整理。"))
             for column, _message in source_errors:
                 for key in key_for_column(column):
-                    if version not in {"V6.5", "V6.6"} or key in values:
+                    if version not in {"V6.5", "V6.6", "V6.7"} or key in values:
                         values[key] = ""
             blank_values = values
-            if version in {"V6.3", "V6.4", "V6.5", "V6.6"}:
+            if version in {"V6.3", "V6.4", "V6.5", "V6.6", "V6.7"}:
                 blank_values = {
                     key: value for key, value in values.items()
                     if key not in {"efficiency_basis_status", "input_contract_revision"}
@@ -536,6 +536,9 @@ class UnifiedWorkbookReader(UnifiedWorkbookReaderPort):
             elif sheet.get("sheet_id") == "transformer":
                 sheets[name] = self._transformer_reader.read(
                     source, template_identity=identity)
+            elif sheet.get("sheet_id") == "industrial_boiler":
+                from .boiler_workbook_reader import BoilerWorkbookReader
+                sheets[name] = BoilerWorkbookReader().read(source, template_identity=identity)
             elif sheet.get("sheet_id") == "compressor":
                 sheets[name] = CompressorWorkbookReader().read(source, template_identity=identity)
             elif sheet.get("sheet_id") == "motor":
@@ -544,12 +547,17 @@ class UnifiedWorkbookReader(UnifiedWorkbookReaderPort):
         if not sheets:
             raise OOXMLReadError("工作簿没有可评价的已接通Sheet")
         messages = ()
-        if version != "V6.6" and "空压机" in unprocessed:
+        if version not in {"V6.6", "V6.7"} and "空压机" in unprocessed:
             with OOXMLWorkbook(source) as book:
                 rows = book.rows("空压机")
                 active = any(any(_cell(row, col) not in (None, "") for col in ("B","C","D","E","F","G","H","I","J","K","P","Q")) for row in rows[3:])
             if active:
                 messages = ("空压机尚未评价，请使用V6.6模板填写空压机数据。",)
+        if version != "V6.7" and "工业锅炉" in unprocessed:
+            with OOXMLWorkbook(source) as book:
+                active = any(any(_cell(row, col) not in (None, "") for col in "BCDEFGHIJKLQR") for row in book.rows("工业锅炉")[3:])
+            if active:
+                messages += ("旧锅炉字段语义不同，工业锅炉尚未评价，请使用V6.7模板重新填写。",)
         return UnifiedSourceWorkbook(
             path=str(source), sheets=sheets, template_identity=identity,
             unprocessed_sheets=tuple(unprocessed), compatibility_messages=messages)
@@ -561,7 +569,7 @@ class CompressorWorkbookReader:
         validation = validate_v6_template(source, check_pump_sheet=False)
         if not validation.is_valid:
             raise OOXMLReadError(validation.message)
-        if validation.identity.get("template_version") != "V6.6":
+        if validation.identity.get("template_version") not in {"V6.6", "V6.7"}:
             raise OOXMLReadError("空压机批量评价请使用V6.6模板")
         with OOXMLWorkbook(source) as book:
             grid = book.rows("空压机")

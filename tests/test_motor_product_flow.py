@@ -121,8 +121,8 @@ class MotorProductFlowTests(unittest.TestCase):
             destination = Path(directory) / "result.xlsx"
             batch.template_resource.download_to(source)
             workbook = load_workbook(source)
-            workbook["工业锅炉"]["B4"] = "保留未接通设备"
-            workbook["工业锅炉"]["D4"] = 1
+            workbook["热处理设备"]["B4"] = "保留未接通设备"
+            workbook["热处理设备"]["D4"] = 1
             workbook.save(source)
             workbook.close()
             with self.assertRaisesRegex(ValueError, "没有可评价数据"):
@@ -163,7 +163,7 @@ class MotorProductFlowTests(unittest.TestCase):
             record = SqliteBatchRecordRepository(paths.records_db).load_batch_record(result.batch_record_id)
             self.assertEqual(record.standard_code, "MULTI")
             self.assertEqual({sheet["sheet_name"] for sheet in record.summary["sheets"]},
-                             {"离心泵", "变压器", "电动机", "空压机"})
+                             {"离心泵", "变压器", "电动机", "空压机", "工业锅炉"})
             compressor = next(sheet for sheet in record.summary["sheets"] if sheet["sheet_name"] == "空压机")
             self.assertEqual(compressor["data_row_count"], 0)
             self.assertEqual(compressor["total_quantity"], 0)

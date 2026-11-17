@@ -42,3 +42,6 @@ STANDARD_ISSUES_REGISTER.md text eol=lf
 tests/fixtures/numeric/conformance_vector_v1.schema.json -text
 
 src/equipeffi/resources/standards/gb19153_2019_candidate.json text eol=lf
+
+# 锅炉派生包的文件身份不随checkout换行变化。
+src/equipeffi/resources/standards/gb24500_2020_candidate.json text eol=lf

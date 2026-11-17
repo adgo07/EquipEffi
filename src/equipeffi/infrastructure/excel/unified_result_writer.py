@@ -822,10 +822,12 @@ class UnifiedResultWorkbookWriter:
                         f"工作表「{name}」尚未接通，不能写入结果")
                 continue
             supported_sheet_ids = {"centrifugal_pump", "transformer"}
-            if version in {"V6.2", "V6.3", "V6.4", "V6.5", "V6.6"}:
+            if version in {"V6.2", "V6.3", "V6.4", "V6.5", "V6.6", "V6.7"}:
                 supported_sheet_ids.add("motor")
-            if version == "V6.6":
+            if version in {"V6.6", "V6.7"}:
                 supported_sheet_ids.add("compressor")
+            if version == "V6.7":
+                supported_sheet_ids.add("industrial_boiler")
             if contract.get("sheet_id") not in supported_sheet_ids:
                 if outcomes:
                     raise ResultWorkbookWriteError(
@@ -881,7 +883,7 @@ class UnifiedResultWorkbookWriter:
                     for row_number, outcome in outcomes.items()
                     for column, payload in _transformer_cell_payloads(outcome).items()
                 }
-            elif name == MOTOR_SHEET and version in {"V6.2", "V6.3", "V6.4", "V6.5", "V6.6"}:
+            elif name == MOTOR_SHEET and version in {"V6.2", "V6.3", "V6.4", "V6.5", "V6.6", "V6.7"}:
                 threshold_style_map = _motor_threshold_style_map(
                     by_part["xl/styles.xml"], by_part[part])
                 result_xml = patch_motor_sheet_xml(
@@ -893,7 +895,13 @@ class UnifiedResultWorkbookWriter:
                     for row_number, outcome in outcomes.items()
                     for column, payload in _motor_cell_payloads(outcome).items()
                 }
-            elif name == "空压机" and version == "V6.6":
+            elif name == "工业锅炉" and version == "V6.7":
+                result_xml = patch_boiler_sheet_xml(source_xml, outcomes)
+                # 条件输入O在空白行保留，不能以清旧输出名义删除设计输入。
+                result_columns = ("M", "N", "P", "S")
+                expected = {f"{column}{number}": str(payload[1]) for number, outcome in outcomes.items()
+                            for column, payload in boiler_cell_payloads(outcome).items()}
+            elif name == "空压机" and version in {"V6.6", "V6.7"}:
                 result_xml = patch_compressor_sheet_xml(source_xml, outcomes)
                 result_columns = ("L", "M", "N", "O", "R")
                 expected = {f"{column}{number}": str(payload[1]) for number, outcome in outcomes.items()
@@ -905,7 +913,7 @@ class UnifiedResultWorkbookWriter:
             try:
                 assert_input_preserved(
                     source_xml, result_xml,
-                    result_columns=result_columns,
+                    result_columns=("M", "N", "O", "P", "S") if name == "工业锅炉" else result_columns,
                     row_numbers=outcome_rows | blank_rows)
                 assert_result_payloads(result_xml, expected)
                 _assert_result_cells_cleared(result_xml, cleared_references)
@@ -1022,6 +1030,66 @@ def patch_compressor_sheet_xml(xml, outcomes):
                 position = cell.element.attribute("r").end
                 style_edits.append((position, position, f' s="{target}"'))
     result = result_patch.apply(sorted(style_edits))
+    assert_non_main_elements_preserved(xml, result)
+    assert_unique_references(result)
+    assert_main_namespace_semantics(result)
+    return result
+
+
+def boiler_cell_payloads(outcome):
+    from .boiler_row_source import encode_source
+    source = dict(outcome.derived.get("boiler_o_source") or {})
+    is_design = source.get("o_kind") in {"DESIGN_INPUT", "SOURCE_AMBIGUOUS"}
+    displayable = not outcome.is_input_error and not outcome.is_execution_error
+    payload = {"P": ("inlineStr", outcome.conclusion)}
+    for col, key in (("M", "grade_1"), ("N", "grade_2"), ("O", "grade_3")):
+        threshold = (outcome.thresholds or {}).get(key, {})
+        text = str(threshold.get("value", "")) if displayable else ""
+        if col == "O" and is_design:
+            # 原输入O连词法、类型与样式一并保留；结果来源标记另存S。
+            text = str(source.get("original_o") or "")
+        else:
+            payload[col] = ("n", text) if text else ("inlineStr", "")
+        if col == "O":
+            source["o_output"] = text
+    remarks = "；".join(outcome.messages)
+    payload["S"] = ("inlineStr", remarks + ("\n" if remarks else "") + encode_source(source))
+    return payload
+
+
+def patch_boiler_sheet_xml(xml, outcomes):
+    patch = WorksheetPatch(xml)
+    if patch.duplicate_references() or any(n not in patch.rows for n in outcomes):
+        raise ResultWorkbookWriteError("锅炉输入行结构不能安全写入")
+    plan = plan_namespace(xml)
+    edits = []
+    for n, outcome in sorted(outcomes.items()):
+        edits.extend(_row_edits(patch, n, boiler_cell_payloads(outcome), plan))
+    result = _normalise_main_namespace(patch.apply(sorted(edits)))
+    # 新增远行的结果格继承各结果列锁定样式；O沿用条件输入的解锁列样式。
+    root = ElementTree.fromstring(xml)
+    ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+    defaults = {}
+    for col in root.findall(f"{ns}cols/{ns}col"):
+        for n in range(int(col.get("min")), min(19,int(col.get("max")))+1):
+            defaults[chr(64+n)] = col.get("style", "0")
+    after = WorksheetPatch(result)
+    edits = []
+    for n, outcome in outcomes.items():
+        output_cols = boiler_cell_payloads(outcome)
+        for cell in after.rows[n].cells:
+            letter = re.sub(r"[0-9]", "", cell.reference or "")
+            if letter not in output_cols:
+                continue
+            previous = next((c for c in patch.rows[n].cells if c.reference == cell.reference), None)
+            style = previous.style if previous and previous.style is not None else defaults.get(letter, "0")
+            attr = cell.element.attribute("s")
+            if attr:
+                edits.append((attr.start, attr.end, f's={attr.quote}{style}{attr.quote}'))
+            else:
+                pos = cell.element.attribute("r").end
+                edits.append((pos, pos, f' s="{style}"'))
+    result = after.apply(sorted(edits))
     assert_non_main_elements_preserved(xml, result)
     assert_unique_references(result)
     assert_main_namespace_semantics(result)

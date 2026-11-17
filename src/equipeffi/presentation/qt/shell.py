@@ -25,7 +25,7 @@ from .style import STYLE, brand, icon
 
 class MainWindow(QMainWindow):
     def __init__(self, settings: SettingsService, analysis=None, *,
-                 batch=None, transformer=None, motor=None, compressor=None, workspace_id: str | None = None, app_version: str = "",
+                 batch=None, transformer=None, motor=None, compressor=None, boiler=None, workspace_id: str | None = None, app_version: str = "",
                  data_location=None, external_launch_context=None):
         super().__init__()
         self.settings = settings
@@ -47,6 +47,8 @@ class MainWindow(QMainWindow):
                 devices.append("电动机")
             devices.append("空压机")
             self.setWindowTitle("设备能效分析工具 · " + "、".join(devices) + "能效分析")
+        if boiler is not None:
+            self.setWindowTitle(self.windowTitle().removesuffix("能效分析") + "、锅炉能效分析")
         self.resize(1280, 800)
         self._settings_from_home = False
         self._first_show = True
@@ -99,7 +101,7 @@ class MainWindow(QMainWindow):
         if self.home_page is not None and batch is None:
             self.home_page.task_buttons[2].setEnabled(False)
             self.home_page.task_buttons[2].setToolTip("当前构建未装配表格导入服务。")
-        self.standards_page = (StandardsPage(analysis, self, transformer=transformer, motor=motor, compressor=compressor)
+        self.standards_page = (StandardsPage(analysis, self, transformer=transformer, motor=motor, compressor=compressor, boiler=boiler)
                                if analysis is not None else None)
         # Phase 7：普通流程没有草稿概念，分析页不接收 workspace_id。
         self.analysis_page = AnalysisPage(analysis, navigator=self) if analysis is not None else None
@@ -109,9 +111,11 @@ class MainWindow(QMainWindow):
         self.motor_analysis_page = MotorAnalysisPage(motor, navigator=self) if motor is not None else None
         from .pages.compressor_analysis import CompressorAnalysisPage
         self.compressor_analysis_page = CompressorAnalysisPage(compressor, navigator=self) if compressor is not None else None
+        from .pages.boiler_analysis import BoilerAnalysisPage
+        self.boiler_analysis_page = BoilerAnalysisPage(boiler, navigator=self) if boiler is not None else None
         self.device_analysis_page = (
             DeviceAnalysisPage(self.analysis_page, self.transformer_analysis_page,
-                               motor_page=self.motor_analysis_page, compressor_page=self.compressor_analysis_page)
+                               motor_page=self.motor_analysis_page, compressor_page=self.compressor_analysis_page, boiler_page=self.boiler_analysis_page)
             if self.analysis_page is not None and self.transformer_analysis_page is not None
             else None)
         # Phase 8：批量评价页只在装配了批量服务时构建（Excel 仍是 adapter 表面）。
@@ -129,7 +133,7 @@ class MainWindow(QMainWindow):
             if analysis is not None else None)
         self.settings_page = SettingsPage(settings, analysis, app_version=self.app_version,
                                          data_location=data_location, navigator=self,
-                                         transformer=transformer, motor=motor, compressor=compressor)
+                                         transformer=transformer, motor=motor, compressor=compressor, boiler=boiler)
 
         self._page_widgets = {
             "首页": self.home_page,
@@ -215,6 +219,8 @@ class MainWindow(QMainWindow):
                 motor_service = self.motor_analysis_page.service
                 overviews = getattr(motor_service, "standard_overviews", lambda: [motor_service.standard_overview()])()
                 available.update(overview["standard_code"] for overview in overviews)
+            if self.boiler_analysis_page is not None:
+                available.add("GB 24500-2020")
             if self.compressor_analysis_page is not None:
                 available.add(self.compressor_analysis_page.service.standard_overview()["standard_code"])
             if standard_code not in available:

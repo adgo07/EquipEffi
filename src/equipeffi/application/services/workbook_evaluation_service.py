@@ -44,6 +44,7 @@ class WorkbookEvaluationSummary(BatchEvaluationSummary):
     def as_dict(self):
         return super().as_dict() | {
             "schema_version": 2, "sheets": snapshot_value(self.sheets),
+            "boiler_minimum_limit": getattr(self, "boiler_minimum_limit", {}),
             "unprocessed_sheets": list(self.unprocessed_sheets),
             "compatibility_messages": list(self.compatibility_messages)}
 
@@ -51,14 +52,16 @@ class WorkbookEvaluationSummary(BatchEvaluationSummary):
 class WorkbookEvaluationService(PumpBatchEvaluationService):
     """保留泵逐行评价行为；变压器通过独立的同核应用服务评价。"""
 
-    def __init__(self, analysis, transformer, *, motor=None, compressor=None, **kwargs):
+    def __init__(self, analysis, transformer, *, motor=None, compressor=None, boiler=None, **kwargs):
         super().__init__(analysis, **kwargs)
         self.transformer = transformer
         self.motor = motor
         self.compressor = compressor
+        self.boiler = boiler
         self._devices = {
             "离心泵": ("centrifugal_pump", "GB 19762-2025", "离心泵"),
             "变压器": ("transformer", "GB 20052-2024", "transformer"),
+            "工业锅炉": ("industrial_boiler", "GB 24500-2020", "boiler"),
             "空压机": ("compressor", "GB 19153-2019", "compressor"),
             "电动机": ("motor", "GB 18613-2020", "motor_lv"),
         }
@@ -75,6 +78,7 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         total = WorkbookEvaluationSummary(unprocessed_sheets=workbook.unprocessed_sheets, compatibility_messages=workbook.compatibility_messages)
         by_sheet = {}
         pmsm_evidence = [] if persist and self.batch_repository is not None else None
+        boiler_evidence = []
         compressor_evidence = [] if persist and self.batch_repository is not None else None
         for name, sheet in workbook.sheets.items():
             summary = BatchEvaluationSummary(data_row_count=len(sheet.rows))
@@ -88,6 +92,8 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
                 elif name == "变压器":
                     rows[row.row_number] = self._transformer_row(
                         row, as_of, summary, references)
+                elif name == "工业锅炉":
+                    rows[row.row_number] = self._boiler_row(row, as_of, summary, references, boiler_evidence)
                 elif name == "空压机":
                     rows[row.row_number] = self._compressor_row(row, as_of, summary, references, compressor_evidence)
                 elif name == "电动机":
@@ -143,6 +149,15 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
                 total.sheets[-1]["unidentified_category_rows"] = requested_codes.count("")
                 device_types = {HV_STANDARD: "motor_hv", "GB 18613-2020": "motor_lv", PMSM_STANDARD: "motor_pmsm"}
                 total.sheets[-1]["device_type"] = device_types[codes[0]] if len(codes) == 1 else "MULTI" if codes else "motor"
+        total.boiler_row_evidence = boiler_evidence
+        total.boiler_minimum_limit = {"rows": {}, "quantities": {}}
+        for item in boiler_evidence:
+            limit = item.get("minimum_limit")
+            if limit and not item.get("is_input_error") and not item.get("is_execution_error"):
+                label = "达到限定值" if limit["met"] else "未达到限定值"
+                for key, amount in (("rows", 1), ("quantities", item["quantity"])):
+                    target = total.boiler_minimum_limit[key]
+                    target[label] = target.get(label, 0) + amount
         destination = destination or self.writer.default_destination(source)
         result_path = self.writer.write(source, by_sheet, Path(destination),
                                         batch_summary=total.as_dict())
@@ -159,6 +174,19 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
             except Exception as error:
                 result.batch_record_error = f"{type(error).__name__}: {error}"
         return result
+
+    def _boiler_row(self, row, as_of, summary, references, row_evidence):
+        from .boiler_analysis_service import BoilerAnalysisRequest
+        evidence = {"row": row.row_number, "raw_input": snapshot_value(row.source_values or row.values)}
+        outcome = self._device_row(row, as_of, summary, references, self.boiler,
+                                   BoilerAnalysisRequest, lambda trace: [], evidence=evidence)
+        evidence.update(evaluation_status=outcome.evaluation_status, conclusion=outcome.conclusion,
+            grade=outcome.grade, quantity=outcome.quantity, is_input_error=outcome.is_input_error,
+            is_execution_error=outcome.is_execution_error, messages=list(outcome.messages))
+        row_evidence.append(evidence)
+        outcome.derived["boiler_o_source"] = snapshot_value(row.values.get("excel_o_source") or {})
+        outcome.derived["minimum_limit"] = evidence.get("minimum_limit", {})
+        return outcome
 
     def _compressor_row(self, row, as_of, summary, references, row_evidence=None):
         from .compressor_analysis_service import CompressorAnalysisRequest
@@ -224,6 +252,9 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
             return BatchRowOutcome(row.row_number, False, "执行失败", None, None,
                                    messages=(reason,), quantity=quantity, is_execution_error=True)
         status = result.evaluation_status
+        if evidence is not None and result.standard_code == "GB 24500-2020":
+            evidence.update(normalized_input=result.raw_values, thresholds=result.thresholds,
+                minimum_limit=result.minimum_limit, references=result.references)
         if evidence is not None:
             evidence["reason_codes"] = list(result.reason_codes)
         if status == "INVALID_INPUT":
@@ -250,6 +281,10 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
             result, "finalizable",
             status in {"SUCCESS", "OUT_OF_STANDARD_SCOPE", "INSUFFICIENT_DATA"})
         reference = result.references
+        if reference.get("standard_code") == "GB 24500-2020":
+            reference = {key: reference[key] for key in ("standard_code", "standard_year", "canonical_version", "canonical_package_hash",
+                "pack_id", "pack_sha256", "numeric_contract_version", "numeric_profile_id", "calculator_version", "rule_version",
+                "result_contract_version", "source_identity", "assessment_scope")}
         if reference.get("standard_code") == "GB 19153-2019":
             if evidence is not None:
                 evidence.update(normalized_input=result.raw_values, thresholds=result.thresholds,
@@ -288,6 +323,8 @@ class WorkbookEvaluationService(PumpBatchEvaluationService):
         reference = refs[0] if len(refs) == 1 else {}
         mixed = len(active) > 1 or bool(single and single["standard_code"] == "MULTI")
         payload = summary.as_dict() | {"template": dict(identity)}
+        if getattr(summary, "boiler_row_evidence", None):
+            payload["boiler_row_evidence"] = summary.boiler_row_evidence
         if pmsm_evidence:
             payload["motor_pmsm_row_evidence"] = pmsm_evidence
         if compressor_evidence:

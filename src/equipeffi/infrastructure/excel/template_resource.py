@@ -156,6 +156,11 @@ V66_TEMPLATE_ENTRY = next(entry for entry in TEMPLATE_MANIFEST["templates"] if e
 V66_TEMPLATE_IDENTITY = {key: str(V66_TEMPLATE_ENTRY.get(key, "")) for key in V65_TEMPLATE_IDENTITY}
 DEFAULT_V66_TEMPLATE = V66_TEMPLATE_IDENTITY["filename"]
 COMPRESSOR_SHEET_CONTRACT = next(sheet for sheet in V66_TEMPLATE_ENTRY["sheets"] if sheet.get("sheet_id") == "compressor")
+V67_TEMPLATE_ENTRY = next(entry for entry in TEMPLATE_MANIFEST["templates"] if entry.get("template_version") == "V6.7")
+V67_TEMPLATE_IDENTITY = {key: str(V67_TEMPLATE_ENTRY.get(key, "")) for key in V66_TEMPLATE_IDENTITY}
+DEFAULT_V67_TEMPLATE = V67_TEMPLATE_IDENTITY["filename"]
+BOILER_SHEET_CONTRACT = next(sheet for sheet in V67_TEMPLATE_ENTRY["sheets"] if sheet.get("sheet_id") == "industrial_boiler")
+
 
 MOTOR_V65_SHEET_CONTRACT = next(sheet for sheet in V65_TEMPLATE_ENTRY["sheets"] if sheet.get("sheet_id") == "motor")
 PUMP_SHEET_CONTRACT: dict[str, Any] = next(
@@ -1310,6 +1315,8 @@ def validate_v6_template(path: Path, *, check_pump_sheet: bool = True
             path, check_pump_sheet=check_pump_sheet)
     if version == "V6.4":
         return V64MotorTemplateResource().validate(path, check_pump_sheet=check_pump_sheet)
+    if version == "V6.7":
+        return V67BoilerTemplateResource().validate(path, check_pump_sheet=check_pump_sheet)
     if version == "V6.6":
         return V66CompressorTemplateResource().validate(path, check_pump_sheet=check_pump_sheet)
     if version == "V6.5":
@@ -1474,14 +1481,17 @@ class V66CompressorTemplateResource(V65MotorTemplateResource):
         return dict(V66_TEMPLATE_IDENTITY)
 
     def validate(self, path=None, *, check_pump_sheet=True):
+        return self._validate_compressor(path, check_pump_sheet, V66_TEMPLATE_ENTRY)
+
+    def _validate_compressor(self, path, check_pump_sheet, entry):
         from dataclasses import replace
         from ...domain.devices.compressor.input_contract import CONTRACT, REVISION
         from ...domain.devices.motor.product_input_contract import MOTOR_PRODUCT_INPUT_CONTRACT
         from ...domain.devices.motor_hv.input_contract import COOLING_CODES as hv_codes
         from ...domain.devices.motor_pmsm.input_contract import COOLING_CODES as pmsm_codes
-        motor = next(s for s in V66_TEMPLATE_ENTRY["sheets"] if s["sheet_id"] == "motor")
+        motor = next(s for s in entry["sheets"] if s["sheet_id"] == "motor")
         cooling = tuple(dict.fromkeys((*hv_codes, *pmsm_codes)))
-        base = self._validate_motor(path, check_pump_sheet, V66_TEMPLATE_ENTRY, motor, MOTOR_PRODUCT_INPUT_CONTRACT, cooling)
+        base = self._validate_motor(path, check_pump_sheet, entry, motor, MOTOR_PRODUCT_INPUT_CONTRACT, cooling)
         if not base.is_valid:
             return base
         candidate = Path(path) if path is not None else self.template_path
@@ -1580,3 +1590,89 @@ def _compressor_capacity_issues(path):
     if total is None or total.findtext(f"{ns}f") != "SUM(D4:D1048576)":
         issues.append("空压机便利数量合计未覆盖完整输入范围")
     return issues
+
+
+class V67BoilerTemplateResource(V66CompressorTemplateResource):
+    def __init__(self, resource_dir=None, *, template_name=V67_TEMPLATE_IDENTITY["filename"]):
+        super().__init__(resource_dir, template_name=template_name)
+
+    @property
+    def identity(self):
+        return dict(V67_TEMPLATE_IDENTITY)
+
+    def validate(self, path=None, *, check_pump_sheet=True):
+        from dataclasses import replace
+        from ...domain.devices.boiler.input_contract import CONTRACT, REVISION
+        from .boiler_sheet_contract import COLUMNS, column_letter
+        base = self._validate_compressor(path, check_pump_sheet, V67_TEMPLATE_ENTRY)
+        if not base.is_valid:
+            return base
+        candidate = Path(path) if path is not None else self.template_path
+        issues = list(base.issues)
+        with OOXMLWorkbook(candidate) as book:
+            grid = book.rows("工业锅炉")
+            config = book.rows("配置")
+            root = ElementTree.fromstring(book.archive.read(book._sheets["工业锅炉"]))
+            styles = ElementTree.fromstring(book.archive.read("xl/styles.xml"))
+        contract = BOILER_SHEET_CONTRACT
+        if contract["contract_revision"] != REVISION or contract["category_ids"] != [c.category_id for c in CONTRACT.categories]:
+            issues.append("锅炉Manifest与Application契约不一致")
+        expected_fields = []
+        for col, label, unit, key, role in COLUMNS:
+            descriptor = dict(column=col, label=label, unit=unit, role=role)
+            if role == "result":
+                descriptor["threshold_key" if key.startswith("grade_") else "result_key"] = key
+            elif key:
+                descriptor["field_id"] = key
+            expected_fields.append(descriptor)
+        if contract["fields"] != expected_fields:
+            issues.append("锅炉字段列义/角色映射与载体契约不一致")
+        formal_ids = {f.field_id for c in CONTRACT.categories for f in CONTRACT.visible_fields(c.category_id, {"qnet_kj_kg": "8000"})}
+        if {f["field_id"] for f in expected_fields if f.get("field_id")} - formal_ids - {"category_id", "quantity", "photo"}:
+            issues.append("锅炉输入字段未在Application声明")
+        for descriptor in contract["fields"]:
+            actual = _header_parts(grid[2][_column_index(descriptor["column"])])
+            if actual != (descriptor.get("label", ""), descriptor.get("unit", ""), ()):
+                issues.append("锅炉表头与输入契约不一致：" + descriptor["column"])
+        names = _workbook_defined_names(candidate)
+        for name, col in (("EV_BOILER_V67_CATEGORY", "FL"), ("EV_BOILER_V67_CATEGORY_IDS", "FM")):
+            if names.get(name) != (f"'配置'!${col}$2:${col}${len(CONTRACT.categories)+1}",):
+                issues.append("锅炉类别命名范围不一致")
+        for n, c in enumerate(CONTRACT.categories, 1):
+            expected = (c.label, c.category_id, ",".join(f.field_id for f in CONTRACT.visible_fields(c.category_id) if f.required),
+                        "t/h" if c.form == "steam" else "MW" if c.form == "hot_water" else "")
+            if tuple(str(config[n][_column_index(col)] or "") for col in ("FL", "FM", "FN", "FO")) != expected:
+                issues.append("锅炉配置类别/字段/容量单位与Application不一致")
+            col = column_letter(173 + n)
+            fuels = tuple(label for _value, label in CONTRACT.options(c.category_id, "fuel")) or ("",)
+            if tuple(str(config[row][_column_index(col)] or "") if _column_index(col) < len(config[row]) else "" for row in range(1,len(fuels)+1)) != fuels:
+                issues.append("锅炉燃料选项与Application不一致")
+            if names.get(f"EV_BOILER_V67_FUEL_{n}") != (f"'配置'!${col}$2:${col}${len(fuels)+1}",):
+                issues.append("锅炉燃料命名范围不一致")
+        ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+        validations = root.findall(f"{ns}dataValidations/{ns}dataValidation")
+        rules = {node.get("sqref", "").split("4:")[0]: node for node in validations}
+        expected = {"D": ("whole", "greaterThan", "0"), "F": ("list", "", "EV_BOILER_V67_CATEGORY"),
+            "G": ("list", "", 'INDIRECT("EV_BOILER_V67_FUEL_"&IFERROR(MATCH(F4,EV_BOILER_V67_CATEGORY,0),23))'),
+            "H": ("decimal", "greaterThanOrEqual", "0"), "I": ("decimal", "greaterThanOrEqual", "0"),
+            "J": ("decimal", "greaterThan", "0"), "K": ("decimal", "between", "0"),
+            "L": ("decimal", "greaterThanOrEqual", "0"), "O": ("decimal", "greaterThan", "0")}
+        if len(rules) != len(validations) or set(rules) != set(expected):
+            issues.append("锅炉校验列不一致")
+        for col, triple in expected.items():
+            node = rules.get(col)
+            if node is None or (node.get("type", ""), node.get("operator", ""), node.findtext(f"{ns}formula1")) != triple or node.get("sqref") != f"{col}4:{col}1048576":
+                issues.append("锅炉校验或容量不一致：" + col)
+        xfs = styles.find(f"{ns}cellXfs")
+        for col in root.findall(f"{ns}cols/{ns}col"):
+            for index in range(int(col.get("min")), min(19, int(col.get("max")))+1):
+                letter = chr(64+index)
+                protection = xfs[int(col.get("style", "0"))].find(f"{ns}protection")
+                locked = protection is None or protection.get("locked", "1") != "0"
+                if letter in "BCDEFGHIJKLOQR" and locked or letter in "MNPS" and not locked:
+                    issues.append("锅炉全列保护不一致：" + letter)
+        for cell in root.findall(f"{ns}sheetData/{ns}row/{ns}c"):
+            match = re.fullmatch(r"([A-S])([0-9]+)", cell.get("r", ""))
+            if match and int(match[2]) >= 4 and cell.find(f"{ns}f") is not None and match[1] in "MNPS":
+                issues.append("锅炉数据区含退役公式")
+        return replace(base, is_valid=not issues, issues=tuple(issues), message="V6.7模板结构检查通过" if not issues else "V6.7不兼容："+"；".join(issues))
