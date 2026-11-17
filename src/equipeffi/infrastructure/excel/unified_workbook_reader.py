@@ -356,7 +356,7 @@ class TransformerWorkbookReader:
             raise OOXMLReadError(validation.message)
         if validation.identity.get("template_version") not in {"V6.1", "V6.2", "V6.3", "V6.4", "V6.5", "V6.6"}:
             raise OOXMLReadError(
-                "当前工作簿的变压器Sheet尚未接入；请使用V6.1至V6.5模板")
+                "当前工作簿的变压器Sheet尚未接入；请使用V6.1至V6.6模板")
 
         contract = TRANSFORMER_SHEET_CONTRACT
         input_columns = set(_TRANSFORMER_INPUT_FIELDS)
