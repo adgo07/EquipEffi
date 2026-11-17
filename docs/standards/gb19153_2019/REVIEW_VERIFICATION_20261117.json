@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-17",
+  "reviewed_head": "987e9562e8eba448ebce4a477ed67c6295c96075",
+  "source_identity_comparisons": {
+    "pass_count": 2919,
+    "fail": 0,
+    "error": 0,
+    "skip": 0
+  },
+  "independent_fixed_cases": {
+    "pass_count": 15,
+    "fail": 0,
+    "error": 0,
+    "skip": 0
+  },
+  "inherited_evidence_files_hash_verified": 27,
+  "local_python": "3.13.3 (tags/v3.13.3:6280bb5, Apr  8 2025, 14:47:33) [MSC v.1943 64 bit (AMD64)]",
+  "candidate_file_sha256": "8AA735C69B19A1CE97E69B1CBB4C522C4D3588253192BB3D0B6FD9E2AFB433CC",
+  "evidence_csv_sha256": "04be707b726ba9500fa9c962b1b898095901c9d3c3b9143b0ab575d61b21f613",
+  "protected_paths": [
+    "platform-lock.json",
+    "docs/standards/gb19153_2019/data",
+    "src/equipeffi/infrastructure/persistence/records_migrations.py",
+    "src/equipeffi/infrastructure/persistence/migrations.py",
+    "specs/equipment_efficiency/golden"
+  ],
+  "protected_diff": "EMPTY",
+  "original_pdf_reaudit": "NOT_RUN; reused prior independent original-page transcription",
+  "local_test_rounds": [
+    {
+      "tests": 27,
+      "seconds": 125.691,
+      "fail": 0,
+      "error": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "scope": "core/product/architecture before UI wording fix"
+    },
+    {
+      "tests": 15,
+      "seconds": 40.301,
+      "fail": 0,
+      "error": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "scope": "compressor product and motor flow after wording fix"
+    }
+  ],
+  "native_exe_sha256": "a8b238af4e1eadf587f7da5868a5d9112eff9664029f85c11ed44031d4e5a3a4",
+  "native_observed": "hash matches; isolated launch and accessible home-page tree observed",
+  "native_interaction": "NOT_COMPLETED: capture timed out; click coordinate input geometry unavailable; no successful business input claimed",
+  "excel_wps_native": "NOT_RUN",
+  "clean_windows": "NOT_RUN",
+  "dpi_125": "NOT_RUN",
+  "ci_url": "https://github.com/adgo07/EquipEffi/actions/runs/44053395900",
+  "ci_status": "See final acceptance record and live checks; not asserted by this verifier",
+  "formal_support_promoted": false,
+  "release_created": false,
+  "phase8_changed": false
+}

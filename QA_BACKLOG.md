@@ -1,5 +1,9 @@
 # EquipEffi QA_BACKLOG
 
+### QA-BOILER-001：锅炉已确认分支接入设计（OPEN，2026-11-17）
+
+Owner授权Stage B设计，明确有机热载体未决组合暂缓。四表78值与97%限定值已复用固定源哈希并回读79项一致；设计继承EQP-STD-GB24500-001/002已答部分。旧候选BoilerEvaluator以design_efficiency作比较值且电加热通过时映射三级，与已核验映射不符，分类KEEP/VERIFY，正式接入需独立规范输入与结果，不能沿用为真值；本轮未修改该旧实现。方案见[锅炉设计](docs/standards/gb24500_2020/INTEGRATION_DESIGN.md)，覆盖测试效率/条件设计效率、双结果、精确Profile、25列Excel和历史兼容。输入/模板方案待Owner确认；Stage C、SUPPORTED及发布均未执行。
+
 ### QA-COMP-001：空压机Stage B设计及后续接入追踪（OPEN，2026-11-12）
 
 Owner已批准D01正常直接等级、内部保留比功率评价范围，D02=A及统一18列Excel，并授权完成Stage B出口后继续Stage C。QA-COMP-001跟踪六表只读派生、精确查表、Application/Qt/Record/V6.6同核Excel与Windows候选。规则证据为GB19153-001—005、[决定落档](docs/standards/gb19153_2019/OWNER_DECISIONS.md)和[设计](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)。不覆盖源表/原模板/Golden；不以旧评价器结果作真值；独立验收前保持OPEN。
@@ -7,6 +11,8 @@ Owner已批准D01正常直接等级、内部保留比功率评价范围，D02=A�
 2026-11-12独立复核发现P1容量缺陷：V6.6初稿仅4—13行输入解锁，列默认样式仍锁定；保护Sheet上第14行及以后不能可靠填写。Q1仍SUM(TblCompressor[数量])只覆盖10行。此前XML容量测试只证明读算写，不证明真实可填写；旧候选包不作为最终交付。修复限定空压机：追加保护样式变体，输入列默认/既有数据格解锁、表头与结果锁定，便利数量合计覆盖D4:D1048576；增加机械保护/远行/输出锁定回归，Excel/WPS实机若未执行明确NOT_RUN。原模板、源表、既有XF和其他Sheet业务不变。
 
 2026-11-13候选构建复核：windowed EXE向系统Temp输出--status时两次45秒超时；四组合定位显示系统Temp在两种cwd均超时，而工作树状态路径两种cwd均<1秒exit0。未据此定位单一外部策略或业务缺陷；构建工具临时状态目录改为本次native输出目录并自动清理，加定向路径回归，保留失败报告及诊断矩阵，重建最终候选。
+
+2026-11-17独立工程复核：2,919源位置、15固定边界、27份证据哈希核对通过；本机两轮27/15项测试通过。补齐分析前自动记录说明及旧模板提示，小修Head987e9562完整Python3.12 Windows CI成功；按Owner授权合并PR46@66df7126。候选工程合并已通过，详情见[复核记录](docs/standards/gb19153_2019/PR46_REVIEW_20261117.md)。本项继续OPEN仅跟踪原生Qt完整业务操作、Excel/WPS编辑保存、干净Windows/125%环境及正式支持验收；不继续把工程合并描述为尚未完成，不提升SUPPORTED。
 
 ### QA-PMSM-001：GB 30253候选产品接入（OPEN，2026-11-11）
 
