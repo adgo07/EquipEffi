@@ -26,7 +26,11 @@ def run(output):
             started=perf_counter()
             source=save_input(p/"input.xlsx",{n+4:LOW_ROW for n in range(count)})
             before=sha256(source.read_bytes()).hexdigest()
-            result=create_batch_evaluation_service(paths=paths).evaluate_workbook(source,destination=p/"out.xlsx")
+            service=create_batch_evaluation_service(paths=paths)
+            result=service.evaluate_workbook(source,destination=p/"out.xlsx")
+            recent=service.list_batch_records()
+            assert len(recent)==1 and "boiler_row_evidence" not in recent[0].summary
+            assert len(service.open_batch_record(result.batch_record_id).summary["boiler_row_evidence"])==count
             elapsed=perf_counter()-started
             assert result.summary.data_row_count==count
             assert result.summary.total_quantity==2*count

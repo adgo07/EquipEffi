@@ -104,6 +104,8 @@ class BoilerProductTests(unittest.TestCase):
             with closing(sqlite3.connect(paths.records_db)) as c:
                 self.assertEqual(c.execute("select count(*) from record").fetchone()[0],0)
                 self.assertEqual(c.execute("select count(*) from batch_record").fetchone()[0],1)
+            recent=service.list_batch_records()
+            self.assertNotIn("boiler_row_evidence",recent[0].summary)
             reopened=service.open_batch_record(r.batch_record_id)
             evidence=reopened.summary["boiler_row_evidence"][0]
             self.assertEqual(evidence["minimum_limit"]["source_kind"],"OWNER_DESIGN_LIMIT")

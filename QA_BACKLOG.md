@@ -151,3 +151,5 @@ Owner已批准统一工业锅炉A:S共19列（覆盖PR48旧25列稿）：F显式
 授权范围为固定式水介质蒸汽/热水已确认分支、共享Application/Qt/Record及V6.7批量和Windows未发布候选；有机热载体未开放，混烧合法无法判定。001已答口径及002保持，不改主映射/源表/Approved Golden/中央锁/migrations，不提升SUPPORTED、不合并或发布。QA-BOILER-001继续OPEN。
 
 QA-BOILER-001兼容差异：`REGISTERED_DEVIATION`，legacy generic EvaluationService/JSON锅炉资产KEEP/VERIFY，仍保留旧设计效率/电加热等级语义；本轮正式候选Qt与V6.7通过新BoilerAnalysisService同核接入。disposition：保留兼容资产、不得作为新产品正确性来源，迁移另行专属任务；不扩大重构。证据与当前测试见锅炉实施记录。
+
+QA-BOILER-001摘要读取复核：本机全量诊断实测V6.7的永磁1/100/1000/10000行批次完成后，既有列表读取未移除大明细，既有不可变摘要断言失败；大批次列表另出现SQLite临时读取错误。定位到既有`_LIST_COLUMNS`仅枚举V6.5/V6.6，V6.7漏接。最小修复只给原摘要投影增加V6.7与boiler_row_evidence，load_batch_record仍读完整原快照；不改schema、缓存或记录内容。以同设备回归及锅炉10000行列表/详情复验验证。
