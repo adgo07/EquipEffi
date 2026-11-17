@@ -42,6 +42,7 @@ equipeffi = [
     "resources/templates/设备能效分析空白模板_重构版V6_4.xlsx",
     "resources/templates/设备能效分析空白模板_重构版V6_5.xlsx",
     "resources/templates/设备能效分析空白模板_重构版V6_6.xlsx",
+    "resources/templates/设备能效分析空白模板_重构版V6_7.xlsx",
 ]
 
 [tool.pytest.ini_options]

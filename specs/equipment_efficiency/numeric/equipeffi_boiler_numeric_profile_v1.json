@@ -1,0 +1,15 @@
+{
+  "numeric_profile_id": "EQUIPEFFI_BOILER_EXACT_LOOKUP_V1",
+  "numeric_contract_version": "v1",
+  "profile_version": "1.0.0",
+  "representation": "exact decimal lexical text to rational Fraction",
+  "working_precision": "unbounded exact rational within 30 digit ingress limit",
+  "rounding_mode": "not_applicable",
+  "comparison_policy": "full-value exact >=; grade 1 then 2 then 3",
+  "explicit_rounding_policy": "none",
+  "transcendental_policy": "not_applicable",
+  "tolerance_policy": "none",
+  "ingress_policy": "str/int/Decimal; reject float/bool/non-finite; XLSX raw decimal XML",
+  "display_policy": "presentation only; never used for comparisons",
+  "source": "GB24500-2020 tables 1-4; clause5.2; EQP-STD-GB24500-001/002"
+}

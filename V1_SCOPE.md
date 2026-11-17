@@ -1,5 +1,12 @@
 # Windows V1 产品范围
 
+## 2026-11-17：锅炉Stage C候选实施（19列最终方案）
+
+Owner已批准统一工业锅炉A:S共19列（覆盖PR48旧25列稿）：F显式类别含形态/燃烧方式/冷凝基准，G燃料，H对应额定容量，I额定压力，J低位热值，K挥发分，L唯一被评价热效率；M:O等级限值，P结论，Q照片，R用户备注，S自动备注。低热值生物质O条件作为设计限定值输入，其余分支输出；禁止残留输出充当输入。详见本轮[实施记录](docs/standards/gb24500_2020/PRODUCT_INTEGRATION_20261117.md)。
+
+已接入固定式水介质蒸汽/热水已确认分支、共享Application/Qt/Record及V6.7批量；当前为IMPLEMENTED候选，Windows交付与最终验证见实施记录；有机热载体未开放，混烧合法无法判定。001已答口径及002保持，不改主映射/源表/Approved Golden/中央锁/migrations，不提升SUPPORTED、不合并或发布。QA-BOILER-001继续OPEN。
+
+
 ## 锅炉Stage B设计授权（2026-11-17）
 
 前置空压机PR #46已完成本轮工程复核与小修，最终Head987e9562完整Windows CI通过，合并为66df7126。空压机仍为IMPLEMENTED/正式POST_V1；原生环境及正式支持验收继续见QA-COMP-001，本轮未发布。

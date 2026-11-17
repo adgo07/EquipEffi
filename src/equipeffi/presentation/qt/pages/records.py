@@ -625,6 +625,8 @@ class RecordsPage(QWidget):
 
         if is_product_motor_record(getattr(snapshot, "device_type", ""), input_snapshot):
             return self._show_motor_record(snapshot, result, input_snapshot)
+        if getattr(snapshot, "device_type", "") == "boiler" and input_snapshot.get("input_contract_revision") == "boiler-input.v1":
+            return self._show_boiler_record(snapshot, result, input_snapshot)
         if getattr(snapshot, "device_type", "") == "compressor" and input_snapshot.get("input_contract_revision") == "compressor-input.v1":
             return self._show_compressor_record(snapshot, result, input_snapshot)
         if getattr(snapshot, "device_type", "") == "transformer":
@@ -744,6 +746,39 @@ class RecordsPage(QWidget):
         basis = [f"采用标准：{snapshot.standard_code}"]
         if refs.get("table_number"):
             basis.append(f"表{refs['table_number']}；选用额定功率 {refs.get('selected_power_kw', '—')} kW；排气表压 {refs.get('selected_pressure_mpa', '—')} MPa")
+        self.detail.setText("\n".join(basic))
+        self.inputs_detail.setText("保存时输入数据\n" + "\n".join(lines) + "\n\n计算依据\n" + "\n".join(basis))
+        self.lists.setCurrentIndex(0)
+        self._enter_detail("单台分析记录")
+        return self.detail.text()
+
+    def _show_boiler_record(self, snapshot, result, inputs):
+        from ....application.services.boiler_analysis_service import get_boiler_input_contract
+        contract = get_boiler_input_contract()
+        category = inputs.get("category_id")
+        label = next((c.label for c in contract.categories if c.category_id == category), snapshot.product_category)
+        basic = [f"采用标准：{snapshot.standard_code}", f"设备类别：{label}", f"评价日期：{snapshot.as_of}",
+                 f"评价结论：{result.get('ui_conclusion') or snapshot.ui_conclusion}"]
+        if result.get("support_status") == "IMPLEMENTED":
+            basic.append("保存时软件状态：已实现，待验收")
+        if result.get("explanation"):
+            basic.append(result["explanation"])
+        for key, threshold in result.get("thresholds", {}).items():
+            basic.append(f"{key[-1]}级热效率限值：{threshold.get('display_text', '—')}%")
+        basic.append(f"保存时间：{format_saved_time(snapshot.finalized_at_utc)}")
+        lines = []
+        for field in contract.visible_fields(category, inputs):
+            value = inputs.get(field.field_id)
+            if value not in (None, ""):
+                value = dict(contract.options(category, field.field_id)).get(value, value)
+                lines.append(f"{field.label}" + (f"（{field.unit}）" if field.unit else "") + f"：{value}")
+        refs = result.get("references") or snapshot.reference_snapshot
+        basis = [f"采用标准：{snapshot.standard_code}"]
+        if refs.get("table_number"):
+            basis.append(f"表{refs['table_number']}；效率基准：" + ("高位" if refs.get("efficiency_basis") == "HIGHER" else "低位"))
+        limit = result.get("minimum_limit") or {}
+        if limit:
+            basis.append(("设计限定值" if limit.get("source_kind") == "OWNER_DESIGN_LIMIT" else "限定值") + f"：{limit['value']}%；" + ("达到" if limit['met'] else "未达到"))
         self.detail.setText("\n".join(basic))
         self.inputs_detail.setText("保存时输入数据\n" + "\n".join(lines) + "\n\n计算依据\n" + "\n".join(basis))
         self.lists.setCurrentIndex(0)

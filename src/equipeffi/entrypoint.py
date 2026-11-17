@@ -39,10 +39,10 @@ def _runtime_status() -> dict[str, object]:
         template["template_version"] = V61_TEMPLATE_IDENTITY["template_version"]
         resource = V61TransformerTemplateResource()
         if motor_enabled:
-            from .infrastructure.excel.template_resource import V66_TEMPLATE_IDENTITY, V66CompressorTemplateResource
-            template.update(template_id=V66_TEMPLATE_IDENTITY["template_id"],
-                            template_version=V66_TEMPLATE_IDENTITY["template_version"])
-            resource = V66CompressorTemplateResource()
+            from .infrastructure.excel.template_resource import V67_TEMPLATE_IDENTITY, V67BoilerTemplateResource
+            template.update(template_id=V67_TEMPLATE_IDENTITY["template_id"],
+                            template_version=V67_TEMPLATE_IDENTITY["template_version"])
+            resource = V67BoilerTemplateResource()
         validation = resource.validate()
         template["available"] = validation.is_valid
         template["issues"] = list(validation.issues)
@@ -113,12 +113,22 @@ def _runtime_status() -> dict[str, object]:
     except Exception as exc:
         compressor["error"] = f"{type(exc).__name__}: {exc}"
 
+    boiler = {"available": False, "support_status": "IMPLEMENTED"}
+    try:
+        from .composition import create_boiler_analysis_service
+        service = create_boiler_analysis_service(with_persistence=False)
+        boiler.update(service.standard_overview())
+        boiler["available"] = bool(service.input_contract.categories)
+    except Exception as exc:
+        boiler["error"] = f"{type(exc).__name__}: {exc}"
+
     ready = (
         bool(desktop["available"])
         and bool(template["available"])
         and all(bool(profile["available"]) for profile in profiles.values())
         and bool(transformer["available"])
         and bool(compressor["available"])
+        and bool(boiler["available"])
         and (not motor_enabled or bool(motor["available"]))
     )
     return {
@@ -129,6 +139,7 @@ def _runtime_status() -> dict[str, object]:
         "transformer": transformer,
         "motor": motor,
         "compressor": compressor,
+        "boiler": boiler,
     }
 
 

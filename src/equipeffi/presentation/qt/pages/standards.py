@@ -17,10 +17,10 @@ LIFECYCLE_STATE_LABELS = {
 
 
 class StandardsPage(QWidget):
-    def __init__(self, service, navigator=None, parent=None, *, transformer=None, motor=None, compressor=None):
+    def __init__(self, service, navigator=None, parent=None, *, transformer=None, motor=None, compressor=None, boiler=None):
         super().__init__(parent)
         self.service, self.navigator = service, navigator
-        self.services = [s for s in (service, transformer, motor, compressor) if s is not None]
+        self.services = [s for s in (service, transformer, motor, compressor, boiler) if s is not None]
         self.motor_service = motor
         self.standard_code = None
         self._catalog = []
