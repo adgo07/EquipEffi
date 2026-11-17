@@ -4,7 +4,7 @@
 
 |资源|修改前SHA256|当前SHA256|
 |---|---|---|
-|`src/equipeffi/resources/TEMPLATE_MANIFEST.json`|`f2053e4fee9a647542565beef9303fd6b925ad584fab2c7d2cc2e3c36d497c7f`|`d19d672c6d0fd141fe2ed11d3ab2167497225ebe449d081cb0974153af393a37`|
+|`src/equipeffi/resources/TEMPLATE_MANIFEST.json`|`f2053e4fee9a647542565beef9303fd6b925ad584fab2c7d2cc2e3c36d497c7f`|`fbce41bc60c93376d32a1a0beb07c38eee854be83aea3235ea71f7564250dad4`|
 |`src/equipeffi/resources/standards/gb24500_2020_candidate.json`|`新增派生资产`|`696c469873cca486b185422cc3dde60d2fa5663b5ec3080e73a04015e04debf5`|
 |`src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_7.xlsx`|`新增派生资产`|`ebaef4e0e7fd87f65127549b39eff2e446990f76d5cb79f6e0af06d9d552aabf`|
 |`docs/standards/gb24500_2020/data/GB24500_2020_TABLE_VALUES.xlsx`|`9f8e243b96ea45cd0c1f1a33dc1c0a7b62eaa8a5f2f9095234c427463a68de1a`|`9f8e243b96ea45cd0c1f1a33dc1c0a7b62eaa8a5f2f9095234c427463a68de1a`|

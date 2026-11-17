@@ -6977,7 +6977,7 @@
               "label": "固定式水介质蒸汽锅炉／电加热",
               "form": "steam",
               "heat": "electric",
-              "basis": "LOWER"
+              "basis": "NOT_APPLICABLE"
             },
             {
               "category_id": "steam_mixed",
@@ -7047,7 +7047,7 @@
               "label": "固定式水介质热水锅炉／电加热",
               "form": "hot_water",
               "heat": "electric",
-              "basis": "LOWER"
+              "basis": "NOT_APPLICABLE"
             },
             {
               "category_id": "hot_water_mixed",

@@ -21,7 +21,7 @@ HEATS = (("layer_coal", "层状燃煤"), ("fluid_coal", "流化床燃煤"),
          ("oil", "室燃油"), ("chamber_coal", "室燃煤"), ("electric", "电加热"),
          ("mixed", "混烧／燃料不能唯一归类"))
 CATEGORIES = tuple(Category(f"{form}_{heat}", f"固定式水介质{label}／{title}", form, heat,
-                            "HIGHER" if heat == "gas_condensing_higher" else "LOWER")
+                            "NOT_APPLICABLE" if heat == "electric" else "HIGHER" if heat == "gas_condensing_higher" else "LOWER")
                    for form, label in (("steam", "蒸汽锅炉"), ("hot_water", "热水锅炉"))
                    for heat, title in HEATS) + (
     Category("ORGANIC_HEAT_CARRIER", "有机热载体锅炉（未开放）", None, None),

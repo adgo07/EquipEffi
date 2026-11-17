@@ -107,6 +107,7 @@ class BoilerCoreTests(unittest.TestCase):
         for eta,met in (("96.999999999999999","未达到限定值"),("97","达到限定值"),("98","达到限定值")):
             r=self.evaluate(category_id="steam_electric",fuel="电",qnet_kj_kg="",rated_capacity="",efficiency_pct=eta)
             self.assertEqual((r.grade,r.ui_conclusion,r.thresholds),(None,met,{}))
+            self.assertEqual(r.references["efficiency_basis"],"NOT_APPLICABLE")
         for category,status in (("steam_mixed","INSUFFICIENT_DATA"),("UNCERTAIN_CATEGORY","INSUFFICIENT_DATA"),("OTHER_CATEGORY","OUT_OF_STANDARD_SCOPE"),("ORGANIC_HEAT_CARRIER",None)):
             self.assertEqual(self.calc.evaluate(dict(category_id=category),self.pack).evaluation_status,status)
         self.assertEqual(self.evaluate(category_id="steam_mixed",rated_pressure_mpa="3.8").evaluation_status,"OUT_OF_STANDARD_SCOPE")

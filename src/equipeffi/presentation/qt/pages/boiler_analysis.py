@@ -66,6 +66,7 @@ class BoilerAnalysisPage(QWidget):
         scroll.setWidget(body)
         outer.addWidget(scroll)
         self.category.currentIndexChanged.connect(self._category_changed)
+        self.category.currentTextChanged.connect(self._mark_stale)
         self._category_changed()
 
     def _mark_stale(self, *_):
