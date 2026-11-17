@@ -45,5 +45,5 @@ def build_pack(root=ROOT):
 
 if __name__ == "__main__":
     pack = build_pack()
-    (ROOT / OUTPUT).write_text(json.dumps(pack, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (ROOT / OUTPUT).write_text(json.dumps(pack, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print("78表值 + 97%限定值派生完成")

@@ -23,6 +23,8 @@ class BoilerCoreTests(unittest.TestCase):
 
     def test_fixed_source_all_79_values_and_derived_identity(self):
         self.assertEqual(build_pack(), self.pack)
+        resource=Path(__file__).resolve().parents[2]/"src/equipeffi/resources/standards/gb24500_2020_candidate.json"
+        self.assertNotIn(b"\r",resource.read_bytes())
         from openpyxl import load_workbook
         from tools.build_gb24500_boiler_pack import ROOT, WORKBOOK
         book = load_workbook(ROOT / WORKBOOK, data_only=True)
@@ -127,3 +129,15 @@ class BoilerCoreTests(unittest.TestCase):
                 self.assertEqual(vector["numeric_profile_id"],PROFILE_ID)
                 result=self.calc.evaluate(vector["inputs"],self.pack,numeric_profile_id=vector["numeric_profile_id"])
                 self.assertEqual(dict(evaluation_status=result.evaluation_status,grade=result.grade),vector["expected_business_result"])
+
+    def test_fresh_checkout_file_identity_is_stable(self):
+        from tempfile import TemporaryDirectory
+        from hashlib import sha256
+        from tests.test_motor_candidate_file_identity import fresh_checkouts
+        path=Path("src/equipeffi/resources/standards/gb24500_2020_candidate.json")
+        with TemporaryDirectory() as directory:
+            for mode,checkout,expected in fresh_checkouts(Path(directory),(path,)):
+                with self.subTest(autocrlf=mode):
+                    self.assertEqual((checkout/path).read_bytes(),expected[path])
+                    _pack,digest=load_boiler_pack(checkout/path)
+                    self.assertEqual(digest,sha256(expected[path]).hexdigest().upper())
