@@ -67,6 +67,8 @@ def main():
        local_python=sys.version,candidate_file_sha256=raw_hash,evidence_csv_sha256=sha256(evidence_path.read_bytes()).hexdigest(),
        protected_paths=unchanged,protected_diff='EMPTY',
        original_pdf_reaudit='NOT_RUN; reused prior independent original-page transcription',
+       replay_scope='2919 source cells, 15 fixed cases and 27 inherited evidence-file hashes only',
+       historical_observations='Test rounds and EXE observations below are recorded constants, not executed or reverified by this script; EXE identity has one repository delivery source, not independent build evidence',
        local_test_rounds=[dict(tests=27,seconds=125.691,fail=0,error=0,skip=0,exit_code=0,scope='core/product/architecture before UI wording fix'),
                           dict(tests=15,seconds=40.301,fail=0,error=0,skip=0,exit_code=0,scope='compressor product and motor flow after wording fix')],
        native_exe_sha256='a8b238af4e1eadf587f7da5868a5d9112eff9664029f85c11ed44031d4e5a3a4',

@@ -26,6 +26,8 @@
   ],
   "protected_diff": "EMPTY",
   "original_pdf_reaudit": "NOT_RUN; reused prior independent original-page transcription",
+  "replay_scope": "2919 source cells, 15 fixed cases and 27 inherited evidence-file hashes only",
+  "historical_observations": "Test rounds and EXE observations below are recorded constants, not executed or reverified by this script; EXE identity has one repository delivery source, not independent build evidence",
   "local_test_rounds": [
     {
       "tests": 27,
