@@ -12,6 +12,7 @@ class UnifiedSourceWorkbook:
     sheets: dict[str, BatchSourceWorkbook]
     template_identity: dict[str, str] = field(default_factory=dict)
     unprocessed_sheets: tuple[str, ...] = ()
+    compatibility_messages: tuple[str, ...] = ()
 
 
 class UnifiedWorkbookReader(Protocol):

@@ -1,0 +1,65 @@
+{
+  "assets": [
+    {
+      "path": "platform-lock.json",
+      "unchanged": true,
+      "working_sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53",
+      "recheck_sha256": "b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53",
+      "unchanged_at_cb0a08be": true
+    },
+    {
+      "path": "docs/standards/gb19153_2019/data/GB19153_2019_标准表值.xlsx",
+      "unchanged": true,
+      "working_sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+      "recheck_sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+      "unchanged_at_cb0a08be": true
+    },
+    {
+      "path": "src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_1.xlsx",
+      "unchanged": true,
+      "working_sha256": "4edafeaec9907598f1871d7d76faf0809451667f070a2870e95db263845029b0",
+      "recheck_sha256": "4edafeaec9907598f1871d7d76faf0809451667f070a2870e95db263845029b0",
+      "unchanged_at_cb0a08be": true
+    },
+    {
+      "path": "src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_2.xlsx",
+      "unchanged": true,
+      "working_sha256": "d009850015b4c5e132d9ff72d0ddb1649e67affeaa8f457b12187466c75cec0e",
+      "recheck_sha256": "d009850015b4c5e132d9ff72d0ddb1649e67affeaa8f457b12187466c75cec0e",
+      "unchanged_at_cb0a08be": true
+    },
+    {
+      "path": "src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_20261005.xlsx",
+      "unchanged": true,
+      "working_sha256": "ee9dbe17a06081739cfb8ef0d330ce30b4634cba5ce29ccd1eab058d09348810",
+      "recheck_sha256": "ee9dbe17a06081739cfb8ef0d330ce30b4634cba5ce29ccd1eab058d09348810",
+      "unchanged_at_cb0a08be": true
+    },
+    {
+      "path": "src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_3.xlsx",
+      "unchanged": true,
+      "working_sha256": "a184dae19312606eac9d7539e9e632a8780fec3907ec7bd5adabfaa7794f30e6",
+      "recheck_sha256": "a184dae19312606eac9d7539e9e632a8780fec3907ec7bd5adabfaa7794f30e6",
+      "unchanged_at_cb0a08be": true
+    },
+    {
+      "path": "src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_4.xlsx",
+      "unchanged": true,
+      "working_sha256": "edd4df72eae23bf35686a0026216815bf2842dd326ee98cd620074175124fcda",
+      "recheck_sha256": "edd4df72eae23bf35686a0026216815bf2842dd326ee98cd620074175124fcda",
+      "unchanged_at_cb0a08be": true
+    },
+    {
+      "path": "src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_5.xlsx",
+      "unchanged": true,
+      "working_sha256": "11f767efcf03d362ed1cfcf7fdfc17ed3909dbd4bc21c48971762ffa0a5cf059",
+      "recheck_sha256": "11f767efcf03d362ed1cfcf7fdfc17ed3909dbd4bc21c48971762ffa0a5cf059",
+      "unchanged_at_cb0a08be": true
+    }
+  ],
+  "mapping_business_body_unchanged": true,
+  "fail": 0,
+  "historical_production_sha": "03ff5ded8e12d5590be0235d9d9c85eff91caed6",
+  "recheck_source_sha": "cb0a08bedcbcbc8f04540ae00c0b835b736c9faf",
+  "golden_diff_from_master_base": []
+}

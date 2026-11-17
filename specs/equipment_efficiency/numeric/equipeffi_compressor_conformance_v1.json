@@ -1,0 +1,204 @@
+[
+  {
+    "case_id": "COMP-EQUAL",
+    "category": "exact_comparison",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_COMPRESSOR_EXACT_LOOKUP_V1",
+    "authority_scope": "compressor",
+    "inputs": {
+      "category_id": "oil_injected_rotary",
+      "rated_motor_output_power_kw": "1.5",
+      "rated_discharge_pressure_mpa": "0.3",
+      "cooling_method": "AIR",
+      "specific_power_kw_per_m3_min": "5.8"
+    },
+    "provenance": {
+      "source_id": "GB19153-2019 / EQP-STD-GB19153-001/005",
+      "source_path": "docs/standards/gb19153_2019/INTEGRATION_DESIGN.md",
+      "locator": "表1风冷1.5kW/0.3MPa；Owner D01/D02；非Approved Golden"
+    },
+    "expected_business_result": {
+      "evaluation_status": "SUCCESS",
+      "grade": "1"
+    },
+    "operator": "lte",
+    "threshold": "5.8",
+    "comparison_value": "5.8"
+  },
+  {
+    "case_id": "COMP-AFTER",
+    "category": "business_boundary",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_COMPRESSOR_EXACT_LOOKUP_V1",
+    "authority_scope": "compressor",
+    "inputs": {
+      "category_id": "oil_injected_rotary",
+      "rated_motor_output_power_kw": "1.5",
+      "rated_discharge_pressure_mpa": "0.3",
+      "cooling_method": "AIR",
+      "specific_power_kw_per_m3_min": "5.800000000000000000000001"
+    },
+    "provenance": {
+      "source_id": "GB19153-2019 / EQP-STD-GB19153-001/005",
+      "source_path": "docs/standards/gb19153_2019/INTEGRATION_DESIGN.md",
+      "locator": "表1风冷1.5kW/0.3MPa；Owner D01/D02；非Approved Golden"
+    },
+    "expected_business_result": {
+      "evaluation_status": "SUCCESS",
+      "grade": "2"
+    }
+  },
+  {
+    "case_id": "COMP-DISPLAY",
+    "category": "display_separation",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_COMPRESSOR_EXACT_LOOKUP_V1",
+    "authority_scope": "compressor",
+    "inputs": {
+      "category_id": "oil_injected_rotary",
+      "rated_motor_output_power_kw": "1.5",
+      "rated_discharge_pressure_mpa": "0.3",
+      "cooling_method": "AIR",
+      "specific_power_kw_per_m3_min": "5.800001"
+    },
+    "provenance": {
+      "source_id": "GB19153-2019 / EQP-STD-GB19153-001/005",
+      "source_path": "docs/standards/gb19153_2019/INTEGRATION_DESIGN.md",
+      "locator": "表1风冷1.5kW/0.3MPa；Owner D01/D02；非Approved Golden"
+    },
+    "expected_business_result": {
+      "evaluation_status": "SUCCESS",
+      "grade": "2"
+    },
+    "comparison_value": "5.800001",
+    "display_value": "5.80",
+    "rounding": {
+      "stage": "display",
+      "mode": "ROUND_HALF_UP",
+      "places": 2,
+      "purpose": "display"
+    }
+  },
+  {
+    "case_id": "COMP-DASH",
+    "category": "business_boundary",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_COMPRESSOR_EXACT_LOOKUP_V1",
+    "authority_scope": "compressor",
+    "inputs": {
+      "category_id": "oil_injected_rotary",
+      "rated_motor_output_power_kw": "1.5",
+      "rated_discharge_pressure_mpa": "0.3",
+      "cooling_method": "LIQUID",
+      "specific_power_kw_per_m3_min": "5.8"
+    },
+    "provenance": {
+      "source_id": "GB19153-2019 / EQP-STD-GB19153-001/005",
+      "source_path": "docs/standards/gb19153_2019/INTEGRATION_DESIGN.md",
+      "locator": "表1风冷1.5kW/0.3MPa；Owner D01/D02；非Approved Golden"
+    },
+    "expected_business_result": {
+      "evaluation_status": "INSUFFICIENT_DATA",
+      "grade": null
+    }
+  },
+  {
+    "case_id": "COMP-MISSING",
+    "category": "input_rejection",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_COMPRESSOR_EXACT_LOOKUP_V1",
+    "authority_scope": "compressor",
+    "inputs": {
+      "category_id": "oil_injected_rotary",
+      "rated_motor_output_power_kw": "",
+      "rated_discharge_pressure_mpa": "0.3",
+      "cooling_method": "AIR",
+      "specific_power_kw_per_m3_min": "5.8"
+    },
+    "provenance": {
+      "source_id": "GB19153-2019 / EQP-STD-GB19153-001/005",
+      "source_path": "docs/standards/gb19153_2019/INTEGRATION_DESIGN.md",
+      "locator": "表1风冷1.5kW/0.3MPa；Owner D01/D02；非Approved Golden"
+    },
+    "expected_business_result": {
+      "evaluation_status": "INVALID_INPUT",
+      "grade": null
+    }
+  },
+  {
+    "case_id": "COMP-LEXEME",
+    "category": "parse_normalization",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_COMPRESSOR_EXACT_LOOKUP_V1",
+    "authority_scope": "compressor",
+    "inputs": {
+      "category_id": "oil_injected_rotary",
+      "rated_motor_output_power_kw": "1.5",
+      "rated_discharge_pressure_mpa": "0.3",
+      "cooling_method": "AIR",
+      "specific_power_kw_per_m3_min": " 5.8e0 "
+    },
+    "provenance": {
+      "source_id": "GB19153-2019 / EQP-STD-GB19153-001/005",
+      "source_path": "docs/standards/gb19153_2019/INTEGRATION_DESIGN.md",
+      "locator": "表1风冷1.5kW/0.3MPa；Owner D01/D02；非Approved Golden"
+    },
+    "expected_business_result": {
+      "evaluation_status": "SUCCESS",
+      "grade": "1"
+    }
+  },
+  {
+    "case_id": "COMP-AMBIENT",
+    "category": "ambient_independence",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_COMPRESSOR_EXACT_LOOKUP_V1",
+    "authority_scope": "compressor",
+    "inputs": {
+      "category_id": "oil_injected_rotary",
+      "rated_motor_output_power_kw": "1.5",
+      "rated_discharge_pressure_mpa": "0.3",
+      "cooling_method": "AIR",
+      "specific_power_kw_per_m3_min": "5.8"
+    },
+    "provenance": {
+      "source_id": "GB19153-2019 / EQP-STD-GB19153-001/005",
+      "source_path": "docs/standards/gb19153_2019/INTEGRATION_DESIGN.md",
+      "locator": "表1风冷1.5kW/0.3MPa；Owner D01/D02；非Approved Golden"
+    },
+    "expected_business_result": {
+      "evaluation_status": "SUCCESS",
+      "grade": "1"
+    },
+    "ambient_profile": {
+      "precision": 2
+    },
+    "requested_profile": "EQUIPEFFI_COMPRESSOR_EXACT_LOOKUP_V1",
+    "effective_profile": "EQUIPEFFI_COMPRESSOR_EXACT_LOOKUP_V1"
+  },
+  {
+    "case_id": "COMP-PROPAGATION",
+    "category": "profile_propagation",
+    "numeric_contract_version": "v1",
+    "numeric_profile_id": "EQUIPEFFI_COMPRESSOR_EXACT_LOOKUP_V1",
+    "authority_scope": "compressor",
+    "inputs": {
+      "category_id": "oil_injected_rotary",
+      "rated_motor_output_power_kw": "1.5",
+      "rated_discharge_pressure_mpa": "0.3",
+      "cooling_method": "AIR",
+      "specific_power_kw_per_m3_min": "5.8"
+    },
+    "provenance": {
+      "source_id": "GB19153-2019 / EQP-STD-GB19153-001/005",
+      "source_path": "docs/standards/gb19153_2019/INTEGRATION_DESIGN.md",
+      "locator": "表1风冷1.5kW/0.3MPa；Owner D01/D02；非Approved Golden"
+    },
+    "expected_business_result": {
+      "evaluation_status": "SUCCESS",
+      "grade": "1"
+    },
+    "requested_profile": "EQUIPEFFI_COMPRESSOR_EXACT_LOOKUP_V1",
+    "effective_profile": "EQUIPEFFI_COMPRESSOR_EXACT_LOOKUP_V1"
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "check": "independent implementation versus existing approved workbook",
+  "numeric_source_reaudit": false,
+  "source_sha256": "7686bbc675e3f3189b4d21898738dd4f4303e57cf66e0df8db52bbdc89dd7dc7",
+  "candidate_raw_sha256": "8AA735C69B19A1CE97E69B1CBB4C522C4D3588253192BB3D0B6FD9E2AFB433CC",
+  "groups": 973,
+  "evaluations": 5165,
+  "assertions": 20177,
+  "fail": 0,
+  "errors": [],
+  "elapsed_seconds": 121.146
+}

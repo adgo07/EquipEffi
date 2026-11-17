@@ -1,0 +1,29 @@
+{
+  "source_sha": "cb0a08bedcbcbc8f04540ae00c0b835b736c9faf",
+  "runtime_sha": "e900492349bbe1b6a4a8faac9851a499738a8e6e",
+  "executable": "G:\\Python Project\\EquipEffi\\_compressor_design_20261112\\dist\\compressor-cb0a08be\\dist\\equipeffi-compressor-cb0a08be\\equipeffi-compressor-cb0a08be.exe",
+  "executable_sha256": "a8b238af4e1eadf587f7da5868a5d9112eff9664029f85c11ed44031d4e5a3a4",
+  "pid": 45852,
+  "poll": null,
+  "localappdata": "G:\\Python Project\\EquipEffi\\_compressor_design_20261112\\outputs\\compressor-implementation\\native-cb0a08be-data",
+  "app_data": "G:\\Python Project\\EquipEffi\\_compressor_design_20261112\\outputs\\compressor-implementation\\native-cb0a08be-data\\EquipEffi",
+  "startup_log": "G:\\Python Project\\EquipEffi\\_compressor_design_20261112\\outputs\\compressor-implementation\\native-startup-cb0a08be.log",
+  "status_file": "G:\\Python Project\\EquipEffi\\_compressor_design_20261112\\outputs\\compressor-implementation\\native-status-cb0a08be.json",
+  "qt_platform": "windows",
+  "python_qt_external_variables_removed": true,
+  "observation_20261113": {
+    "timestamp": "2026-11-13T00:24:04.001406+08:00",
+    "observed_by": "elevated Get-CimInstance and refreshed Get-Process for the exact task PID",
+    "pid": 45852,
+    "command_line": "\"G:\\Python Project\\EquipEffi\\_compressor_design_20261112\\dist\\compressor-cb0a08be\\dist\\equipeffi-compressor-cb0a08be\\equipeffi-compressor-cb0a08be.exe\" --qt",
+    "main_window_handle": 4919298,
+    "main_window_title": "设备能效分析工具 · 离心泵、变压器、电动机、空压机能效分析",
+    "responding": true,
+    "session_id": 1,
+    "native_window_confirmed": true,
+    "gui_interaction": "NOT_RUN",
+    "note": "Earlier non-elevated process snapshots returned handle 0/title empty. Elevated exact-PID observation confirms a Windows window; not equivalent to GUI interaction acceptance."
+  },
+  "environment_source": "Explicit Popen env constructed after removal of PYTHON*/PYSIDE*/QT_*/QML*; QT_QPA_PLATFORM=windows was set last; LOCALAPPDATA points only to the isolated review directory.",
+  "data_directory_policy": "This launch uses the isolated review directory shown in app_data. It does not use the normal user data directory."
+}

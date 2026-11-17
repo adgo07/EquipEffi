@@ -58,8 +58,8 @@ _COLUMNS = ("batch_record_id, standard_code, device_type, source_workbook, "
             "total_quantity, evaluated_quantity, app_version, "
             "canonical_version, numeric_profile_id")
 _LIST_COLUMNS = _COLUMNS.replace(
-    "summary_json", "CASE WHEN template_version = 'V6.5' THEN "
-    "json_remove(summary_json, '$.motor_pmsm_row_evidence') ELSE summary_json END")
+    "summary_json", "CASE WHEN template_version IN ('V6.5', 'V6.6') THEN "
+    "json_remove(summary_json, '$.motor_pmsm_row_evidence', '$.compressor_row_evidence') ELSE summary_json END")
 
 
 class SqliteBatchRecordRepository:

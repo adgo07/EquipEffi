@@ -648,6 +648,7 @@ def _batch_summary_values(batch_summary: dict | None,
     )
     warning = ("以下Sheet未评价，内容保留原样：" + "、".join(unprocessed)
                if unprocessed else "无未评价Sheet。")
+    warning += " ".join(batch_summary.get("compatibility_messages", ()))
     return {
         27: "EquipEffi批量评价输出区；原始输入工作簿未覆盖。",
         28: template_version or "未知",
@@ -821,8 +822,10 @@ class UnifiedResultWorkbookWriter:
                         f"工作表「{name}」尚未接通，不能写入结果")
                 continue
             supported_sheet_ids = {"centrifugal_pump", "transformer"}
-            if version in {"V6.2", "V6.3", "V6.4", "V6.5"}:
+            if version in {"V6.2", "V6.3", "V6.4", "V6.5", "V6.6"}:
                 supported_sheet_ids.add("motor")
+            if version == "V6.6":
+                supported_sheet_ids.add("compressor")
             if contract.get("sheet_id") not in supported_sheet_ids:
                 if outcomes:
                     raise ResultWorkbookWriteError(
@@ -878,7 +881,7 @@ class UnifiedResultWorkbookWriter:
                     for row_number, outcome in outcomes.items()
                     for column, payload in _transformer_cell_payloads(outcome).items()
                 }
-            elif name == MOTOR_SHEET and version in {"V6.2", "V6.3", "V6.4", "V6.5"}:
+            elif name == MOTOR_SHEET and version in {"V6.2", "V6.3", "V6.4", "V6.5", "V6.6"}:
                 threshold_style_map = _motor_threshold_style_map(
                     by_part["xl/styles.xml"], by_part[part])
                 result_xml = patch_motor_sheet_xml(
@@ -890,6 +893,11 @@ class UnifiedResultWorkbookWriter:
                     for row_number, outcome in outcomes.items()
                     for column, payload in _motor_cell_payloads(outcome).items()
                 }
+            elif name == "空压机" and version == "V6.6":
+                result_xml = patch_compressor_sheet_xml(source_xml, outcomes)
+                result_columns = ("L", "M", "N", "O", "R")
+                expected = {f"{column}{number}": str(payload[1]) for number, outcome in outcomes.items()
+                            for column, payload in compressor_cell_payloads(outcome).items()}
             else:
                 raise ResultWorkbookWriteError(f"没有工作表「{name}」的结果写入适配器")
             result_xml, cleared_references = _clear_blank_result_cells(
@@ -965,3 +973,56 @@ class UnifiedResultWorkbookWriter:
             except OSError:
                 pass
             raise
+
+
+def compressor_cell_payloads(outcome):
+    displayable = not outcome.is_input_error and not outcome.is_execution_error
+    payload = {"O": ("inlineStr", outcome.conclusion), "R": ("inlineStr", "；".join(outcome.messages))}
+    for column, key in (("L", "grade_1"), ("M", "grade_2"), ("N", "grade_3")):
+        threshold = (outcome.thresholds or {}).get(key, {})
+        # 标准原字面保留1位等精度，文本限值不参与业务计算。
+        payload[column] = ("inlineStr", str(threshold.get("display_text", "")) if displayable else "")
+    return payload
+
+
+def patch_compressor_sheet_xml(xml, outcomes):
+    patch = WorksheetPatch(xml)
+    if patch.duplicate_references():
+        raise ResultWorkbookWriteError("空压机工作表存在重复坐标")
+    if any(number not in patch.rows for number in outcomes):
+        raise ResultWorkbookWriteError("空压机输入行无法定位")
+    plan = plan_namespace(xml)
+    edits = []
+    for number, outcome in sorted(outcomes.items()):
+        edits.extend(_row_edits(patch, int(number), compressor_cell_payloads(outcome), plan))
+    result = _normalise_main_namespace(patch.apply(sorted(edits)))
+    # 新行的结果格不能继承同行输入格的解锁样式；按结果列的锁定默认样式写入。
+    root = ElementTree.fromstring(xml)
+    ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+    styles = {col: "0" for col in ("L", "M", "N", "O", "R")}
+    for column in root.findall(f"{ns}cols/{ns}col"):
+        for number in range(int(column.get("min")), min(int(column.get("max")), 18) + 1):
+            letter = chr(64 + number)
+            if letter in styles:
+                styles[letter] = column.get("style", "0")
+    result_patch = WorksheetPatch(result)
+    style_edits = []
+    for number in outcomes:
+        for cell in result_patch.rows[number].cells:
+            reference = cell.reference or ""
+            match = re.fullmatch(r"([LMNOR])[0-9]+", reference)
+            if match is None:
+                continue
+            previous = next((item for item in patch.rows[number].cells if item.reference == reference), None)
+            target = previous.style if previous is not None and previous.style is not None else styles[match.group(1)]
+            attribute = cell.element.attribute("s")
+            if attribute is not None:
+                style_edits.append((attribute.start, attribute.end, f"s={attribute.quote}{target}{attribute.quote}"))
+            else:
+                position = cell.element.attribute("r").end
+                style_edits.append((position, position, f' s="{target}"'))
+    result = result_patch.apply(sorted(style_edits))
+    assert_non_main_elements_preserved(xml, result)
+    assert_unique_references(result)
+    assert_main_namespace_semantics(result)
+    return result

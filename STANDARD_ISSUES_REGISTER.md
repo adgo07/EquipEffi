@@ -818,7 +818,7 @@ EQP-STD-GB19762-001
 |状态|`PROVISIONAL`|
 |首次发现日期/最后更新日期|2026-10-13 / 2026-10-23|
 |Owner回复及落实依据|[2026-10-14回复快照](docs/governance/owner_response_20261023/OWNER_REPLY_SNAPSHOT.md)，原编号对应条目；2026-10-23授权落实。|
-|未决边界|原001还包含表3液冷、表4未列液冷及横杠组合，回复未决定这些子项，保持未决。|
+|未决边界|表3液冷、表4未列液冷及横杠仍无标准指标，不借值。2026-11-12 Owner D02=A批准无指标时INSUFFICIENT_DATA / 无法判定；表1/2总范围内表轴外压力同理。此软件输出决定不补造标准指标，001保持PROVISIONAL。|
 |映射/候选联动|`docs/standards/gb19153_2019/STANDARD_MAPPING.md`的“2026-10-23 Owner回复落实”；同目录边界候选同步，Approved Golden和历史记录未改。|
 |本轮补充答复|[2026-10-23补充确认](docs/governance/owner_response_20261023/OWNER_FOLLOWUP_20261023.md)|
 
@@ -879,6 +879,20 @@ EQP-STD-GB19762-001
 |未决边界|本项项目处理口径已明确；不表示官方勘误或软件已经实现。|
 |映射/候选联动|`docs/standards/gb19153_2019/STANDARD_MAPPING.md`的“2026-10-23 Owner回复落实”；同目录边界候选同步，Approved Golden和历史记录未改。|
 
+
+### EQP-STD-GB19153-005 — 比功率等级与整机附加条件的产品输出边界
+
+|字段|内容|
+|---|---|
+|问题编号|`EQP-STD-GB19153-005`|
+|标准 / 类型|GB 19153—2019 / IMPLEMENTATION|
+|标准原文事实|第4.1、5章给出比功率限值和等级；第4.3另有输入功率、轴功率及直联便携式机组实际输入功率条件。六张比功率表本身不能证明这些附加条件均满足。|
+|技术判断|比功率等级对照与整机全部条件符合性必须区分；本项不改变已核验表值。|
+|软件当前处理方式|2026-11-12 Owner批准仅评价比功率，用户直接显示等级，不附加范围解释；内部保存SPECIFIC_POWER_GRADE_ONLY，不宣称整机附加条件合规。Stage C按此执行。|
+|证据 / 决策入口|[主映射](docs/standards/gb19153_2019/STANDARD_MAPPING.md)、[集中决策D01](docs/standards/gb19153_2019/OWNER_DECISIONS.md)、[接入设计](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)|
+|置信度 / 待确认|标准事实沿用既有核验；Owner已明确批准产品范围，不是官方解释。第4.3附加条件本轮不评价，002/003保留原状态。|
+|影响 / 追踪|影响必填字段、结果标签和附加条件状态；拟追踪compressor-grade-rule.v1及GC-COMP-01—06、BC-COMP-05。关联002、003，不替代其状态。|
+|状态 / 日期|RESOLVED / 2026-11-12|
 
 ### EQP-STD-GB24500-001 — 特殊限定值与等级、交叉条件的组合输出
 

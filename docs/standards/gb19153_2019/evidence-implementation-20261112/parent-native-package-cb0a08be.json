@@ -1,0 +1,29 @@
+{
+  "verified": [
+    {
+      "sha256": "8AA735C69B19A1CE97E69B1CBB4C522C4D3588253192BB3D0B6FD9E2AFB433CC",
+      "name": "gb19153_2019_candidate.json",
+      "pass": true
+    },
+    {
+      "sha256": "6B85EDCCF4690D7878A277FD7648C77B20A4BFD277EBD80C9BD8127ACF5587CC",
+      "name": "设备能效分析空白模板_重构版V6_6.xlsx",
+      "pass": true
+    },
+    {
+      "sha256": "A8B238AF4E1EADF587F7DA5868A5D9112EFF9664029F85C11ED44031D4E5A3A4",
+      "name": "equipeffi-compressor-cb0a08be.exe",
+      "pass": true
+    }
+  ],
+  "native_gui": "NOT_RUN",
+  "reviewer": "parent independent archive review",
+  "entries": 203,
+  "error": 0,
+  "forbidden_assets": [],
+  "zip_sha256": "750DC8429D2BE35BEA480F459E2CF48AC6DA2A32F6114199B44D511490551DB3",
+  "pass": 5,
+  "source_sha": "cb0a08bedcbcbc8f04540ae00c0b835b736c9faf",
+  "fail": 0,
+  "all_zip_members_crc": "PASS"
+}

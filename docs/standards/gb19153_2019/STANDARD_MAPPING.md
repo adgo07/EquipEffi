@@ -2,9 +2,11 @@
 
 > 2026-10-24目录收口：映射与配套工作簿共同使用；本文为规则和当前解释入口，工作簿保存源表值。 历史来源、核验与旧交接已[集中归档](../../governance/standard_archive_20261024/README.md)。历史状态不覆盖已确认解释；当前问题状态仅以[根台账](../../../STANDARD_ISSUES_REGISTER.md)为准。
 
-> 当前修订：2026-10-23 Owner回复落实版。当前解释见文末同名章节；原始表值及历史验收证据保留。下述2026-10-13开工预检查及旧修订说明是历史记录；本轮预检查、变更和验证见[修订报告](../../governance/owner_response_20261023/REPORT.md)。
+> 当前状态更新：2026-11-12，Owner已授权Stage B接入设计，见[接入设计](INTEGRATION_DESIGN.md)及[集中决策清单](OWNER_DECISIONS.md)。业务解释仍以2026-10-23 Owner回复落实版及根问题台账为准，本轮不改表值或既有解释。历史变更见[修订报告](../../governance/owner_response_20261023/REPORT.md)。
 
-整理稿A.1，2026-10-13，执行者Codex。仅Stage A事实整理；第一轮独立验收为**整理稿有条件通过**，独立数值/横杠核对仅86处，不是全部Stage A出口通过，未批准冻结或进入软件实现。主映射与[标准表值工作簿](data/GB19153_2019_标准表值.xlsx)配套使用。原文优先；本文不改变已有Profile/Golden或生产实现；本轮映射解释按文末Owner决定更新。独立覆盖及反馈处理见[核验记录](../../governance/standard_archive_20261024/gb19153_2019/evidence/VERIFICATION.md#第一轮独立验收反馈处理2026-10-13)。
+整理稿A.1始于2026-10-13。首次独立验收为有条件通过、抽核86处，这是历史阶段；后续[全量独立验收](../../governance/device_full_acceptance_20261013/compressor_boiler/ACCEPTANCE_REPORT.md)已覆盖空压机2502个数值、417个横杠位置及表7六个比值，[最终复验](../../governance/device_full_acceptance_20261013/reverification/final_compressor_boiler/FINAL_REVERIFICATION.md)确认数值、结构与映射事实通过。两标准合计3004项包含锅炉，不应全部计为空压机。主映射继续与[标准表值工作簿](data/GB19153_2019_标准表值.xlsx)配套使用，原文优先；本轮直接复用已有证据，不重复数值核验。
+
+当前Stage B出口完成，D01直接显示等级、D02=A及18列Excel已经Owner批准，允许进入Stage C。见[决定落档](OWNER_DECISIONS.md)。001—003保持PROVISIONAL、004及005为RESOLVED；新决定不改变源表或附加条件原文。源工作簿与Approved Golden保持原样。
 
 ## 1. 身份与平台预检查
 

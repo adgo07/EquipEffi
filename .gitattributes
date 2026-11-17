@@ -40,3 +40,5 @@ STANDARD_ISSUES_REGISTER.md text eol=lf
 
 # Locked conformance schema is vendored byte-for-byte for offline validation.
 tests/fixtures/numeric/conformance_vector_v1.schema.json -text
+
+src/equipeffi/resources/standards/gb19153_2019_candidate.json text eol=lf

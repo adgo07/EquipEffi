@@ -1,5 +1,9 @@
 # Windows V1 产品范围
 
+## 本轮授权候选：空压机Stage C（2026-11-12启动）
+
+Owner已批准空压机D01直接等级、D02=A及18列Excel，并授权Stage B出口后继续Stage C。[设计](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)出口完成，候选核心及Application/Qt/Record/V6.6批量已实现，候选成熟度IMPLEMENTED（容量保护及批量持久化、原生包状态/资源已验证；测试/CI与实际GUI内容交互NOT_RUN边界统一见实施记录）；正式发布scope仍POST_V1，不提升SUPPORTED，不正式发布。
+
 ## 本轮授权候选：永磁同步电动机产品接入（2026-11-11）
 
 未发布候选加入GB30253五个显式分支，状态为 `IMPLEMENTED / 已实现，待验收`。延续高压GB30254的候选状态及GB18613既有支持投影。共享电动机页面及同一批量工作表，候选默认V6.5 / `motor-input.v5`；旧V6至V6.4按各自契约，V6.2保留实测/kV语义。正式发布仍为v0.2.1，发布范围按下文记录。原有永磁 `POST_V1` 描述指正式范围，候选本轮开发成熟度为 `IMPLEMENTED`。证据及独立验收限制见[永磁接入实施记录](docs/standards/gb30253_2024/PRODUCT_INTEGRATION_20261111.md)。

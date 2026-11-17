@@ -1,4 +1,4 @@
-"""只读核验当前 Qt/V6.5、正式泵、变压器与电机服务及发布资源。
+"""只读核验当前 Qt/V6.6、正式泵、变压器与电机服务及发布资源。
 
 用法（在仓库根目录）：
     python tools/audit_release.py
@@ -39,13 +39,13 @@ from equipeffi.infrastructure.excel.template_resource import (
     DEFAULT_V6_TEMPLATE,
     DEFAULT_V61_TEMPLATE,
     DEFAULT_V62_TEMPLATE,
-    DEFAULT_V65_TEMPLATE,
+    DEFAULT_V66_TEMPLATE,
     DEFAULT_V64_TEMPLATE,
     V6_TEMPLATE_IDENTITY,
-    V65_TEMPLATE_IDENTITY,
+    V66_TEMPLATE_IDENTITY,
     V6TemplateResource,
     V61TransformerTemplateResource,
-    V65MotorTemplateResource,
+    V66CompressorTemplateResource,
     V62MotorTemplateResource,
 )
 from equipeffi.infrastructure.standards.json_repository import JsonStandardRepository
@@ -418,35 +418,35 @@ def _audit_workbooks(
     checks: dict[str, Any],
     template: Path,
 ) -> None:
-    """核验当前 V6.5 产品模板，同时确认旧 V6 泵模板仍可读取。"""
+    """核验当前 V6.6 产品模板，同时确认旧 V6 泵模板仍可读取。"""
 
     if not template.is_file():
-        errors.append(f"当前V6.5模板不存在: {template}")
+        errors.append(f"当前V6.6模板不存在: {template}")
         return
     identity_keys = (
         "template_id", "template_version", "template_kind",
         "template_contract_revision", "filename", "asset_sha256",
     )
     try:
-        result = V65MotorTemplateResource().validate(template)
+        result = V66CompressorTemplateResource().validate(template)
         checks["template"] = asdict(result)
-        checks["template_identity"] = V65_TEMPLATE_IDENTITY
+        checks["template_identity"] = V66_TEMPLATE_IDENTITY
         if not result.is_valid:
-            errors.append("当前V6.5模板身份或泵/变压器/电机契约校验失败")
-        if any(result.identity.get(key) != V65_TEMPLATE_IDENTITY.get(key)
+            errors.append("当前V6.6模板身份或泵/变压器/电机契约校验失败")
+        if any(result.identity.get(key) != V66_TEMPLATE_IDENTITY.get(key)
                for key in identity_keys):
-            errors.append("当前模板身份不是清单登记的V6.5产品版本")
+            errors.append("当前模板身份不是清单登记的V6.6产品版本")
 
         unified = UnifiedWorkbookReader().read(template)
         checks["template_unified_sheets"] = sorted(unified.sheets)
-        if not {"离心泵", "变压器", "电动机"}.issubset(unified.sheets):
-            errors.append("V6.5统一Reader未识别离心泵、变压器与电动机工作表")
+        if not {"离心泵", "变压器", "电动机", "空压机"}.issubset(unified.sheets):
+            errors.append("V6.6统一Reader未识别离心泵、变压器与电动机工作表")
         pump_workbook = V6PumpWorkbookReader().read(template)
         checks["template_empty_pump_rows"] = len(pump_workbook.rows)
         if pump_workbook.rows:
-            errors.append("V6.5空白模板的离心泵输入区不应预载数据行")
+            errors.append("V6.6空白模板的离心泵输入区不应预载数据行")
     except Exception as exc:
-        errors.append(f"当前V6.5模板检查异常: {type(exc).__name__}: {exc}")
+        errors.append(f"当前V6.6模板检查异常: {type(exc).__name__}: {exc}")
 
     try:
         legacy_v61 = V61TransformerTemplateResource()
@@ -552,7 +552,7 @@ def _audit_transformer_pack(errors: list[str], checks: dict[str, Any]) -> None:
 
 
 def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any], wheel: Path | None, root: Path) -> None:
-    """核验wheel含Qt/V6.5与V2.1运行资源，并保留旧V6泵输入兼容。"""
+    """核验wheel含Qt/V6.6与V2.1运行资源，并保留旧V6泵输入兼容。"""
 
     if wheel is None:
         return
@@ -574,7 +574,7 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
         "equipeffi/domain/devices/transformer/calculator.py",
         "equipeffi/infrastructure/standards/transformer_repository.py",
         "equipeffi/standard_manifest.json",
-        f"equipeffi/resources/templates/{DEFAULT_V65_TEMPLATE}",
+        f"equipeffi/resources/templates/{DEFAULT_V66_TEMPLATE}",
         f"equipeffi/resources/templates/{DEFAULT_V64_TEMPLATE}",
         "equipeffi/resources/templates/设备能效分析空白模板_重构版V6_3.xlsx",
         f"equipeffi/resources/templates/{DEFAULT_V62_TEMPLATE}",
@@ -595,7 +595,7 @@ def _audit_wheel(errors: list[str], warnings: list[str], checks: dict[str, Any],
             checks["wheel_member_count"] = len(names)
             checks["wheel_missing_members"] = missing
             if missing:
-                errors.append("wheel缺少当前Qt/V6.5、变压器V2.1或旧V6泵运行文件: " + ", ".join(missing))
+                errors.append("wheel缺少当前Qt/V6.6、变压器V2.1或旧V6泵运行文件: " + ", ".join(missing))
             if any(name.endswith(".xlsx") and "V4" in name for name in names):
                 errors.append("wheel包含已退役的V4模板")
             metadata_members = sorted(
@@ -645,7 +645,7 @@ from equipeffi.application.services.transformer_analysis_service import Transfor
 from equipeffi.composition import create_pump_analysis_service
 from equipeffi.composition import create_transformer_analysis_service
 from equipeffi.infrastructure.excel.pump_workbook_reader import V6PumpWorkbookReader
-from equipeffi.infrastructure.excel.template_resource import V6TemplateResource, V65MotorTemplateResource
+from equipeffi.infrastructure.excel.template_resource import V6TemplateResource, V66CompressorTemplateResource
 from equipeffi.infrastructure.excel.unified_workbook_reader import UnifiedWorkbookReader
 from equipeffi.infrastructure.standards.transformer_repository import load_transformer_pack
 service = create_pump_analysis_service(with_persistence=False)
@@ -654,10 +654,10 @@ assert set(scopes) == {'pump_water', 'pump_chemical'}
 assert all(item['support_status'] == 'SUPPORTED' and item['pack_id'] for item in scopes.values())
 result = service.evaluate(PumpAnalysisRequest('单级单吸清水离心泵', date.today(), QBEP='100', HBEP='50', speed='2900', efficiency='90', suction='单吸', stages='1'))
 assert result.evaluation_status == 'SUCCESS' and result.rule_profile == 'pump_water'
-current = V65MotorTemplateResource()
-assert current.validate().is_valid and current.identity['template_version'] == 'V6.5'
+current = V66CompressorTemplateResource()
+assert current.validate().is_valid and current.identity['template_version'] == 'V6.6'
 unified = UnifiedWorkbookReader().read(current.template_path)
-assert {'离心泵', '变压器', '电动机'} <= set(unified.sheets)
+assert {'离心泵', '变压器', '电动机', '空压机'} <= set(unified.sheets)
 assert not V6PumpWorkbookReader().read(current.template_path).rows
 legacy = V6TemplateResource()
 assert legacy.validate().is_valid and legacy.identity['template_version'] == 'V6-20261005'
@@ -687,7 +687,16 @@ assert pmsm.standard_code == 'GB 30253-2024' and pmsm.support_status == 'IMPLEME
 assert pmsm.evaluation_status == 'SUCCESS' and pmsm.ui_conclusion == '1级'
 assert pmsm.thresholds['grade_1']['exact'] == {'numerator': '657', 'denominator': '8', 'unit': 'percent_point'}
 assert pmsm.references['standard_issues']['EQP-STD-GB30253-003'] == 'PROVISIONAL'
-print('headless-pumps-v6.5-transformer-v2.1-motor-ok')
+from equipeffi.composition import create_compressor_analysis_service
+from equipeffi.application.services.compressor_analysis_service import CompressorAnalysisRequest
+compressor = create_compressor_analysis_service(with_persistence=False)
+result = compressor.evaluate(CompressorAnalysisRequest(dict(category_id='oil_injected_rotary',
+    rated_motor_output_power_kw='1.5', rated_discharge_pressure_mpa='0.3',
+    cooling_method='AIR', specific_power_kw_per_m3_min='6.2')))
+assert result.standard_code == 'GB 19153-2019' and result.support_status == 'IMPLEMENTED'
+assert result.ui_conclusion == '2级' and result.explanation == ''
+assert result.references['assessment_scope'] == 'SPECIFIC_POWER_GRADE_ONLY'
+print('headless-pumps-v6.6-transformer-v2.1-motor-compressor-ok')
 """
     try:
         runtime = subprocess.run(
@@ -704,8 +713,8 @@ print('headless-pumps-v6.5-transformer-v2.1-motor-ok')
         errors.append(f"wheel headless运行时烟测无法启动: {exc}")
     else:
         checks["wheel_headless_stdout"] = runtime.stdout.strip()
-        if runtime.returncode != 0 or runtime.stdout.strip() != "headless-pumps-v6.5-transformer-v2.1-motor-ok":
-            errors.append(f"wheel headless泵/V6.5/变压器烟测失败: {runtime.stderr.strip() or runtime.stdout.strip()}")
+        if runtime.returncode != 0 or runtime.stdout.strip() != "headless-pumps-v6.6-transformer-v2.1-motor-compressor-ok":
+            errors.append(f"wheel headless泵/V6.6/变压器烟测失败: {runtime.stderr.strip() or runtime.stdout.strip()}")
 
     try:
         status = subprocess.run(
@@ -721,12 +730,12 @@ print('headless-pumps-v6.5-transformer-v2.1-motor-ok')
         status_payload = json.loads(status.stdout)
         checks["wheel_status"] = status_payload
         valid_status = (
-            set(status_payload) == {"ready", "desktop", "template", "pump_profiles", "transformer", "motor"}
+            set(status_payload) == {"ready", "desktop", "template", "pump_profiles", "transformer", "motor", "compressor"}
             and status_payload.get("desktop", {}).get("surface") == "PySide6 Qt"
             and status_payload.get("desktop", {}).get("available") is True
             and status_payload.get("template", {}).get("available") is True
-            and status_payload.get("template", {}).get("template_id") == V65_TEMPLATE_IDENTITY["template_id"]
-            and status_payload.get("template", {}).get("template_version") == V65_TEMPLATE_IDENTITY["template_version"]
+            and status_payload.get("template", {}).get("template_id") == V66_TEMPLATE_IDENTITY["template_id"]
+            and status_payload.get("template", {}).get("template_version") == V66_TEMPLATE_IDENTITY["template_version"]
             and set(status_payload.get("pump_profiles", {})) == {"pump_water", "pump_chemical"}
             and all(
                 item.get("available") is True
@@ -743,12 +752,15 @@ print('headless-pumps-v6.5-transformer-v2.1-motor-ok')
             and {item.get("standard_code"): item.get("support_status")
                  for item in status_payload.get("motor", {}).get("standards", ())} ==
                 {"GB 18613-2020": "SUPPORTED", "GB 30254-2024": "IMPLEMENTED", "GB 30253-2024": "IMPLEMENTED"}
+            and status_payload.get("compressor", {}).get("available") is True
+            and status_payload.get("compressor", {}).get("support_status") == "IMPLEMENTED"
+            and status_payload.get("compressor", {}).get("standard_code") == "GB 19153-2019"
             and status_payload.get("ready") is True
             and status.returncode == 0
         )
         if not valid_status:
             errors.append(
-                "wheel --status未验证当前Qt/V6.5/变压器SUPPORTED/正式泵profile: "
+                "wheel --status未验证当前Qt/V6.6/变压器SUPPORTED/正式泵profile: "
                 + (status.stderr.strip() or json.dumps(status_payload, ensure_ascii=False))
             )
     except (OSError, subprocess.SubprocessError, json.JSONDecodeError) as exc:
@@ -764,14 +776,14 @@ print('headless-pumps-v6.5-transformer-v2.1-motor-ok')
         if not (
             candidate.returncode == 0 and payload.get("ready") is True
             and payload.get("template", {}).get("available") is True
-            and payload.get("template", {}).get("template_id") == "equipeffi.device-efficiency.V6.5"
-            and payload.get("template", {}).get("template_version") == "V6.5"
+            and payload.get("template", {}).get("template_id") == "equipeffi.device-efficiency.V6.6"
+            and payload.get("template", {}).get("template_version") == "V6.6"
             and payload.get("motor", {}).get("enabled") is True
             and payload.get("motor", {}).get("available") is True
             and payload.get("motor", {}).get("support_status") == "SUPPORTED"
             and payload.get("motor", {}).get("standard_code") == "GB 18613-2020"
         ):
-            errors.append("wheel旧电机命令兼容V6.5/GB18613资源烟测失败：" + candidate.stdout)
+            errors.append("wheel旧电机命令兼容V6.6/GB18613资源烟测失败：" + candidate.stdout)
     except (OSError, subprocess.SubprocessError, json.JSONDecodeError) as exc:
         errors.append(f"wheel旧电机命令兼容烟测异常: {type(exc).__name__}: {exc}")
 
@@ -828,7 +840,7 @@ def _audit_native_report(
     if not report.get("qt_capable") or mode != "pyside6_qt":
         errors.append("原生桌面包未证明PySide6 Qt可用")
     if not report.get("status_ready"):
-        errors.append("原生桌面包--status未验证Qt/V6.5/变压器实现/正式泵服务")
+        errors.append("原生桌面包--status未验证Qt/V6.6/变压器实现/正式泵服务")
     executable = Path(str(report.get("executable", "")))
     if not executable.is_file():
         errors.append(f"原生构建报告指向的可执行文件不存在: {executable}")
@@ -925,7 +937,7 @@ def audit_project(
     template_path = (
         Path(template)
         if template
-        else source_root / "equipeffi" / "resources" / "templates" / DEFAULT_V65_TEMPLATE
+        else source_root / "equipeffi" / "resources" / "templates" / DEFAULT_V66_TEMPLATE
     )
     _audit_workbooks(errors, warnings, checks, template_path)
     _audit_transformer_pack(errors, checks)

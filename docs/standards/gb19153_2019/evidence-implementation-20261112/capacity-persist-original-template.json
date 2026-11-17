@@ -1,0 +1,20 @@
+[
+  {
+    "rows": 10000,
+    "seconds": 295.109,
+    "pass_count": 11,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "input_sha256": "2cdf840bd324529cab58fea6441c3b61bfed5c96cc933aa4e222cd1680679981",
+    "result_sha256": "E0F2F81CC01C83D16477C7A92CD89DAAFCC87D19AF74D3094D21801750E11F93",
+    "no_software_capacity_setting": true,
+    "persist": true,
+    "batch_records": 1,
+    "single_records": 0,
+    "row_evidence": 10000,
+    "list_omits_row_evidence": true,
+    "full_detail_preserved": true,
+    "database_unchanged_by_reads": true
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "checks": 41,
+  "fail": 0,
+  "errors": [],
+  "source": "G:\\Python Project\\EquipEffi\\_compressor_design_20261112\\outputs\\compressor-review\\excel-3fea4a60\\input.xlsx",
+  "result": "G:\\Python Project\\EquipEffi\\_compressor_design_20261112\\outputs\\compressor-review\\excel-3fea4a60\\result.xlsx",
+  "input_sha256": "bc151e149756aedb633a54f75b1154e34216a029044e8fdebbc475a628983f45",
+  "output_sha256": "28805db33a658b8a0fc4549f9753e48e3d1e5a4f80daa6df6da0388b6a2d3f8c",
+  "batch_record_id": "BATCH-74611dd3c673"
+}

@@ -377,14 +377,14 @@ class DeviceAnalysisPage(QWidget):
     """在泵和变压器页面间切换；默认保留原有泵流程。"""
 
     def __init__(self, pump_page: QWidget, transformer_page: TransformerAnalysisPage,
-                 parent: QWidget | None = None, *, motor_page=None):
+                 parent: QWidget | None = None, *, motor_page=None, compressor_page=None):
         super().__init__(parent)
         self.pump_page = pump_page
         self.transformer_page = transformer_page
         layout = QVBoxLayout(self)
         page_gutter(layout)
         layout.addWidget(heading("新建分析"))
-        for page in (pump_page, transformer_page, motor_page):
+        for page in (pump_page, transformer_page, motor_page, compressor_page):
             if page is not None and hasattr(page, "heading"):
                 page.heading.hide()
                 page.layout().setContentsMargins(0, 0, 0, 0)
@@ -411,9 +411,20 @@ class DeviceAnalysisPage(QWidget):
             self.device_selector.addItem("电动机（尚未开放）", "motor_lv")
             self.device_selector.model().item(self.device_selector.count() - 1).setEnabled(False)
             self.device_selector.setToolTip("当前配置未开放电动机分析。")
+        self.compressor_page = compressor_page
+        if compressor_page is not None:
+            self.device_selector.addItem("空压机", "compressor")
+            self.pages.addWidget(compressor_page)
         layout.addWidget(self.pages, 1)
-        self.device_selector.currentIndexChanged.connect(self.pages.setCurrentIndex)
+        self._device_pages = {"centrifugal_pump": pump_page, "transformer": transformer_page,
+                              "motor_lv": motor_page, "compressor": compressor_page}
+        self.device_selector.currentIndexChanged.connect(self._select_device_page)
         self.device_selector.setCurrentIndex(0)
+
+    def _select_device_page(self, *_):
+        widget = self._device_pages.get(self.device_selector.currentData())
+        if widget is not None:
+            self.pages.setCurrentWidget(widget)
 
     def select_standard(self, standard_code: str | None) -> bool:
         if standard_code is None:
@@ -423,6 +434,8 @@ class DeviceAnalysisPage(QWidget):
         if standard_code in {"GB 18613-2020", "GB 30254-2024", PMSM_STANDARD} and self.motor_page is not None:
             self.device_selector.setCurrentIndex(2)
             self.motor_page.select_standard(standard_code)
+        elif standard_code == "GB 19153-2019" and self.compressor_page is not None:
+            self.device_selector.setCurrentIndex(self.device_selector.findData("compressor"))
         elif standard_code == "GB 20052-2024":
             self.device_selector.setCurrentIndex(1)
         elif standard_code == "GB 19762-2025":

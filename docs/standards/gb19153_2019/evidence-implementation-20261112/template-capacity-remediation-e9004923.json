@@ -1,0 +1,78 @@
+{
+  "template_sha256": "6b85edccf4690d7878a277fd7648c77b20a4bfd277ebd80c9bd8127acf5587cc",
+  "changed_parts": [
+    "xl/worksheets/sheet3.xml",
+    "xl/tables/table3.xml",
+    "xl/worksheets/sheet18.xml",
+    "xl/styles.xml",
+    "xl/workbook.xml"
+  ],
+  "existing_cell_xfs_unchanged": true,
+  "input_protection": {
+    "B": {
+      "default_input_unlocked": true,
+      "header_locked": true,
+      "first_input_unlocked": true
+    },
+    "C": {
+      "default_input_unlocked": true,
+      "header_locked": true,
+      "first_input_unlocked": true
+    },
+    "D": {
+      "default_input_unlocked": true,
+      "header_locked": true,
+      "first_input_unlocked": true
+    },
+    "E": {
+      "default_input_unlocked": true,
+      "header_locked": true,
+      "first_input_unlocked": true
+    },
+    "F": {
+      "default_input_unlocked": true,
+      "header_locked": true,
+      "first_input_unlocked": true
+    },
+    "G": {
+      "default_input_unlocked": true,
+      "header_locked": true,
+      "first_input_unlocked": true
+    },
+    "H": {
+      "default_input_unlocked": true,
+      "header_locked": true,
+      "first_input_unlocked": true
+    },
+    "I": {
+      "default_input_unlocked": true,
+      "header_locked": true,
+      "first_input_unlocked": true
+    },
+    "J": {
+      "default_input_unlocked": true,
+      "header_locked": true,
+      "first_input_unlocked": true
+    },
+    "K": {
+      "default_input_unlocked": true,
+      "header_locked": true,
+      "first_input_unlocked": true
+    },
+    "P": {
+      "default_input_unlocked": true,
+      "header_locked": true,
+      "first_input_unlocked": true
+    },
+    "Q": {
+      "default_input_unlocked": true,
+      "header_locked": true,
+      "first_input_unlocked": true
+    }
+  },
+  "result_columns_locked": true,
+  "quantity_formula": "=SUM(D4:D1048576)",
+  "sheet_protection": true,
+  "actual_excel_interaction": "NOT_RUN",
+  "fail": 0
+}

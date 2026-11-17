@@ -1,0 +1,28 @@
+{
+  "evidence_source_sha": "c27c3532c29a0efb0e6df32564ff659e7a05fb27",
+  "current_runtime_sha": "e900492349bbe1b6a4a8faac9851a499738a8e6e",
+  "build_source_sha": "cb0a08bedcbcbc8f04540ae00c0b835b736c9faf",
+  "unchanged_files": [
+    {
+      "path": "src/equipeffi/domain/devices/compressor/calculator.py",
+      "git_blob_sha256": "81dc3c4633f86a77bc0cde74fe4447fd24b1f0773dd3578b198c94e955216b9f",
+      "unchanged_from_c27c3532": true
+    },
+    {
+      "path": "src/equipeffi/domain/devices/compressor/input_contract.py",
+      "git_blob_sha256": "d5ad6d2faa503d8fce14c8a47b8b432e0678212e31a5087f0fa8b10d78d07923",
+      "unchanged_from_c27c3532": true
+    },
+    {
+      "path": "src/equipeffi/application/services/compressor_analysis_service.py",
+      "git_blob_sha256": "e20c83d8d8b7544b5eee4a130a4f9380842e16733f93e6995c433f85cd686ea1",
+      "unchanged_from_c27c3532": true
+    },
+    {
+      "path": "src/equipeffi/resources/standards/gb19153_2019_candidate.json",
+      "git_blob_sha256": "8aa735c69b19a1ce97e69b1cbb4c522c4d3588253192bb3d0b6fd9e2afb433cc",
+      "unchanged_from_c27c3532": true
+    }
+  ],
+  "runtime_src_diff_e900_to_cb0": []
+}

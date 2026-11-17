@@ -1,0 +1,32 @@
+{
+  "source_sha": "cb0a08be",
+  "template_sha": "6B85EDCCF4690D7878A277FD7648C77B20A4BFD277EBD80C9BD8127ACF5587CC",
+  "tool": "unified CUA",
+  "inventory_status": "PASS",
+  "inventory_observation": "cua.listWindows succeeded in 3.5s; exact candidate executable process path and title returned",
+  "window_id": 4919298,
+  "window_title": "设备能效分析工具 · 离心泵、变压器、电动机、空压机能效分析",
+  "executable": "G:\\Python Project\\EquipEffi\\_compressor_design_20261112\\dist\\compressor-cb0a08be\\dist\\equipeffi-compressor-cb0a08be\\equipeffi-compressor-cb0a08be.exe",
+  "content_status": "NOT_RUN",
+  "blocked_call": "await cua.getApp({windowId:4919298})",
+  "blocked_seconds": 63.6,
+  "requested_timeout_ms": 10000,
+  "outcome": "No content or screenshot returned before interruption",
+  "interactions_status": "NOT_RUN",
+  "checks_not_run": [
+    "six compressor classifications",
+    "normal grade 2 display",
+    "dash no-result status",
+    "invalid input creates no record",
+    "standard library entry",
+    "history two tabs",
+    "small window scrolling",
+    "batch import and save new workbook"
+  ],
+  "fixture": "outputs/compressor-review/excel-a62333a2/input.xlsx",
+  "output_workbook_created_by_native_ui": false,
+  "screenshots": [],
+  "input_actions": 0,
+  "limitation": "Tool content retrieval blocked; does not establish product pass or failure",
+  "completion_summary_sent": true
+}

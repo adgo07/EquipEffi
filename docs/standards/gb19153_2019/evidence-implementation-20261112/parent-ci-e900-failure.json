@@ -1,0 +1,25 @@
+{
+  "source_sha": "e900492349bbe1b6a4a8faac9851a499738a8e6e",
+  "run_id": 43254403940,
+  "job_id": 131308722071,
+  "url": "https://github.com/adgo07/EquipEffi/actions/runs/43254403940",
+  "conclusion": "FAILURE",
+  "tests_run": 1330,
+  "pass": 1327,
+  "fail": 2,
+  "error": 1,
+  "skip": 0,
+  "seconds": 1611.725,
+  "whitespace": "SUCCESS",
+  "compileall": "SUCCESS",
+  "package_resource_smoke": "SKIPPED_AFTER_TEST_FAILURE",
+  "failures": [
+    "test_zipapp_builder_excludes_unlisted_development_files: temporary fixture lacks gb19153 candidate and V6.6 assets",
+    "test_three_device_batch_and_reimport_preserve_exact_result: 4 summary sheets, expected 3",
+    "test_lookup_and_absent_branches: selected pressure source decimal 0.7, expected old rational display 7/10"
+  ],
+  "github_log_artifact": "https://github.com/adgo07/EquipEffi/actions/runs/43254403940/artifacts/13963616621",
+  "artifact_zip_sha256": "48a13de4a88955a84e8090dc3e2332308c8cd83702a49a4c9240c21214e28c39",
+  "log_excerpt": "ci-e900-failures.log",
+  "reviewer": "parent, actual completed workflow and job log inspected"
+}

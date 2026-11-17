@@ -1,0 +1,113 @@
+{
+  "source_sha": "c27c3532c29a0efb0e6df32564ff659e7a05fb27",
+  "template_sha256": "B3EE24A5606C74C042FB88C43B2F55C6042D1B6067D777E3FFFD482F2F25C30D",
+  "finding": "P1: protected compressor input columns locked beyond initial ten rows",
+  "sheet_protected": true,
+  "table_range": "A3:R13",
+  "columns": {
+    "B": {
+      "default_locked": true,
+      "row4_locked": false,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "C": {
+      "default_locked": true,
+      "row4_locked": false,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "D": {
+      "default_locked": true,
+      "row4_locked": false,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "E": {
+      "default_locked": true,
+      "row4_locked": false,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "F": {
+      "default_locked": true,
+      "row4_locked": false,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "G": {
+      "default_locked": true,
+      "row4_locked": false,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "H": {
+      "default_locked": true,
+      "row4_locked": false,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "I": {
+      "default_locked": true,
+      "row4_locked": false,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "J": {
+      "default_locked": true,
+      "row4_locked": false,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "K": {
+      "default_locked": true,
+      "row4_locked": false,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "P": {
+      "default_locked": true,
+      "row4_locked": false,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "Q": {
+      "default_locked": true,
+      "row4_locked": false,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "L": {
+      "default_locked": true,
+      "row4_locked": true,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "M": {
+      "default_locked": true,
+      "row4_locked": true,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "N": {
+      "default_locked": true,
+      "row4_locked": true,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "O": {
+      "default_locked": true,
+      "row4_locked": true,
+      "row14_locked": true,
+      "row10003_locked": true
+    },
+    "R": {
+      "default_locked": true,
+      "row4_locked": true,
+      "row14_locked": true,
+      "row10003_locked": true
+    }
+  },
+  "status": "CONFIRMED; remediation required",
+  "actual_excel_interaction": "NOT_RUN"
+}

@@ -366,6 +366,7 @@ class BatchPage(QWidget):
         else:
             row_count, skipped = len(workbook.rows), workbook.skipped_blank_rows
             details = ""
+        details += "。".join(getattr(workbook, "compatibility_messages", ()))
         self.check_label.setText(
             f"文件结构已读取：发现 {row_count} 行需要评价的数据"
             f"（另有 {skipped} 行完全空白，已跳过）。"
@@ -595,6 +596,7 @@ class BatchPage(QWidget):
         unprocessed = getattr(summary, "unprocessed_sheets", ()) or ()
         if unprocessed:
             lines.append("未处理工作表：" + "、".join(str(name) for name in unprocessed))
+        lines.extend(getattr(summary, "compatibility_messages", ()))
         if result.batch_record_saved:
             lines.append(f"已保存批次总结记录：{result.batch_record_id}")
         else:

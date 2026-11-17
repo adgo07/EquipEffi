@@ -66,12 +66,13 @@ class SettingsPage(QWidget):
 
     def __init__(self, settings, service=None, *, app_version: str = "",
                  data_location: Path | None = None, navigator=None,
-                 transformer=None, motor=None, parent: QWidget | None = None):
+                 transformer=None, motor=None, compressor=None, parent: QWidget | None = None):
         super().__init__(parent)
         self.settings = settings
         self.service = service
         self.transformer_service = transformer
         self.motor_service = motor
+        self.compressor_service = compressor
         self.app_version = app_version
         self.data_location = data_location
         self.navigator = navigator
@@ -223,6 +224,9 @@ class SettingsPage(QWidget):
                          for entry in overviews if entry.get("support_status") in status_labels]
             if standards:
                 lines.append("电动机：" + "；".join(standards))
+        if self.compressor_service is not None:
+            compressor = self.compressor_service.standard_overview()
+            lines.append(f"空压机：{compressor['standard_code']}（已实现，待验收）")
         self.about.setText("\n".join(lines))
 
         # 普通用户不得看到内部机器键名（last.directory / window.geometry /

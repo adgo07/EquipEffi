@@ -1,0 +1,12 @@
+{
+  "scope": "Three affected modules: distribution asset audit, motor product flow, compressor core",
+  "tests_run": 25,
+  "pass": 25,
+  "fail": 0,
+  "error": 0,
+  "skip": 0,
+  "seconds": 106.962,
+  "log": "outputs/compressor-implementation/ci-fixture-related-modules.log",
+  "runtime_src_changed": false,
+  "presentation_mode": "Offscreen Qt automated tests where applicable; no native GUI interaction claimed"
+}

@@ -1,0 +1,24 @@
+{
+  "tool": "computer-use @oai/sky",
+  "last_success": "sky.list_windows recovery succeeded; no Excel window",
+  "blocked_call": "sky.launch_app Microsoft.Office.EXCEL.EXE.15 followed by list_apps; tool invocation interrupted after 673s",
+  "excel_open": true,
+  "native_excel_status": "NOT_RUN",
+  "checks_not_run": [
+    "F dropdown eight choices",
+    "J cooling dropdown",
+    "G/K prompts",
+    "18 columns visual check",
+    "10000-row native fill",
+    "save and reopen"
+  ],
+  "source_sha_at_copy": "22750E655453D900D9D3580AF0BD5431B989E5FD1E98DC1501933A09E241F446",
+  "final_template_sha": "6B85EDCCF4690D7878A277FD7648C77B20A4BFD277EBD80C9BD8127ACF5587CC",
+  "screenshots": [],
+  "user_windows_changed": false,
+  "explicit_path_recovery": "Registry App Paths located C:\\Program Files\\Microsoft Office\\Root\\Office16\\EXCEL.EXE; Start-Process failed: 指定的登录会话不存在。可能已被终止。",
+  "escalated_recovery": "Elevated Start-Process succeeded; sky.list_windows returned Excel id 78055488 title Excel. Subsequent get_window plus get_window_state(include_screenshot=true,include_text=true) hung 658.5s and was interrupted; no screenshot, tree or business interaction result.",
+  "unified_cua_recovery": "cua.getState succeeded in 4.2s. Subsequent standalone cua.getApp({windowId:78055488}) with timeout_ms=10000 did not return initial AX/state; interrupted after 144.1s. No further content reads or actions. completion_summary sent.",
+  "final_candidate_native_ui_status": "NOT_RUN: computer-use window content retrieval blocked; no visual or interactive conclusion about final candidate.",
+  "final_candidate_source_sha": "cb0a08be"
+}

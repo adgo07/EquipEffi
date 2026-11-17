@@ -625,6 +625,8 @@ class RecordsPage(QWidget):
 
         if is_product_motor_record(getattr(snapshot, "device_type", ""), input_snapshot):
             return self._show_motor_record(snapshot, result, input_snapshot)
+        if getattr(snapshot, "device_type", "") == "compressor" and input_snapshot.get("input_contract_revision") == "compressor-input.v1":
+            return self._show_compressor_record(snapshot, result, input_snapshot)
         if getattr(snapshot, "device_type", "") == "transformer":
             return self._show_transformer_record(snapshot, result, input_snapshot)
 
@@ -717,6 +719,36 @@ class RecordsPage(QWidget):
     def _category_label(self, value: str) -> str:
         motor_labels = {item.category_id: item.label for item in getattr(self.motor_contract, "categories", ())}
         return motor_labels.get(value, self._transformer_categories.get(value, value))
+
+    def _show_compressor_record(self, snapshot, result, inputs):
+        from ....application.services.compressor_analysis_service import get_compressor_input_contract
+        contract = get_compressor_input_contract()
+        category = inputs.get("category_id")
+        label = next((c.label for c in contract.categories if c.category_id == category), snapshot.product_category)
+        basic = [f"采用标准：{snapshot.standard_code}", f"设备类别：{label}", f"评价日期：{snapshot.as_of}",
+                 f"评价结论：{result.get('ui_conclusion') or snapshot.ui_conclusion}"]
+        if result.get("support_status") == "IMPLEMENTED":
+            basic.append("保存时软件状态：已实现，待验收")
+        if result.get("explanation"):
+            basic.append(result["explanation"])
+        for key, threshold in result.get("thresholds", {}).items():
+            basic.append(f"{key[-1]}级比功率限值：{threshold.get('display_text', '—')} kW/(m³/min)")
+        basic.append(f"保存时间：{format_saved_time(snapshot.finalized_at_utc)}")
+        lines = []
+        for field in contract.visible_fields(category):
+            value = inputs.get(field.field_id)
+            if value not in (None, ""):
+                value = dict(contract.options(category, field.field_id)).get(value, value)
+                lines.append(f"{field.label}" + (f"（{field.unit}）" if field.unit else "") + f"：{value}")
+        refs = result.get("references") or snapshot.reference_snapshot
+        basis = [f"采用标准：{snapshot.standard_code}"]
+        if refs.get("table_number"):
+            basis.append(f"表{refs['table_number']}；选用额定功率 {refs.get('selected_power_kw', '—')} kW；排气表压 {refs.get('selected_pressure_mpa', '—')} MPa")
+        self.detail.setText("\n".join(basic))
+        self.inputs_detail.setText("保存时输入数据\n" + "\n".join(lines) + "\n\n计算依据\n" + "\n".join(basis))
+        self.lists.setCurrentIndex(0)
+        self._enter_detail("单台分析记录")
+        return self.detail.text()
 
     def _show_motor_record(self, snapshot, result, inputs):
         from ....application.services.motor_basis_formatter import format_motor_basis_lines

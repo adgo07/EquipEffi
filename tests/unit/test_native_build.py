@@ -87,6 +87,7 @@ class NativeBuildTests(unittest.TestCase):
                     return SimpleNamespace(returncode=0)
                 self.assertEqual(command[:2], [str(executable), "--status"])
                 self.assertEqual(command[2], "--status-file")
+                self.assertEqual(Path(command[3]).parent.parent.resolve(), executable.parent.resolve())
                 self.assertTrue(kwargs["text"])
                 self.assertEqual(kwargs["encoding"], "utf-8")
                 self.assertEqual(kwargs["env"]["PYTHONIOENCODING"], "utf-8")
