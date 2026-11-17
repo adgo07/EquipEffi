@@ -1,5 +1,11 @@
 # Windows V1 产品范围
 
+## 锅炉Stage B设计授权（2026-11-17）
+
+前置空压机PR #46已完成本轮工程复核与小修，最终Head987e9562完整Windows CI通过，合并为66df7126。空压机仍为IMPLEMENTED/正式POST_V1；原生环境及正式支持验收继续见QA-COMP-001，本轮未发布。
+
+Owner要求完成空压机PR #46验收后设计锅炉，并明确有机热载体未决组合本轮保留待定，只设计已确认分支。[锅炉接入设计](docs/standards/gb24500_2020/INTEGRATION_DESIGN.md)提出水介质蒸汽/热水、表1～4、低热值生物质已批准处理及电加热97%限定值方案。输入及V6.7的25列方案待确认；锅炉正式POST_V1与运行时支持状态不变，未开放产品入口。本授权为设计，未进入Stage C或正式发布。
+
 ## 本轮授权候选：空压机Stage C（2026-11-12启动）
 
 Owner已批准空压机D01直接等级、D02=A及18列Excel，并授权Stage B出口后继续Stage C。[设计](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)出口完成，候选核心及Application/Qt/Record/V6.6批量已实现，候选成熟度IMPLEMENTED（容量保护及批量持久化、原生包状态/资源已验证；测试/CI与实际GUI内容交互NOT_RUN边界统一见实施记录）；正式发布scope仍POST_V1，不提升SUPPORTED，不正式发布。

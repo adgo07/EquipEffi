@@ -45,7 +45,7 @@
 |GB 19577—2024 热泵和冷水机组能效限定值及能效等级|[主映射](gb19577_2024/STANDARD_MAPPING.md)|[数据工作簿](gb19577_2024/data/GB19577_2024_TABLE_VALUES.xlsx)|
 |GB 19761—2020 通风机能效限定值及能效等级|[主映射](gb19761_2020/STANDARD_MAPPING.md)|[数据工作簿](gb19761_2020/data/GB19761_2020_表1-4核对工作簿.xlsx)|
 |GB 21454—2021 多联式空调（热泵）机组|[主映射](gb21454_2021/STANDARD_MAPPING.md)|[数据工作簿](gb21454_2021/data/GB21454_2021_标准表值.xlsx)|
-|GB 24500—2020 工业锅炉|[主映射](gb24500_2020/STANDARD_MAPPING.md)|[数据工作簿](gb24500_2020/data/GB24500_2020_TABLE_VALUES.xlsx)|
+|GB 24500—2020 工业锅炉|[主映射](gb24500_2020/STANDARD_MAPPING.md)；[已确认分支接入设计（待确认）](gb24500_2020/INTEGRATION_DESIGN.md)|[数据工作簿](gb24500_2020/data/GB24500_2020_TABLE_VALUES.xlsx)|
 |GB 28381—2012 离心鼓风机|[主映射](gb28381_2012/STANDARD_MAPPING.md)|[数据工作簿](gb28381_2012/data/GB28381_2012_TABLES.xlsx)|
 |GB 28381—2026 鼓风机能效限定值及能效等级|[主映射](gb28381_2026/STANDARD_MAPPING.md)|[数据工作簿](gb28381_2026/GB28381_2026_TABLE_VALUES.xlsx)|
 |GB 29541—2013 热泵热水机（器）能效限定值及能效等级|[主映射](gb29541_2013/STANDARD_MAPPING.md)|映射内完整限值（单文件）|

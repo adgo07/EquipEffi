@@ -1,5 +1,11 @@
 # 当前任务状态
 
+## 当前任务：锅炉已确认分支接入设计（2026-11-17）
+
+Owner授权验收PR #46并在无阻塞问题时合并，随后设计锅炉。PR46小修Head `987e9562`完整Windows CI成功，已合并`66df7126`；[复核记录](docs/standards/gb19153_2019/PR46_REVIEW_20261117.md)明确原生交互、Excel/WPS及环境验证仍未完成，空压机继续IMPLEMENTED，QA-COMP-001保持OPEN。
+
+锅炉Stage B方案见[接入设计](docs/standards/gb24500_2020/INTEGRATION_DESIGN.md)；本轮明确保留有机热载体未决组合，优先设计水介质已确认分支。001已有低热值生物质处理与002排放口径保持；不关闭001、不实现Calculator、不提升支持状态。输入与拟V6.7的25列方案供Owner确认，验证见[设计检查](docs/standards/gb24500_2020/DESIGN_VERIFICATION_20261117.json)。旧表78值及97%限定值回读79/79通过，原映射、工作簿、模板、锁和生产实现不变。以下原任务段保留为历史时点。
+
 ## 当前任务：空压机Stage C候选接入（2026-11-12）
 
 Owner已明确批准D01仅评价比功率、正常结果直接显示等级、D02=A及统一18列Excel，并授权Stage B出口后继续Stage C。决定落档见[OWNER_DECISIONS](docs/standards/gb19153_2019/OWNER_DECISIONS.md)，设计见[INTEGRATION_DESIGN](docs/standards/gb19153_2019/INTEGRATION_DESIGN.md)。Stage B出口已完成（当时达到READY_FOR_IMPLEMENTATION）；当前Stage C候选为IMPLEMENTED，已接通六表、Application/Qt/Record/V6.6同核批量，完成容量保护修复和原生候选构建。2026-11-13最后已完成完整CI为e900：1330项中1327通过、2失败/1错误（3处旧fixture/预期已定向修复）；本次HEAD门禁以PR #46实时checks为准，实际Qt/Excel内容交互未验证；QA-COMP-001保持OPEN，详见[实施记录](docs/standards/gb19153_2019/PRODUCT_INTEGRATION_20261112.md)及[验证JSON](docs/standards/gb19153_2019/IMPLEMENTATION_VERIFICATION_20261112.json)；不提升SUPPORTED、不正式发布；Phase 8状态不变。
