@@ -18,7 +18,7 @@ MANIFEST = ROOT / "src/equipeffi/resources/TEMPLATE_MANIFEST.json"
 FILENAME = "设备能效分析空白模板_重构版V6_7.xlsx"
 CATEGORY_NAME = "EV_BOILER_V67_CATEGORY"
 CATEGORY_IDS = "EV_BOILER_V67_CATEGORY_IDS"
-from equipeffi.infrastructure.excel.boiler_sheet_contract import COLUMNS, INPUT_COLUMNS, RESULT_COLUMNS
+from equipeffi.infrastructure.excel.boiler_sheet_contract import COLUMNS, INPUT_COLUMNS, RESULT_COLUMNS, column_letter
 
 
 
@@ -201,9 +201,8 @@ def build():
         put(n, "FO", "t/h" if c.form == "steam" else "MW" if c.form == "hot_water" else "")
         # 每类别一个受控燃料列表；配置仅作模板输入契约。
         fuel_col = 172 + n
-        from openpyxl.utils import get_column_letter
         for row, (_value, label) in enumerate(CONTRACT.options(c.category_id, "fuel") or (("", ""),), 2):
-            put(row, get_column_letter(fuel_col), label)
+            put(row, column_letter(fuel_col), label)
     workbook = _parse_xml(data["xl/workbook.xml"])
     names = workbook.find(_tag("definedNames"))
     old_names = set(identity_defined_names(V66_TEMPLATE_ENTRY))
@@ -214,7 +213,7 @@ def build():
     for name, col, count in ((CATEGORY_NAME, "FL", len(CONTRACT.categories)), (CATEGORY_IDS, "FM", len(CONTRACT.categories))):
         ET.SubElement(names, _tag("definedName"), name=name).text = f"'配置'!${col}$2:${col}${count + 1}"
     for n, c in enumerate(CONTRACT.categories, 1):
-        col = get_column_letter(173 + n)
+        col = column_letter(173 + n)
         count = max(1, len(CONTRACT.options(c.category_id, "fuel")))
         ET.SubElement(names, _tag("definedName"), name=f"EV_BOILER_V67_FUEL_{n}").text = f"'配置'!${col}$2:${col}${count + 1}"
     for name, value in identity_defined_names(entry).items():

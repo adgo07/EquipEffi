@@ -4,9 +4,9 @@
 
 |资源|修改前SHA256|当前SHA256|
 |---|---|---|
-|`src/equipeffi/resources/TEMPLATE_MANIFEST.json`|`f2053e4fee9a647542565beef9303fd6b925ad584fab2c7d2cc2e3c36d497c7f`|`f60dd3cd69e9f2ed1fb5f224b5380ea0171d75f27101dfc696760748de14d39a`|
+|`src/equipeffi/resources/TEMPLATE_MANIFEST.json`|`f2053e4fee9a647542565beef9303fd6b925ad584fab2c7d2cc2e3c36d497c7f`|`d19d672c6d0fd141fe2ed11d3ab2167497225ebe449d081cb0974153af393a37`|
 |`src/equipeffi/resources/standards/gb24500_2020_candidate.json`|`新增派生资产`|`07d2d4ff3724f988dae4799ff030b4a1467cc2d08c6919af7714c9e5647d9264`|
-|`src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_7.xlsx`|`新增派生资产`|`e04a2628f152dc830ce6872277423068525e5cd79ac2db0dfa2a8300aab258d5`|
+|`src/equipeffi/resources/templates/设备能效分析空白模板_重构版V6_7.xlsx`|`新增派生资产`|`ebaef4e0e7fd87f65127549b39eff2e446990f76d5cb79f6e0af06d9d552aabf`|
 |`docs/standards/gb24500_2020/data/GB24500_2020_TABLE_VALUES.xlsx`|`9f8e243b96ea45cd0c1f1a33dc1c0a7b62eaa8a5f2f9095234c427463a68de1a`|`9f8e243b96ea45cd0c1f1a33dc1c0a7b62eaa8a5f2f9095234c427463a68de1a`|
 |`docs/standards/gb24500_2020/STANDARD_MAPPING.md`|`454d1547e21b9e959c1b43116820950adfa6e082dca1222e5092f11f3777bdee`|`454d1547e21b9e959c1b43116820950adfa6e082dca1222e5092f11f3777bdee`|
 |`platform-lock.json`|`87a8786f9d630609204b240a496f92bdcbc75904ffc2db71f6f318b596e2c3f4`|`b45cb389605c367f8f6bde528da4d01616a1e5151b6631f13bd1440882175d53`|

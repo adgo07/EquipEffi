@@ -53,8 +53,8 @@ class BoilerInputContract:
             return basic
         result = basic + (Field("rated_capacity", "额定蒸发量" if c.form == "steam" else "额定热功率",
                                "t/h" if c.form == "steam" else "MW",
-                               c.form == "hot_water" or c.heat in {"layer_coal", "biomass"}),
-                          Field("rated_pressure_mpa", "额定蒸汽压力" if c.form == "steam" else "额定出水压力", "MPa", True))
+                               c.heat != "mixed" and (c.form == "hot_water" or c.heat in {"layer_coal", "biomass"})),
+                          Field("rated_pressure_mpa", "额定蒸汽压力" if c.form == "steam" else "额定出水压力", "MPa", c.heat != "mixed"))
         if c.heat == "mixed":
             return result
         result += (Field("fuel", "能源／燃料品种", required=True),)

@@ -158,6 +158,7 @@ DEFAULT_V66_TEMPLATE = V66_TEMPLATE_IDENTITY["filename"]
 COMPRESSOR_SHEET_CONTRACT = next(sheet for sheet in V66_TEMPLATE_ENTRY["sheets"] if sheet.get("sheet_id") == "compressor")
 V67_TEMPLATE_ENTRY = next(entry for entry in TEMPLATE_MANIFEST["templates"] if entry.get("template_version") == "V6.7")
 V67_TEMPLATE_IDENTITY = {key: str(V67_TEMPLATE_ENTRY.get(key, "")) for key in V66_TEMPLATE_IDENTITY}
+DEFAULT_V67_TEMPLATE = V67_TEMPLATE_IDENTITY["filename"]
 BOILER_SHEET_CONTRACT = next(sheet for sheet in V67_TEMPLATE_ENTRY["sheets"] if sheet.get("sheet_id") == "industrial_boiler")
 
 
@@ -1602,8 +1603,7 @@ class V67BoilerTemplateResource(V66CompressorTemplateResource):
     def validate(self, path=None, *, check_pump_sheet=True):
         from dataclasses import replace
         from ...domain.devices.boiler.input_contract import CONTRACT, REVISION
-        from openpyxl.utils import get_column_letter
-        from .boiler_sheet_contract import COLUMNS
+        from .boiler_sheet_contract import COLUMNS, column_letter
         base = self._validate_compressor(path, check_pump_sheet, V67_TEMPLATE_ENTRY)
         if not base.is_valid:
             return base
@@ -1643,7 +1643,7 @@ class V67BoilerTemplateResource(V66CompressorTemplateResource):
                         "t/h" if c.form == "steam" else "MW" if c.form == "hot_water" else "")
             if tuple(str(config[n][_column_index(col)] or "") for col in ("FL", "FM", "FN", "FO")) != expected:
                 issues.append("锅炉配置类别/字段/容量单位与Application不一致")
-            col = get_column_letter(173 + n)
+            col = column_letter(173 + n)
             fuels = tuple(label for _value, label in CONTRACT.options(c.category_id, "fuel")) or ("",)
             if tuple(str(config[row][_column_index(col)] or "") if _column_index(col) < len(config[row]) else "" for row in range(1,len(fuels)+1)) != fuels:
                 issues.append("锅炉燃料选项与Application不一致")

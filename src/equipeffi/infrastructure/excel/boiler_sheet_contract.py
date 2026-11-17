@@ -13,3 +13,12 @@ COLUMNS = (
     ("R", "填表备注", "", "user_note", "input"), ("S", "自动备注", "", "messages", "result"))
 INPUT_COLUMNS = frozenset("BCDEFGHIJKLOQR")
 RESULT_COLUMNS = frozenset("MNPS")
+
+
+def column_letter(number):
+    """一基列号→OOXML列名，运行时不依赖openpyxl。"""
+    result = ""
+    while number:
+        number, remainder = divmod(number - 1, 26)
+        result = chr(65 + remainder) + result
+    return result
