@@ -2,6 +2,8 @@
 
 ### QA-BOILER-001：锅炉已确认分支接入设计（OPEN，2026-11-17）
 
+2026-11-17复核补充：PR47三项设计/证据说明小修已通过最终CI并合并。混烧与无法归类采用合法无法判定路由，取得具体事实后由维护者登记处理；不新增近似套表解释。后续[契约细化设计](docs/standards/gb24500_2020/CONTRACT_DETAIL_DESIGN.md)已补齐条件校验、双结果和批次计数验收口径；本QA继续OPEN，Stage C与正式支持验收尚未执行。
+
 Owner授权Stage B设计，明确有机热载体未决组合暂缓。四表78值与97%限定值已复用固定源哈希并回读79项一致；设计继承EQP-STD-GB24500-001/002已答部分。旧候选BoilerEvaluator以design_efficiency作比较值且电加热通过时映射三级，与已核验映射不符，分类KEEP/VERIFY，正式接入需独立规范输入与结果，不能沿用为真值；本轮未修改该旧实现。方案见[锅炉设计](docs/standards/gb24500_2020/INTEGRATION_DESIGN.md)，覆盖测试效率/条件设计效率、双结果、精确Profile、25列Excel和历史兼容。输入/模板方案待Owner确认；Stage C、SUPPORTED及发布均未执行。
 
 ### QA-COMP-001：空压机Stage B设计及后续接入追踪（OPEN，2026-11-12）
