@@ -48,7 +48,7 @@ class MainWindow(QMainWindow):
             devices.append("空压机")
             self.setWindowTitle("设备能效分析工具 · " + "、".join(devices) + "能效分析")
         if boiler is not None:
-            self.setWindowTitle(self.windowTitle().replace("能效分析", "、锅炉能效分析"))
+            self.setWindowTitle(self.windowTitle().removesuffix("能效分析") + "、锅炉能效分析")
         self.resize(1280, 800)
         self._settings_from_home = False
         self._first_show = True

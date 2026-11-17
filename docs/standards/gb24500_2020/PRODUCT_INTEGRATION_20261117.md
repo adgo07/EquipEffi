@@ -60,3 +60,6 @@ Windows候选使用隔离Python3.12.14/PySide6 6.12.0/PyInstaller6.22.3构建，
 补充来源身份与适配矩阵：25个Qt离屏／Excel类别及特例投影全部一致（含两种低热值双结果、有机热载体未开放、混烧及其他／不确定类别）；原生GUI资格另计。锅炉Canonical新增`text eol=lf`且派生工具显式LF输出，防止checkout换行改变文件身份；不改78表值/97或任何规则。新建autocrlf=true/false checkout字节与Git blob一致，文件SHA均为696c469873cca486b185422cc3dde60d2fa5663b5ec3080e73a04015e04debf5，核心与新建checkout共9项通过（2.052秒）。该文件哈希取代过程CRLF副本身份；旧历史不重写。
 
 本地初次全量诊断与实施收口修改发生交叠，其失败/错误与过程日志保留，不作为固定Head通过证据；最终完整门禁只采用本PR固定Head的干净Windows CI。最终代码身份、候选资源与测试状态以PR及本机`delivery-manifest.json`核对，不引用任何旧候选或中间Head冒充最终运行。
+
+
+原生Qt补查事实：用户指定astra/low子代理通过隔离脚本及沙箱外可见启动，窗口清单已确认原生Qt窗口；读取窗口时Computer Use返回“app approval timed out”，未取得截图或表单交互，所以仅“成功启动”有证据，业务操作仍NOT_RUN。清单暴露标题拼接重复锅炉字样，已改为只处理末尾标题后缀，未改业务逻辑。Excel启动工具此前长时间卡住，原生Excel编辑/保存/下拉仍NOT_RUN。不存在以offscreen代替原生验收的声明。
